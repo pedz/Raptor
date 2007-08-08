@@ -3,4 +3,28 @@
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
+
+  before_filter :authenticate
+
+  private
+  #
+  # A before_filter for the entire application.  This authenticates
+  # against bluepages.  If authentication succeeds, the matching user
+  # record is found.  If it does not exist, it is created and
+  # initialized with the ldap_id field.  The user model is stored in
+  # the session.
+  #
+  def authenticate
+    return true if session[:user]
+    authenticate_or_request_with_http_basic "Raptor" do |user_name, password|
+      next nil unless LdapUser.authenticate_from_email(user_name, password)
+      u = User.find_by_ldap_id(user_name) || User.create!(:ldap_id => user_name)
+      session[:user] = u
+      return true
+    end
+  end
+
+  def admin?
+    session[:user].admin
+  end
 end

@@ -1,0 +1,20 @@
+<% if admin? %>
+  <p>
+    <b>User:</b>
+    <%=h @retain_queue.user_id %>
+  </p>
+<% end %>
+
+<p>
+  <b>Queue name:</b>
+  <%=h @retain_queue.queue_name %>
+</p>
+
+<p>
+  <b>Center:</b>
+  <%=h @retain_queue.center %>
+</p>
+
+
+<%= link_to 'Edit', edit_retain_queue_path(@retain_queue) %> |
+<%= link_to 'Back', retain_queues_path %>

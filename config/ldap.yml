@@ -1,0 +1,23 @@
+development:
+  host: bluepages.ibm.com
+  port: 636
+  method: :ssl
+  base: o=ibm.com
+  #  bind_dn: cn=admin,dc=local,dc=net
+  #  password: secret
+
+test:
+  host: bluepages.ibm.com
+  port: 636
+  method: :ssl
+  base: o=ibm.com
+  #  bind_dn: cn=admin,dc=local,dc=net
+  #  password: secret
+
+production:
+  host: bluepages.ibm.com
+  port: 636
+  method: :ssl
+  base: o=ibm.com
+  #  bind_dn: cn=admin,dc=local,dc=net
+  #  password: secret

@@ -1,0 +1,29 @@
+<h1>Editing retain_queue</h1>
+
+<%= error_messages_for :retain_queue %>
+
+<% form_for(@retain_queue) do |f| %>
+<% if admin? %>
+  <p>
+    <b>User</b><br />
+    <%= f.text_field :user_id %>
+  </p>
+<% end %>
+
+  <p>
+    <b>Queue name</b><br />
+    <%= f.text_field :queue_name %>
+  </p>
+
+  <p>
+    <b>Center</b><br />
+    <%= f.text_field :center %>
+  </p>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @retain_queue %> |
+<%= link_to 'Back', retain_queues_path %>
