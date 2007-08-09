@@ -3,20 +3,27 @@
 <table>
   <tr>
     <th>Retid</th>
-    <th>Password</th>
+    <% if admin? %>
+      <th>Password</th>
+    <% end %>
   </tr>
 
 <% for retain_user in @retain_users %>
   <tr>
     <td><%=h retain_user.retid %></td>
-    <td><%=h retain_user.password %></td>
+    <% if admin? %>
+      <td><%=h retain_user.password %></td>
+    <% end %>
     <td><%= link_to 'Show', retain_user %></td>
     <td><%= link_to 'Edit', edit_retain_user_path(retain_user) %></td>
-    <td><%= link_to 'Destroy', retain_user, :confirm => 'Are you sure?', :method => :delete %></td>
+    <% if admin? %>
+      <td><%= link_to 'Destroy', retain_user, :confirm => 'Are you sure?', :method => :delete %></td>
+    <% end %>
   </tr>
 <% end %>
 </table>
 
 <br />
-
-<%= link_to 'New retain_user', new_retain_user_path %>
+<% if admin? %>
+  <%= link_to 'New retain_user', new_retain_user_path %>
+<% end %>

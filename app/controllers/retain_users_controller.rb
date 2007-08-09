@@ -1,12 +1,18 @@
 class RetainUsersController < ApplicationController
-  before_filter :admin? :except => [ :new ]
-  before_filter :this_user
+  before_filter :this_user?, :only => [ :show, :edit, :update, :destroy ]
 
   # GET /retain_users
   # GET /retain_users.xml
+  # Admin user gets the entire list.  Normal user gets a list with
+  # only their record
   def index
-    @retain_users = RetainUser.find(:all)
-
+    if admin?
+      @retain_users = RetainUser.find(:all)
+    elsif session[:user].retain_user
+      @retain_users = [ session[:user].retain_user ]
+    else
+      @retain_users = []
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @retain_users }
@@ -16,7 +22,8 @@ class RetainUsersController < ApplicationController
   # GET /retain_users/1
   # GET /retain_users/1.xml
   def show
-    @retain_user = RetainUser.find(params[:id])
+    # Done in this_user?
+    # @retain_user = RetainUser.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -27,8 +34,8 @@ class RetainUsersController < ApplicationController
   # GET /retain_users/new
   # GET /retain_users/new.xml
   def new
+    return if duplicate?
     @retain_user = RetainUser.new
-
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @retain_user }
@@ -37,15 +44,17 @@ class RetainUsersController < ApplicationController
 
   # GET /retain_users/1/edit
   def edit
-    @retain_user = RetainUser.find(params[:id])
+    # Done in this_user?
+    # @retain_user = RetainUser.find(params[:id])
   end
 
   # POST /retain_users
   # POST /retain_users.xml
   def create
+    return if duplicate?
     @retain_user = RetainUser.new(params[:retain_user])
-    @retain_user.user = session[:user]
     respond_to do |format|
+      @retain_user.user = session[:user]
       if @retain_user.save
         flash[:notice] = 'RetainUser was successfully created.'
         format.html {
@@ -64,7 +73,8 @@ class RetainUsersController < ApplicationController
   # PUT /retain_users/1
   # PUT /retain_users/1.xml
   def update
-    @retain_user = RetainUser.find(params[:id])
+    # Done in this_user?
+    # @retain_user = RetainUser.find(params[:id])
 
     respond_to do |format|
       if @retain_user.update_attributes(params[:retain_user])
@@ -81,12 +91,32 @@ class RetainUsersController < ApplicationController
   # DELETE /retain_users/1
   # DELETE /retain_users/1.xml
   def destroy
-    @retain_user = RetainUser.find(params[:id])
+    # Done in this_user?
+    # @retain_user = RetainUser.find(params[:id])
     @retain_user.destroy
 
     respond_to do |format|
       format.html { redirect_to(retain_users_url) }
       format.xml  { head :ok }
     end
+  end
+
+  # A user is allowed to have only one retain user record at a time.
+  # new and create call this to make sure that the request is not
+  # going to produce a second retain user record for this user.
+  def duplicate?
+    return false if session[:user].retain_user.nil?
+    respond_to do |format|
+      flash[:error] = "User already has a retain user record.  Please delete before adding"
+      format.html { redirect_to(retain_users_url) }
+      format.xml  { render :xml => @retain_user.errors, :status => :unprocessable_entity }
+    end
+    return true
+  end
+  
+  # A normal user can only look around at their own record.
+  def this_user?
+    @retain_user = RetainUser.find(params[:id])
+    admin? || @retain_user.user.id == session[:user].id
   end
 end

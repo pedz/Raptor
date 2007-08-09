@@ -6,6 +6,10 @@ class ApplicationController < ActionController::Base
 
   before_filter :authenticate
 
+  def admin?
+    session[:user].admin
+  end
+
   private
   #
   # A before_filter for the entire application.  This authenticates
@@ -18,13 +22,17 @@ class ApplicationController < ActionController::Base
     return true if session[:user]
     authenticate_or_request_with_http_basic "Raptor" do |user_name, password|
       next nil unless LdapUser.authenticate_from_email(user_name, password)
-      u = User.find_by_ldap_id(user_name) || User.create!(:ldap_id => user_name)
+      u = User.find_by_ldap_id(user_name)
+      if u.nil?
+        # Can not use this because ldap_id is protected
+        # User.create!(:ldap_id => user_name)
+        # Use this instead:
+        u = User.new
+        u.ldap_id = user_name
+        u.save!
+      end
       session[:user] = u
       return true
     end
-  end
-
-  def admin?
-    session[:user].admin
   end
 end

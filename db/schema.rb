@@ -27,4 +27,6 @@ ActiveRecord::Schema.define(:version => 3) do
     t.datetime "updated_at"
   end
 
+  add_index "users", ["ldap_id"], :name => "unique_ldap_id", :unique => true
+
 end

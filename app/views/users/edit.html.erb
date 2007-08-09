@@ -3,24 +3,18 @@
 <%= error_messages_for :user %>
 
 <% form_for(@user) do |f| %>
-  <p>
-    <b>Ldap</b><br />
-    <%= f.text_field :ldap_id %>
-  </p>
+  <% if admin? %>
+    <p>
+      <b>Admin</b><br />
+      <%= f.check_box :admin %>
+    </p>
 
-  <p>
-    <b>Retain user</b><br />
-    <%= f.text_field :retain_user_id %>
-  </p>
-
-  <p>
-    <b>Admin</b><br />
-    <%= f.check_box :admin %>
-  </p>
-
-  <p>
-    <%= f.submit "Update" %>
-  </p>
+    <p>
+      <%= f.submit "Update" %>
+    </p>
+  <% else %>
+    <p>Currently no fields are editable by users</p>
+  <% end %>
 <% end %>
 
 <%= link_to 'Show', @user %> |

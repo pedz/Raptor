@@ -3,7 +3,7 @@
   <%=h @retain_user.retid %>
 </p>
 
-<% if @admin %>
+<% if admin? %>
   <p>
     <b>Password:</b>
     <%=h @retain_user.password %>

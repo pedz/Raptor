@@ -14,6 +14,7 @@ class CreateUsers < ActiveRecord::Migration
       t.boolean    :admin, :default => false
       t.timestamps
     end
+    execute "ALTER TABLE users ADD CONSTRAINT unique_ldap_id UNIQUE (ldap_id)"
   end
 
   def self.down
