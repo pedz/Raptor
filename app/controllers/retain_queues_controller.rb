@@ -14,7 +14,12 @@ class RetainQueuesController < RetainController
   # GET /retain_queues/1.xml
   def show
     @retain_queue = RetainQueue.find(params[:id])
-
+    @user = session[:user]
+    @retain_user = @user.retain_user
+    r = Retain::Base.new
+    f = r.login(@retain_user)
+    @pmrs = r.cs(@retain_queue)
+    
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @retain_queue }
