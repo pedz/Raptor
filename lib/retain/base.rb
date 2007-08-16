@@ -5,20 +5,21 @@ require 'retain/utils'
 
 module Retain
   class Base
-    def initialize
-      @connection = Connection.new
+    def initialize(options = {})
+      @options = options
+      @login = options[:signon].trim(6)
+      @password = options[:password].trim(8)
       @logged_in = false
       @logger = RAILS_DEFAULT_LOGGER
     end
 
     def connect
+      @connection = Connection.new
       @connection.connect(Config.symbolize_keys[Node][0])
     end
 
     # Pass in a RetainUser and tries to log in
-    def login(retain_user)
-      @login = retain_user.retid.trim(6)
-      @password = retain_user.password.trim(8)
+    def login(options = {})
       first50 = 'SDTC,SDIRETEXuuuuuu  pppppppp00000000   ,IC,000000'.dup
       first50.sub!('uuuuuu', @login)
       first50.sub!('pppppppp', @password)
@@ -42,17 +43,41 @@ module Retain
 
     # We should already be connected and logged in.  queue is a
     # RetainQueue -- probably should be a hash.
-    def cs(queue)
+    def cs(options)
       p = Request.new(:request => "PMCS", :login => @login)
-      RAILS_DEFAULT_LOGGER.debug(p.methods.to_yaml)
       p.signon = @login
       p.password = @password
-      p.queue_name = queue.queue_name.trim(6)
-      p.center = queue.center.trim(3)
+      p.queue_name = options[:queue_name].trim(6)
+      p.center = options[:center].trim(3)
       p.h_or_s = "S"
+      sendit(p, options)
+    end
+    
+    def pmr(options)
+      p = Request.new(:request => "PMPB", :login => @login)
+      p.signon = @login
+      p.password = @password
+      if options[:iris]
+        p.iris = options[:iris]
+      else
+        p.problem = options[:problem]
+        p.branch = options[:branch]
+        p.country = options[:country]
+      end
+      p.group_request = [331, 340, 707, 930, 1384, 1390 ]
+      sendit(p, options)
+    end
 
-      @connection.write(p)
+    def sendit(p, options = {})
+      raise "Login Failed" unless login(options)
+      send = p.to_s
+      hex_dump("#{p.request} reply", send)
+      if  @connection.write(send) != send.length
+        raise "write to socket failed in sendit"
+      end
       f = @connection.read(24)
+      raise "read returned nil in sendit" if f.nil?
+      raise "short read in sendit" if f.length != 24
       len = f[20...24].net2int
       if len > 24
         b = @connection.read(len - 24)
@@ -60,8 +85,8 @@ module Retain
         b = ""
       end
       all = f + b
-      # hex_dump("pmcs reply", all)
-      Retain::Parse.new(all)
+      hex_dump("#{p.request} reply", all)
+      Retain::Reply.new(all)
     end
     
     def hex_dump(title, s)

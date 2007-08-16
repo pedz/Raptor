@@ -16,10 +16,17 @@ class RetainQueuesController < RetainController
     @retain_queue = RetainQueue.find(params[:id])
     @user = session[:user]
     @retain_user = @user.retain_user
-    r = Retain::Base.new
-    f = r.login(@retain_user)
-    @pmrs = r.cs(@retain_queue)
-    
+    r = Retain::Base.new(:signon => @retain_user.retid,
+                         :password => @retain_user.password)
+    queue = r.cs(:queue_name => @retain_queue.queue_name,
+                 :center => @retain_queue.center)
+    logger.debug("hello there")
+    @pmrs = []
+    for pmr in queue.fields.de32
+      logger.debug("hello there again")
+      @pmrs << r.pmr(:iris => pmr.iris)
+    end
+
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @retain_queue }

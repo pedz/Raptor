@@ -2,8 +2,6 @@
 require 'retain/utils'
 
 module Retain
-  DataElement = Struct.new(:number, :data)
-  
   class Parse
     attr_reader :fields
     
@@ -17,7 +15,6 @@ module Retain
     # will be a two element structure of element number and the raw
     # data.
     def scan(s)
-      r = Fields.new
       until s.nil?
         len = s[0...2].net2short
         ele = s[2...4].net2short
@@ -29,14 +26,14 @@ module Retain
           s = nil
         end
         case ele
-        when 32
+        when Fields::DE32
           dat = scan(dat)
         when Fields::CALL_SEARCH_RESULT
-          r.<<(Fields::IRIS, dat[0...12])
-          r.<<(Fields::CALL_SEARCH_RESULT, dat[12...dat.length])
+          add_field(Fields::IRIS, dat[0...12])
+          add_field(Fields::CALL_SEARCH_RESULT, dat[12...dat.length])
           next
         end
-        r.<<( ele, dat)
+        add_field( ele, dat)
       end
       r
     end

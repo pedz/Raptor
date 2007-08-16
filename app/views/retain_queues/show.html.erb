@@ -13,7 +13,7 @@
   <%= link_to 'Back', retain_queues_path %>
 </p>
 
-<% for field in @pmrs.fields.de32 %>
-<%= field.call_search_result.ascii %><br/>
+<% for pmr in @pmrs %>
+<%= pmr.fields.error_message[0...69] %><br/>
 <% end %>
 

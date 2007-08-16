@@ -6,14 +6,18 @@ module Retain
     PACKET_LENGTH = 20...24
     ELEMENT_COUNT = 24...28
 
+    attr_reader :request
+    
     def initialize(options = {})
       # Set up options with valid defaults
       @options = {              # Default options
         :billing_id => "AIX",
         :ext_billing_id => "AIX"
       }.merge(options)
-    
-      @request = "SDIYSHD2".ebcdic + # header element
+
+      @request = @options[:request]
+
+      @request_string = "SDIYSHD2".ebcdic + # header element
         0.int2net +               # return code
         2.int2net +               # interface program level
         0x4001.int2net +          # buffer size
@@ -54,18 +58,26 @@ module Retain
     end
 
     def to_s
-      @request[PACKET_LENGTH] = @request.length.int2net
-      @request[ELEMENT_COUNT] = @element_count.int2net
-      @request
+      @request_string[PACKET_LENGTH] = @request_string.length.int2net
+      @request_string[ELEMENT_COUNT] = @element_count.int2net
+      @request_string
     end
 
     def data_element(id, data)
       @element_count += 1
       s = 0.short2net + id.short2net + 0.short2net + data
       s[0..1] = s.length.short2net
-      @request << s
+      @request_string << s
     end
 
+    def group_request=(fields)
+      s = ""
+      fields.each do |f|
+        s += f.short2net
+      end
+      data_element(1253, s)
+    end
+    
     Fields::FIELD_DEFINITIONS.each_pair do |k, v|
       index, convert = v
       if convert
@@ -76,11 +88,13 @@ module Retain
         c_out_str = ""
       end
 
-      eval <<-EOF
+      unless method_defined?("#{k}=".to_sym)
+        eval <<-EOF
         def #{k}=(data)
           data_element(#{index}, data#{c_in_str})
         end
       EOF
+      end
     end
   end
 end
