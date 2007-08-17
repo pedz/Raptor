@@ -1,8 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :retain_queues
-
-  map.resources :retain_users
-
+  map.resources :retain_queues, :path_prefix => '/retain', :controller => 'retain/queues'
+  map.resources :retain_users, :path_prefix => '/retain', :controller => 'retain/users'
   map.resources :users
 
   # The priority is based upon order of creation: first created -> highest priority.

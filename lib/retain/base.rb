@@ -47,7 +47,7 @@ module Retain
       p.password = @password
       p.queue_name = options[:queue_name].trim(6)
       p.center = options[:center].trim(3)
-      p.h_or_s = "S"
+      p.h_or_s = options[:h_or_s] || "S"
       sendit(p, options)
     end
 
@@ -73,7 +73,9 @@ module Retain
         p.branch = options[:branch]
         p.country = options[:country]
       end
-      p.pmpb_group_request = [331, 340, 707, 930, 1384, 1390 ]
+      p.pmpb_group_request = options[:pmpb_group_request].map { |ele|
+        Fields::FIELD_DEFINITIONS[ele.to_s][0]
+      }
       sendit(p, options)
     end
 
