@@ -1,0 +1,28 @@
+<h1>Listing queues</h1>
+
+<table>
+  <tr>
+<% if admin? %>
+    <th>User</th>
+<% end %>
+    <th>Queue name</th>
+    <th>Center</th>
+  </tr>
+
+<% for queue in @queues %>
+  <tr>
+<% if admin? %>
+    <td><%=h queue.user_id %></td>
+<% end %>
+    <td><%=h queue.queue_name %></td>
+    <td><%=h queue.center %></td>
+    <td><%= link_to 'Show', queue %></td>
+    <td><%= link_to 'Edit', edit_queue_path(queue) %></td>
+    <td><%= link_to 'Destroy', queue, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New queue', new_queue_path %>

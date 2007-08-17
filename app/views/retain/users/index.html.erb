@@ -1,0 +1,29 @@
+<h1>Listing Retain Users</h1>
+
+<table>
+  <tr>
+    <th>Retid</th>
+    <% if admin? %>
+      <th>Password</th>
+    <% end %>
+  </tr>
+
+<% for user in @users %>
+  <tr>
+    <td><%=h user.retid %></td>
+    <% if admin? %>
+      <td><%=h user.password %></td>
+    <% end %>
+    <td><%= link_to 'Show', user %></td>
+    <td><%= link_to 'Edit', edit_retain_user_path(user) %></td>
+    <% if admin? %>
+      <td><%= link_to 'Destroy', retain_user, :confirm => 'Are you sure?', :method => :delete %></td>
+    <% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<% if admin? %>
+  <%= link_to 'New retain_user', new_retain_user_path %>
+<% end %>
