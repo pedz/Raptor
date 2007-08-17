@@ -1,7 +1,11 @@
 module ActiveLdap
   module Attributes
     def self.included(base)
-      base.extend(ClassMethods)
+      base.class_eval do
+        extend(ClassMethods)
+        extend(Normalize)
+        include(Normalize)
+      end
     end
 
     module ClassMethods
@@ -15,7 +19,9 @@ module ActiveLdap
           result + ancestor.instance_eval {@attr_protected ||= []}
         end
       end
+    end
 
+    module Normalize
       def normalize_attribute_name(name)
         name.to_s.downcase
       end
@@ -24,11 +30,9 @@ module ActiveLdap
       # Hashes are for subtypes
       # Arrays are for multiple entries
       def normalize_attribute(name, value)
-        logger.debug {"stub: called normalize_attribute" +
-                      "(#{name.inspect}, #{value.inspect})"}
         if name.nil?
-          raise RuntimeError, 'The first argument, name, must not be nil. ' +
-                              'Please report this as a bug!'
+          raise RuntimeError, _('The first argument, name, must not be nil. ' \
+                                'Please report this as a bug!')
         end
 
         name = normalize_attribute_name(name)
@@ -55,7 +59,7 @@ module ActiveLdap
         else
           values.each do |value|
             if value.is_a?(Hash)
-              suffix, real_value = extract_subtypes(value)
+              suffix, real_value = extract_attribute_options(value)
               new_name = name + suffix
               result[new_name] ||= []
               result[new_name].concat(real_value)
@@ -70,11 +74,15 @@ module ActiveLdap
 
       private
       def normalize_attribute_value_of_array(name, value)
-        if value.size > 1 and schema.single_value?(name)
-          raise TypeError, "Attribute #{name} can only have a single value"
+        if value.size > 1 and schema.attribute(name).single_value?
+          raise TypeError, _("Attribute %s can only have a single value") % name
         end
         if value.empty?
-          schema.binary_required?(name) ? [{'binary' => value}] : value
+          if schema.attribute(name).binary_required?
+            [{'binary' => value}]
+          else
+            value
+          end
         else
           value.collect do |entry|
             normalize_attribute(name, entry)[1][0]
@@ -84,16 +92,20 @@ module ActiveLdap
 
       def normalize_attribute_value_of_hash(name, value)
         if value.keys.size > 1
-          raise TypeError, "Hashes must have one key-value pair only."
+          raise TypeError,
+                _("Hashes must have one key-value pair only: %s") % value.inspect
         end
         unless value.keys[0].match(/^(lang-[a-z][a-z]*)|(binary)$/)
-          logger.warn {"unknown subtype did not match lang-* or binary:" +
-                       "#{value.keys[0]}"}
+          logger.warn do
+            format = _("unknown option did not match lang-* or binary: %s")
+            format % value.keys[0]
+          end
         end
         # Contents MUST be a String or an Array
-        if !value.has_key?('binary') and schema.binary_required?(name)
-          suffix, real_value = extract_subtypes(value)
-          name, values = make_subtypes(name + suffix + ';binary', real_value)
+        if !value.has_key?('binary') and schema.attribute(name).binary_required?
+          suffix, real_value = extract_attribute_options(value)
+          name, values =
+            normalize_attribute_options("#{name}#{suffix};binary", real_value)
           values
         else
           [value]
@@ -101,11 +113,19 @@ module ActiveLdap
       end
 
       def normalize_attribute_value_of_nil_class(name, value)
-        schema.binary_required?(name) ? [{'binary' => []}] : []
+        if schema.attribute(name).binary_required?
+          [{'binary' => []}]
+        else
+          []
+        end
       end
 
       def normalize_attribute_value_of_string(name, value)
-        [schema.binary_required?(name) ? {'binary' => [value]} : value]
+        if schema.attribute(name).binary_required?
+          [{'binary' => [value]}]
+        else
+          [value]
+        end
       end
 
       def normalize_attribute_value_of_date(name, value)
@@ -129,51 +149,36 @@ module ActiveLdap
         normalize_attribute_value_of_string(name, new_value)
       end
 
-
-      # make_subtypes
+      # normalize_attribute_options
       #
-      # Makes the Hashized value from the full attributename
+      # Makes the Hashized value from the full attribute name
       # e.g. userCertificate;binary => "some_bin"
       #      becomes userCertificate => {"binary" => "some_bin"}
-      def make_subtypes(attr, value)
-        logger.debug {"stub: called make_subtypes(#{attr.inspect}, " +
-                      "#{value.inspect})"}
+      def normalize_attribute_options(attr, value)
         return [attr, value] unless attr.match(/;/)
 
-        ret_attr, *subtypes = attr.split(/;/)
-        return [ret_attr, [make_subtypes_helper(subtypes, value)]]
+        ret_attr, *options = attr.split(/;/)
+        [ret_attr,
+         [options.reverse.inject(value) {|result, option| {option => result}}]]
       end
 
-      # make_subtypes_helper
-      #
-      # This is a recursive function for building
-      # nested hashed from multi-subtyped values
-      def make_subtypes_helper(subtypes, value)
-        logger.debug {"stub: called make_subtypes_helper" +
-                      "(#{subtypes.inspect}, #{value.inspect})"}
-        return value if subtypes.size == 0
-        return {subtypes[0] => make_subtypes_helper(subtypes[1..-1], value)}
-      end
-
-      # extract_subtypes
+      # extract_attribute_options
       #
       # Extracts all of the subtypes from a given set of nested hashes
       # and returns the attribute suffix and the final true value
-      def extract_subtypes(value)
-        logger.debug {"stub: called extract_subtypes(#{value.inspect})"}
-        subtype = ''
+      def extract_attribute_options(value)
+        options = ''
         ret_val = value
         if value.class == Hash
-          subtype = ';' + value.keys[0]
+          options = ';' + value.keys[0]
           ret_val = value[value.keys[0]]
-          subsubtype = ''
           if ret_val.class == Hash
-            subsubtype, ret_val = extract_subtypes(ret_val)
+            sub_options, ret_val = extract_attribute_options(ret_val)
+            options += sub_options
           end
-          subtype += subsubtype
         end
         ret_val = [ret_val] unless ret_val.class == Array
-        return subtype, ret_val
+        [options, ret_val]
       end
     end
 
@@ -186,9 +191,9 @@ module ActiveLdap
       end
 
       targets.collect do |key, value|
-        [to_real_attribute_name(key), value]
+        [to_real_attribute_name(key) || key, value]
       end.reject do |key, value|
-        key.nil? or needless_attributes[key]
+        needless_attributes[key]
       end
     end
 

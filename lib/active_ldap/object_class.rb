@@ -5,6 +5,11 @@ module ActiveLdap
     end
 
     module ClassMethods
+      def classes
+        required_classes.collect do |name|
+          schema.object_class(name)
+        end
+      end
     end
 
     def add_class(*target_classes)
@@ -43,11 +48,11 @@ module ActiveLdap
         new_class.is_a?(String)
       end
       unless invalid_classes.empty?
-        message = "Value in objectClass array is not a String"
+        format = _("Value in objectClass array is not a String: %s")
         invalid_classes_info = invalid_classes.collect do |invalid_class|
           "#{invalid_class.class}:#{invalid_class.inspect}"
         end.join(", ")
-        raise TypeError,  "#{message}: #{invalid_classes_info}"
+        raise TypeError, format % invalid_classes_info
       end
     end
 
@@ -56,8 +61,8 @@ module ActiveLdap
         schema.exist_name?("objectClasses", new_class)
       end
       unless invalid_classes.empty?
-        message = "unknown objectClass in LDAP server"
-        message = "#{message}: #{invalid_classes.join(', ')}"
+        format = _("unknown objectClass in LDAP server: %s")
+        message = format % invalid_classes.join(', ')
         raise ObjectClassError, message
       end
     end
@@ -65,12 +70,15 @@ module ActiveLdap
     def assert_have_all_required_classes(new_classes)
       normalized_new_classes = new_classes.collect(&:downcase)
       required_classes = self.class.required_classes.reject do |required_class|
-        normalized_new_classes.include?(required_class.downcase)
+        normalized_new_classes.include?(required_class.downcase) or
+          (normalized_new_classes.find do |new_class|
+             schema.object_class(new_class).super_class?(required_class)
+           end)
       end
       unless required_classes.empty?
-        raise RequiredObjectClassMissed,
-                "Can't remove required objectClass: " +
-                 required_classes.join(", ")
+        format = _("Can't remove required objectClass: %s")
+        message = format % required_classes.join(", ")
+        raise RequiredObjectClassMissed, message
       end
     end
   end

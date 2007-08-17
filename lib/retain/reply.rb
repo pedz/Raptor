@@ -39,17 +39,10 @@ module Retain
       
       Fields::FIELD_DEFINITIONS.each_pair do |k, v|
         index, convert = v
-        if convert
-          c_in_str = ".upcase.ebcdic"
-          c_out_str = ".ascii"
-        else
-          c_in_str = ""
-          c_out_str = ""
-        end
-        
+        cvt = Fields.ocvt(convert)
         eval <<-EOF
           def #{k}
-            @fields[#{index}]#{c_out_str}
+            @fields[#{index}]#{cvt}
           end
         EOF
       end
@@ -66,13 +59,17 @@ module Retain
     # Scan string s and return an array of structures.  The structures
     # will be a two element structure of element number and the raw
     # data.
-    def scan(s)
+    def scan(s, six_byte_headers = true)
       r = Field.new
       until s.nil?
         len = s[0...2].net2short
         ele = s[2...4].net2short
-        tpe = s[4...6].net2short
-        dat = s[6...len]
+        if six_byte_headers
+          tpe = s[4...6].net2short
+          dat = s[6...len]
+        else
+          dat = s[4...len]
+        end
         if s.length > len
           s = s[len...s.length]
         else
@@ -80,7 +77,7 @@ module Retain
         end
         case ele
         when Fields::DE32
-          dat = scan(dat)
+          dat = scan(dat, false)
         when Fields::CALL_SEARCH_RESULT
           r.add_field(Fields::IRIS, dat[0...12])
           r.add_field(Fields::CALL_SEARCH_RESULT, dat[12...dat.length])

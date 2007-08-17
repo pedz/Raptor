@@ -18,14 +18,17 @@ class RetainQueuesController < RetainController
     @retain_user = @user.retain_user
     r = Retain::Base.new(:signon => @retain_user.retid,
                          :password => @retain_user.password)
-    queue = r.cs(:queue_name => @retain_queue.queue_name,
-                 :center => @retain_queue.center)
-    logger.debug("hello there")
-    @pmrs = []
-    for pmr in queue.fields.de32
-      logger.debug("hello there again")
-      @pmrs << r.pmr(:iris => pmr.iris)
-    end
+    queue = r.scs0(:queue_name => @retain_queue.queue_name,
+                   :center => @retain_queue.center,
+                   :scs0_group_request => [
+                                           :problem,
+                                           :branch,
+                                           :country,
+                                           :NLS_comments,
+                                           :NLS_customer_name,
+                                           :NLS_contact_name
+                                          ])
+    @pmrs = queue.fields.de32
 
     respond_to do |format|
       format.html # show.html.erb

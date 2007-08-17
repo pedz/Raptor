@@ -55,7 +55,8 @@ module ActiveLdap
         if config.is_a?(Symbol) or config.is_a?(String)
           _config = configurations[config.to_s]
           unless _config
-            raise ConnectionError, "#{config} connection is not configured"
+            raise ConnectionError,
+                  _("%s connection is not configured") % config
           end
           config = _config
         end
@@ -79,22 +80,29 @@ module ActiveLdap
         @@defined_configurations.delete_if {|key, value| value == config}
       end
 
-      CONNECTION_CONFIGURATION_KEYS = [:base, :ldap_scope, :adapter]
+      CONNECTION_CONFIGURATION_KEYS = [:base, :adapter]
       def remove_connection_related_configuration(config)
         config.reject do |key, value|
           CONNECTION_CONFIGURATION_KEYS.include?(key)
 	end
       end
 
-      def merge_configuration(config)
+      def merge_configuration(config, target=self)
         configuration = default_configuration
         config.symbolize_keys.each do |key, value|
           case key
           when :base
             # Scrub before inserting
-            self.base = value.gsub(/['}{#]/, '')
-          when :ldap_scope
-            self.ldap_scope = value
+            target.base = value.gsub(/['}{#]/, '')
+          when :scope, :ldap_scope
+            if key == :ldap_scope
+              logger.warning do
+                _(":ldap_scope configuration option is deprecated. " \
+                  "Use :scope instead.")
+              end
+            end
+            target.scope = value
+            configuration[:scope] = value
           else
             configuration[key] = value
           end

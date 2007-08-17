@@ -7,7 +7,24 @@ module ActiveLdap
 
       base.class_eval do
         alias_method :new_record?, :new_entry?
+        class << self
+          alias_method :human_attribute_name_active_ldap,
+                       :human_attribute_name
+        end
         include ActiveRecord::Validations
+        class << self
+          alias_method :human_attribute_name,
+                       :human_attribute_name_active_ldap
+        end
+
+        # Workaround for GetText's ugly implementation
+        begin
+          instance_method(:save_without_validation)
+        rescue NameError
+          alias_method_chain :save, :validation
+          alias_method_chain :save!, :validation
+          alias_method_chain :update_attribute, :validation_skipping
+        end
 
         validate :validate_required_values
 
@@ -37,30 +54,41 @@ module ActiveLdap
         # Basic validation:
         # - Verify that every 'MUST' specified in the schema has a value defined
         def validate_required_values
-          logger.debug {"stub: validate_required_values called"}
-
           # Make sure all MUST attributes have a value
-          @musts.each do |object_class, attributes|
-            attributes.each do |required_attribute|
+          @object_classes.each do |object_class|
+            object_class.must.each do |required_attribute|
               # Normalize to ensure we catch schema problems
-              real_name = to_real_attribute_name(required_attribute, true)
+              # needed?
+              real_name = to_real_attribute_name(required_attribute.name, true)
               raise UnknownAttribute.new(required_attribute) if real_name.nil?
               # # Set default if it wasn't yet set.
               # @data[real_name] ||= [] # need?
               value = @data[real_name] || []
               # Check for missing requirements.
               if value.empty?
-                aliases = schema.attribute_aliases(real_name) - [real_name]
-                message = "is required attribute "
-                unless aliases.empty?
-                  message << "(aliases: #{aliases.join(', ')}) "
+                aliases = required_attribute.aliases
+                args = [object_class.name]
+                if ActiveLdap.const_defined?(:GetTextFallback)
+                  if aliases.empty?
+                    format = "is required attribute by objectClass '%s'"
+                  else
+                    format = "is required attribute by objectClass '%s'" \
+                             ": aliases: %s"
+                    args << aliases.join(', ')
+                  end
+                else
+                  if aliases.empty?
+                    format = "%{fn} is required attribute by objectClass '%s'"
+                  else
+                    format = "%{fn} is required attribute by objectClass '%s'" \
+                             ": aliases: %s"
+                    args << aliases.join(', ')
+                  end
                 end
-                message << "by objectClass '#{object_class}'"
-                errors.add(real_name, message)
+                errors.add(real_name, format % args)
               end
             end
           end
-          logger.debug {"stub: validate_required_values finished"}
         end
 
         private

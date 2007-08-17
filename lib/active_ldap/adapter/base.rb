@@ -4,12 +4,15 @@ require 'active_ldap/ldap_error'
 module ActiveLdap
   module Adapter
     class Base
+      include GetTextSupport
+
       VALID_ADAPTER_CONFIGURATION_KEYS = [:host, :port, :method, :timeout,
                                           :retry_on_timeout, :retry_limit,
                                           :retry_wait, :bind_dn, :password,
                                           :password_block, :try_sasl,
                                           :sasl_mechanisms, :sasl_quiet,
-                                          :allow_anonymous, :store_password]
+                                          :allow_anonymous, :store_password,
+                                          :scope]
       def initialize(configuration={})
         @connection = nil
         @configuration = configuration.dup
@@ -54,14 +57,14 @@ module ActiveLdap
         # Attempt 2: SIMPLE with credentials if password block
         # Attempt 3: SIMPLE ANONYMOUS if 1 and 2 fail (or pwblock returns '')
         if try_sasl and sasl_bind(bind_dn, options)
-          @logger.info {'Bound SASL'}
+          @logger.info {_('Bound by SASL')}
         elsif simple_bind(bind_dn, options)
-          @logger.info {'Bound simple'}
+          @logger.info {_('Bound by simple')}
         elsif allow_anonymous and bind_as_anonymous(options)
-          @logger.info {'Bound anonymous'}
+          @logger.info {_('Bound as anonymous')}
         else
           message = yield if block_given?
-          message ||= 'All authentication methods exhausted.'
+          message ||= _('All authentication methods exhausted.')
           raise AuthenticationError, message
         end
 
@@ -69,7 +72,6 @@ module ActiveLdap
       end
 
       def bind_as_anonymous(options={})
-        @logger.info {"Attempting anonymous authentication"}
         operation(options) do
           yield
         end
@@ -116,7 +118,7 @@ module ActiveLdap
       def search(options={})
         filter = parse_filter(options[:filter]) || 'objectClass=*'
         attrs = options[:attributes] || []
-        scope = ensure_scope(options[:scope])
+        scope = ensure_scope(options[:scope] || @scope)
         base = options[:base]
         limit = options[:limit] || 0
         limit = nil if limit <= 0
@@ -135,8 +137,10 @@ module ActiveLdap
           end
         rescue LdapError
           # Do nothing on failure
-          @logger.debug {"Ignore error #{$!.class}(#{$!.message}) " +
-                         "for #{filter} and attrs #{attrs.inspect}"}
+          @logger.info do
+            args = [$!.class, $!.message, filter, attrs.inspect]
+            _("Ignore error %s(%s): filter %s: attributes: %s") % args
+          end
         end
 
         values
@@ -153,7 +157,7 @@ module ActiveLdap
             end
           end
         rescue LdapError::NoSuchObject
-          raise EntryNotFound, "No such entry: #{target}"
+          raise EntryNotFound, _("No such entry: %s") % target
         end
       end
 
@@ -163,17 +167,17 @@ module ActiveLdap
             yield(dn, entries)
           end
         rescue LdapError::NoSuchObject
-          raise EntryNotFound, "No such entry: #{dn}"
+          raise EntryNotFound, _("No such entry: %s") % dn
         rescue LdapError::InvalidDnSyntax
           raise DistinguishedNameInvalid.new(dn)
         rescue LdapError::AlreadyExists
-          raise EntryAlreadyExist, "#{$!.message}: #{dn}"
+          raise EntryAlreadyExist, _("%s: %s") % [$!.message, dn]
         rescue LdapError::StrongAuthRequired
-          raise StrongAuthenticationRequired, "#{$!.message}: #{dn}"
+          raise StrongAuthenticationRequired, _("%s: %s") % [$!.message, dn]
         rescue LdapError::ObjectClassViolation
-          raise RequiredAttributeMissed, "#{$!.message}: #{dn}"
+          raise RequiredAttributeMissed, _("%s: %s") % [$!.message, dn]
         rescue LdapError::UnwillingToPerform
-          raise OperationNotPermitted, "#{$!.message}: #{dn}"
+          raise OperationNotPermitted, _("%s: %s") % [$!.message, dn]
         end
       end
 
@@ -185,7 +189,7 @@ module ActiveLdap
         rescue LdapError::UndefinedType
           raise
         rescue LdapError::ObjectClassViolation
-          raise RequiredAttributeMissed, "#{$!.message}: #{dn}"
+          raise RequiredAttributeMissed, _("%s: %s") % [$!.message, dn]
         end
       end
 
@@ -216,7 +220,7 @@ module ActiveLdap
         if password_block.respond_to?(:call)
           passwd = password_block.call(bind_dn)
         else
-          @logger.error {'password_block not nil or Proc object. Ignoring.'}
+          @logger.error {_('password_block not nil or Proc object. Ignoring.')}
           return nil
         end
 
@@ -235,7 +239,7 @@ module ActiveLdap
         begin
           Timeout.alarm(@timeout, &block)
         rescue Timeout::Error => e
-          @logger.error {'Requested action timed out.'}
+          @logger.error {_('Requested action timed out.')}
           retry if try_reconnect and @retry_on_timeout and reconnect(options)
           @logger.error {e.message}
           raise TimeoutError, e.message
@@ -279,7 +283,6 @@ module ActiveLdap
             bound?
           end
         rescue LdapError::InvalidDnSyntax
-          @logger.debug {"DN is invalid: #{bind_dn}"}
           raise DistinguishedNameInvalid.new(bind_dn)
         rescue LdapError::InvalidCredentials
           false
@@ -405,8 +408,8 @@ module ActiveLdap
         return if operator.nil?
         unless filter_logical_operator?(operator)
           raise ArgumentError,
-                "invalid logical operator: #{operator.inspect}: " +
-                "available operators: #{LOGICAL_OPERATORS.inspect}"
+                _("invalid logical operator: %s: available operators: %s") %
+                  [operator.inspect, LOGICAL_OPERATORS.inspect]
         end
       end
 
@@ -422,10 +425,10 @@ module ActiveLdap
         loop do
           unless can_reconnect?(options)
             raise ConnectionError,
-                  'Giving up trying to reconnect to LDAP server.'
+                  _('Giving up trying to reconnect to LDAP server.')
           end
 
-          @logger.debug {'Attempting to reconnect'}
+          @logger.debug {_('Attempting to reconnect')}
           disconnect!
 
           # Reset the attempts if this was forced.
@@ -435,9 +438,11 @@ module ActiveLdap
             connect(options)
             break
           rescue => detail
-            @logger.error {"Reconnect to server failed: #{detail.exception}"}
-            @logger.error {"Reconnect to server failed backtrace:\n" +
-                            detail.backtrace.join("\n")}
+            @logger.error do
+              _("Reconnect to server failed: %s\n" \
+                "Reconnect to server failed backtrace:\n" \
+                "%s") % [detail.exception, detail.backtrace.join("\n")]
+            end
             # Do not loop if forced
             raise ConnectionError, detail.message if force
           end

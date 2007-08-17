@@ -27,16 +27,15 @@ module ActiveLdap
       end
 
       def find_target
-        key = @options[:many]
         values = @owner[@options[:foreign_key_name], true].compact
+        return [] if values.empty?
+
+        key = @options[:many]
         components = values.collect do |value|
           [key, value]
         end
-        if components.empty?
-          []
-        else
-          foreign_class.find(:all, :filter => [:or, *components])
-        end
+        options = find_options(:filter => [:or, *components])
+        foreign_class.find(:all, options)
       end
     end
   end

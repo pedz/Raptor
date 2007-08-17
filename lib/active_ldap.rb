@@ -177,7 +177,7 @@
 #   class Group < ActiveLdap::Base
 #     ldap_mapping :dn_attribute => 'cn',
 #                  :prefix => 'ou=Groups', :classes => ['top', 'posixGroup']
-#                  :scope => LDAP::LDAP_SCOPE_ONELEVEL
+#                  :scope => :one
 #   end
 #
 # As you can see, this method is used for defining how this class maps in to LDAP.  Let's say that
@@ -473,7 +473,7 @@
 # * :method indicates whether to use :ssl, :tls, or :plain
 # * :retries - indicates the number of attempts to reconnect that will be undertaken when a stale connection occurs. -1 means infinite.
 # * :retry_wait - seconds to wait before retrying a connection
-# * :ldap_scope - dictates how to find objects. (Default: ONELEVEL)
+# * :scope - dictates how to find objects. (Default: :one)
 # * :timeout - time in seconds - defaults to disabled. This CAN interrupt search() requests. Be warned.
 # * :retry_on_timeout - whether to reconnect when timeouts occur. Defaults to true
 # See lib/configuration.rb for defaults for each option
@@ -905,12 +905,6 @@
 # package, and I'd like to see it prove helpful to more people than just myself.
 #
 
-if RUBY_PLATFORM.match('linux')
-  require 'active_ldap/timeout'
-else
-  require 'active_ldap/timeout_stub'
-end
-
 require_gem_if_need = Proc.new do |library_name, gem_name|
   begin
     require library_name
@@ -927,25 +921,43 @@ if Dependencies.respond_to?(:load_paths)
   Dependencies.load_paths << File.expand_path(File.dirname(__FILE__))
 end
 
-require 'active_ldap/base'
-require 'active_ldap/associations'
-require 'active_ldap/configuration'
-require 'active_ldap/connection'
-require 'active_ldap/attributes'
-require 'active_ldap/object_class'
-require 'active_ldap/distinguished_name'
-
-require_gem_if_need.call("active_record/base", "activerecord")
-require 'active_ldap/validations'
-require 'active_ldap/callbacks'
-
 module ActiveLdap
   VERSION = "0.8.2"
 end
 
+if RUBY_PLATFORM.match('linux')
+  require 'active_ldap/timeout'
+else
+  require 'active_ldap/timeout_stub'
+end
+
+require_gem_if_need.call("active_record/base", "activerecord")
+begin
+  require_gem_if_need.call("gettext/active_record", "gettext")
+  ActiveLdap.const_set("GetText", GetText)
+rescue LoadError
+  require 'active_ldap/get_text_fallback'
+end
+
+require 'active_ldap/get_text_support'
+
+require 'active_ldap/base'
+require 'active_ldap/associations'
+require 'active_ldap/configuration'
+require 'active_ldap/connection'
+require 'active_ldap/operations'
+require 'active_ldap/attributes'
+require 'active_ldap/object_class'
+require 'active_ldap/distinguished_name'
+
+require 'active_ldap/validations'
+require 'active_ldap/callbacks'
+
+
 ActiveLdap::Base.class_eval do
   include ActiveLdap::Configuration
   include ActiveLdap::Connection
+  include ActiveLdap::Operations
   include ActiveLdap::Attributes
   include ActiveLdap::ObjectClass
   include ActiveLdap::Associations

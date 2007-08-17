@@ -401,8 +401,8 @@ protected
       when String then desc.starts_with?('::') ? desc[2..-1] : desc
       when Symbol then desc.to_s
       when Module
-        raise ArgumentError, "Anonymous modules have no name to be referenced by" if desc.name.blank?
-        desc.name
+             raise ArgumentError, "Anonymous modules have no name to be referenced by" if desc.name.blank?
+             desc.name
       else raise TypeError, "Not a valid constant descriptor: #{desc.inspect}"
     end
   end

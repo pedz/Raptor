@@ -41,8 +41,6 @@ module Retain
       end
     end
 
-    # We should already be connected and logged in.  queue is a
-    # RetainQueue -- probably should be a hash.
     def cs(options)
       p = Request.new(:request => "PMCS", :login => @login)
       p.signon = @login
@@ -50,6 +48,17 @@ module Retain
       p.queue_name = options[:queue_name].trim(6)
       p.center = options[:center].trim(3)
       p.h_or_s = "S"
+      sendit(p, options)
+    end
+
+    def scs0(options)
+      p = Request.new(:request => "SCS0", :login => @login)
+      p.signon = @login
+      p.queue_name = options[:queue_name].trim(6)
+      p.center = options[:center].trim(3)
+      p.scs0_group_request = options[:scs0_group_request].map { |ele|
+        Fields::FIELD_DEFINITIONS[ele.to_s][0]
+      }
       sendit(p, options)
     end
     
@@ -64,14 +73,14 @@ module Retain
         p.branch = options[:branch]
         p.country = options[:country]
       end
-      p.group_request = [331, 340, 707, 930, 1384, 1390 ]
+      p.pmpb_group_request = [331, 340, 707, 930, 1384, 1390 ]
       sendit(p, options)
     end
 
     def sendit(p, options = {})
       raise "Login Failed" unless login(options)
       send = p.to_s
-      hex_dump("#{p.request} reply", send)
+      # hex_dump("#{p.request} request", send)
       if  @connection.write(send) != send.length
         raise "write to socket failed in sendit"
       end
@@ -85,7 +94,7 @@ module Retain
         b = ""
       end
       all = f + b
-      hex_dump("#{p.request} reply", all)
+      # hex_dump("#{p.request} reply", all)
       Retain::Reply.new(all)
     end
     

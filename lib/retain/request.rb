@@ -70,28 +70,29 @@ module Retain
       @request_string << s
     end
 
-    def group_request=(fields)
+    def group_request(fields)
       s = ""
       fields.each do |f|
         s += f.short2net
       end
-      data_element(1253, s)
+      s
+    end
+
+    def scs0_group_request=(fields)
+      data_element(Fields::SCS0_GROUP_REQUEST, group_request(fields))
+    end
+
+    def pmpb_group_request=(fields)
+      data_element(Fields::PMPB_GROUP_REQUEST, group_request(fields))
     end
     
     Fields::FIELD_DEFINITIONS.each_pair do |k, v|
       index, convert = v
-      if convert
-        c_in_str = ".upcase.ebcdic"
-        c_out_str = ".ascii"
-      else
-        c_in_str = ""
-        c_out_str = ""
-      end
-
+      cvt = Fields.icvt(convert)
       unless method_defined?("#{k}=".to_sym)
         eval <<-EOF
         def #{k}=(data)
-          data_element(#{index}, data#{c_in_str})
+          data_element(#{index}, data#{cvt})
         end
       EOF
       end

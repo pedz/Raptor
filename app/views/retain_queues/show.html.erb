@@ -13,7 +13,13 @@
   <%= link_to 'Back', retain_queues_path %>
 </p>
 
+<table>
 <% for pmr in @pmrs %>
-<%= pmr.fields.error_message[0...69] %><br/>
+  <tr>
+    <td> <%= "%s,%s,%s" % [ pmr.problem, pmr.branch, pmr.country ] %></td>
+    <td> <%= pmr.NLS_comments[2...pmr.NLS_comments.length] %></td>
+    <td> <%= pmr.NLS_customer_name[2...pmr.NLS_customer_name.length] %></td>
+    <td> <%= pmr.NLS_contact_name[2...pmr.NLS_contact_name.length] %></td>
+  </tr>
 <% end %>
-
+</table>
