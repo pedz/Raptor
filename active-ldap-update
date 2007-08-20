@@ -1,0 +1,5 @@
+#!/bin/sh -x
+
+piston update $1 lib/active_ldap
+piston update $1 lib/active_ldap.rb
+piston update $1 vendor/plugins/active_ldap

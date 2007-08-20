@@ -1,16 +1,16 @@
 <% if admin? %>
   <p>
     <b>User:</b>
-    <%=h @queue.user_id %>
+    <%=h @retain_queue.user_id %>
   </p>
 <% end %>
 
 <p>
   <b>Queue:</b>
-  <%=h @queue.queue_name %>,
-  <%=h @queue.center %>
-  <%= link_to 'Edit', edit_queue_path(@queue) %> |
-  <%= link_to 'Back', queues_path %>
+  <%=h @retain_queue.queue_name %>,
+  <%=h @retain_queue.center %>
+  <%= link_to 'Edit', edit_retain_queue_path(@retain_queue) %> |
+  <%= link_to 'Back', retain_queues_path %>
 </p>
 
 <table>

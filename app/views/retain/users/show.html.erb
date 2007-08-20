@@ -1,14 +1,14 @@
 <p>
   <b>Retid:</b>
-  <%=h @user.retid %>
+  <%=h @retain_user.retid %>
 </p>
 
 <% if admin? %>
   <p>
     <b>Password:</b>
-    <%=h @user.password %>
+    <%=h @retain_user.password %>
   </p>
 <% end %>
 
-<%= link_to 'Edit', edit_retain_user_path(@user) %> |
+<%= link_to 'Edit', edit_retain_user_path(@retain_user) %> |
 <%= link_to 'Back', retain_users_path %>

@@ -1,7 +1,7 @@
 
 # Add site specific configuration here
 
-module Retain
+module RetainConfig
   # Which node should we use
   Node = :bdc
 end

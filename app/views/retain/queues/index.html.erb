@@ -9,20 +9,20 @@
     <th>Center</th>
   </tr>
 
-<% for queue in @queues %>
+<% for retain_queue in @retain_queues %>
   <tr>
 <% if admin? %>
-    <td><%=h queue.user_id %></td>
+    <td><%=h retain_queue.user_id %></td>
 <% end %>
-    <td><%=h queue.queue_name %></td>
-    <td><%=h queue.center %></td>
-    <td><%= link_to 'Show', queue %></td>
-    <td><%= link_to 'Edit', edit_queue_path(queue) %></td>
-    <td><%= link_to 'Destroy', queue, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%=h retain_queue.queue_name %></td>
+    <td><%=h retain_queue.center %></td>
+    <td><%= link_to 'Show', retain_queue %></td>
+    <td><%= link_to 'Edit', edit_retain_queue_path(retain_queue) %></td>
+    <td><%= link_to 'Destroy', retain_queue, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New queue', new_queue_path %>
+<%= link_to 'New Retain Queue', new_retain_queue_path %>

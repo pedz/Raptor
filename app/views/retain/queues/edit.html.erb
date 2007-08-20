@@ -2,7 +2,7 @@
 
 <%= error_messages_for :queue %>
 
-<% form_for(@queue) do |f| %>
+<% form_for(@retain_queue) do |f| %>
 <% if admin? %>
   <p>
     <b>User</b><br />
@@ -25,5 +25,5 @@
   </p>
 <% end %>
 
-<%= link_to 'Show', @queue %> |
-<%= link_to 'Back', queues_path %>
+<%= link_to 'Show', @retain_queue %> |
+<%= link_to 'Back', retain_queues_path %>

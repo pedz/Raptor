@@ -8,14 +8,14 @@
     <% end %>
   </tr>
 
-<% for user in @users %>
+<% for retain_user in @retain_users %>
   <tr>
-    <td><%=h user.retid %></td>
+    <td><%=h retain_user.retid %></td>
     <% if admin? %>
-      <td><%=h user.password %></td>
+      <td><%=h retain_user.password %></td>
     <% end %>
-    <td><%= link_to 'Show', user %></td>
-    <td><%= link_to 'Edit', edit_retain_user_path(user) %></td>
+    <td><%= link_to 'Show', retain_user %></td>
+    <td><%= link_to 'Edit', edit_retain_user_path(retain_user) %></td>
     <% if admin? %>
       <td><%= link_to 'Destroy', retain_user, :confirm => 'Are you sure?', :method => :delete %></td>
     <% end %>
@@ -25,5 +25,5 @@
 
 <br />
 <% if admin? %>
-  <%= link_to 'New retain_user', new_retain_user_path %>
+  <%= link_to 'New Retain User', new_retain_user_path %>
 <% end %>

@@ -1,6 +1,4 @@
 
-require 'retain/config'
-require 'retain/connection'
 require 'retain/utils'
 
 module Retain
@@ -15,7 +13,7 @@ module Retain
 
     def connect
       @connection = Connection.new
-      @connection.connect(Config.symbolize_keys[Node][0])
+      @connection.connect(Retain::Config.symbolize_keys[RetainConfig::Node][0])
     end
 
     # Pass in a RetainUser and tries to log in
