@@ -1,5 +1,6 @@
 
 namespace :svn do
+  desc "Add all unknown files to svn"
   task :add_all do
     require 'tempfile'
     

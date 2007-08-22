@@ -1,6 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :retain_pmrs,   :controller => 'retain/pmrs', :member => { :blah => :get }
   map.resources :retain_queues, :controller => 'retain/queues'
-  map.resources :retain_users, :controller => 'retain/users'
+  map.resources :retain_users,  :controller => 'retain/users'
   map.resources :users
 
   # The priority is based upon order of creation: first created -> highest priority.

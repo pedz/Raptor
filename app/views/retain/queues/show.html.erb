@@ -15,8 +15,9 @@
 
 <table>
 <% for pmr in @pmrs %>
+  <% tmp = "%s,%s,%s" % [ pmr.problem, pmr.branch, pmr.country ] %>
   <tr>
-    <td> <%= "%s,%s,%s" % [ pmr.problem, pmr.branch, pmr.country ] %></td>
+    <td> <%= link_to tmp, retain_pmr_path(tmp) %></td>
     <td> <%= pmr.NLS_comments[2...pmr.NLS_comments.length] %></td>
     <td> <%= pmr.NLS_customer_name[2...pmr.NLS_customer_name.length] %></td>
     <td> <%= pmr.NLS_contact_name[2...pmr.NLS_contact_name.length] %></td>

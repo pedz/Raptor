@@ -21,7 +21,6 @@ module Retain
       # at +num+ is set to the +data+.  Otherwise, +@reply_fields+ at +num+ is
       # set to an array and +data+ is appeneded to the array.
       def add_field(num, data)
-        RAILS_DEFAULT_LOGGER.debug("adding #{num} of #{data.class}")
         if @fields[num].is_a?(Array)
           @fields[num] << data
         elsif @fields[num].nil?

@@ -1,0 +1,24 @@
+<h1>Listing retain_pmrs</h1>
+
+<table>
+  <tr>
+    <th>Problem</th>
+    <th>Branch</th>
+    <th>Country</th>
+  </tr>
+
+<% for retain_pmr in @retain_pmrs %>
+  <tr>
+    <td><%=h retain_pmr.problem %></td>
+    <td><%=h retain_pmr.branch %></td>
+    <td><%=h retain_pmr.country %></td>
+    <td><%= link_to 'Show', retain_pmr %></td>
+    <td><%= link_to 'Edit', edit_retain_pmr_path(retain_pmr) %></td>
+    <td><%= link_to 'Destroy', retain_pmr, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New retain_pmr', new_retain_pmr_path %>

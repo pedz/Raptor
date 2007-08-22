@@ -1,0 +1,26 @@
+<h1>New retain_pmr</h1>
+
+<%= error_messages_for :retain_pmr %>
+
+<% form_for(@retain_pmr) do |f| %>
+  <p>
+    <b>Problem</b><br />
+    <%= f.text_field :problem %>
+  </p>
+
+  <p>
+    <b>Branch</b><br />
+    <%= f.text_field :branch %>
+  </p>
+
+  <p>
+    <b>Country</b><br />
+    <%= f.text_field :country %>
+  </p>
+
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', retain_pmrs_path %>
