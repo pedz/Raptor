@@ -2,7 +2,7 @@
 
 <%= error_messages_for :user %>
 
-<% form_for(@retain_user) do |f| %>
+<% form_for(@retuser) do |f| %>
   <p>
     <b>Retid</b><br />
     <%= f.text_field :retid %>
@@ -23,5 +23,5 @@
   </p>
 <% end %>
 
-<%= link_to 'Show', @retain_user %> |
-<%= link_to 'Back', retain_users_path %>
+<%= link_to 'Show', @retuser %> |
+<%= link_to 'List of Retain Users', retusers_path %>

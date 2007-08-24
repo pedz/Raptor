@@ -4,16 +4,17 @@
 # +retid+::    +string+ -- retain id
 # +password+:: +string+ -- retain password
 #
-class CreateRetainUsers < ActiveRecord::Migration
+class CreateRetusers < ActiveRecord::Migration
   def self.up
-    create_table :retain_users do |t|
-      t.string :retid, :null => false
-      t.string :password, :null => false
+    create_table :retusers do |t|
+      t.integer :user_id
+      t.string  :retid, :null => false
+      t.string  :password, :null => false
       t.timestamps 
     end
   end
 
   def self.down
-    drop_table :retain_users
+    drop_table :retusers
   end
 end

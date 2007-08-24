@@ -1,0 +1,14 @@
+<p>
+  <b>Retid:</b>
+  <%=h @retuser.retid %>
+</p>
+
+<% if admin? %>
+  <p>
+    <b>Password:</b>
+    <%=h @retuser.password %>
+  </p>
+<% end %>
+
+<%= link_to 'Edit', edit_retuser_path(@retuser) %> |
+<%= link_to 'Index of Retain Users', retusers_path %>

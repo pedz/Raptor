@@ -1,8 +1,8 @@
-<h1>Editing queue</h1>
+<h1>Editing a favorite queue</h1>
 
 <%= error_messages_for :queue %>
 
-<% form_for(@retain_queue) do |f| %>
+<% form_for(@favorite_queue) do |f| %>
 <% if admin? %>
   <p>
     <b>User</b><br />
@@ -25,5 +25,5 @@
   </p>
 <% end %>
 
-<%= link_to 'Show', @retain_queue %> |
-<%= link_to 'Back', retain_queues_path %>
+<%= link_to 'Show', @favorite_queue %> |
+<%= link_to 'Index of Favorite Queues', favorite_queues_path %>

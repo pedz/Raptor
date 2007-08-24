@@ -20,6 +20,7 @@ class ApplicationController < ActionController::Base
   #
   def authenticate
     return true if session[:user]
+    ActiveLdap::Base.establish_connection
     authenticate_or_request_with_http_basic "Raptor" do |user_name, password|
       next nil unless LdapUser.authenticate_from_email(user_name, password)
       u = User.find_by_ldap_id(user_name)
@@ -32,6 +33,7 @@ class ApplicationController < ActionController::Base
         u.save!
       end
       session[:user] = u
+      session[:retain] = nil
       return true
     end
   end

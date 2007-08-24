@@ -1,0 +1,27 @@
+<h1>Listing Retain Users</h1>
+
+<table>
+  <tr>
+    <th>Retid</th>
+    <% if admin? %>
+      <th>Password</th>
+    <% end %>
+  </tr>
+
+<% for retuser in @retusers %>
+  <tr>
+    <td><%=h retuser.retid %></td>
+    <% if admin? %>
+      <td><%=h retuser.password %></td>
+    <% end %>
+    <td><%= link_to 'Show', retuser %></td>
+    <td><%= link_to 'Edit', edit_retuser_path(retuser) %></td>
+    <% if admin? %>
+      <td><%= link_to 'Destroy', retuser, :confirm => 'Are you sure?', :method => :delete %></td>
+    <% end %>
+  </tr>
+<% end %>
+</table>
+
+<br/>
+<%= link_to 'Create Retain User Id', new_retuser_path %>

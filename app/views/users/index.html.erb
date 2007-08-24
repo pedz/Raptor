@@ -12,10 +12,10 @@
 <% for user in @users %>
   <tr>
     <td><%=h user.ldap_id %></td>
-    <% if user.retain_user_id.nil? %>
-      <td>None</td>
+    <% if user.retusers.empty? %>
+      <td><%= link_to 'New Retain User Id', new_retuser_path %></td>
     <% else %>
-      <td><%=link_to "#{user.retain_user_id}", retain_user_url(user.retain_user_id) %></td>
+      <td><%=link_to "#{user.retusers[0].retid}", user.retusers[0] %></td>
     <% end %>
     <% if admin? %>
       <td><%=h user.admin %></td>

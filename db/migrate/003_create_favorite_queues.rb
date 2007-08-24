@@ -4,9 +4,10 @@
 # +user_id+::    +integer+ -- Points back to the user record
 # +queue_name+:: +string+  -- Retain queue name
 # +center+::     +string+  -- Retain center
-class CreateRetainQueues < ActiveRecord::Migration
+#
+class CreateFavoriteQueues < ActiveRecord::Migration
   def self.up
-    create_table :retain_queues do |t|
+    create_table :favorite_queues do |t|
       t.integer :user_id,    :null => false
       t.string  :queue_name, :null => false
       t.string  :center,     :null => false
@@ -16,6 +17,6 @@ class CreateRetainQueues < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :retain_queues
+    drop_table :favorite_queues
   end
 end

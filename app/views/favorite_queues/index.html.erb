@@ -1,0 +1,28 @@
+<h1>Listing favorite queues</h1>
+
+<table>
+  <tr>
+<% if admin? %>
+    <th>User</th>
+<% end %>
+    <th>Queue name</th>
+    <th>Center</th>
+  </tr>
+
+<% for favorite_queue in @favorite_queues %>
+  <tr>
+<% if admin? %>
+    <td><%=h favorite_queue.user_id %></td>
+<% end %>
+    <td><%=h favorite_queue.queue_name %></td>
+    <td><%=h favorite_queue.center %></td>
+    <td><%= link_to 'Show', favorite_queue %></td>
+    <td><%= link_to 'Edit', edit_favorite_queue_path(favorite_queue) %></td>
+    <td><%= link_to 'Destroy', favorite_queue, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Favorite Queue', new_favorite_queue_path %>

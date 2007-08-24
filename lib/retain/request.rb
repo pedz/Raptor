@@ -26,7 +26,7 @@ module Retain
         @options[:request].ebcdic + # request type
 
         # login and password
-        ((@options[:login] + "  ") * 2).ebcdic +
+        ((Logon.instance.signon + "  ") * 2).ebcdic +
         0.int2net + 0.int2net +
 
         "I".ebcdic +             # INBOUND

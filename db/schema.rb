@@ -2,9 +2,9 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 3) do
+ActiveRecord::Schema.define(:version => 4) do
 
-  create_table "retain_queues", :force => true do |t|
+  create_table "favorite_queues", :force => true do |t|
     t.integer  "user_id",    :null => false
     t.string   "queue_name", :null => false
     t.string   "center",     :null => false
@@ -12,7 +12,16 @@ ActiveRecord::Schema.define(:version => 3) do
     t.datetime "updated_at"
   end
 
-  create_table "retain_users", :force => true do |t|
+  create_table "retain_pmrs", :force => true do |t|
+    t.string   "problem"
+    t.string   "branch"
+    t.string   "country"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "retusers", :force => true do |t|
+    t.integer  "user_id"
     t.string   "retid",      :null => false
     t.string   "password",   :null => false
     t.datetime "created_at"

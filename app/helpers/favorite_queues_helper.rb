@@ -1,0 +1,2 @@
+module FavoriteQueuesHelper
+end

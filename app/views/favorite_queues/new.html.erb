@@ -1,8 +1,8 @@
-<h1>New queue</h1>
+<h1>Create another favorite queue</h1>
 
 <%= error_messages_for :queue %>
 
-<% form_for(@retain_queue) do |f| %>
+<% form_for(@favorite_queue) do |f| %>
   <p>
     <b>Queue name</b><br />
     <%= f.text_field :queue_name %>
@@ -18,4 +18,4 @@
   </p>
 <% end %>
 
-<%= link_to 'Back', retain_queues_path %>
+<%= link_to 'Index of Favorite Queues', favorite_queues_path %>
