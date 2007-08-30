@@ -6,8 +6,6 @@ module Retain
     PACKET_LENGTH = 20...24
     ELEMENT_COUNT = 24...28
 
-    attr_reader :request
-    
     def initialize(options = {})
       # Set up options with valid defaults
       @options = {              # Default options
@@ -64,38 +62,11 @@ module Retain
     end
 
     def data_element(id, data)
+      puts "Adding data_element #{id}='#{data.ascii}' for #{@request}"
       @element_count += 1
       s = 0.short2net + id.short2net + 0.short2net + data
       s[0..1] = s.length.short2net
       @request_string << s
-    end
-
-    def group_request(fields)
-      s = ""
-      fields.each do |f|
-        s += f.short2net
-      end
-      s
-    end
-
-    def scs0_group_request=(fields)
-      data_element(Fields::SCS0_GROUP_REQUEST, group_request(fields))
-    end
-
-    def pmpb_group_request=(fields)
-      data_element(Fields::PMPB_GROUP_REQUEST, group_request(fields))
-    end
-    
-    Fields::FIELD_DEFINITIONS.each_pair do |k, v|
-      index, convert = v
-      cvt = Fields.icvt(convert)
-      unless method_defined?("#{k}=".to_sym)
-        eval <<-EOF
-        def #{k}=(data)
-          data_element(#{index}, data#{cvt})
-        end
-      EOF
-      end
     end
   end
 end

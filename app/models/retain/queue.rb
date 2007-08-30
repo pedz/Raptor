@@ -1,24 +1,47 @@
 module Retain
   class Queue < Base
+
+    set_fetch_request "SCS0"
+    set_fetch_required_fields :queue_name, :center, :scs0_group_request
+
     def initialize(options = {})
-      @options = options
-      @fields = nil
-      @logger = options[:logger] || RAILS_DEFAULT_LOGGER
+      super(options)
+      unless @fields.has_key?(:scs0_group_request)
+        @fields[:scs0_group_request] = [
+                                        :queue_name,
+                                        :center,
+                                        :h_or_s,
+                                        :ppg,
+                                        :problem,
+                                        :branch,
+                                        :country
+                                       ]
+      end
     end
 
-    def method_missing(sym)
-      puts "queue method_missing: #{sym.to_s}"
-      if @fields.nil?
-        p = Request.new(:request => "PMCS")
-        p.signon = Logon.instance.signon
-        p.password = Logon.instance.password
-        p.queue_name = @options[:queue_name].trim(6)
-        p.center = @options[:center].trim(3)
-        p.h_or_s = @options[:h_or_s] || "S"
-        @temp = sendit(p, @options)
-        @fields = @temp.fields
+    #
+    # Returns the list of calls from the de32 field as Retain::Call
+    # objects.
+    #
+    def calls
+      de32.map do |fields|
+        puts "make a call"
+        Call.new :fields => fields
       end
-      @fields.send sym
+    end
+
+    def decode_center(b1, b2)
+      s = (b1 * 256) + b2
+      i1 = s / 100;
+      i2 = s % 100;
+      i3 = i1 - 10;
+
+      ## if it is less than 26, than it's an alphanumeric
+      ## center like 13L
+      return ("%02d%c" % [ i2, (?A + i3)]).ebcdic if i3 >= 0 && i3 <= 25
+
+      ## Otherwise it is pure numeric
+      return ("%03d" % s).ebcdic
     end
   end
 end

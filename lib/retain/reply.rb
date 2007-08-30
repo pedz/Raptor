@@ -36,20 +36,21 @@ module Retain
         @fields[index]
       end
       
-      Fields::FIELD_DEFINITIONS.each_pair do |k, v|
-        index, convert = v
-        cvt = Fields.ocvt(convert)
-        eval <<-EOF
-          def #{k}
-            @fields[#{index}]#{cvt}
-          end
-        EOF
-      end
+      #### Fields::FIELD_DEFINITIONS.each_pair do |k, v|
+      ###   index, convert = v
+      ###   cvt = Fields.ocvt(convert)
+      ###   eval <<-EOF
+      ###     def #{k}
+      ###       @fields[#{index}]#{cvt}
+      ###     end
+      ###   EOF
+      ### end
     end
     
     attr_reader :fields, :header, :rc
     
     def initialize(s)
+      raise "This is no longer used"
       @header = s[0...128]
       @rc = @header[8...12].net2int
       @fields = scan(s[128...s.length])

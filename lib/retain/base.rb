@@ -3,9 +3,91 @@ require 'retain/utils'
 
 module Retain
   class Base
+    ###
+    ### Class methods
+    ###
+    @@fetch_optional_fields = []
+    
+    #
+    # Set the retain call to fetch the record
+    #
+    def self.set_fetch_request(s)
+      @@fetch_request = s
+    end
+    
+    #
+    # Set required fields for the fetch
+    #
+    def self.set_fetch_required_fields(*args)
+      @@fetch_required_fields = args
+    end
+    
+    #
+    # Set optional fields for fetch
+    #
+    def self.set_fetch_optional_fields(*args)
+      @@fetch_optional_fields = args
+    end
+    
+    ###
+    ### instance methods
+    ###
+    
     def initialize(options = {})
-      # @options = options
-      # @logger = RAILS_DEFAULT_LOGGER
+      puts "initializing #{self.class}"
+      @options = options
+      @logger = @options[:logger] || RAILS_DEFAULT_LOGGER
+      @fields = Fields.new(self.method(:fetch_fields))
+
+      (@@fetch_required_fields + @@fetch_optional_fields).each do |sym|
+        case sym
+        when :signon
+          puts "add required or optional field field #{sym}"
+          self.signon = @options[:signon] || Logon.instance.signon
+        when :password
+          puts "add required or optional field field #{sym}"
+          self.password = @options[:password] || Logon.instance.password
+        else
+          if @options.has_key?(sym)
+            puts "add required or optional field field #{sym}"
+            @fields[sym] = @options[sym]
+          end
+        end
+      end
+      
+      if @options.has_key?(:default_fields)
+        fields = @options.delete(:fields)
+        fields.each_pair do |k, v|
+          puts "add default field #{k}"
+          @fields[k] = v
+        end
+      end
+
+      if @options.has_key?(:fields)
+        fields = @options.delete(:fields)
+        fields.each_pair do |k, v|
+          puts "add field field #{k}:'#{v}'"
+          @fields[k] = v
+        end
+      end
+    end
+
+    def fetch_fields
+      #
+      # Over time, this will all go away and be set up as instance
+      # variables or those magical class variables.
+      #
+      sendit :request => @@fetch_request
+      # @fields = @temp.fields
+    end
+
+    #
+    # Create field getters and setters
+    #
+    Fields::FIELD_DEFINITIONS.each_pair do |k, v|
+      index, convert, width = v
+      eval "def #{k}; @fields.#{k}; end", nil, __FILE__, __LINE__
+      eval "def #{k}=(data); @fields.#{k} = data; end", nil, __FILE__, __LINE__
     end
 
     def connect
@@ -14,17 +96,20 @@ module Retain
     end
 
     def login(options = {})
-      first50 = 'SDTC,SDIRETEXuuuuuu  pppppppp00000000   ,IC,000000'.dup
-      puts "Login for #{Logon.instance.signon}"
-      first50.sub!('uuuuuu', Logon.instance.signon)
-      first50.sub!('pppppppp', Logon.instance.password)
-
+      #
+      # Could pull signon and password from options
+      #
+      first50 = 'SDTC,SDIRETEX' + 
+        Logon.instance.signon +
+        '  ' +
+        Logon.instance.password +
+        '00000000   ,IC,000000'
+      
       # "encrypt" the password
       send = first50.ebcdic
       # hex_dump("first 50", send)
       ( 21..28 ).each { |i| send[i] -= 0x3f }
       hex_dump("first 50", send)
-      puts "in login"
       connect
       @connection.write(send)
       reply = @login_reply = @connection.read(50)
@@ -38,48 +123,24 @@ module Retain
       end
     end
 
-    def cs(options = {})
-      p = Request.new(:request => "PMCS")
-      p.signon = Logon.instance.signon
-      p.password = Logon.instance.password
-      p.queue_name = options[:queue_name].trim(6)
-      p.center = options[:center].trim(3)
-      p.h_or_s = options[:h_or_s] || "S"
-      sendit(p, options)
-    end
+    def sendit(send_options)
+      options = @options.merge(send_options)
+      raise "Login Failed" unless login(send_options)
 
-    def scs0(options = {})
-      p = Request.new(:request => "SCS0")
-      p.signon = Logon.instance.signon
-      p.queue_name = options[:queue_name].trim(6)
-      p.center = options[:center].trim(3)
-      p.scs0_group_request = options[:scs0_group_request].map { |ele|
-        Fields::FIELD_DEFINITIONS[ele.to_s][0]
-      }
-      sendit(p, options)
-    end
-    
-    def pmr(options = {})
-      p = Request.new(:request => "PMPB")
-      p.signon = Logon.instance.signon
-      p.password = Logon.instance.password
-      if options[:iris]
-        p.iris = options[:iris]
-      else
-        p.problem = options[:problem]
-        p.branch = options[:branch]
-        p.country = options[:country]
+      p = Request.new(send_options)
+      fields = @fields.dup
+      puts "fields.class is #{fields.class}"
+      @@fetch_required_fields.each do |sym|
+        puts "sym is #{sym}"
+        index = Fields.sym_to_index(sym)
+        raise "required field #{sym} not present" unless fields.has_key?(sym)
+        v = fields.delete(sym)
+        puts "v.class is #{v.class}"
+        p.data_element(index, v.to_s)
       end
-      p.pmpb_group_request = options[:pmpb_group_request].map { |ele|
-        Fields::FIELD_DEFINITIONS[ele.to_s][0]
-      }
-      sendit(p, options)
-    end
 
-    def sendit(p, options = {})
-      raise "Login Failed" unless login(options)
       send = p.to_s
-      # hex_dump("#{p.request} request", send)
+      hex_dump("#{send_options[:request]} request", send)
       if  @connection.write(send) != send.length
         raise "write to socket failed in sendit"
       end
@@ -92,9 +153,40 @@ module Retain
       else
         b = ""
       end
-      all = f + b
-      # hex_dump("#{p.request} reply", all)
-      Retain::Reply.new(all)
+      @reply = f + b
+      hex_dump("#{send_options[:request]} reply", @reply)
+      @header = @reply[0...128]
+      @rc = @header[8...12].net2int
+      puts "self is of class #{self.class}"
+      puts "rc should be #{@rc}"
+      scan_fields(@fields, @reply[128...@reply.length])
+    end
+    
+    def scan_fields(fields, s, six_byte_headers = true)
+      de32 = Array.new
+      until s.nil?
+        len = s[0...2].net2short
+        ele = s[2...4].net2short
+        if six_byte_headers
+          tpe = s[4...6].net2short
+          dat = s[6...len]
+        else
+          dat = s[4...len]
+        end
+        if s.length > len
+          s = s[len...s.length]
+        else
+          s = nil
+        end
+        case ele
+        when Fields::DE32
+          de32 << scan_fields(Fields.new(nil), dat, false)
+          next
+        end
+        fields.add_raw(ele, dat)
+      end
+      fields[Fields::DE32] = de32 unless de32.empty?
+      fields
     end
     
     def hex_dump(title, s)
