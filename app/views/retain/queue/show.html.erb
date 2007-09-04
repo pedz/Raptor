@@ -1,0 +1,7 @@
+<h1>Retain Queue: <%= h @queue.queue_name %>,<%= h @queue.center %></h1>
+
+<ol>
+  <% for call in @calls %>
+  <li><%=  h call.pbc %></li>
+  <% end %>
+</ol>

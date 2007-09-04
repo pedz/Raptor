@@ -1,37 +1,40 @@
 module Retain
   class RetainController < ApplicationController
 
-    before_filter :validate_retain_user
+    before_filter :validate_retuser
 
     private
     
-    def validate_retain_user
+    def validate_retuser
+      logger.debug("in validate_retuser")
       u = session[:user]
 
       # Avoid extra db hits if session[:retain] already set
-      if param = session[:retain]
+      if params = session[:retain]
+        logger.debug("setting logon params #{__LINE__}")
         Logon.instance.set(params)
         return true
       end
 
-      # If no retain_users defined for this user, then redirect and
+      # If no retusers defined for this user, then redirect and
       # set up a retain user.
-      if u.retain_users.empty?
+      if u.retusers.empty?
         session[:original_uri] = request.request_uri
-        redirect_to new_retain_user_url
+        redirect_to new_retuser_url
         return false
       end
 
       # Pull together the signon/password and the host/port and create
       # a ConnectionParamters structure.  We hold this in the session
       # data.  We also set the Logon instance to use these settings.
-      ru = u.retain_users[0]
+      ru = u.retusers[0]
       c = Retain::Config.symbolize_keys[RetainConfig::Node][0].symbolize_keys
       params = ConnectionParameters.new(:host => c[:host],
                                         :port => c[:port],
                                         :signon => ru.retid,
                                         :password => ru.password)
       session[:retain] = params
+      logger.debug("setting logon params #{__LINE__}")
       Logon.instance.set(params)
       return true
     end

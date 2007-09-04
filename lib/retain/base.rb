@@ -128,13 +128,11 @@ module Retain
       raise "Login Failed" unless login(send_options)
 
       p = Request.new(send_options)
-      fields = @fields.dup
-      puts "fields.class is #{fields.class}"
       @@fetch_required_fields.each do |sym|
         puts "sym is #{sym}"
         index = Fields.sym_to_index(sym)
-        raise "required field #{sym} not present" unless fields.has_key?(sym)
-        v = fields.delete(sym)
+        raise "required field #{sym} not present" unless @fields.has_key?(sym)
+        v = @fields[sym]
         puts "v.class is #{v.class}"
         p.data_element(index, v.to_s)
       end

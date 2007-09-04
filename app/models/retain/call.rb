@@ -21,5 +21,9 @@ module Retain
                                        ]
       end
     end
+    
+    def pbc
+      "%s,%s,%s" % [ problem, branch, country ]
+    end
   end
 end

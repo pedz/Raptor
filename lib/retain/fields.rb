@@ -21,6 +21,7 @@ module Retain
       :queue_name                 => [   27, :upper_ebcdic,  6 ],
       :de32                       => [   32, :binary,        0 ],
       :center                     => [   41, :upper_ebcdic,  3 ],
+      :nls_resolver               => [   97, :nls,          30 ],
       :nls_customer_name          => [  101, :nls,          30 ],
       :nls_contact_name           => [  102, :nls,          30 ],
       :nls_comments               => [  128, :nls,          56 ],

@@ -13,9 +13,10 @@ puts "#{__FILE__}:#{__LINE__}"
 q = Retain::Queue.new(:queue_name => 'PEDZ', :center => '165')
 puts "#{__FILE__}:#{__LINE__}"
 recs = q.calls
+puts q.queue_name
 puts "#{__FILE__}:#{__LINE__}"
 rec = recs[0]
 puts "#{__FILE__}:#{__LINE__}"
 puts "rec is of class #{rec.class}"
 puts "rec.problem is #{rec.problem}"
-puts "cpu type is #{rec.cpu_type}"
+puts "cpu type is #{rec.nls_resolver}"
