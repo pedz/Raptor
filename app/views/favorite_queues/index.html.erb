@@ -14,8 +14,9 @@
 <% if admin? %>
     <td><%=h favorite_queue.user_id %></td>
 <% end %>
-    <td><%=h favorite_queue.queue_name %></td>
-    <td><%=h favorite_queue.center %></td>
+    <td><%=h q = favorite_queue.queue_name.gsub(/ /, '') %></td>
+    <td><%=h c = favorite_queue.center %></td>
+    <td><%= link_to 'Queue', retain_queue_path("#{q},#{c}") %></td>
     <td><%= link_to 'Show', favorite_queue %></td>
     <td><%= link_to 'Edit', edit_favorite_queue_path(favorite_queue) %></td>
     <td><%= link_to 'Destroy', favorite_queue, :confirm => 'Are you sure?', :method => :delete %></td>

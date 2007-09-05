@@ -1,7 +1,25 @@
-<h1>Retain Queue: <%= h @queue.queue_name %>,<%= h @queue.center %></h1>
+<h1>Retain Queue: <%= h @queue.queue_name.gsub(/ /, '') %>,<%= h @queue.center %></h1>
 
-<ol>
+<table style='font-family : courier, monospace'>
+  <thead>
+    <th>Sel#</th>
+    <th>Prblm,bnc,cty</th>
+    <th>S</th>
+    <th>P</th>
+    <th>Comments</th>
+    <th>Customer</th>
+    <th>CStatus</th>
+  </thead>
+  <% index = 0 %>
   <% for call in @calls %>
-  <li><%=  h call.pbc %></li>
+  <tr>
+    <td><%= h index += 1 %></td>
+    <td><%= link_to call.pbc, retain_pmr_path(call.pbc) %></td>
+    <td><%= h call.p_s_b %></td>
+    <td><%= h call.priority %></td>
+    <td><%= h call.comments %></td>
+    <td><%= h call.customer_name %></td>
+    <td><%= h call.cstatus %></td>
+  </tr>
   <% end %>
-</ol>
+</table>

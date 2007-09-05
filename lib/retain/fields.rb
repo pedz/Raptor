@@ -17,10 +17,14 @@ module Retain
       :country                    => [    3, :upper_ebcdic,  3 ],
       :problem                    => [    4, :upper_ebcdic,  5 ],
       :customer_number            => [   11, :upper_ebcdic,  7 ],
+      :customer_name              => [   14, :ebcdic,       28 ],
+      :customer_contact_name      => [   19, :ebcdic,       28 ],
       :cpu_type                   => [   22, :ebcdic,        4 ],
+      :priority                   => [   23, :ebcdic,        1 ],
       :queue_name                 => [   27, :upper_ebcdic,  6 ],
       :de32                       => [   32, :binary,        0 ],
       :center                     => [   41, :upper_ebcdic,  3 ],
+      :comments                   => [   42, :ebcdic,       54 ],
       :nls_resolver               => [   97, :nls,          30 ],
       :nls_customer_name          => [  101, :nls,          30 ],
       :nls_contact_name           => [  102, :nls,          30 ],
@@ -39,7 +43,8 @@ module Retain
       :password                   => [ 1237, :upper_ebcdic,  8 ],
       :pmpb_group_request         => [ 1253, :binary,        0 ],
       :error_message              => [ 1384, :upper_ebcdic, 79 ],
-      :information_text_line      => [ 1390, :upper_ebcdic, 72 ]
+      :information_text_line      => [ 1390, :upper_ebcdic, 72 ],
+      :cstatus                    => [ 1633, :upper_ebcdic,  7 ]
     }
     
     def initialize(fetch_fields = nil)

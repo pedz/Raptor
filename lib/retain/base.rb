@@ -136,6 +136,14 @@ module Retain
         puts "v.class is #{v.class}"
         p.data_element(index, v.to_s)
       end
+      @@fetch_optional_fields.each do |sym|
+        puts "sym is #{sym}"
+        index = Fields.sym_to_index(sym)
+        next unless @fields.has_key?(sym)
+        v = @fields[sym]
+        puts "v.class is #{v.class}"
+        p.data_element(index, v.to_s)
+      end
 
       send = p.to_s
       hex_dump("#{send_options[:request]} request", send)

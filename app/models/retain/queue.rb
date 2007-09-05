@@ -1,8 +1,9 @@
 module Retain
   class Queue < Base
-
+    
     set_fetch_request "SCS0"
     set_fetch_required_fields :queue_name, :center, :scs0_group_request
+    set_fetch_optional_fields :h_or_s
 
     def initialize(options = {})
       super(options)
@@ -14,7 +15,12 @@ module Retain
                                         :ppg,
                                         :problem,
                                         :branch,
-                                        :country
+                                        :country,
+                                        :priority,
+                                        :p_s_b,
+                                        :comments,
+                                        :customer_name,
+                                        :cstatus
                                        ]
       end
     end
