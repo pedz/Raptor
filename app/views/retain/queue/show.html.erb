@@ -1,4 +1,6 @@
-<h1>Retain Queue: <%= h @queue.queue_name.gsub(/ /, '') %>,<%= h @queue.center %></h1>
+<!-- retain/queue/show.html.erb -->
+<% @title = "Retain queue: #{@queue.to_s}" %>
+<h1>Retain Queue: <%= h @queue.to_s %></h1>
 
 <table style='font-family : courier, monospace'>
   <thead>
@@ -14,7 +16,7 @@
   <% for call in @calls %>
   <tr>
     <td><%= h index += 1 %></td>
-    <td><%= link_to call.pbc, retain_pmr_path(call.pbc) %></td>
+    <td><%= link_to call.pbc, call %></td>
     <td><%= h call.p_s_b %></td>
     <td><%= h call.priority %></td>
     <td><%= h call.comments %></td>

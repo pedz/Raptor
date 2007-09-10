@@ -1,37 +1,27 @@
+
 module Retain
   class Queue < Base
-    
-    set_fetch_request "SCS0"
-    set_fetch_required_fields :queue_name, :center, :scs0_group_request
-    set_fetch_optional_fields :h_or_s
+    set_fetch_sdi Scs0.new
 
     def initialize(options = {})
       super(options)
-      unless @fields.has_key?(:scs0_group_request)
-        @fields[:scs0_group_request] = [
-                                        :queue_name,
-                                        :center,
-                                        :h_or_s,
-                                        :ppg,
-                                        :problem,
-                                        :branch,
-                                        :country,
-                                        :priority,
-                                        :p_s_b,
-                                        :comments,
-                                        :customer_name,
-                                        :cstatus
-                                       ]
-      end
     end
-
+    
+    def to_s
+      ret = queue_name.sub(/ +$/, '') + ',' + center
+      if h_or_s? && h_or_s != 'S' && h_or_s != 's'
+        ret << h_or_s
+      end
+      ret
+    end
+    
     #
     # Returns the list of calls from the de32 field as Retain::Call
     # objects.
     #
     def calls
       de32.map do |fields|
-        puts "make a call"
+        @logger.debug("DEBUG: make a call")
         Call.new :fields => fields
       end
     end

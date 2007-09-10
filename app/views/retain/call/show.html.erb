@@ -1,0 +1,29 @@
+<!-- retain/call/show.html.erb -->
+<% @title = "Retain call: #{@call.pbc}" %>
+<h1 style='text-align: center'><%= h @call.pbc %></h1>
+Comments: <%= h @call.comments %>
+Priority: <%= h @call.priority %>
+Severity: <%= h @pmr.severity %><br/>
+Queue: <%= h @call.clean_queue_name + ',' + @call.center %>
+Comp: <%= h @call.comp_id_or_alias %>
+Cust: <%= h @call.nls_customer_name %>
+Contact: <%= h @call.nls_contact_name %>
+Phone1: <%= h @call.contact_phone_1 %>
+Phone2: <%= h @call.contact_phone_2 %><br/>
+<table>
+  <tr>
+    <td>Scratch Pad:</td>
+    <td><%= h @pmr.nls_scratch_pad_1 %></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><%= h @pmr.nls_scratch_pad_2 %></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><%= h @pmr.nls_scratch_pad_3 %></td>
+  </tr>
+</table>
+<% for line in @pmr.nls_text_lines %>
+  <%= h line %><br/>
+<% end %>

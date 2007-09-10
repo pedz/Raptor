@@ -24,6 +24,7 @@ module ActionController
         end
       
       named_route = build_named_route_call(record_or_hash_or_array, namespace, inflection, options)
+      RAILS_DEFAULT_LOGGER.debug("DEBUG: url #{named_route}")
       send(named_route, *args)
     end
 

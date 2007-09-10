@@ -1,8 +1,13 @@
 module Retain
   class Pmr < Base
-    set_fetch_request "PMPB"
-    set_fetch_required_fields(:problem, :branch, :country
-                              :signon, :password,
-                              :pmpb_group_request)
+    set_fetch_sdi Pmpb.new
+
+    def initialize(options = {})
+      super(options)
+    end
+
+    def to_s
+      "%s,%s,%s" % [ problem, branch, country ]
+    end
   end
 end

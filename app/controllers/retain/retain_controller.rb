@@ -6,12 +6,12 @@ module Retain
     private
     
     def validate_retuser
-      logger.debug("in validate_retuser")
+      logger.debug("DEBUG: in validate_retuser")
       u = session[:user]
 
       # Avoid extra db hits if session[:retain] already set
       if params = session[:retain]
-        logger.debug("setting logon params #{__LINE__}")
+        logger.debug("DEBUG: setting logon params #{__LINE__}")
         Logon.instance.set(params)
         return true
       end
@@ -34,7 +34,7 @@ module Retain
                                         :signon => ru.retid,
                                         :password => ru.password)
       session[:retain] = params
-      logger.debug("setting logon params #{__LINE__}")
+      logger.debug("DEBUG: setting logon params #{__LINE__}")
       Logon.instance.set(params)
       return true
     end

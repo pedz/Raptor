@@ -63,6 +63,7 @@ module ActionView
       #   # calls @workshop.to_s
       #   # => /workshops/5
       def url_for(options = {})
+        RAILS_DEFAULT_LOGGER.debug("DEBUG: in url_for")
         case options
         when Hash
           options = { :only_path => true }.update(options.symbolize_keys)
@@ -133,6 +134,7 @@ module ActionView
       #        var m = document.createElement('input'); m.setAttribute('type', 'hidden'); m.setAttribute('name', '_method'); 
       #        m.setAttribute('value', 'delete'); f.appendChild(m);f.submit(); };return false;">Delete Image</a>
       def link_to(name, options = {}, html_options = nil)
+        RAILS_DEFAULT_LOGGER.debug("DEBUG: in link_to")
         url = options.is_a?(String) ? options : self.url_for(options)
 
         if html_options

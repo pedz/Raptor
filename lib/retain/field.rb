@@ -40,9 +40,9 @@ module Retain
     #
     # Get the value without output conversion
     #
-    ### def raw_value
-    ###   @value
-    ### end
+    def raw_value
+      @value
+    end
     
     #
     # Set the value with input conversion and fill to width
@@ -55,10 +55,9 @@ module Retain
     #
     # Set the raw value without input conversion
     #
-    ### def raw_value=(v)
-    ###   @value = v
-    ###   @dirty = true
-    ### end
+    def raw_value=(v)
+      @value = v
+    end
     
     #
     # Mark field as dirty
@@ -102,24 +101,48 @@ module Retain
       if value.nil?
         return @value = value
       end
-      if @width && @width > 0
-        value = value.trim(@width)
+      if value.is_a?(Array)
+        @value = value.map { |line| encode(line) }
+      else
+        @value = encode(value)
       end
-      @value = case @cvt
-               when :upper_ebcdic then value.upcase.ebcdic
-               when :ebcdic then value.ebcdic
-               when :nls then value.ebcdic
-               when :binary then value
-               else puts "@cvt is #{@cvt}"
-               end
     end
     
     def get_value
+      if @value.is_a?(Array)
+        @value.map { |line| decode(line) }
+      else
+        decode(@value)
+      end
+    end
+
+    def encode(value)
+      if @width && @width > 0
+        value = value.trim(@width)
+      end
       case @cvt
-      when :upper_ebcdic then @value.ascii
-      when :ebcdic then @value.ascii
-      when :nls then @value.ascii
-      when :binary then @value
+      when :upper_ebcdic then value.upcase.ebcdic
+      when :ebcdic then value.ebcdic
+      when :nls then value.ebcdic
+      when :binary then value
+      when :ppg
+        h = value.hex
+        value = "  "
+        value[0] = h / 256
+        value[1] = h % 256
+        value
+      else @logger.debug("DEBUG: @cvt is #{@cvt}")
+      end
+    end
+
+    def decode(value)
+      case @cvt
+      when :upper_ebcdic then value.ascii
+      when :ebcdic then value.ascii
+      when :nls then value.ascii[2...value.length]
+      when :binary then value
+      when :ppg then
+        "%x" % (value[0] * 256 + value[1])
       end
     end
 
