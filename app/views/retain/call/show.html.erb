@@ -1,29 +1,78 @@
 <!-- retain/call/show.html.erb -->
 <% @title = "Retain call: #{@call.pbc}" %>
-<h1 style='text-align: center'><%= h @call.pbc %></h1>
-Comments: <%= h @call.comments %>
-Priority: <%= h @call.priority %>
-Severity: <%= h @pmr.severity %><br/>
-Queue: <%= h @call.clean_queue_name + ',' + @call.center %>
-Comp: <%= h @call.comp_id_or_alias %>
-Cust: <%= h @call.nls_customer_name %>
-Contact: <%= h @call.nls_contact_name %>
-Phone1: <%= h @call.contact_phone_1 %>
-Phone2: <%= h @call.contact_phone_2 %><br/>
-<table>
-  <tr>
-    <td>Scratch Pad:</td>
-    <td><%= h @pmr.nls_scratch_pad_1 %></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td><%= h @pmr.nls_scratch_pad_2 %></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td><%= h @pmr.nls_scratch_pad_3 %></td>
-  </tr>
-</table>
-<% for line in @pmr.nls_text_lines %>
-  <%= h line %><br/>
+<% content_for(:top) do %>
+  <h1 style='text-align: center'><%= h @call.pbc %></h1>
+  Comments: <%= h @call.comments %>
+  Priority: <%= h @call.priority %>
+  Severity: <%= h @pmr.severity %><br/>
+  Queue: <%= h @call.clean_queue_name + ',' + @call.center %>
+  Comp: <%= h @call.comp_id_or_alias %>
+  Cust: <%= h @call.nls_customer_name %>
+  Contact: <%= h @call.nls_contact_name %>
+  Phone1: <%= h @call.contact_phone_1 %>
+  Phone2: <%= h @call.contact_phone_2 %><br/>
+<!--
+  <table>
+    <tr>
+      <td>Scratch Pad:</td>
+      <td><%= h @pmr.nls_scratch_pad_1 %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><%= h @pmr.nls_scratch_pad_2 %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><%= h @pmr.nls_scratch_pad_3 %></td>
+    </tr>
+  </table>
+-->
+<% end %>
+
+<% content_for(:center) do %>
+  <div class='even'>
+    <% @pmr.nls_text_lines.each_with_index do |line, index| %>
+      <%= show_line(line, index) %>
+    <% end %>
+  </div>
+<% end %>
+
+<% content_for(:left) do %>
+  <table>
+  <% @pmr.nls_text_lines.each_with_index do |line, index| %>
+  <%   if line.type == 0x3d %>
+  <%     md = Regexp.new(' S5> (SERVICE GIVEN= ([0-9][0-9]))  SG/19/').match(line.text) %>
+  <%     unless md.nil? || md[2] == "99" %>
+    <tr>
+      <td>
+	&nbsp;
+      </td>
+      <td>
+	<%= "<a href='#line_#{index}'>#{md[1]}</a>" %>
+      </td>
+    </tr>
+  <%     end %>
+  <%   end %>
+  <%   if line.type == 0x3f %>
+  <%     logger.debug line.text %>
+  <%     sig_line = Retain::SignatureLine.new(line.text) %>
+  <%     unless sig_line.name.nil? || sig_line.stype.nil? %>
+    <tr>
+      <td colspan='2'>
+	<%= "<a href='#line_#{index}'>#{sig_line.name}</a>" %>
+      </td>
+      <td>
+	<%= "<a href='#line_#{index}'>#{sig_line.stype}</a>" %>
+      </td>
+    </tr>
+  <%     end %>
+  <%   end %>
+  <% end %>
+  </table>
+<% end %>
+
+<% content_for(:right) do %>
+  <% (0 ... (@pmr.nls_text_lines.length / 16)).each do |page_number| %>
+  <%=  "<a href='#line_#{page_number * 16}'>Page #{page_number + 2}</a><br/>" %>
+  <% end %>
 <% end %>

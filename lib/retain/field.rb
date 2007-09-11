@@ -121,27 +121,45 @@ module Retain
         value = value.trim(@width)
       end
       case @cvt
-      when :upper_ebcdic then value.upcase.ebcdic
-      when :ebcdic then value.ebcdic
-      when :nls then value.ebcdic
-      when :binary then value
+      when :upper_ebcdic
+        value.upcase.ebcdic
+      when :ebcdic
+        value.ebcdic
+      when :nls
+        reais "Can no encode nls yet"
+      when :binary
+        value
+      when :nls_text_lines
+        raise "Can not encode text lines yet"
+      when :text_lines
+        raise "Can not encode nls text lines yet"
       when :ppg
         h = value.hex
         value = "  "
         value[0] = h / 256
         value[1] = h % 256
         value
-      else @logger.debug("DEBUG: @cvt is #{@cvt}")
+      else
+        raise "Unknown version method: #{@cvt}"
       end
     end
 
     def decode(value)
       case @cvt
-      when :upper_ebcdic then value.ascii
-      when :ebcdic then value.ascii
-      when :nls then value.ascii[2...value.length]
-      when :binary then value
-      when :ppg then
+      when :upper_ebcdic
+        value.ascii
+      when :ebcdic
+        value.ascii
+      when :nls
+        value.ascii[2...value.length]
+      when :binary
+        value
+      when :nls_text_lines
+        tmp = value[2...value.length]
+        TextLine.new(tmp[0], tmp.ascii)
+      when :text_lines
+        TextLine.new(value[0], value.ascii)
+      when :ppg
         "%x" % (value[0] * 256 + value[1])
       end
     end

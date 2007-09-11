@@ -66,24 +66,34 @@ module Retain
     def sendit(req_fields, send_options = {})
       fields = @fields.merge(req_fields)
       options = @options.merge(send_options)
-      @logger.debug("DEBUG: fields = #{fields.to_yaml}")
-      @logger.debug("DEBUG: options = #{options.to_yaml}")
+      if false
+        @logger.debug("DEBUG: fields = #{fields.to_yaml}")
+        @logger.debug("DEBUG: options = #{options.to_yaml}")
+      end
 
       p = Request.new(options)
       @@required_fields.each do |sym|
-        @logger.debug("DEBUG: sym is #{sym} class is #{sym.class}")
+        if false
+          @logger.debug("DEBUG: sym is #{sym} class is #{sym.class}")
+        end
         index = Fields.sym_to_index(sym)
         raise "required field #{sym} not present" unless fields.has_key?(sym)
         v = fields[sym]
-        @logger.debug("DEBUG: v.class is #{v.class}")
+        if false
+          @logger.debug("DEBUG: v.class is #{v.class}")
+        end
         p.data_element(index, v.to_s)
       end
       @@optional_fields.each do |sym|
-        @logger.debug("DEBUG: sym is #{sym}")
+        if false
+          @logger.debug("DEBUG: sym is #{sym}")
+        end
         index = Fields.sym_to_index(sym)
         next unless fields.has_key?(sym)
         v = fields[sym]
-        @logger.debug("DEBUG: v.class is #{v.class}")
+        if false
+          @logger.debug("DEBUG: v.class is #{v.class}")
+        end
         p.data_element(index, v.to_s)
       end
 
@@ -105,8 +115,10 @@ module Retain
       @reply = f + b
       @header = @reply[0...128]
       @rc = @header[8...12].net2int
-      @logger.debug("DEBUG: self is of class #{self.class}")
-      @logger.debug("DEBUG: rc should be #{@rc}")
+      if false
+        @logger.debug("DEBUG: self is of class #{self.class}")
+        @logger.debug("DEBUG: rc should be #{@rc}")
+      end
 
       new_fields = Fields.new
       scan_fields(new_fields, @reply[128...@reply.length])
@@ -142,18 +154,17 @@ module Retain
       
       # "encrypt" the password
       send = first50.ebcdic
-      # hex_dump("first 50", send)
       ( 21..28 ).each { |i| send[i] -= 0x3f }
-      # hex_dump("first 50", send)
       connect
       @connection.write(send)
       reply = @login_reply = @connection.read(50)
       @logger.debug("DEBUG: reply length is #{reply.length}")
-      @logger.debug("DEBUG: reply length: #{reply.length}")
       if reply.length == 50
         # Can add more for things like password date, etc
         true
       else
+        hex_dump("first 50 request", send)
+        hex_dump("first 50 reply", reply)
         false
       end
     end
