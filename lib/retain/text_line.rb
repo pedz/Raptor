@@ -2,10 +2,10 @@
 module Retain
   class TextLine
 
-    attr_accessor :type, :text
+    attr_accessor :line_type, :text
 
     def initialize(type, text)
-      @type = type
+      @line_type = type
       @text = text
     end
   end

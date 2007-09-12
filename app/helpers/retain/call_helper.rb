@@ -6,9 +6,13 @@ module Retain
     def show_line(line, index)
       # Retain pages start on two -- go figure.
       span_classes =
-        case line.type
+        case line.line_type
         when 0x3f then 'signature'
         when 0x3d then 'system'
+        when 0x32 then 'normal_protected'
+        when 0x22 then 'normal_unprotected'
+        when 0x3A then 'intensified_protected'
+        when 0x2A then 'intensified_unprotected'
         else 'normal'
         end
       page = (index / 16)

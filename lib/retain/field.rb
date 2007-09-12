@@ -117,28 +117,33 @@ module Retain
     end
 
     def encode(value)
-      if @width && @width > 0
-        value = value.trim(@width)
+      if @width.nil? || @width < 0
+        width = value.length
+      else
+        width = @width
       end
       case @cvt
       when :upper_ebcdic
-        value.upcase.ebcdic
+        value.trim(width).upcase.ebcdic
       when :ebcdic
-        value.ebcdic
-      when :nls
-        reais "Can no encode nls yet"
+        value.trim(width).ebcdic
       when :binary
         value
-      when :nls_text_lines
-        raise "Can not encode text lines yet"
-      when :text_lines
-        raise "Can not encode nls text lines yet"
+      when :znumber             # zero filled number
+        RAILS_DEFAULT_LOGGER.debug("width=#{width}, value=#{value}, value.class=#{value.class}")
+        ("%0#{width}d" % value).ebcdic
       when :ppg
         h = value.hex
         value = "  "
         value[0] = h / 256
         value[1] = h % 256
         value
+      when :nls
+        raise "Can no encode nls yet"
+      when :nls_text_lines
+        raise "Can not encode text lines yet"
+      when :text_lines
+        raise "Can not encode nls text lines yet"
       else
         raise "Unknown version method: #{@cvt}"
       end
@@ -159,6 +164,8 @@ module Retain
         TextLine.new(tmp[0], tmp.ascii)
       when :text_lines
         TextLine.new(value[0], value.ascii)
+      when :znumber
+        value.ascii.to_i
       when :ppg
         "%x" % (value[0] * 256 + value[1])
       end

@@ -2,7 +2,41 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 4) do
+ActiveRecord::Schema.define(:version => 8) do
+
+  create_table "cached_calls", :force => true do |t|
+    t.string   "queue_name", :limit => 6,                  :null => false
+    t.string   "center",     :limit => 3,                  :null => false
+    t.string   "h_or_s",     :limit => 1, :default => "S", :null => false
+    t.string   "ppg",        :limit => 3,                  :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cached_pmrs", :force => true do |t|
+    t.string   "problem",    :limit => 5, :null => false
+    t.string   "branch",     :limit => 3, :null => false
+    t.string   "country",    :limit => 3, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cached_queues", :force => true do |t|
+    t.string   "queue_name", :limit => 6,                  :null => false
+    t.string   "center",     :limit => 3,                  :null => false
+    t.string   "h_or_s",     :limit => 1, :default => "S", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cached_text_lines", :force => true do |t|
+    t.integer  "cached_pmr_id",               :null => false
+    t.integer  "line_number",                 :null => false
+    t.integer  "line_type",                   :null => false
+    t.string   "text",          :limit => 72, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "favorite_queues", :force => true do |t|
     t.integer  "user_id",    :null => false

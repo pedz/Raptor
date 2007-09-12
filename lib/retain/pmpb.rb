@@ -4,6 +4,7 @@ module Retain
     set_required_fields(:problem, :branch, :country,
                         :signon, :password,
                         :pmpb_group_request)
+    set_optional_fields(:beginning_page_number)
 
     def initialize(options = {})
       super(options)
@@ -22,10 +23,11 @@ module Retain
                                         :nls_scratch_pad_1,
                                         :nls_scratch_pad_2,
                                         :nls_scratch_pad_3,
-                                        :nls_text_lines
+                                        :addtxt_lines,
+                                        :information_text_lines,
+                                        :alterable_format_text_lines
                                        ]
       end
-      
     end
   end
 end
