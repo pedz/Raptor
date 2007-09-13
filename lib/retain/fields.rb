@@ -41,7 +41,7 @@ module Retain
       :nls_comments                => [  128, :nls,            56 ],
       :author_type                 => [  131, :ebcdic,          1 ],
       :owning_retain_node          => [  132, :ebcdic,          3 ],
-      :nls_pmr_owner_name          => [  133, :ebcdic,         24 ],
+      :nls_pmr_owner_name          => [  133, :nls,            24 ],
       :pmr_owner_phone             => [  134, :ebcdic,         19 ],
       :pmr_owner_employee_number   => [  135, :ebcdic,          6 ],
       :pmr_owner_territory         => [  136, :ebcdic,          3 ],
@@ -474,17 +474,34 @@ module Retain
       end
     end
     
+    #
+    # If the attribute or field is already present, then just return
+    # it.  Otherwise, if the fields have not been fetched and
+    # @fetch_fields is set up so we can fetch them, we call sendit via
+    # @fetch_fields.  If it returns an error, we process it
+    # appropriately.  Otherwise, we set @fetched to true so we do not
+    # try to fetch the fields again and we check to see if the field
+    # we were originally trying to get was returned.  If it is, we
+    # return its value.  If all this fails, we raise an exception.
+    #
     def reader(index, cvt, width)
       if f = @fields[index]
         return f.value
-      elsif not @fetched
-        @fetch_fields.call
+      elsif not (@fetched || @fetch_fields.nil?)
+        base_obj = @fetch_fields.call
+        unless base_obj.rc == 0
+          if base_obj.error_message?
+            raise base_obj.error_message
+          else
+            raise Errors[base_obj.rc]
+          end
+        end
+        @fetched = true
         if f = @fields[index]
           return f.value
         end
-        raise "reader did not read attribute"
       end
-      super.send sym
+      raise "reader did not read attribute"
     end
     
     def writer(index, cvt, width, value)

@@ -127,12 +127,26 @@ module Retain
       unless @rc == 0
         hex_dump("#{options[:request]} request", send)
         hex_dump("#{options[:request]} reply", @reply)
-        if req_fields.error_message?
-          raise req_fields.error_message
-        else
-          raise Errors[@rc]
-        end
+        # if req_fields.error_message?
+        #   raise req_fields.error_message
+        # else
+        #   raise Errors[@rc]
+        # end
       end
+    end
+
+    def rc
+      @rc
+    end
+    
+    #
+    # Create field getters and setters
+    #
+    Fields::FIELD_DEFINITIONS.each_pair do |k, v|
+      index, convert, width = v
+      eval "def #{k};  @fields.#{k}; end", nil, __FILE__, __LINE__
+      eval "def #{k}?; @fields.#{k}?; end", nil, __FILE__, __LINE__
+      eval "def #{k}=(data); @fields.#{k} = data; end", nil, __FILE__, __LINE__
     end
 
     private

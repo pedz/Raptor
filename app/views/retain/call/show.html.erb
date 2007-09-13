@@ -11,6 +11,10 @@
   Contact: <%= h @call.nls_contact_name %>
   Phone1: <%= h @call.contact_phone_1 %>
   Phone2: <%= h @call.contact_phone_2 %><br/>
+  PMR Owner: <%= h @pmr.pmr_owner_name %>
+  <span class='inplace_edit' href='<%= retain_call_path(@call) %>' value='pmr_owner_employee_number'>
+    <%= h @pmr.pmr_owner_employee_number %>
+  </span><br/>
 <!--
   <table>
     <tr>

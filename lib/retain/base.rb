@@ -26,9 +26,15 @@ module Retain
       @fields.merge(field_temp) unless field_temp.nil?
     end
 
+    def rc
+      @rc
+    end
+
     def fetch_fields
       @logger.debug("DEBUG: fetch fields for #{self.class}")
       @@fetch.sendit(@fields, @options)
+      @rc = @@fetch.rc
+      self
     end
 
     #

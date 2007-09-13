@@ -1,2 +1,13 @@
-// Place your application-specific JavaScript functions and classes here
-// This file is automatically included by javascript_include_tag :defaults
+
+Event.addBehavior({
+    '.inplace_edit' : function () {
+	url = this.getAttribute('href');
+	v = this.getAttribute('value');
+	ajaxOptions = { method: 'put' }
+	options = {
+	    callback: function(form, value) { return v + '=' + escape(value) },
+	    ajaxOptions: ajaxOptions
+	};
+	new Ajax.InPlaceEditor(this, url, options)
+    }
+});
