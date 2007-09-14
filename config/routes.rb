@@ -1,8 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :retain_pmrs,   :controller => 'retain/pmrs'
   map.resources :retain_call, :controller => 'retain/call'
-  # map.retain_call  'retain_call/:call_spec',   :controller => 'retain/call',  :action => 'update', :method => :post
-  # map.retain_call  'retain_call/:call_spec',   :controller => 'retain/call',  :action => 'show'
   map.retain_queue 'retain_queue/:queue_spec', :controller => 'retain/queue', :action => 'show'
   map.resources :favorite_queues
   map.resources :retusers

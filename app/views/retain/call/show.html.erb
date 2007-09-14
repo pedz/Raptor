@@ -1,36 +1,89 @@
 <!-- retain/call/show.html.erb -->
+
 <% @title = "Retain call: #{@call.pbc}" %>
 <% content_for(:top) do %>
-  <h1 style='text-align: center'><%= h @call.pbc %></h1>
-  Comments: <%= h @call.comments %>
-  Priority: <%= h @call.priority %>
-  Severity: <%= h @pmr.severity %><br/>
-  Queue: <%= h @call.clean_queue_name + ',' + @call.center %>
-  Comp: <%= h @call.comp_id_or_alias %>
-  Cust: <%= h @call.nls_customer_name %>
-  Contact: <%= h @call.nls_contact_name %>
-  Phone1: <%= h @call.contact_phone_1 %>
-  Phone2: <%= h @call.contact_phone_2 %><br/>
-  PMR Owner: <%= h @pmr.pmr_owner_name %>
-  <span class='inplace_edit' href='<%= retain_call_path(@call) %>' value='pmr_owner_employee_number'>
-    <%= h @pmr.pmr_owner_employee_number %>
-  </span><br/>
-<!--
-  <table>
-    <tr>
-      <td>Scratch Pad:</td>
-      <td><%= h @pmr.nls_scratch_pad_1 %></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td><%= h @pmr.nls_scratch_pad_2 %></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td><%= h @pmr.nls_scratch_pad_3 %></td>
-    </tr>
-  </table>
--->
+  <div id='line1'>
+    <span id='queue' class='field-left'>
+      <span id='queue-header' class='field-header'>
+	Queue
+      </span>
+      <span id='queue-spec' class='field'>
+	<%= link_to @call.short_queue_name, retain_queue_path(@call.full_queue_name) %>
+      </span>
+    </span>
+    <span id='pbc' class='field field-center'>
+      <%= h @call.pbc %>
+    </span>
+    <span id='pri-sev' class='field-right'>
+      <span id='pri-sev-header' class='field-header'>
+	P/S
+      </span>
+      <span id='pri-sev-spec' class='field'>
+	<%= h @call.priority %>/<%= h @pmr.severity %>
+      </span>
+    </span>
+  </div>
+  <div id='line2'>
+    <span id='owner' class='field-left'>
+      <span id='owner-header' class='field-header'>
+	Owner
+      </span>
+      <span id='owner-spec' class='field'>
+	<%= h @pmr.pmr_owner_name %>
+	<span class='inplace-edit' href='<%= retain_call_path(@call) %>' value='pmr_owner_employee_number'>
+	  <%= h @pmr.pmr_owner_employee_number %>
+	</span>
+      </span>
+    </span>
+    <span id='customer-name' class='field field-center'>
+      <%= h @call.nls_customer_name %>
+    </span>
+    <span id='resolver' class='field-right'>
+      <span id='resolver-header' class='field-header'>
+	Resolver
+      </span>
+      <span id='resolver-spec' class='field'>
+	<%= h @pmr.resolver_name %>
+	<span class='inplace-edit' href='<%= retain_call_path(@call) %>' value='resolver_id'>
+	  <%= h @pmr.resolver_id %>
+	</span>
+      </span>
+    </span>
+  </div>
+  <div id='line3'>
+    <span id='comp' class='field-left'>
+      <span id='comp-header' class='field-header'>
+	Comp
+      </span>
+      <span id='comp-spec' class='field'>
+	<%= h @call.comp_id_or_alias %>
+      </span>
+    </span>
+    <span id='comments' class='field field-center'>
+      <%= h @call.comments %>
+    </span>
+    <span class='field-right'>
+    </span>
+  </div>
+  <div id='line4'>
+    <span id='click-header'>Click to view:</span>
+    <span id='ecpaat-header'  class='click-tag' for='ecpaat-lines'>ECPAAT</span>,
+    <span id='scratch-header' class='click-tag' for='scratch-lines'>Scratch Pad</span>,
+    <span id='contact-header' class='click-tag' for='contact-lines'>Contact Info</span><br/>
+    <span id='ecpaat-lines' class='click-data'>
+      <%= @ecpaat_lines %>
+    </span>
+    <span id='scratch-lines' class='click-data'>
+      <%= h @pmr.nls_scratch_pad_1 %><br/>
+      <%= h @pmr.nls_scratch_pad_2 %><br/>
+      <%= h @pmr.nls_scratch_pad_3 %><br/>
+    </span>
+    <span id='contact-lines' class='click-data'>
+      <%= h @call.nls_contact_name %><br/>
+      <%= h @call.contact_phone_1 %><br/>
+      <%= h @call.contact_phone_2 %><br/>
+    </span>
+  </div>
 <% end %>
 
 <% content_for(:center) do %>

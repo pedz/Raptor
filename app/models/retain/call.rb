@@ -10,11 +10,15 @@ module Retain
     # The to_s is called for named routes
     #
     def to_s
-      "%s,%s,%s,%s" % [ clean_queue_name , center, h_or_s, ppg ]
+      "%s,%s" % [ full_queue_name, ppg ]
     end
     
-    def clean_queue_name
-      queue_name.gsub(/ +$/, "")
+    def full_queue_name
+      queue_name.gsub(/ +$/, "") + "," + center + "," + h_or_s
+    end
+    
+    def short_queue_name
+      full_queue_name.sub(/,[sS]/, '')
     end
     
     # A convenience method to give back the usual form of

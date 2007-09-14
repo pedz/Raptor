@@ -29,7 +29,7 @@ module Retain
       :queue_level                 => [   54, :ebcdic,          1 ],
       :creator_serial              => [   87, :ebcdic,         87 ],
       :q_or_d                      => [   89, :ebcdic,          1 ],
-      :nls_resolver                => [   97, :nls,            30 ],
+      :nls_creator_name            => [   97, :nls,            30 ],
       :nls_customer_name           => [  101, :nls,            30 ],
       :nls_contact_name            => [  102, :nls,            30 ],
       :nls_scratch_pad_1           => [  103, :nls,            74 ],
@@ -318,7 +318,10 @@ module Retain
       :entitlement_code            => [ 2421, :ebcdic,          4 ],
       :contract_number             => [ 2422, :ebcdic,         20 ],
       :pid_number                  => [ 2423, :ebcdic,          7 ],
-      :keyword_three               => [ 2424, :ebcdic,         15 ]
+      :keyword_three               => [ 2424, :ebcdic,         15 ],
+      # resolver_id of 2495 does not seem to work.  It is blank.  NLS?
+      :resolver_name               => [ 2496, :ebcdic,         22 ],
+      :resolver_id                 => [ 2509, :ebcdic,          6 ]
     }
     
     def initialize(fetch_fields = nil)

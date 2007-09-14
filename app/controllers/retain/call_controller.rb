@@ -1,5 +1,31 @@
 module Retain
   class CallController < RetainController
+    ENVIRONMENT  = "environment|env"
+    CUSTOMER     = "customer rep"
+    PROBLEM      = "problem"
+    ACTION_TAKEN = "action taken"
+    ACTION_PLAN  = "action plan"
+    TESTCASE     = "testcase"
+    ECPAAT_HEADINGS = [ "Environment",
+                        "Customer Rep",
+                        "Problem",
+                        "Action Taken",
+                        "Action Plan",
+                        "Testcase" ]
+    ECPAAT_REGEXP = Regexp.new("^(" +
+                               "#{ENVIRONMENT}|" +
+                               "#{CUSTOMER}|" +
+                               "#{PROBLEM}|" +
+                               "#{ACTION_TAKEN}|" +
+                               "#{ACTION_PLAN}|" +
+                               "#{TESTCASE}" +
+                               "): *(.*)$", Regexp::IGNORECASE)
+    #
+    # The Anderson tools puts a '.' on a line to create an empty line.
+    # The regexp below is true if the whole line is blank or if the
+    # initial character is a period followed by blanks.
+    BLANK_REGEXP = Regexp.new("^[. ] *$")
+
     #
     # I'm going to put a local copy of this here.  As the html view
     # changes, the fields needed should be added here.  I do not put
@@ -22,7 +48,9 @@ module Retain
                                 :nls_scratch_pad_3,
                                 :nls_text_lines,
                                 :pmr_owner_name,
-                                :pmr_owner_employee_number
+                                :pmr_owner_employee_number,
+                                :resolver_id,
+                                :resolver_name
                                ]
     
     def show
@@ -159,6 +187,47 @@ module Retain
       end
       cached_pmr.save!
       @text_lines = cached_pmr.cached_text_lines
+
+      @ecpaat = Hash.new
+      last_match = nil
+      @text_lines.each do |line|
+        # A signature or special line ends the match
+        if line.line_type < 0x40
+          logger.debug("DEBUG: match end")
+          last_match = nil
+          next
+        end
+        if md = ECPAAT_REGEXP.match(line.text)
+          logger.debug("DEBUG: match start")
+          last_match = md[1].downcase
+          last_match = "environment" if last_match == "env"
+          @ecpaat[last_match] = [ md[2] ]
+          next
+        end
+        logger.debug("DEBUG: match cont")
+        @ecpaat[last_match] << line.text unless last_match.nil?
+      end
+      @ecpaat_lines = ""
+      ECPAAT_HEADINGS.each do |head|
+        @ecpaat_lines << "<b>#{head}:</b> "
+        head_index = head.downcase
+        if @ecpaat[head_index].nil?
+          @ecpaat_lines << "<br/>"
+        else
+          add_blank = false
+          @ecpaat[head_index].each do |line|
+            if BLANK_REGEXP.match(line)
+              add_blank = true
+            else
+              if add_blank
+                @ecpaat_lines << "<br/>"
+              end
+              add_blank = false
+              @ecpaat_lines << line + "<br/>"
+            end
+          end
+        end
+      end
     end
 
     def update
