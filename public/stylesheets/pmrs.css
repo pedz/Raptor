@@ -67,6 +67,17 @@ body {
     color: green;
 }
 
+.normal-protected {
+}
+
+.normal-unprotected {
+}
+
+.intensified-protected {
+}
+.intensified-unprotected {
+}
+
 .even {
     background-color: Salmon;
 }
