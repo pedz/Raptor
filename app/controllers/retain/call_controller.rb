@@ -181,7 +181,8 @@ module Retain
         else
           cached_text_line = Cached::TextLine.new(:line_number => line_number,
                                                   :line_type   => line.line_type,
-                                                  :text        => line.text)
+                                                  :text        => line.text,
+                                                  :code_page   => line.code_page)
           cached_text_lines << cached_text_line
         end
       end

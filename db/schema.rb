@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(:version => 8) do
     t.integer  "line_number",                 :null => false
     t.integer  "line_type",                   :null => false
     t.string   "text",          :limit => 72, :null => false
+    t.integer  "code_page",                   :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

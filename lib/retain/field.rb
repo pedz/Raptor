@@ -161,9 +161,9 @@ module Retain
         value
       when :nls_text_lines
         tmp = value[2...value.length]
-        TextLine.new(tmp[0], tmp.ascii)
+        TextLine.new(tmp[0], tmp.ascii, value[0...2].net2short)
       when :text_lines
-        TextLine.new(value[0], value.ascii)
+        TextLine.new(value[0], value.ascii, 0x0056)
       when :znumber
         value.ascii.to_i
       when :ppg

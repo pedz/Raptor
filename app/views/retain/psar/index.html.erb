@@ -1,0 +1,35 @@
+<!-- app/views/retain/psar/index.html.erb -->
+<table>
+  <thead>
+    <tr>
+      <th>Problem</th>
+      <th>SC</th>
+      <th>AC</th>
+      <th>CIA</th>
+      <th>FESN</th>
+      <th>APAR</th>
+      <th>Stop</th>
+      <th>Sched</th>
+      <th>System Date</th>
+      <th>Stop Date Year</th>
+      <th>Activity Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for psar in @psars %>
+    <tr>
+      <td><%= h psar.problem %>,<%= h psar.branch %>,<%= h psar.country %></td>
+      <td><%= h psar.psar_service_code %></td>
+      <td><%= h psar.psar_action_code %></td>
+      <td><%= h psar.psar_cia %></td>
+	 <td><%= h psar.psar_fesn %></td>
+	 <td><%= h psar.psar_apar %></td>
+      <td class='ret-time'><%= time_format(psar.psar_activity_stop_time) %></td>
+      <td class='ret-time'><%= time_format(psar.psar_actual_time) %></td>
+      <td><%= h psar.psar_system_date %></td>
+      <td><%= h psar.psar_stop_date_year %></td>
+      <td><%= h psar.psar_activity_date %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

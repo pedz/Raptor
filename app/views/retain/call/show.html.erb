@@ -89,6 +89,7 @@
 <% content_for(:center) do %>
   <div class='even'>
     <% @text_lines.each_with_index do |line, index| %>
+      <!-- code page: <%= "0x%04x" % line.code_page %> <%= "%d" % line.code_page %> <%= "0%o" % line.code_page %> -->
       <%= show_line(line, index) %>
     <% end %>
   </div>
@@ -98,7 +99,7 @@
   <table>
   <% @text_lines.each_with_index do |line, index| %>
   <%   if line.line_type == 0x3d %>
-  <%     md = Regexp.new(' S5> (SERVICE GIVEN= ([0-9][0-9]))  SG/19/').match(line.text) %>
+  <%     md = Regexp.new(' S5> (SERVICE GIVEN= ([0-9][0-9]))  SG/[0-9]9/').match(line.text) %>
   <%     unless md.nil? || md[2] == "99" %>
     <tr>
       <td>
@@ -127,8 +128,18 @@
   </table>
 <% end %>
 
+<% content_for(:left_tab) do %>
+  <div>S<br/>i<br/>g<br/>n<br/>a<br/>t<br/>u<br/>r<br/>e<br/>s</div>
+<% end %>
+
+<% content_for(:right_tab) do %>
+  <div>P<br/>a<br/>g<br/>e<br/>s<br/></div>
+<% end %>
+
 <% content_for(:right) do %>
-  <% (0 ... (@text_lines.length / 16)).each do |page_number| %>
-  <%=  "<a href='#line_#{page_number * 16}'>Page #{page_number + 2}</a><br/>" %>
-  <% end %>
+  <div>
+    <% (0 ... (@text_lines.length / 16)).each do |page_number| %>
+    <%=  "<a href='#line_#{page_number * 16}'>Page #{page_number + 2}</a><br/>" %>
+    <% end %>
+  </div>
 <% end %>

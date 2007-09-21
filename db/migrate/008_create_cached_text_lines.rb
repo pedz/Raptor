@@ -5,6 +5,7 @@ class CreateCachedTextLines < ActiveRecord::Migration
       t.integer :line_number,   :null => false
       t.integer :line_type,     :null => false
       t.string  :text,          :null => false, :limit => 72
+      t.integer :code_page,     :null => false
       t.timestamps 
     end
   end

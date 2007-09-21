@@ -13,39 +13,63 @@
     padding-left: 1em;
 }
 
-#left {
+#left-tab {
     position : fixed;
     top: 150px;
     left: 0px;
+    width: 2em;
+    bottom: 0px;
+    background-color : #c0c0c0;
+    overflow: auto;
+}
+
+#left-tab div {
+    text-align: center;
+}
+
+#left {
+    position : fixed;
+    top: 150px;
+    left: 2em;
     width: 20em;
     bottom: 0px;
     background-color : #c0c0c0;
     overflow: auto;
 }
 
-#left a {
-    padding-left: 1em;
+#right-tab {
+    position : fixed;
+    top: 150px;
+    right: 0px;
+    width: 2em;
+    bottom: 0px;
+    background-color : #c0c0c0;
+    overflow: auto;
+}
+
+#right-tab div {
+    text-align: center;
 }
 
 #right {
     position : fixed;
     top: 150px;
-    right: 0px;
+    right: 2em;
     width: 8em;
     bottom: 0px;
     background-color : #c0c0c0;
     overflow: auto;
 }
 
-#right a {
-    padding-left: 1em;
+#right div {
+    margin-left: 1em;
 }
 
 #center {
     position: absolute;
     top: 150px;
-    left: 20em;
-    right: 8em;
+    left: 2em;
+    right: 2em;
     bottom: 0px;
     overflow: auto;
     font-family: courier, monospace;
@@ -68,14 +92,19 @@ body {
 }
 
 .normal-protected {
+    color: white;
 }
 
 .normal-unprotected {
+    color: pink;
 }
 
 .intensified-protected {
+    color: orange;
 }
+
 .intensified-unprotected {
+    color: tan;
 }
 
 .even {
@@ -92,6 +121,7 @@ body {
 
 .click-tag {
     text-decoration: underline;
+    cursor: pointer;
 }
 
 .field-header {
