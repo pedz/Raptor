@@ -1,5 +1,5 @@
 <!-- retain/queue/show.html.erb -->
-<% @title = "Retain queue: #{@queue.to_s}" %>
+<% @title = "Retain queue: #{@queue.to_s}" -%>
 <h1>Retain Queue: <%= h @queue.to_s %></h1>
 
 <table style='font-family : courier, monospace'>
@@ -12,10 +12,10 @@
     <th>Customer</th>
     <th>CStatus</th>
   </thead>
-  <% index = 0 %>
-  <% for call in @calls %>
+<% index = 0 -%>
+<% for call in @calls -%>
   <tr>
-    <td><%= h index += 1 %></td>
+    <td><button href='<%= retain_call_url(call) %>'><%= index += 1 %></button></td>
     <td><%= link_to call.pbc, call %></td>
     <td><%= h call.p_s_b %></td>
     <td><%= h call.priority %></td>
@@ -23,5 +23,5 @@
     <td><%= h call.customer_name %></td>
     <td><%= h call.cstatus %></td>
   </tr>
-  <% end %>
+<% end -%>
 </table>

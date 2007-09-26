@@ -1,0 +1,13 @@
+<!-- app/views/layouts/shared/_body.html.erb -->
+  <body>
+    <p style="color: green"><%= flash[:notice] %></p>
+    <% if divs.nil? || divs.empty? -%>
+    <%=  yield %>
+    <% else -%>
+    <%   for div in divs -%>
+           <div id="<%= div.to_s.gsub(/_/, '-') %>">
+             <%= yield div  %>
+           </div>
+    <%   end -%>
+    <% end -%>
+  </body>

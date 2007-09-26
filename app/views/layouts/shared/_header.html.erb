@@ -1,0 +1,7 @@
+<!-- app/views/layouts/shared/_header.html.erb -->
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <title><%= h @title %></title>
+    <%= stylesheet_link_tag(*stylesheets) unless stylesheets.nil? %>
+    <%= javascript_include_tag(*javascript_files) unless javascript_files.nil? %>
+  </head>
