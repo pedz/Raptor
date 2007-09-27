@@ -33,10 +33,14 @@ module ApplicationHelper
   end
   
   def std_styles(*extras)
-    [ "scaffold" ] + extras
+    [ "application", "scaffold" ] + extras
   end
   
   def admin?
     session[:user].admin
+  end
+
+  def button(text, url)
+    "<button href='#{url}' class='auto-button' id='#{text.to_s}'>#{text.to_s}</button>"
   end
 end

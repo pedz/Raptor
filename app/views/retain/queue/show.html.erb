@@ -15,7 +15,7 @@
 <% index = 0 -%>
 <% for call in @calls -%>
   <tr>
-    <td><button href='<%= retain_call_url(call) %>'><%= index += 1 %></button></td>
+    <td><%= button(index += 1, retain_call_url(call)) %></td>
     <td><%= link_to call.pbc, call %></td>
     <td><%= h call.p_s_b %></td>
     <td><%= h call.priority %></td>
