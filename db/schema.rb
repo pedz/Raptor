@@ -64,9 +64,8 @@ ActiveRecord::Schema.define(:version => 8) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "ldap_id",                           :null => false
-    t.integer  "retain_user_id"
-    t.boolean  "admin",          :default => false
+    t.string   "ldap_id",                       :null => false
+    t.boolean  "admin",      :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

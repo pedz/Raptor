@@ -7,10 +7,11 @@
 
 <p>
   <b>Queue:</b>
-  <%=h @favorite_queue.queue_name %>,
-  <%=h @favorite_queue.center %>
-  <%= link_to 'Edit', edit_favorite_queue_path(@favorite_queue) %> |
-  <%= link_to 'Index of favorite queues', favorite_queues_path %>
+  <%=h q = @favorite_queue.queue_name.gsub(/ /, '') %>,
+  <%=h c = @favorite_queue.center %>
+  <%= link_to 'Edit Settings', edit_favorite_queue_path(@favorite_queue) %> |
+  <%= link_to 'Index of favorite queues', favorite_queues_path %> |
+  <%= link_to 'Show Retain Queue', retain_queue_path("#{q},#{c}") %>
 </p>
 
 <table>
