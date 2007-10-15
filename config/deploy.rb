@@ -4,7 +4,7 @@ set :repository,  "svn://p51.austin.ibm.com/raptor/trunk"
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
 # via the :deploy_to variable:
-set :deploy_to, "/usr/local/www/rcm.easesoftware.com/rails"
+set :deploy_to, "/usr/local/www/raptor"
 set :mongrel_conf, "#{current_path}/config/mongrel_cluster.yml" 
 set :use_sudo, false
 
