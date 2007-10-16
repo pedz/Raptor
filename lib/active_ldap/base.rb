@@ -160,10 +160,12 @@ module ActiveLdap
   # ActiveLdap functionality. It is meant to only ever be subclassed
   # by extension classes.
   class Base
-    if Reloadable.const_defined?(:Deprecated)
-      include Reloadable::Deprecated
-    else
-      include Reloadable::Subclasses
+    if Module.const_defined?(:Reloadable)
+      if Reloadable.const_defined?(:Deprecated)
+        include Reloadable::Deprecated
+      else
+        include Reloadable::Subclasses
+      end
     end
 
     VALID_LDAP_MAPPING_OPTIONS = [:dn_attribute, :prefix, :scope,
