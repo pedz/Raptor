@@ -18,7 +18,7 @@ module ActionView
     #   image_tag("rails.png")
     #     => <img src="http://assets.example.com/images/rails.png" alt="Rails" />
     #   stylesheet_include_tag("application")
-    #     => <link href="http://assets.example.com/stylesheets/application.css" media="screen" rel="Stylesheet" type="text/css" />
+    #     => <link href="http://assets.example.com/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
     #
     # This is useful since browsers typically open at most two connections to a single host,
     # which means your assets often wait in single file for their turn to load.  You can
@@ -29,7 +29,7 @@ module ActionView
     #   image_tag("rails.png")
     #     => <img src="http://assets0.example.com/images/rails.png" alt="Rails" />
     #   stylesheet_include_tag("application")
-    #     => <link href="http://assets3.example.com/stylesheets/application.css" media="screen" rel="Stylesheet" type="text/css" />
+    #     => <link href="http://assets3.example.com/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
     #
     # To do this, you can either setup four actual hosts, or you can use wildcard DNS to CNAME 
     # the wildcard to a single asset host.  You can read more about setting up your DNS CNAME records from
@@ -125,7 +125,7 @@ module ActionView
       #     <script type="text/javascript" src="/javascripts/prototype.js"></script>
       #     <script type="text/javascript" src="/javascripts/effects.js"></script>
       #     ...
-      #     <script type="text/javascript" src="/javascripts/application.js"></script> <!-- * see below -->
+      #     <script type="text/javascript" src="/javascripts/application.js"></script>
       #
       # * = The application.js file is only referenced if it exists
       #
@@ -179,7 +179,7 @@ module ActionView
           joined_javascript_name = (cache == true ? "all" : cache) + ".js"
           joined_javascript_path = File.join(JAVASCRIPTS_DIR, joined_javascript_name)
 
-          if !File.exists?(joined_javascript_path)
+          if !file_exist?(joined_javascript_path)
             File.open(joined_javascript_path, "w+") do |cache|
               javascript_paths = expand_javascript_sources(sources).collect do |source|
                 compute_public_path(source, 'javascripts', 'js', false)
@@ -232,30 +232,30 @@ module ActionView
       #
       # ==== Examples
       #   stylesheet_link_tag "style" # =>
-      #     <link href="/stylesheets/style.css" media="screen" rel="Stylesheet" type="text/css" />
+      #     <link href="/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
       #
       #   stylesheet_link_tag "style.css" # =>
-      #     <link href="/stylesheets/style.css" media="screen" rel="Stylesheet" type="text/css" />
+      #     <link href="/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
       #
       #   stylesheet_link_tag "http://www.railsapplication.com/style.css" # =>
-      #     <link href="http://www.railsapplication.com/style.css" media="screen" rel="Stylesheet" type="text/css" />
+      #     <link href="http://www.railsapplication.com/style.css" media="screen" rel="stylesheet" type="text/css" />
       #
       #   stylesheet_link_tag "style", :media => "all" # =>
-      #     <link href="/stylesheets/style.css" media="all" rel="Stylesheet" type="text/css" />
+      #     <link href="/stylesheets/style.css" media="all" rel="stylesheet" type="text/css" />
       #
       #   stylesheet_link_tag "style", :media => "print" # =>
-      #     <link href="/stylesheets/style.css" media="print" rel="Stylesheet" type="text/css" />
+      #     <link href="/stylesheets/style.css" media="print" rel="stylesheet" type="text/css" />
       #
       #   stylesheet_link_tag "random.styles", "/css/stylish" # =>
-      #     <link href="/stylesheets/random.styles" media="screen" rel="Stylesheet" type="text/css" />
-      #     <link href="/css/stylish.css" media="screen" rel="Stylesheet" type="text/css" />
+      #     <link href="/stylesheets/random.styles" media="screen" rel="stylesheet" type="text/css" />
+      #     <link href="/css/stylish.css" media="screen" rel="stylesheet" type="text/css" />
       #
       # You can also include all styles in the stylesheet directory using :all as the source:
       #
       #   stylesheet_link_tag :all # =>
-      #     <link href="/stylesheets/style1.css"  media="screen" rel="Stylesheet" type="text/css" />
-      #     <link href="/stylesheets/styleB.css"  media="screen" rel="Stylesheet" type="text/css" />
-      #     <link href="/stylesheets/styleX2.css" media="screen" rel="Stylesheet" type="text/css" />
+      #     <link href="/stylesheets/style1.css"  media="screen" rel="stylesheet" type="text/css" />
+      #     <link href="/stylesheets/styleB.css"  media="screen" rel="stylesheet" type="text/css" />
+      #     <link href="/stylesheets/styleX2.css" media="screen" rel="stylesheet" type="text/css" />
       #
       # == Caching multiple stylesheets into one
       #
@@ -266,20 +266,20 @@ module ActionView
       #
       # ==== Examples
       #   stylesheet_link_tag :all, :cache => true # when ActionController::Base.perform_caching is false =>
-      #     <link href="/stylesheets/style1.css"  media="screen" rel="Stylesheet" type="text/css" />
-      #     <link href="/stylesheets/styleB.css"  media="screen" rel="Stylesheet" type="text/css" />
-      #     <link href="/stylesheets/styleX2.css" media="screen" rel="Stylesheet" type="text/css" />
+      #     <link href="/stylesheets/style1.css"  media="screen" rel="stylesheet" type="text/css" />
+      #     <link href="/stylesheets/styleB.css"  media="screen" rel="stylesheet" type="text/css" />
+      #     <link href="/stylesheets/styleX2.css" media="screen" rel="stylesheet" type="text/css" />
       #
       #   stylesheet_link_tag :all, :cache => true # when ActionController::Base.perform_caching is true =>
-      #     <link href="/stylesheets/all.css"  media="screen" rel="Stylesheet" type="text/css" />
+      #     <link href="/stylesheets/all.css"  media="screen" rel="stylesheet" type="text/css" />
       #
       #   stylesheet_link_tag "shop", "cart", "checkout", :cache => "payment" # when ActionController::Base.perform_caching is false =>
-      #     <link href="/stylesheets/shop.css"  media="screen" rel="Stylesheet" type="text/css" />
-      #     <link href="/stylesheets/cart.css"  media="screen" rel="Stylesheet" type="text/css" />
-      #     <link href="/stylesheets/checkout.css" media="screen" rel="Stylesheet" type="text/css" />
+      #     <link href="/stylesheets/shop.css"  media="screen" rel="stylesheet" type="text/css" />
+      #     <link href="/stylesheets/cart.css"  media="screen" rel="stylesheet" type="text/css" />
+      #     <link href="/stylesheets/checkout.css" media="screen" rel="stylesheet" type="text/css" />
       #
       #   stylesheet_link_tag "shop", "cart", "checkout", :cache => "payment" # when ActionController::Base.perform_caching is true =>
-      #     <link href="/stylesheets/payment.css"  media="screen" rel="Stylesheet" type="text/css" />
+      #     <link href="/stylesheets/payment.css"  media="screen" rel="stylesheet" type="text/css" />
       def stylesheet_link_tag(*sources)
         options = sources.extract_options!.stringify_keys
         cache   = options.delete("cache")
@@ -288,7 +288,7 @@ module ActionView
           joined_stylesheet_name = (cache == true ? "all" : cache) + ".css"
           joined_stylesheet_path = File.join(STYLESHEETS_DIR, joined_stylesheet_name)
 
-          if !File.exists?(joined_stylesheet_path)
+          if !file_exist?(joined_stylesheet_path)
             File.open(joined_stylesheet_path, "w+") do |cache|
               stylesheet_paths = expand_stylesheet_sources(sources).collect do |source|
                 compute_public_path(source, 'stylesheets', 'css', false) 
@@ -299,45 +299,36 @@ module ActionView
           end
 
           tag("link", {
-            "rel" => "Stylesheet", "type" => Mime::CSS, "media" => "screen",
-            "href" => stylesheet_path(joined_stylesheet_name)
-          }.merge(options))
+            "rel" => "stylesheet", "type" => Mime::CSS, "media" => "screen",
+            "href" => html_escape(stylesheet_path(joined_stylesheet_name))
+          }.merge(options), false, false)
         else
           options.delete("cache")
 
           expand_stylesheet_sources(sources).collect do |source|
             tag("link", {
-              "rel" => "Stylesheet", "type" => Mime::CSS, "media" => "screen", "href" => stylesheet_path(source)
-            }.merge(options))
+              "rel" => "stylesheet", "type" => Mime::CSS, "media" => "screen", "href" => html_escape(stylesheet_path(source))
+            }.merge(options), false, false)
           end.join("\n")
         end
       end
 
       # Computes the path to an image asset in the public images directory.
       # Full paths from the document root will be passed through.
-      # Used internally by image_tag to build the image path. Passing
-      # a filename without an extension is deprecated.
+      # Used internally by image_tag to build the image path.
       #
       # ==== Examples
-      #   image_path("edit.png")  # => /images/edit.png
-      #   image_path("icons/edit.png")  # => /images/icons/edit.png
-      #   image_path("/icons/edit.png")  # => /icons/edit.png
+      #   image_path("edit")                                         # => /images/edit
+      #   image_path("edit.png")                                     # => /images/edit.png
+      #   image_path("icons/edit.png")                               # => /images/icons/edit.png
+      #   image_path("/icons/edit.png")                              # => /icons/edit.png
       #   image_path("http://www.railsapplication.com/img/edit.png") # => http://www.railsapplication.com/img/edit.png
       def image_path(source)
-        unless (source.split("/").last || source).include?(".") || source.blank?
-          ActiveSupport::Deprecation.warn(
-            "You've called image_path with a source that doesn't include an extension. " +
-            "In Rails 2.0, that will not result in .png automatically being appended. " +
-            "So you should call image_path('#{source}.png') instead", caller
-          )
-        end
-
-        compute_public_path(source, 'images', 'png')
+        compute_public_path(source, 'images')
       end
 
       # Returns an html image tag for the +source+. The +source+ can be a full
-      # path or a file that exists in your public images directory. Note that
-      # specifying a filename without the extension is now deprecated in Rails.
+      # path or a file that exists in your public images directory.
       #
       # ==== Options
       # You can add HTML attributes using the +options+. The +options+ supports
@@ -350,6 +341,8 @@ module ActionView
       #   value is not in the correct format.
       #
       # ==== Examples
+      #  image_tag("icon")  # =>
+      #    <img src="/images/icon" alt="Icon" />
       #  image_tag("icon.png")  # =>
       #    <img src="/images/icon.png" alt="Icon" />
       #  image_tag("icon.png", :size => "16x10", :alt => "Edit Entry")  # =>
@@ -375,33 +368,51 @@ module ActionView
       end
 
       private
+        def file_exist?(path)
+          @@file_exist_cache ||= {}
+          if !(@@file_exist_cache[path] ||= File.exist?(path))
+            @@file_exist_cache[path] = true
+            false
+          else
+            true
+          end
+        end
+
         # Add the .ext if not present. Return full URLs otherwise untouched.
         # Prefix with /dir/ if lacking a leading /. Account for relative URL
         # roots. Rewrite the asset path for cache-busting asset ids. Include
         # a single or wildcarded asset host, if configured, with the correct
         # request protocol.
-        def compute_public_path(source, dir, ext, include_host = true)
-          source += ".#{ext}" if File.extname(source).blank?
+        def compute_public_path(source, dir, ext = nil, include_host = true)
+          cache_key = [ @controller.request.protocol,
+                        ActionController::Base.asset_host,
+                        @controller.request.relative_url_root,
+                        dir, source, ext, include_host ].join
 
-          if source =~ %r{^[-a-z]+://}
-            source
-          else
-            source = "/#{dir}/#{source}" unless source[0] == ?/
-            source = "#{@controller.request.relative_url_root}#{source}"
-            rewrite_asset_path!(source)
+          ActionView::Base.computed_public_paths[cache_key] ||=
+            begin
+              source += ".#{ext}" if File.extname(source).blank? && ext
 
-            if include_host
-              host = compute_asset_host(source)
+              if source =~ %r{^[-a-z]+://}
+                source
+              else
+                source = "/#{dir}/#{source}" unless source[0] == ?/
+                source = "#{@controller.request.relative_url_root}#{source}"
+                rewrite_asset_path!(source)
 
-              unless host.blank? or host =~ %r{^[-a-z]+://}
-                host = "#{@controller.request.protocol}#{host}"
+                if include_host
+                  host = compute_asset_host(source)
+
+                  unless host.blank? or host =~ %r{^[-a-z]+://}
+                    host = "#{@controller.request.protocol}#{host}"
+                  end
+
+                  "#{host}#{source}"
+                else
+                  source
+                end
               end
-
-              "#{host}#{source}"
-            else
-              source
             end
-          end
         end
 
         # Pick an asset host for this source. Returns nil if no host is set,
@@ -416,8 +427,17 @@ module ActionView
         # Use the RAILS_ASSET_ID environment variable or the source's
         # modification time as its cache-busting asset id.
         def rails_asset_id(source)
-          ENV["RAILS_ASSET_ID"] ||
-            File.mtime(File.join(ASSETS_DIR, source)).to_i.to_s rescue ""
+          if asset_id = ENV["RAILS_ASSET_ID"]
+            asset_id
+          else
+            path = File.join(ASSETS_DIR, source)
+
+            if File.exist?(path)
+              File.mtime(path).to_i.to_s
+            else
+              ''
+            end
+          end
         end
 
         # Break out the asset path rewrite so you wish to put the asset id
@@ -439,7 +459,7 @@ module ActionView
               sources[(sources.index(:defaults) + 1)..sources.length]
 
             sources.delete(:defaults)
-            sources << "application" if File.exists?(File.join(JAVASCRIPTS_DIR, "application.js"))
+            sources << "application" if file_exist?(File.join(JAVASCRIPTS_DIR, "application.js"))
           end
 
           sources
@@ -447,14 +467,14 @@ module ActionView
 
         def expand_stylesheet_sources(sources)
           if sources.first == :all
-            sources = Dir[File.join(STYLESHEETS_DIR, '*.css')].collect { |file| File.basename(file).split(".", 1).first }.sort
+            @@all_stylesheet_sources ||= Dir[File.join(STYLESHEETS_DIR, '*.css')].collect { |file| File.basename(file).split(".", 1).first }.sort
           else
             sources
           end
         end
 
         def join_asset_file_contents(paths)
-          paths.collect { |path| File.read(File.join(ASSETS_DIR, path.split("?").first)) }.join("\n\n")          
+          paths.collect { |path| File.read(File.join(ASSETS_DIR, path.split("?").first)) }.join("\n\n")
         end
     end
   end

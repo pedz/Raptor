@@ -36,11 +36,11 @@ module ActiveRecord
   #   class AddSystemSettings < ActiveRecord::Migration
   #     def self.up
   #       create_table :system_settings do |t|
-  #         t.column :name,     :string
-  #         t.column :label,    :string
-  #         t.column :value,    :text
-  #         t.column :type,     :string
-  #         t.column :position, :integer
+  #         t.string  :name
+  #         t.string  :label
+  #         t.text  :value
+  #         t.string  :type
+  #         t.integer  :position
   #       end
   #
   #       SystemSetting.create :name => "notice", :label => "Use notice?", :value => 1
@@ -92,11 +92,11 @@ module ActiveRecord
   # n MyNewMigration.
   #
   # To run migrations against the currently configured database, use
-  # <tt>rake migrate</tt>. This will update the database by running all of the
+  # <tt>rake db:migrate</tt>. This will update the database by running all of the
   # pending migrations, creating the <tt>schema_info</tt> table if missing.
   #
   # To roll the database back to a previous migration version, use
-  # <tt>rake migrate VERSION=X</tt> where <tt>X</tt> is the version to which
+  # <tt>rake db:migrate VERSION=X</tt> where <tt>X</tt> is the version to which
   # you wish to downgrade. If any of the migrations throw an
   # <tt>IrreversibleMigration</tt> exception, that step will fail and you'll
   # have some manual work to do.
@@ -330,7 +330,11 @@ module ActiveRecord
 
     def migrate
       migration_classes.each do |migration_class|
-        Base.logger.info("Reached target version: #{@target_version}") and break if reached_target_version?(migration_class.version)
+        if reached_target_version?(migration_class.version)
+          Base.logger.info("Reached target version: #{@target_version}")
+          break
+        end
+
         next if irrelevant_migration?(migration_class.version)
 
         Base.logger.info "Migrating to #{migration_class} (#{migration_class.version})"

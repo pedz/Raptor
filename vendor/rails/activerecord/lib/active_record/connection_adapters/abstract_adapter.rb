@@ -8,6 +8,7 @@ require 'active_record/connection_adapters/abstract/schema_statements'
 require 'active_record/connection_adapters/abstract/database_statements'
 require 'active_record/connection_adapters/abstract/quoting'
 require 'active_record/connection_adapters/abstract/connection_specification'
+require 'active_record/connection_adapters/abstract/query_cache'
 
 module ActiveRecord
   module ConnectionAdapters # :nodoc:
@@ -22,6 +23,7 @@ module ActiveRecord
     # SchemaStatements#remove_column are very useful.
     class AbstractAdapter
       include Quoting, DatabaseStatements, SchemaStatements
+      include QueryCache
       @@row_even = true
 
       def initialize(connection, logger = nil) #:nodoc:
@@ -61,6 +63,12 @@ module ActiveRecord
         rt
       end
 
+      # QUOTING ==================================================
+
+      # Override to return the quoted table name if the database needs it
+      def quote_table_name(name)
+        name
+      end
 
       # CONNECTION MANAGEMENT ====================================
 
@@ -127,7 +135,7 @@ module ActiveRecord
           end
         rescue Exception => e
           # Log message and raise exception.
-          # Set last_verfication to 0, so that connection gets verified
+          # Set last_verification to 0, so that connection gets verified
           # upon reentering the request loop
           @last_verification = 0
           message = "#{e.class.name}: #{e.message}: #{sql}"

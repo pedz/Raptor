@@ -157,4 +157,28 @@ class FormTagHelperTest < Test::Unit::TestCase
   def test_pass
     assert_equal 1, 1
   end
+
+  def test_field_set_tag
+    _erbout = ''
+    field_set_tag("Your details") { _erbout.concat "Hello world!" }
+
+    expected = %(<fieldset><legend>Your details</legend>Hello world!</fieldset>)
+    assert_dom_equal expected, _erbout
+
+    _erbout = ''
+    field_set_tag { _erbout.concat "Hello world!" }
+
+    expected = %(<fieldset>Hello world!</fieldset>)
+    assert_dom_equal expected, _erbout
+    
+    _erbout = ''
+    field_set_tag('') { _erbout.concat "Hello world!" }
+
+    expected = %(<fieldset>Hello world!</fieldset>)
+    assert_dom_equal expected, _erbout
+  end
+
+  def protect_against_forgery?
+    false
+  end
 end

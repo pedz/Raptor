@@ -25,6 +25,10 @@ class TestTest < Test::Unit::TestCase
       render :text => request.request_uri
     end
 
+    def test_query_string
+      render :text => request.query_string
+    end
+
     def test_html_output
       render :text => <<HTML
 <html>
@@ -44,6 +48,16 @@ class TestTest < Test::Unit::TestCase
   </body>
 </html>
 HTML
+    end
+    
+    def test_xml_output
+      response.content_type = "application/xml"
+      render :text => <<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <area>area is an empty tag in HTML, raising an error if not in xml mode</area>
+</root>
+XML
     end
 
     def test_only_one_param
@@ -133,6 +147,17 @@ HTML
     assert_equal "/explicit/uri", @response.body
   end
 
+  def test_process_with_query_string
+    process :test_query_string, :q => 'test'
+    assert_equal "q=test", @response.body
+  end
+
+  def test_process_with_query_string_with_explicit_uri
+    @request.set_REQUEST_URI "/explicit/uri?q=test?extra=question"
+    process :test_query_string
+    assert_equal "q=test?extra=question", @response.body
+  end
+
   def test_multiple_calls
     process :test_only_one_param, :left => true
     assert_equal "OK", @response.body
@@ -215,9 +240,9 @@ HTML
   def test_assert_tag_before
     process :test_html_output
 
-    # there is a tag preceeding a tag with id 'bar'
+    # there is a tag preceding a tag with id 'bar'
     assert_tag :before => { :attributes => { :id => "bar" } }
-    # there is no tag preceeding a 'form' tag
+    # there is no tag preceding a 'form' tag
     assert_no_tag :before => { :tag => "form" }
   end
 
@@ -300,6 +325,20 @@ HTML
         :only => { :tag => "a",
           :children => { :count => 1,
             :only => { :tag => "img" } } } }
+  end
+  
+  def test_should_not_impose_childless_html_tags_in_xml
+    process :test_xml_output
+
+    begin
+      $stderr = StringIO.new
+      assert_select 'area' #This will cause a warning if content is processed as HTML
+      $stderr.rewind && err = $stderr.read
+    ensure
+      $stderr = STDERR
+    end
+
+    assert err.empty?
   end
 
   def test_assert_tag_attribute_matching
@@ -435,6 +474,30 @@ HTML
     assert_equal content_type, file.content_type
     assert_equal file.path, file.local_path
     assert_equal File.read(path), file.read
+  end
+  
+  def test_test_uploaded_file_with_binary
+    filename = 'mona_lisa.jpg'
+    path = "#{FILES_DIR}/#{filename}"
+    content_type = 'image/png'
+    
+    binary_uploaded_file = ActionController::TestUploadedFile.new(path, content_type, :binary)
+    assert_equal File.open(path, 'rb').read, binary_uploaded_file.read
+    
+    plain_uploaded_file = ActionController::TestUploadedFile.new(path, content_type)
+    assert_equal File.open(path, 'r').read, plain_uploaded_file.read
+  end
+
+  def test_fixture_file_upload_with_binary
+    filename = 'mona_lisa.jpg'
+    path = "#{FILES_DIR}/#{filename}"
+    content_type = 'image/jpg'
+    
+    binary_file_upload = fixture_file_upload(path, content_type, :binary)
+    assert_equal File.open(path, 'rb').read, binary_file_upload.read
+    
+    plain_file_upload = fixture_file_upload(path, content_type)
+    assert_equal File.open(path, 'r').read, plain_file_upload.read
   end
 
   def test_fixture_file_upload

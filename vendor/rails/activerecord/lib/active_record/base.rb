@@ -29,11 +29,21 @@ module ActiveRecord #:nodoc:
   end
   class StaleObjectError < ActiveRecordError #:nodoc:
   end
-  class ConfigurationError < StandardError #:nodoc:
+  class ConfigurationError < ActiveRecordError #:nodoc:
   end
-  class ReadOnlyRecord < StandardError #:nodoc:
+  class ReadOnlyRecord < ActiveRecordError #:nodoc:
   end
-  class Rollback < StandardError #:nodoc:
+  class Rollback < ActiveRecordError #:nodoc:
+  end
+  class ProtectedAttributeAssignmentError < ActiveRecordError #:nodoc:
+  end
+  class DangerousAttributeError < ActiveRecordError #:nodoc:
+  end
+
+  # Raised when you've tried to access a column, which wasn't
+  # loaded by your finder.  Typically this is because :select
+  # has been specified
+  class MissingAttributeError < NoMethodError
   end
 
   class AttributeAssignmentError < ActiveRecordError #:nodoc:
@@ -144,7 +154,7 @@ module ActiveRecord #:nodoc:
   #     end
   #   end
   #
-  # You can alternatively use self[:attribute]=(value) and self[:attribute] instead of write_attribute(:attribute, vaule) and
+  # You can alternatively use self[:attribute]=(value) and self[:attribute] instead of write_attribute(:attribute, value) and
   # read_attribute(:attribute) as a shorter form.
   #
   # == Accessing attributes before they have been typecasted
@@ -274,15 +284,13 @@ module ActiveRecord #:nodoc:
     # Accepts a logger conforming to the interface of Log4r or the default Ruby 1.8+ Logger class, which is then passed
     # on to any new database connections made and which can be retrieved on both a class and instance level by calling +logger+.
     cattr_accessor :logger, :instance_writer => false
-    
-    include Reloadable::Deprecated
-    
+
     def self.inherited(child) #:nodoc:
       @@subclasses[self] ||= []
       @@subclasses[self] << child
       super
     end
-    
+
     def self.reset_subclasses #:nodoc:
       nonreloadables = []
       subclasses.each do |klass|
@@ -320,13 +328,13 @@ module ActiveRecord #:nodoc:
     cattr_accessor :table_name_suffix, :instance_writer => false
     @@table_name_suffix = ""
 
-    # Indicates whether or not table names should be the pluralized versions of the corresponding class names.
+    # Indicates whether table names should be the pluralized versions of the corresponding class names.
     # If true, the default table name for a +Product+ class will be +products+. If false, it would just be +product+.
     # See table_name for the full rules on table/class naming. This is true, by default.
     cattr_accessor :pluralize_table_names, :instance_writer => false
     @@pluralize_table_names = true
 
-    # Determines whether or not to use ANSI codes to colorize the logging statements committed by the connection adapter. These colors
+    # Determines whether to use ANSI codes to colorize the logging statements committed by the connection adapter. These colors
     # make it much easier to overview things during debugging (when used through a reader like +tail+ and on a black background), but
     # may complicate matters if you use software like syslog. This is true, by default.
     cattr_accessor :colorize_logging, :instance_writer => false
@@ -337,18 +345,11 @@ module ActiveRecord #:nodoc:
     cattr_accessor :default_timezone, :instance_writer => false
     @@default_timezone = :local
 
-    # Determines whether or not to use a connection for each thread, or a single shared connection for all threads.
+    # Determines whether to use a connection for each thread, or a single shared connection for all threads.
     # Defaults to false. Set to true if you're writing a threaded application.
     cattr_accessor :allow_concurrency, :instance_writer => false
     @@allow_concurrency = false
 
-    # Determines whether to speed up access by generating optimized reader
-    # methods to avoid expensive calls to method_missing when accessing
-    # attributes by name. You might want to set this to false in development
-    # mode, because the methods would be regenerated on each request.
-    cattr_accessor :generate_read_methods, :instance_writer => false
-    @@generate_read_methods = true
-    
     # Specifies the format to use when dumping the database schema with Rails'
     # Rakefile.  If :sql, the schema is dumped as (potentially database-
     # specific) SQL statements.  If :ruby, the schema is dumped as an 
@@ -357,6 +358,11 @@ module ActiveRecord #:nodoc:
     # adapters for, e.g., your development and test environments.
     cattr_accessor :schema_format , :instance_writer => false
     @@schema_format = :ruby
+
+    # Determines whether to raise an exception on mass-assignment to protected
+    # attribute. Defaults to true.
+    cattr_accessor :whiny_protected_attributes, :instance_writer => false
+    @@whiny_protected_attributes = true
 
     class << self # Class methods
       # Find operates with three different retrieval approaches:
@@ -525,7 +531,7 @@ module ActiveRecord #:nodoc:
       # calling the destroy method). Example:
       #   Post.delete_all "person_id = 5 AND (category = 'Something' OR category = 'Else')"
       def delete_all(conditions = nil)
-        sql = "DELETE FROM #{table_name} "
+        sql = "DELETE FROM #{quoted_table_name} "
         add_conditions!(sql, conditions, scope(:find))
         connection.delete(sql, "#{name} Delete all")
       end
@@ -639,6 +645,15 @@ module ActiveRecord #:nodoc:
         read_inheritable_attribute("attr_accessible")
       end
 
+       # Attributes listed as readonly can be set for a new record, but will be ignored in database updates afterwards.
+       def attr_readonly(*attributes)
+         write_inheritable_array("attr_readonly", attributes - (readonly_attributes || []))
+       end
+
+       # Returns an array of all the attributes that have been specified as readonly.
+       def readonly_attributes
+         read_inheritable_attribute("attr_readonly")
+       end
 
       # If you have an attribute that needs to be saved to the database as an object, and retrieved as the same object, 
       # then specify the name of that attribute using this method and it will be handled automatically.  
@@ -875,15 +890,10 @@ module ActiveRecord #:nodoc:
         end
       end
 
-      # Contains the names of the generated reader methods.
-      def read_methods #:nodoc:
-        @read_methods ||= Set.new
-      end
-
       # Resets all the cached information about columns, which will cause them to be reloaded on the next request.
       def reset_column_information
-        read_methods.each { |name| undef_method(name) }
-        @column_names = @columns = @columns_hash = @content_columns = @dynamic_methods_hash = @read_methods = @inheritance_column = nil
+        generated_methods.each { |name| undef_method(name) }
+        @column_names = @columns = @columns_hash = @content_columns = @dynamic_methods_hash = @generated_methods = @inheritance_column = nil
       end
 
       def reset_column_information_and_inheritable_attributes_for_all_subclasses#:nodoc:
@@ -904,6 +914,11 @@ module ActiveRecord #:nodoc:
         else
           superclass == Base || !columns_hash.include?(inheritance_column)
         end
+      end
+
+      def finder_needs_type_condition? #:nodoc:
+        # This is like this because benchmarking justifies the strange :false stuff
+        :true == (@finder_needs_type_condition ||= descends_from_active_record? ? :false : :true)
       end
 
       # Returns a string like 'Post id:integer, title:string, body:text'
@@ -967,16 +982,6 @@ module ActiveRecord #:nodoc:
         object.is_a?(self)
       end      
 
-      # Deprecated 
-      def threaded_connections #:nodoc:
-        allow_concurrency
-      end
-
-      # Deprecated 
-      def threaded_connections=(value) #:nodoc:
-        self.allow_concurrency = value
-      end
-
       # Returns the base AR subclass that this class descends from. If A
       # extends AR::Base, A.base_class will return A. If B descends from A
       # through some arbitrarily deep hierarchy, B.base_class will return A.
@@ -1028,7 +1033,7 @@ module ActiveRecord #:nodoc:
       
         def find_one(id, options)
           conditions = " AND (#{sanitize_sql(options[:conditions])})" if options[:conditions]
-          options.update :conditions => "#{table_name}.#{connection.quote_column_name(primary_key)} = #{quote_value(id,columns_hash[primary_key])}#{conditions}"
+          options.update :conditions => "#{quoted_table_name}.#{connection.quote_column_name(primary_key)} = #{quote_value(id,columns_hash[primary_key])}#{conditions}"
 
           # Use find_every(options).first since the primary key condition
           # already ensures we have a single record. Using find_initial adds
@@ -1043,7 +1048,7 @@ module ActiveRecord #:nodoc:
         def find_some(ids, options)
           conditions = " AND (#{sanitize_sql(options[:conditions])})" if options[:conditions]
           ids_list   = ids.map { |id| quote_value(id,columns_hash[primary_key]) }.join(',')
-          options.update :conditions => "#{table_name}.#{connection.quote_column_name(primary_key)} IN (#{ids_list})#{conditions}"
+          options.update :conditions => "#{quoted_table_name}.#{connection.quote_column_name(primary_key)} IN (#{ids_list})#{conditions}"
 
           result = find_every(options)
 
@@ -1100,6 +1105,16 @@ module ActiveRecord #:nodoc:
             end
 
           object.instance_variable_set("@attributes", record)
+          object.instance_variable_set("@attributes_cache", Hash.new)
+
+          if object.respond_to_without_attributes?(:after_find)
+            object.send(:callback, :after_find)
+          end
+
+          if object.respond_to_without_attributes?(:after_initialize)
+            object.send(:callback, :after_initialize)
+          end
+
           object
         end
 
@@ -1111,14 +1126,13 @@ module ActiveRecord #:nodoc:
 
         def construct_finder_sql(options)
           scope = scope(:find)
-          sql  = "SELECT #{(scope && scope[:select]) || options[:select] || (options[:joins] && table_name + '.*') || '*'} "
-          sql << "FROM #{(scope && scope[:from]) || options[:from] || table_name} "
+          sql  = "SELECT #{(scope && scope[:select]) || options[:select] || (options[:joins] && quoted_table_name + '.*') || '*'} "
+          sql << "FROM #{(scope && scope[:from]) || options[:from] || quoted_table_name} "
 
           add_joins!(sql, options, scope)
           add_conditions!(sql, options[:conditions], scope)
 
-          sql << " GROUP BY #{options[:group]} " if options[:group]
-
+          add_group!(sql, options[:group], scope)
           add_order!(sql, options[:order], scope)
           add_limit!(sql, options, scope)
           add_lock!(sql, options, scope)
@@ -1154,10 +1168,26 @@ module ActiveRecord #:nodoc:
           end
         end
 
+        def add_group!(sql, group, scope = :auto)
+          if group
+            sql << " GROUP BY #{group}"
+          else
+            scope = scope(:find) if :auto == scope
+            if scope && (scoped_group = scope[:group])
+              sql << " GROUP BY #{scoped_group}"
+            end
+          end
+        end
+
         # The optional scope argument is for the current :find scope.
         def add_limit!(sql, options, scope = :auto)
           scope = scope(:find) if :auto == scope
-          options = options.reverse_merge(:limit => scope[:limit], :offset => scope[:offset]) if scope
+
+          if scope
+            options[:limit] ||= scope[:limit]
+            options[:offset] ||= scope[:offset]
+          end
+
           connection.add_limit_offset!(sql, options)
         end
 
@@ -1183,15 +1213,15 @@ module ActiveRecord #:nodoc:
           segments = []
           segments << sanitize_sql(scope[:conditions]) if scope && !scope[:conditions].blank?
           segments << sanitize_sql(conditions) unless conditions.blank?
-          segments << type_condition unless descends_from_active_record?
-          segments.compact!
-          sql << "WHERE (#{segments.join(") AND (")}) " unless segments.all?(&:blank?)
+          segments << type_condition if finder_needs_type_condition?
+          segments.delete_if{|s| s.blank?}
+          sql << "WHERE (#{segments.join(") AND (")}) " unless segments.empty?
         end
 
         def type_condition
           quoted_inheritance_column = connection.quote_column_name(inheritance_column)
-          type_condition = subclasses.inject("#{table_name}.#{quoted_inheritance_column} = '#{name.demodulize}' ") do |condition, subclass|
-            condition << "OR #{table_name}.#{quoted_inheritance_column} = '#{subclass.name.demodulize}' "
+          type_condition = subclasses.inject("#{quoted_table_name}.#{quoted_inheritance_column} = '#{name.demodulize}' ") do |condition, subclass|
+            condition << "OR #{quoted_table_name}.#{quoted_inheritance_column} = '#{subclass.name.demodulize}' "
           end
 
           " (#{type_condition}) "
@@ -1213,6 +1243,9 @@ module ActiveRecord #:nodoc:
         #
         # This also enables you to initialize a record if it is not found, such as find_or_initialize_by_amount(amount) 
         # or find_or_create_by_user_and_password(user, password).
+        #
+        # Each dynamic finder or initializer/creator is also defined in the class after it is first invoked, so that future
+        # attempts to use it do not run through method_missing.
         def method_missing(method_id, *arguments)
           if match = /^find_(all_by|by)_([_a-zA-Z]\w*)$/.match(method_id.to_s)
             finder = determine_finder(match)
@@ -1220,45 +1253,52 @@ module ActiveRecord #:nodoc:
             attribute_names = extract_attribute_names_from_match(match)
             super unless all_attributes_exists?(attribute_names)
 
-            attributes = construct_attributes_from_arguments(attribute_names, arguments)
-
-            case extra_options = arguments[attribute_names.size]
-              when nil
-                options = { :conditions => attributes }
+            self.class_eval %{
+              def self.#{method_id}(*args) 
+                options = args.last.is_a?(Hash) ? args.pop : {}
+                attributes = construct_attributes_from_arguments([:#{attribute_names.join(',:')}], args)
+                finder_options = { :conditions => attributes }
+                validate_find_options(options)
                 set_readonly_option!(options)
-                ActiveSupport::Deprecation.silence { send(finder, options) }
 
-              when Hash
-                finder_options = extra_options.merge(:conditions => attributes)
-                validate_find_options(finder_options)
-                set_readonly_option!(finder_options)
-
-                if extra_options[:conditions]
-                  with_scope(:find => { :conditions => extra_options[:conditions] }) do
-                    ActiveSupport::Deprecation.silence { send(finder, finder_options) }
+                if options[:conditions]
+                  with_scope(:find => finder_options) do
+                    ActiveSupport::Deprecation.silence { send(:#{finder}, options) }
                   end
                 else
-                  ActiveSupport::Deprecation.silence { send(finder, finder_options) }
+                  ActiveSupport::Deprecation.silence { send(:#{finder}, options.merge(finder_options)) }
                 end
-
-              else
-                raise ArgumentError, "Unrecognized arguments for #{method_id}: #{extra_options.inspect}"
-            end
+              end
+            }, __FILE__, __LINE__
+            send(method_id, *arguments)
           elsif match = /^find_or_(initialize|create)_by_([_a-zA-Z]\w*)$/.match(method_id.to_s)
             instantiator = determine_instantiator(match)
             attribute_names = extract_attribute_names_from_match(match)
             super unless all_attributes_exists?(attribute_names)
 
-            if arguments[0].is_a?(Hash)
-              attributes = arguments[0].with_indifferent_access
-              find_attributes = attributes.slice(*attribute_names)
-            else
-              find_attributes = attributes = construct_attributes_from_arguments(attribute_names, arguments)
-            end
-            options = { :conditions => find_attributes }
-            set_readonly_option!(options)
+            self.class_eval %{
+              def self.#{method_id}(*args) 
+                if args[0].is_a?(Hash)
+                  attributes = args[0].with_indifferent_access
+                  find_attributes = attributes.slice(*[:#{attribute_names.join(',:')}])
+                else
+                  find_attributes = attributes = construct_attributes_from_arguments([:#{attribute_names.join(',:')}], args)
+                end
+                                
+                options = { :conditions => find_attributes }
+                set_readonly_option!(options)
 
-            find_initial(options) || send(instantiator, attributes)
+                record = find_initial(options)
+                if record.nil?
+                  record = self.new { |r| r.send(:attributes=, attributes, false) } 
+                  #{'record.save' if instantiator == :create}
+                  record
+                else
+                  record                
+                end
+              end
+            }, __FILE__, __LINE__
+            send(method_id, *arguments)
           else
             super
           end
@@ -1284,7 +1324,7 @@ module ActiveRecord #:nodoc:
 
         def all_attributes_exists?(attribute_names)
           attribute_names.all? { |name| column_methods_hash.include?(name.to_sym) }
-        end
+        end        
 
         def attribute_condition(argument)
           case argument
@@ -1388,7 +1428,7 @@ module ActiveRecord #:nodoc:
           method_scoping.assert_valid_keys([ :find, :create ])
 
           if f = method_scoping[:find]
-            f.assert_valid_keys([ :conditions, :joins, :select, :include, :from, :offset, :limit, :order, :readonly, :lock ])
+            f.assert_valid_keys([ :conditions, :joins, :select, :include, :from, :offset, :limit, :order, :group, :readonly, :lock ])
             set_readonly_option! f
           end
 
@@ -1530,8 +1570,20 @@ module ActiveRecord #:nodoc:
         #     # => "status IS NULL and group_id IN (1,2,3)"
         #   { :age => 13..18 }
         #     # => "age BETWEEN 13 AND 18"
+        #   { 'other_records.id' => 7 }
+        #     # => "`other_records`.`id` = 7"
         def sanitize_sql_hash_for_conditions(attrs)
           conditions = attrs.map do |attr, value|
+            attr = attr.to_s
+
+            # Extract table name from qualified attribute names.
+            if attr.include?('.')
+              table_name, attr = attr.split('.', 2)
+              table_name = connection.quote_table_name(table_name)
+            else
+              table_name = quoted_table_name
+            end
+
             "#{table_name}.#{connection.quote_column_name(attr)} #{attribute_condition(value)}"
           end.join(' AND ')
 
@@ -1617,8 +1669,8 @@ module ActiveRecord #:nodoc:
           # Inherit :readonly from finder scope if set.  Otherwise,
           # if :joins is not blank then :readonly defaults to true.
           unless options.has_key?(:readonly)
-            if scoped?(:find, :readonly)
-              options[:readonly] = scope(:find, :readonly)
+            if scoped_readonly = scope(:find, :readonly)
+              options[:readonly] = scoped_readonly
             elsif !options[:joins].blank? && !options[:select]
               options[:readonly] = true
             end
@@ -1639,11 +1691,14 @@ module ActiveRecord #:nodoc:
       # hence you can't have attributes that aren't part of the table columns.
       def initialize(attributes = nil)
         @attributes = attributes_from_column_definition
+        @attributes_cache = {}
         @new_record = true
         ensure_proper_type
         self.attributes = attributes unless attributes.nil?
         self.class.send(:scope, :create).each { |att,value| self.send("#{att}=", value) } if self.class.send(:scoped?, :create)
-        yield self if block_given?
+        result = yield self if block_given?
+        callback(:after_initialize) if respond_to_without_attributes?(:after_initialize)
+        result
       end
 
       # A model instance's primary key is always available as model.id
@@ -1652,13 +1707,10 @@ module ActiveRecord #:nodoc:
         attr_name = self.class.primary_key
         column = column_for_attribute(attr_name)
         
-        if self.class.generate_read_methods
-          define_read_method(:id, attr_name, column)
-          # now that the method exists, call it
-          self.send attr_name.to_sym
-        else
-          read_attribute(attr_name)
-        end
+        self.class.send(:define_read_method, :id, attr_name, column)
+        # now that the method exists, call it
+        self.send attr_name.to_sym
+
       end
 
       # Enables Active Record objects to be used as URL parameters in Action Pack automatically.
@@ -1702,7 +1754,7 @@ module ActiveRecord #:nodoc:
       def destroy
         unless new_record?
           connection.delete <<-end_sql, "#{self.class.name} Destroy"
-            DELETE FROM #{self.class.table_name}
+            DELETE FROM #{self.class.quoted_table_name}
             WHERE #{connection.quote_column_name(self.class.primary_key)} = #{quoted_id}
           end_sql
         end
@@ -1718,14 +1770,14 @@ module ActiveRecord #:nodoc:
       def clone
         attrs = self.attributes_before_type_cast
         attrs.delete(self.class.primary_key)
-        self.class.new do |record|
-          record.send :instance_variable_set, '@attributes', attrs
-        end
+        record = self.class.new
+        record.send :instance_variable_set, '@attributes', attrs
+        record
       end
 
       # Updates a single attribute and saves the record. This is especially useful for boolean flags on existing records.
       # Note: This method is overwritten by the Validation module that'll make sure that updates made with this method
-      # doesn't get subjected to validation checks. Hence, attributes can be updated even if the full object isn't valid.
+      # aren't subjected to validation checks. Hence, attributes can be updated even if the full object isn't valid.
       def update_attribute(name, value)
         send(name.to_s + '=', value)
         save
@@ -1787,6 +1839,7 @@ module ActiveRecord #:nodoc:
         clear_aggregation_cache
         clear_association_cache
         @attributes.update(self.class.find(self.id, options).instance_variable_get('@attributes'))
+        @attributes_cache = {}
         self
       end
 
@@ -1807,14 +1860,16 @@ module ActiveRecord #:nodoc:
       # matching the attribute names (which again matches the column names). Sensitive attributes can be protected
       # from this form of mass-assignment by using the +attr_protected+ macro. Or you can alternatively
       # specify which attributes *can* be accessed in with the +attr_accessible+ macro. Then all the
-      # attributes not included in that won't be allowed to be mass-assigned.
-      def attributes=(new_attributes)
+      # attributes not included in that won't be allowed to be mass-assigned. 
+      def attributes=(new_attributes, guard_protected_attributes = true)
         return if new_attributes.nil?
         attributes = new_attributes.dup
         attributes.stringify_keys!
 
         multi_parameter_attributes = []
-        remove_attributes_protected_from_mass_assignment(attributes).each do |k, v|
+        attributes = remove_attributes_protected_from_mass_assignment(attributes) if guard_protected_attributes
+        
+        attributes.each do |k, v|
           k.include?("(") ? multi_parameter_attributes << [ k, v ] : send(k + "=", v)
         end
 
@@ -1902,27 +1957,6 @@ module ActiveRecord #:nodoc:
         id.hash
       end
 
-      # For checking respond_to? without searching the attributes (which is faster).
-      alias_method :respond_to_without_attributes?, :respond_to?
-
-      # A Person object with a name attribute can ask person.respond_to?("name"), person.respond_to?("name="), and
-      # person.respond_to?("name?") which will all return true.
-      def respond_to?(method, include_priv = false)
-        if @attributes.nil?
-          return super
-        elsif attr_name = self.class.column_methods_hash[method.to_sym]
-          return true if @attributes.include?(attr_name) || attr_name == self.class.primary_key
-          return false if self.class.read_methods.include?(attr_name)
-        elsif @attributes.include?(method_name = method.to_s)
-          return true
-        elsif md = self.class.match_attribute_method?(method.to_s)
-          return true if @attributes.include?(md.pre_match)
-        end
-        # super must be called at the end of the method, because the inherited respond_to?
-        # would return true for generated readers, even if the attribute wasn't present
-        super
-      end
-
       # Just freeze the attributes hash, such that associations are still accessible even on destroyed records.
       def freeze
         @attributes.freeze; self
@@ -1961,9 +1995,11 @@ module ActiveRecord #:nodoc:
       # Updates the associated record with values matching those of the instance attributes.
       # Returns the number of affected rows.
       def update
+        quoted_attributes = attributes_with_quotes(false, false)
+        return 0 if quoted_attributes.empty?
         connection.update(
-          "UPDATE #{self.class.table_name} " +
-          "SET #{quoted_comma_pair_list(connection, attributes_with_quotes(false))} " +
+          "UPDATE #{self.class.quoted_table_name} " +
+          "SET #{quoted_comma_pair_list(connection, quoted_attributes)} " +
           "WHERE #{connection.quote_column_name(self.class.primary_key)} = #{quote_value(id)}",
           "#{self.class.name} Update"
         )
@@ -1976,13 +2012,18 @@ module ActiveRecord #:nodoc:
           self.id = connection.next_sequence_value(self.class.sequence_name)
         end
 
-        self.id = connection.insert(
-          "INSERT INTO #{self.class.table_name} " +
+        quoted_attributes = attributes_with_quotes
+
+        statement = if quoted_attributes.empty?
+          connection.empty_insert_statement(self.class.table_name)
+        else
+          "INSERT INTO #{self.class.quoted_table_name} " +
           "(#{quoted_column_names.join(', ')}) " +
-          "VALUES(#{attributes_with_quotes.values.join(', ')})",
-          "#{self.class.name} Create",
-          self.class.primary_key, self.id, self.class.sequence_name
-        )
+          "VALUES(#{quoted_attributes.values.join(', ')})"
+        end
+
+        self.id = connection.insert(statement, "#{self.class.name} Create",
+          self.class.primary_key, self.id, self.class.sequence_name)
 
         @new_record = false
         id
@@ -1998,194 +2039,47 @@ module ActiveRecord #:nodoc:
         end
       end
 
-
-      # Allows access to the object attributes, which are held in the @attributes hash, as were
-      # they first-class methods. So a Person class with a name attribute can use Person#name and
-      # Person#name= and never directly use the attributes hash -- except for multiple assigns with
-      # ActiveRecord#attributes=. A Milestone class can also ask Milestone#completed? to test that
-      # the completed attribute is not nil or 0.
-      #
-      # It's also possible to instantiate related objects, so a Client class belonging to the clients
-      # table with a master_id foreign key can instantiate master through Client#master.
-      def method_missing(method_id, *args, &block)
-        method_name = method_id.to_s
-        if @attributes.include?(method_name) or
-            (md = /\?$/.match(method_name) and
-            @attributes.include?(query_method_name = md.pre_match) and
-            method_name = query_method_name)
-          if self.class.read_methods.empty? && self.class.generate_read_methods
-            define_read_methods
-            # now that the method exists, call it
-            self.send method_id.to_sym
-          else
-            md ? query_attribute(method_name) : read_attribute(method_name)
-          end
-        elsif self.class.primary_key.to_s == method_name
-          id
-        elsif md = self.class.match_attribute_method?(method_name)
-          attribute_name, method_type = md.pre_match, md.to_s
-          if @attributes.include?(attribute_name)
-            __send__("attribute#{method_type}", attribute_name, *args, &block)
-          else
-            super
-          end
-        else
-          super
-        end
-      end
-
-      # Returns the value of the attribute identified by <tt>attr_name</tt> after it has been typecast (for example,
-      # "2004-12-12" in a data column is cast to a date object, like Date.new(2004, 12, 12)).
-      def read_attribute(attr_name)
-        attr_name = attr_name.to_s
-        if !(value = @attributes[attr_name]).nil?
-          if column = column_for_attribute(attr_name)
-            if unserializable_attribute?(attr_name, column)
-              unserialize_attribute(attr_name)
-            else
-              column.type_cast(value)
-            end
-          else
-            value
-          end
-        else
-          nil
-        end
-      end
-
-      def read_attribute_before_type_cast(attr_name)
-        @attributes[attr_name]
-      end
-
-      # Called on first read access to any given column and generates reader
-      # methods for all columns in the columns_hash if
-      # ActiveRecord::Base.generate_read_methods is set to true.
-      def define_read_methods
-        self.class.columns_hash.each do |name, column|
-          unless respond_to_without_attributes?(name)
-            if self.class.serialized_attributes[name]
-              define_read_method_for_serialized_attribute(name)
-            else
-              define_read_method(name.to_sym, name, column)
-            end
-          end
-
-          unless respond_to_without_attributes?("#{name}?")
-            define_question_method(name)
-          end
-        end
-      end
-
-      # Define an attribute reader method.  Cope with nil column.
-      def define_read_method(symbol, attr_name, column)
-        cast_code = column.type_cast_code('v') if column
-        access_code = cast_code ? "(v=@attributes['#{attr_name}']) && #{cast_code}" : "@attributes['#{attr_name}']"
-        
-        unless attr_name.to_s == self.class.primary_key.to_s
-          access_code = access_code.insert(0, "raise NoMethodError, 'missing attribute: #{attr_name}', caller unless @attributes.has_key?('#{attr_name}'); ")
-          self.class.read_methods << attr_name
-        end
-        
-        evaluate_read_method attr_name, "def #{symbol}; #{access_code}; end"
-      end
-      
-      # Define read method for serialized attribute.
-      def define_read_method_for_serialized_attribute(attr_name)
-        unless attr_name.to_s == self.class.primary_key.to_s
-          self.class.read_methods << attr_name
-        end
-        
-        evaluate_read_method attr_name, "def #{attr_name}; unserialize_attribute('#{attr_name}'); end"
-      end
-           
-      # Define an attribute ? method.
-      def define_question_method(attr_name)
-        unless attr_name.to_s == self.class.primary_key.to_s
-          self.class.read_methods << "#{attr_name}?"
-        end
-        
-        evaluate_read_method attr_name, "def #{attr_name}?; query_attribute('#{attr_name}'); end"
-      end
-      
-      # Evaluate the definition for an attribute reader or ? method
-      def evaluate_read_method(attr_name, method_definition)
-        begin
-          self.class.class_eval(method_definition)
-        rescue SyntaxError => err
-          self.class.read_methods.delete(attr_name)
-          if logger
-            logger.warn "Exception occurred during reader method compilation."
-            logger.warn "Maybe #{attr_name} is not a valid Ruby identifier?"
-            logger.warn "#{err.message}"
-          end
-        end
-      end
-
-      # Returns true if the attribute is of a text column and marked for serialization.
-      def unserializable_attribute?(attr_name, column)
-        column.text? && self.class.serialized_attributes[attr_name]
-      end
-
-      # Returns the unserialized object of the attribute.
-      def unserialize_attribute(attr_name)
-        unserialized_object = object_from_yaml(@attributes[attr_name])
-
-        if unserialized_object.is_a?(self.class.serialized_attributes[attr_name]) || unserialized_object.nil?
-          @attributes[attr_name] = unserialized_object
-        else
-          raise SerializationTypeMismatch,
-            "#{attr_name} was supposed to be a #{self.class.serialized_attributes[attr_name]}, but was a #{unserialized_object.class.to_s}"
-        end
-      end
-
-      # Updates the attribute identified by <tt>attr_name</tt> with the specified +value+. Empty strings for fixnum and float
-      # columns are turned into nil.
-      def write_attribute(attr_name, value)
-        attr_name = attr_name.to_s
-        if (column = column_for_attribute(attr_name)) && column.number?
-          @attributes[attr_name] = convert_number_column_value(value)
-        else
-          @attributes[attr_name] = value
-        end
-      end
-
       def convert_number_column_value(value)
         case value
-          when FalseClass: 0
-          when TrueClass:  1
-          when '':         nil
+          when FalseClass; 0
+          when TrueClass;  1
+          when '';         nil
           else value
         end
       end
 
-      def query_attribute(attr_name)
-        unless value = read_attribute(attr_name)
-          false
-        else
-          column = self.class.columns_hash[attr_name]
-          if column.nil?
-            if Numeric === value || value !~ /[^0-9]/
-              !value.to_i.zero?
-            else
-              !value.blank?
-            end
-          elsif column.number?
-            !value.zero?
+      def remove_attributes_protected_from_mass_assignment(attributes)
+        safe_attributes =
+          if self.class.accessible_attributes.nil? && self.class.protected_attributes.nil?
+            attributes.reject { |key, value| attributes_protected_by_default.include?(key.gsub(/\(.+/, "")) }
+          elsif self.class.protected_attributes.nil?
+            attributes.reject { |key, value| !self.class.accessible_attributes.include?(key.gsub(/\(.+/, "").intern) || attributes_protected_by_default.include?(key.gsub(/\(.+/, "")) }
+          elsif self.class.accessible_attributes.nil?
+            attributes.reject { |key, value| self.class.protected_attributes.include?(key.gsub(/\(.+/,"").intern) || attributes_protected_by_default.include?(key.gsub(/\(.+/, "")) }
           else
-            !value.blank?
+            raise "Declare either attr_protected or attr_accessible for #{self.class}, but not both."
+          end
+
+        removed_attributes = attributes.keys - safe_attributes.keys
+
+        if removed_attributes.any?
+          error_message = "Can't mass-assign these protected attributes: #{removed_attributes.join(', ')}"
+          if self.class.whiny_protected_attributes
+            raise ProtectedAttributeAssignmentError, error_message
+          else
+            logger.error error_message
           end
         end
+
+        safe_attributes
       end
 
-      def remove_attributes_protected_from_mass_assignment(attributes)
-        if self.class.accessible_attributes.nil? && self.class.protected_attributes.nil?
-          attributes.reject { |key, value| attributes_protected_by_default.include?(key.gsub(/\(.+/, "")) }
-        elsif self.class.protected_attributes.nil?
-          attributes.reject { |key, value| !self.class.accessible_attributes.include?(key.gsub(/\(.+/, "").intern) || attributes_protected_by_default.include?(key.gsub(/\(.+/, "")) }
-        elsif self.class.accessible_attributes.nil?
-          attributes.reject { |key, value| self.class.protected_attributes.include?(key.gsub(/\(.+/,"").intern) || attributes_protected_by_default.include?(key.gsub(/\(.+/, "")) }
+      # Removes attributes which have been marked as readonly.
+      def remove_readonly_attributes(attributes)
+        unless self.class.readonly_attributes.nil?
+          attributes.delete_if { |key, value| self.class.readonly_attributes.include?(key.gsub(/\(.+/,"").intern) }
         else
-          raise "Declare either attr_protected or attr_accessible for #{self.class}, but not both."
+          attributes
         end
       end
 
@@ -2198,13 +2092,14 @@ module ActiveRecord #:nodoc:
 
       # Returns copy of the attributes hash where all the values have been safely quoted for use in
       # an SQL statement.
-      def attributes_with_quotes(include_primary_key = true)
-        attributes.inject({}) do |quoted, (name, value)|
+      def attributes_with_quotes(include_primary_key = true, include_readonly_attributes = true)
+        quoted = attributes.inject({}) do |quoted, (name, value)|
           if column = column_for_attribute(name)
             quoted[name] = quote_value(value, column) unless !include_primary_key && column.primary
           end
           quoted
         end
+        include_readonly_attributes ? quoted : remove_readonly_attributes(quoted)
       end
 
       # Quote strings appropriately for SQL statements.
@@ -2297,6 +2192,10 @@ module ActiveRecord #:nodoc:
         end
       end
 
+      def self.quoted_table_name
+        self.connection.quote_table_name(self.table_name)
+      end
+
       def quote_columns(quoter, hash)
         hash.inject({}) do |quoted, (name, value)|
           quoted[quoter.quote_column_name(name)] = value
@@ -2322,13 +2221,7 @@ module ActiveRecord #:nodoc:
 
       def clone_attribute_value(reader_method, attribute_name)
         value = send(reader_method, attribute_name)
-
-        case value
-        when nil, Fixnum, true, false
-          value
-        else
-          value.clone
-        end
+        value.duplicable? ? value.clone : value
       rescue TypeError, NoMethodError
         value
       end

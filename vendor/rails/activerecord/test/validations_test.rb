@@ -21,6 +21,18 @@ class ProtectedPerson < ActiveRecord::Base
   attr_protected :first_name
 end
 
+class UniqueReply < Reply
+  validates_uniqueness_of :content, :scope => 'parent_id'
+end
+
+class SillyUniqueReply < UniqueReply
+end
+
+class Topic < ActiveRecord::Base
+  has_many :unique_replies, :dependent => :destroy, :foreign_key => "parent_id"
+  has_many :silly_unique_replies, :dependent => :destroy, :foreign_key => "parent_id"
+end
+
 class ValidationsTest < Test::Unit::TestCase
   fixtures :topics, :developers
 
@@ -92,6 +104,12 @@ class ValidationsTest < Test::Unit::TestCase
       flunk
     rescue ActiveRecord::RecordInvalid => invalid
       assert_equal r, invalid.record
+    end
+  end
+
+  def test_exception_on_create_bang_many
+    assert_raises(ActiveRecord::RecordInvalid) do
+      Reply.create!([ { "title" => "OK" }, { "title" => "Wrong Create" }])
     end
   end
 
@@ -314,6 +332,21 @@ class ValidationsTest < Test::Unit::TestCase
     assert r3.valid?, "Saving r3"
   end
 
+  def test_validate_uniqueness_scoped_to_defining_class
+    t = Topic.create("title" => "What, me worry?")
+
+    r1 = t.unique_replies.create "title" => "r1", "content" => "a barrel of fun"
+    assert r1.valid?, "Saving r1"
+
+    r2 = t.silly_unique_replies.create "title" => "r2", "content" => "a barrel of fun"
+    assert !r2.valid?, "Saving r2"
+
+    # Should succeed as validates_uniqueness_of only applies to
+    # UniqueReply and it's subclasses
+    r3 = t.replies.create "title" => "r2", "content" => "a barrel of fun"
+    assert r3.valid?, "Saving r3"
+  end
+
   def test_validate_uniqueness_with_scope_array
     Reply.validates_uniqueness_of(:author_name, :scope => [:author_email_address, :parent_id])
 
@@ -449,6 +482,24 @@ class ValidationsTest < Test::Unit::TestCase
     developer = Developer.new("name" => "michael", "salary" => nil)
     developer.instance_eval("def salary; read_attribute('salary') ? read_attribute('salary') : 100000; end")
     assert developer.valid?
+  end
+
+  def test_validates_length_of_with_allow_nil
+    Topic.validates_length_of( :title, :is => 5, :allow_nil=>true )
+
+    assert !Topic.create("title" => "ab").valid?
+    assert !Topic.create("title" => "").valid?
+    assert Topic.create("title" => nil).valid?
+    assert Topic.create("title" => "abcde").valid?
+  end
+
+  def test_validates_length_of_with_allow_blank
+    Topic.validates_length_of( :title, :is => 5, :allow_blank=>true )
+
+    assert !Topic.create("title" => "ab").valid?
+    assert Topic.create("title" => "").valid?
+    assert Topic.create("title" => nil).valid?
+    assert Topic.create("title" => "abcde").valid?
   end
 
   def test_numericality_with_allow_nil_and_getter_method
@@ -637,7 +688,7 @@ class ValidationsTest < Test::Unit::TestCase
     end
   end
 
-  def test_validates_length_with_globaly_modified_error_message
+  def test_validates_length_with_globally_modified_error_message
     ActiveRecord::Errors.default_error_messages[:too_short] = 'tu est trops petit hombre %d'
     Topic.validates_length_of :title, :minimum => 10
     t = Topic.create(:title => 'too short')
@@ -645,25 +696,13 @@ class ValidationsTest < Test::Unit::TestCase
 
     assert_equal 'tu est trops petit hombre 10', t.errors['title']
   end
-  
-  def test_add_on_boundary_breaking_is_deprecated
-    t = Topic.new('title' => 'noreplies', 'content' => 'whatever')
-    class << t
-      def validate
-        errors.add_on_boundary_breaking('title', 1..6)
-      end
-    end
-    assert_deprecated 'add_on_boundary_breaking' do
-      assert !t.valid?
-    end
-  end
 
   def test_validates_size_of_association
     assert_nothing_raised { Topic.validates_size_of :replies, :minimum => 1 }
     t = Topic.new('title' => 'noreplies', 'content' => 'whatever')
     assert !t.save
     assert t.errors.on(:replies)
-    t.replies.create('title' => 'areply', 'content' => 'whateveragain')
+    reply = t.replies.build('title' => 'areply', 'content' => 'whateveragain')
     assert t.valid?
   end
 
@@ -856,7 +895,7 @@ class ValidationsTest < Test::Unit::TestCase
       t = Topic.new('title' => 'あいうえお', 'content' => 'かきくけこ')
       assert !t.save
       assert t.errors.on(:replies)
-      t.replies.create('title' => 'あいうえお', 'content' => 'かきくけこ')
+      t.replies.build('title' => 'あいうえお', 'content' => 'かきくけこ')
       assert t.valid?
     end
   end
@@ -1121,6 +1160,28 @@ class ValidationsTest < Test::Unit::TestCase
     assert !t.valid?
     assert_equal "can't be blank", t.errors.on("title").first
  end
+
+  # previous implementation of validates_presence_of eval'd the 
+  # string with the wrong binding, this regression test is to 
+  # ensure that it works correctly
+  def test_validation_with_if_as_string
+    Topic.validates_presence_of(:title)
+    Topic.validates_presence_of(:author_name, :if => "title.to_s.match('important')")
+
+    t = Topic.new
+    assert !t.valid?, "A topic without a title should not be valid"
+    assert !t.errors.invalid?("author_name"), "A topic without an 'important' title should not require an author"
+
+    t.title = "Just a title"
+    assert t.valid?, "A topic with a basic title should be valid"
+
+    t.title = "A very important title"
+    assert !t.valid?, "A topic with an important title, but without an author, should not be valid"
+    assert t.errors.invalid?("author_name"), "A topic with an 'important' title should require an author"
+
+    t.author_name = "Hubert J. Farnsworth"
+    assert t.valid?, "A topic with an important title and author should be valid"
+  end
 end
 
 

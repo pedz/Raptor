@@ -1,4 +1,15 @@
 require 'erb'
+require 'builder'
+
+class ERB
+  module Util
+    HTML_ESCAPE = { '&' => '&amp;', '"' => '&quot;', '>' => '&gt;', '<' => '&lt;' }
+
+    def html_escape(s)
+      s.to_s.gsub(/[&\"><]/) { |special| HTML_ESCAPE[special] }
+    end
+  end
+end
 
 module ActionView #:nodoc:
   class ActionViewError < StandardError #:nodoc:
@@ -188,6 +199,8 @@ module ActionView #:nodoc:
     
     @@erb_variable = '_erbout'
     cattr_accessor :erb_variable
+    
+    delegate :request_forgery_protection_token, :to => :controller
 
     @@template_handlers = HashWithIndifferentAccess.new
  
@@ -210,6 +223,10 @@ module ActionView #:nodoc:
     @@cached_template_extension = {}
     # Maps template paths / extensions to 
     @@cached_base_paths = {}
+
+    # Cache public asset paths
+    cattr_reader :computed_public_paths
+    @@computed_public_paths = {}
 
     @@templates_requiring_setup = Set.new(%w(builder rxml rjs))
 
@@ -555,7 +572,8 @@ module ActionView #:nodoc:
         if template_requires_setup?(extension)
           body = case extension.to_sym
             when :rxml, :builder
-              "controller.response.content_type ||= Mime::XML\n" +
+              content_type_handler = (controller.respond_to?(:response) ? "controller.response" : "controller")
+              "#{content_type_handler}.content_type ||= Mime::XML\n" +
               "xml = Builder::XmlMarkup.new(:indent => 2)\n" +
               template +
               "\nxml.target!\n"

@@ -65,9 +65,9 @@ module ActiveRecord
 
       # Removes all records from this association.  Returns +self+ so method calls may be chained.
       def clear
-        return self if length.zero? # forces load_target if hasn't happened already
+        return self if length.zero? # forces load_target if it hasn't happened already
 
-        if @reflection.options[:dependent] && @reflection.options[:dependent] == :delete_all
+        if @reflection.options[:dependent] && @reflection.options[:dependent] == :destroy
           destroy_all
         else          
           delete_all
@@ -85,17 +85,15 @@ module ActiveRecord
       end
       
       def create(attrs = {})
-        record = @reflection.klass.send(:with_scope, :create => construct_scope[:create]) { @reflection.klass.create(attrs) }                
-        @target ||= [] unless loaded?
-        @target << record 
-        record
+        if attrs.is_a?(Array)
+          attrs.collect { |attr| create(attr) }
+        else
+          create_record(attrs) { |record| record.save }
+        end
       end
 
       def create!(attrs = {})
-        record = @reflection.klass.send(:with_scope, :create => construct_scope[:create]) { @reflection.klass.create!(attrs) }                
-        @target ||= [] unless loaded?
-        @target << record 
-        record
+        create_record(attrs) { |record| record.save! }
       end
 
       # Returns the size of the collection by executing a SELECT COUNT(*) query if the collection hasn't been loaded and
@@ -156,6 +154,7 @@ module ActiveRecord
         end
       end
 
+
       protected
         def method_missing(method, *args, &block)
           if @target.respond_to?(method) || (!@reflection.klass.respond_to?(method) && Class.respond_to?(method))
@@ -186,6 +185,27 @@ module ActiveRecord
         end
 
       private
+
+        def create_record(attrs, &block)
+          ensure_owner_is_not_new
+          record = @reflection.klass.send(:with_scope, :create => construct_scope[:create]) { @reflection.klass.new(attrs) }
+          add_record_to_target_with_callbacks(record, &block)
+        end
+
+        def build_record(attrs, &block)
+          record = @reflection.klass.new(attrs)
+          add_record_to_target_with_callbacks(record, &block)
+        end
+
+        def add_record_to_target_with_callbacks(record)
+          callback(:before_add, record)
+          yield(record) if block_given?
+          @target ||= [] unless loaded?
+          @target << record
+          callback(:after_add, record)
+          record
+        end
+
         def callback(method, record)
           callbacks_for(method).each do |callback|
             case callback
@@ -206,7 +226,14 @@ module ActiveRecord
         def callbacks_for(callback_name)
           full_callback_name = "#{callback_name}_for_#{@reflection.name}"
           @owner.class.read_inheritable_attribute(full_callback_name.to_sym) || []
-        end        
+        end   
+        
+        def ensure_owner_is_not_new
+          if @owner.new_record?
+            raise ActiveRecord::RecordNotSaved, "You cannot call create unless the parent is saved"
+          end
+        end
+               
     end
   end
 end

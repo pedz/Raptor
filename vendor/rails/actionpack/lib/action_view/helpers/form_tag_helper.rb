@@ -363,6 +363,28 @@ module ActionView
       def image_submit_tag(source, options = {})
         tag :input, { "type" => "image", "src" => image_path(source) }.update(options.stringify_keys)
       end
+
+      # Creates a field set for grouping HTML form elements.
+      #
+      # <tt>legend</tt> will become the fieldset's title (optional as per W3C).
+      #
+      # === Examples
+      #   <% field_set_tag do %>
+      #     <p><%= text_field_tag 'name' %></p>
+      #   <% end %>
+      #   # => <fieldset><p><input id="name" name="name" type="text" /></p></fieldset>
+      #
+      #   <% field_set_tag 'Your details' do %>
+      #     <p><%= text_field_tag 'name' %></p>
+      #   <% end %>
+      #   # => <fieldset><legend>Your details</legend><p><input id="name" name="name" type="text" /></p></fieldset>
+      def field_set_tag(legend = nil, &block)
+        content = capture(&block)
+        concat(tag(:fieldset, {}, true), block.binding)
+        concat(content_tag(:legend, legend), block.binding) unless legend.blank?
+        concat(content, block.binding)
+        concat("</fieldset>", block.binding)
+      end
       
       private
         def html_options_for_form(url_for_options, options, *parameters_for_url)
@@ -379,10 +401,10 @@ module ActionView
               ''
             when /^post$/i, "", nil
               html_options["method"] = "post"
-              ''
+              protect_against_forgery? ? content_tag(:div, token_tag, :style => 'margin:0;padding:0') : ''
             else
               html_options["method"] = "post"
-              content_tag(:div, tag(:input, :type => "hidden", :name => "_method", :value => method), :style => 'margin:0;padding:0')
+              content_tag(:div, tag(:input, :type => "hidden", :name => "_method", :value => method) + token_tag, :style => 'margin:0;padding:0')
           end
         end
         
@@ -396,6 +418,14 @@ module ActionView
           concat(form_tag_html(html_options), block.binding)
           concat(content, block.binding)
           concat("</form>", block.binding)
+        end
+
+        def token_tag
+          unless protect_against_forgery?
+            ''
+          else
+            tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token)
+          end
         end
     end
   end

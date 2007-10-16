@@ -8,6 +8,12 @@ module TMail
       from_charset = sub_header("content-type", "charset")
       case (content_transfer_encoding || "7bit").downcase
         when "quoted-printable"
+          # the default charset is set to iso-8859-1 instead of 'us-ascii'. 
+          # This is needed as many mailer do not set the charset but send in ISO. This is only used if no charset is set.
+          if !from_charset.blank? && from_charset.downcase == 'us-ascii'
+            from_charset = 'iso-8859-1'
+          end
+          
           Unquoter.unquote_quoted_printable_and_convert_to(quoted_body,
             to_charset, from_charset, true)
         when "base64"
@@ -78,7 +84,7 @@ module TMail
       end
  
       def unquote_base64_and_convert_to(text, to, from)
-        convert_to(Base64.decode(text).first, to, from)
+        convert_to(Base64.decode(text), to, from)
       end
 
       begin

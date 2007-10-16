@@ -21,6 +21,7 @@ class JavaScriptHelperTest < Test::Unit::TestCase
     assert_equal '', escape_javascript(nil)
     assert_equal %(This \\"thing\\" is really\\n netos\\'), escape_javascript(%(This "thing" is really\n netos'))
     assert_equal %(backslash\\\\test), escape_javascript( %(backslash\\test) )
+    assert_equal %(dont <\\/close> tags), escape_javascript(%(dont </close> tags))
   end
 
   def test_link_to_function
@@ -49,6 +50,11 @@ class JavaScriptHelperTest < Test::Unit::TestCase
 
   def test_link_to_function_with_href
     assert_dom_equal %(<a href="http://example.com/" onclick="alert('Hello world!'); return false;">Greeting</a>),
+      link_to_function("Greeting", "alert('Hello world!')", :href => 'http://example.com/')
+  end
+
+  def test_link_to_function_with_href
+    assert_dom_equal %(<a href="http://example.com/" onclick="alert('Hello world!'); return false;">Greeting</a>), 
       link_to_function("Greeting", "alert('Hello world!')", :href => 'http://example.com/')
   end
 
@@ -89,6 +95,18 @@ class JavaScriptHelperTest < Test::Unit::TestCase
   def test_javascript_tag_with_options
     assert_dom_equal "<script id=\"the_js_tag\" type=\"text/javascript\">\n//<![CDATA[\nalert('hello')\n//]]>\n</script>",
       javascript_tag("alert('hello')", :id => "the_js_tag")
+  end
+
+  def test_javascript_tag_with_block
+    _erbout = ''
+    javascript_tag { _erbout.concat "alert('hello')" }
+    assert_dom_equal "<script type=\"text/javascript\">\n//<![CDATA[\nalert('hello')\n//]]>\n</script>", _erbout
+  end
+
+  def test_javascript_tag_with_block_and_options
+    _erbout = ''
+    javascript_tag(:id => "the_js_tag") { _erbout.concat "alert('hello')" }
+    assert_dom_equal "<script id=\"the_js_tag\" type=\"text/javascript\">\n//<![CDATA[\nalert('hello')\n//]]>\n</script>", _erbout
   end
 
   def test_javascript_cdata_section

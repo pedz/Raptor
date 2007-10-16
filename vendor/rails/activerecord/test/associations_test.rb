@@ -14,6 +14,8 @@ require 'fixtures/author'
 require 'fixtures/comment'
 require 'fixtures/tag'
 require 'fixtures/tagging'
+require 'fixtures/person'
+require 'fixtures/reader'
 
 class AssociationsTest < Test::Unit::TestCase
   fixtures :accounts, :companies, :developers, :projects, :developers_projects,
@@ -24,24 +26,26 @@ class AssociationsTest < Test::Unit::TestCase
       Class.new(ActiveRecord::Base).has_many(:wheels, :name => 'wheels')
     end
   end
+  
+  def test_should_construct_new_finder_sql_after_create
+    person = Person.new
+    assert_equal [], person.readers.find(:all)
+    person.save!
+    reader = Reader.create! :person => person, :post => Post.new(:title => "foo", :body => "bar")
+    assert_equal [reader], person.readers.find(:all)
+  end
 
   def test_force_reload
     firm = Firm.new("name" => "A New Firm, Inc")
     firm.save
     firm.clients.each {|c|} # forcing to load all clients
     assert firm.clients.empty?, "New firm shouldn't have client objects"
-    assert_deprecated do
-      assert !firm.has_clients?, "New firm shouldn't have clients"
-    end
     assert_equal 0, firm.clients.size, "New firm should have 0 clients"
 
     client = Client.new("name" => "TheClient.com", "firm_id" => firm.id)
     client.save
 
     assert firm.clients.empty?, "New firm should have cached no client objects"
-    assert_deprecated do
-      assert !firm.has_clients?, "New firm should have cached a no-clients response"
-    end
     assert_equal 0, firm.clients.size, "New firm should have cached 0 clients count"
 
     assert !firm.clients(true).empty?, "New firm should have reloaded client objects"
@@ -107,6 +111,10 @@ class AssociationProxyTest < Test::Unit::TestCase
     assert !david.projects.loaded?
   end
 
+  def test_save_on_parent_saves_children
+    developer = Developer.create :name => "Bryan", :salary => 50_000
+    assert_equal 1, developer.reload.audit_logs.size
+  end
 end
 
 class HasOneAssociationsTest < Test::Unit::TestCase
@@ -213,12 +221,6 @@ class HasOneAssociationsTest < Test::Unit::TestCase
     firm.destroy
     assert_equal num_accounts - 1, Account.count
     assert_equal [account_id], Account.destroyed_account_ids[firm.id]
-  end
-
-  def test_deprecated_exclusive_dependence
-    assert_deprecated(/:exclusively_dependent.*:dependent => :delete_all/) do
-      Firm.has_many :deprecated_exclusively_dependent_clients, :class_name => 'Client', :exclusively_dependent => true
-    end
   end
 
   def test_exclusive_dependence
@@ -588,6 +590,33 @@ class HasManyAssociationsTest < Test::Unit::TestCase
     assert_equal 3, first_firm.plain_clients.length
     assert_equal 3, first_firm.plain_clients.size
   end
+  
+  def test_create_with_bang_on_has_many_when_parent_is_new_raises
+    assert_raises(ActiveRecord::RecordNotSaved) do 
+      firm = Firm.new
+      firm.plain_clients.create! :name=>"Whoever"
+    end
+  end
+
+  def test_regular_create_on_has_many_when_parent_is_new_raises
+    assert_raises(ActiveRecord::RecordNotSaved) do 
+      firm = Firm.new
+      firm.plain_clients.create :name=>"Whoever"
+    end
+  end
+  
+  def test_create_with_bang_on_has_many_raises_when_record_not_saved
+    assert_raises(ActiveRecord::RecordInvalid) do
+      firm = Firm.find(:first)
+      firm.plain_clients.create!
+    end
+  end
+
+  def test_create_with_bang_on_habtm_when_parent_is_new_raises
+    assert_raises(ActiveRecord::RecordNotSaved) do 
+      Developer.new("name" => "Aredridel").projects.create!    
+    end
+  end
 
   def test_adding_a_mismatch_class
     assert_raises(ActiveRecord::AssociationTypeMismatch) { companies(:first_firm).clients_of_firm << nil }
@@ -823,7 +852,8 @@ class HasManyAssociationsTest < Test::Unit::TestCase
 
     assert_equal 0, firm.exclusively_dependent_clients_of_firm.size
     assert_equal 0, firm.exclusively_dependent_clients_of_firm(true).size
-    assert_equal [3], Client.destroyed_client_ids[firm.id]
+    # no destroy-filters should have been called
+    assert_equal [], Client.destroyed_client_ids[firm.id]
 
     # Should be destroyed since the association is exclusively dependent.
     assert Client.find_by_id(client_id).nil?
@@ -973,6 +1003,11 @@ class HasManyAssociationsTest < Test::Unit::TestCase
     assert_equal 1, firm.clients.length
   end
 
+  def test_replace_with_less_and_dependent_nullify
+    num_companies = Company.count
+    companies(:rails_core).companies = []
+    assert_equal num_companies, Company.count
+  end
 
   def test_replace_with_new
     firm = Firm.find(:first)
@@ -1143,6 +1178,42 @@ class BelongsToAssociationsTest < Test::Unit::TestCase
 
     assert_equal 0, Topic.find(t1.id).replies.size
     assert_equal 0, Topic.find(t2.id).replies.size
+  end
+
+  def test_belongs_to_counter_after_save
+    topic = Topic.create!(:title => "monday night")
+    topic.replies.create!(:title => "re: monday night", :content => "football")
+    assert_equal 1, Topic.find(topic.id)[:replies_count]
+
+    topic.save!
+    assert_equal 1, Topic.find(topic.id)[:replies_count]
+  end
+
+  def test_belongs_to_counter_after_update_attributes
+    topic = Topic.create!(:title => "37s")
+    topic.replies.create!(:title => "re: 37s", :content => "rails")
+    assert_equal 1, Topic.find(topic.id)[:replies_count]
+
+    topic.update_attributes(:title => "37signals")
+    assert_equal 1, Topic.find(topic.id)[:replies_count]
+  end
+  
+  def test_belongs_to_counter_after_save
+    topic = Topic.create("title" => "monday night")
+    topic.replies.create("title" => "re: monday night", "content" => "football")
+    assert_equal 1, Topic.find(topic.id).send(:read_attribute, "replies_count")
+
+    topic.save
+    assert_equal 1, Topic.find(topic.id).send(:read_attribute, "replies_count")
+  end
+
+  def test_belongs_to_counter_after_update_attributes
+    topic = Topic.create("title" => "37s")
+    topic.replies.create("title" => "re: 37s", "content" => "rails")
+    assert_equal 1, Topic.find(topic.id).send(:read_attribute, "replies_count")
+
+    topic.update_attributes("title" => "37signals")
+    assert_equal 1, Topic.find(topic.id).send(:read_attribute, "replies_count")
   end
 
   def test_assignment_before_parent_saved
@@ -1461,7 +1532,7 @@ class HasAndBelongsToManyAssociationsTest < Test::Unit::TestCase
     assert_equal 1, project.access_level.to_i
   end
 
-  def test_hatbm_attribute_access_and_respond_to
+  def test_habtm_attribute_access_and_respond_to
     project = developers(:jamis).projects[0]
     assert project.has_attribute?("name")
     assert project.has_attribute?("joined_on")
@@ -1470,10 +1541,12 @@ class HasAndBelongsToManyAssociationsTest < Test::Unit::TestCase
     assert project.respond_to?("name=")
     assert project.respond_to?("name?")
     assert project.respond_to?("joined_on")
-    assert project.respond_to?("joined_on=")
+    # given that the 'join attribute' won't be persisted, I don't
+    # think we should define the mutators
+    #assert project.respond_to?("joined_on=")
     assert project.respond_to?("joined_on?")
     assert project.respond_to?("access_level")
-    assert project.respond_to?("access_level=")
+    #assert project.respond_to?("access_level=")
     assert project.respond_to?("access_level?")
   end
 
@@ -1545,8 +1618,8 @@ class HasAndBelongsToManyAssociationsTest < Test::Unit::TestCase
 
   def test_create_by_new_record
     devel = Developer.new(:name => "Marcel", :salary => 75000)
-    proj1 = devel.projects.create(:name => "Make bed")
-    proj2 = devel.projects.create(:name => "Lie in it")
+    proj1 = devel.projects.build(:name => "Make bed")
+    proj2 = devel.projects.build(:name => "Lie in it")
     assert_equal devel.projects.last, proj2
     assert proj2.new_record?
     devel.save
@@ -1831,6 +1904,7 @@ class HasAndBelongsToManyAssociationsTest < Test::Unit::TestCase
     join_base = ActiveRecord::Associations::ClassMethods::JoinDependency::JoinBase.new(Project)
     join_dep  = ActiveRecord::Associations::ClassMethods::JoinDependency.new(join_base, :developers, nil)
     projects  = Project.send(:select_limited_ids_list, {:order => 'developers.created_at'}, join_dep)
+    assert !projects.include?("'"), projects
     assert_equal %w(1 2), projects.scan(/\d/).sort
   end
 

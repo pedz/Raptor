@@ -1,4 +1,4 @@
-# Be sure to restart your web server when you modify this file.
+# Be sure to restart your server when you modify this file.
 
 # Uncomment below to force Rails into production mode when
 # you don't control web/app server and can't set it the proper way
@@ -16,8 +16,9 @@ Rails::Initializer.run do |config|
   # Skip frameworks you're not going to use (only works if using vendor/rails)
   # config.frameworks -= [ :active_resource, :action_mailer ]
 
-  # Only load the plugins named here, by default all plugins in vendor/plugins are loaded
-  # config.plugins = %W( exception_notification ssl_requirement )
+  # Only load the plugins named here, in the order given. By default, all plugins in vendor/plugins are loaded in alphabetical order.
+  # :all can be used as a placeholder for all plugins not explicitly named.
+  # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
 
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
@@ -33,7 +34,8 @@ Rails::Initializer.run do |config|
     :secret      => '<%= app_secret %>'
   }
 
-  # Use the database for sessions instead of the file system
+  # Use the database for sessions instead of the cookie-based default,
+  # which shouldn't be used to store highly confidential information
   # (create the session table with 'rake db:sessions:create')
   # config.action_controller.session_store = :active_record_store
 
@@ -51,5 +53,5 @@ Rails::Initializer.run do |config|
   # See Rails::Configuration for more options
 
   # Application configuration should go into files in config/initializers
-  # -- all .rb files in that directory is automatically loaded
+  # -- all .rb files in that directory are automatically loaded
 end

@@ -8,10 +8,11 @@ end
 module ActionController #:nodoc:
   module SessionManagement #:nodoc:
     def self.included(base)
-      base.extend(ClassMethods)
-      
-      base.send :alias_method_chain, :process, :session_management_support
-      base.send :alias_method_chain, :process_cleanup, :session_management_support
+      base.class_eval do
+        extend ClassMethods
+        alias_method_chain :process, :session_management_support
+        alias_method_chain :process_cleanup, :session_management_support
+      end
     end
 
     module ClassMethods
@@ -69,7 +70,7 @@ module ActionController #:nodoc:
       # All session options described for ActionController::Base.process_cgi
       # are valid arguments.
       def session(*args)
-        options = Hash === args.last ? args.pop : {}
+        options = args.extract_options!
 
         options[:disabled] = true if !args.empty?
         options[:only] = [*options[:only]].map { |o| o.to_s } if options[:only]

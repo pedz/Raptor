@@ -52,12 +52,18 @@ module Mime
         EXTENSION_LOOKUP[extension]
       end
 
-      def register(string, symbol, mime_type_synonyms = [], extension_synonyms = [])
-        Mime.send :const_set, symbol.to_s.upcase, Type.new(string, symbol, mime_type_synonyms)
+      # Registers an alias that's not used on mime type lookup, but can be referenced directly. Especially useful for
+      # rendering different HTML versions depending on the user agent, like an iPhone.
+      def register_alias(string, symbol, extension_synonyms = [])
+        register(string, symbol, [], extension_synonyms, true)
+      end
 
-        SET << Mime.send(:const_get, symbol.to_s.upcase)
+      def register(string, symbol, mime_type_synonyms = [], extension_synonyms = [], skip_lookup = false)
+        Mime.instance_eval { const_set symbol.to_s.upcase, Type.new(string, symbol, mime_type_synonyms) }
 
-        ([string] + mime_type_synonyms).each { |string| LOOKUP[string] = SET.last }
+        SET << Mime.const_get(symbol.to_s.upcase)
+
+        ([string] + mime_type_synonyms).each { |string| LOOKUP[string] = SET.last } unless skip_lookup
         ([symbol.to_s] + extension_synonyms).each { |ext| EXTENSION_LOOKUP[ext] = SET.last }
       end
 
