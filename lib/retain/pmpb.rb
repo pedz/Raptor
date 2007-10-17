@@ -1,6 +1,6 @@
 module Retain
   class Pmpb < Sdi
-    set_request "PMPB"
+    set_fetch_request "PMPB"
     set_required_fields(:problem, :branch, :country,
                         :signon, :password,
                         :pmpb_group_request)

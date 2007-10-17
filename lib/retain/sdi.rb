@@ -6,37 +6,43 @@ module Retain
   # I am making them objects so they can contain settings.  Not sure
   # how this is going to work... lets see...
   class Sdi
-    ###
-    ### Class methods
-    ###
-    @@optional_fields = []
-    
-    #
-    # Set the SDI call
-    #
-    def self.set_request(s)
-      @@request = s
-    end
-    
-    #
-    # Set required fields for SDI call
-    #
-    def self.set_required_fields(*args)
-      @@required_fields = args
-    end
-    
-    #
-    # Set optional fields for SDI call
-    #
-    def self.set_optional_fields(*args)
-      @@optional_fields = args
+
+    ### Class methods to set the class instance variables.
+    class << self
+      def set_fetch_request(s)
+        @fetch_request = s
+      end
+      alias :fetch_request= :set_fetch_request
+
+      def fetch_request
+        @fetch_request
+      end
+
+      def set_required_fields(*args)
+        @required_fields = args
+      end
+      alias :required_fields= set_required_fields
+
+      def required_fields
+        @required_fields
+      end
+
+      def set_optional_fields(*args)
+        @optional_fields = args
+      end
+      alias :optional_fields= set_optional_fields
+
+      def optional_fields
+        # sdi subclasses are not required to have optional fields
+        @optional_fields || []
+      end
     end
 
     ###
     ### instance methods
     ###
     def initialize(options = {})
-      @options = {:request => @@request}.merge(options)
+      @options = { :request => self.class.fetch_request }.merge(options)
       @logger = @options[:logger] || RAILS_DEFAULT_LOGGER
       @fields = Fields.new
       @logger.debug("DEBUG: initializing #{self.class}")
@@ -47,7 +53,7 @@ module Retain
 
       # Second precedence is fields specified in options.  We make
       # these fields.
-      (@@required_fields + @@optional_fields).each do |sym|
+      (self.class.required_fields + self.class.optional_fields).each do |sym|
         case sym
         when :signon
           @fields[sym] = @options[sym] || Logon.instance.signon
@@ -71,10 +77,10 @@ module Retain
         @logger.debug("DEBUG: options = #{options.to_yaml}")
       end
 
-      p = Request.new(options)
-      @@required_fields.each do |sym|
-        if false
-          @logger.debug("DEBUG: sym is #{sym} class is #{sym.class}")
+      request = Request.new(options)
+      self.class.required_fields.each do |sym|
+        if true
+          @logger.debug("DEBUG: req sym is #{sym} class is #{sym.class}")
         end
         index = Fields.sym_to_index(sym)
         raise "required field #{sym} not present" unless fields.has_key?(sym)
@@ -82,11 +88,11 @@ module Retain
         if false
           @logger.debug("DEBUG: v.class is #{v.class}")
         end
-        p.data_element(index, v.to_s)
+        request.data_element(index, v.to_s)
       end
-      @@optional_fields.each do |sym|
-        if false
-          @logger.debug("DEBUG: sym is #{sym}")
+      self.class.optional_fields.each do |sym|
+        if true
+          @logger.debug("DEBUG: opt sym is #{sym} class is #{sym.class}")
         end
         index = Fields.sym_to_index(sym)
         next unless fields.has_key?(sym)
@@ -94,12 +100,12 @@ module Retain
         if false
           @logger.debug("DEBUG: v.class is #{v.class}")
         end
-        p.data_element(index, v.to_s)
+        request.data_element(index, v.to_s)
       end
 
       raise "Login Failed" unless login
 
-      send = p.to_s
+      send = request.to_s
       if  @connection.write(send) != send.length
         raise "write to socket failed in sendit"
       end
@@ -115,7 +121,7 @@ module Retain
       @reply = f + b
       @header = @reply[0...128]
       @rc = @header[8...12].net2int
-      if false
+      if true
         @logger.debug("DEBUG: self is of class #{self.class}")
         @logger.debug("DEBUG: rc should be #{@rc}")
       end
@@ -211,17 +217,17 @@ module Retain
     end
     
     def hex_dump(title, s)
-      @logger.debug("DEBUG: #{title}")
+      @logger.info("DEBUG: #{title}")
       line = "     "
       (0..19).each { |b| line << ("%2d " % b) }
-      @logger.debug("DEBUG: #{line}")
+      @logger.info("DEBUG: #{line}")
       foo = 0
       until s.nil?
         line = ("%3d:" % foo)
         foo += 20
         l = s.length > 20 ? 20 : s.length
         s[0...l].each_byte { |b| line << (" %02x" % b) }
-        @logger.debug("DEBUG: #{line}")
+        @logger.info("DEBUG: #{line}")
         s = s[20...s.length]
       end
     end

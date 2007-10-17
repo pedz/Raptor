@@ -3,8 +3,16 @@ require 'retain/utils'
 
 module Retain
   class Base
-    def self.set_fetch_sdi(sdi)
-      @@fetch = sdi
+    ### Class instance methods
+    class << self
+      def set_fetch_sdi(sdi)
+        @fetch_sdi = sdi
+      end
+      alias :fetch_sdi= set_fetch_sdi
+
+      def fetch_sdi
+        @fetch_sdi.new
+      end
     end
 
     ###
@@ -32,8 +40,9 @@ module Retain
 
     def fetch_fields
       @logger.debug("DEBUG: fetch fields for #{self.class}")
-      @@fetch.sendit(@fields, @options)
-      @rc = @@fetch.rc
+      fetch_sdi = self.class.fetch_sdi
+      fetch_sdi.sendit(@fields, @options)
+      @rc = fetch_sdi.rc
       self
     end
 

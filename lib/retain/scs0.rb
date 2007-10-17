@@ -1,7 +1,7 @@
 module Retain
   class Scs0 < Sdi
 
-    set_request "SCS0"
+    set_fetch_request "SCS0"
     set_required_fields :queue_name, :center, :scs0_group_request
     set_optional_fields :h_or_s
     

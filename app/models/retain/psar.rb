@@ -1,6 +1,6 @@
 module Retain
   class Psar < Base
-    set_fetch_sdi Psrr.new
+    set_fetch_sdi Psrr
 
     def self.range(start_date, stop_date)
       temp = Retain::Psar.new(:psar_start_date => start_date.strftime("%Y%m%d"),

@@ -1,7 +1,7 @@
 
 module Retain
   class Queue < Base
-    set_fetch_sdi Scs0.new
+    set_fetch_sdi Scs0
 
     def initialize(options = {})
       super(options)

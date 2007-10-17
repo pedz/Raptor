@@ -1,7 +1,7 @@
 module Retain
   class Pmcb < Sdi
     
-    set_request "PMCB"
+    set_fetch_request "PMCB"
     set_required_fields(:queue_name, :center, :ppg,
                         :h_or_s, :signon, :password,
                         :pmpb_group_request)

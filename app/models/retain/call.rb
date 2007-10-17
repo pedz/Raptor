@@ -1,6 +1,6 @@
 module Retain
   class Call < Base
-    set_fetch_sdi Pmcb.new
+    set_fetch_sdi Pmcb
 
     def initialize(options = {})
       super(options)
