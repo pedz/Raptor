@@ -85,13 +85,7 @@ module Retain
       
       if cached_pmr
         last_cached_line_number = cached_pmr.cached_text_lines.length
-        last_cached_page = (last_cached_line_number / 16)
-        if (last_cached_page * 16) == last_cached_line_number
-          page_offset = 1
-        else
-          page_offset = 2
-        end
-        last_cached_page += page_offset
+        last_cached_page = (last_cached_line_number / 16) + 1
       else
         page_offset = 0
         last_cached_page = 0
@@ -99,15 +93,20 @@ module Retain
         # Create a fresh PMR if we did not have one cached
         cached_pmr = Cached::Pmr.new(pmr_hash)
       end
-      logger.debug("DEBUG: last_cached_page=#{last_cached_page}, last_cached_line_number=#{last_cached_line_number}")
+      logger.debug("DEBUG: last_cached_page=#{last_cached_page}, " +
+                   "last_cached_line_number=#{last_cached_line_number}")
 
-      pmr_hash[:beginning_page_number] = last_cached_page if last_cached_page > 0
+      if last_cached_page > 0
+        pmr_hash[:beginning_page_number] = last_cached_page
+      end
       @pmr = Retain::Pmr.new(pmr_hash)
       local_pmpb_group_request = LOCAL_PMPB_GROUP_REQUEST
 
       # If the PMR is not in the cache, we request the FA lines;
       # otherwise we do not.
-      local_pmpb_group_request << :alterable_format_text_lines if last_cached_page == 0
+      if last_cached_page == 0
+        local_pmpb_group_request << :alterable_format_text_lines
+      end
       @pmr.pmpb_group_request = local_pmpb_group_request
 
       # Fetch the record from Retain here.
@@ -140,6 +139,10 @@ module Retain
         else
           logger.debug("DEBUG: alt_lines.length=#{alt_lines.length}")
         end
+        mod = alt_lines.length % 16
+        if mod != 0
+          alt_lines += Retain::TextLine.blank_lines(16 - mod)
+        end
       else
         alt_lines = []
       end
@@ -152,7 +155,8 @@ module Retain
         # Retain calls Page 2.  We need a zero based index so the
         # multiplies come out right.  This should not be page_offset.
         beginning_page_number = @pmr.beginning_page_number - 2
-        logger.debug("DEBUG: @pmr.beginning_page_number = #{@pmr.beginning_page_number}")
+        logger.debug("DEBUG: @pmr.beginning_page_number = " +
+                     "#{@pmr.beginning_page_number}")
         beginning_page_number = 0 if beginning_page_number < 0
       else
         beginning_page_number = 0
@@ -171,18 +175,22 @@ module Retain
         line_number = beginning_line_number + index
         if last_cached_line_number > line_number
           cached_line = cached_text_lines[line_number]
-          unless cached_line.text == line.text && cached_line.line_type == line.line_type
-            logger.debug("DEBUG: before: #{cached_line.line_number} #{cached_line.line_type} '#{cached_line.text}'")
-            logger.debug("DEBUG:  after: #{line_number} #{line.line_type} '#{line.text}'")
+          unless (cached_line.text == line.text &&
+                  cached_line.line_type == line.line_type)
+            logger.debug("DEBUG: before: #{cached_line.line_number} " +
+                         "#{cached_line.line_type} '#{cached_line.text}'")
+            logger.debug("DEBUG:  after: #{line_number} #{line.line_type} '" +
+                         "#{line.text}'")
             cached_line.line_type = line.line_type
             cached_line.text = line.text
             cached_line.save!
           end
         else
-          cached_text_line = Cached::TextLine.new(:line_number => line_number,
-                                                  :line_type   => line.line_type,
-                                                  :text        => line.text,
-                                                  :code_page   => line.code_page)
+          cached_text_line =
+            Cached::TextLine.new(:line_number => line_number,
+                                 :line_type   => line.line_type,
+                                 :text        => line.text,
+                                 :code_page   => line.code_page)
           cached_text_lines << cached_text_line
         end
       end
@@ -194,18 +202,18 @@ module Retain
       @text_lines.each do |line|
         # A signature or special line ends the match
         if line.line_type < 0x40
-          logger.debug("DEBUG: match end")
+          logger.debug("DEBUG: match end") if false
           last_match = nil
           next
         end
         if md = ECPAAT_REGEXP.match(line.text)
-          logger.debug("DEBUG: match start")
+          logger.debug("DEBUG: match start") if false
           last_match = md[1].downcase
           last_match = "environment" if last_match == "env"
           @ecpaat[last_match] = [ md[2] ]
           next
         end
-        logger.debug("DEBUG: match cont")
+        logger.debug("DEBUG: match cont") if false
         @ecpaat[last_match] << line.text unless last_match.nil?
       end
       @ecpaat_lines = ""

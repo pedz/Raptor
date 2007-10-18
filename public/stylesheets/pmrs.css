@@ -108,11 +108,11 @@ body {
 }
 
 .even {
-    background-color: Salmon;
+    background-color: #f0f0ff;
 }
 
 .odd {
-    background-color: SandyBrown;
+    background-color: #f8f8ff;
 }
 
 #click-header {
