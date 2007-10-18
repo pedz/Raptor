@@ -1,6 +1,6 @@
 module Retain
   class Pmpu < Sdi
-    set_request "PMPU"
+    set_fetch_request "PMPU"
     set_required_fields(:problem, :branch, :country,
                         :signon, :password, :last_alter_timestamp)
     set_optional_fields(:pmr_owner_employee_number)
