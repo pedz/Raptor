@@ -68,7 +68,7 @@ module Retain
 
       # Get the call from retain.  I'm afraid to cache these
       @call = Retain::Call.new(options)
-      logger.debug("#{@call.problem},#{@call.branch},#{@call.country}")
+      logger.info("#{@call.problem},#{@call.branch},#{@call.country}")
 
       # This is hash is reused so make a local variable.
       pmr_hash = {
@@ -93,7 +93,7 @@ module Retain
         # Create a fresh PMR if we did not have one cached
         cached_pmr = Cached::Pmr.new(pmr_hash)
       end
-      logger.debug("DEBUG: last_cached_page=#{last_cached_page}, " +
+      logger.info("DEBUG: last_cached_page=#{last_cached_page}, " +
                    "last_cached_line_number=#{last_cached_line_number}")
 
       if last_cached_page > 0
@@ -122,14 +122,14 @@ module Retain
       # alt_lines.
       #
       if text_lines.is_a?(Retain::TextLine)
-        logger.debug("DEBUG: text_lines.class=#{text_lines.class}")
+        logger.info("DEBUG: text_lines.class=#{text_lines.class}")
         if text_lines.text.blank?
           text_lines = []
         else
           text_lines = [ text_lines ]
         end
       else
-        logger.debug("DEBUG: text_lines.length=#{text_lines.length}")
+        logger.info("DEBUG: text_lines.length=#{text_lines.length}")
       end
 
       # Some requests will not have the alterable format text so make
@@ -137,17 +137,17 @@ module Retain
       # the first thing we look at because it has not been fetched
       # yet.
       if @pmr.alterable_format_text_lines?
-        logger.debug("DEBUG: Received alt lines")
+        logger.info("DEBUG: Received alt lines")
         alt_lines = @pmr.alterable_format_text_lines
         if alt_lines.is_a?(Retain::TextLine)
-          logger.debug("DEBUG: alt_lines.class=#{alt_lines.class}")
+          logger.info("DEBUG: alt_lines.class=#{alt_lines.class}")
           if alt_lines.text.blank?
             alt_lines = []
           else
             alt_lines = [ alt_lines ]
           end
         else
-          logger.debug("DEBUG: alt_lines.length=#{alt_lines.length}")
+          logger.info("DEBUG: alt_lines.length=#{alt_lines.length}")
         end
         #
         # The way an FA is displayed is that it consumes a multiple of
@@ -169,15 +169,15 @@ module Retain
         # Retain calls Page 2.  We need a zero based index so the
         # multiplies come out right.  This should not be page_offset.
         beginning_page_number = @pmr.beginning_page_number - 2
-        logger.debug("DEBUG: @pmr.beginning_page_number = " +
+        logger.info("DEBUG: @pmr.beginning_page_number = " +
                      "#{@pmr.beginning_page_number}")
         beginning_page_number = 0 if beginning_page_number < 0
       else
         beginning_page_number = 0
       end
       beginning_line_number = beginning_page_number * 16
-      logger.debug("DEBUG: beginning_page_number = #{beginning_page_number}")
-      logger.debug("DEBUG: first line: #{new_text_lines[0].text}")
+      logger.info("DEBUG: beginning_page_number = #{beginning_page_number}")
+      logger.info("DEBUG: first line: #{new_text_lines[0].text}")
 
       # For each line, we check to see if we already have it in the
       # cache.  If we do and it has not changed, we do nothing.  If it
@@ -191,9 +191,9 @@ module Retain
           cached_line = cached_text_lines[line_number]
           unless (cached_line.text == line.text &&
                   cached_line.line_type == line.line_type)
-            logger.debug("DEBUG: before: #{cached_line.line_number} " +
+            logger.info("DEBUG: before: #{cached_line.line_number} " +
                          "#{cached_line.line_type} '#{cached_line.text}'")
-            logger.debug("DEBUG:  after: #{line_number} #{line.line_type} '" +
+            logger.info("DEBUG:  after: #{line_number} #{line.line_type} '" +
                          "#{line.text}'")
             cached_line.line_type = line.line_type
             cached_line.text = line.text
@@ -216,18 +216,18 @@ module Retain
       @text_lines.each do |line|
         # A signature or special line ends the match
         if line.line_type < 0x40
-          logger.debug("DEBUG: match end") if false
+          logger.info("DEBUG: match end") if false
           last_match = nil
           next
         end
         if md = ECPAAT_REGEXP.match(line.text)
-          logger.debug("DEBUG: match start") if false
+          logger.info("DEBUG: match start") if false
           last_match = md[1].downcase
           last_match = "environment" if last_match == "env"
           @ecpaat[last_match] = [ md[2] ]
           next
         end
-        logger.debug("DEBUG: match cont") if false
+        logger.info("DEBUG: match cont") if false
         @ecpaat[last_match] << line.text unless last_match.nil?
       end
       @ecpaat_lines = ""
@@ -279,11 +279,11 @@ module Retain
       respond_to do |format|
         if pmpu.rc == 0
           format.html { render :text => params[:pmr_owner_employee_number] }
-          format.xml  { logger.debug("DEBUG: xml")  }
+          format.xml  { logger.info("DEBUG: xml")  }
         else
           format.html { render(:text => params[:pmr_owner_employee_number],
                                :status => :unprocessable_entity) }
-          format.xml  { logger.debug("DEBUG: xml")  }
+          format.xml  { logger.info("DEBUG: xml")  }
         end
       end
     end
