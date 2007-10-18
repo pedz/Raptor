@@ -111,6 +111,16 @@ module Retain
 
       # Fetch the record from Retain here.
       text_lines = @pmr.nls_text_lines
+      #
+      # The way that the reply gunk works is a single text line will
+      # have a value of just a single text line but a bunck of them
+      # will be an array of text lines.  So, we test to see if
+      # text_lines is a single element of type text line.  If it is,
+      # we then check to see if it is blank; converting text_lines to
+      # an empty element for a blank line and an array with a single
+      # element in the other case.  We do the same thing later for
+      # alt_lines.
+      #
       if text_lines.is_a?(Retain::TextLine)
         logger.debug("DEBUG: text_lines.class=#{text_lines.class}")
         if text_lines.text.blank?
@@ -139,6 +149,10 @@ module Retain
         else
           logger.debug("DEBUG: alt_lines.length=#{alt_lines.length}")
         end
+        #
+        # The way an FA is displayed is that it consumes a multiple of
+        # pages.  Here, we pad with blank lines to a page boundry.
+        #
         mod = alt_lines.length % 16
         if mod != 0
           alt_lines += Retain::TextLine.blank_lines(16 - mod)
