@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 8) do
+ActiveRecord::Schema.define(:version => 10) do
 
   create_table "cached_calls", :force => true do |t|
     t.string   "queue_name", :limit => 6,                  :null => false
@@ -43,6 +43,22 @@ ActiveRecord::Schema.define(:version => 8) do
     t.integer  "user_id",    :null => false
     t.string   "queue_name", :null => false
     t.string   "center",     :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "feedback_notes", :force => true do |t|
+    t.integer  "feedback_id"
+    t.text     "note"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "feedbacks", :force => true do |t|
+    t.string   "abstract"
+    t.integer  "priority",   :default => 3
+    t.integer  "ftype",      :default => 0
+    t.integer  "state",      :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end

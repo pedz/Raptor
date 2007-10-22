@@ -1,0 +1,2 @@
+module FeedbackNotesHelper
+end

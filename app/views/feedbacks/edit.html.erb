@@ -1,0 +1,32 @@
+<h1>Editing feedback</h1>
+
+<%= error_messages_for :feedback %>
+
+<% form_for(@feedback) do |f| %>
+  <p>
+    <b>Abstract</b><br />
+    <%= f.text_field :abstract %>
+  </p>
+
+  <p>
+    <b>Priority</b><br />
+    <%= f.text_field :priority %>
+  </p>
+
+  <p>
+    <b>Ftype</b><br />
+    <%= f.text_field :ftype %>
+  </p>
+
+  <p>
+    <b>State</b><br />
+    <%= f.text_field :state %>
+  </p>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @feedback %> |
+<%= link_to 'Back', feedbacks_path %>

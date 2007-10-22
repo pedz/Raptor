@@ -1,0 +1,13 @@
+<p>
+  <b>Feedback:</b>
+  <%=h @feedback_note.feedback_id %>
+</p>
+
+<p>
+  <b>Note:</b>
+  <%=h @feedback_note.note %>
+</p>
+
+
+<%= link_to 'Edit', edit_feedback_feedback_note_path(@feedback, @feedback_note) %> |
+<%= link_to 'Back', feedback_feedback_notes_path(@feedback) %>

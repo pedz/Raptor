@@ -1,0 +1,31 @@
+<h1>New feedback</h1>
+
+<%= error_messages_for :feedback %>
+
+<% form_for(@feedback) do |f| %>
+  <table>
+    <thead>
+      <tr>
+	<td>Abstract</td>
+	<td>Priority</td>
+	<td>Type</td>
+      </tr>
+    </thead>
+    <tr>
+      <td><%= f.text_field :abstract %></td>
+      <td><%= f.select :priority, [ 1, 2, 3, 4, 5 ] %></td>
+      <td><%= f.select :ftype, Feedback::FEEDBACK_TYPES %></td>
+    </tr>
+  </table>
+  <p>
+    <b>Comment, Defect, or spleen venting</b><br/>
+    <% fields_for :feedback_note, @feedback.feedback_notes[0] do |note| %>
+    <%=  note.text_area :note, :size => "75x20" %>
+    <% end %>
+  </p>
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', feedbacks_path %>

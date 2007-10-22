@@ -1,0 +1,23 @@
+<h1>Listing feedback_notes</h1>
+
+<table>
+  <tr>
+    <th>Feedback</th>
+    <th>Note</th>
+  </tr>
+
+<% for feedback_note in @feedback_notes %>
+  <tr>
+    <td><%=h feedback_note.feedback_id %></td>
+    <td><%=h feedback_note.note %></td>
+    <td><%= link_to 'Show', feedback_feedback_note_path(@feedback, feedback_note) %></td>
+    <td><%= link_to 'Edit', edit_feedback_feedback_note_path(@feedback, feedback_note) %></td>
+    <td><%= link_to('Destroy', feedback_feedback_note_path(@feedback, feedback_note),
+		    :confirm => 'Are you sure?', :method => :delete) %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New feedback_note', new_feedback_feedback_note_path(@feedback) %>

@@ -1,0 +1,25 @@
+<h1><%= @title = "Feedback #{@feedback.id}" %></h1>
+<table>
+  <thead>
+    <tr>
+      <td><b>Abstract</b></td>
+      <td><b>Priority</b></td>
+      <td><b>Type</b></td>
+      <td><b>State</b></td>
+    </tr>
+  </thead>
+  <tr>
+    <td><%=h @feedback.abstract %></td>
+    <td><%=h @feedback.priority %></td>
+    <td><%=h Feedback::FEEDBACK_TYPES[@feedback.ftype] %></td>
+    <td><%=h Feedback::FEEDBACK_STATES[@feedback.state] %></td>
+  </tr>
+</table>
+<%= link_to 'Back', feedbacks_path %>
+<% for note in @feedback.feedback_notes %>
+  <p>
+    <b>Note <%= h note.created_at %></b><br/>
+    <%= h note.note %>
+  </p>
+<% end %>
+<%= link_to 'New Note', new_feedback_feedback_note_path(@feedback) %>

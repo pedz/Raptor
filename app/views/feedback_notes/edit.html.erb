@@ -1,0 +1,17 @@
+<h1>Editing feedback_note</h1>
+
+<%= error_messages_for :feedback_note %>
+
+<% form_for([@feedback, @feedback_note]) do |f| %>
+  <p>
+    <b>Note</b><br />
+    <%= f.text_field :note %>
+  </p>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', feedback_feedback_note_path(@feedback, @feedback_note) %> |
+<%= link_to 'Back', feedback_feedback_notes_path(@feedback) %>

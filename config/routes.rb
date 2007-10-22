@@ -1,5 +1,11 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :retain_pmrs,   :controller => 'retain/pmrs'
+  map.resources :feedbacks do |feedback|
+    feedback.resources :feedback_notes
+  end
+  # map.resources :feedbacks
+  # map.resources :feedback_notes, :path_prefix => '/feedbacks/:feedback_id'
+
+  map.resources :retain_pmrs, :controller => 'retain/pmrs'
   map.resources :retain_call, :controller => 'retain/call'
   map.resources :retain_psar, :controller => 'retain/psar'
   map.retain_queue 'retain_queue/:queue_spec', :controller => 'retain/queue', :action => 'show'
