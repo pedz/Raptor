@@ -1,3 +1,10 @@
+module SM
+  class ToFlow
+    def handle_special_COMMENT(special)
+      special.text
+    end
+  end
+end
 
 namespace :doc do
   RAILS_INCLUDES = [
@@ -41,9 +48,5 @@ namespace :doc do
     rdoc.options << '--line-numbers' << '--inline-source' << '--ri'
     RAILS_INCLUDES.each { |l| rdoc.rdoc_files.include(l) }
     RAILS_EXCLUDES.each { |l| rdoc.rdoc_files.exclude(l) }
-    # rdoc.rdoc_files.exclude('vendor/rails/actionpack/lib/action_view/helpers/asset_tag_helper.rb')
-    rdoc.rdoc_files.exclude('vendor/rails/actionpack/lib/action_view/helpers/text_helper.rb')
-    rdoc.rdoc_files.exclude('vendor/rails/actionpack/lib/action_view/helpers/capture_helper.rb')
-    rdoc.rdoc_files.exclude('vendor/rails/activesupport/lib/active_support/vendor/builder-2.1.2/builder/xmlmarkup.rb')
   }
 end
