@@ -2,26 +2,30 @@
 <% @title = "Retain queue: #{@queue.to_s}" -%>
 <h1>Retain Queue: <%= h @queue.to_s %></h1>
 
-<table style='font-family : courier, monospace'>
-  <thead>
-    <th>Sel#</th>
-    <th>Prblm,bnc,cty</th>
-    <th>S</th>
-    <th>P</th>
-    <th>Comments</th>
-    <th>Customer</th>
-    <th>CStatus</th>
-  </thead>
-<% index = 0 -%>
-<% for call in @calls -%>
-  <tr>
-    <td><%= button(index += 1, retain_call_url(call)) %></td>
-    <td><%= link_to call.pbc, call %></td>
-    <td><%= h call.p_s_b %></td>
-    <td><%= h call.priority %></td>
-    <td><%= h call.comments %></td>
-    <td><%= h call.customer_name %></td>
-    <td><%= h call.cstatus %></td>
-  </tr>
-<% end -%>
-</table>
+<% if @calls.nil? %>
+  Empty Queue or Queue not found.  Sorry but I can't tell the difference.
+<% else %>
+  <table style='font-family : courier, monospace'>
+    <thead>
+      <th>Sel#</th>
+      <th>Prblm,bnc,cty</th>
+      <th>S</th>
+      <th>P</th>
+      <th>Comments</th>
+      <th>Customer</th>
+      <th>CStatus</th>
+    </thead>
+  <% index = 0 -%>
+  <% for call in @calls -%>
+    <tr>
+      <td><%= button(index += 1, retain_call_url(call)) %></td>
+      <td><%= link_to call.pbc, call %></td>
+      <td><%= h call.p_s_b %></td>
+      <td><%= h call.priority %></td>
+       <td><%= h call.comments %></td>
+       <td><%= h call.customer_name %></td>
+       <td><%= h call.cstatus %></td>
+    </tr>
+  <% end -%>
+  </table>
+<% end %>

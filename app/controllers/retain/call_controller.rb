@@ -1,17 +1,24 @@
 module Retain
   class CallController < RetainController
     ENVIRONMENT  = "environment|env"
+    ENVIRONMENT.freeze
     CUSTOMER     = "customer rep"
+    CUSTOMER.freeze
     PROBLEM      = "problem"
+    PROBLEM.freeze
     ACTION_TAKEN = "action taken"
+    ACTION_TAKEN.freeze
     ACTION_PLAN  = "action plan"
+    ACTION_PLAN.freeze
     TESTCASE     = "testcase"
+    TESTCASE.freeze
     ECPAAT_HEADINGS = [ "Environment",
                         "Customer Rep",
                         "Problem",
                         "Action Taken",
                         "Action Plan",
                         "Testcase" ]
+    ECPAAT_HEADINGS.freeze
     ECPAAT_REGEXP = Regexp.new("^(" +
                                "#{ENVIRONMENT}|" +
                                "#{CUSTOMER}|" +
@@ -20,11 +27,14 @@ module Retain
                                "#{ACTION_PLAN}|" +
                                "#{TESTCASE}" +
                                "): *(.*)$", Regexp::IGNORECASE)
+    ECPAAT_REGEXP.freeze
+
     #
     # The Anderson tools puts a '.' on a line to create an empty line.
     # The regexp below is true if the whole line is blank or if the
     # initial character is a period followed by blanks.
     BLANK_REGEXP = Regexp.new("^[. ] *$")
+    BLANK_REGEXP.freeze
 
     #
     # I'm going to put a local copy of this here.  As the html view
@@ -52,6 +62,7 @@ module Retain
                                 :resolver_id,
                                 :resolver_name
                                ]
+    LOCAL_PMPB_GROUP_REQUEST.freeze
     
     def show
       # parse the call spec.  Format is: queue,center,h,ppg but the h
@@ -100,7 +111,7 @@ module Retain
         pmr_hash[:beginning_page_number] = last_cached_page
       end
       @pmr = Retain::Pmr.new(pmr_hash)
-      local_pmpb_group_request = LOCAL_PMPB_GROUP_REQUEST
+      local_pmpb_group_request = LOCAL_PMPB_GROUP_REQUEST.dup
 
       # If the PMR is not in the cache, we request the FA lines;
       # otherwise we do not.

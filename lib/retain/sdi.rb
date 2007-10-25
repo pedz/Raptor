@@ -49,7 +49,9 @@ module Retain
       
       # Look at the default_fields for a list of fields to use as
       # defaults.
-      @fields.merge(@options.delete(:default_fields)) if @options.has_key?(:default_fields)
+      if @options.has_key?(:default_fields)
+        @fields.merge(@options.delete(:default_fields))
+      end
 
       # Second precedence is fields specified in options.  We make
       # these fields.
@@ -132,6 +134,7 @@ module Retain
 
       unless @rc == 0
         hex_dump("#{options[:request]} request", send)
+        @logger.info(new_fields.to_debug)
         hex_dump("#{options[:request]} reply", @reply)
         # if req_fields.error_message?
         #   raise req_fields.error_message

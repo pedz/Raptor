@@ -88,6 +88,7 @@ module Retain
       :dispatched_by_center        => [  301, :ebcdic,          3 ],
       :requeue_center              => [  305, :ebcdic,          3 ],
       :requeue_employee            => [  306, :ebcdic,          6 ],
+      :call_symbol                 => [  316, :binary,         12 ],
       :addtxt_lines                => [  331, :text_lines,     72 ],
       :customer_account            => [  332, :ebcdic,        332 ],
       :dcsf_user_id                => [  333, :ebcdic,        333 ],
@@ -498,6 +499,14 @@ module Retain
       end
     end
     
+    def to_debug
+      r = ''
+      @fields.each_pair do |k, v|
+        r << "DEBUG: #{@@field_num_to_name[k]}: '#{v.to_s}'\n"
+      end
+      r
+    end
+
     private
 
     def merge_fields!(new_fields)
@@ -573,13 +582,3 @@ module Retain
     end
   end
 end
-
-### class String
-###   include Retain::FieldConverters
-### end
-### 
-### class Array
-###   def ocvt(how)
-###     self
-###   end
-### end

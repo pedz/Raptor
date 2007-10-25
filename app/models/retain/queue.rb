@@ -20,7 +20,11 @@ module Retain
     # objects.
     #
     def calls
-      de32.map do |fields|
+      temp = de32
+      if temp.length == 1 && temp[0].ppg? == false
+        return nil
+      end
+      temp.map do |fields|
         @logger.debug("DEBUG: make a call")
         Call.new :fields => fields
       end
