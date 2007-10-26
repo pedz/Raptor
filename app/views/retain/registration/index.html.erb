@@ -1,0 +1,13 @@
+
+<table>
+  <tr><td>Name</td><td><%= h @reg.name %></td></tr>
+  <tr><td>Center</td><td><%= h @reg.center %></td></tr>
+  <tr><td>Queue</td><td><%= h @reg.queue_name %></td></tr>
+  <tr><td>Hardware or Software</td><td><%= h @reg.h_or_s %></td></tr>
+</table>
+<ol>
+<% pri = @reg.primary_support_list %>
+<% for s in (0...@reg.num_primary_list).map { |i| pri[i*6,6] } %>
+  <li><%= h s %></li>
+<% end %>
+</ol>

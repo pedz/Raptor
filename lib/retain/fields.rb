@@ -236,6 +236,13 @@ module Retain
       :call_problem_threshold      => [  710, :ebcdic,          2 ],
       :author_id                   => [  711, :ebcdic,          4 ],
       :signon2                     => [  712, :ebcdic,          6 ],
+      :name                        => [  713, :ebcdic,         22 ],
+      :absorb_support_list         => [  716, :ebcdic,         80 ],
+      :num_primary_list            => [  741, :int,             1 ],
+      :num_secondary_list          => [  742, :int,             1 ],
+      :num_absorb_list             => [  743, :int,             1 ],
+      :primary_support_list        => [  744, :ebcdic,         60 ],
+      :secondary_support_list      => [  745, :ebcdic,        120 ],
       :embargoed_countries         => [  878, :ebcdic,          3 ],
       :minutes_from_gmt            => [  920, :binary,          2 ],
       :iris                        => [  930, :binary,         12 ],
@@ -502,7 +509,7 @@ module Retain
     def to_debug
       r = ''
       @fields.each_pair do |k, v|
-        r << "DEBUG: #{@@field_num_to_name[k]}: '#{v.to_s}'\n"
+        r << "DEBUG: #{@@field_num_to_name[k]}: '#{v.value}'\n"
       end
       r
     end

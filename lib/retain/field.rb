@@ -123,6 +123,14 @@ module Retain
         width = @width
       end
       case @cvt
+      when :int
+        v = ""
+        while value > 0
+          v << "%c" % (value % 256)
+          value /= 256
+        end
+        v += "\0" * width
+        v.reverse[0...width]
       when :upper_ebcdic
         value.trim(width).upcase.ebcdic
       when :ebcdic
@@ -151,6 +159,8 @@ module Retain
 
     def decode(value)
       case @cvt
+      when :int
+        v = 0; value.each_byte { |b| v = v * 256 + b }; v
       when :upper_ebcdic
         value.ascii
       when :ebcdic

@@ -132,6 +132,7 @@ module Retain
       scan_fields(new_fields, @reply[128...@reply.length])
       req_fields.merge!(new_fields)
 
+      @logger.info(new_fields.to_debug)
       unless @rc == 0
         hex_dump("#{options[:request]} request", send)
         @logger.info(new_fields.to_debug)
