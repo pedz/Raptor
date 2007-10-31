@@ -9,6 +9,7 @@
     <thead>
       <th>Sel#</th>
       <th>Prblm,bnc,cty</th>
+      <th>Cat</th>
       <th>S</th>
       <th>P</th>
       <th>Comments</th>
@@ -20,6 +21,7 @@
     <tr>
       <td><%= button(index += 1, retain_call_url(call)) %></td>
       <td><%= link_to call.pbc, call %></td>
+      <td><%= h call.category %></td>
       <td><%= h call.p_s_b %></td>
       <td><%= h call.priority %></td>
        <td><%= h call.comments %></td>

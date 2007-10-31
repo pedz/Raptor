@@ -24,7 +24,7 @@ Event.addBehavior({
 
     '.click-data:click' : function () {
 	this.hide();
-	recalc_dimentions();
+	recalc_dimensions();
     },
 
     '#left-tab:mouseover' : function () {

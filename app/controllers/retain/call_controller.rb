@@ -1,24 +1,17 @@
 module Retain
   class CallController < RetainController
-    ENVIRONMENT  = "environment|env"
-    ENVIRONMENT.freeze
-    CUSTOMER     = "customer rep"
-    CUSTOMER.freeze
-    PROBLEM      = "problem"
-    PROBLEM.freeze
-    ACTION_TAKEN = "action taken"
-    ACTION_TAKEN.freeze
-    ACTION_PLAN  = "action plan"
-    ACTION_PLAN.freeze
-    TESTCASE     = "testcase"
-    TESTCASE.freeze
+    ENVIRONMENT  = "environment|env".freeze
+    CUSTOMER     = "customer rep".freeze
+    PROBLEM      = "problem".freeze
+    ACTION_TAKEN = "action taken".freeze
+    ACTION_PLAN  = "action plan".freeze
+    TESTCASE     = "testcase".freeze
     ECPAAT_HEADINGS = [ "Environment",
                         "Customer Rep",
                         "Problem",
                         "Action Taken",
                         "Action Plan",
-                        "Testcase" ]
-    ECPAAT_HEADINGS.freeze
+                        "Testcase" ].freeze
     ECPAAT_REGEXP = Regexp.new("^(" +
                                "#{ENVIRONMENT}|" +
                                "#{CUSTOMER}|" +
@@ -26,15 +19,13 @@ module Retain
                                "#{ACTION_TAKEN}|" +
                                "#{ACTION_PLAN}|" +
                                "#{TESTCASE}" +
-                               "): *(.*)$", Regexp::IGNORECASE)
-    ECPAAT_REGEXP.freeze
+                               "): *(.*)$", Regexp::IGNORECASE).freeze
 
     #
     # The Anderson tools puts a '.' on a line to create an empty line.
     # The regexp below is true if the whole line is blank or if the
     # initial character is a period followed by blanks.
-    BLANK_REGEXP = Regexp.new("^[. ] *$")
-    BLANK_REGEXP.freeze
+    BLANK_REGEXP = Regexp.new("^[. ] *$").freeze
 
     #
     # I'm going to put a local copy of this here.  As the html view
@@ -60,9 +51,9 @@ module Retain
                                 :pmr_owner_name,
                                 :pmr_owner_employee_number,
                                 :resolver_id,
-                                :resolver_name
-                               ]
-    LOCAL_PMPB_GROUP_REQUEST.freeze
+                                :resolver_name,
+                                :problem_e_mail
+                               ].freeze
     
     def show
       # parse the call spec.  Format is: queue,center,h,ppg but the h

@@ -20,7 +20,8 @@ module Retain
                                         :nls_contact_name,
                                         :contact_phone_1,
                                         :contact_phone_2,
-                                        :priority
+                                        :priority,
+                                        :category
                                        ]
       end
     end
