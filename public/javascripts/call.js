@@ -34,10 +34,10 @@ Event.addBehavior({
 
     '#left-tab:click' : function () {
 	left_stays_open = !left_stays_open;
+	var l = $('left');
+	var lt = $('left-tab');
+	var c = $('center');
 	if (left_stays_open) {
-	    var l = $('left');
-	    var lt = $('left-tab');
-	    var c = $('center');
 	    var l_width  = window.getComputedStyle(l, null).width;
 	    console.log("l_width", l_width);
 	    var lt_width = window.getComputedStyle(lt, null).width;
@@ -46,9 +46,6 @@ Event.addBehavior({
 	    console.log("width", width);
 	    c.style.left = width;
 	} else {
-	    var l = $('left');
-	    var lt = $('left-tab');
-	    var c = $('center');
 	    var width = (lt.scrollWidth) + "px";
 	    c.style.left = width;
 	    l.hide();
@@ -58,15 +55,14 @@ Event.addBehavior({
     '#right-tab:mouseover' : function () {
 	right_is_open = true;
 	$('right').show();
-	// $('right-tab').hide();
     },
 
     '#right-tab:click' : function () {
 	right_stays_open = !right_stays_open;
+	var r = $('right');
+	var rt = $('right-tab');
+	var c = $('center');
 	if (right_stays_open) {
-	    var r = $('right');
-	    var rt = $('right-tab');
-	    var c = $('center');
 	    var r_width  = window.getComputedStyle(r, null).width;
 	    console.log("r_width", r_width);
 	    var rt_width = window.getComputedStyle(rt, null).width;
@@ -75,9 +71,6 @@ Event.addBehavior({
 	    console.log("width", width);
 	    c.style.right = width;
 	} else {
-	    var r = $('right');
-	    var rt = $('right-tab');
-	    var c = $('center');
 	    var width = (rt.scrollWidth) + "px";
 	    c.style.right = width;
 	    r.hide();
@@ -105,16 +98,31 @@ Event.addBehavior({
 
 function recalc_dimensions()
 {
-    var t = $('top');
-    t.style.height = "1em";
-    var newHeight = t.scrollHeight + "px";
-    console.log(newHeight);
-    t.style.height = newHeight;
-    $('left').style.top = newHeight;
-    $('left-tab').style.top = newHeight;
-    $('center').style.top = newHeight;
-    $('right').style.top = newHeight;
-    $('right-tab').style.top = newHeight;
+    var top = $('top');
+    top.style.height = "1em";
+    var newTop = top.scrollHeight + "px";
+
+    var bottom = $('bottom');
+    bottom.style.height = "1em";
+    var newBottom = bottom.scrollHeight + "px";
+
+    console.log("newTop =", newTop);
+    console.log("newBottom =", newBottom);
+
+    top.style.height = newTop;
+    bottom.style.height = newBottom;
+
+    $('left').style.top = newTop;
+    $('left-tab').style.top = newTop;
+    $('center').style.top = newTop;
+    $('right').style.top = newTop;
+    $('right-tab').style.top = newTop;
+
+    $('left').style.bottom = newBottom;
+    $('left-tab').style.bottom = newBottom;
+    $('center').style.bottom = newBottom;
+    $('right').style.bottom = newBottom;
+    $('right-tab').style.bottom = newBottom;
 }
 
 function close_side_panels()

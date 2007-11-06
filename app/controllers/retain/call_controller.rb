@@ -275,7 +275,7 @@ module Retain
         :country => @call.country
       }
       pmpu = Retain::Pmpu.new(pmr_hash)
-      pmpu.pmr_owner_employee_number = params[:pmr_owner_employee_number]
+      pmpu.pmr_owner_employee_number = params[:pmr_owner_employee_number].gsub(/[\t ]/, '')
       fields = Retain::Fields.new
       pmpu.sendit(fields)
       respond_to do |format|

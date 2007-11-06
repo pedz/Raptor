@@ -7,9 +7,10 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :retain_pmrs, :controller => 'retain/pmrs'
   map.resources :retain_call, :controller => 'retain/call'
-  map.resources :retain_psar, :controller => 'retain/psar'
-  map.resources :retain_registration, :controller => 'retain/registration'
-  map.retain_queue 'retain_queue/:queue_spec', :controller => 'retain/queue', :action => 'show'
+  map.resource  :retain_psar, :controller => 'retain/psar'
+  map.resource  :retain_registration, :controller => 'retain/registration'
+  # map.retain_queue 'retain_queue/:queue_spec', :controller => 'retain/queue', :action => 'show'
+  map.resources :retain_queue, :controller => 'retain/queue'
   map.resources :favorite_queues
   map.resources :retusers
   map.resources :users

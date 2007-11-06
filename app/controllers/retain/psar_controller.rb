@@ -1,6 +1,6 @@
 module Retain
   class PsarController < RetainController
-    def index
+    def show
       # We request PSAR's from Saturday a week ago up to today.
       temp_date = Time.now
 

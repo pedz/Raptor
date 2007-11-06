@@ -1,6 +1,6 @@
 module Retain
   class RegistrationController < RetainController
-    def index
+    def show
       @reg = Retain::Registration.new
       logger.debug("DEBUG: reg #{@reg.queue_name}")
     end

@@ -2,87 +2,111 @@
 
 <% @title = "Retain call: #{@call.pbc}" %>
 <% content_for(:top) do %>
-  <div id='line1'>
-    <span id='queue' class='field-left'>
-      <span id='queue-header' class='field-header'>
-	Queue
-      </span>
-      <span id='queue-spec' class='field'>
-	<%= link_to @call.short_queue_name, retain_queue_path(@call.full_queue_name) %>
-      </span>
-    </span>
-    <span id='pbc' class='field field-center'>
-      <%= h @call.pbc %>
-    </span>
-    <span id='pri-sev' class='field-right'>
-      <span id='pri-sev-header' class='field-header'>
-	P/S
-      </span>
-      <span id='pri-sev-spec' class='field'>
-	<%= h @call.priority %>/<%= h @pmr.severity %>
-      </span>
-    </span>
-  </div>
-  <div id='line2'>
-    <span id='owner' class='field-left'>
-      <span id='owner-header' class='field-header'>
-	Owner
-      </span>
-      <span id='owner-spec' class='field'>
-	<%= h @pmr.pmr_owner_name %>
-	<span class='inplace-edit' href='<%= retain_call_path(@call) %>' value='pmr_owner_employee_number'>
-	  <%= h @pmr.pmr_owner_employee_number %>
+  <table id='pmr-header'>
+    <tr>
+      <td>
+	<span id='queue' class='field-left'>
+	  <span id='queue-header' class='field-header'>
+	    Queue
+	  </span>
+	  <span id='queue-spec' class='field'>
+	    <%= link_to @call.short_queue_name, retain_queue_path(@call.full_queue_name) %>
+	  </span>
 	</span>
-      </span>
-    </span>
-    <span id='customer-name' class='field field-center'>
-      <%= h @call.nls_customer_name %>
-    </span>
-    <span id='resolver' class='field-right'>
-      <span id='resolver-header' class='field-header'>
-	Resolver
-      </span>
-      <span id='resolver-spec' class='field'>
-	<%= h @pmr.resolver_name %>
-	<span class='inplace-edit' href='<%= retain_call_path(@call) %>' value='resolver_id'>
-	  <%= h @pmr.resolver_id %>
+      </td>
+      <td>
+	<span id='pbc' class='field field-center'>
+	  <%= h @call.pbc %>
 	</span>
-      </span>
-    </span>
-  </div>
-  <div id='line3'>
-    <span id='comp' class='field-left'>
-      <span id='comp-header' class='field-header'>
-	Comp
-      </span>
-      <span id='comp-spec' class='field'>
-	<%= h @call.comp_id_or_alias %>
-      </span>
-    </span>
-    <span id='comments' class='field field-center'>
-      <%= h @call.comments %>
-    </span>
-    <span class='field-right'>
-    </span>
-  </div>
-  <div id='line4'>
-    <span id='click-header'>Click to view:</span>
-    <span id='ecpaat-header'  class='click-tag' for='ecpaat-lines'>ECPAAT</span>,
-    <span id='scratch-header' class='click-tag' for='scratch-lines'>Scratch Pad</span>,
-    <span id='contact-header' class='click-tag' for='contact-lines'>Contact Info</span><br/>
-    <span id='ecpaat-lines' class='click-data'>
-      <%= @ecpaat_lines %>
-    </span>
-    <span id='scratch-lines' class='click-data'>
-      <%= h @pmr.nls_scratch_pad_1 %><br/>
-      <%= h @pmr.nls_scratch_pad_2 %><br/>
-      <%= h @pmr.nls_scratch_pad_3 %><br/>
-    </span>
-    <span id='contact-lines' class='click-data'>
-      <%= h @call.nls_contact_name %><br/>
-      <%= h @call.contact_phone_1 %><br/>
-      <%= h @call.contact_phone_2 %><br/>
-      <script>
+      </td>
+      <td>
+	<span id='pri-sev' class='field-right'>
+	  <span id='pri-sev-header' class='field-header'>
+	    P/S
+	  </span>
+	  <span id='pri-sev-spec' class='field'>
+	    <%= h @call.priority %>/<%= h @pmr.severity %>
+	  </span>
+	</span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+	<span id='owner' class='field-left'>
+	  <span id='owner-header' class='field-header'>
+	    Owner
+	  </span>
+	  <span id='owner-spec' class='field'>
+	    <%= h @pmr.pmr_owner_name %>
+	    <span class='inplace-edit'
+		  href='<%= retain_call_path(@call) %>'
+		  value='pmr_owner_employee_number'>
+	      <%= h @pmr.pmr_owner_employee_number %>
+	    </span>
+	  </span>
+	</span>
+      </td>
+      <td>
+	<span id='customer-name' class='field field-center'>
+	  <%= h @call.nls_customer_name %>
+	</span>
+      </td>
+      <td>
+	<span id='resolver' class='field-right'>
+	  <span id='resolver-header' class='field-header'>
+	    Resolver
+	  </span>
+	  <span id='resolver-spec' class='field'>
+	    <%= h @pmr.resolver_name %>
+	    <span class='inplace-edit'
+		  href='<%= retain_call_path(@call) %>'
+		  value='resolver_id'>
+	      <%= h @pmr.resolver_id %>
+	    </span>
+	  </span>
+	</span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+	<span id='comp' class='field-left'>
+	  <span id='comp-header' class='field-header'>
+	    Comp
+	  </span>
+	  <span id='comp-spec' class='field'>
+	    <%= h @call.comp_id_or_alias %>
+	  </span>
+	</span>
+      </td>
+      <td>
+	<span id='comments' class='field field-center'>
+	  <%= h @call.comments %>
+	</span>
+      </td>
+      <td>
+	<span class='field-right'>
+	</span>
+      </td>
+    </tr>
+    <tr>
+      <td colspan='3'>
+	<span id='click-header'>Click to view:</span>
+	<span id='ecpaat-header'  class='click-tag' for='ecpaat-lines'>ECPAAT</span>,
+	<span id='scratch-header' class='click-tag' for='scratch-lines'>Scratch Pad</span>,
+	<span id='contact-header' class='click-tag' for='contact-lines'>Contact Info</span><br/>
+	<span id='ecpaat-lines' class='click-data'>
+	  <%= @ecpaat_lines %>
+	</span>
+	<span id='scratch-lines' class='click-data'>
+	  <%= h @pmr.nls_scratch_pad_1 %><br/>
+	  <%= h @pmr.nls_scratch_pad_2 %><br/>
+	  <%= h @pmr.nls_scratch_pad_3 %><br/>
+	</span>
+	<span id='contact-lines' class='click-data'>
+	  <%= h @call.nls_contact_name %><br/>
+	  <%= h @call.contact_phone_1 %><br/>
+	  <%= h @call.contact_phone_2 %><br/>
+	  <script>
 function getSelText()
 {
     if (window.getSelection) {
@@ -105,14 +129,16 @@ function newUrl(to,sub)
    txt = getSelText();
    $("blahblah").href = "mailto:" + to + "?subject=" + sub + "&body=" + txt
 }
-      </script>
-      <a id='blahblah'
-	 href="#"
-	 onclick='newUrl("<%= h @pmr.problem_e_mail %>", "PMR <%= @call.pbc.upcase %>");'>
-	<%= h @pmr.problem_e_mail %>
-      </a><br/>
-    </span>
-  </div>
+	  </script>
+	  <a id='blahblah'
+	     href="#"
+	     onclick='newUrl("<%= h @pmr.problem_e_mail %>", "PMR <%= @call.pbc.upcase %>");'>
+	    <%= h @pmr.problem_e_mail %>
+	  </a><br/>
+	</span>
+      </td>
+    </tr>
+  </table>
 <% end %>
 
 <% content_for(:center) do %>
@@ -174,5 +200,10 @@ function newUrl(to,sub)
 <% end %>
 
 <% content_for(:bottom) do %>
-
+  <div>
+    <%= button("Home", "/") %>
+    <%= button("Queues", favorite_queues_path) %>
+    <%= button("PSAR", retain_psar_path) %>
+    <%= button("Registration", retain_registration_path) %>
+  </div>
 <% end %>
