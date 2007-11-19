@@ -29,18 +29,23 @@ module ApplicationHelper
       "controls",
       "lowpro",
       "firebug/firebug",
+      "raptor",
       "application" ] + extras
   end
   
   def std_styles(*extras)
-    [ "application", "scaffold" ] + extras
+    [ "scaffold", "application" ] + extras
   end
   
   def admin?
     session[:user].admin
   end
 
-  def button(text, url)
-    "<button href='#{url}' class='auto-button' id='#{text.to_s}'>#{text.to_s}</button>"
+  def button(text, action)
+    "<button onclick='#{action}' class='auto-button' id='#{text.to_s}'>#{text.to_s}</button>"
+  end
+
+  def button_url(text, url)
+    button(text, "Raptor.loadPage(\"#{url}\")")
   end
 end
