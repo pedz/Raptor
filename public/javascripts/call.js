@@ -3,7 +3,7 @@ Event.addBehavior({
     '.inplace-edit' : function () {
 	var url = this.getAttribute('href');
 	var v = this.getAttribute('value');
-	var ajaxOptions = { method: 'put' };
+	var ajaxOptions = { method: 'post' };
 	var options = {
 	    callback: function(form, value) { return v + '=' + escape(value) },
 	    ajaxOptions: ajaxOptions
@@ -14,17 +14,17 @@ Event.addBehavior({
     '.click-tag:click' : function () {
 	var other = this.getAttribute('for');
 	$(other).toggle();
-	recalc_dimensions();
+	Raptor.recalc_dimensions();
     },
 
     '.click-data' : function () {
 	this.hide();
-	recalc_dimensions();
+	Raptor.recalc_dimensions();
     },
 
     '.click-data:click' : function () {
 	this.hide();
-	recalc_dimensions();
+	Raptor.recalc_dimensions();
     },
 
     '#left-tab:mouseover' : function () {
@@ -78,25 +78,26 @@ Event.addBehavior({
     },
 
     '#center:mouseover' : function () {
-	close_side_panels();
+	Raptor.close_side_panels();
     },
 
     '#top:mouseover' : function () {
-	close_side_panels();
+	Raptor.close_side_panels();
     },
 
     'body' : function () {
+	$('update-form').hide();
 	left_is_open = false;
 	left_stays_open = false;
 	right_is_open = false;
 	right_stays_open = false;
 	$('left').hide();
 	$('right').hide();
-	recalc_dimensions();
+	Raptor.recalc_dimensions();
     }
 });
 
-function recalc_dimensions()
+Raptor.recalc_dimensions = function()
 {
     var top = $('top');
     top.style.height = "1em";
@@ -125,7 +126,7 @@ function recalc_dimensions()
     $('right-tab').style.bottom = newBottom;
 }
 
-function close_side_panels()
+Raptor.close_side_panels = function()
 {
     if (!left_stays_open && left_is_open) {
 	$('left').hide();

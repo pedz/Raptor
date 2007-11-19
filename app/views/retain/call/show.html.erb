@@ -39,7 +39,7 @@
 	  <span id='owner-spec' class='field'>
 	    <%= h @pmr.pmr_owner_name %>
 	    <span class='inplace-edit'
-		  href='<%= retain_call_path(@call) %>'
+		  href='<%= alter_retain_call_path(@call) %>'
 		  value='pmr_owner_employee_number'>
 	      <%= h @pmr.pmr_owner_employee_number %>
 	    </span>
@@ -59,7 +59,7 @@
 	  <span id='resolver-spec' class='field'>
 	    <%= h @pmr.resolver_name %>
 	    <span class='inplace-edit'
-		  href='<%= retain_call_path(@call) %>'
+		  href='<%= alter_retain_call_path(@call) %>'
 		  value='resolver_id'>
 	      <%= h @pmr.resolver_id %>
 	    </span>
@@ -194,16 +194,25 @@ function newUrl(to,sub)
 <% content_for(:right) do %>
   <div>
     <% (0 ... (@text_lines.length / 16)).each do |page_number| %>
-    <%=  "<a href='#line_#{page_number * 16}'>Page #{page_number + 2}</a><br/>" %>
+    <%= "<a href='#line_#{page_number * 16}'>Page #{page_number + 2}</a><br/>" %>
     <% end %>
   </div>
 <% end %>
 
 <% content_for(:bottom) do %>
   <div>
-    <%= button("Home", "/") %>
-    <%= button("Queues", favorite_queues_path) %>
-    <%= button("PSAR", retain_psar_path) %>
-    <%= button("Registration", retain_registration_path) %>
+    <%= button_url("Home", "/") %>
+    <%= button_url("Queues", favorite_queues_path) %>
+    <%= button_url("PSAR", retain_psar_path) %>
+    <%= button_url("Registration", retain_registration_path) %>
+    <%= button("Did you update the mo fo PMR, JACK?", "Raptor.updateToggle();") %>
+    <form id='update-form'>
+      <textarea rows="10" cols="72">Action Taken:
+
+
+Action Plan:
+
+      </textarea>
+    </form>
   </div>
 <% end %>

@@ -6,16 +6,23 @@ ActionController::Routing::Routes.draw do |map|
   # map.resources :feedback_notes, :path_prefix => '/feedbacks/:feedback_id'
 
   map.resources :retain_pmrs, :controller => 'retain/pmrs'
-  map.resources :retain_call, :controller => 'retain/call'
+  map.resources(:retain_call,
+                :controller => 'retain/call',
+                :member => { :alter => :post,
+                  :addtxt => :post,
+                  :requeue => :post })
   map.resource  :retain_psar, :controller => 'retain/psar'
   map.resource  :retain_registration, :controller => 'retain/registration'
-  # map.retain_queue 'retain_queue/:queue_spec', :controller => 'retain/queue', :action => 'show'
-  map.resources :retain_queue, :controller => 'retain/queue'
+  map.resources :retain_qs, :controller => 'retain/qs'
+  map.resources :retain_qq, :controller => 'retain/qq'
+  map.resources :retain_queue, :controller => 'retain/queue',
+                               :member => { :addtxt => :post }
   map.resources :favorite_queues
   map.resources :retusers
   map.resources :users
 
-  # The priority is based upon order of creation: first created -> highest priority.
+  # The priority is based upon order of creation: first created ->
+  # highest priority.
 
   # Sample of regular route:
   # map.connect 'products/:id', :controller => 'catalog', :action => 'view'

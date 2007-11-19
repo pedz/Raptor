@@ -18,21 +18,6 @@ class FavoriteQueuesController < ApplicationController
   # GET /favorite_queues/1.xml
   def show
     @favorite_queue = FavoriteQueue.find(params[:id])
-    ### @user = session[:user]
-    ### @user = @user.favorite_user
-    ### r = Favorite::Base.new(:signon => @user.retid,
-    ###                      :password => @user.password)
-    ### queue = r.scs0(:queue_name => @favorite_queue.queue_name,
-    ###                :center => @favorite_queue.center,
-    ###                :scs0_group_request => [
-    ###                                        :problem,
-    ###                                        :branch,
-    ###                                        :country,
-    ###                                        :NLS_comments,
-    ###                                        :NLS_customer_name,
-    ###                                        :NLS_contact_name
-    ###                                       ])
-    ### @pmrs = queue.fields.de32
     @pmrs = []
     
     respond_to do |format|
