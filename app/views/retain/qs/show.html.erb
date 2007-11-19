@@ -1,0 +1,41 @@
+<!-- retain/queue/show.html.erb -->
+<% @title = "Retain queue: #{@queue.to_s}" -%>
+<% content_for(:top) do %>
+  <h1>Retain Queue: <%= h @queue.to_s %></h1>
+<% end %>
+<% content_for(:center) do %>
+  <div class="smaller">
+    <%= link_to 'Index of Favorite Queues', favorite_queues_path %>
+  
+    <% if @tuples.empty? %>
+      Empty Queue or Queue not found.  Sorry but I can't tell the difference.
+    <% else %>
+      <table style='font-family : courier, monospace'>
+        <thead>
+  	  <th>Sel#</th>
+  	  <th>Prblm,bnc,cty</th>
+  	  <th>S</th>
+  	  <th>Owner</th>
+  	  <th>Resolver</th>
+  	  <th>Next Queue</th>
+        </thead>
+        <% index = 0 -%>
+        <% for call, pmr, cached_pmr, text_lines in @tuples -%>
+          <tr>
+  	    <td><%= button(index += 1, retain_call_url(call)) %></td>
+  	    <td><%= link_to call.pbc, call %></td>
+  	    <td><%= call.p_s_b %></td>
+  	    <td><%= pmr.pmr_owner_name %></td>
+  	    <td><%= pmr.resolver_name %></td>
+  	    <td><%= pmr.next_queue %>,<%= pmr.next_center %></td>
+  	  </tr>
+        <% end -%>
+      </table>
+    <% end %>
+  </div>
+<% end %>
+<% content_for(:bottom) do %>
+  <div>
+    <%= button_url("Home", "/") %>
+  </div>
+<% end %>
