@@ -16,9 +16,49 @@
     <td>Site</td><td><%= @query.site %></td>
   </tr>
   <tr>
-    <td>Signon</td><td><%= @query.signon2 %></td>
-  </tr>
-  <tr>
-    <td>Name</td><td><%= @query.name %></td>
+    <td>Special Conditions</td><td><%= @query.special_conditions %></td>
   </tr>
 </table>
+<table>
+  <thead>
+    <tr>
+      <td>Index</td>
+      <td>Name</td>
+      <td>Number</td>
+      <td>Phone</td>
+      <td>User Info</td>
+      <td>Queue Status</td>
+    </tr>
+  </thead>
+<% signon2s = @query.signon2 %>
+<% names = @query.name %>
+<% telephone_numbers = @query.telephone_number %>
+<% authority_levels = @query.authority_level %>
+<% psar_collector_indicators = @query.psar_collector_indicator %>
+<% dyalight_savings_times = @query.dyalight_savings_time %>
+<% app_driver_signons = @query.app_driver_signon %>
+<% time_zone_adjustments = @query.time_zone_adjustment %>
+<% user_status_informations = @query.user_status_information %>
+<% queue_status_flags = @query.queue_status_flag %>
+<!--
+    <%= user_status_informations.class %>
+    <%= queue_status_flags.class %>
+    <%= user_status_informations.length %>
+    <%= queue_status_flags.length %>
+    <%= user_status_informations[0].class %>
+    <%= queue_status_flags[0].class %>
+  -->
+  <tbody>
+    <% (0...signon2s.length).each do |i| %>
+    <tr>
+      <td><%= i+1 %></td>
+      <td><%= signon2s[i] %></td>
+      <td><%= names[i] %></td>
+      <td><%= telephone_numbers[i] %></td>
+      <td><%= ("%02x" % user_status_informations[i]) %></td>
+      <td><%= ("%02x" % queue_status_flags[i]) %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
