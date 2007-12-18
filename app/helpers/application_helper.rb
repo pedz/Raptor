@@ -22,12 +22,7 @@ module ApplicationHelper
 
   def std_scripts(*extras)
     [ "prototype",
-      "effects",
-      "prototype",
-      "effects",
-      "dragdrop",
-      "controls",
-      "lowpro",
+      "scriptaculous",
       "firebug/firebug",
       "raptor",
       "application" ] + extras

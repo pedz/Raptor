@@ -486,7 +486,8 @@ Object.extend(String.prototype, {
   },
 
   isJSON: function() {
-    var str = this.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, '');
+    // I added a back-slash before the double quote inside the character set
+    var str = this.replace(/\\./g, '@').replace(/"[^\"\\\n\r]*"/g, '');
     return (/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(str);
   },
 

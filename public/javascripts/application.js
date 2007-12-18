@@ -3,11 +3,9 @@
 // hope it is either empty or pretty minimal...
 //
 
-Event.addBehavior({
-    'body' : function() {
-	bottom = $('bottom');
-	if (bottom) {
-	    Raptor.addUserInput(bottom);
-	}
+document.observe('dom:loaded', function() {
+    bottom = $('bottom');
+    if (bottom) {
+	Raptor.addUserInput(bottom);
     }
 });

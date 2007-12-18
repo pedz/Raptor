@@ -3,6 +3,11 @@
 //
 
 var Raptor = {
+    left_is_open: false,
+    left_stays_open: false,
+    right_is_open: false,
+    right_stays_open: false,
+
     // Appends a text field to element and arranges for that text
     // field to have focus when the page is first loaded.  Text typed
     // in this field will act as a command line interface.
@@ -76,5 +81,42 @@ var Raptor = {
     updateToggle : function() {
 	$('update-form').toggle();
 	Raptor.recalc_dimensions();
+    },
+
+    recalc_dimensions: function() {
+	var top = $('top');
+	top.style.height = "1em";
+	var newTop = top.scrollHeight + "px";
+
+	var bottom = $('bottom');
+	bottom.style.height = "1em";
+	var newBottom = bottom.scrollHeight + "px";
+
+	console.log("newTop =", newTop);
+	console.log("newBottom =", newBottom);
+	
+	top.style.height = newTop;
+	bottom.style.height = newBottom;
+
+	$('left').style.top = newTop;
+	$('left-tab').style.top = newTop;
+	$('center').style.top = newTop;
+	$('right').style.top = newTop;
+	$('right-tab').style.top = newTop;
+	
+	$('left').style.bottom = newBottom;
+	$('left-tab').style.bottom = newBottom;
+	$('center').style.bottom = newBottom;
+	$('right').style.bottom = newBottom;
+	$('right-tab').style.bottom = newBottom;
+    },
+
+    close_side_panels: function() {
+	if (!Raptor.left_stays_open && Raptor.left_is_open) {
+	    $('left').hide();
+	}
+	if (!Raptor.right_stays_open && Raptor.right_is_open) {
+	    $('right').hide();
+	}
     }
 };
