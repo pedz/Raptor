@@ -3972,7 +3972,7 @@ Object.extend(document, {
   }
 
   if (document.addEventListener) {
-    if (Prototype.Browser.WebKit) {
+    if (Prototype.Browser.WebKit || navigator.userAgent.include('KHTML')) {
       timer = window.setInterval(function() {
         if (/loaded|complete/.test(document.readyState))
           fireContentLoadedEvent();

@@ -84,31 +84,47 @@ var Raptor = {
     },
 
     recalc_dimensions: function() {
-	var top = $('top');
-	top.style.height = "1em";
-	var newTop = top.scrollHeight + "px";
+	Raptor.top.style.height = "1em";
+	var newTop = Raptor.top.scrollHeight + "px";
 
-	var bottom = $('bottom');
-	bottom.style.height = "1em";
-	var newBottom = bottom.scrollHeight + "px";
+	Raptor.bottom.style.height = "1em";
+	var newBottom = Raptor.bottom.scrollHeight + "px";
+
+	var newRight = Raptor.right_tab_width;
+	if (Raptor.right_stays_open) {
+	    newRight += Raptor.right_width;
+	} else {
+	    Raptor.right.hide();
+	}
+	Raptor.center.style.right = newRight + "px";
+
+	var newLeft = Raptor.left_tab_width;
+	if (Raptor.left_stays_open) {
+	    newLeft += Raptor.left_width;
+	} else {
+	    Raptor.left.hide();
+	}
+	Raptor.center.style.left = newLeft + "px";
 
 	console.log("newTop =", newTop);
 	console.log("newBottom =", newBottom);
+	console.log("newleft =", newLeft);
+	console.log("newRight =", newRight);
 	
-	top.style.height = newTop;
-	bottom.style.height = newBottom;
+	Raptor.top.style.height = newTop;
+	Raptor.bottom.style.height = newBottom;
 
-	$('left').style.top = newTop;
-	$('left-tab').style.top = newTop;
-	$('center').style.top = newTop;
-	$('right').style.top = newTop;
-	$('right-tab').style.top = newTop;
+	Raptor.left.style.top = newTop;
+	Raptor.left_tab.style.top = newTop;
+	Raptor.center.style.top = newTop;
+	Raptor.right.style.top = newTop;
+	Raptor.right_tab.style.top = newTop;
 	
-	$('left').style.bottom = newBottom;
-	$('left-tab').style.bottom = newBottom;
-	$('center').style.bottom = newBottom;
-	$('right').style.bottom = newBottom;
-	$('right-tab').style.bottom = newBottom;
+	Raptor.left.style.bottom = newBottom;
+	Raptor.left_tab.style.bottom = newBottom;
+	Raptor.center.style.bottom = newBottom;
+	Raptor.right.style.bottom = newBottom;
+	Raptor.right_tab.style.bottom = newBottom;
     },
 
     close_side_panels: function() {

@@ -1,5 +1,19 @@
 
 document.observe('dom:loaded', function() {
+    Raptor.right = $('right');
+    Raptor.right_tab = $('right-tab');
+    Raptor.right_width = parseInt(window.getComputedStyle(Raptor.right, null).width);
+    Raptor.right_tab_width = parseInt(window.getComputedStyle(Raptor.right_tab, null).width);
+
+    Raptor.left = $('left');
+    Raptor.left_tab = $('left-tab');
+    Raptor.left_width = parseInt(window.getComputedStyle(Raptor.left, null).width);
+    Raptor.left_tab_width = parseInt(window.getComputedStyle(Raptor.left_tab, null).width);
+
+    Raptor.top = $('top');
+    Raptor.center = $('center');
+    Raptor.bottom = $('bottom');
+
     // We want to hide the update-form at page load.
     $('update-form').hide();
 
@@ -48,57 +62,32 @@ document.observe('dom:loaded', function() {
     });
 
     $('left-tab').observe('mouseover', function (event) {
+	console.log("left-tab mouseoever");
 	event.stop();
 	Raptor.left_is_open = true;
+	ele = $('left');
 	$('left').show();
     });
 
     $('left-tab').observe('click', function (event) {
+	console.log("left-tab click");
 	event.stop();
 	Raptor.left_stays_open = !Raptor.left_stays_open;
-	var l = $('left');
-	var lt = $('left-tab');
-	var c = $('center');
-	if (Raptor.left_stays_open) {
-	    var l_width  = window.getComputedStyle(l, null).width;
-	    // console.log("l_width", l_width);
-	    var lt_width = window.getComputedStyle(lt, null).width;
-	    // console.log("lt_width", lt_width);
-	    var width = (parseInt(l_width) + parseInt(lt_width)) + "px";
-	    // console.log("width", width);
-	    c.style.left = width;
-	} else {
-	    var width = (lt.scrollWidth) + "px";
-	    c.style.left = width;
-	    l.hide();
-	}
+	Raptor.recalc_dimensions();
     });
 
     $('right-tab').observe('mouseover', function (event) {
+	console.log("right-tab mouseover");
 	event.stop();
 	Raptor.right_is_open = true;
 	$('right').show();
     });
 
     $('right-tab').observe('click', function (event) {
+	console.log("right-tab click");
 	event.stop();
 	Raptor.right_stays_open = !Raptor.right_stays_open;
-	var r = $('right');
-	var rt = $('right-tab');
-	var c = $('center');
-	if (Raptor.right_stays_open) {
-	    var r_width  = window.getComputedStyle(r, null).width;
-	    // console.log("r_width", r_width);
-	    var rt_width = window.getComputedStyle(rt, null).width;
-	    // console.log("rt_width", rt_width);
-	    var width = (parseInt(r_width) + parseInt(rt_width)) + "px";
-	    // console.log("width", width);
-	    c.style.right = width;
-	} else {
-	    var width = (rt.scrollWidth) + "px";
-	    c.style.right = width;
-	    r.hide();
-	}
+	Raptor.recalc_dimensions();
     });
 
     $('center').observe('mouseover', function (event) {
