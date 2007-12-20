@@ -585,7 +585,8 @@ module Retain
         base_obj = @fetch_fields.call
         unless base_obj.rc == 0
           if base_obj.error_message?
-            raise base_obj.error_message
+            msg = base_obj.error_message + ( " error=%d" % base_obj.rc )
+            raise msg
           else
             raise Errors[base_obj.rc]
           end
