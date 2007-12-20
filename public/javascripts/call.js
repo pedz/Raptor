@@ -62,7 +62,7 @@ document.observe('dom:loaded', function() {
     });
 
     $('left-tab').observe('mouseover', function (event) {
-	console.log("left-tab mouseoever");
+	// console.log("left-tab mouseoever");
 	event.stop();
 	Raptor.left_is_open = true;
 	ele = $('left');
@@ -70,21 +70,21 @@ document.observe('dom:loaded', function() {
     });
 
     $('left-tab').observe('click', function (event) {
-	console.log("left-tab click");
+	// console.log("left-tab click");
 	event.stop();
 	Raptor.left_stays_open = !Raptor.left_stays_open;
 	Raptor.recalc_dimensions();
     });
 
     $('right-tab').observe('mouseover', function (event) {
-	console.log("right-tab mouseover");
+	// console.log("right-tab mouseover");
 	event.stop();
 	Raptor.right_is_open = true;
 	$('right').show();
     });
 
     $('right-tab').observe('click', function (event) {
-	console.log("right-tab click");
+	// console.log("right-tab click");
 	event.stop();
 	Raptor.right_stays_open = !Raptor.right_stays_open;
 	Raptor.recalc_dimensions();

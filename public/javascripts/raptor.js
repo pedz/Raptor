@@ -46,7 +46,7 @@ var Raptor = {
 		    if (match) {
 			// Exact match takes precidence
 			if (eleId.length == textLength) {
-			    console.log(this);
+			    // console.log(this);
 			    this.value = "";
 			    ele.click();
 			    return false;
@@ -61,7 +61,7 @@ var Raptor = {
 		    }
 		}
 		if (foundElement) {
-		    console.log(this);
+		    // console.log(this);
 		    this.value = "";
 		    foundElement.click();
 		    return false;
@@ -106,10 +106,10 @@ var Raptor = {
 	}
 	Raptor.center.style.left = newLeft + "px";
 
-	console.log("newTop =", newTop);
-	console.log("newBottom =", newBottom);
-	console.log("newleft =", newLeft);
-	console.log("newRight =", newRight);
+	// console.log("newTop =", newTop);
+	// console.log("newBottom =", newBottom);
+	// console.log("newleft =", newLeft);
+	// console.log("newRight =", newRight);
 	
 	Raptor.top.style.height = newTop;
 	Raptor.bottom.style.height = newBottom;
