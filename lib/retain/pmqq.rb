@@ -206,27 +206,28 @@ module Retain
       super(options)
       unless @fields.has_key?(:group_request)
         @fields[:group_request] = [
-                                   :country,
+                                   # :country,
                                    :queue_name,
                                    :center,
                                    :queue_level,
                                    :support_center_binary,
                                    :site,
-                                   :cd_employee_number,
-                                   :cd_employee_name,
+                                   # :cd_employee_number,
+                                   # :cd_employee_name,
                                    :special_conditions
                                   ]
       end
+
       unless @fields.has_key?(:list_request)
         @fields[:list_request] = [
                                   :signon2,
                                   :name,
                                   :telephone_number,
-                                  :authority_level,
-                                  :psar_collector_indicator,
-                                  :dyalight_savings_time,
-                                  :app_driver_signon,
-                                  :time_zone_adjustment,
+                                  # :authority_level,
+                                  # :psar_collector_indicator,
+                                  # :dyalight_savings_time,
+                                  # :app_driver_signon,
+                                  # :time_zone_adjustment,
                                   :user_status_information,
                                   :queue_status_flag
                                  ]
