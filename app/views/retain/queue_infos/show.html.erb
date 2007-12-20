@@ -1,0 +1,18 @@
+<p>
+  <b>Queue name:</b>
+  <%=h @queue_info.queue_name %>
+</p>
+
+<p>
+  <b>Center:</b>
+  <%=h @queue_info.center %>
+</p>
+
+<p>
+  <b>Owner:</b>
+  <%=h @queue_info.owner %>
+</p>
+
+
+<%= link_to 'Edit', edit_retain_queue_info_path(@queue_info) %> |
+<%= link_to 'Back', retain_queue_infos_path %>

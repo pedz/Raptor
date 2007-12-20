@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  id: 1
+  queue_name: MyString
+  center: MyString
+  owner: MyString
+  created_at: 2007-12-20 13:09:20
+  updated_at: 2007-12-20 13:09:20
+two:
+  id: 2
+  queue_name: MyString
+  center: MyString
+  owner: MyString
+  created_at: 2007-12-20 13:09:20
+  updated_at: 2007-12-20 13:09:20

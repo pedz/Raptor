@@ -1,0 +1,27 @@
+<h1>Editing queue_info</h1>
+
+<%= error_messages_for :queue_info %>
+
+<% form_for(@queue_info) do |f| %>
+  <p>
+    <b>Queue name</b><br />
+    <%= f.text_field :queue_name %>
+  </p>
+
+  <p>
+    <b>Center</b><br />
+    <%= f.text_field :center %>
+  </p>
+
+  <p>
+    <b>Owner</b><br />
+    <%= f.text_field :owner %>
+  </p>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @queue_info %> |
+<%= link_to 'Back', queue_infos_path %>

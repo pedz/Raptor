@@ -5,6 +5,7 @@ ActionController::Routing::Routes.draw do |map|
   # map.resources :feedbacks
   # map.resources :feedback_notes, :path_prefix => '/feedbacks/:feedback_id'
 
+  map.resources :retain_queue_infos, :controller => 'retain/queue_infos'
   map.resources :retain_pmrs, :controller => 'retain/pmrs'
   map.resources(:retain_call,
                 :controller => 'retain/call',
@@ -17,7 +18,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :retain_qq, :controller => 'retain/qq'
   map.resources :retain_queue, :controller => 'retain/queue',
                                :member => { :addtxt => :post }
-  map.resources :favorite_queues
+  map.resources :retain_favorite_queues, :controller => 'retain/favorite_queues'
   map.resources :retusers
   map.resources :users
 

@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 10) do
+ActiveRecord::Schema.define(:version => 11) do
 
   create_table "cached_calls", :force => true do |t|
     t.string   "queue_name", :limit => 6,                  :null => false
@@ -59,6 +59,14 @@ ActiveRecord::Schema.define(:version => 10) do
     t.integer  "priority",   :default => 3
     t.integer  "ftype",      :default => 0
     t.integer  "state",      :default => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "queue_infos", :force => true do |t|
+    t.string   "queue_name"
+    t.string   "center"
+    t.string   "owner"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

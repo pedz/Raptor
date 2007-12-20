@@ -7,6 +7,7 @@
 <% end %>
     <th>Queue name</th>
     <th>Center</th>
+    <th>Calls</th>
   </tr>
 
 <% for favorite_queue in @favorite_queues %>
@@ -16,14 +17,15 @@
 <% end %>
     <td><%=h q = favorite_queue.queue_name.gsub(/ /, '') %></td>
     <td><%=h c = favorite_queue.center %></td>
+    <td align='right'><%= h favorite_queue.calls %></td>
     <td><%= link_to 'Queue', retain_queue_path("#{q},#{c}") %></td>
-    <td><%= link_to 'Show', favorite_queue %></td>
-    <td><%= link_to 'Edit', edit_favorite_queue_path(favorite_queue) %></td>
-    <td><%= link_to 'Destroy', favorite_queue, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Show', retain_favorite_queue_path(favorite_queue) %></td>
+    <td><%= link_to 'Edit', edit_retain_favorite_queue_path(favorite_queue) %></td>
+    <td><%= link_to 'Destroy', retain_favorite_queue_path(favorite_queue), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Favorite Queue', new_favorite_queue_path %>
+<%= link_to 'New Favorite Queue', new_retain_favorite_queue_path %>

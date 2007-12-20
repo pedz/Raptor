@@ -1,7 +1,7 @@
 <!-- retain/queue/show.html.erb -->
 <% @title = "Retain queue: #{@queue.to_s}" -%>
 <h1>Retain Queue: <%= h @queue.to_s %></h1>
-<%= link_to 'Index of Favorite Queues', favorite_queues_path %>
+<%= link_to 'Index of Favorite Queues', retain_favorite_queues_path %>
 
 <% if @calls.nil? %>
   Empty Queue or Queue not found.  Sorry but I can't tell the difference.

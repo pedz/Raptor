@@ -1,0 +1,2 @@
+module Retain::QueueInfosHelper
+end
