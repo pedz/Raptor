@@ -419,7 +419,7 @@ if (!("console" in window) || !("firebug" in console)) {
             }
             return "?";
         };
-        return String(value).replace(/[<>&"']/g, replaceChars);
+        return String(value).replace(/[<>&\"\']/g, replaceChars);
     }
 
     function objectToString(object)
