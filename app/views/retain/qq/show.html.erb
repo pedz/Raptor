@@ -23,40 +23,56 @@
   <thead>
     <tr>
       <td>Index</td>
+      <% length = 0 %>
+      <% if @query.signon2? %>
+      <%   signon2s = @query.signon2 %>
+      <%   length = [ length, signon2s.length].max %>
+      <td>Sign On</td>
+      <% end %>
+      <%  if @query.name? %>
+      <%    names = @query.name %>
+      <%    length = [ length, names.length ].max %>
       <td>Name</td>
-      <td>Number</td>
+      <% end %>
+      <% if @query.telephone_number? %>
+      <%   telephone_numbers = @query.telephone_number %>
+      <%   length = [ length, telephone_numbers.length ].max %>
       <td>Phone</td>
+      <% end %>
+      <% if @query.user_status_information? %>
+      <%   user_status_informations = @query.user_status_information %>
+      <%   length = [ length, user_status_informations.length ].max %>
       <td>User Info</td>
+      <% end %>
+      <% if @query.queue_status_flag? %>
+      <%   queue_status_flags = @query.queue_status_flag %>
+      <%   length = [ length, queue_status_flags.length ].max %>
       <td>Queue Status</td>
+      <% end %>
     </tr>
   </thead>
-<% signon2s = @query.signon2 %>
-<% names = @query.name %>
-<% telephone_numbers = @query.telephone_number %>
-<% authority_levels = @query.authority_level %>
-<% psar_collector_indicators = @query.psar_collector_indicator %>
-<% dyalight_savings_times = @query.dyalight_savings_time %>
-<% app_driver_signons = @query.app_driver_signon %>
-<% time_zone_adjustments = @query.time_zone_adjustment %>
-<% user_status_informations = @query.user_status_information %>
-<% queue_status_flags = @query.queue_status_flag %>
 <!--
-    <%= user_status_informations.class %>
-    <%= queue_status_flags.class %>
-    <%= user_status_informations.length %>
-    <%= queue_status_flags.length %>
-    <%= user_status_informations[0].class %>
-    <%= queue_status_flags[0].class %>
-  -->
+    <%= names %>
+    -->
   <tbody>
-    <% (0...signon2s.length).each do |i| %>
+    <% (0...length).each do |i| %>
     <tr>
       <td><%= i+1 %></td>
+      <% if signon2s %>
       <td><%= signon2s[i] %></td>
+      <% end %>
+      <% if names %>
       <td><%= names[i] %></td>
+      <% end %>
+      <% if telephone_numbers %>
       <td><%= telephone_numbers[i] %></td>
+      <% end %>      
+      <% if user_status_informations %>
       <td><%= ("%02x" % user_status_informations[i]) %></td>
+      <% end %>
+      <% if queue_status_flags %>
       <td><%= ("%02x" % queue_status_flags[i]) %></td>
+      <% end %>
     </tr>
     <% end %>
   </tbody>
