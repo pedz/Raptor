@@ -2,7 +2,7 @@
 
 <%= error_messages_for :queue %>
 
-<% form_for(@favorite_queue) do |f| %>
+<% form_for(@retain_favorite_queue) do |f| %>
   <p>
     <b>Queue name</b><br />
     <%= f.text_field :queue_name %>
@@ -18,4 +18,4 @@
   </p>
 <% end %>
 
-<%= link_to 'Index of Favorite Queues', favorite_queues_path %>
+<%= link_to 'Index of Favorite Queues', retain_favorite_queues_path %>

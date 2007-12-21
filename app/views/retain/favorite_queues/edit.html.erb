@@ -2,7 +2,7 @@
 
 <%= error_messages_for :queue %>
 
-<% form_for(@favorite_queue) do |f| %>
+<% form_for(@retain_favorite_queue) do |f| %>
 <% if admin? %>
   <p>
     <b>User</b><br />
@@ -25,5 +25,5 @@
   </p>
 <% end %>
 
-<%= link_to 'Show', @favorite_queue %> |
-<%= link_to 'Index of Favorite Queues', favorite_queues_path %>
+<%= link_to 'Show', @retain_favorite_queue %> |
+<%= link_to 'Index of Favorite Queues', retain_favorite_queues_path %>

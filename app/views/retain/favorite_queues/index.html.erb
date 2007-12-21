@@ -10,18 +10,18 @@
     <th>Calls</th>
   </tr>
 
-<% for favorite_queue in @favorite_queues %>
+<% for retain_favorite_queue in @retain_favorite_queues %>
   <tr>
 <% if admin? %>
-    <td><%=h favorite_queue.user_id %></td>
+    <td><%=h retain_favorite_queue.user_id %></td>
 <% end %>
-    <td><%=h q = favorite_queue.queue_name.gsub(/ /, '') %></td>
-    <td><%=h c = favorite_queue.center %></td>
-    <td align='right'><%= h favorite_queue.calls %></td>
+    <td><%=h q = retain_favorite_queue.queue_name.gsub(/ /, '') %></td>
+    <td><%=h c = retain_favorite_queue.center %></td>
+    <td align='right'><%= h retain_favorite_queue.calls %></td>
     <td><%= link_to 'Queue', retain_queue_path("#{q},#{c}") %></td>
-    <td><%= link_to 'Show', retain_favorite_queue_path(favorite_queue) %></td>
-    <td><%= link_to 'Edit', edit_retain_favorite_queue_path(favorite_queue) %></td>
-    <td><%= link_to 'Destroy', retain_favorite_queue_path(favorite_queue), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Show', retain_favorite_queue %></td>
+    <td><%= link_to 'Edit', edit_retain_favorite_queue_path(retain_favorite_queue) %></td>
+    <td><%= link_to 'Destroy', retain_favorite_queue, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
