@@ -49,6 +49,12 @@ module ActiveRecord
     end
   end
 
+  class HasManyThroughCantDissociateNewRecords < ActiveRecordError #:nodoc:
+    def initialize(owner, reflection)
+      super("Cannot dissociate new records through '#{owner.class.name}##{reflection.name}' on '#{reflection.source_reflection.class_name rescue nil}##{reflection.source_reflection.name rescue nil}'. Both records must have an id in order to delete the has_many :through record associating them.")
+    end
+  end
+
   class EagerLoadPolymorphicError < ActiveRecordError #:nodoc:
     def initialize(reflection)
       super("Can not eagerly load the polymorphic association #{reflection.name.inspect}")
@@ -119,7 +125,7 @@ module ActiveRecord
     #   ----------------------------------+-------+----------+----------
     #   #others                           |   X   |    X     |    X
     #   #others=(other,other,...)         |   X   |    X     |    
-    #   #other_ids                        |   X   |    X     |    
+    #   #other_ids                        |   X   |    X     |    X
     #   #other_ids=(id,id,...)            |   X   |    X     |    
     #   #others<<                         |   X   |    X     |    X
     #   #others.push                      |   X   |    X     |    X
@@ -127,15 +133,15 @@ module ActiveRecord
     #   #others.build(attributes={})      |   X   |    X     |    X
     #   #others.create(attributes={})     |   X   |    X     |    
     #   #others.create!(attributes={})    |   X   |    X     |    X
-    #   #others.size                      |   X   |    X     |    
-    #   #others.length                    |   X   |    X     |    
-    #   #others.count                     |       |    X     |    
+    #   #others.size                      |   X   |    X     |    X
+    #   #others.length                    |   X   |    X     |    X
+    #   #others.count                     |       |    X     |    X
     #   #others.sum(args*,&block)         |   X   |    X     |    X
-    #   #others.empty?                    |   X   |    X     |    
+    #   #others.empty?                    |   X   |    X     |    X
     #   #others.clear                     |   X   |    X     |    
     #   #others.delete(other,other,...)   |   X   |    X     |    X
     #   #others.delete_all                |   X   |    X     |    
-    #   #others.destroy_all               |   X   |    X     |    
+    #   #others.destroy_all               |   X   |    X     |    X
     #   #others.find(*args)               |   X   |    X     |    X
     #   #others.find_first                |   X   |          |    
     #   #others.uniq                      |   X   |    X     |    
@@ -237,7 +243,7 @@ module ActiveRecord
     #
     # == Unsaved objects and associations
     #
-    # You can manipulate objects and associations before they are saved to the database, but there is some special behaviour you should be
+    # You can manipulate objects and associations before they are saved to the database, but there is some special behavior you should be
     # aware of, mostly involving the saving of associated objects.
     #
     # === One-to-one associations
@@ -260,8 +266,8 @@ module ActiveRecord
     #
     # === Association callbacks
     #
-    # Similiar to the normal callbacks that hook into the lifecycle of an Active Record object, you can also define callbacks that get
-    # trigged when you add an object to or remove an object from an association collection. Example:
+    # Similar to the normal callbacks that hook into the lifecycle of an Active Record object, you can also define callbacks that get
+    # triggered when you add an object to or remove an object from an association collection. Example:
     #
     #   class Project
     #     has_and_belongs_to_many :developers, :after_add => :evaluate_velocity
@@ -409,10 +415,10 @@ module ActiveRecord
     #     has_many :assets, :as => :attachable, :dependent => :destroy
     #   end
     #
-    #   class GuestPost < ActiveRecord::Base
+    #   class GuestPost < Post
     #   end
     #
-    #   class MemberPost < ActiveRecord::Base
+    #   class MemberPost < Post
     #   end
     #
     # == Caching
@@ -578,10 +584,10 @@ module ActiveRecord
       #   This will also destroy the objects if they're declared as +belongs_to+ and dependent on this model.
       # * <tt>collection=objects</tt> - replaces the collections content by deleting and adding objects as appropriate.
       # * <tt>collection_singular_ids</tt> - returns an array of the associated objects' ids
-      # * <tt>collection_singular_ids=ids</tt> - replace the collection by the objects identified by the primary keys in +ids+
+      # * <tt>collection_singular_ids=ids</tt> - replace the collection with the objects identified by the primary keys in +ids+
       # * <tt>collection.clear</tt> - removes every object from the collection. This destroys the associated objects if they
       #   are associated with <tt>:dependent => :destroy</tt>, deletes them directly from the database if <tt>:dependent => :delete_all</tt>,
-      #   or otherwise sets their foreign keys to NULL.
+      #   otherwise sets their foreign keys to NULL.
       # * <tt>collection.empty?</tt> - returns +true+ if there are no associated objects.
       # * <tt>collection.size</tt> - returns the number of associated objects.
       # * <tt>collection.find</tt> - finds an associated object according to the same rules as Base.find.
@@ -615,8 +621,6 @@ module ActiveRecord
       #   SQL fragment, such as <tt>price > 5 AND name LIKE 'B%'</tt>.
       # * <tt>:order</tt>       - specify the order in which the associated objects are returned as an <tt>ORDER BY</tt> SQL fragment,
       #   such as <tt>last_name, first_name DESC</tt>
-      # * <tt>:group</tt>       - specify the attribute by which the associated objects are returned as a <tt>GROUP BY</tt> SQL fragment,
-      #   such as +category+
       # * <tt>:foreign_key</tt> - specify the foreign key used for the association. By default this is guessed to be the name
       #   of this class in lower-case and +_id+ suffixed. So a +Person+ class that makes a +has_many+ association will use +person_id+
       #   as the default +foreign_key+.
@@ -627,13 +631,13 @@ module ActiveRecord
       # * <tt>:finder_sql</tt>  - specify a complete SQL statement to fetch the association. This is a good way to go for complex
       #   associations that depend on multiple tables. Note: When this option is used, +find_in_collection+ is _not_ added.
       # * <tt>:counter_sql</tt>  - specify a complete SQL statement to fetch the size of the association. If <tt>:finder_sql</tt> is
-      #   specified but <tt>:counter_sql</tt>, <tt>:counter_sql</tt> will be generated by replacing <tt>SELECT ... FROM</tt> with <tt>SELECT COUNT(*) FROM</tt>.
+      #   specified but not <tt>:counter_sql</tt>, <tt>:counter_sql</tt> will be generated by replacing <tt>SELECT ... FROM</tt> with <tt>SELECT COUNT(*) FROM</tt>.
       # * <tt>:extend</tt>  - specify a named module for extending the proxy. See "Association extensions".
       # * <tt>:include</tt>  - specify second-order associations that should be eager loaded when the collection is loaded.
       # * <tt>:group</tt>: An attribute name by which the result should be grouped. Uses the <tt>GROUP BY</tt> SQL-clause.
       # * <tt>:limit</tt>: An integer determining the limit on the number of rows that should be returned.
       # * <tt>:offset</tt>: An integer determining the offset from where the rows should be fetched. So at 5, it would skip the first 4 rows.
-      # * <tt>:select</tt>: By default, this is <tt>*</tt> as in <tt>SELECT * FROM</tt>, but can be changed if you for example want to do a join, 
+      # * <tt>:select</tt>: By default, this is <tt>*</tt> as in <tt>SELECT * FROM</tt>, but can be changed if you, for example, want to do a join 
       #   but not include the joined columns.
       # * <tt>:as</tt>: Specifies a polymorphic interface (See <tt>#belongs_to</tt>).
       # * <tt>:through</tt>: Specifies a Join Model through which to perform the query.  Options for <tt>:class_name</tt> and <tt>:foreign_key</tt> 
@@ -702,8 +706,8 @@ module ActiveRecord
       #   if the real class name is +Person+, you'll have to specify it with this option.
       # * <tt>:conditions</tt>  - specify the conditions that the associated object must meet in order to be included as a +WHERE+
       #   SQL fragment, such as <tt>rank = 5</tt>.
-      # * <tt>:order</tt>       - specify the order from which the associated object will be picked at the top. Specified as
-      #   an <tt>ORDER BY</tt> SQL fragment, such as <tt>last_name, first_name DESC</tt>
+      # * <tt>:order</tt>       - specify the order in which the associated objects are returned as an <tt>ORDER BY</tt> SQL fragment,
+      #   such as <tt>last_name, first_name DESC</tt>
       # * <tt>:dependent</tt>   - if set to <tt>:destroy</tt>, the associated object is destroyed when this object is. If set to
       #   <tt>:delete</tt>, the associated object is deleted *without* calling its destroy method. If set to <tt>:nullify</tt>, the associated
       #   object's foreign key is set to +NULL+. Also, association is assigned.
@@ -715,7 +719,7 @@ module ActiveRecord
             #
       # Option examples:
       #   has_one :credit_card, :dependent => :destroy  # destroys the associated credit card
-      #   has_one :credit_card, :dependent => :nullify  # updates the associated records foreign key value to null rather than destroying it
+      #   has_one :credit_card, :dependent => :nullify  # updates the associated records foreign key value to NULL rather than destroying it
       #   has_one :last_comment, :class_name => "Comment", :order => "posted_on"
       #   has_one :project_manager, :class_name => "Person", :conditions => "role = 'project_manager'"
       #   has_one :attachment, :as => :attachable
@@ -765,12 +769,12 @@ module ActiveRecord
       #   if the real class name is +Person+, you'll have to specify it with this option.
       # * <tt>:conditions</tt>  - specify the conditions that the associated object must meet in order to be included as a +WHERE+
       #   SQL fragment, such as <tt>authorized = 1</tt>.
-      # * <tt>:order</tt>       - specify the order from which the associated object will be picked at the top. Specified as
-      #   an <tt>ORDER BY</tt> SQL fragment, such as <tt>last_name, first_name DESC</tt>
+      # * <tt>:order</tt>       - specify the order in which the associated objects are returned as an <tt>ORDER BY</tt> SQL fragment,
+      #   such as <tt>last_name, first_name DESC</tt>
       # * <tt>:foreign_key</tt> - specify the foreign key used for the association. By default this is guessed to be the name
       #   of the associated class in lower-case and +_id+ suffixed. So a +Person+ class that makes a +belongs_to+ association to a
       #   +Boss+ class will use +boss_id+ as the default +foreign_key+.
-      # * <tt>:counter_cache</tt> - caches the number of belonging objects on the associate class through use of +increment_counter+ 
+      # * <tt>:counter_cache</tt> - caches the number of belonging objects on the associate class through the use of +increment_counter+ 
       #   and +decrement_counter+. The counter cache is incremented when an object of this class is created and decremented when it's
       #   destroyed. This requires that a column named <tt>#{table_name}_count</tt> (such as +comments_count+ for a belonging +Comment+ class)
       #   is used on the associate class (such as a +Post+ class). You can also specify a custom counter cache column by providing 
@@ -918,7 +922,8 @@ module ActiveRecord
       #   the +has_and_belongs_to_many+ association will use +project_id+ as the default association +foreign_key+.
       # * <tt>:conditions</tt>  - specify the conditions that the associated object must meet in order to be included as a +WHERE+
       #   SQL fragment, such as <tt>authorized = 1</tt>.
-      # * <tt>:order</tt> - specify the order in which the associated objects are returned as a <tt>ORDER BY</tt> SQL fragment, such as <tt>last_name, first_name DESC</tt>
+      # * <tt>:order</tt> - specify the order in which the associated objects are returned as an <tt>ORDER BY</tt> SQL fragment,
+      #   such as <tt>last_name, first_name DESC</tt>
       # * <tt>:uniq</tt> - if set to +true+, duplicate associated objects will be ignored by accessors and query methods
       # * <tt>:finder_sql</tt> - overwrite the default generated SQL statement used to fetch the association with a manual statement
       # * <tt>:delete_sql</tt> - overwrite the default generated SQL statement used to remove links between the associated 
@@ -949,7 +954,7 @@ module ActiveRecord
         # Don't use a before_destroy callback since users' before_destroy
         # callbacks will be executed after the association is wiped out.
         old_method = "destroy_without_habtm_shim_for_#{reflection.name}"
-        class_eval <<-end_eval
+        class_eval <<-end_eval unless method_defined?(old_method)
           alias_method :#{old_method}, :destroy_without_callbacks
           def destroy_without_callbacks
             #{reflection.name}.clear
@@ -1242,7 +1247,7 @@ module ActiveRecord
 
         def construct_finder_sql_with_included_associations(options, join_dependency)
           scope = scope(:find)
-          sql = "SELECT #{column_aliases(join_dependency)} FROM #{(scope && scope[:from]) || options[:from] || table_name} "
+          sql = "SELECT #{column_aliases(join_dependency)} FROM #{(scope && scope[:from]) || options[:from] || quoted_table_name} "
           sql << join_dependency.join_associations.collect{|join| join.association_join }.join
  
           add_joins!(sql, options, scope)
@@ -1259,7 +1264,7 @@ module ActiveRecord
  
         def add_limited_ids_condition!(sql, options, join_dependency)
           unless (id_list = select_limited_ids_list(options, join_dependency)).empty?
-            sql << "#{condition_word(sql)} #{table_name}.#{primary_key} IN (#{id_list}) "
+            sql << "#{condition_word(sql)} #{connection.quote_table_name table_name}.#{primary_key} IN (#{id_list}) "
           else
             throw :invalid_query
           end
@@ -1279,11 +1284,11 @@ module ActiveRecord
           is_distinct = !options[:joins].blank? || include_eager_conditions?(options) || include_eager_order?(options)
           sql = "SELECT "
           if is_distinct
-            sql << connection.distinct("#{table_name}.#{primary_key}", options[:order])
+            sql << connection.distinct("#{connection.quote_table_name table_name}.#{primary_key}", options[:order])
           else
             sql << primary_key
           end
-          sql << " FROM #{table_name} "
+          sql << " FROM #{connection.quote_table_name table_name} "
 
           if is_distinct
             sql << join_dependency.join_associations.collect(&:association_join).join
@@ -1293,12 +1298,10 @@ module ActiveRecord
           add_conditions!(sql, options[:conditions], scope)
           add_group!(sql, options[:group], scope)
 
-          if options[:order]
-            if is_distinct
-              connection.add_order_by_for_association_limiting!(sql, options)
-            else
-              add_order!(sql, options[:order], scope)
-            end
+          if options[:order] && is_distinct
+            connection.add_order_by_for_association_limiting!(sql, options)
+          else
+            add_order!(sql, options[:order], scope)
           end
 
           add_limit!(sql, options, scope)
@@ -1337,7 +1340,7 @@ module ActiveRecord
 
         def column_aliases(join_dependency)
           join_dependency.joins.collect{|join| join.column_names_with_alias.collect{|column_name, aliased_name|
-              "#{join.aliased_table_name}.#{connection.quote_column_name column_name} AS #{aliased_name}"}}.flatten.join(", ")
+              "#{connection.quote_table_name join.aliased_table_name}.#{connection.quote_column_name column_name} AS #{aliased_name}"}}.flatten.join(", ")
         end
 
         def add_association_callbacks(association_name, options)
@@ -1347,7 +1350,9 @@ module ActiveRecord
             defined_callbacks = options[callback_name.to_sym]
             if options.has_key?(callback_name.to_sym)
               class_inheritable_reader full_callback_name.to_sym
-              write_inheritable_array(full_callback_name.to_sym, [defined_callbacks].flatten)
+              write_inheritable_attribute(full_callback_name.to_sym, [defined_callbacks].flatten)
+            else
+              write_inheritable_attribute(full_callback_name.to_sym, [])
             end
           end
         end
@@ -1396,11 +1401,34 @@ module ActiveRecord
               end
               construct(@base_records_hash[primary_id], @associations, join_associations.dup, row)
             end
+            remove_duplicate_results!(join_base.active_record, @base_records_in_order, @associations)
             return @base_records_in_order
           end
 
-          def aliased_table_names_for(table_name)
-            joins.select{|join| join.table_name == table_name }.collect{|join| join.aliased_table_name}
+          def remove_duplicate_results!(base, records, associations)
+            case associations
+              when Symbol, String
+                reflection = base.reflections[associations]
+                if reflection && [:has_many, :has_and_belongs_to_many].include?(reflection.macro)
+                  records.each { |record| record.send(reflection.name).target.uniq! }
+                end
+              when Array
+                associations.each do |association|
+                  remove_duplicate_results!(base, records, association)
+                end
+              when Hash
+                associations.keys.each do |name|
+                  reflection = base.reflections[name]
+                  is_collection = [:has_many, :has_and_belongs_to_many].include?(reflection.macro)
+
+                  parent_records = records.map do |record|
+                    next unless record.send(reflection.name)
+                    is_collection ? record.send(reflection.name).target.uniq! : record.send(reflection.name)
+                  end.flatten.compact
+
+                  remove_duplicate_results!(reflection.class_name.constantize, parent_records, associations[name]) unless parent_records.empty?
+                end
+            end
           end
 
           protected
@@ -1411,7 +1439,7 @@ module ActiveRecord
                   reflection = parent.reflections[associations.to_s.intern] or
                   raise ConfigurationError, "Association named '#{ associations }' was not found; perhaps you misspelled it?"
                   @reflections << reflection
-                  @joins << JoinAssociation.new(reflection, self, parent)
+                  @joins << build_join_association(reflection, parent)
                 when Array
                   associations.each do |association|
                     build(association, parent)
@@ -1424,6 +1452,11 @@ module ActiveRecord
                 else
                   raise ConfigurationError, associations.inspect
               end
+            end
+
+            # overridden in InnerJoinDependency subclass
+            def build_join_association(reflection, parent)
+              JoinAssociation.new(reflection, self, parent)
             end
 
             def construct(parent, associations, joins, row)
@@ -1455,7 +1488,7 @@ module ActiveRecord
 
                   return nil if record.id.to_s != join.parent.record_id(row).to_s or row[join.aliased_primary_key].nil?
                   association = join.instantiate(row)
-                  collection.target.push(association) unless collection.target.include?(association)
+                  collection.target.push(association)
                 when :has_one
                   return if record.id.to_s != join.parent.record_id(row).to_s
                   association = join.instantiate(row) unless row[join.aliased_primary_key].nil?
@@ -1560,16 +1593,21 @@ module ActiveRecord
             end
 
             def association_join
+              connection = reflection.active_record.connection
               join = case reflection.macro
                 when :has_and_belongs_to_many
-                  " LEFT OUTER JOIN %s ON %s.%s = %s.%s " % [
+                  " #{join_type} %s ON %s.%s = %s.%s " % [
                      table_alias_for(options[:join_table], aliased_join_table_name),
-                     aliased_join_table_name,
+                     connection.quote_table_name(aliased_join_table_name),
                      options[:foreign_key] || reflection.active_record.to_s.foreign_key,
-                     parent.aliased_table_name, reflection.active_record.primary_key] +
-                  " LEFT OUTER JOIN %s ON %s.%s = %s.%s " % [
-                     table_name_and_alias, aliased_table_name, klass.primary_key,
-                     aliased_join_table_name, options[:association_foreign_key] || klass.to_s.foreign_key
+                     connection.quote_table_name(parent.aliased_table_name),
+		     reflection.active_record.primary_key] +
+                  " #{join_type} %s ON %s.%s = %s.%s " % [
+                     table_name_and_alias,
+		     connection.quote_table_name(aliased_table_name),
+		     klass.primary_key,
+                     connection.quote_table_name(aliased_join_table_name),
+		     options[:association_foreign_key] || klass.to_s.foreign_key
                      ]
                 when :has_many, :has_one
                   case
@@ -1582,8 +1620,8 @@ module ActiveRecord
                       if through_reflection.options[:as] # has_many :through against a polymorphic join
                         jt_foreign_key = through_reflection.options[:as].to_s + '_id'
                         jt_as_extra = " AND %s.%s = %s" % [
-                          aliased_join_table_name,
-                          reflection.active_record.connection.quote_column_name(through_reflection.options[:as].to_s + '_type'),
+                          connection.quote_table_name(aliased_join_table_name),
+                          connection.quote_column_name(through_reflection.options[:as].to_s + '_type'),
                           klass.quote_value(parent.active_record.base_class.name)
                         ]
                       else
@@ -1596,8 +1634,8 @@ module ActiveRecord
                           first_key   = "#{source_reflection.options[:as]}_id" 
                           second_key  = options[:foreign_key] || primary_key 
                           as_extra    = " AND %s.%s = %s" % [
-                            aliased_table_name,
-                            reflection.active_record.connection.quote_column_name("#{source_reflection.options[:as]}_type"),  
+                            connection.quote_table_name(aliased_table_name),
+                            connection.quote_column_name("#{source_reflection.options[:as]}_type"),
                             klass.quote_value(source_reflection.active_record.base_class.name) 
                           ]
                         else
@@ -1607,8 +1645,8 @@ module ActiveRecord
                         
                         unless through_reflection.klass.descends_from_active_record?
                           jt_sti_extra = " AND %s.%s = %s" % [
-                            aliased_join_table_name,
-                            reflection.active_record.connection.quote_column_name(through_reflection.active_record.inheritance_column),
+                            connection.quote_table_name(aliased_join_table_name),
+                            connection.quote_column_name(through_reflection.active_record.inheritance_column),
                             through_reflection.klass.quote_value(through_reflection.klass.name.demodulize)]
                         end
                       when :belongs_to
@@ -1616,8 +1654,8 @@ module ActiveRecord
                         if reflection.options[:source_type]
                           second_key = source_reflection.association_foreign_key
                           jt_source_extra = " AND %s.%s = %s" % [
-                            aliased_join_table_name,
-                            reflection.active_record.connection.quote_column_name(reflection.source_reflection.options[:foreign_type]),
+                            connection.quote_table_name(aliased_join_table_name),
+                            connection.quote_column_name(reflection.source_reflection.options[:foreign_type]),
                             klass.quote_value(reflection.options[:source_type])
                           ]
                         else
@@ -1625,46 +1663,58 @@ module ActiveRecord
                         end
                       end
 
-                      " LEFT OUTER JOIN %s ON (%s.%s = %s.%s%s%s%s) " % [
+                      " #{join_type} %s ON (%s.%s = %s.%s%s%s%s) " % [
                         table_alias_for(through_reflection.klass.table_name, aliased_join_table_name),
-                        parent.aliased_table_name, reflection.active_record.connection.quote_column_name(parent.primary_key),
-                        aliased_join_table_name, reflection.active_record.connection.quote_column_name(jt_foreign_key), 
+                        connection.quote_table_name(parent.aliased_table_name),
+			connection.quote_column_name(parent.primary_key),
+                        connection.quote_table_name(aliased_join_table_name),
+			connection.quote_column_name(jt_foreign_key),
                         jt_as_extra, jt_source_extra, jt_sti_extra
                       ] +
-                      " LEFT OUTER JOIN %s ON (%s.%s = %s.%s%s) " % [
+                      " #{join_type} %s ON (%s.%s = %s.%s%s) " % [
                         table_name_and_alias, 
-                        aliased_table_name, reflection.active_record.connection.quote_column_name(first_key),
-                        aliased_join_table_name, reflection.active_record.connection.quote_column_name(second_key),
+                        connection.quote_table_name(aliased_table_name),
+			connection.quote_column_name(first_key),
+                        connection.quote_table_name(aliased_join_table_name),
+			connection.quote_column_name(second_key),
                         as_extra
                       ]
 
                     when reflection.options[:as] && [:has_many, :has_one].include?(reflection.macro)
-                      " LEFT OUTER JOIN %s ON %s.%s = %s.%s AND %s.%s = %s" % [
+                      " #{join_type} %s ON %s.%s = %s.%s AND %s.%s = %s" % [
                         table_name_and_alias,
-                        aliased_table_name, "#{reflection.options[:as]}_id",
-                        parent.aliased_table_name, parent.primary_key,
-                        aliased_table_name, "#{reflection.options[:as]}_type",
+                        connection.quote_table_name(aliased_table_name),
+			"#{reflection.options[:as]}_id",
+                        connection.quote_table_name(parent.aliased_table_name),
+			parent.primary_key,
+                        connection.quote_table_name(aliased_table_name),
+			"#{reflection.options[:as]}_type",
                         klass.quote_value(parent.active_record.base_class.name)
                       ]
                     else
                       foreign_key = options[:foreign_key] || reflection.active_record.name.foreign_key
-                      " LEFT OUTER JOIN %s ON %s.%s = %s.%s " % [
+                      " #{join_type} %s ON %s.%s = %s.%s " % [
                         table_name_and_alias,
-                        aliased_table_name, foreign_key,
-                        parent.aliased_table_name, parent.primary_key
+                        aliased_table_name,
+			foreign_key,
+                        parent.aliased_table_name,
+			parent.primary_key
                       ]
                   end
                 when :belongs_to
-                  " LEFT OUTER JOIN %s ON %s.%s = %s.%s " % [
-                     table_name_and_alias, aliased_table_name, reflection.klass.primary_key,
-                     parent.aliased_table_name, options[:foreign_key] || klass.to_s.foreign_key
+                  " #{join_type} %s ON %s.%s = %s.%s " % [
+                     table_name_and_alias,
+		     connection.quote_table_name(aliased_table_name),
+		     reflection.klass.primary_key,
+                     connection.quote_table_name(parent.aliased_table_name),
+		     options[:foreign_key] || klass.to_s.foreign_key
                     ]
                 else
                   ""
               end || ''
               join << %(AND %s.%s = %s ) % [
-                aliased_table_name, 
-                reflection.active_record.connection.quote_column_name(klass.inheritance_column), 
+                connection.quote_table_name(aliased_table_name),
+                connection.quote_column_name(klass.inheritance_column),
                 klass.quote_value(klass.name.demodulize)] unless klass.descends_from_active_record?
 
               [through_reflection, reflection].each do |ref|
@@ -1681,7 +1731,7 @@ module ActiveRecord
               end
               
               def table_alias_for(table_name, table_alias)
-                "#{table_name} #{table_alias if table_name != table_alias}".strip
+	         "#{reflection.active_record.connection.quote_table_name(table_name)} #{table_alias if table_name != table_alias}".strip
               end
 
               def table_name_and_alias
@@ -1691,8 +1741,29 @@ module ActiveRecord
               def interpolate_sql(sql)
                 instance_eval("%@#{sql.gsub('@', '\@')}@") 
               end 
+
+            private
+
+              def join_type
+                "LEFT OUTER JOIN"
+              end
           end
         end
+
+        class InnerJoinDependency < JoinDependency # :nodoc:
+          protected
+            def build_join_association(reflection, parent)
+              InnerJoinAssociation.new(reflection, self, parent)
+            end
+
+          class InnerJoinAssociation < JoinAssociation
+            private
+              def join_type
+                "INNER JOIN"
+              end
+          end
+        end
+
     end
   end
 end

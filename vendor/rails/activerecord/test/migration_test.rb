@@ -286,7 +286,7 @@ if ActiveRecord::Base.connection.supports_migrations?
           :bio => "I was born ....", :age => 18, :height => 1.78,
           :wealth => BigDecimal.new("12345678901234567890.0123456789"),
           :birthday => 18.years.ago, :favorite_day => 10.days.ago,
-          :moment_of_truth => "1582-10-10 21:40:18", :male => true
+          :moment_of_truth => "1782-10-10 21:40:18", :male => true
       end
 
       bob = Person.find(:first)
@@ -323,6 +323,7 @@ if ActiveRecord::Base.connection.supports_migrations?
         assert_equal DateTime.now.offset, bob.moment_of_truth.offset
         assert_not_equal 0, bob.moment_of_truth.offset
         assert_not_equal "Z", bob.moment_of_truth.zone
+        assert_equal DateTime::ITALY, bob.moment_of_truth.start
       end
 
       assert_equal TrueClass, bob.male?.class
@@ -461,8 +462,8 @@ if ActiveRecord::Base.connection.supports_migrations?
       end
     end
     
-    unless current_adapter?(:SQLiteAdapter)
     def test_change_column_nullability
+      Person.delete_all 
       Person.connection.add_column "people", "funny", :boolean
       Person.reset_column_information
       assert Person.columns_hash["funny"].null, "Column 'funny' must initially allow nulls"
@@ -472,7 +473,6 @@ if ActiveRecord::Base.connection.supports_migrations?
       Person.connection.change_column "people", "funny", :boolean, :null => true
       Person.reset_column_information
       assert Person.columns_hash["funny"].null, "Column 'funny' must allow nulls again at this point"
-    end
     end
 
     def test_rename_table_with_an_index
@@ -868,7 +868,66 @@ if ActiveRecord::Base.connection.supports_migrations?
         Person.connection.execute("select suitably_short_seq.nextval from dual")
       end
     end
-
   end
+
+  uses_mocha 'Sexy migration tests' do
+    class SexyMigrationsTest < Test::Unit::TestCase
+      def test_references_column_type_adds_id
+        with_new_table do |t|
+          t.expects(:column).with('customer_id', :integer, {})
+          t.references :customer
+        end
+      end
+ 
+      def test_references_column_type_with_polymorphic_adds_type
+        with_new_table do |t|
+          t.expects(:column).with('taggable_type', :string, {})
+          t.expects(:column).with('taggable_id', :integer, {})
+          t.references :taggable, :polymorphic => true
+        end
+      end
+      
+      def test_belongs_to_works_like_references
+        with_new_table do |t|
+          t.expects(:column).with('customer_id', :integer, {})
+          t.belongs_to :customer
+        end
+      end
+      
+      def test_timestamps_creates_updated_at_and_created_at
+        with_new_table do |t|
+          t.expects(:column).with(:created_at, :datetime)
+          t.expects(:column).with(:updated_at, :datetime)
+          t.timestamps
+        end
+      end
+      
+      def test_integer_creates_integer_column
+        with_new_table do |t|
+          t.expects(:column).with(:foo, 'integer', {})
+          t.expects(:column).with(:bar, 'integer', {})
+          t.integer :foo, :bar
+        end
+      end
+      
+      def test_string_creates_string_column
+        with_new_table do |t|
+          t.expects(:column).with(:foo, 'string', {})
+          t.expects(:column).with(:bar, 'string', {})
+          t.string :foo, :bar
+        end
+      end
+      
+      protected
+      def with_new_table
+        Person.connection.create_table :delete_me do |t|
+          yield t
+        end
+      ensure
+        Person.connection.drop_table :delete_me rescue nil
+      end
+      
+    end # SexyMigrationsTest
+  end # uses_mocha
 end
 

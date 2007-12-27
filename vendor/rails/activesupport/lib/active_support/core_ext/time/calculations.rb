@@ -35,8 +35,8 @@ module ActiveSupport #:nodoc:
           def time_with_datetime_fallback(utc_or_local, year, month=1, day=1, hour=0, min=0, sec=0, usec=0)
             ::Time.send(utc_or_local, year, month, day, hour, min, sec, usec)
           rescue
-            offset = if utc_or_local.to_sym == :utc then 0 else ::DateTime.now.offset end
-            ::DateTime.civil(year, month, day, hour, min, sec, offset, 0)
+            offset = utc_or_local.to_sym == :local ? ::DateTime.local_offset : 0
+            ::DateTime.civil(year, month, day, hour, min, sec, offset)
           end
 
           # wraps class method time_with_datetime_fallback with utc_or_local == :utc
@@ -177,7 +177,7 @@ module ActiveSupport #:nodoc:
         def end_of_month
           #self - ((self.mday-1).days + self.seconds_since_midnight)
           last_day = ::Time.days_in_month( self.month, self.year )
-          change(:day => last_day,:hour => 0, :min => 0, :sec => 0, :usec => 0)
+          change(:day => last_day, :hour => 23, :min => 59, :sec => 59, :usec => 0)
         end
         alias :at_end_of_month :end_of_month
 		

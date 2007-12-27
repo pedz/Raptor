@@ -32,11 +32,11 @@ class DateTimeExtCalculationsTest < Test::Unit::TestCase
     assert_equal DateTime.new(2005, 2, 21), DateTime.new(2005, 2, 21).to_datetime
   end
 
-  # FIXME: ruby 1.9 compat
   def test_to_time
     assert_equal Time.utc(2005, 2, 21, 10, 11, 12), DateTime.new(2005, 2, 21, 10, 11, 12, 0, 0).to_time
-    assert_equal Time.local(2005, 2, 21, 10, 11, 12), DateTime.new(2005, 2, 21, 10, 11, 12, Rational(-5, 24), 0).to_time
     assert_equal Time.utc_time(2039, 2, 21, 10, 11, 12), DateTime.new(2039, 2, 21, 10, 11, 12, 0, 0).to_time
+    # DateTimes with offsets other than 0 are returned unaltered
+    assert_equal DateTime.new(2005, 2, 21, 10, 11, 12, Rational(-5, 24)), DateTime.new(2005, 2, 21, 10, 11, 12, Rational(-5, 24)).to_time
   end
 
   def test_seconds_since_midnight
@@ -77,10 +77,9 @@ class DateTimeExtCalculationsTest < Test::Unit::TestCase
   end
 
   def test_end_of_month
-    assert_equal DateTime.civil(2005,3,31,0,0,0), DateTime.civil(2005,3,20,10,10,10).end_of_month
-    assert_equal DateTime.civil(2005,2,28,0,0,0), DateTime.civil(2005,2,20,10,10,10).end_of_month
-    assert_equal DateTime.civil(2005,4,30,0,0,0), DateTime.civil(2005,4,20,10,10,10).end_of_month
-
+    assert_equal DateTime.civil(2005,3,31,23,59,59), DateTime.civil(2005,3,20,10,10,10).end_of_month
+    assert_equal DateTime.civil(2005,2,28,23,59,59), DateTime.civil(2005,2,20,10,10,10).end_of_month
+    assert_equal DateTime.civil(2005,4,30,23,59,59), DateTime.civil(2005,4,20,10,10,10).end_of_month
   end
 
   def test_beginning_of_year
@@ -200,9 +199,9 @@ class DateTimeExtCalculationsTest < Test::Unit::TestCase
   end
 
   def test_xmlschema
-    assert_equal '1880-02-28T15:15:10Z', DateTime.civil(1880, 2, 28, 15, 15, 10).xmlschema
-    assert_equal '1980-02-28T15:15:10Z', DateTime.civil(1980, 2, 28, 15, 15, 10).xmlschema
-    assert_equal '2080-02-28T15:15:10Z', DateTime.civil(2080, 2, 28, 15, 15, 10).xmlschema
+    assert_match(/^1880-02-28T15:15:10\+00:?00$/, DateTime.civil(1880, 2, 28, 15, 15, 10).xmlschema)
+    assert_match(/^1980-02-28T15:15:10\+00:?00$/, DateTime.civil(1980, 2, 28, 15, 15, 10).xmlschema)
+    assert_match(/^2080-02-28T15:15:10\+00:?00$/, DateTime.civil(2080, 2, 28, 15, 15, 10).xmlschema)
     assert_match(/^1880-02-28T15:15:10-06:?00$/, DateTime.civil(1880, 2, 28, 15, 15, 10, -0.25).xmlschema)
     assert_match(/^1980-02-28T15:15:10-06:?00$/, DateTime.civil(1980, 2, 28, 15, 15, 10, -0.25).xmlschema)
     assert_match(/^2080-02-28T15:15:10-06:?00$/, DateTime.civil(2080, 2, 28, 15, 15, 10, -0.25).xmlschema)
@@ -211,4 +210,21 @@ class DateTimeExtCalculationsTest < Test::Unit::TestCase
   def test_acts_like_time
     assert DateTime.new.acts_like_time?
   end
+
+  def test_local_offset
+    with_timezone 'US/Eastern' do
+      assert_equal Rational(-5, 24), DateTime.local_offset
+    end
+    with_timezone 'US/Central' do
+      assert_equal Rational(-6, 24), DateTime.local_offset
+    end
+  end
+
+  protected
+    def with_timezone(new_tz = 'US/Eastern')
+      old_tz, ENV['TZ'] = ENV['TZ'], new_tz
+      yield
+    ensure
+      old_tz ? ENV['TZ'] = old_tz : ENV.delete('TZ')
+    end
 end

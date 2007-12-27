@@ -18,7 +18,7 @@ class CookieTest < Test::Unit::TestCase
       cookies["user_name"] = { "value" => "david", "expires" => Time.local(2005, 10, 10) }
       cookies["login"]     = "XJ-122"
     end
-
+    
     def access_frozen_cookies
       cookies["will"] = "work"
     end
@@ -67,7 +67,7 @@ class CookieTest < Test::Unit::TestCase
   def test_setting_cookie_with_http_only
     get :authenticate_with_http_only
     assert_equal [ CGI::Cookie::new("name" => "user_name", "value" => "david", "http_only" => true) ], @response.headers["cookie"]
-    assert_equal CGI::Cookie::new("name" => "user_name", "value" => "david", "path" => "/", "http_only" => true).to_s, @response.headers["cookie"].to_s
+    assert_equal CGI::Cookie::new("name" => "user_name", "value" => "david", "path" => "/", "http_only" => true).to_s, @response.headers["cookie"][0].to_s
   end
 
   def test_multiple_cookies
@@ -92,6 +92,14 @@ class CookieTest < Test::Unit::TestCase
     assert_equal nil, jar["something_else"]
   end
 
+  def test_cookiejar_accessor_with_array_value
+    a = %w{1 2 3}
+    @request.cookies["pages"] = CGI::Cookie.new("name" => "pages", "value" => a, "expires" => Time.local(2025, 10, 10))
+    @controller.request = @request
+    jar = ActionController::CookieJar.new(@controller)
+    assert_equal a, jar["pages"]
+  end
+  
   def test_delete_cookie_with_path
     get :delete_cookie_with_path
     assert_equal "/beaten", @response.headers["cookie"].first.path

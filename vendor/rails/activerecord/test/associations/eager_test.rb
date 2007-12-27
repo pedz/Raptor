@@ -37,6 +37,18 @@ class EagerAssociationTest < Test::Unit::TestCase
     end
   end
 
+  def test_with_two_tables_in_from_without_getting_double_quoted
+    posts = Post.find(:all,
+      :select     => "posts.*",
+      :from       => "authors, posts",
+      :include    => :comments,
+      :conditions => "posts.author_id = authors.id",
+      :order      => "posts.id"
+    )
+
+    assert_equal 2, posts.first.comments.size
+  end
+
   def test_loading_with_multiple_associations
     posts = Post.find(:all, :include => [ :comments, :author, :categories ], :order => "posts.id")
     assert_equal 2, posts.first.comments.size
@@ -250,6 +262,15 @@ class EagerAssociationTest < Test::Unit::TestCase
       assert_equal count, posts.size
     end
   end
+
+  def test_eager_with_scoped_order_using_association_limiting_without_explicit_scope
+    posts_with_explicit_order = Post.find(:all, :conditions => 'comments.id is not null', :include => :comments, :order => 'posts.id DESC', :limit => 2)
+    posts_with_scoped_order = Post.with_scope(:find => {:order => 'posts.id DESC'}) do
+      Post.find(:all, :conditions => 'comments.id is not null', :include => :comments, :limit => 2)
+    end
+    assert_equal posts_with_explicit_order, posts_with_scoped_order
+  end
+
   def test_eager_association_loading_with_habtm
     posts = Post.find(:all, :include => :categories, :order => "posts.id")
     assert_equal 2, posts[0].categories.size

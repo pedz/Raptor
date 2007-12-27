@@ -70,6 +70,13 @@ module ActiveRecord
         name
       end
 
+      # REFERENTIAL INTEGRITY ====================================
+
+      # Override to turn off referential integrity while executing +&block+
+      def disable_referential_integrity(&block)
+        yield
+      end
+
       # CONNECTION MANAGEMENT ====================================
 
       # Is this connection active and ready to perform queries?
@@ -120,7 +127,7 @@ module ActiveRecord
       protected
         def log(sql, name)
           if block_given?
-            if @logger and @logger.level <= Logger::INFO
+            if @logger and @logger.debug?
               result = nil
               seconds = Benchmark.realtime { result = yield }
               @runtime += seconds

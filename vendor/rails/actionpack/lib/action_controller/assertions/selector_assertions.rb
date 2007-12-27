@@ -13,15 +13,13 @@ module ActionController
     end
 
     # Adds the #assert_select method for use in Rails functional
-    # test cases.
-    #
-    # Use #assert_select to make assertions on the response HTML of a controller
+    # test cases, which can be used to make assertions on the response HTML of a controller
     # action. You can also call #assert_select within another #assert_select to
     # make assertions on elements selected by the enclosing assertion.
     #
     # Use #css_select to select elements without making an assertions, either
     # from the response HTML or elements selected by the enclosing assertion.
-    #
+    # 
     # In addition to HTML responses, you can make the following assertions:
     # * #assert_select_rjs    -- Assertions on HTML content of RJS update and
     #     insertion operations.
@@ -29,7 +27,7 @@ module ActionController
     #     for example for dealing with feed item descriptions.
     # * #assert_select_email    -- Assertions on the HTML body of an e-mail.
     #
-    # Also see HTML::Selector for learning how to use selectors.
+    # Also see HTML::Selector to learn how to use selectors.
     module SelectorAssertions
       # :call-seq:
       #   css_select(selector) => array
@@ -49,12 +47,26 @@ module ActionController
       # The selector may be a CSS selector expression (+String+), an expression
       # with substitution values (+Array+) or an HTML::Selector object.
       #
-      # For example:
+      # ==== Examples
+      #   # Selects all div tags
+      #   divs = css_select("div")
+      #
+      #   # Selects all paragraph tags and does something interesting
+      #   pars = css_select("p")
+      #   pars.each do |par|
+      #     # Do something fun with paragraphs here...
+      #   end
+      #
+      #   # Selects all list items in unordered lists
+      #   items = css_select("ul>li") 
+      #      
+      #   # Selects all form tags and then all inputs inside the form
       #   forms = css_select("form")
       #   forms.each do |form|
       #     inputs = css_select(form, "input")
       #     ...
       #   end
+      #
       def css_select(*args)
         # See assert_select to understand what's going on here.
         arg = args.shift
@@ -106,12 +118,13 @@ module ActionController
       # response HTML. Calling #assert_select inside an #assert_select block will
       # run the assertion for each element selected by the enclosing assertion.
       #
-      # For example:
+      # ==== Example
       #   assert_select "ol>li" do |elements|
       #     elements.each do |element|
       #       assert_select element, "li"
       #     end
       #   end
+      #
       # Or for short:
       #   assert_select "ol>li" do
       #     assert_select "li"
@@ -149,7 +162,7 @@ module ActionController
       # If the method is called with a block, once all equality tests are
       # evaluated the block is called with an array of all matched elements.
       #
-      # === Examples
+      # ==== Examples
       #
       #   # At least one form element
       #   assert_select "form"
@@ -326,14 +339,16 @@ module ActionController
       # that update or insert an element with that identifier.
       #
       # Use the first argument to narrow down assertions to only statements
-      # of that type. Possible values are +:replace+, +:replace_html+, +:show+,
-      # +:hide+, +:toggle+, +:remove+ and +:insert_html+.
+      # of that type. Possible values are <tt>:replace</tt>, <tt>:replace_html</tt>, 
+      # <tt>:show</tt>, <tt>:hide</tt>, <tt>:toggle</tt>, <tt>:remove</tt> and
+      # <tt>:insert_html</tt>.
       #
-      # Use the argument +:insert+ followed by an insertion position to narrow
+      # Use the argument <tt>:insert</tt> followed by an insertion position to narrow
       # down the assertion to only statements that insert elements in that
-      # position. Possible values are +:top+, +:bottom+, +:before+ and +:after+.
+      # position. Possible values are <tt>:top</tt>, <tt>:bottom</tt>, <tt>:before</tt>
+      # and <tt>:after</tt>.
       #
-      # Using the +:remove+ statement, you will be able to pass a block, but it will
+      # Using the <tt>:remove</tt> statement, you will be able to pass a block, but it will
       # be ignored as there is no HTML passed for this statement.
       #
       # === Using blocks
@@ -351,7 +366,7 @@ module ActionController
       # but without distinguishing whether the content is returned in an HTML
       # or JavaScript.
       #
-      # === Examples
+      # ==== Examples
       #
       #   # Replacing the element foo.
       #   # page.replace 'foo', ...
@@ -437,6 +452,7 @@ module ActionController
         end
 
         if matches
+          assert_block("") { true } # to count the assertion
           if block_given? && !([:remove, :show, :hide, :toggle].include? rjs_type)
             begin
               in_scope, @selected = @selected, matches
@@ -465,8 +481,20 @@ module ActionController
       # The content of each element is un-encoded, and wrapped in the root
       # element +encoded+. It then calls the block with all un-encoded elements.
       #
-      # === Example
+      # ==== Examples
+      #   # Selects all bold tags from within the title of an ATOM feed's entries (perhaps to nab a section name prefix)
+      #   assert_select_feed :atom, 1.0 do
+      #     # Select each entry item and then the title item
+      #     assert_select "entry>title" do
+      #       # Run assertions on the encoded title elements
+      #       assert_select_encoded do
+      #         assert_select "b"
+      #       end
+      #     end
+      #   end
+      #   
       #
+      #   # Selects all paragraph tags from within the description of an RSS feed
       #   assert_select_feed :rss, 2.0 do
       #     # Select description element of each feed item.
       #     assert_select "channel>item>description" do
@@ -517,11 +545,19 @@ module ActionController
       # You must enable deliveries for this assertion to work, use:
       #   ActionMailer::Base.perform_deliveries = true
       #
-      # === Example
+      # ==== Examples
       #
-      # assert_select_email do
-      #   assert_select "h1", "Email alert"
-      # end
+      #  assert_select_email do
+      #    assert_select "h1", "Email alert"
+      #  end
+      #
+      #  assert_select_email do
+      #    items = assert_select "ol>li"
+      #    items.each do
+      #       # Work with items here...
+      #    end
+      #  end
+      #
       def assert_select_email(&block)
         deliveries = ActionMailer::Base.deliveries
         assert !deliveries.empty?, "No e-mail in delivery list"
@@ -591,6 +627,7 @@ module ActionController
         def unescape_rjs(rjs_string)
           # RJS encodes double quotes and line breaks.
           unescaped= rjs_string.gsub('\"', '"')
+          unescaped.gsub!(/\\\//, '/')
           unescaped.gsub!('\n', "\n")
           unescaped.gsub!('\076', '>')
           unescaped.gsub!('\074', '<')

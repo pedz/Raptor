@@ -3,17 +3,27 @@ require 'html/document'
 
 module ActionController
   module Assertions
+    # A small suite of assertions that test responses from Rails applications.
     module ResponseAssertions
       # Asserts that the response is one of the following types:
       #
-      # * <tt>:success</tt>: Status code was 200
-      # * <tt>:redirect</tt>: Status code was in the 300-399 range
-      # * <tt>:missing</tt>: Status code was 404
-      # * <tt>:error</tt>:  Status code was in the 500-599 range
+      # * <tt>:success</tt>   - Status code was 200
+      # * <tt>:redirect</tt>  - Status code was in the 300-399 range
+      # * <tt>:missing</tt>   - Status code was 404
+      # * <tt>:error</tt>     - Status code was in the 500-599 range
       #
       # You can also pass an explicit status number like assert_response(501)
       # or its symbolic equivalent assert_response(:not_implemented).
       # See ActionController::StatusCodes for a full list.
+      #
+      # ==== Examples
+      #
+      #   # assert that the response was a redirection
+      #   assert_response :redirect 
+      #
+      #   # assert that the response code was status code 401 (unauthorized)
+      #   assert_response 401
+      #
       def assert_response(type, message = nil)
         clean_backtrace do
           if [ :success, :missing, :redirect, :error ].include?(type) && @response.send("#{type}?")
@@ -28,9 +38,18 @@ module ActionController
         end
       end
 
-      # Assert that the redirection options passed in match those of the redirect called in the latest action. This match can be partial,
-      # such that assert_redirected_to(:controller => "weblog") will also match the redirection of
-      # redirect_to(:controller => "weblog", :action => "show") and so on.
+      # Assert that the redirection options passed in match those of the redirect called in the latest action. 
+      # This match can be partial, such that assert_redirected_to(:controller => "weblog") will also
+      # match the redirection of redirect_to(:controller => "weblog", :action => "show") and so on.
+      #
+      # ==== Examples
+      #
+      #   # assert that the redirection was to the "index" action on the WeblogController
+      #   assert_redirected_to :controller => "weblog", :action => "index"
+      #
+      #   # assert that the redirection was to the named route login_url
+      #   assert_redirected_to login_url
+      #
       def assert_redirected_to(options = {}, message=nil)
         clean_backtrace do
           assert_response(:redirect, message)
@@ -104,6 +123,12 @@ module ActionController
       end
 
       # Asserts that the request was rendered with the appropriate template file.
+      #
+      # ==== Examples
+      #
+      #   # assert that the "new" view template was rendered
+      #   assert_template "new"
+      #
       def assert_template(expected = nil, message=nil)
         clean_backtrace do
           rendered = expected ? @response.rendered_file(!expected.include?('/')) : @response.rendered_file

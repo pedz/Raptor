@@ -50,8 +50,6 @@ namespace :mysql do
     %x( mysqladmin  create activerecord_unittest2 )
     %x( mysql -e "grant all on activerecord_unittest.* to rails@localhost" )
     %x( mysql -e "grant all on activerecord_unittest2.* to rails@localhost" )
-    %x( mysql  activerecord_unittest < #{File.join(SCHEMA_PATH, 'mysql.sql')} )
-    %x( mysql  activerecord_unittest2 < #{File.join(SCHEMA_PATH, 'mysql2.sql')} )
   end
 
   desc 'Drop the MySQL test databases'
@@ -164,6 +162,7 @@ end
 dist_dirs = [ "lib", "test", "examples" ]
 
 spec = Gem::Specification.new do |s|
+  s.platform = Gem::Platform::RUBY
   s.name = PKG_NAME
   s.version = PKG_VERSION
   s.summary = "Implements the ActiveRecord pattern for ORM."
@@ -174,7 +173,7 @@ spec = Gem::Specification.new do |s|
     s.files = s.files + Dir.glob( "#{dir}/**/*" ).delete_if { |item| item.include?( "\.svn" ) }
   end
 
-  s.add_dependency('activesupport', '= 1.4.4' + PKG_BUILD)
+  s.add_dependency('activesupport', '= 2.0.2' + PKG_BUILD)
 
   s.files.delete "test/fixtures/fixture_database.sqlite"
   s.files.delete "test/fixtures/fixture_database_2.sqlite"

@@ -70,7 +70,7 @@ module ActionController #:nodoc:
   end
 
   class DoubleRenderError < ActionControllerError #:nodoc:
-    DEFAULT_MESSAGE = "Render and/or redirect were called multiple times in this action. Please note that you may only call render OR redirect, and only once per action. Also note that neither redirect nor render terminate execution of the action, so if you want to exit an action after redirecting, you need to do something like \"redirect_to(...) and return\". Finally, note that to cause a before filter to halt execution of the rest of the filter chain, the filter must return false, explicitly, so \"render(...) and return false\"."
+    DEFAULT_MESSAGE = "Render and/or redirect were called multiple times in this action. Please note that you may only call render OR redirect, and at most once per action. Also note that neither redirect nor render terminate execution of the action, so if you want to exit an action after redirecting, you need to do something like \"redirect_to(...) and return\"."
 
     def initialize(message = nil)
       super(message || DEFAULT_MESSAGE)
@@ -85,6 +85,8 @@ module ActionController #:nodoc:
     end
   end
 
+  class UnknownHttpMethod < ActionControllerError #:nodoc:
+  end
 
   # Action Controllers are the core of a web request in Rails. They are made up of one or more actions that are executed
   # on request and then either render a template or redirect to another action. An action is defined as a public method
@@ -162,16 +164,25 @@ module ActionController #:nodoc:
   # For removing objects from the session, you can either assign a single key to nil, like <tt>session[:person] = nil</tt>, or you can
   # remove the entire session with reset_session.
   #
-  # By default, sessions are stored on the file system in <tt>RAILS_ROOT/tmp/sessions</tt>. Any object can be placed in the session
-  # (as long as it can be Marshalled). But remember that 1000 active sessions each storing a 50kb object could lead to a 50MB store on the filesystem.
-  # In other words, think carefully about size and caching before resorting to the use of the session on the filesystem.
+  # Sessions are stored in a browser cookie that's cryptographically signed, but unencrypted, by default. This prevents
+  # the user from tampering with the session but also allows him to see its contents.
   #
-  # An alternative to storing sessions on disk is to use ActiveRecordStore to store sessions in your database, which can solve problems
-  # caused by storing sessions in the file system and may speed up your application. To use ActiveRecordStore, uncomment the line:
+  # Do not put secret information in session!
+  #
+  # Other options for session storage are:
+  #
+  # ActiveRecordStore: sessions are stored in your database, which works better than PStore with multiple app servers and,
+  # unlike CookieStore, hides your session contents from the user. To use ActiveRecordStore, set
   #
   #   config.action_controller.session_store = :active_record_store
   #
   # in your <tt>environment.rb</tt> and run <tt>rake db:sessions:create</tt>.
+  #
+  # MemCacheStore: sessions are stored as entries in your memcached cache.  Set the session store type in <tt>environment.rb</tt>:
+  #
+  #   config.action_controller.session_store = :mem_cache_store
+  #
+  #  This assumes that memcached has been installed and configured properly.  See the MemCacheStore docs for more information.
   #
   # == Responses
   #
@@ -226,7 +237,7 @@ module ActionController #:nodoc:
   #
   # == Calling multiple redirects or renders
   #
-  # An action should conclude with a single render or redirect. Attempting to try to do either again will result in a DoubleRenderError:
+  # An action may contain only a single render or a single redirect. Attempting to try to do either again will result in a DoubleRenderError:
   #
   #   def do_something
   #     redirect_to :action => "elsewhere"
@@ -282,7 +293,7 @@ module ActionController #:nodoc:
     # The param_parsers hash lets you register handlers which will process the http body and add parameters to the
     # <tt>params</tt> hash. These handlers are invoked for post and put requests.
     #
-    # By default application/xml is enabled. A XmlSimple class with the same param name as the root will be instanciated
+    # By default application/xml is enabled. A XmlSimple class with the same param name as the root will be instantiated
     # in the <tt>params</tt>. This allows XML requests to mask themselves as regular form submissions, so you can have one
     # action serve both regular forms and web service requests.
     #
@@ -408,49 +419,45 @@ module ActionController #:nodoc:
         write_inheritable_attribute(:hidden_actions, hidden_actions | names.map(&:to_s))
       end
 
-
-      @@view_paths = {}
-
-      # View load paths determine the bases from which template references can be made. So a call to
-      # render("test/template") will be looked up in the view load paths array and the closest match will be
-      # returned.
-      def view_paths=(value)
-        @@view_paths[name] = value
-      end
-
-      # View load paths for controller.
+      ## View load paths determine the bases from which template references can be made. So a call to
+      ## render("test/template") will be looked up in the view load paths array and the closest match will be
+      ## returned.
       def view_paths
-        if paths = @@view_paths[name]
-          paths
-        else
-          if superclass.respond_to?(:view_paths)
-            superclass.view_paths.dup.freeze
-          else
-            @@view_paths[name] = []
-          end
-        end
+        @view_paths || superclass.view_paths
       end
-      
+
+      def view_paths=(value)
+        @view_paths = value
+      end
+
       # Adds a view_path to the front of the view_paths array.
       # If the current class has no view paths, copy them from 
-      # the superclass
+      # the superclass.  This change will be visible for all future requests.
+      #
+      #   ArticleController.prepend_view_path("views/default")
+      #   ArticleController.prepend_view_path(["views/default", "views/custom"])
+      #
       def prepend_view_path(path)
-        self.view_paths = view_paths.dup if view_paths.frozen?
-        view_paths.unshift(path)
+        @view_paths = superclass.view_paths.dup if @view_paths.nil?
+        view_paths.unshift(*path)
       end
       
       # Adds a view_path to the end of the view_paths array.
       # If the current class has no view paths, copy them from 
-      # the superclass
+      # the superclass. This change will be visible for all future requests.
+      #
+      #   ArticleController.append_view_path("views/default")
+      #   ArticleController.append_view_path(["views/default", "views/custom"])
+      #
       def append_view_path(path)
-        self.view_paths = view_paths.dup if view_paths.frozen?
-        view_paths << path
+        @view_paths = superclass.view_paths.dup if @view_paths.nil?
+        view_paths.push(*path)
       end
       
-      # Replace sensitive paramater data from the request log.
-      # Filters paramaters that have any of the arguments as a substring.
+      # Replace sensitive parameter data from the request log.
+      # Filters parameters that have any of the arguments as a substring.
       # Looks in all subhashes of the param hash for keys to filter.
-      # If a block is given, each key and value of the paramater hash and all
+      # If a block is given, each key and value of the parameter hash and all
       # subhashes is passed to it, the value or key
       # can be replaced using String#replace or similar method.
       #
@@ -583,7 +590,7 @@ module ActionController #:nodoc:
       # However, you might ask why the action from the current request, 'contacts', isn't carried over into the new URL. The
       # answer has to do with the order in which the parameters appear in the generated path. In a nutshell, since the
       # value that appears in the slot for <tt>:first</tt> is not equal to default value for <tt>:first</tt> we stop using
-      # defaults. On it's own, this rule can account for much of the typical Rails URL behavior.
+      # defaults. On its own, this rule can account for much of the typical Rails URL behavior.
       #  
       # Although a convenience, defaults can occasionally get in your way. In some cases a default persists longer than desired.
       # The default may be cleared by adding <tt>:name => nil</tt> to <tt>url_for</tt>'s options.
@@ -631,11 +638,37 @@ module ActionController #:nodoc:
         request.session_options && request.session_options[:disabled] != false
       end
 
+      self.view_paths = []
+      
       # View load paths for controller.
       def view_paths
-        self.class.view_paths
+        (@template || self.class).view_paths
+      end
+    
+      def view_paths=(value)
+        (@template || self.class).view_paths = value
+      end
+
+      # Adds a view_path to the front of the view_paths array.
+      # This change affects the current request only.
+      #
+      #   self.prepend_view_path("views/default")
+      #   self.prepend_view_path(["views/default", "views/custom"])
+      #
+      def prepend_view_path(path)
+        (@template || self.class).prepend_view_path(path)
       end
       
+      # Adds a view_path to the end of the view_paths array.
+      # This change affects the current request only.
+      #
+      #   self.append_view_path("views/default")
+      #   self.append_view_path(["views/default", "views/custom"])
+      #
+      def append_view_path(path)
+        (@template || self.class).append_view_path(path)
+      end
+
     protected
       # Renders the content that will be returned to the browser as the response body.
       #
@@ -733,11 +766,11 @@ module ActionController #:nodoc:
       #   render :text => "Explosion!", :status => 500
       #
       #   # Renders the clear text "Hi there!" within the current active layout (if one exists)
-      #   render :text => "Explosion!", :layout => true
+      #   render :text => "Hi there!", :layout => true
       #
       #   # Renders the clear text "Hi there!" within the layout
       #   # placed in "app/views/layouts/special.r(html|xml)"
-      #   render :text => "Explosion!", :layout => "special"
+      #   render :text => "Hi there!", :layout => "special"
       #
       # The :text option can also accept a Proc object, which can be used to manually control the page generation. This should
       # generally be avoided, as it violates the separation between code and content, and because almost everything that can be
@@ -829,7 +862,7 @@ module ActionController #:nodoc:
 
           elsif inline = options[:inline]
             add_variables_to_assigns
-            render_for_text(@template.render_template(options[:type] || :erb, inline, nil, options[:locals] || {}), options[:status])
+            render_for_text(@template.render_template(options[:type], inline, nil, options[:locals] || {}), options[:status])
 
           elsif action_name = options[:action]
             template = default_template_name(action_name.to_s)
@@ -840,13 +873,13 @@ module ActionController #:nodoc:
             end            
 
           elsif xml = options[:xml]
-            response.content_type = Mime::XML
+            response.content_type ||= Mime::XML
             render_for_text(xml.respond_to?(:to_xml) ? xml.to_xml : xml, options[:status])
 
           elsif json = options[:json]
             json = json.to_json unless json.is_a?(String)
             json = "#{options[:callback]}(#{json})" unless options[:callback].blank?
-            response.content_type = Mime::JSON
+            response.content_type ||= Mime::JSON
             render_for_text(json, options[:status])
 
           elsif partial = options[:partial]
@@ -910,19 +943,9 @@ module ActionController #:nodoc:
           raise ArgumentError, "too many arguments to head"
         elsif args.empty?
           raise ArgumentError, "too few arguments to head"
-        elsif args.length == 2
-          status = args.shift
-          options = args.shift
-        elsif args.first.is_a?(Hash)
-          options = args.first
-        else
-          status = args.first
-          options = {}
         end
-
-        raise ArgumentError, "head requires an options hash" if !options.is_a?(Hash)
-
-        status = interpret_status(status || options.delete(:status) || :ok)
+        options = args.extract_options!
+        status = interpret_status(args.shift || options.delete(:status) || :ok)
 
         options.each do |key, value|
           headers[key.to_s.dasherize.split(/-/).map { |v| v.capitalize }.join("-")] = value.to_s
@@ -979,11 +1002,11 @@ module ActionController #:nodoc:
 
       # Redirects the browser to the target specified in +options+. This parameter can take one of three forms:
       #
-      # * <tt>Hash</tt>: The URL will be generated by calling url_for with the +options+.
-      # * <tt>Record</tt>: The URL will be generated by calling url_for with the +options+, which will reference a named URL for that record.
-      # * <tt>String starting with protocol:// (like http://)</tt>: Is passed straight through as the target for redirection.
-      # * <tt>String not containing a protocol</tt>: The current protocol and host is prepended to the string.
-      # * <tt>:back</tt>: Back to the page that issued the request. Useful for forms that are triggered from multiple places.
+      # * <tt>Hash</tt> - The URL will be generated by calling url_for with the +options+.
+      # * <tt>Record</tt> - The URL will be generated by calling url_for with the +options+, which will reference a named URL for that record.
+      # * <tt>String starting with protocol:// (like http://)</tt> - Is passed straight through as the target for redirection.
+      # * <tt>String not containing a protocol</tt> - The current protocol and host is prepended to the string.
+      # * <tt>:back</tt> - Back to the page that issued the request. Useful for forms that are triggered from multiple places.
       #   Short-hand for redirect_to(request.env["HTTP_REFERER"])
       #
       # Examples:
@@ -991,6 +1014,7 @@ module ActionController #:nodoc:
       #   redirect_to post
       #   redirect_to "http://www.rubyonrails.org"
       #   redirect_to "/images/screenshot.jpg"
+      #   redirect_to articles_url
       #   redirect_to :back
       #
       # The redirection happens as a "302 Moved" header unless otherwise specified. 
@@ -1125,15 +1149,19 @@ module ActionController #:nodoc:
         end
       end
 
+      def default_render #:nodoc:
+        render
+      end
+
       def perform_action
         if self.class.action_methods.include?(action_name)
           send(action_name)
-          render unless performed?
+          default_render unless performed?
         elsif respond_to? :method_missing
           method_missing action_name
-          render unless performed?
+          default_render unless performed?
         elsif template_exists? && template_public?
-          render
+          default_render
         else
           raise UnknownAction, "No action responded to #{action_name}", caller
         end
@@ -1230,7 +1258,7 @@ module ActionController #:nodoc:
       def template_exempt_from_layout?(template_name = default_template_name)
         extension = @template && @template.pick_template_extension(template_name)
         name_with_extension = !template_name.include?('.') && extension ? "#{template_name}.#{extension}" : template_name
-        extension == :rjs || @@exempt_from_layout.any? { |ext| name_with_extension =~ ext }
+        @@exempt_from_layout.any? { |ext| name_with_extension =~ ext }
       end
 
       def assert_existence_of_template_file(template_name)

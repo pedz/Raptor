@@ -173,9 +173,8 @@ module ActiveRecord
             Time.send(Base.default_timezone, year, mon, mday, hour, min, sec, microsec)
           # Over/underflow to DateTime
           rescue ArgumentError, TypeError
-            zone_offset = if Base.default_timezone == :local then DateTime.now.offset else 0 end
-            # Append zero calendar reform start to account for dates skipped by calendar reform
-            DateTime.new(year, mon, mday, hour, min, sec, zone_offset, 0) rescue nil
+            zone_offset = Base.default_timezone == :local ? DateTime.local_offset : 0
+            DateTime.civil(year, mon, mday, hour, min, sec, zone_offset) rescue nil
           end
 
           def fast_string_to_date(string)
@@ -272,7 +271,7 @@ module ActiveRecord
     end
 
     # Represents a SQL table in an abstract way.
-    # Columns are stored as ColumnDefinition in the #columns attribute.
+    # Columns are stored as a ColumnDefinition in the #columns attribute.
     class TableDefinition
       attr_accessor :columns
 
@@ -293,24 +292,29 @@ module ActiveRecord
       end
 
       # Instantiates a new column for the table.
-      # The +type+ parameter must be one of the following values:
+      # The +type+ parameter is normally one of the migrations native types,
+      # which is one of the following:
       # <tt>:primary_key</tt>, <tt>:string</tt>, <tt>:text</tt>,
       # <tt>:integer</tt>, <tt>:float</tt>, <tt>:decimal</tt>,
       # <tt>:datetime</tt>, <tt>:timestamp</tt>, <tt>:time</tt>,
       # <tt>:date</tt>, <tt>:binary</tt>, <tt>:boolean</tt>.
       #
+      # You may use a type not in this list as long as it is supported by your
+      # database (for example, "polygon" in MySQL), but this will not be database
+      # agnostic and should usually be avoided.
+      #
       # Available options are (none of these exists by default):
-      # * <tt>:limit</tt>:
+      # * <tt>:limit</tt> -
       #   Requests a maximum column length (<tt>:string</tt>, <tt>:text</tt>,
       #   <tt>:binary</tt> or <tt>:integer</tt> columns only)
-      # * <tt>:default</tt>:
+      # * <tt>:default</tt> -
       #   The column's default value. Use nil for NULL.
-      # * <tt>:null</tt>:
+      # * <tt>:null</tt> -
       #   Allows or disallows +NULL+ values in the column.  This option could
       #   have been named <tt>:null_allowed</tt>.
-      # * <tt>:precision</tt>:
+      # * <tt>:precision</tt> -
       #   Specifies the precision for a <tt>:decimal</tt> column. 
-      # * <tt>:scale</tt>:
+      # * <tt>:scale</tt> -
       #   Specifies the scale for a <tt>:decimal</tt> column. 
       #
       # Please be aware of different RDBMS implementations behavior with
@@ -393,6 +397,24 @@ module ActiveRecord
       #
       # There's a short-hand method for each of the type values declared at the top. And then there's 
       # TableDefinition#timestamps that'll add created_at and updated_at as datetimes.
+      #
+      # TableDefinition#references will add an appropriately-named _id column, plus a corresponding _type
+      # column if the :polymorphic option is supplied. If :polymorphic is a hash of options, these will be
+      # used when creating the _type column. So what can be written like this:
+      #
+      #   create_table :taggings do |t|
+      #     t.integer :tag_id, :tagger_id, :taggable_id
+      #     t.string  :tagger_type
+      #     t.string  :taggable_type, :default => 'Photo'
+      #   end
+      #
+      # Can also be written as follows using references:
+      #
+      #   create_table :taggings do |t|
+      #     t.references :tag
+      #     t.references :tagger, :polymorphic => true
+      #     t.references :taggable, :polymorphic => { :default => 'Photo' }
+      #   end
       def column(name, type, options = {})
         column = self[name] || ColumnDefinition.new(@base, name, type)
         column.limit = options[:limit] || native[type.to_sym][:limit] if options[:limit] or native[type.to_sym]
@@ -415,13 +437,27 @@ module ActiveRecord
         EOV
       end
       
+      # Appends <tt>:datetime</tt> columns <tt>:created_at</tt> and 
+      # <tt>:updated_at</tt> to the table.
       def timestamps
         column(:created_at, :datetime)
         column(:updated_at, :datetime)
       end
 
+      def references(*args)
+        options = args.extract_options!
+        polymorphic = options.delete(:polymorphic)
+        args.each do |col|
+          column("#{col}_id", :integer, options)
+          unless polymorphic.nil?
+            column("#{col}_type", :string, polymorphic.is_a?(Hash) ? polymorphic : {})
+          end
+        end
+      end
+      alias :belongs_to :references
+
       # Returns a String whose contents are the column definitions
-      # concatenated together.  This string can then be pre and appended to
+      # concatenated together.  This string can then be prepended and appended to
       # to generate the final SQL to create the table.
       def to_sql
         @columns * ', '

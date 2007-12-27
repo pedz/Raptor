@@ -104,7 +104,7 @@ module ActionView
       #   in dangerous actions like deleting a record (which search bots can follow
       #   while spidering your site). Supported verbs are :post, :delete and :put.
       #   Note that if the user has JavaScript disabled, the request will fall back
-      #   to using GET. If you are relying on the POST behavior, your should check
+      #   to using GET. If you are relying on the POST behavior, you should check
       #   for it in your controller's action by using the request object's methods
       #   for post?, delete? or put?.
       # * The +html_options+ will accept a hash of html attributes for the link tag.
@@ -331,7 +331,7 @@ module ActionView
       # also used as the name of the link unless +name+ is specified. Additional
       # HTML attributes for the link can be passed in +html_options+.
       #
-      # mail_to has several methods for hindering email harvestors and customizing
+      # mail_to has several methods for hindering email harvesters and customizing
       # the email itself by passing special keys to +html_options+.
       #
       # ==== Options

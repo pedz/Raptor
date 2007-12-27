@@ -13,8 +13,9 @@ class TestJSONEncoding < Test::Unit::TestCase
   NumericTests  = [[ 1,     %(1)     ],
                    [ 2.5,   %(2.5)   ]]
 
-  StringTests   = [[ 'this is the <string>',     %("this is the \\074string\\076")],
-                   [ 'a "string" with quotes', %("a \\"string\\" with quotes") ]]
+  StringTests   = [[ 'this is the <string>',     %("this is the \\u003Cstring\\u003E")],
+                   [ 'a "string" with quotes & an ampersand', %("a \\"string\\" with quotes \\u0026 an ampersand") ],
+                   [ 'http://test.host/posts/1', %("http://test.host/posts/1")]]
 
   ArrayTests    = [[ ['a', 'b', 'c'],          %([\"a\", \"b\", \"c\"])          ],
                    [ [1, 'a', :b, nil, false], %([1, \"a\", \"b\", null, false]) ]]
@@ -45,17 +46,17 @@ class TestJSONEncoding < Test::Unit::TestCase
     assert_equal %({\"a\": \"b\"}), { :a => :b }.to_json
     assert_equal %({\"a\": 1}), { 'a' => 1  }.to_json
     assert_equal %({\"a\": [1, 2]}), { 'a' => [1,2] }.to_json
+    assert_equal %({1: 2}), { 1 => 2 }.to_json
 
     sorted_json = '{' + {:a => :b, :c => :d}.to_json[1..-2].split(', ').sort.join(', ') + '}'
     assert_equal %({\"a\": \"b\", \"c\": \"d\"}), sorted_json
   end
 
   def test_utf8_string_encoded_properly_when_kcode_is_utf8
-    old_kcode, $KCODE = $KCODE, 'UTF8'
-    assert_equal '"\\u20ac2.99"', '€2.99'.to_json
-    assert_equal '"\\u270e\\u263a"', '✎☺'.to_json
-  ensure
-    $KCODE = old_kcode
+    with_kcode 'UTF8' do
+      assert_equal '"\\u20ac2.99"', '€2.99'.to_json
+      assert_equal '"\\u270e\\u263a"', '✎☺'.to_json
+    end
   end
 
   def test_exception_raised_when_encoding_circular_reference
@@ -78,6 +79,19 @@ class TestJSONEncoding < Test::Unit::TestCase
   end
 
   protected
+    def with_kcode(code)
+      if RUBY_VERSION < '1.9'
+        begin
+          old_kcode, $KCODE = $KCODE, 'UTF8'
+          yield
+        ensure
+          $KCODE = old_kcode
+        end
+      else
+        yield
+      end
+    end
+
     def object_keys(json_object)
       json_object[1..-2].scan(/([^{}:,\s]+):/).flatten.sort
     end

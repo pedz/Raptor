@@ -1,5 +1,6 @@
 require "#{File.dirname(__FILE__)}/../abstract_unit"
 require "#{File.dirname(__FILE__)}/fake_controllers"
+require "action_controller/test_case"
 
 class TestTest < Test::Unit::TestCase
   class TestController < ActionController::Base
@@ -72,6 +73,10 @@ XML
       render :text => params[:file].size
     end
 
+    def test_send_file
+      send_file(File.expand_path(__FILE__))
+    end
+
     def redirect_to_same_controller
       redirect_to :controller => 'test', :action => 'test_uri', :id => 5
     end
@@ -108,7 +113,7 @@ XML
 
   def test_raw_post_handling
     params = {:page => {:name => 'page name'}, 'some key' => 123}
-    get :render_raw_post, params.dup
+    post :render_raw_post, params.dup
 
     assert_equal params.to_query, @response.body
   end
@@ -116,7 +121,7 @@ XML
   def test_body_stream
     params = { :page => { :name => 'page name' }, 'some key' => 123 }
 
-    get :render_body, params.dup
+    post :render_body, params.dup
 
     assert_equal params.to_query, @response.body
   end
@@ -213,7 +218,7 @@ XML
   def test_assert_tag_descendant
     process :test_html_output
 
-    # there is a tag with a decendant 'li' tag
+    # there is a tag with a descendant 'li' tag
     assert_tag :descendant => { :tag => "li" }
     # there is no tag with a descendant 'html' tag
     assert_no_tag :descendant => { :tag => "html" }
@@ -541,6 +546,11 @@ XML
     end
   end
 
+  def test_binary_content_works_with_send_file
+    get :test_send_file
+    assert_nothing_raised(NoMethodError) { @response.binary_content }
+  end
+  
   protected
     def with_foo_routing
       with_routing do |set|
@@ -580,3 +590,34 @@ class CleanBacktraceTest < Test::Unit::TestCase
     assert !caught.backtrace.empty?
   end
 end
+
+class InferringClassNameTest < Test::Unit::TestCase
+  def test_determine_controller_class
+    assert_equal ContentController, determine_class("ContentControllerTest")
+  end
+
+  def test_determine_controller_class_with_nonsense_name
+    assert_raises ActionController::NonInferrableControllerError do
+      determine_class("HelloGoodBye")
+    end
+  end
+
+  def test_determine_controller_class_with_sensible_name_where_no_controller_exists
+    assert_raises ActionController::NonInferrableControllerError do
+      determine_class("NoControllerWithThisNameTest")
+    end
+  end
+
+  private
+    def determine_class(name)
+      ActionController::TestCase.determine_default_controller_class(name)
+    end
+end
+
+class CrazyNameTest < ActionController::TestCase
+  tests ContentController
+  def test_controller_class_can_be_set_manually_not_just_inferred
+    assert_equal ContentController, self.class.controller_class
+  end
+end
+

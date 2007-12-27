@@ -3,6 +3,9 @@ require 'stringio'
 require 'strscan'
 
 module ActionController
+  # HTTP methods which are accepted by default. 
+  ACCEPTED_HTTP_METHODS = Set.new(%w( get head put post delete options ))
+
   # CgiRequest and TestRequest provide concrete implementations.
   class AbstractRequest
     cattr_accessor :relative_url_root
@@ -12,18 +15,24 @@ module ActionController
     # such as { 'RAILS_ENV' => 'production' }.
     attr_reader :env
 
+    # The true HTTP request method as a lowercase symbol, such as :get.
+    # UnknownHttpMethod is raised for invalid methods not listed in ACCEPTED_HTTP_METHODS.
+    def request_method
+      @request_method ||= begin
+        method = ((@env['REQUEST_METHOD'] == 'POST' && !parameters[:_method].blank?) ? parameters[:_method].to_s : @env['REQUEST_METHOD']).downcase
+        if ACCEPTED_HTTP_METHODS.include?(method)
+          method.to_sym
+        else
+          raise UnknownHttpMethod, "#{method}, accepted HTTP methods are #{ACCEPTED_HTTP_METHODS.to_a.to_sentence}"
+        end
+      end
+    end
+
     # The HTTP request method as a lowercase symbol, such as :get.
     # Note, HEAD is returned as :get since the two are functionally
     # equivalent from the application's perspective.
     def method
-      @request_method ||=
-        if @env['REQUEST_METHOD'] == 'POST' && !parameters[:_method].blank?
-          parameters[:_method].to_s.downcase.to_sym
-        else
-          @env['REQUEST_METHOD'].downcase.to_sym
-        end
-
-      @request_method == :head ? :get : @request_method
+      request_method == :head ? :get : request_method
     end
 
     # Is this a GET (or HEAD) request?  Equivalent to request.method == :get
@@ -33,23 +42,23 @@ module ActionController
 
     # Is this a POST request?  Equivalent to request.method == :post
     def post?
-      method == :post
+      request_method == :post
     end
 
     # Is this a PUT request?  Equivalent to request.method == :put
     def put?
-      method == :put
+      request_method == :put
     end
 
     # Is this a DELETE request?  Equivalent to request.method == :delete
     def delete?
-      method == :delete
+      request_method == :delete
     end
 
     # Is this a HEAD request? request.method sees HEAD as :get, so check the
     # HTTP method directly.
     def head?
-      @env['REQUEST_METHOD'].downcase.to_sym == :head
+      request_method == :head
     end
 
     def headers
@@ -166,7 +175,7 @@ module ActionController
     # Returns a host:port string for this request, such as example.com or
     # example.com:8080.
     def host_with_port
-      host + port_string
+      @host_with_port ||= host + port_string
     end
 
     # Returns the port number of this request as an integer.
@@ -191,7 +200,7 @@ module ActionController
     # Returns the domain part of a host, such as rubyonrails.org in "www.rubyonrails.org". You can specify
     # a different <tt>tld_length</tt>, such as 2 to catch rubyonrails.co.uk in "www.rubyonrails.co.uk".
     def domain(tld_length = 1)
-      return nil if !/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.match(host).nil? or host.nil?
+      return nil unless named_host?(host)
 
       host.split('.').last(1 + tld_length).join('.')
     end
@@ -200,7 +209,7 @@ module ActionController
     # You can specify a different <tt>tld_length</tt>, such as 2 to catch ["www"] instead of ["www", "rubyonrails"]
     # in "www.rubyonrails.co.uk".
     def subdomains(tld_length = 1)
-      return [] unless host
+      return [] unless named_host?(host)
       parts = host.split('.')
       parts[0..-(tld_length+2)]
     end
@@ -275,7 +284,7 @@ module ActionController
 
     # Returns both GET and POST parameters in a single hash.
     def parameters
-      @parameters ||= request_parameters.update(query_parameters).update(path_parameters).with_indifferent_access
+      @parameters ||= request_parameters.merge(query_parameters).update(path_parameters).with_indifferent_access
     end
 
     def path_parameters=(parameters) #:nodoc:
@@ -288,11 +297,12 @@ module ActionController
       @symbolized_path_parameters ||= path_parameters.symbolize_keys
     end
 
-    # Returns a hash with the parameters used to form the path of the request 
+    # Returns a hash with the parameters used to form the path of the request.
+    # Returned hash keys are strings.  See <tt>symbolized_path_parameters</tt> for symbolized keys.
     #
     # Example: 
     #
-    #   {:action => 'my_action', :controller => 'my_controller'}
+    #   {'action' => 'my_action', 'controller' => 'my_controller'}
     def path_parameters
       @path_parameters ||= {}
     end
@@ -385,6 +395,10 @@ module ActionController
           "content_length" => content_length,
           "exception" => "#{e.message} (#{e.class})",
           "backtrace" => e.backtrace }
+      end
+
+      def named_host?(host)
+        !(host.nil? || /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.match(host))
       end
 
     class << self
@@ -574,7 +588,13 @@ module ActionController
           end
           raise EOFError, "bad boundary end of body part" unless boundary_end=~/--/
 
-          body.rewind if body.respond_to?(:rewind)
+	  begin
+            body.rewind if body.respond_to?(:rewind)
+	  rescue Errno::ESPIPE
+            # Handles exceptions raised by input streams that cannot be rewound
+            # such as when using plain CGI under Apache
+	  end
+
           params
         end
     end

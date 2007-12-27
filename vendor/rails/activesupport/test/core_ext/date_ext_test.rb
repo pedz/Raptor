@@ -23,6 +23,8 @@ class DateExtCalculationsTest < Test::Unit::TestCase
 
   def test_to_datetime
     assert_equal DateTime.civil(2005, 2, 21), Date.new(2005, 2, 21).to_datetime
+    assert_equal 0, Date.new(2005, 2, 21).to_datetime.offset # use UTC offset
+    assert_equal ::Date::ITALY, Date.new(2005, 2, 21).to_datetime.start # use Ruby's default start value
   end
 
   def test_to_date
@@ -174,9 +176,13 @@ class DateExtCalculationsTest < Test::Unit::TestCase
   
   def test_xmlschema
     with_timezone 'US/Eastern' do
-      assert_match(/^1880-06-28T00:00:00-04:?00$/, Date.new(1880, 6, 28).xmlschema)
+      assert_match(/^1980-02-28T00:00:00-05:?00$/, Date.new(1980, 2, 28).xmlschema)
       assert_match(/^1980-06-28T00:00:00-04:?00$/, Date.new(1980, 6, 28).xmlschema)
-      assert_match(/^2080-06-28T00:00:00-04:?00$/, Date.new(2080, 6, 28).xmlschema)
+      # these tests are only of interest on platforms where older dates #to_time fail over to DateTime
+      if ::DateTime === Date.new(1880, 6, 28).to_time
+        assert_match(/^1880-02-28T00:00:00-05:?00$/, Date.new(1880, 2, 28).xmlschema)
+        assert_match(/^1880-06-28T00:00:00-05:?00$/, Date.new(1880, 6, 28).xmlschema) # DateTimes aren't aware of DST rules
+      end
     end
   end
 

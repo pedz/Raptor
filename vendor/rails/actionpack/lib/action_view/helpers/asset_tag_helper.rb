@@ -31,13 +31,60 @@ module ActionView
     #   stylesheet_include_tag("application")
     #     => <link href="http://assets3.example.com/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
     #
-    # To do this, you can either setup four actual hosts, or you can use wildcard DNS to CNAME 
+    # To do this, you can either setup 4 actual hosts, or you can use wildcard DNS to CNAME 
     # the wildcard to a single asset host.  You can read more about setting up your DNS CNAME records from
     # your ISP.
     #
     # Note: This is purely a browser performance optimization and is not meant
     # for server load balancing. See http://www.die.net/musings/page_load_time/
     # for background.
+    #
+    # Alternatively, you can exert more control over the asset host by setting <tt>asset_host</tt> to a proc
+    # that takes a single source argument. This is useful if you are unable to setup 4 actual hosts or have
+    # fewer/more than 4 hosts. The example proc below generates http://assets1.example.com and
+    # http://assets2.example.com randomly.
+    #
+    #   ActionController::Base.asset_host = Proc.new { |source| "http://assets#{rand(2) + 1}.example.com" }
+    #   image_tag("rails.png")
+    #     => <img src="http://assets2.example.com/images/rails.png" alt="Rails" />
+    #   stylesheet_include_tag("application")
+    #     => <link href="http://assets1.example.com/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
+    #
+    # The proc takes a single <tt>source</tt> parameter which is the path of the source asset. This can be used to
+    # generate a particular asset host depending on the asset path.
+    #
+    #    ActionController::Base.asset_host = Proc.new { |source|
+    #      if source.starts_with?('/images')
+    #        "http://images.example.com"
+    #      else
+    #        "http://assets.example.com"
+    #      end
+    #    }
+    #   image_tag("rails.png")
+    #     => <img src="http://images.example.com/images/rails.png" alt="Rails" />
+    #   stylesheet_include_tag("application")
+    #     => <link href="http://assets.example.com/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
+    #
+    # === Using asset timestamps
+    #
+    # By default, Rails will append all asset paths with that asset's timestamp. This allows you to set a cache-expiration date for the
+    # asset far into the future, but still be able to instantly invalidate it by simply updating the file (and hence updating the timestamp,
+    # which then updates the URL as the timestamp is part of that, which in turn busts the cache).
+    #
+    # It's the responsibility of the web server you use to set the far-future expiration date on cache assets that you need to take 
+    # advantage of this feature. Here's an example for Apache:
+    #
+    # # Asset Expiration
+    # ExpiresActive On
+    # <FilesMatch "\.(ico|gif|jpe?g|png|js|css)$">
+    #   ExpiresDefault "access plus 1 year"
+    # </FilesMatch>
+    #
+    # Also note that in order for this to work, all your application servers must return the same timestamps. This means that they must 
+    # have their clocks synchronized. If one of them drift out of sync, you'll see different timestamps at random and the cache won't
+    # work. Which means that the browser will request the same assets over and over again even thought they didn't change. You can use
+    # something like Live HTTP Headers for Firefox to verify that the cache is indeed working (and that the assets are not being 
+    # requested over and over).
     module AssetTagHelper
       ASSETS_DIR      = defined?(RAILS_ROOT) ? "#{RAILS_ROOT}/public" : "public"
       JAVASCRIPTS_DIR = "#{ASSETS_DIR}/javascripts"
@@ -90,6 +137,7 @@ module ActionView
       def javascript_path(source)
         compute_public_path(source, 'javascripts', 'js')
       end
+      alias_method :path_to_javascript, :javascript_path # aliased to avoid conflicts with a javascript_path named route
 
       JAVASCRIPT_DEFAULT_SOURCES = ['prototype', 'effects', 'dragdrop', 'controls'] unless const_defined?(:JAVASCRIPT_DEFAULT_SOURCES)
       @@javascript_default_sources = JAVASCRIPT_DEFAULT_SOURCES.dup
@@ -179,23 +227,10 @@ module ActionView
           joined_javascript_name = (cache == true ? "all" : cache) + ".js"
           joined_javascript_path = File.join(JAVASCRIPTS_DIR, joined_javascript_name)
 
-          if !file_exist?(joined_javascript_path)
-            File.open(joined_javascript_path, "w+") do |cache|
-              javascript_paths = expand_javascript_sources(sources).collect do |source|
-                compute_public_path(source, 'javascripts', 'js', false)
-              end
-
-              cache.write(join_asset_file_contents(javascript_paths))
-            end
-          end
-
-          content_tag("script", "", {
-            "type" => Mime::JS, "src" => javascript_path(joined_javascript_name)
-          }.merge(options))
+          write_asset_file_contents(joined_javascript_path, compute_javascript_paths(sources))
+          javascript_src_tag(joined_javascript_name, options)
         else
-          expand_javascript_sources(sources).collect do |source|
-            content_tag("script", "", { "type" => Mime::JS, "src" => javascript_path(source) }.merge(options))
-          end.join("\n")
+          expand_javascript_sources(sources).collect { |source| javascript_src_tag(source, options) }.join("\n")
         end
       end
 
@@ -225,6 +260,7 @@ module ActionView
       def stylesheet_path(source)
         compute_public_path(source, 'stylesheets', 'css')
       end
+      alias_method :path_to_stylesheet, :stylesheet_path # aliased to avoid conflicts with a stylesheet_path named route
 
       # Returns a stylesheet link tag for the sources specified as arguments. If
       # you don't specify an extension, .css will be appended automatically.
@@ -288,28 +324,10 @@ module ActionView
           joined_stylesheet_name = (cache == true ? "all" : cache) + ".css"
           joined_stylesheet_path = File.join(STYLESHEETS_DIR, joined_stylesheet_name)
 
-          if !file_exist?(joined_stylesheet_path)
-            File.open(joined_stylesheet_path, "w+") do |cache|
-              stylesheet_paths = expand_stylesheet_sources(sources).collect do |source|
-                compute_public_path(source, 'stylesheets', 'css', false) 
-              end
-
-              cache.write(join_asset_file_contents(stylesheet_paths))
-            end
-          end
-
-          tag("link", {
-            "rel" => "stylesheet", "type" => Mime::CSS, "media" => "screen",
-            "href" => html_escape(stylesheet_path(joined_stylesheet_name))
-          }.merge(options), false, false)
+          write_asset_file_contents(joined_stylesheet_path, compute_stylesheet_paths(sources))
+          stylesheet_tag(joined_stylesheet_name, options)
         else
-          options.delete("cache")
-
-          expand_stylesheet_sources(sources).collect do |source|
-            tag("link", {
-              "rel" => "stylesheet", "type" => Mime::CSS, "media" => "screen", "href" => html_escape(stylesheet_path(source))
-            }.merge(options), false, false)
-          end.join("\n")
+          expand_stylesheet_sources(sources).collect { |source| stylesheet_tag(source, options) }.join("\n")
         end
       end
 
@@ -326,19 +344,23 @@ module ActionView
       def image_path(source)
         compute_public_path(source, 'images')
       end
+      alias_method :path_to_image, :image_path # aliased to avoid conflicts with an image_path named route
 
       # Returns an html image tag for the +source+. The +source+ can be a full
       # path or a file that exists in your public images directory.
       #
       # ==== Options
       # You can add HTML attributes using the +options+. The +options+ supports
-      # two additional keys for convienence and conformance:
+      # three additional keys for convenience and conformance:
       #
       # * <tt>:alt</tt>  - If no alt text is given, the file name part of the
       #   +source+ is used (capitalized and without the extension)
       # * <tt>:size</tt> - Supplied as "{Width}x{Height}", so "30x45" becomes
       #   width="30" and height="45". <tt>:size</tt> will be ignored if the
       #   value is not in the correct format.
+      # * <tt>:mouseover</tt> - Set an alternate image to be used when the onmouseover
+      #   event is fired, and sets the original image to be replaced onmouseout.
+      #   This can be used to implement an easy image toggle that fires on onmouseover.
       #
       # ==== Examples
       #  image_tag("icon")  # =>
@@ -353,15 +375,23 @@ module ActionView
       #    <img alt="Icon" height="32" src="/icons/icon.gif" width="32" />
       #  image_tag("/icons/icon.gif", :class => "menu_icon") # =>
       #    <img alt="Icon" class="menu_icon" src="/icons/icon.gif" />
+      #  image_tag("mouse.png", :mouseover => "/images/mouse_over.png") # => 
+      #    <img src="/images/mouse.png" onmouseover="this.src='/images/mouse_over.png'" onmouseout="this.src='/images/mouse.png'" alt="Mouse" />
+      #  image_tag("mouse.png", :mouseover => image_path("mouse_over.png")) # => 
+      #    <img src="/images/mouse.png" onmouseover="this.src='/images/mouse_over.png'" onmouseout="this.src='/images/mouse.png'" alt="Mouse" />
       def image_tag(source, options = {})
         options.symbolize_keys!
 
-        options[:src] = image_path(source)
+        options[:src] = path_to_image(source)
         options[:alt] ||= File.basename(options[:src], '.*').split('.').first.capitalize
 
-        if options[:size]
-          options[:width], options[:height] = options[:size].split("x") if options[:size] =~ %r{^\d+x\d+$}
-          options.delete(:size)
+        if size = options.delete(:size)
+          options[:width], options[:height] = size.split("x") if size =~ %r{^\d+x\d+$}
+        end
+
+        if mouseover = options.delete(:mouseover)
+          options[:onmouseover]	= "this.src='#{image_path(mouseover)}'"
+          options[:onmouseout]	= "this.src='#{image_path(options[:src])}'"
         end
 
         tag("img", options)
@@ -381,13 +411,20 @@ module ActionView
         # Add the .ext if not present. Return full URLs otherwise untouched.
         # Prefix with /dir/ if lacking a leading /. Account for relative URL
         # roots. Rewrite the asset path for cache-busting asset ids. Include
-        # a single or wildcarded asset host, if configured, with the correct
-        # request protocol.
+        # asset host, if configured, with the correct request protocol.
         def compute_public_path(source, dir, ext = nil, include_host = true)
-          cache_key = [ @controller.request.protocol,
-                        ActionController::Base.asset_host,
-                        @controller.request.relative_url_root,
-                        dir, source, ext, include_host ].join
+          has_request = @controller.respond_to?(:request)
+
+          cache_key =
+            if has_request
+              [ @controller.request.protocol,
+                ActionController::Base.asset_host.to_s,
+                @controller.request.relative_url_root,
+                dir, source, ext, include_host ].join
+            else
+              [ ActionController::Base.asset_host.to_s,
+                dir, source, ext, include_host ].join
+            end
 
           ActionView::Base.computed_public_paths[cache_key] ||=
             begin
@@ -397,13 +434,15 @@ module ActionView
                 source
               else
                 source = "/#{dir}/#{source}" unless source[0] == ?/
-                source = "#{@controller.request.relative_url_root}#{source}"
+                if has_request
+                  source = "#{@controller.request.relative_url_root}#{source}"
+                end
                 rewrite_asset_path!(source)
 
                 if include_host
                   host = compute_asset_host(source)
 
-                  unless host.blank? or host =~ %r{^[-a-z]+://}
+                  if has_request && !host.blank? && host !~ %r{^[-a-z]+://}
                     host = "#{@controller.request.protocol}#{host}"
                   end
 
@@ -416,11 +455,16 @@ module ActionView
         end
 
         # Pick an asset host for this source. Returns nil if no host is set,
-        # the host if no wildcard is set, or the host interpolated with the
-        # numbers 0-3 if it contains %d. The number is the source hash mod 4.
+        # the host if no wildcard is set, the host interpolated with the
+        # numbers 0-3 if it contains %d (the number is the source hash mod 4),
+        # or the value returned from invoking the proc if it's a proc.
         def compute_asset_host(source)
           if host = ActionController::Base.asset_host
-            host % (source.hash % 4)
+            if host.is_a?(Proc)
+              host.call(source)
+            else
+              host % (source.hash % 4)
+            end
           end
         end
 
@@ -447,7 +491,23 @@ module ActionView
           source << "?#{asset_id}" if !asset_id.blank?
         end
 
-        def expand_javascript_sources(sources)          
+        def javascript_src_tag(source, options)
+          content_tag("script", "", { "type" => Mime::JS, "src" => path_to_javascript(source) }.merge(options))
+        end
+
+        def stylesheet_tag(source, options)
+          tag("link", { "rel" => "stylesheet", "type" => Mime::CSS, "media" => "screen", "href" => html_escape(path_to_stylesheet(source)) }.merge(options), false, false)
+        end
+
+        def compute_javascript_paths(sources)
+          expand_javascript_sources(sources).collect { |source| compute_public_path(source, 'javascripts', 'js', false) }
+        end
+
+        def compute_stylesheet_paths(sources)
+          expand_stylesheet_sources(sources).collect { |source| compute_public_path(source, 'stylesheets', 'css', false) }
+        end
+
+        def expand_javascript_sources(sources)
           case
           when sources.include?(:all)
             all_javascript_files = Dir[File.join(JAVASCRIPTS_DIR, '*.js')].collect { |file| File.basename(file).split(".", 0).first }.sort
@@ -475,6 +535,13 @@ module ActionView
 
         def join_asset_file_contents(paths)
           paths.collect { |path| File.read(File.join(ASSETS_DIR, path.split("?").first)) }.join("\n\n")
+        end
+
+        def write_asset_file_contents(joined_asset_path, asset_paths)
+          unless file_exist?(joined_asset_path)
+            FileUtils.mkdir_p(File.dirname(joined_asset_path))
+            File.open(joined_asset_path, "w+") { |cache| cache.write(join_asset_file_contents(asset_paths)) }
+          end
         end
     end
   end
