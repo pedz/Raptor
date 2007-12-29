@@ -105,7 +105,7 @@ module Retain
         request.data_element(index, v.to_s)
       end
 
-      raise "Login Failed" unless login
+      login
 
       send = request.to_s
       if  @connection.write(send) != send.length
@@ -168,6 +168,11 @@ module Retain
 
     def login
       #
+      # Abort early if the failed flag is already true
+      #
+      raise Retain::FailedMarkedTrue if Logon.instance.failed
+
+      #
       # Could pull signon and password from options
       #
       first50 = 'SDTC,SDIRETEX' + 
@@ -183,13 +188,10 @@ module Retain
       @connection.write(send)
       reply = @login_reply = @connection.read(50)
       @logger.debug("DEBUG: reply length is #{reply.length}")
-      if reply.length == 50
-        # Can add more for things like password date, etc
-        true
-      else
+      if reply.length != 50
         hex_dump("first 50 request", send)
         hex_dump("first 50 reply", reply)
-        false
+        raise Retain::LogonFailed
       end
     end
     

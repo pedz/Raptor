@@ -1,13 +1,15 @@
 <!-- app/views/layouts/shared/_body.html.erb -->
   <body>
     <% if divs.nil? || divs.empty? -%>
-    <p style="color: green"><%= flash[:notice] %></p>
-    <%=  yield %>
+      <% flash.keys.each do |key| %>
+        <p id="<%= key.to_s %>"><%= flash[key] %></p>
+      <% end %>
+      <%= yield %>
     <% else -%>
-    <%   for div in divs -%>
-           <div id="<%= div.to_s.gsub(/_/, '-') %>">
-             <%= yield div  %>
-           </div>
-    <%   end -%>
+      <% for div in divs -%>
+        <div id="<%= div.to_s.gsub(/_/, '-') %>">
+          <%= yield div  %>
+        </div>
+      <% end -%>
     <% end -%>
   </body>

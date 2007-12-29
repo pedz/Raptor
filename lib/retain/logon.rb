@@ -24,5 +24,9 @@ module Retain
     def password
       @params.password
     end
+
+    def failed
+      @params.failed
+    end
   end
 end

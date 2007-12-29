@@ -4,6 +4,7 @@
 # +user_id+::    +integer+ -- Points back to the user record
 # +queue_name+:: +string+  -- Retain queue name
 # +center+::     +string+  -- Retain center
+# +h_or_s+::     +string+  -- Software (S) or Hardware (H)
 #
 class CreateFavoriteQueues < ActiveRecord::Migration
   def self.up
@@ -11,7 +12,7 @@ class CreateFavoriteQueues < ActiveRecord::Migration
       t.integer :user_id,    :null => false
       t.string  :queue_name, :null => false
       t.string  :center,     :null => false
-
+      t.string  :h_or_s, :default => 'S'
       t.timestamps 
     end
   end

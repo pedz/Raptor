@@ -58,6 +58,8 @@ class RetusersController < ApplicationController
         format.html {
           uri = session[:original_uri]
           session[:original_uri] = nil
+          # Delete the retain session since it changed
+          session[:retain] = nil
           redirect_to(uri || @retuser)
         }
         format.xml  { render :xml => @retuser, :status => :created, :location => @retuser }
@@ -77,7 +79,13 @@ class RetusersController < ApplicationController
     respond_to do |format|
       if @retuser.update_attributes(params[:retuser])
         flash[:notice] = 'Retuser was successfully updated.'
-        format.html { redirect_to(@retuser) }
+        format.html {
+          uri = session[:original_uri]
+          session[:original_uri] = nil
+          # Delete the retain session since it changed
+          session[:retain] = nil
+          redirect_to(uri || @retuser)
+        }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

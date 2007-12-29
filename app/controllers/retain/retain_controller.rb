@@ -1,42 +1,81 @@
 module Retain
   class RetainController < ApplicationController
-
+    
     before_filter :validate_retuser
+    
+    rescue_from Retain::LogonFailed, :with => :logon_failed
+    rescue_from Retain::FailedMarkedTrue, :with => :failed_marked_true
 
     private
     
+    #
+    # A before filter for the retain part of the application.  Any
+    # controller that might call in to retain should be subclassed as
+    # a RetainController.
+    #
     def validate_retuser
       logger.debug("DEBUG: in validate_retuser")
-      u = session[:user]
-
+      user = session[:user]
+      
       # Avoid extra db hits if session[:retain] already set
       if params = session[:retain]
         logger.debug("DEBUG: setting logon params #{__LINE__}")
         Logon.instance.set(params)
         return true
       end
-
+      
       # If no retusers defined for this user, then redirect and
       # set up a retain user.
-      if u.retusers.empty?
+      if user.retusers.empty?
         session[:original_uri] = request.request_uri
         redirect_to new_retuser_url
         return false
       end
 
-      # Pull together the signon/password and the host/port and create
-      # a ConnectionParamters structure.  We hold this in the session
-      # data.  We also set the Logon instance to use these settings.
-      ru = u.retusers[0]
-      c = Retain::Config.symbolize_keys[RetainConfig::Node][0].symbolize_keys
-      params = ConnectionParameters.new(:host => c[:host],
-                                        :port => c[:port],
-                                        :signon => ru.retid,
-                                        :password => ru.password)
-      session[:retain] = params
-      logger.debug("DEBUG: setting logon params #{__LINE__}")
-      Logon.instance.set(params)
+      setup_logon_instance
       return true
+    end
+
+    # Pull together the signon/password and the host/port and create a
+    # ConnectionParamters structure.  We hold this in the session
+    # data.  We also set the Logon instance to use these settings.
+    def setup_logon_instance
+      retuser = session[:user].retusers[0]
+      config = Retain::Config.symbolize_keys[RetainConfig::Node][0].symbolize_keys
+      params = ConnectionParameters.new(:host     => config[:host],
+                                        :port     => config[:port],
+                                        :signon   => retuser.retid,
+                                        :password => retuser.password,
+                                        :failed   => retuser.failed)
+      session[:retain] = params
+      Logon.instance.set(params)
+    end
+    
+    def logon_failed
+      # Find the retuser record and set the failed bit to true so we
+      # do not retry until the user resets his password.
+      user = session[:user]
+      retuser = user.retusers[0]
+      retuser.failed = true
+      retuser.save
+
+      flash[:error] = "Login failed -- bad password?"
+      # Remember what we were trying to do
+      session[:original_uri] = request.request_uri
+      # Go edit the retuser
+      redirect_to edit_retuser_url(retuser)
+    end
+
+    def failed_marked_true
+      flash[:warning] = "'failed' flag set.  Check password, clear 'failed' flag, and try again"
+
+      # Remember what we were trying to do
+      session[:original_uri] = request.request_uri
+
+      # Go edit the retuser
+      user = session[:user]
+      retuser = user.retusers[0]
+      redirect_to edit_retuser_url(retuser)
     end
 
     #
@@ -46,48 +85,48 @@ module Retain
     # sometimes and that field is appended if we want to receive them.
     #
     LOCAL_GROUP_REQUEST = [
-                                :queue_name,
-                                :center,
-                                :h_or_s,
-                                :ppg,
-                                :priority,
-                                :severity,
-                                :p_s_b,
-                                :comments,
-                                :customer_name,
-                                :cstatus,
-                                :nls_scratch_pad_1,
-                                :nls_scratch_pad_2,
-                                :nls_scratch_pad_3,
-                                :nls_text_lines,
-                                :pmr_owner_name,
-                                :pmr_owner_employee_number,
-                                :resolver_id,
-                                :resolver_name,
-                                :problem_e_mail,
-                                :next_queue,
-                                :next_center
-                               ].freeze
+                           :queue_name,
+                           :center,
+                           :h_or_s,
+                           :ppg,
+                           :priority,
+                           :severity,
+                           :p_s_b,
+                           :comments,
+                           :customer_name,
+                           :cstatus,
+                           :nls_scratch_pad_1,
+                           :nls_scratch_pad_2,
+                           :nls_scratch_pad_3,
+                           :nls_text_lines,
+                           :pmr_owner_name,
+                           :pmr_owner_employee_number,
+                           :resolver_id,
+                           :resolver_name,
+                           :problem_e_mail,
+                           :next_queue,
+                           :next_center
+                          ].freeze
     
-
+    
     # Takes a hash which defines a call.  Returns a tuple array whcih
     # is the Retain::Call, Retain::Pmr, Cached::Pmr, text_lines
     def call_to_all(options)
-
+      
       # Get the call from retain.  I'm afraid to cache these
       call = Retain::Call.new(options)
       logger.info("#{call.problem},#{call.branch},#{call.country}")
-
+      
       # This is hash is reused so make a local variable.
       pmr_hash = {
         :problem => call.problem,
         :branch => call.branch,
         :country => call.country
       }
-
+      
       # Get the cached pmr if one exists.
       cached_pmr = Cached::Pmr.find(:first, :conditions => pmr_hash)
-
+      
       # When we fetch the text lines from Retain, it pads with blank
       # lines up to the page boundary.
       
@@ -102,21 +141,21 @@ module Retain
         cached_pmr = Cached::Pmr.new(pmr_hash)
       end
       logger.info("DEBUG: last_cached_page=#{last_cached_page}, " +
-                   "last_cached_line_number=#{last_cached_line_number}")
-
+                  "last_cached_line_number=#{last_cached_line_number}")
+      
       if last_cached_page > 0
         pmr_hash[:beginning_page_number] = last_cached_page
       end
       pmr = Retain::Pmr.new(pmr_hash)
       local_group_request = LOCAL_GROUP_REQUEST.dup
-
+      
       # If the PMR is not in the cache, we request the FA lines;
       # otherwise we do not.
       if last_cached_page == 0
         local_group_request << :alterable_format_text_lines
       end
       pmr.group_request = local_group_request
-
+      
       # Fetch the record from Retain here.
       text_lines = pmr.nls_text_lines
       #
@@ -139,7 +178,7 @@ module Retain
       else
         logger.info("DEBUG: text_lines.length=#{text_lines.length}")
       end
-
+      
       # Some requests will not have the alterable format text so make
       # this conditional.  Becaues it is conditional, this can not be
       # the first thing we look at because it has not been fetched
@@ -168,17 +207,17 @@ module Retain
       else
         alt_lines = []
       end
-
+      
       # Retain puts the FA lines at the top.
       new_text_lines = alt_lines + text_lines
-
+      
       if pmr.beginning_page_number?
         # The minus 2 is because the first page of text on the screen
         # Retain calls Page 2.  We need a zero based index so the
         # multiplies come out right.  This should not be page_offset.
         beginning_page_number = pmr.beginning_page_number - 2
         logger.info("DEBUG: pmr.beginning_page_number = " +
-                     "#{pmr.beginning_page_number}")
+                    "#{pmr.beginning_page_number}")
         beginning_page_number = 0 if beginning_page_number < 0
       else
         beginning_page_number = 0
@@ -186,7 +225,7 @@ module Retain
       beginning_line_number = beginning_page_number * 16
       logger.info("DEBUG: beginning_page_number = #{beginning_page_number}")
       logger.info("DEBUG: first line: #{new_text_lines[0].text}")
-
+      
       # For each line, we check to see if we already have it in the
       # cache.  If we do and it has not changed, we do nothing.  If it
       # is cached and it changes (from a blank line to a text line),
@@ -200,9 +239,9 @@ module Retain
           unless (cached_line.text == line.text &&
                   cached_line.line_type == line.line_type)
             logger.info("DEBUG: before: #{cached_line.line_number} " +
-                         "#{cached_line.line_type} '#{cached_line.text}'")
+                        "#{cached_line.line_type} '#{cached_line.text}'")
             logger.info("DEBUG:  after: #{line_number} #{line.line_type} '" +
-                         "#{line.text}'")
+                        "#{line.text}'")
             cached_line.line_type = line.line_type
             cached_line.text = line.text
             cached_line.save!

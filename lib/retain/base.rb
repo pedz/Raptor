@@ -1,5 +1,6 @@
 
 require 'retain/utils'
+require 'retain/exceptions'
 
 module Retain
   class Base

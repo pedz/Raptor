@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
   end
 
   private
+  
   #
   # A before_filter for the entire application.  This authenticates
   # against bluepages.  If authentication succeeds, the matching user
@@ -23,18 +24,19 @@ class ApplicationController < ActionController::Base
     ActiveLdap::Base.establish_connection
     authenticate_or_request_with_http_basic "Raptor" do |user_name, password|
       next nil unless LdapUser.authenticate_from_email(user_name, password)
-      u = User.find_by_ldap_id(user_name)
-      if u.nil?
+      user = User.find_by_ldap_id(user_name)
+      if user.nil?
         # Can not use this because ldap_id is protected
         # User.create!(:ldap_id => user_name)
         # Use this instead:
-        u = User.new
-        u.ldap_id = user_name
-        u.save!
+        user = User.new
+        user.ldap_id = user_name
+        user.save!
       end
-      session[:user] = u
+      session[:user] = user
       session[:retain] = nil
       return true
     end
+    return false
   end
 end
