@@ -5,6 +5,7 @@ module Retain
     
     rescue_from Retain::LogonFailed, :with => :logon_failed
     rescue_from Retain::FailedMarkedTrue, :with => :failed_marked_true
+    # rescue_from ActionView::TemplateError, :with => :my_template_error
 
     private
     
@@ -77,6 +78,11 @@ module Retain
       retuser = user.retusers[0]
       redirect_to edit_retuser_url(retuser)
     end
+
+    # def my_template_error(e)
+    #   logger.debug("template exception caught")
+    #   redirect_to "/"
+    # end
 
     #
     # I'm going to put a local copy of this here.  As the html view

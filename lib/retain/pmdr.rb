@@ -140,6 +140,10 @@ module Retain
       unless @fields.has_key?(:group_request)
         @fields[:group_request] = [
                                    :name,
+                                   :support_center_binary,
+                                   :hardware_center_mnemonic,
+                                   :hardware_center,
+                                   :center_mnemonic,
                                    :queue_name,
                                    :center,
                                    :h_or_s,

@@ -3,19 +3,20 @@
 <%= error_messages_for :queue %>
 
 <% form_for(@retain_favorite_queue) do |f| %>
+
   <p>
     <b>Queue name</b><br />
-    <%= f.text_field :queue_name %>
+    <%= f.text_field :queue_name, :size => 6 %>
   </p>
 
   <p>
     <b>Center</b><br />
-    <%= f.text_field :center %>
+    <%= f.text_field :center, :size => 3 %>
   </p>
 
   <p>
     <b>Hardware (H) or Software (S)</b><br />
-    <%= f.text_field :h_or_s %>
+    <%= f.text_field :h_or_s, :size => 1 %>
   </p>
 
   <p>

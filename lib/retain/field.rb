@@ -86,6 +86,31 @@ module Retain
 
     private
 
+    # Decodes a "binary" (HEX(2)) center to ascii
+    def decode_center(v)
+      s = v.net2short
+      i1 = s / 100;
+      i2 = s % 100;
+      i3 = i1 - 10;
+
+      ## if it is less than 26, than it's an alphanumeric
+      ## center like 13L
+      return ("%02d%c" % [ i2, (?A + i3)]) if i3 >= 0 && i3 <= 25
+
+      ## Otherwise it is pure numeric
+      return ("%03d" % s)
+    end
+
+    # Encode an ascii center to the "binary" representation
+    def encode_center(v)
+      # I think if the last character is a digit, we just encode it as a binary
+      return v.to_i.short2net if (?0 .. ?9).member?(v[2])
+
+      # Otherwise, the last character effectively becomes the 100's
+      # digit with A => 10 (or 1000 after its multiplied by 100)
+      return ((v.upcase[2] - ?A + 10) * 100 + v[0..1].to_i).short2net
+    end
+
     def group_request(fields)
       s = ""
       fields.each do |f|
@@ -135,6 +160,8 @@ module Retain
         value.trim(width).upcase.ebcdic
       when :ebcdic
         value.trim(width).ebcdic
+      when :binary_center
+        encode_center(value.trim(3))
       when :binary
         value
       when :znumber             # zero filled number
@@ -167,6 +194,8 @@ module Retain
         value.ascii
       when :nls
         value.ascii[2...value.length]
+      when :binary_center
+        decode_center(value)
       when :binary
         value
       when :nls_text_lines
