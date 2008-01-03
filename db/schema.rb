@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 11) do
+ActiveRecord::Schema.define(:version => 12) do
 
   create_table "cached_calls", :force => true do |t|
     t.string   "queue_name", :limit => 6,                  :null => false
@@ -32,6 +32,17 @@ ActiveRecord::Schema.define(:version => 11) do
     t.string   "queue_name", :limit => 6,                  :null => false
     t.string   "center",     :limit => 3,                  :null => false
     t.string   "h_or_s",     :limit => 1, :default => "S", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cached_registrations", :force => true do |t|
+    t.string   "signon",           :null => false
+    t.string   "psar_number"
+    t.string   "name"
+    t.string   "telephone_number"
+    t.string   "software_center"
+    t.string   "hardware_center"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

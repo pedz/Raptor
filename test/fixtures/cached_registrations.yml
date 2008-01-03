@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  signon: MyString
+  psar_number: MyString
+  name: MyString
+  telephone: MyString
+  software_center: MyString
+  hardware_center: MyString
+
+two:
+  signon: MyString
+  psar_number: MyString
+  name: MyString
+  telephone: MyString
+  software_center: MyString
+  hardware_center: MyString
