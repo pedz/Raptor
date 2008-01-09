@@ -64,7 +64,7 @@ module Retain
     end
 
     def data_element(id, data)
-      @logger.debug("DEBUG: Adding data_element #{id}='#{data.ascii}' " +
+      @logger.debug("RTN: Adding data_element #{id}='#{data.ascii}' " +
                     "for #{@request}")
       @element_count += 1
       s = 0.short2net + id.short2net + 0.short2net + data

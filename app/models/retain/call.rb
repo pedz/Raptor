@@ -20,11 +20,5 @@ module Retain
     def short_queue_name
       full_queue_name.sub(/,[sS]/, '')
     end
-    
-    # A convenience method to give back the usual form of
-    # problem,branch,country for a call.
-    def pbc
-      "%s,%s,%s" % [ problem, branch, country ]
-    end
   end
 end

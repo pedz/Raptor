@@ -45,7 +45,7 @@ module Retain
       @options = { :request => self.class.fetch_request }.merge(options)
       @logger = @options[:logger] || RAILS_DEFAULT_LOGGER
       @fields = Fields.new
-      @logger.debug("DEBUG: initializing #{self.class}")
+      @logger.debug("RTN: initializing #{self.class}")
       
       # Look at the default_fields for a list of fields to use as
       # defaults.
@@ -75,32 +75,32 @@ module Retain
       fields = @fields.merge(req_fields)
       options = @options.merge(send_options)
       if false
-        @logger.debug("DEBUG: fields = #{fields.to_yaml}")
-        @logger.debug("DEBUG: options = #{options.to_yaml}")
+        @logger.debug("RTN: fields = #{fields.to_yaml}")
+        @logger.debug("RTN: options = #{options.to_yaml}")
       end
 
       request = Request.new(options)
       self.class.required_fields.each do |sym|
         if true
-          @logger.debug("DEBUG: req sym is #{sym} class is #{sym.class}")
+          @logger.debug("RTN: req sym is #{sym} class is #{sym.class}")
         end
         index = Fields.sym_to_index(sym)
         raise "required field #{sym} not present" unless fields.has_key?(sym)
         v = fields[sym]
         if false
-          @logger.debug("DEBUG: v.class is #{v.class}")
+          @logger.debug("RTN: v.class is #{v.class}")
         end
         request.data_element(index, v.to_s)
       end
       self.class.optional_fields.each do |sym|
         if true
-          @logger.debug("DEBUG: opt sym is #{sym} class is #{sym.class}")
+          @logger.debug("RTN: opt sym is #{sym} class is #{sym.class}")
         end
         index = Fields.sym_to_index(sym)
         next unless fields.has_key?(sym)
         v = fields[sym]
         if false
-          @logger.debug("DEBUG: v.class is #{v.class}")
+          @logger.debug("RTN: v.class is #{v.class}")
         end
         request.data_element(index, v.to_s)
       end
@@ -124,8 +124,8 @@ module Retain
       @header = @reply[0...128]
       @rc = @header[8...12].net2int
       if true
-        @logger.debug("DEBUG: self is of class #{self.class}")
-        @logger.debug("DEBUG: rc should be #{@rc}")
+        @logger.debug("RTN: self is of class #{self.class}")
+        @logger.debug("RTN: rc should be #{@rc}")
       end
 
       new_fields = Fields.new
@@ -149,6 +149,10 @@ module Retain
       @rc
     end
     
+    def fields
+      @fields
+    end
+
     #
     # Create field getters and setters
     #
@@ -187,7 +191,7 @@ module Retain
       connect
       @connection.write(send)
       reply = @login_reply = @connection.read(50)
-      @logger.debug("DEBUG: reply length is #{reply.length}")
+      @logger.debug("RTN: reply length is #{reply.length}")
       if reply.length != 50
         hex_dump("first 50 request", send)
         hex_dump("first 50 reply", reply)
@@ -223,17 +227,17 @@ module Retain
     end
     
     def hex_dump(title, s)
-      @logger.info("DEBUG: #{title}")
+      @logger.info("RTN: #{title}")
       line = "     "
       (0..19).each { |b| line << ("%2d " % b) }
-      @logger.info("DEBUG: #{line}")
+      @logger.info("RTN: #{line}")
       foo = 0
       until s.nil?
         line = ("%3d:" % foo)
         foo += 20
         l = s.length > 20 ? 20 : s.length
         s[0...l].each_byte { |b| line << (" %02x" % b) }
-        @logger.info("DEBUG: #{line}")
+        @logger.info("RTN: #{line}")
         s = s[20...s.length]
       end
     end

@@ -6,6 +6,8 @@ module Retain
   class Base
     ### Class instance methods
     class << self
+      attr_reader :subclass, :logger
+      
       def set_fetch_sdi(sdi)
         @fetch_sdi = sdi
       end
@@ -16,14 +18,17 @@ module Retain
       end
     end
 
+    attr_reader :fields
+
     ###
     ### instance methods
     ###
     def initialize(options = {})
+      super()
       @options = options
       @logger = @options.delete(:logger) || RAILS_DEFAULT_LOGGER
       @fields = Fields.new(self.method(:fetch_fields))
-      @logger.debug("DEBUG: initializing #{self.class}")
+      @logger.debug("RTN: initializing #{self.class}")
 
       # options can have default_fields and fields which are both a
       # list of fields.  We merge in the sequence of :default_fields,
@@ -40,7 +45,7 @@ module Retain
     end
 
     def fetch_fields
-      @logger.debug("DEBUG: fetch fields for #{self.class}")
+      @logger.debug("RTN: fetch fields for #{self.class}")
       fetch_sdi = self.class.fetch_sdi
       fetch_sdi.sendit(@fields, @options)
       @rc = fetch_sdi.rc
@@ -55,6 +60,21 @@ module Retain
       eval "def #{k};  @fields.#{k}; end", nil, __FILE__, __LINE__
       eval "def #{k}?; @fields.#{k}?; end", nil, __FILE__, __LINE__
       eval "def #{k}=(data); @fields.#{k} = data; end", nil, __FILE__, __LINE__
+    end
+
+    protected
+
+    def self.inherited(subclass)
+      super(subclass)
+      subclass.extend(ClassNameUtils)
+      
+      subclass.class_eval {
+        # Rembmer our name
+        @subclass = subclass
+
+        # Set up Logger
+        @logger = RAILS_DEFAULT_LOGGER
+      }
     end
   end
 end

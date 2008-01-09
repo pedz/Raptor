@@ -455,7 +455,7 @@ module Retain
 
     def dump_fields
       @fields.each_pair do |k, v|
-        @logger.debug("DEBUG: field:#{k} is #{v.value}")
+        logger.debug("RTN: field:#{k} is #{v.value}")
       end
     end
 
@@ -512,6 +512,16 @@ module Retain
       @fields[index] = Field.new(cvt, width, value)
     end
     
+    def keys
+      @fields.keys.map { |key|
+        if key.kind_of? Symbol
+          key
+        else
+          Fields.index_to_sym(key)
+        end
+      }
+    end
+
     def each_pair
       @fields.each_pair do |k, v|
         yield(k, v.value)
@@ -527,21 +537,23 @@ module Retain
     def to_debug
       r = ''
       @fields.each_pair do |k, v|
-        r << "DEBUG: #{@@field_num_to_name[k]}: '#{v.value}'\n"
+        r << "RTN: #{@@field_num_to_name[k]}: '#{v.value}'\n"
       end
       r
     end
 
     private
 
+    attr_reader :logger
+
     def merge_fields!(new_fields)
       new_fields.each_raw_pair do |k, v|
         index = index_or_sym_to_index(k)
         if false
           if v.is_a?(Array)
-            @logger.debug("DEBUG: merge hash #{index}:Array")
+            logger.debug("RTN: merge hash #{index}:Array")
           else
-            @logger.debug("DEBUG: merge hash #{index}:#{v.value}")
+            logger.debug("RTN: merge hash #{index}:#{v.value}")
           end
         end
         @fields[index] = v
@@ -555,9 +567,9 @@ module Retain
         width = @@field_num_to_width[index]
         if false
           if v.is_a?(Array)
-            @logger.debug("DEBUG: merge hash #{index}:Array")
+            logger.debug("RTN: merge hash #{index}:Array")
           else
-            @logger.debug("DEBUG: merge hash #{index}:#{v}")
+            logger.debug("RTN: merge hash #{index}:#{v}")
           end
         end
         @fields[index] = Field.new(cvt, width, v)

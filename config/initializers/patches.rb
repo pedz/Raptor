@@ -1,12 +1,9 @@
 require 'action_controller'
 
-RAILS_DEFAULT_LOGGER.debug("bananas bananas")
-
 module ActionController
   module Rescue
     protected
       def rescue_action_with_handler(exception)
-        RAILS_DEFAULT_LOGGER.debug("bananas 4")
         # Special case ActionView::TemplateError exception.  Look at
         # original exception as well
         if ((handler = handler_for_rescue(exception)).nil? &&

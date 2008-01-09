@@ -47,18 +47,18 @@ module Retain
       @text_lines.each do |line|
         # A signature or special line ends the match
         if line.line_type < 0x40
-          logger.info("DEBUG: match end") if false
+          logger.info("RTN: match end") if false
           last_match = nil
           next
         end
         if md = ECPAAT_REGEXP.match(line.text)
-          logger.info("DEBUG: match start") if false
+          logger.info("RTN: match start") if false
           last_match = md[1].downcase
           last_match = "environment" if last_match == "env"
           @ecpaat[last_match] = [ md[2] ]
           next
         end
-        logger.info("DEBUG: match cont") if false
+        logger.info("RTN: match cont") if false
         @ecpaat[last_match] << line.text unless last_match.nil?
       end
       @ecpaat_lines = ""
@@ -111,21 +111,21 @@ module Retain
       if params[:pmr_owner_employee_number]
         new_text = pmpu.pmr_owner_employee_number =
           params[:pmr_owner_employee_number].gsub(/[\t ]/, '')
-        logger.debug("DEBUG: owner = #{new_text}")
+        logger.debug("RTN: owner = #{new_text}")
       elsif params[:resolver_id]
         new_text = pmpu.resolver_id = params[:resolver_id].gsub(/[\t ]/, '')
-        logger.debug("DEBUG: resolver = #{new_text}")
+        logger.debug("RTN: resolver = #{new_text}")
       end
       fields = Retain::Fields.new
       pmpu.sendit(fields)
       respond_to do |format|
         if pmpu.rc == 0
           format.html { render :text => new_text }
-          format.xml  { logger.info("DEBUG: xml")  }
+          format.xml  { logger.info("RTN: xml")  }
         else
           format.html { render(:text => new_text,
                                :status => :unprocessable_entity) }
-          format.xml  { logger.info("DEBUG: xml")  }
+          format.xml  { logger.info("RTN: xml")  }
         end
       end
     end

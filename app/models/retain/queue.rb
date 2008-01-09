@@ -22,10 +22,10 @@ module Retain
     def calls
       temp = de32
       if temp.length == 1 && temp[0].ppg? == false
-        return nil
+        return []
       end
       temp.map do |fields|
-        @logger.debug("DEBUG: make a call")
+        @logger.debug("RTN: make a call")
         Call.new :fields => fields
       end
     end

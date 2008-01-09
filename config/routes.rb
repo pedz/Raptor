@@ -7,7 +7,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :retain_queue_infos, :controller => 'retain/queue_infos'
   map.resources :retain_pmrs, :controller => 'retain/pmrs'
-  map.resources(:retain_call,
+  map.resources(:combined_call,
                 :controller => 'retain/call',
                 :member => { :alter => :post,
                   :addtxt => :post,

@@ -19,7 +19,6 @@ module Retain
     # GET /favorite_queues/1.xml
     def show
       @retain_favorite_queue = Retain::FavoriteQueue.find(params[:id])
-      @pmrs = []
       
       respond_to do |format|
         format.html # show.html.erb

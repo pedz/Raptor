@@ -1,10 +1,9 @@
 class CreateQueueInfos < ActiveRecord::Migration
   def self.up
     create_table :queue_infos do |t|
-      t.string :queue_name
-      t.string :center
-      t.string :owner
-
+      t.string :queue_name, :null => false, :limit => 6
+      t.string :center, :null => false, :limit => 3
+      t.string :owner, :null => false, :limit => 6
       t.timestamps 
     end
   end

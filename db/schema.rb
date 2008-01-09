@@ -12,10 +12,20 @@
 ActiveRecord::Schema.define(:version => 12) do
 
   create_table "cached_calls", :force => true do |t|
-    t.string   "queue_name", :limit => 6,                  :null => false
-    t.string   "center",     :limit => 3,                  :null => false
-    t.string   "h_or_s",     :limit => 1, :default => "S", :null => false
-    t.string   "ppg",        :limit => 3,                  :null => false
+    t.integer  "queue_id",                                     :null => false
+    t.string   "queue_name",    :limit => 6,                   :null => false
+    t.string   "center",        :limit => 3,                   :null => false
+    t.string   "h_or_s",        :limit => 1,  :default => "S", :null => false
+    t.string   "ppg",           :limit => 3,                   :null => false
+    t.string   "problem",       :limit => 5
+    t.string   "branch",        :limit => 3
+    t.string   "country",       :limit => 3
+    t.string   "priority",      :limit => 1
+    t.string   "p_s_b",         :limit => 1
+    t.string   "comments",      :limit => 54
+    t.string   "customer_name", :limit => 28
+    t.string   "cstatus",       :limit => 7
+    t.string   "category",      :limit => 3
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -35,6 +45,8 @@ ActiveRecord::Schema.define(:version => 12) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "cached_queues", ["queue_name", "center", "h_or_s"], :name => "unique_queues", :unique => true
 
   create_table "cached_registrations", :force => true do |t|
     t.string   "signon",           :null => false
@@ -58,10 +70,10 @@ ActiveRecord::Schema.define(:version => 12) do
   end
 
   create_table "favorite_queues", :force => true do |t|
-    t.integer  "user_id",                     :null => false
-    t.string   "queue_name",                  :null => false
-    t.string   "center",                      :null => false
-    t.string   "h_or_s",     :default => "S"
+    t.integer  "user_id",                                  :null => false
+    t.string   "queue_name", :limit => 6,                  :null => false
+    t.string   "center",     :limit => 3,                  :null => false
+    t.string   "h_or_s",                  :default => "S"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -83,9 +95,9 @@ ActiveRecord::Schema.define(:version => 12) do
   end
 
   create_table "queue_infos", :force => true do |t|
-    t.string   "queue_name"
-    t.string   "center"
-    t.string   "owner"
+    t.string   "queue_name", :limit => 6, :null => false
+    t.string   "center",     :limit => 3, :null => false
+    t.string   "owner",      :limit => 6, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
