@@ -14,7 +14,7 @@ module Retain
                                    :branch,
                                    :country,
                                    :cpu_type,
-                                   :comp_id_or_alias,
+                                   :component_id,
                                    :comments,
                                    :nls_customer_name,
                                    :nls_contact_name,

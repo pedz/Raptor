@@ -5,7 +5,6 @@ class CreateFeedbacks < ActiveRecord::Migration
       t.integer :priority, :default => 3
       t.integer :ftype, :default => 0
       t.integer :state, :default => 0
-
       t.timestamps 
     end
   end

@@ -21,12 +21,12 @@
   <% for call in @calls -%>
     <tr>
       <td><%= button(index += 1, combined_call_url(call)) %></td>
-      <td><%= link_to call.pbc, call %></td>
+      <td><%= link_to call.pmr.pbc, call %></td>
       <td><%= h call.category %></td>
       <td><%= h call.p_s_b %></td>
       <td><%= h call.priority %></td>
        <td><%= h call.comments %></td>
-       <td><%= h call.customer_name %></td>
+       <td><%= h call.nls_customer_name %></td>
        <td><%= h call.cstatus %></td>
     </tr>
   <% end -%>

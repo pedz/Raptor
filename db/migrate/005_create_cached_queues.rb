@@ -6,8 +6,8 @@ class CreateCachedQueues < ActiveRecord::Migration
       t.string :h_or_s,     :null => false, :limit => 1, :default => 'S'
       t.timestamps 
     end
-    execute "ALTER TABLE cached_queues ADD CONSTRAINT unique_queues UNIQUE " +
-      "(queue_name, center, h_or_s)"
+    execute("ALTER TABLE cached_queues ADD CONSTRAINT unique_queues UNIQUE " +
+            "(queue_name, center, h_or_s)")
   end
 
   def self.down

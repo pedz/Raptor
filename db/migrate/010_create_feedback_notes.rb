@@ -3,7 +3,6 @@ class CreateFeedbackNotes < ActiveRecord::Migration
     create_table :feedback_notes do |t|
       t.integer :feedback_id
       t.text    :note
-
       t.timestamps 
     end
   end

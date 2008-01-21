@@ -27,61 +27,20 @@ module Retain
     # initial character is a period followed by blanks.
     BLANK_REGEXP = Regexp.new("^[. ] *$").freeze
     
+    # Show a Retain call
     def show
-      # parse the call spec.  Format is: queue,center,h,ppg but the h
-      # can be omitted.
+      # id should be of the form queue_name,center,s,ppg
+      # First, split id into a hash
       words = params[:id].split(',')
       options = {
         :queue_name => words[0],
         :center => words[1],
-        :ppg => words.last
+        :h_or_s => 'S',         # set default H/S field
       }
-      if words.length == 4
-        options[:h_or_s] = words[2]
-      end
-
-      @call, @pmr, cached_pmr, @text_lines = call_to_all(options)
-
-      @ecpaat = Hash.new
-      last_match = nil
-      @text_lines.each do |line|
-        # A signature or special line ends the match
-        if line.line_type < 0x40
-          logger.info("RTN: match end") if false
-          last_match = nil
-          next
-        end
-        if md = ECPAAT_REGEXP.match(line.text)
-          logger.info("RTN: match start") if false
-          last_match = md[1].downcase
-          last_match = "environment" if last_match == "env"
-          @ecpaat[last_match] = [ md[2] ]
-          next
-        end
-        logger.info("RTN: match cont") if false
-        @ecpaat[last_match] << line.text unless last_match.nil?
-      end
-      @ecpaat_lines = ""
-      ECPAAT_HEADINGS.each do |head|
-        @ecpaat_lines << "<b>#{head}:</b> "
-        head_index = head.downcase
-        if @ecpaat[head_index].nil?
-          @ecpaat_lines << "<br/>"
-        else
-          add_blank = false
-          @ecpaat[head_index].each do |line|
-            if BLANK_REGEXP.match(line)
-              add_blank = true
-            else
-              if add_blank
-                @ecpaat_lines << "<br/>"
-              end
-              add_blank = false
-              @ecpaat_lines << line + "<br/>"
-            end
-          end
-        end
-      end
+      options[:h_or_s] = words[2] if words.length == 4
+      @queue = Combined::Queue.new(options)
+      @call = @queue.calls.find_by_ppg(words.last)
+      @pmr = @call.pmr
     end
 
     # Not used currently
@@ -131,3 +90,58 @@ module Retain
     end
   end
 end
+
+####      # parse the call spec.  Format is: queue,center,h,ppg but the h
+####      # can be omitted.
+####      words = params[:id].split(',')
+####      options = {
+####        :queue_name => words[0],
+####        :center => words[1],
+####        :ppg => words.last
+####      }
+####      if words.length == 4
+####        options[:h_or_s] = words[2]
+####      end
+####
+####      @call, @pmr, cached_pmr, @text_lines = call_to_all(options)
+####
+####      @ecpaat = Hash.new
+####      last_match = nil
+####      @text_lines.each do |line|
+####        # A signature or special line ends the match
+####        if line.line_type < 0x40
+####          logger.info("RTN: match end") if false
+####          last_match = nil
+####          next
+####        end
+####        if md = ECPAAT_REGEXP.match(line.text)
+####          logger.info("RTN: match start") if false
+####          last_match = md[1].downcase
+####          last_match = "environment" if last_match == "env"
+####          @ecpaat[last_match] = [ md[2] ]
+####          next
+####        end
+####        logger.info("RTN: match cont") if false
+####        @ecpaat[last_match] << line.text unless last_match.nil?
+####      end
+####      @ecpaat_lines = ""
+####      ECPAAT_HEADINGS.each do |head|
+####        @ecpaat_lines << "<b>#{head}:</b> "
+####        head_index = head.downcase
+####        if @ecpaat[head_index].nil?
+####          @ecpaat_lines << "<br/>"
+####        else
+####          add_blank = false
+####          @ecpaat[head_index].each do |line|
+####            if BLANK_REGEXP.match(line)
+####              add_blank = true
+####            else
+####              if add_blank
+####                @ecpaat_lines << "<br/>"
+####              end
+####              add_blank = false
+####              @ecpaat_lines << line + "<br/>"
+####            end
+####          end
+####        end
+####      end

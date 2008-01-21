@@ -1,6 +1,6 @@
 <!-- retain/call/show.html.erb -->
 
-<% @title = "Retain call: #{@call.pbc}" %>
+<% @title = "Retain call: #{@pmr.pbc}" %>
 <% content_for(:top) do %>
   <table id='pmr-header'>
     <tr>
@@ -10,13 +10,13 @@
 	    Queue
 	  </span>
 	  <span id='queue-spec' class='field'>
-	    <%= link_to @call.short_queue_name, retain_queue_path(@call.full_queue_name) %>
+	    <%= link_to @call.queue.to_s, retain_queue_path(@call.queue.to_s) %>
 	  </span>
 	</span>
       </td>
       <td>
 	<span id='pbc' class='field field-center'>
-	  <%= h @call.pbc %>
+	  <%= h @pmr.pbc %>
 	</span>
       </td>
       <td>
@@ -25,7 +25,8 @@
 	    P/S
 	  </span>
 	  <span id='pri-sev-spec' class='field'>
-	    <%= h @call.priority %>/<%= h @pmr.severity %>
+	    <%= h @call.priority %> / 
+	    <%= h @pmr.severity %>
 	  </span>
 	</span>
       </td>
@@ -39,7 +40,7 @@
 	  <span id='owner-spec' class='field'>
 	    <%= h @pmr.pmr_owner_name %>
 	    <span class='inplace-edit'
-		  href='<%= alter_retain_call_path(@call) %>'
+		  href='<%= alter_combined_call_path(@call) %>'
 		  value='pmr_owner_employee_number'>
 	      <%= h @pmr.pmr_owner_employee_number %>
 	    </span>
@@ -59,7 +60,7 @@
 	  <span id='resolver-spec' class='field'>
 	    <%= h @pmr.resolver_name %>
 	    <span class='inplace-edit'
-		  href='<%= alter_retain_call_path(@call) %>'
+		  href='<%= alter_combined_call_path(@call) %>'
 		  value='resolver_id'>
 	      <%= h @pmr.resolver_id %>
 	    </span>
@@ -74,7 +75,7 @@
 	    Comp
 	  </span>
 	  <span id='comp-spec' class='field'>
-	    <%= h @call.comp_id_or_alias %>
+	    <%= h @pmr.component_id %>
 	  </span>
 	</span>
       </td>
@@ -132,7 +133,7 @@ function newUrl(to,sub)
 	  </script>
 	  <a id='blahblah'
 	     href="#"
-	     onclick='newUrl("<%= h @pmr.problem_e_mail %>", "PMR <%= @call.pbc.upcase %>");'>
+	     onclick='newUrl("<%= h @pmr.problem_e_mail %>", "PMR <%= @pmr.pbc.upcase %>");'>
 	    <%= h @pmr.problem_e_mail %>
 	  </a><br/>
 	</span>

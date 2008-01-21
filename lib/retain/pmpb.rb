@@ -18,7 +18,7 @@ module Retain
                                    :severity,
                                    :p_s_b,
                                    :comments,
-                                   :customer_name,
+                                   :nls_customer_name,
                                    :cstatus,
                                    :nls_scratch_pad_1,
                                    :nls_scratch_pad_2,

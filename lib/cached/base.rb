@@ -3,17 +3,38 @@ module Cached
     class << self
       attr_reader :logger
       @logger = RAILS_DEFAULT_LOGGER
+
+      # list of fields as symbols in this record.
+      def db_fields
+        @db_fields ||= columns.map { |c| c.name.to_sym }
+      end
+
+      # list of associations as symbols in this record.
+      def db_associations
+        @db_associations ||= reflections.values.map{ |r| r.name }
+      end
+    end
+
+    # Return a hash of options based upon the Retain record
+    def self.options_from_retain(retain)
+      # We find the intersection of the db fields and the retain
+      # fields and create an options hash with those fields.
+      retain_keys = retain.fields.keys
+      fields = db_fields & retain_keys
+      a = fields.map { |field| [ field, retain.send(field) ] }.flatten
+      logger.debug("a is #{a.inspect}")
+      Hash[ * a ]
     end
 
     # Create the DB record from a Retain record
     def self.new_from_retain(retain)
       # Get the fields for the cached class
       logger.debug("CMB: new #{@subclass} from retain")
-      all_fields = cached_class.columns.map { |r| r.name.to_sym }
-      fields = all_fields & retain.fields.keys
-      new_options = Hash[ * fields.map { |field|
-                          [ field, retain.send(field) ] }.flatten ]
-      new(new_options)
+      new(options_from_retain(retain))
+    end
+
+    def to_combined
+      self.class.combined_class.new(self)
     end
 
     protected

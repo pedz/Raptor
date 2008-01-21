@@ -436,6 +436,7 @@ module Retain
     end
 
     def self.sym_to_index(sym)
+      raise "#{sym} not known as a field to retain" if FIELD_DEFINITIONS[sym].nil?
       FIELD_DEFINITIONS[sym][0]
     end
 

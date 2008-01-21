@@ -1,18 +1,22 @@
 module Combined
   class Queue < Base
-    def calls
-      load unless cache_valid
-      @calls_cache ||= cached.calls.map { |call| call.to_combined }
-    end
+    # def calls
+    #   load unless cache_valid
+    #   @calls_cache ||= cached.calls.map { |call| call.to_combined }
+    # end
 
     def cache_valid
       self.cached.updated_at
     end
 
+    def to_s
+      queue_name.sub(/ +/, '') + ',' + center + ',' + (h_or_s || 'S')
+    end
+    
     private
 
     def load
-      logger.debug("CMB: load for #{self} called")
+      logger.debug("CMB: load for <#{self.class}:#{self.object_id}> called")
       cached = self.cached
       
       # Pull the fields we need from the cached record into an options_hash
@@ -34,7 +38,10 @@ module Combined
 
       # Now we get our create the list of calls
       retain_queue.calls.each do |call|
-        cached.calls << Cached::Call.new_from_retain(call)
+        db_call = Cached::Call.new_from_retain(call)
+        db_pmr = Cached::Pmr.new_from_retain(call)
+        db_call.pmr = db_pmr
+        cached.calls << db_call
       end
       cached.save
     end

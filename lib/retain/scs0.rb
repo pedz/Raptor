@@ -19,7 +19,7 @@ module Retain
                                         :priority,
                                         :p_s_b,
                                         :comments,
-                                        :customer_name,
+                                        :nls_customer_name,
                                         :cstatus
                                        ]
       end
