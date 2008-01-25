@@ -49,12 +49,15 @@ class String
   0x40,0x40,0x40,0x40,0x40,0x40,0x40,0x40,0x40,0x40,0x40,0x40,0x40,0x40,0x40,0x40  # f0h
                   ]
 
-  def ascii
-    (0...self.length).map { |i| ASCIITABLE[self[i]].chr }.join('')
+  RETAIN_CS = "IBM-037"
+  USER_CS = "utf8"
+
+  def retain_to_user(encoding = RETAIN_CS)
+    self.to_u(encoding).to_s(USER_CS)
   end
 
-  def ebcdic
-    (0...self.length).map { |i| EBCDICTABLE[self[i]].chr }.join('')
+  def user_to_retain(encoding = RETAIN_CS)
+    self.to_u(USER_CS).to_s(encoding)
   end
 
   # Makes string len length, truncating it if necessary, padding it

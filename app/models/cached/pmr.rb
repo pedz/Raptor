@@ -2,6 +2,25 @@ module Cached
   class Pmr < Base
     set_table_name "cached_pmrs"
     has_many :calls, :class_name => "Cached::Call"
-    has_many :text_lines, :class_name => "Cached::TextLine", :foreign_key => "cached_pmr_id"
+    has_many(:scratch_pad_lines,
+             :conditions => "line_type = #{Cached::TextLine::LineTypes::SCRATCH_PAD}",
+             :class_name => "Cached::TextLine",
+             :order => "line_number",
+             :foreign_key => "pmr_id")
+    has_many(:alterable_format_lines,
+             :conditions => "line_type = #{Cached::TextLine::LineTypes::ALTERABLE_FORMAT}",
+             :class_name => "Cached::TextLine",
+             :order => "line_number",
+             :foreign_key => "pmr_id")
+    has_many(:text_lines,
+             :conditions => "line_type = #{Cached::TextLine::LineTypes::TEXT_LINE}",
+             :class_name => "Cached::TextLine",
+             :order => "line_number",
+             :foreign_key => "pmr_id")
+    has_many(:information_text_lines,
+             :conditions => "line_type = #{Cached::TextLine::LineTypes::INFORMATION_TEXT}",
+             :class_name => "Cached::TextLine",
+             :order => "line_number",
+             :foreign_key => "pmr_id")
   end
 end

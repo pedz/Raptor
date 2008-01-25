@@ -99,9 +99,9 @@
 	  <%= @ecpaat_lines %>
 	</span>
 	<span id='scratch-lines' class='click-data'>
-	  <%= h @pmr.nls_scratch_pad_1 %><br/>
-	  <%= h @pmr.nls_scratch_pad_2 %><br/>
-	  <%= h @pmr.nls_scratch_pad_3 %><br/>
+	  <% for sp_line in @pmr.scratch_pad_lines %>
+	    <%= show_line(sp_line, 1) %>
+	  <% end %>
 	</span>
 	<span id='contact-lines' class='click-data'>
 	  <%= h @call.nls_contact_name %><br/>
@@ -144,8 +144,7 @@ function newUrl(to,sub)
 
 <% content_for(:center) do %>
   <div class='even'>
-    <% @text_lines.each_with_index do |line, index| %>
-      <!-- code page: <%= "0x%04x" % line.code_page %> <%= "%d" % line.code_page %> <%= "0%o" % line.code_page %> -->
+    <% @pmr.text_lines.each_with_index do |line, index| %>
       <%= show_line(line, index) %>
     <% end %>
   </div>
@@ -153,8 +152,8 @@ function newUrl(to,sub)
 
 <% content_for(:left) do %>
   <table>
-  <% @text_lines.each_with_index do |line, index| %>
-  <%   if line.line_type == 0x3d %>
+  <% @pmr.text_lines.each_with_index do |line, index| %>
+  <%   if line.text_type == :system_inserted %>
   <%     md = Regexp.new(' S5> (SERVICE GIVEN= ([0-9][0-9]))  SG/[0-9]9/').match(line.text) %>
   <%     unless md.nil? || md[2] == "99" %>
     <tr>
@@ -167,7 +166,7 @@ function newUrl(to,sub)
     </tr>
   <%     end %>
   <%   end %>
-  <%   if line.line_type == 0x3f %>
+  <%   if line.text_type == :signature %>
   <%     sig_line = Retain::SignatureLine.new(line.text) %>
   <%     unless sig_line.name.nil? || sig_line.stype.nil? %>
     <tr>
@@ -194,7 +193,7 @@ function newUrl(to,sub)
 
 <% content_for(:right) do %>
   <div>
-    <% (0 ... (@text_lines.length / 16)).each do |page_number| %>
+    <% (0 ... (@pmr.text_lines.length / 16)).each do |page_number| %>
     <%= "<a href='#line_#{page_number * 16}'>Page #{page_number + 2}</a><br/>" %>
     <% end %>
   </div>

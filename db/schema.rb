@@ -36,9 +36,6 @@ ActiveRecord::Schema.define(:version => 12) do
     t.string   "country",                   :limit => 3,  :null => false
     t.string   "severity",                  :limit => 1
     t.string   "component_id",              :limit => 12
-    t.string   "nls_scratch_pad_1",         :limit => 74
-    t.string   "nls_scratch_pad_2",         :limit => 74
-    t.string   "nls_scratch_pad_3",         :limit => 74
     t.string   "pmr_owner_name",            :limit => 22
     t.string   "pmr_owner_employee_number", :limit => 6
     t.string   "resolver_id",               :limit => 6
@@ -46,9 +43,15 @@ ActiveRecord::Schema.define(:version => 12) do
     t.string   "problem_e_mail",            :limit => 64
     t.string   "next_queue",                :limit => 6
     t.string   "next_center",               :limit => 3
+    t.string   "creation_date",             :limit => 9
+    t.string   "creation_time",             :limit => 5
+    t.string   "alteration_date",           :limit => 9
+    t.string   "alteration_time",           :limit => 5
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "cached_pmrs", ["problem", "branch", "country", "creation_date"], :name => "unique_pmrs", :unique => true
 
   create_table "cached_queues", :force => true do |t|
     t.string   "queue_name", :limit => 6,                  :null => false
@@ -72,16 +75,16 @@ ActiveRecord::Schema.define(:version => 12) do
   end
 
   create_table "cached_text_lines", :force => true do |t|
-    t.integer  "pmr_id",                    :null => false
-    t.integer  "line_number",               :null => false
-    t.integer  "line_type",                 :null => false
-    t.string   "text",        :limit => 72, :null => false
-    t.integer  "code_page",                 :null => false
+    t.integer  "pmr_id",                      :null => false
+    t.integer  "line_type",                   :null => false
+    t.integer  "line_number",                 :null => false
+    t.integer  "text_type_ord",               :null => false
+    t.string   "text",          :limit => 72, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "cached_text_lines", ["pmr_id", "line_number"], :name => "unique_text_lines", :unique => true
+  add_index "cached_text_lines", ["pmr_id", "line_type", "line_number"], :name => "unique_text_lines", :unique => true
 
   create_table "favorite_queues", :force => true do |t|
     t.integer  "user_id",                                  :null => false

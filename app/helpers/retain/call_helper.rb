@@ -3,18 +3,10 @@ module Retain
     #
     # line should be a Retain::TextLine.  index is the line number
     # within the PMR
+    #
     def show_line(line, index)
       # Retain pages start on two -- go figure.
-      span_classes =
-        case line.line_type
-        when 0x3f then 'signature'
-        when 0x3d then 'system'
-        when 0x32 then 'normal-protected'
-        when 0x22 then 'normal-unprotected'
-        when 0x3A then 'intensified-protected'
-        when 0x2A then 'intensified-unprotected'
-        else 'normal'
-        end
+      span_classes = line.text_type.to_s.gsub('_', '-')
       page = (index / 16)
       if (page * 16) == index
         even_odd = ((page % 2) == 0) ? "even" : "odd"

@@ -83,7 +83,7 @@ module Retain
       @retain_favorite_queue.destroy
       
       respond_to do |format|
-        format.html { redirect_to(queues_url) }
+        format.html { redirect_to(retain_favorite_queues_url) }
         format.xml  { head :ok }
       end
     end

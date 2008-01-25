@@ -186,7 +186,7 @@ module Retain
         '00000000   ,IC,000000'
       
       # "encrypt" the password
-      send = first50.ebcdic
+      send = first50.user_to_retain
       ( 21..28 ).each { |i| send[i] -= 0x3f }
       connect
       @connection.write(send)

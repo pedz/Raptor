@@ -6,6 +6,7 @@
 class LdapUser < ActiveLdap::Base
   ldap_mapping :prefix => 'ou=bluepages', :dn_attribute => 'uid'
   belongs_to :manager, :class => 'LdapUser', :foreign_key => 'manager', :primary_key => 'dn'
+  has_many   :manages, :class => 'LdapUser', :foreign_key => 'dn', :primary_key => 'manager'
 
   def self.authenticate_from_email(email, password)
     return nil unless (u = find(:attribute => "mail", :value => email))

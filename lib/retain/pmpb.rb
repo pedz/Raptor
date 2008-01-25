@@ -25,7 +25,7 @@ module Retain
                                    :nls_scratch_pad_3,
                                    :addtxt_lines,
                                    :information_text_lines,
-                                   :alterable_format_text_lines
+                                   :alterable_format_lines
                                   ]
       end
     end

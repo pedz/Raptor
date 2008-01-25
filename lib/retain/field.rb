@@ -1,4 +1,3 @@
-
 module Retain
   #
   # A data element will be stored in a Field.  Fields will be a
@@ -17,6 +16,9 @@ module Retain
   # value= or raw_value= is called.
   #
   class Field
+
+    @@ccsid2encoding = Hash.new "ibm-037"
+    @@ccsid2encoding[5035] = "ibm-5035"
 
     def initialize(cvt, width, value = nil, raw = false)
       @cvt = cvt
@@ -157,16 +159,16 @@ module Retain
         v += "\0" * width
         v.reverse[0...width]
       when :upper_ebcdic
-        value.trim(width).upcase.ebcdic
+        value.trim(width).upcase.user_to_retain
       when :ebcdic
-        value.trim(width).ebcdic
+        value.trim(width).user_to_retain
       when :binary_center
         encode_center(value.trim(3))
       when :binary
         value
       when :znumber             # zero filled number
         RAILS_DEFAULT_LOGGER.debug("width=#{width}, value=#{value}, value.class=#{value.class}")
-        ("%0#{width}d" % value).ebcdic
+        ("%0#{width}d" % value).user_to_retain
       when :ppg
         h = value.hex
         value = "  "
@@ -176,9 +178,9 @@ module Retain
       when :nls
         raise "Can no encode nls yet"
       when :nls_text_lines
-        raise "Can not encode text lines yet"
-      when :text_lines
         raise "Can not encode nls text lines yet"
+      when :text_lines
+        raise "Can not encode text lines yet"
       else
         raise "Unknown version method: #{@cvt}"
       end
@@ -189,22 +191,25 @@ module Retain
       when :int
         v = 0; value.each_byte { |b| v = v * 256 + b }; v
       when :upper_ebcdic
-        value.ascii
+        value.retain_to_user
       when :ebcdic
-        value.ascii
+        value.retain_to_user
       when :nls
-        value.ascii[2...value.length]
+        ccsid = value[0, 2].net2short
+        encoding = @@ccsid2encoding[ccsid]
+        # This seems to be the fastest way to trim off two bytes from
+        # the front of a string.  The 10^9 is roughly MAXINT.
+        value[2, 1000000000].retain_to_user(encoding)
       when :binary_center
         decode_center(value)
       when :binary
         value
       when :nls_text_lines
-        tmp = value[2...value.length]
-        TextLine.new(tmp[0], tmp.ascii, value[0...2].net2short)
+        TextLine.new(value[2, 1000000000], value[0, 2].net2short)
       when :text_lines
-        TextLine.new(value[0], value.ascii, 0x0056)
+        TextLine.new(value, 37)
       when :znumber
-        value.ascii.to_i
+        value.retain_to_user.to_i
       when :ppg
         "%x" % (value[0] * 256 + value[1])
       end
