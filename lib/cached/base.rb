@@ -26,11 +26,13 @@ module Cached
       Hash[ * a ]
     end
 
-    # Create the DB record from a Retain record
+    # Fetch or create the DB record from a Retain record  -- probably
+    # should not be called "new"
     def self.new_from_retain(retain)
       # Get the fields for the cached class
       logger.debug("CMB: new #{@subclass} from retain")
-      new(options_from_retain(retain))
+      options = options_from_retain(retain)
+      find(:first, :conditions => options) || new(options)
     end
 
     def to_combined
