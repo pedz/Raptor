@@ -14,6 +14,10 @@ module Combined
       @logger.debug("CMB: <#{self.class}:#{self.object_id}> initialized")
     end
 
+    def mark_cache_invalid
+      @invalid_cache = true
+    end
+
     class << self
       # Create a class instance getters to get an array of Retain
       # fields, all fields in the db class, the skipped fields, the
@@ -90,7 +94,7 @@ module Combined
         db_fields.each do |name|
           eval("def  #{name}
                   logger.debug(\"CMB: #{name} called as field\")
-                  load unless cached.#{name} && cache_valid
+                  call_load unless cached.#{name} && cache_valid
                   return cached.#{name}
                 end", nil, __FILE__, __LINE__)
         end
@@ -99,7 +103,7 @@ module Combined
         db_associations.each do |name|
           eval("def  #{name}
                   logger.debug(\"CMB: #{name} called\")
-                  load unless cached.#{name} && cache_valid
+                  call_load unless cached.#{name} && cache_valid
                   replacement(cached.#{name})
                 end", nil, __FILE__, __LINE__)
         end
@@ -117,9 +121,19 @@ module Combined
       @cached
     end
 
+    def call_load
+      load
+      @invalid_cache = false
+    end
+
     def cache_valid
+      # If we are not cached at all, then cache is invalid
       return false if (updated_at = self.cached.updated_at).nil?
+      # If data type says cache never expires then we are good to go
       return true if (expire = expire_time) == :never
+      # If item has been explicitly marked to be re-fetched
+      return false if @invalid_cache
+      # else, return if cache time has expired or not
       (updated_at + expire) > Time.now
     end
 
