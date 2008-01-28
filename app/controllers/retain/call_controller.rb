@@ -40,7 +40,9 @@ module Retain
       options[:h_or_s] = words[2] if words.length == 4
       @queue = Combined::Queue.new(options)
       @call = @queue.calls.find_by_ppg(words.last)
+      @call.mark_cache_invalid
       @pmr = @call.pmr
+      @pmr.mark_cache_invalid
     end
 
     # Not used currently
