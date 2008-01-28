@@ -33,6 +33,11 @@ module Combined
       # Now we get our create the list of calls
       retain_queue.calls.each do |call|
         db_call = Cached::Call.new_from_retain(call)
+        # If/when we start keeping expired PMRs we need to augment
+        # this call to not find expired PMRs.  We do not have the
+        # create date at this point but if we exclude expired PMRs,
+        # then we will create a new PMR if we hit the case of a
+        # duplicate problem,branch,country.
         db_pmr = Cached::Pmr.new_from_retain(call)
         db_call.pmr = db_pmr
         cached.calls << db_call
