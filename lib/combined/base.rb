@@ -56,6 +56,13 @@ module Combined
         @extra_fields += [ *args ]
         @retain_fields  += [ *args ]
       end
+
+      attr_reader :expire_time
+
+      # We expect a duration but :never is also accepted
+      def set_expire_time(duration)
+        @expire_time = duration
+      end
     end
 
     protected
@@ -108,6 +115,16 @@ module Combined
         temp.new(@options)
       logger.debug("CMB: updated_at = #{@cached.updated_at}")
       @cached
+    end
+
+    def cache_valid
+      return false if (updated_at = self.cached.updated_at).nil?
+      return true if (expire = expire_time) == :never
+      (updated_at + expire) > Time.now
+    end
+
+    def expire_time
+      self.class.expire_time
     end
   end
 end

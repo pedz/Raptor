@@ -3,6 +3,14 @@ require 'retain/utils'
 require 'retain/exceptions'
 
 module Retain
+  class SdiReaderError < Exception
+    attr_reader :msg, :rc
+    def initialize(msg, rc)
+      @msg = msg
+      @rc = rc
+    end
+  end
+
   class Base
     ### Class instance methods
     class << self

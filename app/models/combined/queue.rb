@@ -1,13 +1,7 @@
 module Combined
   class Queue < Base
-    # def calls
-    #   load unless cache_valid
-    #   @calls_cache ||= cached.calls.map { |call| call.to_combined }
-    # end
 
-    def cache_valid
-      self.cached.updated_at
-    end
+    set_expire_time 30.minutes
 
     def to_s
       queue_name.sub(/ +/, '') + ',' + center + ',' + (h_or_s || 'S')

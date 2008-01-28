@@ -3,10 +3,8 @@ module Combined
     add_skipped_fields :queue_id, :pmr_id
     add_extra_fields :problem, :branch, :country
 
-    def cache_valid
-      self.cached.updated_at
-    end
-
+    set_expire_time 30.minutes
+    
     #
     # The to_s is called for named routes
     #

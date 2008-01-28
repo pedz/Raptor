@@ -45,10 +45,16 @@ module Retain
     # POST /favorite_queues
     # POST /favorite_queues.xml
     def create
-      @retain_favorite_queue = Retain::FavoriteQueue.new(params[:retain_favorite_queue])
+      options = params[:retain_favorite_queue]
+      @retain_favorite_queue = Retain::FavoriteQueue.new(options)
+
+      if ! (queue_valid = Retain::Cq.check_queue(options.symbolize_keys))
+        flash[:error] = "Queue is not valid"
+      end
+
       @retain_favorite_queue.user = session[:user]
       respond_to do |format|
-        if @retain_favorite_queue.save
+        if queue_valid && @retain_favorite_queue.save
           flash[:notice] = 'FavoriteQueue was successfully created.'
           format.html { redirect_to(@retain_favorite_queue) }
           format.xml  { render :xml => @retain_favorite_queue, :status => :created, :location => @retain_favorite_queue }

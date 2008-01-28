@@ -2,9 +2,7 @@ module Combined
   class Pmr < Base
     add_skipped_fields :problem, :branch, :country
 
-    def cache_valid
-      self.cached.updated_at
-    end
+    set_expire_time 30.minutes
 
     def load
       logger.debug("CMD: load for <#{self.class.to_s}:#{"0x%x" % self.object_id}>")

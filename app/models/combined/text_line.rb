@@ -1,7 +1,7 @@
 module Combined
   class TextLine < Base
-    def cache_valid
-      true
-    end
+
+    set_expire_time :never
+
   end
 end

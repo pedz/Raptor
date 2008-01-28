@@ -15,6 +15,7 @@ module Retain
       :country                     => [    3, :upper_ebcdic,    3 ],
       :problem                     => [    4, :upper_ebcdic,    5 ],
       :customer_number             => [   11, :upper_ebcdic,    7 ],
+      :hits                        => [   11, :int,             4 ],
       :customer_name               => [   14, :ebcdic,         28 ],
       :customer_contact_name       => [   19, :ebcdic,         28 ],
       :cpu_type                    => [   22, :ebcdic,          4 ],
@@ -193,7 +194,7 @@ module Retain
       :current_text_start          => [  651, :ebcdic,          1 ],
       :follow_up_info              => [  652, :ebcdic,         12 ],
       :severity                    => [  657, :ebcdic,          1 ],
-      :call_search_result          => [  658, :ebcdic,          0 ],
+      :call_search_result          => [  658, :ebcdic,         86 ],
       :sec_call_symbol_1           => [  660, :ebcdic,         12 ],
       :sec_call_symbol_2           => [  661, :ebcdic,         12 ],
       :sec_call_symbol_3           => [  662, :ebcdic,         12 ],
@@ -602,11 +603,11 @@ module Retain
         base_obj = @fetch_fields.call
         unless base_obj.rc == 0
           if base_obj.error_message?
-            msg = base_obj.error_message + ( " error=%d" % base_obj.rc )
-            raise msg
+            msg = base_obj.error_message
           else
-            raise Errors[base_obj.rc]
+            msg = Errors[base_obj.rc] || "Unknown Error"
           end
+          raise Retain::SdiReaderError.new(msg, base_obj.rc)
         end
         @fetched = true
         if f = @fields[index]
