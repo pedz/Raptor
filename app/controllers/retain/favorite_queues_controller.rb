@@ -29,7 +29,7 @@ module Retain
     # GET /favorite_queues/new
     # GET /favorite_queues/new.xml
     def new
-      @retain_favorite_queue = Retain::FavoriteQueue.new
+      @retain_favorite_queue = Retain::FavoriteQueue.new(:queue => Combined::Queue.new)
       
       respond_to do |format|
         format.html # new.html.erb

@@ -3,7 +3,7 @@ module Combined
 
     include Common
 
-    def initialize(arg)
+    def initialize(arg = { })
       super()
       if arg.kind_of? Hash
         @options = arg

@@ -12,14 +12,15 @@
   </tr>
 
 <% for retain_favorite_queue in @retain_favorite_queues %>
+<%   queue = retain_favorite_queue.queue %>
   <tr>
 <% if admin? %>
-    <td><%=h retain_favorite_queue.user_id %></td>
+    <td><%=h queue.user_id %></td>
 <% end %>
-    <td><%=h q = retain_favorite_queue.queue_name.gsub(/ /, '') %></td>
-    <td><%=h c = retain_favorite_queue.center %></td>
-    <td><%=h s = retain_favorite_queue.h_or_s %></td>
-    <td align='right'><%= h queue_hits(retain_favorite_queue) %></td>
+    <td><%=h q = queue.queue_name.gsub(/ /, '') %></td>
+    <td><%=h c = queue.center %></td>
+    <td><%=h s = queue.h_or_s %></td>
+    <td align='right'><%= h queue_hits(queue) %></td>
     <td><%= link_to 'Queue', retain_queue_path("#{q},#{c},#{s}") %></td>
     <td><%= link_to 'Show', retain_favorite_queue %></td>
     <td><%= link_to 'Edit', edit_retain_favorite_queue_path(retain_favorite_queue) %></td>

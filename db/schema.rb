@@ -87,10 +87,8 @@ ActiveRecord::Schema.define(:version => 12) do
   add_index "cached_text_lines", ["pmr_id", "line_type", "line_number"], :name => "unique_text_lines", :unique => true
 
   create_table "favorite_queues", :force => true do |t|
-    t.integer  "user_id",                                  :null => false
-    t.string   "queue_name", :limit => 6,                  :null => false
-    t.string   "center",     :limit => 3,                  :null => false
-    t.string   "h_or_s",                  :default => "S"
+    t.integer  "user_id",    :null => false
+    t.integer  "queue_id",   :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
