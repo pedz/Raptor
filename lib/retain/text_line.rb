@@ -20,9 +20,7 @@ module Retain
       @text_type = @@special_line[text[0]]
       cs = Ccsid.to_cs(ccsid)
 
-      if @text_type == :normal
-        @text = text.to_u(cs).to_s("utf8")
-      else
+      if @text_type != :normal
         #
         # In the case of text lines with the special byte in the first
         # byte, we change it to a space.  The space is in the same code
@@ -32,20 +30,8 @@ module Retain
         #
         text = text.dup
         text[0] = ' '.to_u.to_s(cs)
-
-        #
-        # The signature has nulls in it.  So we do a gsub while in
-        # UTF-16.  I am guessing it is safer to do the substitution
-        # while in UTF-16 than as a string since the Strings.gsub does
-        # not know about double byte codes (and may replayce the space
-        # that shows up as the second byte in a double byte sequence).
-        #
-        # The icu4r had some problems here.  /\0/.U seems to cause a
-        # core dump.  The "\0".to_u has the proper effect and avoids the
-        # core dump.  (Its probably cheaper to create too).
-        text = text.to_u(cs).gsub("\0".to_u, ' '.to_u)
-        @text = text.to_s("utf8")
       end
+      @text = text.retain_to_user(cs)
     end
   end
 end
