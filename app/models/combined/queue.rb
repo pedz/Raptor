@@ -19,6 +19,8 @@ module Combined
 
       # :requested_elements is a special case
       requested_elements = Combined::Call.retain_fields.map { |field| field.to_sym }
+      requested_elements << :ppg
+      requested_elements << :p_s_b
       logger.debug("requested_elements = #{requested_elements.inspect}")
       options_hash[:requested_elements] = requested_elements
 
