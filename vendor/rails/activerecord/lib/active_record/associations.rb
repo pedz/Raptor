@@ -983,7 +983,6 @@ module ActiveRecord
         end
       
         def association_accessor_methods(reflection, association_proxy_class)
-          debugger
           define_method(reflection.name) do |*params|
             force_reload = params.first unless params.empty?
             association = instance_variable_get("@#{reflection.name}")
