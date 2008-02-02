@@ -2,8 +2,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :feedbacks do |feedback|
     feedback.resources :feedback_notes
   end
-  # map.resources :feedbacks
-  # map.resources :feedback_notes, :path_prefix => '/feedbacks/:feedback_id'
 
   map.resources :retain_queue_infos, :controller => 'retain/queue_infos'
   map.resources :retain_pmrs, :controller => 'retain/pmrs'
@@ -12,11 +10,11 @@ ActionController::Routing::Routes.draw do |map|
                 :member => { :alter => :post,
                   :addtxt => :post,
                   :requeue => :post })
-  map.resource  :retain_psar, :controller => 'retain/psar'
-  map.resources :retain_registration, :controller => 'retain/registration'
-  map.resources :retain_qs, :controller => 'retain/qs'
-  map.resources :retain_qq, :controller => 'retain/qq'
-  map.resources :combined_queue, :controller => 'retain/queue'
+  map.resource  :retain_psar,              :controller => 'retain/psar'
+  map.resources :retain_registration,      :controller => 'retain/registration'
+  map.resources :retain_qs,                :controller => 'retain/qs'
+  map.resources :retain_qq,                :controller => 'retain/qq'
+  map.resources :combined_queue,           :controller => 'retain/queue'
   map.resources :combined_favorite_queues, :controller => 'retain/favorite_queues'
   map.resources :retusers
   map.resources :users

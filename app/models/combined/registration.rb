@@ -3,6 +3,16 @@ module Combined
     add_skipped_fields :signon
     set_expire_time :never
 
+    def default_center
+      software_center || hardware_center
+    end
+
+    def default_h_or_s
+      (software_center && 'S') ||
+        (hardware_center && 'H') ||
+        'S'
+    end
+    
     private
     
     def load

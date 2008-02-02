@@ -13,6 +13,9 @@ module Combined
       logger.debug("CMB: load for <#{self.class}:#{self.object_id}> called")
       cached = self.cached
       
+      # This could be generallized but for now lets just do this
+      return if cached.queue_name.nil?
+      
       # Pull the fields we need from the cached record into an options_hash
       options_hash = Hash[ *%w{  queue_name center h_or_s }.map { |field|
                              [ field.to_sym, cached.attributes[field] ] }.flatten ]

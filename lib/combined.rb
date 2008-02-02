@@ -22,4 +22,5 @@
 #
 # The Combined classes each declare what Cached class they mimic.
 #
+
 require 'combined/base'

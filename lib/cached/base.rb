@@ -36,10 +36,14 @@ module Cached
     end
 
     def to_combined
+      logger.debug("CMB: to_combined <#{self.class}:#{self.object_id}>")
       self.class.combined_class.new(self)
     end
 
-    protected
+    def wrap_with_combined
+      logger.debug("CMB: wrap Cached <#{self.class}:#{self.object_id}>")
+      self.class.combined_class.new(self)
+    end
 
     def self.inherited(subclass)
       super(subclass)
@@ -51,6 +55,7 @@ module Cached
 
         # Set up the logger
         @logger = RAILS_DEFAULT_LOGGER
+    
       }
     end
   end

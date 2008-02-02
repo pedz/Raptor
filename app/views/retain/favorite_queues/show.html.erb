@@ -1,15 +1,15 @@
 <% if admin? %>
   <p>
     <b>User:</b>
-    <%=h @retain_favorite_queue.user_id %>
+    <%=h @favorite_queue.user_id %>
   </p>
 <% end %>
 
 <p>
   <b>Queue:</b>
-  <%=h q = @retain_favorite_queue.queue_name.gsub(/ /, '') %>,
-  <%=h c = @retain_favorite_queue.center %>
-  <%= link_to 'Edit Settings', edit_retain_favorite_queue_path(@retain_favorite_queue) %> |
-  <%= link_to 'Index of favorite queues', retain_favorite_queues_path %> |
-  <%= link_to 'Show Retain Queue', retain_queue_path("#{q},#{c}") %>
+  <% queue = @favorite_queue.queue %>
+  <%=h q = queue.queue_name.gsub(/ /, '') %>,<%=h c = queue.center %>,<%=h s = queue.h_or_s %>
+  <%= link_to 'Edit Settings', edit_combined_favorite_queue_path(@favorite_queue) %> |
+  <%= link_to 'Index of favorite queues', combined_favorite_queues_path %> |
+  <%= link_to 'Show Retain Queue', combined_queue_path("#{q},#{c},#{s}") %>
 </p>

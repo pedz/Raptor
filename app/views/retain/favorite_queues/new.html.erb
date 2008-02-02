@@ -2,26 +2,26 @@
 
 <%= error_messages_for :queue %>
 
-<% form_for(@retain_favorite_queue.queue) do |f| %>
-
+<% form_for(@favorite_queue) do |f| %>
+<%   fields_for @favorite_queue.queue do |queue| %>
   <p>
     <b>Queue name</b><br />
-    <%= f.text_field :queue_name, :size => 6 %>
+    <%= queue.text_field :queue_name, :size => 6 %>
   </p>
 
   <p>
     <b>Center</b><br />
-    <%= f.text_field :center, :size => 3 %>
+    <%= queue.text_field :center, :size => 3 %>
   </p>
 
   <p>
     <b>Hardware (H) or Software (S)</b><br />
-    <%= f.text_field :h_or_s, :size => 1 %>
+    <%= queue.text_field :h_or_s, :size => 1 %>
   </p>
-
+<% end %>
   <p>
     <%= f.submit "Create" %>
   </p>
 <% end %>
 
-<%= link_to 'Index of Favorite Queues', retain_favorite_queues_path %>
+<%= link_to 'Index of Favorite Queues', combined_favorite_queues_path %>

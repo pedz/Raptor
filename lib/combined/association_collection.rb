@@ -1,4 +1,8 @@
 
+#
+# Currently, this is not used.  I thought I needed it to properly wrap
+# an association but, currently, it does not look like I do.
+#
 module Combined
   class AssociationCollection
     include Common
