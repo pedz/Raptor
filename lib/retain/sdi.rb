@@ -191,8 +191,12 @@ module Retain
       connect
       @connection.write(send)
       reply = @login_reply = @connection.read(50)
-      @logger.debug("RTN: reply length is #{reply.length}")
-      if reply.length != 50
+      if  reply
+        @logger.debug("RTN: reply length is #{reply.length}")
+      else
+        @logger.debug("RTN: nil reply")
+      end
+      unless reply && reply.length == 50
         hex_dump("first 50 request", send)
         hex_dump("first 50 reply", reply)
         raise Retain::LogonFailed

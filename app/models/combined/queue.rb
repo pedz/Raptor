@@ -3,7 +3,7 @@ module Combined
 
     set_expire_time 30.minutes
 
-    def to_s
+    def to_param
       queue_name.sub(/ +/, '') + ',' + center + ',' + (h_or_s || 'S')
     end
     

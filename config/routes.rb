@@ -11,7 +11,7 @@ ActionController::Routing::Routes.draw do |map|
                   :addtxt => :post,
                   :requeue => :post })
   map.resource  :retain_psar,              :controller => 'retain/psar'
-  map.resources :retain_registration,      :controller => 'retain/registration'
+  map.resources :combined_registration,    :controller => 'retain/registration'
   map.resources :retain_qs,                :controller => 'retain/qs'
   map.resources :retain_qq,                :controller => 'retain/qq'
   map.resources :combined_queue,           :controller => 'retain/queue'

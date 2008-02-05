@@ -41,6 +41,6 @@ module ApplicationHelper
   end
 
   def button_url(text, url)
-    button(text, "Raptor.loadPage(\"#{url}\")")
+    button(text, "Raptor.loadPage(\"#{url_for(url)}\")")
   end
 end

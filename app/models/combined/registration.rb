@@ -3,6 +3,14 @@ module Combined
     add_skipped_fields :signon
     set_expire_time :never
 
+    def to_param
+      @cached.signon
+    end
+
+    def self.default_user
+      find_or_initialize_by_signon(Retain::Logon.instance.signon)
+    end
+    
     def default_center
       software_center || hardware_center
     end

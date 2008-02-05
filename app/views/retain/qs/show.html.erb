@@ -5,7 +5,7 @@
 <% end %>
 <% content_for(:center) do %>
   <div class="smaller">
-    <%= link_to 'Index of Favorite Queues', retain_favorite_queues_path %>
+    <%= link_to 'Index of Favorite Queues', combined_favorite_queues_path %>
   
     <% if @tuples.empty? %>
       Empty Queue or Queue not found.  Sorry but I can't tell the difference.

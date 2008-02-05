@@ -1,6 +1,6 @@
 <!-- retain/queue/show.html.erb -->
-<% @title = "Retain queue: #{@queue.to_s}" -%>
-<h1>Retain Queue: <%= h @queue.to_s %></h1>
+<% @title = "Retain queue: #{@queue.to_param}" -%>
+<h1>Retain Queue: <%= h @queue.to_param %></h1>
 <%= link_to 'Index of Favorite Queues', combined_favorite_queues_path %>
 
 <% if @calls.nil? %>

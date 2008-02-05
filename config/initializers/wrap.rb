@@ -23,7 +23,7 @@ class Object
     if self.respond_to? :to_combined
       raise "Object#unwrap_to_cached called with Cached object"
     else
-      RAILS_DEFAULT_LOGGER.debug("CMB: wrap Object xxx <#{self.class}:#{self.object_id}> #{self.class.object_id}")
+      RAILS_DEFAULT_LOGGER.debug("CMB: wrap Object <#{self.class}:#{self.object_id}> #{self.class.object_id}")
       self
     end
   end
@@ -156,13 +156,37 @@ end
 # path to Object.  But we don't want that.  We want those methods
 # proxied as well.  So, we undef them here.
 #
+# But, it turns out that we need to wrap association proxy objects
+# like we wrap active record objects.
+#
 module ActiveRecord
   module Associations
     class AssociationProxy #:nodoc:
-      undef_method :wrap_with_combined
       undef_method :unwrap_to_cached
+      # undef_method :wrap_with_combined
+
+      # For now, we are going to wrap a proxy object if it is
+      # pretending to be an array.  Otherwise, we ask if it responds
+      # to :to_combined.  If it does, we call it.  Otherwise, we just
+      # return self.
+      #
+      # Its not clear if, in the first case of an object acting like
+      # an Array if we need to wrap each of the elements.  Right now,
+      # we are not going to do that.  We'll see how that goes.
+      #
+      # Oh... the reason for not wrapping single objects is because it
+      # defeats methods specific to a Combined class.
+      #
+      def wrap_with_combined
+        if self.kind_of? Array
+          RAILS_DEFAULT_LOGGER.debug("CMB: wrap AssociationProxy <#{self.class}:#{self.object_id}> #{self.class.object_id}")
+          Combined::AssociationProxy.new(self)
+        elsif self.respond_to? :to_combined
+          self.to_combined
+        else
+          self
+        end
+      end
     end
   end
 end
-
-puts "wrap loaded"

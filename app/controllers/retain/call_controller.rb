@@ -29,16 +29,18 @@ module Retain
     
     # Show a Retain call
     def show
-      # id should be of the form queue_name,center,s,ppg
-      # First, split id into a hash
-      words = params[:id].split(',')
-      options = {
-        :queue_name => words[0],
-        :center => words[1],
-        :h_or_s => 'S',         # set default H/S field
+      # id should be of the form queue_name,[center,[s,]]ppg
+      @registration = Combined::Registration.default_user
+      options = { 
+        :center => @registration.default_center,
+        :h_or_s => @registration.default_h_or_s
       }
+      words = params[:id].split(',')
+      options[:queue_name] = words[0]
+      options[:center] = words[1] if words.length > 2
       options[:h_or_s] = words[2] if words.length == 4
-      @queue = Combined::Queue.new(options)
+      @queue = Combined::Queue.find(:first, :conditions => options) ||
+        Combined::Queue.new(options)
       @call = @queue.calls.find_by_ppg(words.last)
       @call.mark_cache_invalid
       @pmr = @call.pmr

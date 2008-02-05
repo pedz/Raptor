@@ -13,7 +13,7 @@
     <td><%=h retain_pmr.branch %></td>
     <td><%=h retain_pmr.country %></td>
     <td><%= link_to 'Show', retain_pmr %></td>
-    <td><%= link_to 'Edit', edit_retain_pmr_path(retain_pmr) %></td>
+    <td><%= link_to 'Edit', edit_polymorphic_path(retain_pmr) %></td>
     <td><%= link_to 'Destroy', retain_pmr, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>

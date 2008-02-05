@@ -32,9 +32,7 @@ module Retain
     # GET /favorite_queues/new
     # GET /favorite_queues/new.xml
     def new
-      retid = session[:user].retusers[0].retid
-      registration = Combined::Registration.find_by_signon(retid) ||
-        Combined::Registration.new(:signon => retid)
+      registration = Combined::Registration.default_user
       default_center = registration.default_center
       default_h_or_s = registration.default_h_or_s
       o = {

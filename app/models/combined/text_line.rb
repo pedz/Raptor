@@ -3,5 +3,9 @@ module Combined
 
     set_expire_time :never
 
+    def to_param
+      @cached.id.to_s
+    end
+
   end
 end

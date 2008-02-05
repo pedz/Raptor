@@ -1,7 +1,7 @@
 module Retain
   class RegistrationController < RetainController
     def show
-      @reg = Combined::Registration.new :signon => params[:id]
+      @reg = Combined::Registration.find_or_initialize_by_signon(params[:id])
     end
   end
 end

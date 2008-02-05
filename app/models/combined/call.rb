@@ -6,10 +6,10 @@ module Combined
     set_expire_time 30.minutes
     
     #
-    # The to_s is called for named routes
+    # The to_param is called for named routes
     #
-    def to_s
-      queue.to_s + ',' + ppg
+    def to_param
+      queue.to_param + ',' + ppg
     end
     
     def load
@@ -33,7 +33,7 @@ module Combined
       # Touch something
       call.priority
       call_options = Cached::Call.options_from_retain(call)
-      cached.pmr = Cached::Pmr.new_from_retain(call) if cached.pmr.nil?
+      cached.pmr = Cached::Pmr.new_from_retain(call)
       cached.update_attributes(call_options)
     end
   end

@@ -17,13 +17,13 @@
 <% if admin? %>
     <td><%=h queue.user_id %></td>
 <% end %>
-    <td><%=h q = queue.queue_name.gsub(/ /, '') %></td>
-    <td><%=h c = queue.center %></td>
-    <td><%=h s = queue.h_or_s %></td>
+    <td><%=h queue.queue_name.gsub(/ /, '') %></td>
+    <td><%=h queue.center %></td>
+    <td><%=h queue.h_or_s %></td>
     <td align='right'><%= h queue_hits(queue) %></td>
-    <td><%= link_to 'Queue', combined_queue_path("#{q},#{c},#{s}") %></td>
+    <td><%= link_to 'Queue', queue %></td>
     <td><%= link_to 'Show', favorite_queue %></td>
-    <td><%= link_to 'Edit', edit_combined_favorite_queue_path(favorite_queue) %></td>
+    <td><%= link_to 'Edit', edit_polymorphic_path(favorite_queue) %></td>
     <td><%= link_to 'Destroy', favorite_queue, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>

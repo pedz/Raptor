@@ -4,16 +4,19 @@ module Combined
 
     set_expire_time 30.minutes
 
+    def to_param
+      pbc
+    end
+
     def load
       logger.debug("CMD: load for <#{self.class.to_s}:#{"0x%x" % self.object_id}>")
-      cached = self.cached
       
       # Fields used for the lookup
       lookup_fields = %w{ problem branch country }
       
       # Pull the lookup fields into the options hash
       options_hash = Hash[ * lookup_fields.map { |field|
-                             [ field.to_sym, cached.attributes[field] ] }.flatten ]
+                             [ field.to_sym, @cached.attributes[field] ] }.flatten ]
       # We also need the signon and password but we get that from the
       # Logon singleton automatically.
       
@@ -21,15 +24,15 @@ module Combined
       # effort on Retain.  The first is to get just the time the PMR
       # was last altered.  This step is skipped if alteration_date (in
       # the cached entry) are nil.
-      temp_id = "%s,%s,%s" % [ cached.problem, cached.branch, cached.country ]
-      if cached.alteration_date
+      temp_id = "%s,%s,%s" % [ @cached.problem, @cached.branch, @cached.country ]
+      if @cached.alteration_date
         logger.debug("CACHE: #{temp_id} alteration date set")
         options_hash[:group_request] = [ :alteration_date, :alteration_time ]
         pmr = Retain::Pmr.new(options_hash)
-        if (cached.alteration_date == pmr.alteration_date) &&
-            (cached.alteration_time == pmr.alteration_time)
+        if (@cached.alteration_date == pmr.alteration_date) &&
+            (@cached.alteration_time == pmr.alteration_time)
           logger.debug("CACHE: #{temp_id} touched")
-          cached.save
+          @cached.save
           return
         end
         logger.debug("CACHE: #{temp_id} has been altered")
@@ -50,9 +53,9 @@ module Combined
                                   :information_text_lines
                                 ]
       
-      if cached.alteration_date
-        fa_lines = cached.alterable_format_lines.length
-        text_lines = cached.text_lines.length
+      if @cached.alteration_date
+        fa_lines = @cached.alterable_format_lines.length
+        text_lines = @cached.text_lines.length
         pages = (fa_lines + text_lines + 15) / 16
         logger.debug("CACHE: #{temp_id} text_lines: #{text_lines}, fa_lines: #{fa_lines}, pages: #{pages}")
         options_hash[:beginning_page_number] = pages + 1
@@ -64,7 +67,7 @@ module Combined
       pmr = Retain::Pmr.new(options_hash)
       # Touch something to do the fetch from retain
       pmr.severity
-      if cached.alteration_date
+      if @cached.alteration_date
         if pmr.nls_text_lines?
           logger.debug("CACHE: #{temp_id} text_lines.length = #{pmr.nls_text_lines.length}")
         end
@@ -77,20 +80,20 @@ module Combined
       # properly
       if pmr.alterable_format_lines?
         update_lines(pmr.alterable_format_lines,
-                     cached.alterable_format_lines,
+                     @cached.alterable_format_lines,
                      0,
                      Cached::TextLine::LineTypes::ALTERABLE_FORMAT)
       end
       
       # Create the text lines
       if pmr.nls_text_lines?
-        if cached.alteration_date
-          offset = ((pmr.beginning_page_number - 2) * 16) - cached.alterable_format_lines.length
+        if @cached.alteration_date
+          offset = ((pmr.beginning_page_number - 2) * 16) - @cached.alterable_format_lines.length
         else
           offset = 0
         end
         update_lines(pmr.nls_text_lines,
-                     cached.text_lines,
+                     @cached.text_lines,
                      offset,
                      Cached::TextLine::LineTypes::TEXT_LINE)
       end
@@ -100,7 +103,7 @@ module Combined
         lines = pmr.information_text_lines
         lines = [ lines ] unless lines.kind_of? Array
         update_lines(lines,
-                     cached.information_text_lines,
+                     @cached.information_text_lines,
                      0,
                      Cached::TextLine::LineTypes::INFORMATION_TEXT)
       end
@@ -111,10 +114,10 @@ module Combined
                 pmr.nls_scratch_pad_3,
                 pmr.scratch_pad_signature ]
       update_lines(lines,
-                   cached.scratch_pad_lines,
+                   @cached.scratch_pad_lines,
                    0,
                    Cached::TextLine::LineTypes::SCRATCH_PAD)
-      cached.update_attributes(Cached::Pmr.options_from_retain(pmr))
+      @cached.update_attributes(Cached::Pmr.options_from_retain(pmr))
     end
 
     # A convenience method to give back the usual form of

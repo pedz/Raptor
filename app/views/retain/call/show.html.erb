@@ -10,7 +10,7 @@
 	    Queue
 	  </span>
 	  <span id='queue-spec' class='field'>
-	    <%= link_to @call.queue.to_s, retain_queue_path(@call.queue.to_s) %>
+	    <%= link_to @call.queue.to_param, @call.queue %>
 	  </span>
 	</span>
       </td>
@@ -202,10 +202,10 @@ function newUrl(to,sub)
 <% content_for(:bottom) do %>
   <div>
     <%= button_url("Home", "/") %>
-    <%= button_url("Queues", retain_favorite_queues_path) %>
+    <%= button_url("Queues", combined_favorite_queues_path) %>
     <%= button_url("PSAR", retain_psar_path) %>
-    <%= button_url("Registration", retain_registration_path) %>
-    <%= button("Did you update the mo fo PMR, JACK?", "Raptor.updateToggle();") %>
+    <%= button_url("Registration", @registration) %>
+    <%= button("Update", "Raptor.updateToggle();") %>
     <form id='update-form'>
       <textarea rows="10" cols="72">Action Taken:
 

@@ -3,28 +3,9 @@ module Combined
 
     include Common
 
-    # new for the Combined subclasses takes a hash of options or an
-    # instance of the equivalent Cached class
-    def initialize(arg = { })
-      super()
-      @logger = RAILS_DEFAULT_LOGGER
-      @logger.debug("CMB: <#{self.class}:#{self.object_id}> start initializing")
-      how = ""
-      if arg.kind_of? Hash
-        @cached = self.class.cached_class.new(arg.unwrap_to_cached)
-        how = "from hash"
-      else
-        @cached = arg
-        how = "from db"
-      end
-      @logger.debug("CMB: <#{self.class}:#{self.object_id}> initialized #{how}")
-    end
-
-    def mark_cache_invalid
-      @invalid_cache = true
-    end
-
     class << self
+      include Combined::ClassCommon
+
       # Create a class instance getters to get an array of Retain
       # fields, all fields in the db class, the skipped fields, the
       # logger, and the subclass.
@@ -50,8 +31,6 @@ module Combined
       # plus extra_fields
       attr_reader :retain_fields
 
-      alias_method :proxy_respond_to?, :respond_to?
-
       def logger
         RAILS_DEFAULT_LOGGER
       end
@@ -63,35 +42,6 @@ module Combined
 
       def cached_class
         @cached_class ||= cached_class_name.constantize
-      end
-
-      # respond_to? class method
-      def respond_to?(symbol, include_private=false)
-        logger.debug("CMB: class respond_to? #{symbol} for #{self.to_s} called")
-        proxy_respond_to?(symbol, include_private) or
-          cached_class.respond_to?(symbol, include_private)
-      end
-
-      def method_missing(symbol, *args, &block)
-        logger.debug("CMB: class method_missing #{symbol} for #{self.to_s} called")
-        args = args.unwrap_to_cached
-
-        if block_given?
-          # If we have a block, then we call the method and replace the
-          # passed in block with our block.  Our block will take each of
-          # the yield arguments, replace them, and then call the block
-          # we were passed.
-          ret = cached_class.send(symbol, *args) { |*o_args|
-            block.call(* o_args.map { |o| o.wrap_with_combined })
-          }
-          
-          # we need to replace the returned value too.
-          ret.wrap_with_combined
-        else
-          # If we were not given a block, then just call the method with
-          # the args and replace the return.
-          cached_class.send(symbol, *args).wrap_with_combined
-        end
       end
 
       def unwrap_to_cached
@@ -125,6 +75,27 @@ module Combined
       end
     end
 
+    # new for the Combined subclasses takes a hash of options or an
+    # instance of the equivalent Cached class
+    def initialize(arg = { })
+      super()
+      @logger = RAILS_DEFAULT_LOGGER
+      @logger.debug("CMB: <#{self.class}:#{self.object_id}> start initializing")
+      how = ""
+      if arg.kind_of? Hash
+        @cached = self.class.cached_class.new(arg.unwrap_to_cached)
+        how = "from hash"
+      else
+        @cached = arg
+        how = "from db"
+      end
+      @logger.debug("CMB: <#{self.class}:#{self.object_id}> initialized #{how}")
+    end
+
+    def mark_cache_invalid
+      @invalid_cache = true
+    end
+
     def cached
       # Can not use to_s in this debugging call -- it creates an infinite loop
       logger.debug("CMB: cached method for <#{self.class}:#{self.object_id}> called.")
@@ -135,6 +106,12 @@ module Combined
       logger.debug("CMB: unwrap <#{self.class}:#{self.object_id}>")
       @cached
     end
+
+    def expire_time
+      self.class.expire_time
+    end
+
+    private
     
     attr_reader :logger
 
@@ -156,18 +133,15 @@ module Combined
         # Set up fields fetched from retain
         @retain_fields = db_fields - @skipped_fields + @extra_fields
 
-        logger.debug("unwrap for cached defined self is #{self.name} #{self.class}:#{self.object_id}")
-        def unwrap_to_cached
-          logger.debug("CMB: unwrap Combined <#{self.class}:#{self.object_id}>")
-          @cached
-        end
-
         # Define getter methods for each field
         db_fields.each do |name|
           eval("def  #{name}
                   logger.debug(\"CMB: #{name} called as field for <\#{self.class}:\#{self.object_id}>\")
-                  call_load unless cached.#{name} && cache_valid
-                  return cached.#{name}
+                  unless cache_valid? && (temp = cached.#{name})
+                    call_load
+                    temp = cached.#{name}
+                  end
+                  return temp
                 end", nil, __FILE__, __LINE__)
         end
 
@@ -175,8 +149,7 @@ module Combined
         db_associations.each do |name|
           eval("def #{name}
                   logger.debug(\"CMB: #{name} called as association for <\#{self.class}:\#{self.object_id}>\")
-                  temp = @cached.#{name}
-                  unless temp && cache_valid
+                  unless cache_valid? && (temp = @cached.#{name})
                     call_load
                     temp = @cached.#{name}
                   end
@@ -215,20 +188,32 @@ module Combined
       load
       @invalid_cache = false
     end
-
-    def cache_valid
+    
+    def cache_valid?
       # If we are not cached at all, then cache is invalid
-      return false if (updated_at = self.cached.updated_at).nil?
+      if (updated_at = @cached.updated_at).nil?
+        logger.debug("CMB: cache_valid?: return false: updated_at is nil")
+        return false
+      end
+      
       # If data type says cache never expires then we are good to go
-      return true if (expire = expire_time) == :never
+      if (expire = expire_time) == :never
+        logger.debug("CMB: cache_valid?: return true: expire set to :never")
+        return true
+      end
+      
       # If item has been explicitly marked to be re-fetched
-      return false if @invalid_cache
+      if @invalid_cache
+        logger.debug("CMB: cache_valid?: return false: invalid_cache set")
+        return false
+      end
+      
       # else, return if cache time has expired or not
-      (updated_at + expire) > Time.now
-    end
-
-    def expire_time
-      self.class.expire_time
+      sum = (updated_at + expire)
+      now = Time.now
+      r = sum > Time.now
+      logger.debug("CMB: cache_valid?: updated_at:#{updated_at}, expire:#{expire}, sum:#{updated_at + expire}, now:#{Time.now}, r:#{r}")
+      r
     end
   end
 end
