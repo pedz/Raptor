@@ -24,3 +24,4 @@
 #
 
 require 'combined/base'
+require 'combined/association_proxy'

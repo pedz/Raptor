@@ -3,6 +3,8 @@ require 'retain/utils'
 
 module Retain
   class Request
+    cattr_accessor :logger
+
     PACKET_LENGTH = 20...24
     ELEMENT_COUNT = 24...28
 
@@ -12,7 +14,6 @@ module Retain
         :billing_id => "AIX",
         :ext_billing_id => "AIX"
       }.merge(options)
-      @logger = @options[:logger] || RAILS_DEFAULT_LOGGER
       
       # Only used to make debugging easy
       @request = @options[:request]
@@ -64,7 +65,7 @@ module Retain
     end
 
     def data_element(id, data)
-      @logger.debug("RTN: Adding data_element #{id}='#{data.retain_to_user}' " +
+      logger.debug("RTN: Adding data_element #{id}='#{data.retain_to_user}' " +
                     "for #{@request}")
       @element_count += 1
       s = 0.short2net + id.short2net + 0.short2net + data

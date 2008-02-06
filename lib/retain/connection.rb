@@ -4,9 +4,10 @@ include Socket::Constants
 
 module Retain
   class Connection
+    cattr_accessor :logger
+    
     def initialize
       @socket = Socket.new( AF_INET, SOCK_STREAM, 0 )
-      @logger = RAILS_DEFAULT_LOGGER
     end
 
     # open the connection.  +config+ is a hash of host and port

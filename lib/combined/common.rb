@@ -3,7 +3,6 @@ module Combined
     alias_method :proxy_respond_to?, :respond_to?
 
     def respond_to?(symbol, include_private=false)
-      logger.debug("CMB: respond_to? #{symbol} for <#{self.class}:#{self.object_id}> called")
       proxy_respond_to?(symbol, include_private) or
         @cached.respond_to?(symbol, include_private)
     end
@@ -15,8 +14,6 @@ module Combined
     # up.
     #
     def method_missing(symbol, *args, &block)
-      logger.debug("CMB: method_missing #{symbol} for <#{self.class}:#{self.object_id}> called")
-      logger.debug("CMB: args = #{args.inspect}")
       args = args.unwrap_to_cached
       if block_given?
         #

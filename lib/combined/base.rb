@@ -1,5 +1,6 @@
 module Combined
   class Base
+    cattr_accessor :logger
 
     include Common
 
@@ -7,10 +8,8 @@ module Combined
       include Combined::ClassCommon
 
       # Create a class instance getters to get an array of Retain
-      # fields, all fields in the db class, the skipped fields, the
-      # logger, and the subclass.
-      
-      # Set up logger
+      # fields, all fields in the db class, the skipped fields, and
+      # the subclass.
       attr_reader :subclass
 
       # skipped_fields are fields in the database record that are not
@@ -31,12 +30,8 @@ module Combined
       # plus extra_fields
       attr_reader :retain_fields
 
-      def logger
-        RAILS_DEFAULT_LOGGER
-      end
-
       def cached_class_name
-        logger.debug("class name is #{self.to_s}")
+        # logger.debug("CMB: class name is #{self.to_s}")
         @cached_class_name ||= "Cached::" + self.to_s.sub(/.*::/, "")
       end
 
@@ -45,7 +40,7 @@ module Combined
       end
 
       def unwrap_to_cached
-        logger.debug("CMB: class unwrap <#{self.class}:#{self.object_id}>")
+        # logger.debug("CMB: class unwrap <#{self.class}:#{self.object_id}>")
         @cached_class
       end
     
@@ -79,17 +74,11 @@ module Combined
     # instance of the equivalent Cached class
     def initialize(arg = { })
       super()
-      @logger = RAILS_DEFAULT_LOGGER
-      @logger.debug("CMB: <#{self.class}:#{self.object_id}> start initializing")
-      how = ""
       if arg.kind_of? Hash
         @cached = self.class.cached_class.new(arg.unwrap_to_cached)
-        how = "from hash"
       else
         @cached = arg
-        how = "from db"
       end
-      @logger.debug("CMB: <#{self.class}:#{self.object_id}> initialized #{how}")
     end
 
     def mark_cache_invalid
@@ -97,13 +86,11 @@ module Combined
     end
 
     def cached
-      # Can not use to_s in this debugging call -- it creates an infinite loop
-      logger.debug("CMB: cached method for <#{self.class}:#{self.object_id}> called.")
       return @cached
     end
 
     def unwrap_to_cached
-      logger.debug("CMB: unwrap <#{self.class}:#{self.object_id}>")
+      # logger.debug("CMB: unwrap <#{self.class}:#{self.object_id}>")
       @cached
     end
 
@@ -112,8 +99,6 @@ module Combined
     end
 
     private
-    
-    attr_reader :logger
 
     def self.inherited(subclass)
       super(subclass)
@@ -122,9 +107,6 @@ module Combined
       subclass.class_eval {
         # Remember our name
         @subclass = subclass
-
-        # Set up logger
-        @logger = RAILS_DEFAULT_LOGGER
         
         # Specify default extra fields and skipped fields
         @skipped_fields = [ :id, :created_at, :updated_at ]
@@ -136,7 +118,6 @@ module Combined
         # Define getter methods for each field
         db_fields.each do |name|
           eval("def  #{name}
-                  logger.debug(\"CMB: #{name} called as field for <\#{self.class}:\#{self.object_id}>\")
                   unless cache_valid? && (temp = cached.#{name})
                     call_load
                     temp = cached.#{name}
@@ -153,38 +134,13 @@ module Combined
                     call_load
                     temp = @cached.#{name}
                   end
-                  # dump_me(temp)
-                  # m = temp.class.instance_method(:wrap_with_combined)
-                  # m.bind(temp).call
-                  logger.debug(\"CMB: temp.ancestors = \#{temp.class.ancestors.inspect}\")
-                  logger.debug(\"CMB: funky.ancestors = \#{(class << temp; self; end).ancestors.inspect}\")
                   temp.wrap_with_combined
                 end", nil, __FILE__, __LINE__)
-        end
-
-        def dump_me(obj)
-          logger.debug("DMP: 0 obj.inspect=#{obj.inspect}")
-          klass = obj.class
-          return if klass.nil?
-          logger.debug("DMP: 1 class=#{klass} name=#{klass.name} methods=#{klass.instance_methods(false).inspect}")
-          klass = klass.superclass
-          return if klass.nil?
-          logger.debug("DMP: 2 class=#{klass} name=#{klass.name} methods=#{klass.instance_methods(false).inspect}")
-          klass = klass.superclass
-          return if klass.nil?
-          logger.debug("DMP: 3 class=#{klass} name=#{klass.name} methods=#{klass.instance_methods(false).inspect}")
-          klass = klass.superclass
-          return if klass.nil?
-          logger.debug("DMP: 4 class=#{klass} name=#{klass.name} methods=#{klass.instance_methods(false).inspect}")
-          klass = klass.superclass
-          return if klass.nil?
-          logger.debug("DMP: 5 class=#{klass} name=#{klass.name} methods=#{klass.instance_methods(false).inspect}")
         end
       }
     end
 
     def call_load
-      logger.debug("CMB: call_load for <#{self.class}:#{self.object_id}>")
       load
       @invalid_cache = false
     end

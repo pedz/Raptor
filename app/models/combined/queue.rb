@@ -24,12 +24,12 @@ module Combined
       requested_elements = Combined::Call.retain_fields.map { |field| field.to_sym }
       requested_elements << :ppg
       requested_elements << :p_s_b
-      logger.debug("requested_elements = #{requested_elements.inspect}")
+      logger.debug("CMB: requested_elements = #{requested_elements.inspect}")
       options_hash[:requested_elements] = requested_elements
 
       # We need to clean out any cached calls.
       @calls_cache = nil
-      logger.debug("###: cached is of type #{cached.class}")
+      logger.debug("CMB: cached is of type #{cached.class}")
       cached.calls.clear
       
       # Create a Retain::Queue from the options cache.

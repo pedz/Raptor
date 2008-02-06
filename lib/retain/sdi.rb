@@ -6,6 +6,7 @@ module Retain
   # I am making them objects so they can contain settings.  Not sure
   # how this is going to work... lets see...
   class Sdi
+    cattr_accessor :logger
 
     ### Class methods to set the class instance variables.
     class << self
@@ -43,9 +44,8 @@ module Retain
     ###
     def initialize(options = {})
       @options = { :request => self.class.fetch_request }.merge(options)
-      @logger = @options[:logger] || RAILS_DEFAULT_LOGGER
       @fields = Fields.new
-      @logger.debug("RTN: initializing #{self.class}")
+      logger.debug("RTN: initializing #{self.class}")
       
       # Look at the default_fields for a list of fields to use as
       # defaults.
@@ -75,32 +75,32 @@ module Retain
       fields = @fields.merge(req_fields)
       options = @options.merge(send_options)
       if false
-        @logger.debug("RTN: fields = #{fields.to_yaml}")
-        @logger.debug("RTN: options = #{options.to_yaml}")
+        logger.debug("RTN: fields = #{fields.to_yaml}")
+        logger.debug("RTN: options = #{options.to_yaml}")
       end
 
       request = Request.new(options)
       self.class.required_fields.each do |sym|
         if true
-          @logger.debug("RTN: req sym is #{sym} class is #{sym.class}")
+          logger.debug("RTN: req sym is #{sym} class is #{sym.class}")
         end
         index = Fields.sym_to_index(sym)
         raise "required field #{sym} not present" unless fields.has_key?(sym)
         v = fields[sym]
         if false
-          @logger.debug("RTN: v.class is #{v.class}")
+          logger.debug("RTN: v.class is #{v.class}")
         end
         request.data_element(index, v.to_s)
       end
       self.class.optional_fields.each do |sym|
         if true
-          @logger.debug("RTN: opt sym is #{sym} class is #{sym.class}")
+          logger.debug("RTN: opt sym is #{sym} class is #{sym.class}")
         end
         index = Fields.sym_to_index(sym)
         next unless fields.has_key?(sym)
         v = fields[sym]
         if false
-          @logger.debug("RTN: v.class is #{v.class}")
+          logger.debug("RTN: v.class is #{v.class}")
         end
         request.data_element(index, v.to_s)
       end
@@ -124,18 +124,18 @@ module Retain
       @header = @reply[0...128]
       @rc = @header[8...12].net2int
       if true
-        @logger.debug("RTN: self is of class #{self.class}")
-        @logger.debug("RTN: rc should be #{@rc}")
+        logger.debug("RTN: self is of class #{self.class}")
+        logger.debug("RTN: rc should be #{@rc}")
       end
 
       new_fields = Fields.new
       scan_fields(new_fields, @reply[128...@reply.length])
       req_fields.merge!(new_fields)
 
-      @logger.info(new_fields.to_debug)
+      logger.info(new_fields.to_debug)
       unless @rc == 0
         hex_dump("#{options[:request]} request", send)
-        @logger.info(new_fields.to_debug)
+        logger.info(new_fields.to_debug)
         hex_dump("#{options[:request]} reply", @reply)
         # if req_fields.error_message?
         #   raise req_fields.error_message
@@ -192,9 +192,9 @@ module Retain
       @connection.write(send)
       reply = @login_reply = @connection.read(50)
       if  reply
-        @logger.debug("RTN: reply length is #{reply.length}")
+        logger.debug("RTN: reply length is #{reply.length}")
       else
-        @logger.debug("RTN: nil reply")
+        logger.debug("RTN: nil reply")
       end
       unless reply && reply.length == 50
         hex_dump("first 50 request", send)
@@ -231,17 +231,17 @@ module Retain
     end
     
     def hex_dump(title, s)
-      @logger.info("RTN: #{title}")
+      logger.info("RTN: #{title}")
       line = "     "
       (0..19).each { |b| line << ("%2d " % b) }
-      @logger.info("RTN: #{line}")
+      logger.info("RTN: #{line}")
       foo = 0
       until s.nil?
         line = ("%3d:" % foo)
         foo += 20
         l = s.length > 20 ? 20 : s.length
         s[0...l].each_byte { |b| line << (" %02x" % b) }
-        @logger.info("RTN: #{line}")
+        logger.info("RTN: #{line}")
         s = s[20...s.length]
       end
     end

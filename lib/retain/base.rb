@@ -1,6 +1,7 @@
 
 require 'retain/utils'
 require 'retain/exceptions'
+require 'retain/fields'
 
 module Retain
   class SdiReaderError < Exception
@@ -12,10 +13,12 @@ module Retain
   end
 
   class Base
+    cattr_accessor :logger
+
     ### Class instance methods
     class << self
-      attr_reader :subclass, :logger
-      
+      attr_reader :subclass
+
       def set_fetch_sdi(sdi)
         @fetch_sdi = sdi
       end
@@ -34,9 +37,8 @@ module Retain
     def initialize(options = {})
       super()
       @options = options
-      @logger = @options.delete(:logger) || RAILS_DEFAULT_LOGGER
       @fields = Fields.new(self.method(:fetch_fields))
-      @logger.debug("RTN: initializing #{self.class}")
+      # logger.debug("RTN: initializing #{self.class}")
 
       # options can have default_fields and fields which are both a
       # list of fields.  We merge in the sequence of :default_fields,
@@ -53,7 +55,7 @@ module Retain
     end
 
     def fetch_fields
-      @logger.debug("RTN: fetch fields for #{self.class}")
+      logger.debug("RTN: fetch fields for #{self.class}")
       fetch_sdi = self.class.fetch_sdi
       fetch_sdi.sendit(@fields, @options)
       @rc = fetch_sdi.rc
@@ -79,9 +81,6 @@ module Retain
       subclass.class_eval {
         # Rembmer our name
         @subclass = subclass
-
-        # Set up Logger
-        @logger = RAILS_DEFAULT_LOGGER
       }
     end
   end

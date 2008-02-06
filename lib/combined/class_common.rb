@@ -4,13 +4,11 @@ module Combined
     
     # respond_to? class method
     def respond_to?(symbol, include_private=false)
-      logger.debug("CMB: class respond_to? #{symbol} for #{self.to_s} called")
       proxy_respond_to?(symbol, include_private) or
         cached_class.respond_to?(symbol, include_private)
     end
     
     def method_missing(symbol, *args, &block)
-      logger.debug("CMB: class method_missing #{symbol} for #{self.to_s} called")
       args = args.unwrap_to_cached
       
       if block_given?

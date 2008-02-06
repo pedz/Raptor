@@ -25,7 +25,7 @@ module Retain
         return []
       end
       temp.map do |fields|
-        @logger.debug("RTN: make a call")
+        logger.debug("RTN: make a call")
         Call.new :fields => fields
       end
     end

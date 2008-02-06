@@ -38,7 +38,7 @@ module Combined
       retain_registration.name
       cache_options = Cached::Registration.options_from_retain(retain_registration)
       cache_options.delete(:sigon)
-      logger.debug("RTN: cache_option in registration = #{cache_options.inspect}")
+      logger.debug("CMB: cache_option in registration = #{cache_options.inspect}")
       cached.update_attributes(cache_options)
     end
   end

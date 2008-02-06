@@ -1,9 +1,8 @@
 module Cached
   class Base < ActiveRecord::Base
-    class << self
-      attr_reader :logger
-      @logger = RAILS_DEFAULT_LOGGER
+    cattr_accessor :logger
 
+    class << self
       # list of fields as symbols in this record.
       def db_fields
         @db_fields ||= columns.map { |c| c.name.to_sym }
@@ -22,7 +21,7 @@ module Cached
       retain_keys = retain.fields.keys
       fields = db_fields & retain_keys
       a = fields.map { |field| [ field, retain.send(field) ] }.flatten
-      logger.debug("a is #{a.inspect}")
+      logger.debug("CHC: options from retain are #{a.inspect}")
       Hash[ * a ]
     end
 
@@ -30,18 +29,18 @@ module Cached
     # should not be called "new"
     def self.new_from_retain(retain)
       # Get the fields for the cached class
-      logger.debug("CMB: new #{@subclass} from retain")
+      # logger.debug("CHC: new #{@subclass} from retain")
       options = options_from_retain(retain)
       find(:first, :conditions => options) || new(options)
     end
 
     def to_combined
-      logger.debug("CMB: to_combined <#{self.class}:#{self.object_id}>")
+      # logger.debug("CHC: to_combined <#{self.class}:#{self.object_id}>")
       self.class.combined_class.new(self)
     end
 
     def wrap_with_combined
-      logger.debug("CMB: wrap Cached <#{self.class}:#{self.object_id}>")
+      # logger.debug("CHC: wrap Cached <#{self.class}:#{self.object_id}>")
       self.class.combined_class.new(self)
     end
 
@@ -52,10 +51,6 @@ module Cached
       subclass.class_eval {
         # Remember our name
         @subclass = subclass
-
-        # Set up the logger
-        @logger = RAILS_DEFAULT_LOGGER
-    
       }
     end
   end

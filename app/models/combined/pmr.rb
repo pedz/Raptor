@@ -9,7 +9,7 @@ module Combined
     end
 
     def load
-      logger.debug("CMD: load for <#{self.class.to_s}:#{"0x%x" % self.object_id}>")
+      logger.debug("CMB: load for <#{self.class.to_s}:#{"0x%x" % self.object_id}>")
       
       # Fields used for the lookup
       lookup_fields = %w{ problem branch country }
@@ -26,18 +26,18 @@ module Combined
       # the cached entry) are nil.
       temp_id = "%s,%s,%s" % [ @cached.problem, @cached.branch, @cached.country ]
       if @cached.alteration_date
-        logger.debug("CACHE: #{temp_id} alteration date set")
+        logger.debug("CMB: #{temp_id} alteration date set")
         options_hash[:group_request] = [ :alteration_date, :alteration_time ]
         pmr = Retain::Pmr.new(options_hash)
         if (@cached.alteration_date == pmr.alteration_date) &&
             (@cached.alteration_time == pmr.alteration_time)
-          logger.debug("CACHE: #{temp_id} touched")
+          logger.debug("CMB: #{temp_id} touched")
           @cached.save
           return
         end
-        logger.debug("CACHE: #{temp_id} has been altered")
+        logger.debug("CMB: #{temp_id} has been altered")
       else
-        logger.debug("CACHE: #{temp_id} alteration date not set")
+        logger.debug("CMB: #{temp_id} alteration date not set")
       end
       
       # PMPB uses group_request.  Lets create that:
@@ -57,7 +57,7 @@ module Combined
         fa_lines = @cached.alterable_format_lines.length
         text_lines = @cached.text_lines.length
         pages = (fa_lines + text_lines + 15) / 16
-        logger.debug("CACHE: #{temp_id} text_lines: #{text_lines}, fa_lines: #{fa_lines}, pages: #{pages}")
+        logger.debug("CMB: #{temp_id} text_lines: #{text_lines}, fa_lines: #{fa_lines}, pages: #{pages}")
         options_hash[:beginning_page_number] = pages + 1
       end
       
@@ -69,10 +69,10 @@ module Combined
       pmr.severity
       if @cached.alteration_date
         if pmr.nls_text_lines?
-          logger.debug("CACHE: #{temp_id} text_lines.length = #{pmr.nls_text_lines.length}")
+          logger.debug("CMB: #{temp_id} text_lines.length = #{pmr.nls_text_lines.length}")
         end
         if pmr.alterable_format_lines?
-          logger.debug("CACHE: #{temp_id} alterable_format_lines.length = #{pmr.alterable_format_lines.length}")
+          logger.debug("CMB: #{temp_id} alterable_format_lines.length = #{pmr.alterable_format_lines.length}")
         end
       end
       # Create the alterable format text lines.  Need to do this
@@ -133,7 +133,7 @@ module Combined
     # the text line to create.
     def update_lines(pmr_lines, cached_lines, offset, line_type)
       raise "bad offset in update_lines" if cached_lines.length < offset
-      logger.debug("CACHE: Yes.... I'm getting called")
+      logger.debug("CMB: Yes.... I'm getting called")
       pmr_lines.each_with_index do |line, index|
         line_number = offset + index
         text_line_options = {
@@ -145,7 +145,7 @@ module Combined
         if cached_lines.length <= line_number
           cached_lines << Cached::TextLine.new(text_line_options)
         else
-          logger.debug("CACHE: possible update here")
+          logger.debug("CMB: possible update here")
           text_line = cached_lines[line_number]
           unless text_line_options.keys.select { |key|
               text_line_options[key] == text_line.send(key)

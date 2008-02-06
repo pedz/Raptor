@@ -1,19 +1,31 @@
 ActionController::Routing::Routes.draw do |map|
+  # Feedback messages, etc.
   map.resources :feedbacks do |feedback|
     feedback.resources :feedback_notes
   end
 
-  map.resources :retain_queue_infos, :controller => 'retain/queue_infos'
-  map.resources :retain_pmrs, :controller => 'retain/pmrs'
+  # Mapping between Queue and Person... Needs much work.
+  map.resources :retain_queue_infos,       :controller => 'retain/queue_infos'
+
+  # Never has worked but will eventually display a PMR (instead of a call)
+  map.resources :retain_pmrs,              :controller => 'retain/pmrs'
+
+  # Shows PSAR data
+  map.resource  :retain_psar,              :controller => 'retain/psar'
+
+  # "Queue Status" -- my Techjump page
+  map.resources :retain_qs,                :controller => 'retain/qs'
+
+  # Does a PMRQQ.  Debug and test. No useful info that I can find.
+  map.resources :retain_qq,                :controller => 'retain/qq'
+
+  # Reasonably well flushed out resources
   map.resources(:combined_call,
                 :controller => 'retain/call',
                 :member => { :alter => :post,
                   :addtxt => :post,
                   :requeue => :post })
-  map.resource  :retain_psar,              :controller => 'retain/psar'
   map.resources :combined_registration,    :controller => 'retain/registration'
-  map.resources :retain_qs,                :controller => 'retain/qs'
-  map.resources :retain_qq,                :controller => 'retain/qq'
   map.resources :combined_queue,           :controller => 'retain/queue'
   map.resources :combined_favorite_queues, :controller => 'retain/favorite_queues'
   map.resources :retusers

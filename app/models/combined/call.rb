@@ -13,7 +13,7 @@ module Combined
     end
     
     def load
-      logger.debug("CMD: load for <#{self.class.to_s}:#{"0x%x" % self.object_id}>")
+      logger.debug("CMB: load for <#{self.class.to_s}:#{"0x%x" % self.object_id}>")
       cached = self.cached
 
       # Pull the fields we need from the cached record into an options_hash
@@ -21,11 +21,11 @@ module Combined
       options_hash = Hash[ *%w{  queue_name center h_or_s }.map { |field|
                              [ field.to_sym, queue.attributes[field] ] }.flatten ]
       options_hash[:ppg] = cached.ppg
-      logger.debug("options_hash = #{options_hash.inspect}")
+      logger.debug("CMB: options_hash = #{options_hash.inspect}")
 
       # :group_request is a special case
       group_request = Combined::Call.retain_fields.map { |field| field.to_sym }
-      logger.debug("group_request = #{group_request.inspect}")
+      logger.debug("CMB: group_request = #{group_request.inspect}")
       options_hash[:group_request] = group_request
 
       call = Retain::Call.new(options_hash)

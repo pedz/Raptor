@@ -5,6 +5,8 @@
 
 module Retain
   class Fields
+    cattr_accessor :logger
+
     #
     # A hash used to create the getters and setters in request and
     # reply.  Also used to create upper case constant equivalents.
@@ -413,7 +415,6 @@ module Retain
     }
     
     def initialize(fetch_fields = nil)
-      @logger = RAILS_DEFAULT_LOGGER
       @fetch_fields = fetch_fields
       @fields = Hash.new
     end
