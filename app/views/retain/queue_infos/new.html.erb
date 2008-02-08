@@ -3,20 +3,8 @@
 <%= error_messages_for :queue_info %>
 
 <% form_for(@queue_info) do |f| %>
-  <p>
-    <b>Queue name</b><br />
-    <%= f.text_field :queue_name %>
-  </p>
-
-  <p>
-    <b>Center</b><br />
-    <%= f.text_field :center %>
-  </p>
-
-  <p>
-    <b>Owner</b><br />
-    <%= f.text_field :owner %>
-  </p>
+  <%= f.select("queue_id", Combined::Queue.find(:all).collect { |q| [ q.to_param, q.id ] }, {:prompt => 'Select Queue'}) %>
+  <%= f.select("owner_id", Combined::Registration.find(:all).collect { |r| [ r.name, r.id ] }, {:prompt => 'Select Owner'}) %>
 
   <p>
     <%= f.submit "Create" %>
