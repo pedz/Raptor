@@ -108,17 +108,8 @@ ActiveRecord::Schema.define(:version => 12) do
   end
 
   create_table "queue_infos", :force => true do |t|
-    t.string   "queue_name", :limit => 6, :null => false
-    t.string   "center",     :limit => 3, :null => false
-    t.string   "owner",      :limit => 6, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "retain_pmrs", :force => true do |t|
-    t.string   "problem"
-    t.string   "branch"
-    t.string   "country"
+    t.integer  "queue_id",   :null => false
+    t.integer  "owner_id",   :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
