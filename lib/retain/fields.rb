@@ -16,7 +16,9 @@ module Retain
       :branch                      => [    2, :upper_ebcdic,    3 ],
       :country                     => [    3, :upper_ebcdic,    3 ],
       :problem                     => [    4, :upper_ebcdic,    5 ],
-      :customer_number             => [   11, :upper_ebcdic,    7 ],
+      # I don't know what I'm going to do about data elements with the
+      # same number but with different purposes.
+      # :customer_number             => [   11, :upper_ebcdic,    7 ],
       :hits                        => [   11, :int,             4 ],
       :customer_name               => [   14, :ebcdic,         28 ],
       :customer_contact_name       => [   19, :ebcdic,         28 ],
@@ -46,7 +48,7 @@ module Retain
       :owning_retain_node          => [  132, :ebcdic,          3 ],
       :nls_pmr_owner_name          => [  133, :nls,            24 ],
       :pmr_owner_phone             => [  134, :ebcdic,         19 ],
-      :pmr_owner_employee_number   => [  135, :ebcdic,          6 ],
+      :pmr_owner_id                => [  135, :ebcdic,          6 ],
       :pmr_owner_territory         => [  136, :ebcdic,          3 ],
       :pmr_owner_name              => [  141, :ebcdic,         22 ],
       :sec_1_queue                 => [  186, :ebcdic,          6 ],
@@ -411,7 +413,7 @@ module Retain
       :keyword_three               => [ 2424, :ebcdic,         15 ],
       :resolver_name               => [ 2496, :ebcdic,         22 ],
       :problem_e_mail              => [ 2497, :ebcdic,         64 ],
-      :resolver_id                 => [ 2509, :ebcdic,          6 ]
+      :pmr_resolver_id             => [ 2509, :ebcdic,          6 ]
     }
     
     def initialize(fetch_fields = nil)

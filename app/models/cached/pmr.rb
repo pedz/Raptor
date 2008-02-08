@@ -1,7 +1,9 @@
 module Cached
   class Pmr < Base
     set_table_name "cached_pmrs"
-    has_many :calls, :class_name => "Cached::Call"
+    has_many   :calls,    :class_name => "Cached::Call"
+    belongs_to :owner,    :class_name => "Cached::Registration"
+    belongs_to :resolver, :class_name => "Cached::Registration"
     has_many(:scratch_pad_lines,
              :conditions => "line_type = #{Cached::TextLine::LineTypes::SCRATCH_PAD}",
              :class_name => "Cached::TextLine",

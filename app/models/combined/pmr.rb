@@ -1,6 +1,7 @@
 module Combined
   class Pmr < Base
-    add_skipped_fields :problem, :branch, :country
+    add_skipped_fields :problem, :branch, :country, :owner_id, :resolver_id
+    add_extra_fields :pmr_owner_id, :pmr_resolver_id
 
     set_expire_time 30.minutes
 
@@ -117,6 +118,12 @@ module Combined
                    @cached.scratch_pad_lines,
                    0,
                    Cached::TextLine::LineTypes::SCRATCH_PAD)
+      # Hook up owner and resolver
+      owner = Cached::Registration.find_or_initialize_by_signon(pmr.pmr_owner_id)
+      resolver = Cached::Registration.find_or_initialize_by_signon(pmr.pmr_resolver_id)
+      @cached.owner = owner
+      @cached.resolver = resolver
+      # Update other attributes
       @cached.update_attributes(Cached::Pmr.options_from_retain(pmr))
     end
 

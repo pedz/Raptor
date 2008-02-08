@@ -38,11 +38,11 @@
 	    Owner
 	  </span>
 	  <span id='owner-spec' class='field'>
-	    <%= h @pmr.pmr_owner_name %>
+	    <%= h @pmr.owner.name %>
 	    <span class='inplace-edit'
 		  href='<%= alter_combined_call_path(@call) %>'
-		  value='pmr_owner_employee_number'>
-	      <%= h @pmr.pmr_owner_employee_number %>
+		  value='owner_signon'>
+	      <%= h @pmr.owner.signon %>
 	    </span>
 	  </span>
 	</span>
@@ -58,11 +58,11 @@
 	    Resolver
 	  </span>
 	  <span id='resolver-spec' class='field'>
-	    <%= h @pmr.resolver_name %>
+	    <%= h @pmr.resolver.name %>
 	    <span class='inplace-edit'
 		  href='<%= alter_combined_call_path(@call) %>'
-		  value='resolver_id'>
-	      <%= h @pmr.resolver_id %>
+		  value='resolver_signon'>
+	      <%= h @pmr.resolver.signon %>
 	    </span>
 	  </span>
 	</span>

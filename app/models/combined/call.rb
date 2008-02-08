@@ -5,9 +5,13 @@ module Combined
 
     set_expire_time 30.minutes
     
-    #
-    # The to_param is called for named routes
-    #
+    def self.from_param(param)
+      words = param.split(',')
+      ppg = words.pop
+      queue = Combined::Queue.from_param(words.join(','))
+      queue.calls.find_or_initialize_by_ppg(ppg)
+    end
+
     def to_param
       queue.to_param + ',' + ppg
     end

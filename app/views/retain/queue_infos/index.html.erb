@@ -3,14 +3,12 @@
 <table>
   <tr>
     <th>Queue name</th>
-    <th>Center</th>
     <th>Owner</th>
   </tr>
 
 <% for queue_info in @queue_infos %>
   <tr>
-    <td><%=h queue_info.queue_name %></td>
-    <td><%=h queue_info.center %></td>
+    <td><%=h queue_info.queue.to_param %></td>
     <td><%=h queue_info.owner %></td>
     <td><%= link_to 'Show', queue_info %></td>
     <td><%= link_to 'Edit', edit_polymorphic_path(queue_info) %></td>

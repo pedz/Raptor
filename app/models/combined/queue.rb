@@ -3,6 +3,20 @@ module Combined
 
     set_expire_time 30.minutes
 
+    def self.from_param(param)
+      registration = Combined::Registration.default_user
+      options = { 
+        :center => registration.default_center,
+        :h_or_s => registration.default_h_or_s
+      }
+      words = param.split(',')
+      options[:queue_name] = words[0]
+      options[:center] = words[1] if words.length > 1
+      options[:h_or_s] = words[2] if words.length > 2
+      Combined::Queue.find(:first, :conditions => options) ||
+        Combined::Queue.new(options)
+    end
+
     def to_param
       queue_name.sub(/ +/, '') + ',' + center + ',' + (h_or_s || 'S')
     end
