@@ -1,6 +1,6 @@
-class CreateQueueInfos < ActiveRecord::Migration
+class CreateCachedQueueInfos < ActiveRecord::Migration
   def self.up
-    create_table :queue_infos do |t|
+    create_table :cached_queue_infos do |t|
       t.integer :queue_id, :null => false
       t.integer :owner_id, :null => false
       t.timestamps 
@@ -8,6 +8,6 @@ class CreateQueueInfos < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :queue_infos
+    drop_table :cached_queue_infos
   end
 end

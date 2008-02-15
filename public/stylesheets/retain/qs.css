@@ -9,10 +9,35 @@
     font-family: verdana, arial, helvetica, sans-serif;
     font-size: 11.2px;
     line-height: normal;
-    color: black;
 }
 
 .smaller button {
     font-size: 10px;
     line-height: 10px;
+}
+
+.good {
+    color: green;
+}
+
+.warn {
+    color: yellow;
+}
+
+.wag-wag {
+    background-color: red;
+}
+
+.click-to-edit {
+    border: 3px outset grey;
+}
+
+.click-to-edit:hover {
+    cursor: pointer;
+}
+
+.secondary {
+}
+
+.backup {
 }

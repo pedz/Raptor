@@ -51,6 +51,13 @@ ActiveRecord::Schema.define(:version => 12) do
 
   add_index "cached_pmrs", ["problem", "branch", "country", "creation_date"], :name => "unique_pmrs", :unique => true
 
+  create_table "cached_queue_infos", :force => true do |t|
+    t.integer  "queue_id",   :null => false
+    t.integer  "owner_id",   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "cached_queues", :force => true do |t|
     t.string   "queue_name", :limit => 6,                  :null => false
     t.string   "center",     :limit => 3,                  :null => false
@@ -103,13 +110,6 @@ ActiveRecord::Schema.define(:version => 12) do
     t.integer  "priority",   :default => 3
     t.integer  "ftype",      :default => 0
     t.integer  "state",      :default => 0
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "queue_infos", :force => true do |t|
-    t.integer  "queue_id",   :null => false
-    t.integer  "owner_id",   :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -84,10 +84,33 @@ module Retain
       end
     end
 
-    # GET /retain_pmrs/12345,abc,xyz
-    # GET /retain_pmrs/12345,abc,xyz.xml
-    def blah
-      
+    def alter
+      # We blow off fetching the PMR.
+      words = params[:id].split(',')
+      field = params[:editorId].to_sym
+      new_text = params[:value]
+      options = {
+        :problem => words[0],
+        :branch => words[1],
+        :country => words[2],
+        field => new_text
+      }
+      # pmpu = Retain::Pmpu.new(options)
+      # fields = Retain::Fields.new
+      # pmpu.sendit(fields)
+      # rc = pmpu.rc
+      new_text = "<span class='wag-wag'>banana</span>"
+      rc = 0
+      respond_to do |format|
+        if rc == 0
+          format.html { render :text => new_text }
+          format.xml  { logger.info("RTN: xml")  }
+        else
+          format.html { render(:text => new_text,
+                               :status => :unprocessable_entity) }
+          format.xml  { logger.info("RTN: xml")  }
+        end
+      end
     end
   end
 end

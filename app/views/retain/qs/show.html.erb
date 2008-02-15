@@ -20,11 +20,11 @@
       <tbody>
 	<% @queue.calls.each_with_index do |call, index| -%>
           <tr>
-  	    <td><%= button(index += 1, call) %></td>
+  	    <td><%= button_url(index += 1, call) %></td>
   	    <td><%= link_to call.pmr.pbc, call %></td>
   	    <td><%= call.p_s_b %></td>
-  	    <td><%= call.pmr.owner.name %></td>
-  	    <td><%= call.pmr.resolver.name %></td>
+	    <%= owner(call) %>
+	    <%= resolver(call) %>
   	    <td><%= call.pmr.next_queue %>,<%= call.pmr.next_center %></td>
   	  </tr>
         <% end -%>

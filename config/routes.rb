@@ -4,28 +4,36 @@ ActionController::Routing::Routes.draw do |map|
     feedback.resources :feedback_notes
   end
 
-  # Mapping between Queue and Person... Needs much work.
-  map.resources :retain_queue_infos,       :controller => 'retain/queue_infos'
-
-  # Never has worked but will eventually display a PMR (instead of a call)
-  map.resources :retain_pmrs,              :controller => 'retain/pmrs'
-
   # Shows PSAR data
   map.resource  :retain_psar,              :controller => 'retain/psar'
-
-  # "Queue Status" -- my Techjump page
-  map.resources :retain_qs,                :controller => 'retain/qs'
 
   # Does a PMRQQ.  Debug and test. No useful info that I can find.
   map.resources :retain_qq,                :controller => 'retain/qq'
 
+  # Mapping between Queue and Person... Needs much work.
+  map.resources :combined_queue_infos,       :controller => 'retain/queue_infos'
+
+  # Never has worked but will eventually display a PMR (instead of a call)
+  map.resources(:combined_pmrs,
+                :controller => 'retain/pmrs',
+                :member => { :alter => :post } )
+
+  # "Queue Status" -- my Techjump page
+  map.resources :combined_qs,                :controller => 'retain/qs'
+
   # Reasonably well flushed out resources
   map.resources(:combined_call,
                 :controller => 'retain/call',
-                :member => { :alter => :post,
+                :member => {
+                  :alter => :post,
                   :addtxt => :post,
                   :requeue => :post })
-  map.resources :combined_registration,    :controller => 'retain/registration'
+  map.resources(:combined_registration,
+                :controller => 'retain/registration',
+                :member => {
+                  :owner_list => :get
+                })
+
   map.resources :combined_queue,           :controller => 'retain/queue'
   map.resources :combined_favorite_queues, :controller => 'retain/favorite_queues'
   map.resources :retusers

@@ -15,6 +15,85 @@ module Combined
     def to_param
       queue.to_param + ',' + ppg
     end
+
+    # The validate_xxx methods problem need a name change.  They
+    # return a three element array of a class name, help string, and a
+    # boolean if the field is editable.
+    def validate_owner
+      # Lets deal with backups and secondarys.  As far as I know, they
+      # are not editable for any reason.
+      p_s_b = self.p_s_b
+      if p_s_b == 'S' || p_s_b == 'B'
+        return ["normal", "Owner for secondary/backup not editable or judged", false ]
+      end
+
+      pmr = self.pmr
+      # World Trade, owner is always o.k.
+      if pmr.country != "000"
+        return ["normal", "Owner for WT not editable or judged", false ]
+      end
+
+      pmr_owner = pmr.owner
+      # A blank owner is a bad dog.
+      if pmr_owner.signon.blank?
+        return [ "wag-wag", "Owner should not be blank", true ]
+      end
+
+      # If Queue Owner is the same as PMR Owner, we're good.
+      queue = self.queue
+      if (infos = queue.queue_infos).empty?
+        return [ "warn", "Queue has no owner", true ]
+      else
+        queue_owner = infos[0].owner
+        if pmr_owner.id == queue_owner.id
+          return [ "good", "PMR Owner is Queue Owner", true ]
+        end
+      end
+
+      center = queue_owner.center(queue.h_or_s)
+      if center && center == queue.center
+        return [ "warn", "PMR Owner in same center but not queue owner", true ]
+      end
+
+      return [ "wag-wag", "PMR Owner not in same center", true ]
+    end
+
+    def validate_resolver
+      # Lets deal with backups and secondarys.  As far as I know, they
+      # are not editable for any reason.
+      p_s_b = self.p_s_b
+      if p_s_b == 'S' || p_s_b == 'B'
+        return ["normal", "Resolver for secondary/backup not editable or judged", false ]
+      end
+
+      pmr = self.pmr
+      pmr_resolver = pmr.resolver
+      # A blank resolver is a bad dog.
+      if pmr_resolver.signon.blank?
+        return [ "wag-wag", "Resolver should not be blank", true ]
+      end
+
+      # If Queue Resolver is the same as PMR Resolver, we're good.
+      queue = self.queue
+      if (infos = queue.queue_infos).empty?
+        # If Queue has no owner, not much else we can do.
+        return [ "warn", "Queue has no owner", true ]
+      else
+        queue_owner = infos[0].owner
+        if pmr_resolver.id == queue_owner.id
+          return [ "good", "PMR Resolver is Queue Owner", true ]
+        end
+      end
+
+      center = queue_owner.center(queue.h_or_s)
+      if center && center == queue.center
+        return [ "warn", "PMR Resolver in same center but not queue owner", true ]
+      end
+
+      return [ "wag-wag", "PMR Resolver not in same center", true ]
+    end
+    
+    private
     
     def load
       logger.debug("CMB: load for <#{self.class.to_s}:#{"0x%x" % self.object_id}>")

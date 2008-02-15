@@ -5,6 +5,16 @@ module Combined
 
     set_expire_time 30.minutes
 
+    def self.from_param(param)
+      words = param.split(',')
+      options = {
+        :problem => words[0],
+        :branch => words[1],
+        :country => words[2]
+      }
+      find(:first, :conditions => options) || new(options)
+    end
+
     def to_param
       pbc
     end
