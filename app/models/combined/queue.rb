@@ -10,11 +10,16 @@ module Combined
         :h_or_s => registration.default_h_or_s
       }
       words = param.split(',')
-      options[:queue_name] = words[0]
-      options[:center] = words[1] if words.length > 1
-      options[:h_or_s] = words[2] if words.length > 2
-      Combined::Queue.find(:first, :conditions => options) ||
-        Combined::Queue.new(options)
+      options[:queue_name] = words[0].upcase
+      options[:center] = words[1].upcase if words.length > 1
+      options[:h_or_s] = words[2].upcase if words.length > 2
+      q = Combined::Queue.find(:first, :conditions => options)
+
+      # Create the queue if we need to but only if it is valid.
+      if q.nil? && Retain::Cq.check_queue(options)
+        q = Combined::Queue.new(options)
+      end
+      q
     end
 
     def to_param

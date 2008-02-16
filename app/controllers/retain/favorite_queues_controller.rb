@@ -57,6 +57,10 @@ module Retain
     # POST /favorite_queues.xml
     def create
       queue_options = params[:combined_queue]
+      queue_options[:queue_name].upcase!
+      queue_options[:center].upcase!
+      queue_options[:h_or_s].upcase!
+      
       # The favorite queue is new -- that much is sure.  But the queue
       # might already exist.
       queue = Combined::Queue.find(:first, :conditions => queue_options) ||
@@ -93,6 +97,9 @@ module Retain
       # then associate the favorite queue with this queue.
       #
       queue_options = params[:combined_queue]
+      queue_options[:queue_name].upcase!
+      queue_options[:center].upcase!
+      queue_options[:h_or_s].upcase!
       queue = Combined::Queue.find(:first, :conditions => queue_options) ||
         Combined::Queue.new(queue_options)
       @favorite_queue = Combined::FavoriteQueue.find(params[:id])

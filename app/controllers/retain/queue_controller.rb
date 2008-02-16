@@ -1,9 +1,12 @@
 module Retain
   class QueueController < RetainController
     def show
-      @queue = Combined::Queue.from_param(params[:id])
-      @queue.mark_cache_invalid
-      @calls = @queue.calls
+      if (@queue = Combined::Queue.from_param(params[:id]))
+        @queue.mark_cache_invalid
+        @calls = @queue.calls
+      else
+        render :text => "<h2 style='color:red'>Queue not found</h2>"
+      end
     end
   end
 end

@@ -64,11 +64,25 @@ module Combined
         :secondary_login => @cached.signon
       }
       retain_registration = Retain::Registration.new(retain_options)
-      # Touch the name to force a fetch
-      retain_registration.name
-      cache_options = Cached::Registration.options_from_retain(retain_registration)
-      cache_options.delete(:signon)
-      logger.debug("CMB: cache_option in registration = #{cache_options.inspect}")
+
+      # We can not retrive any registration record.  So, we catch the
+      # exception
+      begin
+        # Touch the name to force a fetch
+        retain_registration.name
+      rescue Retain::SdiReaderError => err
+        raise err unless err.rc == 251
+        # We set software and hardware center to "000" to tell us we
+        # don't really know.
+        cache_options = {
+          :software_center => "000",
+          :hardware_center => "000"
+        }
+      else
+        cache_options = Cached::Registration.options_from_retain(retain_registration)
+        cache_options.delete(:signon)
+        logger.debug("CMB: cache_option in registration = #{cache_options.inspect}")
+      end
       @cached.update_attributes(cache_options)
     end
   end

@@ -1,7 +1,8 @@
 module Combined
   class Pmr < Base
     add_skipped_fields :problem, :branch, :country, :owner_id, :resolver_id
-    add_extra_fields :pmr_owner_id, :pmr_resolver_id
+    add_extra_fields :pmr_owner_id,    :pmr_owner_name
+    add_extra_fields :pmr_resolver_id, :pmr_resolver_name
 
     set_expire_time 30.minutes
 
@@ -18,6 +19,14 @@ module Combined
     def to_param
       pbc
     end
+
+    # A convenience method to give back the usual form of
+    # problem,branch,country for a call.
+    def pbc
+      (problem + "," + branch + "," + country).upcase
+    end
+    
+    private
 
     def load
       logger.debug("CMB: load for <#{self.class.to_s}:#{"0x%x" % self.object_id}>")
@@ -128,22 +137,18 @@ module Combined
                    @cached.scratch_pad_lines,
                    0,
                    Cached::TextLine::LineTypes::SCRATCH_PAD)
-      # Hook up owner and resolver
+
+      # Hook up owner and resolver.  We have to plop in the name for
+      # new records because we can not retrive all registrations.
       owner = Cached::Registration.find_or_initialize_by_signon(pmr.pmr_owner_id)
+      owner.name = pmr.pmr_owner_name if owner.name.nil?
       resolver = Cached::Registration.find_or_initialize_by_signon(pmr.pmr_resolver_id)
+      resolver.name = pmr.pmr_resolver_name if resolver.name.nil?
       @cached.owner = owner
       @cached.resolver = resolver
       # Update other attributes
       @cached.update_attributes(Cached::Pmr.options_from_retain(pmr))
     end
-
-    # A convenience method to give back the usual form of
-    # problem,branch,country for a call.
-    def pbc
-      (problem + "," + branch + "," + country).upcase
-    end
-    
-    private
 
     # Merges pmr_lines into cached_lines.  Offset is the offset into
     # cached_lines to start the update.  line_type is the line_type of

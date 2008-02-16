@@ -20,6 +20,13 @@ module Combined
     # return a three element array of a class name, help string, and a
     # boolean if the field is editable.
     def validate_owner
+      queue = self.queue
+      user = Combined::Registration.default_user
+      user_center = user.center(queue.h_or_s)
+      if user_center != queue.center
+        return [ "normal", "Queue outside center not editable or judged", false]
+      end
+
       # Lets deal with backups and secondarys.  As far as I know, they
       # are not editable for any reason.
       p_s_b = self.p_s_b
@@ -29,6 +36,8 @@ module Combined
 
       pmr = self.pmr
       # World Trade, owner is always o.k.
+      # TODO Actually, this isn't true.  It resolver or next queue get
+      # clobbered they are not o.k.  We might could add code to detect that.
       if pmr.country != "000"
         return ["normal", "Owner for WT not editable or judged", false ]
       end
@@ -40,7 +49,6 @@ module Combined
       end
 
       # If Queue Owner is the same as PMR Owner, we're good.
-      queue = self.queue
       if (infos = queue.queue_infos).empty?
         return [ "warn", "Queue has no owner", true ]
       else
@@ -59,6 +67,13 @@ module Combined
     end
 
     def validate_resolver
+      queue = self.queue
+      user = Combined::Registration.default_user
+      user_center = user.center(queue.h_or_s)
+      if user_center != queue.center
+        return [ "normal", "Queue outside center not editable or judged", false]
+      end
+
       # Lets deal with backups and secondarys.  As far as I know, they
       # are not editable for any reason.
       p_s_b = self.p_s_b
@@ -74,7 +89,6 @@ module Combined
       end
 
       # If Queue Resolver is the same as PMR Resolver, we're good.
-      queue = self.queue
       if (infos = queue.queue_infos).empty?
         # If Queue has no owner, not much else we can do.
         return [ "warn", "Queue has no owner", true ]
@@ -85,12 +99,75 @@ module Combined
         end
       end
 
-      center = queue_owner.center(queue.h_or_s)
+      center = pmr_resolver.center(queue.h_or_s)
       if center && center == queue.center
         return [ "warn", "PMR Resolver in same center but not queue owner", true ]
       end
 
       return [ "wag-wag", "PMR Resolver not in same center", true ]
+    end
+
+    def validate_next_queue
+      queue = self.queue
+      user = Combined::Registration.default_user
+      user_center = user.center(queue.h_or_s)
+      if user_center != queue.center
+        return [ "normal", "Queue outside center not editable or judged", false]
+      end
+
+      # Lets deal with backups and secondarys.  As far as I know, they
+      # are not editable for any reason.
+      p_s_b = self.p_s_b
+      if p_s_b == 'S' || p_s_b == 'B'
+        return ["normal", "Next Queue for secondary/backup not editable or judged", false ]
+      end
+      
+      pmr = self.pmr
+      # World Trade, next queue is always o.k.
+      # TODO Actually, this isn't true.  It resolver or next queue get
+      # clobbered they are not o.k.  We might could add code to detect that.
+      if pmr.country != "000"
+        return ["normal", "Next Queue for WT not editable or judged", false ]
+      end
+
+      if pmr.next_queue.blank?
+        return [ "wag-wag", "Next Queue queue name is blank", true ]
+      end
+
+      if pmr.next_center.blank?
+        return [ "wag-wag", "Next Queue center is blank", true ]
+      end
+
+      nq_options = {
+        :queue_name => pmr.next_queue.upcase,
+        :center => pmr.next_center.upcase
+      }
+      nq = Combined::Queue.find(:first, :conditions => nq_options)
+      if nq.nil?
+        # Take the 'S' or 'H' flag from the queue we are looking at.
+        nq_options[:h_or_s] = queue.h_or_s
+        unless Retain::Cq.check_queue(nq_options)
+          return [ "warn", "Next Queue does not exist", true ]
+        end
+        nq = Combined::Queue.create(nq_options)
+      end
+
+      # We are going to assume that if we have no queue info records
+      # on this queue, then it is a team queue.
+      if (infos = queue.queue_infos).empty?
+        return [ "good", "Team queues are not editable or judged", false ]
+      end
+
+      # Personal queue set to next queue... bad dog.
+      if nq.id == queue.id
+        return [ "wag-wag", "Next queue set to personal queue", true ]
+      end
+
+      unless nq.queue_infos.empty?
+        return [ "warn", "Next queue is someone's personal queue", true ]
+      end
+
+      return [ "good", "I can't find anything to complain about", true ]
     end
     
     private

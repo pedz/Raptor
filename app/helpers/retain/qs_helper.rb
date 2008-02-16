@@ -12,7 +12,7 @@ module Retain
         if editable
           span(:id => "#{pmr.pbc}-pmr_owner_id",
                :class => "edit-name click-to-edit",
-               :url => alter_combined_pmr_path(pmr),
+               :url => alter_combined_call_path(call),
                :options => {
                  :loadCollectionURL => owner_list_combined_registration_path(retid)
                }.to_json ) do
@@ -41,7 +41,7 @@ module Retain
         if editable
           span(:id => "#{pmr.pbc}-pmr_resolver_id",
                :class => "edit-name click-to-edit",
-               :url => alter_combined_pmr_path(pmr),
+               :url => alter_combined_call_path(call),
                :options => {
                  :loadCollectionURL => owner_list_combined_registration_path(retid)
                }.to_json ) do
@@ -59,13 +59,9 @@ module Retain
     end
 
     def next_queue(call)
-      retid = Logon.instance.signon
       pmr = call.pmr
-      name = pmr.resolver.name
-      if name.blank?
-        name = "blank"
-      end
-      css_class, title, editable = call.validate_resolver
+      nq_text = pmr.next_queue + "," + pmr.next_center
+      css_class, title, editable = call.validate_next_queue
       td do
         if editable
           span(:id => "#{pmr.pbc}-pmr_resolver_id",
@@ -76,12 +72,12 @@ module Retain
                }.to_json ) do
             title += ": Click to Edit"
             span :class => css_class, :title => title  do
-              "#{name}"
+              nq_text
             end
           end
         else
           span :class => css_class, :title => title  do
-            "#{name}"
+            nq_text
           end
         end
       end

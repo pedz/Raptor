@@ -25,7 +25,7 @@
   	    <td><%= call.p_s_b %></td>
 	    <%= owner(call) %>
 	    <%= resolver(call) %>
-  	    <td><%= call.pmr.next_queue %>,<%= call.pmr.next_center %></td>
+	    <%= next_queue(call) %>
   	  </tr>
         <% end -%>
       </tbody>

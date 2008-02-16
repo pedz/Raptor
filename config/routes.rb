@@ -16,7 +16,10 @@ ActionController::Routing::Routes.draw do |map|
   # Never has worked but will eventually display a PMR (instead of a call)
   map.resources(:combined_pmrs,
                 :controller => 'retain/pmrs',
-                :member => { :alter => :post } )
+                :member => {
+                  :alter => :post,
+                  :queue_list => :get
+                })
 
   # "Queue Status" -- my Techjump page
   map.resources :combined_qs,                :controller => 'retain/qs'
