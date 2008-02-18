@@ -59,7 +59,7 @@ module Retain
       case field
       when :next_queue
         new_queue_name, new_center, new_h_or_s = new_text.split(',')
-        options[:next_queue] = new_queue_name
+        options[:next_queue] = new_queue_name.strip
         options[:next_center] = new_center
       else
         options[field] = new_text

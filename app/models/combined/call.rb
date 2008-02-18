@@ -139,7 +139,7 @@ module Combined
       end
 
       nq_options = {
-        :queue_name => pmr.next_queue.upcase,
+        :queue_name => pmr.next_queue.upcase.strip,
         :center => pmr.next_center.upcase
       }
       nq = Combined::Queue.find(:first, :conditions => nq_options)
@@ -164,10 +164,10 @@ module Combined
       end
 
       unless nq.queue_infos.empty?
-        return [ "warn", "Next queue is someone's personal queue", true ]
+        return [ "warn", "Next queue is a personal queue", true ]
       end
 
-      return [ "good", "I can't find anything to complain about", true ]
+      return [ "good", "I can not find anything to complain about", true ]
     end
     
     private

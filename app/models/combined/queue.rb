@@ -10,7 +10,7 @@ module Combined
         :h_or_s => registration.default_h_or_s
       }
       words = param.split(',')
-      options[:queue_name] = words[0].upcase
+      options[:queue_name] = words[0].upcase.strip
       options[:center] = words[1].upcase if words.length > 1
       options[:h_or_s] = words[2].upcase if words.length > 2
       q = Combined::Queue.find(:first, :conditions => options)
@@ -23,7 +23,7 @@ module Combined
     end
 
     def to_param
-      queue_name.sub(/ +/, '') + ',' + center + ',' + (h_or_s || 'S')
+      queue_name.strip + ',' + center + ',' + (h_or_s || 'S')
     end
     
     private

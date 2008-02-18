@@ -158,6 +158,8 @@ module Retain
         end
         v += "\0" * width
         v.reverse[0...width]
+      when :ebcdic_queue
+        value.trim(width).upcase.user_to_retain
       when :upper_ebcdic
         value.trim(width).upcase.user_to_retain
       when :ebcdic
@@ -190,6 +192,8 @@ module Retain
       case @cvt
       when :int
         v = 0; value.each_byte { |b| v = v * 256 + b }; v
+      when :ebcdic_queue
+        value.retain_to_user.strip
       when :upper_ebcdic
         value.retain_to_user
       when :ebcdic

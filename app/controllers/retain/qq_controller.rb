@@ -7,7 +7,10 @@ module Retain
     #
     def show
       queue_name, center, h_or_s = params[:id].split(',')
-      options = { :queue_name => queue_name, :center => center }
+      options = {
+        :queue_name => queue_name.upcase.strip,
+        :center => center
+      }
       if h_or_s.nil?
         options[:h_or_s] = h_or_s
       else

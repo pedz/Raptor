@@ -8,7 +8,7 @@
 <p>
   <b>Queue:</b>
   <% queue = @favorite_queue.queue %>
-  <%=h queue.queue_name.gsub(/ /, '') %>,<%=h queue.center %>,<%=h queue.h_or_s %>
+  <%=h queue.queue_name %>,<%=h queue.center %>,<%=h queue.h_or_s %>
   <%= link_to 'Edit Settings', edit_polymorphic_path(@favorite_queue) %> |
   <%= link_to 'Index of favorite queues', combined_favorite_queues_path %> |
   <%= link_to 'Show Retain Queue', queue %>

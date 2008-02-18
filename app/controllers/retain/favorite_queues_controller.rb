@@ -58,6 +58,7 @@ module Retain
     def create
       queue_options = params[:combined_queue]
       queue_options[:queue_name].upcase!
+      queue_options[:queue_name].strip!
       queue_options[:center].upcase!
       queue_options[:h_or_s].upcase!
       
@@ -98,6 +99,7 @@ module Retain
       #
       queue_options = params[:combined_queue]
       queue_options[:queue_name].upcase!
+      queue_options[:queue_name].strip!
       queue_options[:center].upcase!
       queue_options[:h_or_s].upcase!
       queue = Combined::Queue.find(:first, :conditions => queue_options) ||

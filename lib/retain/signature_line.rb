@@ -37,7 +37,7 @@ module Retain
     end
 
     def queue_name
-      @md[7] if @md
+      @md[7].strip if @md
     end
 
     def queue(h_or_s = 'S')

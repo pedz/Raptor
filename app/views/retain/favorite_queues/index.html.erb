@@ -17,7 +17,7 @@
 <% if admin? %>
     <td><%=h queue.user_id %></td>
 <% end %>
-    <td><%=h queue.queue_name.gsub(/ /, '') %></td>
+    <td><%=h queue.queue_name.strip %></td>
     <td><%=h queue.center %></td>
     <td><%=h queue.h_or_s %></td>
     <td align='right'><%= h queue_hits(queue) %></td>

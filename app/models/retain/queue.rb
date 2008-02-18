@@ -8,7 +8,7 @@ module Retain
     end
     
     def to_s
-      ret = queue_name.sub(/ +$/, '') + ',' + center
+      ret = queue_name.strip + ',' + center
       if h_or_s? && h_or_s != 'S' && h_or_s != 's'
         ret << h_or_s
       end
