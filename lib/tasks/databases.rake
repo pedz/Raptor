@@ -37,6 +37,10 @@ namespace :my do
       task :test do 
         db_create(db_config(:test))
       end
+
+      task :production do 
+        db_create(db_config(:production))
+      end
     end
 
     namespace :drop do 
@@ -55,6 +59,10 @@ namespace :my do
       task :test do 
         db_drop(db_config(:test))
       end
+
+      task :production do 
+        db_drop(db_config(:production))
+      end
     end
 
     namespace :recreate do
@@ -62,6 +70,7 @@ namespace :my do
       task :development => [ "drop:development", "create:development" ]
       task :broketure =>   [ "drop:broketure",   "create:broketure" ]
       task :test =>        [ "drop:test",        "create:test" ]
+      task :production =>  [ "drop:production",  "create:production" ]
     end
 
     namespace :migrate do 
