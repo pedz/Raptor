@@ -43,6 +43,9 @@ module Retain
     def update
     end
     
+    # Currently all the editable attributes that call PMPU fall into
+    # this routine.  I might want to split it apart.  Not sure what to
+    # do here.
     def alter
       call = Combined::Call.from_param(params[:id])
       pmr = call.pmr
@@ -52,14 +55,22 @@ module Retain
         :problem => pmr.problem,
         :branch => pmr.branch,
         :country => pmr.country,
-        field => new_text
       }
+      case field
+      when :next_queue
+        new_queue_name, new_center, new_h_or_s = new_text.split(',')
+        options[:next_queue] = new_queue_name
+        options[:next_center] = new_center
+      else
+        options[field] = new_text
+      end
+
+      # Perform the update.
       pmpu = Retain::Pmpu.new(options)
       fields = Retain::Fields.new
       pmpu.sendit(fields)
       rc = pmpu.rc
-      # new_text = "<span class='wag-wag'>banana</span>"
-      # rc = 0
+
       respond_to do |format|
         if rc == 0
           # Cause PMR to get reloaded from retain
@@ -67,17 +78,17 @@ module Retain
 
           # Figure out what to send back
           case field
+          when :next_queue
+            new_text = pmr.next_queue + "," + pmr.next_center
+            css_class, title, editable = call.validate_next_queue
           when :pmr_owner_id
-            new_owner = pmr.owner
-            new_text = new_owner.name
+            new_text = pmr.owner.name
             css_class, title, editable = call.validate_owner
-            replace_text = "<span class='#{css_class}' title='#{title + ":Click to Edit"}'>#{new_text}</span>"
           when :pmr_resolver_id
-            new_resolver = pmr.resolver
-            new_text = new_resolver.name
+            new_text = pmr.resolver.name
             css_class, title, editable = call.validate_resolver
-            replace_text = "<span class='#{css_class}' title='#{title + ":Click to Edit"}'>#{new_text}</span>"
           end
+          replace_text = "<span class='#{css_class}' title='#{title + ":Click to Edit"}'>#{new_text}</span>"
           format.html { render :text => replace_text }
           format.xml  { logger.info("RTN: xml")  }
         else
@@ -87,5 +98,47 @@ module Retain
         end
       end
     end
+
+    def queue_list
+      call = Combined::Call.from_param(params[:id])
+      queue = call.queue
+      h_or_s = queue.h_or_s
+      center = queue.center
+      pmr_queues = []
+
+      # owned_queues is a list of all the queues that have owners.
+      owned_queues = Combined::QueueInfo.find(:all, :include => :queue).map { |qi|
+        qi.queue.to_param
+      }.uniq
+
+      # team queues are queues in the same center that do not have an
+      # owner.
+      team_queues =
+        Combined::Queue.find(:all,
+                             :conditions => {
+                               :center => center,
+                               :h_or_s => h_or_s
+                             },
+                             :include => :queue_infos).select { |q|
+        q.queue_infos.empty?
+      }.map { |q|
+        q.to_param
+      }.sort
+
+      # Walk through the signatures of the PMR adding to the pmr_queue
+      # list only those not seen before and do not have owners.  Note
+      # that I want to preseve order in the list so I can not use uniq
+      # after the fact.
+      call.pmr.signature_lines.each do |sig|
+        if sig && (queue = sig.queue(h_or_s))
+          unless pmr_queues.include?(queue) || owned_queues.include?(queue)
+            pmr_queues << queue
+          end
+        end
+      end
+      result = pmr_queues.reverse + team_queues
+      render :json => result.to_json
+    end
+
   end
 end

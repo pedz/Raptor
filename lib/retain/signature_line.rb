@@ -36,8 +36,14 @@ module Retain
       @md[6] if @md
     end
 
-    def queue
+    def queue_name
       @md[7] if @md
+    end
+
+    def queue(h_or_s = 'S')
+      if @md && (qn = queue_name) != "------"
+        (qn + "," + center + "," + h_or_s )
+      end
     end
 
     def hone

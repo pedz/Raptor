@@ -24,5 +24,13 @@ module Cached
              :class_name => "Cached::TextLine",
              :order => "line_number",
              :foreign_key => "pmr_id")
+
+    def signature_lines
+      self.text_lines.select { |text_line|
+        text_line.text_type == :signature
+      }.map { |text_line|
+        Retain::SignatureLine.new(text_line.text)
+      }
+    end
   end
 end

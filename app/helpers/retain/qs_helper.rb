@@ -64,11 +64,11 @@ module Retain
       css_class, title, editable = call.validate_next_queue
       td do
         if editable
-          span(:id => "#{pmr.pbc}-pmr_resolver_id",
+          span(:id => "#{pmr.pbc}-next_queue",
                :class => "edit-name click-to-edit",
-               :url => alter_combined_pmr_path(pmr),
+               :url => alter_combined_call_path(call),
                :options => {
-                 :loadCollectionURL => queue_list_combined_pmr_path(pmr)
+                 :loadCollectionURL => queue_list_combined_call_path(call)
                }.to_json ) do
             title += ": Click to Edit"
             span :class => css_class, :title => title  do

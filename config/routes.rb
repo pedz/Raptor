@@ -5,21 +5,16 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   # Shows PSAR data
-  map.resource  :retain_psar,              :controller => 'retain/psar'
+  map.resource :retain_psar, :controller => 'retain/psar'
 
   # Does a PMRQQ.  Debug and test. No useful info that I can find.
-  map.resources :retain_qq,                :controller => 'retain/qq'
+  map.resources :retain_qq, :controller => 'retain/qq'
 
   # Mapping between Queue and Person... Needs much work.
-  map.resources :combined_queue_infos,       :controller => 'retain/queue_infos'
+  map.resources :combined_queue_infos, :controller => 'retain/queue_infos'
 
   # Never has worked but will eventually display a PMR (instead of a call)
-  map.resources(:combined_pmrs,
-                :controller => 'retain/pmrs',
-                :member => {
-                  :alter => :post,
-                  :queue_list => :get
-                })
+  map.resources :combined_pmrs, :controller => 'retain/pmrs'
 
   # "Queue Status" -- my Techjump page
   map.resources :combined_qs,                :controller => 'retain/qs'
@@ -29,6 +24,7 @@ ActionController::Routing::Routes.draw do |map|
                 :controller => 'retain/call',
                 :member => {
                   :alter => :post,
+                  :queue_list => :get,
                   :addtxt => :post,
                   :requeue => :post })
   map.resources(:combined_registration,

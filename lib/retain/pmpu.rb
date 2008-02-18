@@ -3,7 +3,8 @@ module Retain
     set_fetch_request "PMPU"
     set_required_fields(:problem, :branch, :country,
                         :signon, :password, :last_alter_timestamp)
-    set_optional_fields(:pmr_owner_id, :pmr_resolver_id)
+    set_optional_fields(:pmr_owner_id, :pmr_resolver_id,
+                        :next_queue, :next_center)
 
     def initialize(options = {})
       super(options)

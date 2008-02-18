@@ -155,7 +155,6 @@ module Combined
     # the text line to create.
     def update_lines(pmr_lines, cached_lines, offset, line_type)
       raise "bad offset in update_lines" if cached_lines.length < offset
-      logger.debug("CMB: Yes.... I'm getting called")
       pmr_lines.each_with_index do |line, index|
         line_number = offset + index
         text_line_options = {
@@ -169,9 +168,12 @@ module Combined
         else
           logger.debug("CMB: possible update here")
           text_line = cached_lines[line_number]
-          unless text_line_options.keys.select { |key|
-              text_line_options[key] == text_line.send(key)
-            }.empty?
+          if text_line_options.keys.any? { |key|
+              if text_line_options[key] != text_line.send(key)
+                logger.debug("CMB: mismatch on #{key}: '#{text_line_options[key]}' != '#{text_line.send(key)}'")
+                true
+              end
+            }
             cached_lines[line_number].update_attributes(text_line_options) 
           end
         end
