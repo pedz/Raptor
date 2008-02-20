@@ -6,8 +6,13 @@
 <% content_for(:center) do %>
   <div class="smaller">
     <%= link_to 'Index of Favorite Queues', combined_favorite_queues_path %>
-    <table style='font-family : courier, monospace'>
+    <table class='sortable' style='font-family : courier, monospace'>
       <thead>
+	<tr>
+	  <th colspan='0'>
+	    Click on column headings to sort by that column
+	  </th>
+	</tr>
 	<tr>
 	  <th>Sel#</th>
 	  <th>Prblm,bnc,cty</th>
@@ -15,6 +20,10 @@
 	  <th>Owner</th>
 	  <th>Resolver</th>
 	  <th>Next Queue</th>
+	  <th>Age</th>
+	  <th>Jeff Smith<br>Sev Days</th>
+	  <th>Last CT</th>
+	  <th>Next CT</th>
 	</tr>
       </thead>
       <tbody>
@@ -26,6 +35,10 @@
 	    <%= owner(call) %>
 	    <%= resolver(call) %>
 	    <%= next_queue(call) %>
+	    <%= age(call) %>
+	    <%= jeff(call) %>
+	    <%= last_ct(call) %>
+	    <%= next_ct(call) %>
   	  </tr>
         <% end -%>
       </tbody>

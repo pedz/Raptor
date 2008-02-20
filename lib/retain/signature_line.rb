@@ -58,8 +58,14 @@ module Retain
       @md[10] if @md
     end
 
-    def date
+    def raw_date
       @md[11] if @md
+    end
+
+    def date
+      if (rd = raw_date)
+        Time.mktime(rd[0..1], rd[3..4], rd[6..7], rd[9..10], rd[12..13])
+      end
     end
 
     def ptype

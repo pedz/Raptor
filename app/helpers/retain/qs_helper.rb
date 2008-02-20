@@ -82,7 +82,95 @@ module Retain
         end
       end
     end
-    
+
+    def age(call)
+      td :style => "text-align: right" do
+        "#{call.pmr.age.round}"
+      end
+    end
+
+    # Calculate the Jeff Smith days...
+    MULT = [ 0, 10, 2, 0.5, 0.1 ]
+    def jeff(call)
+      pmr = call.pmr
+      td :style => "text-align: right" do 
+        "#{(MULT[pmr.severity.to_i] * pmr.age).round}"
+      end
+    end
+
+    def last_ct(call)
+      td do
+        "#{call.pmr.last_ct_time.strftime("%a, %d %b %Y %H:%M")}"
+      end
+    end
+
+    def needs_initial_response(call)
+      false
+    end
+
+    US_PRIME_INITIAL_RESPONSE_TIME = [ 0, 2.hours, 2.hours, 2.hours, 2.hours ]
+
+    def ct_initial_response_requirements(call)
+      pmr = call.pmr
+      country = pmr.country
+      if country == '000'       # U. S.
+        if prime_shift(call)
+          return US_PRIME_INITIAL_RESPONSE_TIME[pmr.severity.to_i]
+        else
+          if pmr.severity == 1
+            return 2.hours
+          else       # off shift initial response is next business day
+            # return 1.business_day(country)
+            return 1.day
+          end
+        end
+      else                      # WT
+        case pmr.severity
+        when 1
+          # 2.business_hours(country)
+          2.hours
+        when 2
+          # 4.business_hours(country)
+          4.hours
+        when 3
+          # 8.business_hours(country)
+          8.hours
+        when 4
+          # 8.business_hours(country)
+          8.hours
+        end
+      end
+    end
+
+    FOLLOW_UP_RESPONSE_TIME = [ 0, 1.day, 2.days, 5.days, 5.days ]
+
+    def ct_requirement(call)
+      if needs_initial_response(call)
+        ct_initial_requirements(call)
+      else
+        FOLLOW_UP_RESPONSE_TIME[call.pmr.severity.to_i]
+      end
+    end
+
+    def next_ct_time(call)
+      ct_requirement(call) - (Time.now - call.pmr.last_ct_time)
+    end
+
+    def next_ct(call)
+      nt = next_ct_time(call).to_i
+      if nt <= 0
+        text = "CT Overdue"
+        css_class = "wag-wag"
+      else
+        nt /= (60 * 60)
+        text = "#{(nt / 24).truncate} days and #{(nt % 24).truncate} hours"
+        css_class = "good"
+      end
+      td :class => css_class do
+        text
+      end
+    end
+
     def td(hash = { })
       "<td#{hash.keys.map { |key| " #{key}='#{hash[key]}'"}}>" +
       yield +

@@ -26,11 +26,34 @@ module Cached
              :foreign_key => "pmr_id")
 
     def signature_lines
-      self.text_lines.select { |text_line|
+      @sig_lines ||= self.text_lines.select { |text_line|
         text_line.text_type == :signature
       }.map { |text_line|
         Retain::SignatureLine.new(text_line.text)
       }
+    end
+    
+    def create_time
+      cd = self.creation_date
+      ct = self.creation_time
+      Time.mktime(cd[1..2], cd[4..5], cd[7..8], ct[0..1], ct[3..4])
+    end
+    
+    def last_ct
+      signature_lines.select { |line| line.stype == 'CT' }.last
+    end
+
+    def last_ct_time
+      if (last = last_ct)
+        last.date
+      else
+        create_time
+      end
+    end
+    
+    # age of the PMR in days -- not truncated
+    def age
+      (Time.now - create_time) / 86400
     end
   end
 end
