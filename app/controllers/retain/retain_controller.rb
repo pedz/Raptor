@@ -7,7 +7,7 @@ module Retain
     rescue_from Retain::FailedMarkedTrue, :with => :failed_marked_true
     rescue_from Retain::SdiReaderError do |exception|
       render :text => <<-End
-        <h2 style='text-align: center; color: red;>Retain SDI Error: #{exception.message}</h2>
+        <h2 style='text-align: center; color: red;'>Retain SDI Error: #{exception.message}</h2>
         <p>
           This may be due to a transient Retain problem or it may be a
   real programming error.  Try the same thing a few times and if the
