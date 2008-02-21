@@ -8,7 +8,7 @@ module Retain
       temp_date -= (temp_date.wday + 1) * (24 * 60 * 60)
 
       # Now move it back another week
-      temp_date -= 7 * 46 * 60 * 60
+      temp_date -= 7 * 24 * 60 * 60
 
       @psars = Retain::Psar.range(temp_date, Time.now)
     end
