@@ -6,6 +6,10 @@ class ApplicationController < ActionController::Base
 
   before_filter :authenticate
 
+  rescue_from 'ActiveLdap::LdapError' do |exception|
+    render :text => "<h2 style='text-align: center; color: red;'>LDAP Error: #{exception.message}</h2>"
+  end
+  
   def admin?
     session[:user].admin
   end
