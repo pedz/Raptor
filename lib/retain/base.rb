@@ -5,9 +5,9 @@ require 'retain/fields'
 
 module Retain
   class SdiReaderError < Exception
-    attr_reader :msg, :rc
+    attr_reader :rc
     def initialize(msg, rc)
-      @msg = msg
+      super(msg)
       @rc = rc
     end
   end
