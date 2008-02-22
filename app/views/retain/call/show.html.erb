@@ -204,7 +204,9 @@ function newUrl(to,sub)
 <% content_for(:bottom) do %>
   <div>
     <%= button_url("Home", "/") %>
-    <%= button_url("Queues", combined_favorite_queues_path) %>
+    <%= button_url("Favorites", combined_favorite_queues_path) %>
+    <%= button_url("Queue #{@queue.to_param}", combined_queue_path(@queue)) %>
+    <%= button_url("QS #{@queue.to_param}", combined_q_path(@queue)) %>
     <%= button_url("PSAR", retain_psar_path) %>
     <%= button_url("Registration", @registration) %>
     <%= button("Update", "Raptor.updateToggle();") %>

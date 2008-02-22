@@ -1,0 +1,13 @@
+<!-- retain/call/not_found.html.erb -->
+<% content_for(:center) do %>
+  <h2 style='text-align: center; color: red;'>Call not found</h2>
+<% end %>
+
+<% content_for(:bottom) do %>
+  <div>
+    <%= button_url("Home", "/") %>
+    <%= button_url("Favorites", combined_favorite_queues_path) %>
+    <%= button_url("Queue #{@queue.to_param}", combined_queue_path(@queue)) %>
+    <%= button_url("QS #{@queue.to_param}", combined_q_path(@queue)) %>
+  </div>
+<% end %>

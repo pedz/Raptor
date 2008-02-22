@@ -137,11 +137,6 @@ module Retain
         hex_dump("#{options[:request]} request", send)
         logger.info(new_fields.to_debug)
         hex_dump("#{options[:request]} reply", @reply)
-        # if req_fields.error_message?
-        #   raise req_fields.error_message
-        # else
-        #   raise Errors[@rc]
-        # end
       end
     end
 

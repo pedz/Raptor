@@ -15,7 +15,9 @@ document.observe('dom:loaded', function() {
     Raptor.bottom = $('bottom');
 
     // We want to hide the update-form at page load.
-    $('update-form').hide();
+    if ($('update-form')) {
+	$('update-form').hide();
+    }
 
     // hide the left and right panels at page load.
     $('left').hide();

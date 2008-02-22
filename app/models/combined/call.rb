@@ -5,11 +5,16 @@ module Combined
 
     set_expire_time 30.minutes
     
-    def self.from_param(param)
+    def self.from_param_pair(param)
       words = param.split(',')
       ppg = words.pop
       queue = Combined::Queue.from_param(words.join(','))
-      queue.calls.find_or_initialize_by_ppg(ppg)
+      [ queue.calls.find_or_initialize_by_ppg(ppg), queue ]
+    end
+    
+    def self.from_param(param)
+      call, queue = from_param_pair(param)
+      call
     end
 
     def to_param

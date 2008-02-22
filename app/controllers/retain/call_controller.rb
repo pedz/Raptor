@@ -27,9 +27,21 @@ module Retain
     # initial character is a period followed by blanks.
     BLANK_REGEXP = Regexp.new("^[. ] *$").freeze
     
+    rescue_from Retain::SdiReaderError do |exception|
+      raise exception unless exception.rc == 251
+      case @exception_type
+      when nil
+        render :action => "not_found"
+      when :text
+        render :text => @exception_text
+      when :json
+        rendon :json => @exception_json
+      end
+    end
+    
     # Show a Retain call
     def show
-      @call = Combined::Call.from_param(params[:id])
+      @call, @queue = Combined::Call.from_param_pair(params[:id])
       @call.mark_cache_invalid
       @pmr = @call.pmr
       @pmr.mark_cache_invalid
@@ -47,8 +59,8 @@ module Retain
     # this routine.  I might want to split it apart.  Not sure what to
     # do here.
     def alter
-      call = Combined::Call.from_param(params[:id])
-      pmr = call.pmr
+      @call, @queue = Combined::Call.from_param_pair(params[:id])
+      pmr = @call.pmr
       field = params[:editorId].split('-')[1].to_sym
       new_text = params[:value]
       options = {
@@ -80,13 +92,13 @@ module Retain
           case field
           when :next_queue
             new_text = pmr.next_queue + "," + pmr.next_center
-            css_class, title, editable = call.validate_next_queue
+            css_class, title, editable = @call.validate_next_queue
           when :pmr_owner_id
             new_text = pmr.owner.name
-            css_class, title, editable = call.validate_owner
+            css_class, title, editable = @call.validate_owner
           when :pmr_resolver_id
             new_text = pmr.resolver.name
-            css_class, title, editable = call.validate_resolver
+            css_class, title, editable = @call.validate_resolver
           end
           replace_text = "<span class='#{css_class}' title='#{title + ":Click to Edit"}'>#{new_text}</span>"
           format.html { render :text => replace_text }
@@ -100,6 +112,8 @@ module Retain
     end
 
     def queue_list
+      @exception_json = [ "Call Not Found"].to_json
+      @exception_type = :json
       call = Combined::Call.from_param(params[:id])
       queue = call.queue
       h_or_s = queue.h_or_s

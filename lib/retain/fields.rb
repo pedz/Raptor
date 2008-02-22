@@ -603,10 +603,41 @@ module Retain
       if f = @fields[index]
         return f.value
       elsif not (@fetched || @fetch_fields.nil?)
+        # At the time of this call, self is the @fields in the base
+        # object.  @fetch_fields.call calls the fetch_fields method in
+        # the base object (e.g. a Call or Pmr).  This causes us to
+        # call sendit in the base object's `fetch_sdi'
+        # object. (e.g. Pmcb or Pmpb).  The fields returned are merged
+        # back into the base object's field.  The base object also has
+        # @rc.
         base_obj = @fetch_fields.call
         unless base_obj.rc == 0
-          if base_obj.error_message?
-            msg = base_obj.error_message
+          if self.error_message?
+            msg = self.error_message
+            if msg =~ /I\/O ERR=/
+              raw_msg = self[:error_message].raw_value
+              msg = "%s%02x%02x%02x%02x%s%d%s%02x%02x%s%02x%02x%s%02x%02x%02x%s" %
+                [
+                 raw_msg[ 0 .. 7].retain_to_user, # I/O ERR=
+                 raw_msg[ 8],                     # four hex byes
+                 raw_msg[ 9],                     # 
+                 raw_msg[10],                     # 
+                 raw_msg[11],                     # 
+                 raw_msg[12 .. 42].retain_to_user,#  F/S=20bytes R/C=
+                 raw_msg[43],                     # decimal return code
+                 raw_msg[44 .. 49].retain_to_user,#  BDOP=
+                 raw_msg[50],                     # two bytes in hex
+                 raw_msg[51],                     #
+                 raw_msg[52 .. 57].retain_to_user,#  DERR=
+                 raw_msg[58],                     # CDBM ERR1
+                 raw_msg[59],                     # CDBM ERR2
+                 raw_msg[60 .. 65].retain_to_user,#  DEXC=
+                 raw_msg[66],                     # CDBM EXC1
+                 raw_msg[67],                     # CDBM EXC2
+                 raw_msg[68],                     # CDBM EXC3
+                 raw_msg[69 .. 78].retain_to_user #  SRxxxEXnnn
+                ]
+            end
           else
             msg = Errors[base_obj.rc] || "Unknown Error"
           end
