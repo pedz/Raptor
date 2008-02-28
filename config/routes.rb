@@ -19,6 +19,8 @@ ActionController::Routing::Routes.draw do |map|
   # "Queue Status" -- my Techjump page
   map.resources :combined_qs,                :controller => 'retain/qs'
 
+  map.resources :combined_customers,         :controller => 'retain/customers'
+
   # Reasonably well flushed out resources
   map.resources(:combined_call,
                 :controller => 'retain/call',
