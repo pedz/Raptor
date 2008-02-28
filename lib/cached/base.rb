@@ -16,11 +16,11 @@ module Cached
 
     # Return a hash of options based upon the Retain record
     def self.options_from_retain(retain)
-      # We find the intersection of the db fields and the retain
-      # fields and create an options hash with those fields.
-      retain_keys = retain.fields.keys
-      fields = db_fields & retain_keys
-      a = fields.map { |field| [ field, retain.send(field) ] }.flatten
+      a = db_fields.select { |sym|
+        retain.fields.has_key?(sym)
+      }.map { |sym|
+        [ sym, retain.send(sym) ]
+      }.flatten
       logger.debug("CHC: options from retain are #{a.inspect}")
       Hash[ * a ]
     end

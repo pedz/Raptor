@@ -74,30 +74,64 @@ class String
   def trim(len, padstr=" ")
     self.ljust(len, padstr)[0..len]
   end
-    
-  def net2int
-    ((self[0] * 256 + self[1]) * 256 + self[2]) * 256 + self[3]
+
+  # There is no unpack for signed that is network order.  The only
+  # signed unpack has is native order.  So, the test below determines
+  # if the bytes need to be reversed before being passed to unpack.
+  # We then define the functions we want.  The same trick is done
+  # below for the reverse case.
+  if [ 256 ].pack("s")[0] == 0
+    def ret2short
+      self.reverse.unpack("s")[0]
+    end
+
+    def ret2int
+      self.reverse.unpack("l")[0]
+    end
+  else
+    def ret2short
+      self.unpack("s")[0]
+    end
+
+    def ret2int
+      self.unpack("l")[0]
+    end
   end
     
-  def net2short
-    self[0] * 256 + self[1]
+  def ret2uint
+    self.unpack("N")[0]
+  end
+    
+  def ret2ushort
+    self.unpack("n")[0]
   end
 end
 
 class Integer
-  def int2net
-    (self / (256 * 256 * 256) % 256).chr +
-      (self / (256 * 256) % 256).chr +
-      (self / 256 % 256).chr +
-      (self % 256).chr
+  def uint2ret
+    [ self ].pack("N")
   end
   
-  def long2net
-    (self / 65536).int2net + (self % 65536).int2net
+  def ushort2ret
+    [ self ].pack("n")
   end
-  
-  def short2net
-    (self / 256 % 256).chr +
-      (self % 256).chr
+
+  if [ 256 ].pack("s")[0] == 0
+    def short2ret
+      [ self ].pack("s").reverse
+    end
+
+    def int2ret
+      [ self ].pack("l").reverse
+    end
+  else
+    def short2ret
+      [ self ].pack("s")
+    end
+
+    def int2ret
+      [ self ].pack("l")
+    end
   end
+
 end

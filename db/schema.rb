@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 12) do
+ActiveRecord::Schema.define(:version => 14) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                        :null => false
@@ -29,6 +29,21 @@ ActiveRecord::Schema.define(:version => 12) do
   end
 
   add_index "cached_calls", ["queue_id", "ppg"], :name => "unique_calls", :unique => true
+  add_index "cached_calls", ["queue_id", "ppg"], :name => "uq_cached_calls_pair", :unique => true
+
+  create_table "cached_customers", :force => true do |t|
+    t.string   "country",            :limit => 3,  :null => false
+    t.string   "customer_number",    :limit => 7,  :null => false
+    t.string   "company_name",       :limit => 36, :null => false
+    t.string   "center",             :limit => 3,  :null => false
+    t.boolean  "daylight_time_flag"
+    t.string   "time_zone",          :limit => 5
+    t.integer  "time_zone_binary"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "cached_customers", ["country", "customer_number"], :name => "uq_cached_customers", :unique => true
 
   create_table "cached_pmrs", :force => true do |t|
     t.string   "problem",         :limit => 5,  :null => false
@@ -50,6 +65,7 @@ ActiveRecord::Schema.define(:version => 12) do
   end
 
   add_index "cached_pmrs", ["problem", "branch", "country", "creation_date"], :name => "unique_pmrs", :unique => true
+  add_index "cached_pmrs", ["problem", "branch", "country"], :name => "uq_cached_pmrs_triple", :unique => true
 
   create_table "cached_queue_infos", :force => true do |t|
     t.integer  "queue_id",   :null => false
@@ -57,6 +73,8 @@ ActiveRecord::Schema.define(:version => 12) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "cached_queue_infos", ["queue_id", "owner_id"], :name => "uq_cached_queue_infos_queue_owner", :unique => true
 
   create_table "cached_queues", :force => true do |t|
     t.string   "queue_name", :limit => 6,                  :null => false
@@ -67,6 +85,7 @@ ActiveRecord::Schema.define(:version => 12) do
   end
 
   add_index "cached_queues", ["queue_name", "center", "h_or_s"], :name => "unique_queues", :unique => true
+  add_index "cached_queues", ["queue_name", "center", "h_or_s"], :name => "uq_cached_queues_triple", :unique => true
 
   create_table "cached_registrations", :force => true do |t|
     t.string   "signon",           :null => false
@@ -79,6 +98,8 @@ ActiveRecord::Schema.define(:version => 12) do
     t.datetime "updated_at"
   end
 
+  add_index "cached_registrations", ["signon"], :name => "uq_cached_registrations_signon", :unique => true
+
   create_table "cached_text_lines", :force => true do |t|
     t.integer  "pmr_id",                      :null => false
     t.integer  "line_type",                   :null => false
@@ -90,6 +111,7 @@ ActiveRecord::Schema.define(:version => 12) do
   end
 
   add_index "cached_text_lines", ["pmr_id", "line_type", "line_number"], :name => "unique_text_lines", :unique => true
+  add_index "cached_text_lines", ["pmr_id", "line_type", "line_number"], :name => "uq_cached_text_lines_triple", :unique => true
 
   create_table "favorite_queues", :force => true do |t|
     t.integer  "user_id",    :null => false
@@ -123,6 +145,9 @@ ActiveRecord::Schema.define(:version => 12) do
     t.datetime "updated_at"
   end
 
+  add_index "retusers", ["retid"], :name => "uq_retusers_retid", :unique => true
+  add_index "retusers", ["user_id"], :name => "uq_retusers_user_id", :unique => true
+
   create_table "users", :force => true do |t|
     t.string   "ldap_id",                       :null => false
     t.boolean  "admin",      :default => false
@@ -131,5 +156,6 @@ ActiveRecord::Schema.define(:version => 12) do
   end
 
   add_index "users", ["ldap_id"], :name => "unique_ldap_id", :unique => true
+  add_index "users", ["ldap_id"], :name => "uq_ldap_id", :unique => true
 
 end

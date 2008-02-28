@@ -16,10 +16,8 @@ module Retain
       :branch                      => [    2, :upper_ebcdic,    3 ],
       :country                     => [    3, :upper_ebcdic,    3 ],
       :problem                     => [    4, :upper_ebcdic,    5 ],
-      # I don't know what I'm going to do about data elements with the
-      # same number but with different purposes.
-      # :customer_number             => [   11, :upper_ebcdic,    7 ],
-      :hits                        => [   11, :int,             4 ],
+      :customer_number             => [   11, :upper_ebcdic,    7 ],
+      :hit_count                   => [   11, :int,             4 ],
       :customer_name               => [   14, :ebcdic,         28 ],
       :customer_contact_name       => [   19, :ebcdic,         28 ],
       :cpu_type                    => [   22, :ebcdic,          4 ],
@@ -29,7 +27,7 @@ module Retain
       :cpu_serial_number           => [   39, :ebcdic,          7 ],
       :component_id                => [   40, :ebcdic,         12 ],
       :center                      => [   41, :upper_ebcdic,    3 ],
-      :comments                    => [   42, :ebcdic,         54 ],
+      :comment                     => [   42, :ebcdic,         54 ],
       :business_unit               => [   48, :ebcdic,          3 ],
       :queue_level                 => [   54, :ebcdic,          1 ],
       :creator_serial              => [   87, :ebcdic,         87 ],
@@ -40,10 +38,10 @@ module Retain
       :nls_scratch_pad_1           => [  103, :nls_text_lines, 74 ],
       :nls_scratch_pad_2           => [  104, :nls_text_lines, 74 ],
       :nls_scratch_pad_3           => [  105, :nls_text_lines, 74 ],
-      :nls_text_lines              => [  107, :nls_text_lines, 74 ],
+      :nls_text_line               => [  107, :nls_text_lines, 74 ],
       :nls_user_keyword            => [  118, :ebcdic,         16 ],
       :nominate_flag               => [  121, :ebcdic,          1 ],
-      :nls_comments                => [  128, :nls,            56 ],
+      :nls_comment                 => [  128, :nls,            56 ],
       :author_type                 => [  131, :ebcdic,          1 ],
       :owning_retain_node          => [  132, :ebcdic,          3 ],
       :nls_pmr_owner_name          => [  133, :nls,            24 ],
@@ -94,24 +92,24 @@ module Retain
       :requeue_center              => [  305, :ebcdic,          3 ],
       :requeue_employee            => [  306, :ebcdic,          6 ],
       :call_symbol                 => [  316, :binary,         12 ],
-      :addtxt_lines                => [  331, :text_lines,     72 ],
+      :addtxt_line                 => [  331, :text_lines,     72 ],
       :customer_account            => [  332, :ebcdic,        332 ],
       :dcsf_user_id                => [  333, :ebcdic,        333 ],
       :dcsf_node_id                => [  334, :ebcdic,          8 ],
       :user_id                     => [  335, :ebcdic,        335 ],
       :customer_problem            => [  336, :ebcdic,         14 ],
-      :alterable_format_lines      => [  340, :text_lines,     72 ],
+      :alterable_format_line       => [  340, :text_lines,     72 ],
       :formatted_panel_area        => [  341, :ebcdic,         20 ],
       :corporate_entity            => [  510, :ebcdic,        510 ],
       :director_number             => [  524, :ebcdic,          4 ],
       :dispatched_employee         => [  525, :ebcdic,          6 ],
       :pre_assigned_employee       => [  526, :ebcdic,          6 ],
-      :requested_elements          => [  528, :binary,          0 ],
-      :call_queue_status_flags     => [  536, :ebcdic,          1 ],
+      :requested_element           => [  528, :binary,          0 ],
+      :call_queue_status_flag      => [  536, :ebcdic,          1 ],
       :contact_phone_1             => [  537, :ebcdic,         19 ],
       :contact_phone_2             => [  538, :ebcdic,         19 ],
       :fup_control_count           => [  539, :ebcdic,          1 ],
-      :askq_control_flags          => [  540, :ebcdic,          1 ],
+      :askq_control_flag           => [  540, :ebcdic,          1 ],
       :special_application         => [  541, :ebcdic,          1 ],
       :hardware_territory          => [  542, :ebcdic,          3 ],
       :call_control_flag_1         => [  543, :ebcdic,          1 ],
@@ -131,7 +129,7 @@ module Retain
       :last_response_time          => [  557, :ebcdic,          2 ],
       :accumulated_online_time     => [  558, :ebcdic,          2 ],
       :online_start_timestamp      => [  559, :ebcdic,          4 ],
-      :two_assisting_specialists   => [  560, :ebcdic,         24 ],
+      :two_assisting_specialist    => [  560, :ebcdic,         24 ],
       :call_control_flag_2         => [  561, :ebcdic,          1 ],
       :service_given_code          => [  562, :ebcdic,          2 ],
       :acc_time_before_contact     => [  563, :ebcdic,          2 ],
@@ -143,12 +141,12 @@ module Retain
       :problem_open_date           => [  569, :ebcdic,          4 ],
       :call_requeue_timestamp      => [  570, :ebcdic,          4 ],
       :call_requeue_center         => [  571, :binary_center,   2 ],
-      :number_code_1_requeues      => [  572, :ebcdic,          1 ],
+      :number_code_1_requeue       => [  572, :ebcdic,          1 ],
       :original_response_time      => [  573, :ebcdic,          2 ],
       :last_requeue_code           => [  574, :ebcdic,          1 ],
       :machine_type_model          => [  575, :ebcdic,         10 ],
       :call_dispatch_timestamp     => [  576, :ebcdic,          4 ],
-      :log_comments                => [  577, :ebcdic,         18 ],
+      :log_comment                 => [  577, :ebcdic,         18 ],
       :call_class                  => [  578, :ebcdic,          1 ],
       :call_disposition            => [  579, :ebcdic,          1 ],
       :data_bank_use_code          => [  580, :ebcdic,          1 ],
@@ -158,8 +156,8 @@ module Retain
       :call_bypass_list            => [  584, :ebcdic,         19 ],
       :secondary_login             => [  586, :upper_ebcdic,    6 ],
       :profile_exceptions_message  => [  596, :ebcdic,         64 ],
-      :new_excessive_calls         => [  597, :ebcdic,          1 ],
-      :new_excessive_problems      => [  598, :ebcdic,          1 ],
+      :new_excessive_call          => [  597, :ebcdic,          1 ],
+      :new_excessive_problem       => [  598, :ebcdic,          1 ],
       :profile_call_branch_office  => [  599, :ebcdic,          8 ],
       :profile_customer_attr_1     => [  600, :ebcdic,          8 ],
       :profile_customer_attr_2     => [  601, :ebcdic,          8 ],
@@ -185,8 +183,8 @@ module Retain
       :physical_assist_time        => [  623, :ebcdic,          4 ],
       :system_problem              => [  626, :ebcdic,          2 ],
       :rams_cad_key                => [  627, :ebcdic,         22 ],
-      :rams_cad_flags              => [  628, :ebcdic,          1 ],
-      :number_of_private_pages     => [  633, :ebcdic,          1 ],
+      :rams_cad_flag               => [  628, :ebcdic,          1 ],
+      :number_of_private_page      => [  633, :ebcdic,          1 ],
       :branch_watermark            => [  636, :ebcdic,          3 ],
       :area_watermark              => [  640, :ebcdic,          2 ],
       :business_unit_watermark     => [  643, :ebcdic,          3 ],
@@ -216,8 +214,8 @@ module Retain
       :hardware_severity           => [  677, :ebcdic,          1 ],
       :dl_log                      => [  678, :ebcdic,          5 ],
       :dl_log_2                    => [  679, :ebcdic,          5 ],
-      :problem_record_flags        => [  680, :ebcdic,          1 ],
-      :special_offering_flags      => [  681, :ebcdic,          1 ],
+      :problem_record_flag         => [  680, :ebcdic,          1 ],
+      :special_offering_flag       => [  681, :ebcdic,          1 ],
       :problem_record_flags_2      => [  682, :ebcdic,          1 ],
       :previous_severity           => [  683, :ebcdic,          1 ],
       :original_severity           => [  684, :ebcdic,          1 ],
@@ -237,7 +235,7 @@ module Retain
       :problem_create_poc          => [  705, :ebcdic,          1 ],
       :call_count                  => [  706, :ebcdic,          2 ],
       :symbol_of_call_record       => [  707, :binary,         86 ],
-      :purge_control_flags         => [  708, :ebcdic,          1 ],
+      :purge_control_flag          => [  708, :ebcdic,          1 ],
       :last_service_code           => [  709, :ebcdic,          2 ],
       :call_problem_threshold      => [  710, :ebcdic,          2 ],
       :author_id                   => [  711, :ebcdic,          4 ],
@@ -260,7 +258,11 @@ module Retain
       :num_absorb_list             => [  743, :int,             1 ],
       :primary_support_list        => [  744, :ebcdic,         60 ],
       :secondary_support_list      => [  745, :ebcdic,        120 ],
-      :embargoed_countries         => [  878, :ebcdic,          3 ],
+      :company_name                => [  757, :ebcdic,         36 ],
+      :daylight_time_flag          => [  765, :ebcdic_y_or_n,   1 ],
+      :time_zone                   => [  766, :ebcdic,          5 ],
+      :time_zone_binary            => [  767, :short,           2 ],
+      :embargoed_country           => [  878, :ebcdic,          3 ],
       :list_request                => [  879, :binary,          0 ],
       :software_center_mnemonic    => [  881, :ebcdic,          3 ],
       :cd_employee_number          => [  882, :ebcdic,          6 ],
@@ -319,7 +321,7 @@ module Retain
       :psar_mabo                   => [ 1128, :ebcdic,          4 ],
       :psar_customer_number        => [ 1129, :ebcdic,          7 ],
       :h_or_s                      => [ 1135, :upper_ebcdic,    1 ],
-      :special_conditions          => [ 1137, :ebcdic,        128 ],
+      :special_condition           => [ 1137, :ebcdic,        128 ],
       :signon                      => [ 1236, :upper_ebcdic,    6 ],
       :password                    => [ 1237, :upper_ebcdic,    8 ],
       :scratch_pad_signature       => [ 1238, :text_lines,     72 ],
@@ -345,7 +347,7 @@ module Retain
       :psar_problem_open_moc       => [ 1259, :ebcdic,          4 ],
       :psar_chargeable_src_ind     => [ 1260, :ebcdic,          1 ],
       :global_enterprise_number    => [ 1261, :ebcdic,         10 ],
-      :seven_special_options       => [ 1262, :ebcdic,         28 ],
+      :seven_special_option        => [ 1262, :ebcdic,         28 ],
       :nls_street_address          => [ 1263, :nls,            19 ],
       :chargeable_queue_name       => [ 1264, :ebcdic_queue,    6 ],
       :nls_city                    => [ 1265, :nls,            10 ],
@@ -358,18 +360,18 @@ module Retain
       :iin_account_code            => [ 1272, :ebcdic,          8 ],
       :last_alter_timestamp        => [ 1273, :ebcdic,          6 ],
       :psear_chargeable_time       => [ 1275, :ebcdic,          2 ],
-      :psar_chargeable_after_hours => [ 1276, :ebcdic,          2 ],
+      :psar_chargeable_after_hour  => [ 1276, :ebcdic,          2 ],
       :psar_remote_write           => [ 1278, :ebcdic,          1 ],
       :psar_file_and_symbol        => [ 1279, :ebcdic,         16 ],
       :nls_family_abstract         => [ 1312, :nls,            53 ],
       :error_message               => [ 1384, :ebcdic,         79 ],
-      :information_text_lines      => [ 1390, :text_lines,     72 ],
+      :information_text_line       => [ 1390, :text_lines,     72 ],
       :beginning_page_number       => [ 1391, :znumber,         3 ],
       :ending_page_number          => [ 1392, :znumber,         3 ],
-      :total_pages                 => [ 1393, :ebcdic,         32 ],
+      :total_page                  => [ 1393, :ebcdic,         32 ],
       :external_problem_w_country  => [ 1550, :ebcdic,         10 ],
       :cstatus                     => [ 1633, :upper_ebcdic,    7 ],
-      :problem_flag_bits           => [ 2150, :ebcdic,          1 ],
+      :problem_flag_bit            => [ 2150, :ebcdic,          1 ],
       :invalid_reason_code         => [ 2151, :ebcdic,          8 ],
       :component_id_or_device      => [ 2152, :ebcdic,         12 ],
       :onsite_prob_det_required    => [ 2153, :ebcdic,        2153 ],
@@ -386,8 +388,8 @@ module Retain
       :contract_type               => [ 2164, :ebcdic,          3 ],
       :origin_id                   => [ 2165, :ebcdic,          1 ],
       :customer_problem_number     => [ 2166, :ebcdic,         10 ],
-      :contract_hours              => [ 2167, :ebcdic,         24 ],
-      :service_hours               => [ 2168, :ebcdic,         24 ],
+      :contract_hour               => [ 2167, :ebcdic,         24 ],
+      :service_hour                => [ 2168, :ebcdic,         24 ],
       :authorized_name             => [ 2169, :ebcdic,         25 ],
       :authorized_phone_number     => [ 2170, :ebcdic,         19 ],
       :cmr_customer_number         => [ 2171, :ebcdic,          7 ],
@@ -416,56 +418,84 @@ module Retain
       :pmr_resolver_id             => [ 2509, :ebcdic,          6 ]
     }
     
+    attr_reader :fields, :raw_values
+
     def initialize(fetch_fields = nil)
+      @logger = RAILS_DEFAULT_LOGGER
       @fetch_fields = fetch_fields
       @fields = Hash.new
+      @raw_values = Array.new
     end
     
-    # Convert each of the entries from the table above into a
-    # constant.  These might not be used any more...
-    #
-    # Also create @@field_num_to_name and @@field_num_to_cvt.  These
-    # might not get used either.
-    #
-    @@field_num_to_name   = Array.new
-    @@field_num_to_cvt    = Array.new
-    @@field_num_to_width  = Array.new
+#     # Convert each of the entries from the table above into a
+#     # constant.  These might not be used any more...
+#     #
+#     # Also create @@field_num_to_name and @@field_num_to_cvt.  These
+#     # might not get used either.
+#     #
+#     @@field_num_to_name   = Array.new
+#     @@field_num_to_cvt    = Array.new
+#     @@field_num_to_width  = Array.new
     
-    FIELD_DEFINITIONS.each_pair do |k, v|
-      index, convert, width = v
-      const_set(k.to_s.upcase, index)
-      @@field_num_to_name[index] = k
-      @@field_num_to_cvt[index] =  convert
-      @@field_num_to_width[index] = width
-    end
+#     FIELD_DEFINITIONS.each_pair do |k, v|
+#       index, convert, width = v
+#       @@field_num_to_name[index] = k
+#       @@field_num_to_cvt[index] =  convert
+#       @@field_num_to_width[index] = width
+#    end
+
+#     def self.index_to_sym(index)
+#       @@field_num_to_name[index]
+#     end
 
     def self.sym_to_index(sym)
-      raise "#{sym} not known as a field to retain" if FIELD_DEFINITIONS[sym].nil?
-      FIELD_DEFINITIONS[sym][0]
-    end
-
-    def self.index_to_sym(index)
-      @@field_num_to_name[index]
+      raise "#{sym} not known as a field to retain" if (a = FIELD_DEFINITIONS[sym]).nil?
+      a[0]
     end
     
     #
     # Create field getters and setters
     #
-    FIELD_DEFINITIONS.each_pair do |k, v|
+    FIELD_DEFINITIONS.dup.each_pair do |k, v|
       index, convert, width = v
-      eval "def #{k}; reader(#{index}, :#{convert}, #{width}); end", nil, __FILE__, __LINE__
-      eval "def #{k}?; has_key?(#{index}); end", nil, __FILE__, __LINE__
-      eval "def #{k}=(data); writer(#{index}, :#{convert}, #{width}, data); end", nil, __FILE__, __LINE__
+      ks = k.to_s.pluralize.to_sym
+
+      # Check everything is o.k.
+      raise "#{k} (singular) already defined" if self.method_defined?(k)
+      raise "#{ks} (plural) already defined" if self.method_defined?(ks)
+      raise "#{k} (singular) and #{ks} (plural) the same" if ks === k
+
+      # Add in the plural version
+      FIELD_DEFINITIONS[ks] = v
+
+      # Create singular versions
+      eval "def #{k}; reader(:#{k}, :#{convert}, #{width}, false); end", nil, __FILE__, __LINE__
+      eval "def #{k}?; has_key?(:#{k}); end", nil, __FILE__, __LINE__
+      eval "def #{k}=(data); writer(:#{k}, :#{convert}, #{width}, data, false); end", nil, __FILE__, __LINE__
+
+      # Create plural versions
+      eval "def #{ks}; reader(:#{k}, :#{convert}, #{width}, true); end", nil, __FILE__, __LINE__
+      eval "def #{ks}?; has_key?(:#{k}); end", nil, __FILE__, __LINE__
+      eval "def #{ks}=(data); writer(:#{k}, :#{convert}, #{width}, data, true); end", nil, __FILE__, __LINE__
+
+      # Create constants
+      const_set(k.to_s.upcase, index)
+      const_set(ks.to_s.upcase, index)
     end
 
     def dump_fields
       @fields.each_pair do |k, v|
-        logger.debug("RTN: field:#{k} is #{v.value}")
+        if v.value.is_a? Array
+          logger.debug("RTN: field:#{k} is #{v.value.inspect}")
+        else
+          logger.debug("RTN: field:#{k} is #{v.value}")
+        end
       end
     end
 
-    def delete(index)
-      @fields.delete(index_or_sym_to_index(index))
+    def delete(sym)
+      move_raw_value_to_field(sym)
+      @fields.delete(sym)
     end
 
     def merge(new_fields)
@@ -481,51 +511,70 @@ module Retain
       self
     end
     
-    def has_key?(index)
-      @fields.has_key?(index_or_sym_to_index(index))
+    # We don't move it yet.  We could but I'm worried that it might
+    # bite me if I do.
+    def has_key?(sym)
+      # We can't use field_name_to_index because it raises an
+      # exception for anything that is unexpected.  has_key? gets
+      # called for all sorts of bogus stuff.  So, we have to do it all
+      # by hand.
+      field = FIELD_DEFINITIONS[sym]
+      logger.debug("RTN: has_key? field=#{field.inspect}")
+      if field
+        v = @raw_values[field[0]]
+        logger.debug("RTN: has_key? v.nil? is #{v.nil?}")
+      end
+      logger.debug("RTN: has_key? @fields[sym].inspect is #{@fields[sym].inspect}")
+      ((field = FIELD_DEFINITIONS[sym]) && @raw_values[field[0]] && true) ||
+        @fields.has_key?(sym)
     end
     
-    def [](index)
-      @fields[index_or_sym_to_index(index)]
+    def [](sym)
+      move_raw_value_to_field(sym)
+      @fields[sym]
     end
 
     #
-    # Used to set values received from retain into a field
+    # Used to set values received from retain into a field.  The new
+    # code simply remembers these values without interpretation.
+    # Later, when an access is requested, the value is interpreted.
     #
     def add_raw(index, value)
-      index = index_or_sym_to_index(index)
-      cvt = @@field_num_to_cvt[index]
-      width = @@field_num_to_width[index]
-      if @fields.has_key?(index)
-        field = @fields[index]
-        tmp = field.raw_value
-        if tmp.is_a?(Array)
-          tmp << value
-        else
-          tmp = [ tmp, value ]
-        end
-        @fields[index].raw_value = tmp
-      else
-        @fields[index] = Field.new(cvt, width, value, true)
-      end
+      logger.debug("RTN: add_raw #{index}")
+      (@raw_values[index] ||= Array.new) << value
+#       index = index_or_sym_to_index(index)
+#       cvt = field_name_to_cvt(index)
+#       width = field_name_to_width(index)
+#       if @fields.has_key?(index)
+#         field = @fields[index]
+#         tmp = field.raw_value
+#         if tmp.is_a?(Array)
+#           tmp << value
+#         else
+#           tmp = [ tmp, value ]
+#         end
+#         @fields[index].raw_value = tmp
+#       else
+#         @fields[index] = Field.new(cvt, width, value, true)
+#       end
     end
 
-    def []=(index, value)
-      index = index_or_sym_to_index(index)
-      cvt = @@field_num_to_cvt[index]
-      width = @@field_num_to_width[index]
-      @fields[index] = Field.new(cvt, width, value)
+    def []=(sym, value)
+      cvt = field_name_to_cvt(sym)
+      width = field_name_to_width(sym)
+      @fields[sym] = Field.new(cvt, width, value)
     end
     
-    def keys
-      @fields.keys.map { |key|
-        if key.kind_of? Symbol
-          key
-        else
-          Fields.index_to_sym(key)
-        end
-      }
-    end
+#    def keys
+#      @fields.keys
+#       @fields.keys.map { |key|
+#         if key.kind_of? Symbol
+#           key
+#         else
+#           Fields.index_to_sym(key)
+#         end
+#       }
+#    end
 
     def each_pair
       @fields.each_pair do |k, v|
@@ -542,7 +591,7 @@ module Retain
     def to_debug
       r = ''
       @fields.each_pair do |k, v|
-        r << "RTN: #{@@field_num_to_name[k]}: '#{v.value}'\n"
+        r << "RTN: #{k}: '#{v.value}'\n"
       end
       r
     end
@@ -551,43 +600,50 @@ module Retain
 
     attr_reader :logger
 
+    def field_name_to_index(sym)
+      raise "#{sym} not known as a field to retain" if (a = FIELD_DEFINITIONS[sym]).nil?
+      a[0]
+    end
+
+    def field_name_to_cvt(sym)
+      raise "#{sym} not known as a field to retain" if (a = FIELD_DEFINITIONS[sym]).nil?
+      a[1]
+    end
+
+    def field_name_to_width(sym)
+      raise "#{sym} not known as a field to retain" if (a = FIELD_DEFINITIONS[sym]).nil?
+      a[2]
+    end
+
     def merge_fields!(new_fields)
-      new_fields.each_raw_pair do |k, v|
-        index = index_or_sym_to_index(k)
-        if false
-          if v.is_a?(Array)
-            logger.debug("RTN: merge hash #{index}:Array")
-          else
-            logger.debug("RTN: merge hash #{index}:#{v.value}")
-          end
-        end
-        @fields[index] = v
+      logger.debug("RTN: merge_fields called")
+      new_fields.each_raw_pair do |sym, v|
+        logger.debug("RTN: merge: #{sym}")
+        @fields[sym] = v
+      end
+      new_fields.raw_values.each_with_index do |item, index|
+        logger.debug("RTN: merge: index #{index}") if item
+        @raw_values[index] = item
       end
     end
     
     def merge_hash!(new_fields)
-      new_fields.each_pair do |k, v|
-        index = index_or_sym_to_index(k)
-        cvt = @@field_num_to_cvt[index]
-        width = @@field_num_to_width[index]
-        if false
-          if v.is_a?(Array)
-            logger.debug("RTN: merge hash #{index}:Array")
-          else
-            logger.debug("RTN: merge hash #{index}:#{v}")
-          end
-        end
-        @fields[index] = Field.new(cvt, width, v)
+      logger.debug("RTN: merge_hash called")
+      new_fields.each_pair do |sym, v|
+        logger.debug("RTN: merge: #{sym} = #{v}")
+        cvt = field_name_to_cvt(sym)
+        width = field_name_to_width(sym)
+        @fields[sym] = Field.new(cvt, width, v)
       end
     end
     
-    def index_or_sym_to_index(index)
-      if index.is_a?(Symbol)
-        Fields.sym_to_index(index)
-      else
-        index
-      end
-    end
+#     def index_or_sym_to_index(index)
+#       if index.is_a?(Symbol)
+#         index
+#       else
+#         raise "numeric index no longer supported"
+#       end
+#     end
     
     #
     # If the attribute or field is already present, then just return
@@ -599,60 +655,112 @@ module Retain
     # we were originally trying to get was returned.  If it is, we
     # return its value.  If all this fails, we raise an exception.
     #
-    def reader(index, cvt, width)
-      if f = @fields[index]
-        return f.value
-      elsif not (@fetched || @fetch_fields.nil?)
-        # At the time of this call, self is the @fields in the base
-        # object.  @fetch_fields.call calls the fetch_fields method in
-        # the base object (e.g. a Call or Pmr).  This causes us to
-        # call sendit in the base object's `fetch_sdi'
-        # object. (e.g. Pmcb or Pmpb).  The fields returned are merged
-        # back into the base object's field.  The base object also has
-        # @rc.
-        base_obj = @fetch_fields.call
-        unless base_obj.rc == 0
-          if self.error_message?
-            msg = self.error_message
-            if msg =~ /I\/O ERR=/
-              raw_msg = self[:error_message].raw_value
-              msg = "%s%02x%02x%02x%02x%s%d%s%02x%02x%s%02x%02x%s%02x%02x%02x%s" %
-                [
-                 raw_msg[ 0 .. 7].retain_to_user, # I/O ERR=
-                 raw_msg[ 8],                     # four hex byes
-                 raw_msg[ 9],                     # 
-                 raw_msg[10],                     # 
-                 raw_msg[11],                     # 
-                 raw_msg[12 .. 42].retain_to_user,#  F/S=20bytes R/C=
-                 raw_msg[43],                     # decimal return code
-                 raw_msg[44 .. 49].retain_to_user,#  BDOP=
-                 raw_msg[50],                     # two bytes in hex
-                 raw_msg[51],                     #
-                 raw_msg[52 .. 57].retain_to_user,#  DERR=
-                 raw_msg[58],                     # CDBM ERR1
-                 raw_msg[59],                     # CDBM ERR2
-                 raw_msg[60 .. 65].retain_to_user,#  DEXC=
-                 raw_msg[66],                     # CDBM EXC1
-                 raw_msg[67],                     # CDBM EXC2
-                 raw_msg[68],                     # CDBM EXC3
-                 raw_msg[69 .. 78].retain_to_user #  SRxxxEXnnn
-                ]
-            end
-          else
-            msg = Errors[base_obj.rc] || "Unknown Error"
-          end
-          raise Retain::SdiReaderError.new(msg, base_obj.rc)
-        end
-        @fetched = true
-        if f = @fields[index]
-          return f.value
-        end
+    def reader(sym, cvt, width, plural)
+      # If we have to go talk to retain, figure it out here...
+      logger.debug("RTN: reader #{sym} has_key? is #{self.has_key?(sym)}")
+      logger.debug("RTN: reader @fetched=#{@fetched}, @fetch_fields=#{@fetch_fields}")
+      unless self.has_key?(sym) || @fetched || @fetch_fields.nil?
+        fetch_fields
+      end
+
+      move_raw_value_to_field(sym)
+      if (v = get_value(sym, plural))      
+        return v
       end
       raise "reader did not read attribute"
     end
     
-    def writer(index, cvt, width, value)
-      @fields[index] = Field.new(cvt, width, value)
+    def writer(sym, cvt, width, value, plural)
+      if plural
+        unless value.is_a? Array
+          value = [ value ]
+        end
+      else
+        if value.is_a? Array
+          value = value[0]
+        end
+      end
+      @fields[sym] = Field.new(cvt, width, value)
     end
+
+    def parse_io_err(raw_msg)
+      "%s%02x%02x%02x%02x%s%d%s%02x%02x%s%02x%02x%s%02x%02x%02x%s" %
+        [
+         raw_msg[ 0 .. 7].retain_to_user, # I/O ERR=
+         raw_msg[ 8],                     # four hex byes
+         raw_msg[ 9],                     # 
+         raw_msg[10],                     # 
+         raw_msg[11],                     # 
+         raw_msg[12 .. 42].retain_to_user,#  F/S=20bytes R/C=
+         raw_msg[43],                     # decimal return code
+         raw_msg[44 .. 49].retain_to_user,#  BDOP=
+         raw_msg[50],                     # two bytes in hex
+         raw_msg[51],                     #
+         raw_msg[52 .. 57].retain_to_user,#  DERR=
+         raw_msg[58],                     # CDBM ERR1
+         raw_msg[59],                     # CDBM ERR2
+         raw_msg[60 .. 65].retain_to_user,#  DEXC=
+         raw_msg[66],                     # CDBM EXC1
+         raw_msg[67],                     # CDBM EXC2
+         raw_msg[68],                     # CDBM EXC3
+         raw_msg[69 .. 78].retain_to_user #  SRxxxEXnnn
+        ]
+    end
+
+    def move_raw_value_to_field(sym)
+      index = field_name_to_index(sym)
+      unless (raw_values = @raw_values[index]).nil?
+        @raw_values[index] = nil
+        @fields[sym] = Field.new(field_name_to_cvt(sym),
+                                 field_name_to_width(sym),
+                                 raw_values,
+                                 true)
+      end
+    end
+
+    def get_value(sym, plural)
+      if f = @fields[sym]
+        v = f.value
+        if plural
+          if v.is_a? Array
+            v
+          else
+            [ v ]
+          end
+        else
+          if v.is_a? Array
+            v[0]
+          else
+            v
+          end
+        end
+      else
+        nil
+      end
+    end
+
+    def fetch_fields
+      # At the time of this call, self is the @fields in the base
+      # object.  @fetch_fields.call calls the `fetch_fields' method
+      # in the base object which might be, for example, a Call or
+      # Pmr.  This causes us to call sendit in the base object's
+      # `fetch_sdi' object which might be, for example, a Pmcb or
+      # Pmpb .  The fields returned are merged back into the base
+      # object's field.  The base object also has @rc.
+      base_obj = @fetch_fields.call
+      unless base_obj.rc == 0
+        if self.error_message?
+          msg = self.error_message
+          if msg =~ /I\/O ERR=/
+            msg = parse_io_err(self[:error_message].raw_value)
+          end
+        else
+          msg = Errors[base_obj.rc] || "Unknown Error"
+        end
+        raise Retain::SdiReaderError.new(msg, base_obj.rc)
+      end
+      @fetched = true
+    end
+
   end
 end

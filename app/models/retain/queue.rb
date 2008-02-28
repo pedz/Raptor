@@ -20,7 +20,7 @@ module Retain
     # objects.
     #
     def calls
-      temp = de32
+      temp = de32s
       if temp.length == 1 && temp[0].ppg? == false
         return []
       end

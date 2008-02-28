@@ -52,7 +52,7 @@ module Retain
     def initialize(s)
       raise "This is no longer used"
       @header = s[0...128]
-      @rc = @header[8...12].net2int
+      @rc = @header[8...12].ret2uint
       @fields = scan(s[128...s.length])
     end
 
@@ -62,10 +62,10 @@ module Retain
     def scan(s, six_byte_headers = true)
       r = Field.new
       until s.nil?
-        len = s[0...2].net2short
-        ele = s[2...4].net2short
+        len = s[0...2].ret2ushort
+        ele = s[2...4].ret2ushort
         if six_byte_headers
-          tpe = s[4...6].net2short
+          tpe = s[4...6].ret2ushort
           dat = s[6...len]
         else
           dat = s[4...len]

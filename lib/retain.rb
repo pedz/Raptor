@@ -1,4 +1,4 @@
-
+puts "start loading lib/retain"
 require 'retain/base'
 require 'retain/ccsid'
 require 'retain/config'
@@ -21,7 +21,7 @@ require 'retain/psrr'
 require 'retain/reply'
 require 'retain/request'
 require 'retain/scs0'
-require 'retain/sdi'
 require 'retain/signature_line'
 require 'retain/text_line'
 require 'retain/utils'
+puts "end loading lib/retain"

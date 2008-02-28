@@ -16,10 +16,6 @@ module Retain
   # value= or raw_value= is called.
   #
   class Field
-
-    @@ccsid2encoding = Hash.new "ibm-037"
-    @@ccsid2encoding[5035] = "ibm-5035"
-
     def initialize(cvt, width, value = nil, raw = false)
       @cvt = cvt
       @width = width
@@ -90,7 +86,7 @@ module Retain
 
     # Decodes a "binary" (HEX(2)) center to ascii
     def decode_center(v)
-      s = v.net2short
+      s = v.ret2ushort
       i1 = s / 100;
       i2 = s % 100;
       i3 = i1 - 10;
@@ -106,11 +102,11 @@ module Retain
     # Encode an ascii center to the "binary" representation
     def encode_center(v)
       # I think if the last character is a digit, we just encode it as a binary
-      return v.to_i.short2net if (?0 .. ?9).member?(v[2])
+      return v.to_i.ushort2ret if (?0 .. ?9).member?(v[2])
 
       # Otherwise, the last character effectively becomes the 100's
       # digit with A => 10 (or 1000 after its multiplied by 100)
-      return ((v.upcase[2] - ?A + 10) * 100 + v[0..1].to_i).short2net
+      return ((v.upcase[2] - ?A + 10) * 100 + v[0..1].to_i).ushort2ret
     end
 
     def group_request(fields)
@@ -119,7 +115,7 @@ module Retain
         if f.is_a?(Symbol)
           f = Fields.sym_to_index(f)
         end
-        s += f.short2net
+        s += f.ushort2ret
       end
       s
     end
@@ -162,6 +158,12 @@ module Retain
         value.trim(width).upcase.user_to_retain
       when :upper_ebcdic
         value.trim(width).upcase.user_to_retain
+      when :ebcdic_y_or_n
+        if value
+          'Y'.trim(width).user_to_retain
+        else
+          'N'.trim(width).user_to_retain
+        end
       when :ebcdic
         value.trim(width).user_to_retain
       when :binary_center
@@ -171,6 +173,8 @@ module Retain
       when :znumber             # zero filled number
         RAILS_DEFAULT_LOGGER.debug("width=#{width}, value=#{value}, value.class=#{value.class}")
         ("%0#{width}d" % value).user_to_retain
+      when :short
+        value.short2ret
       when :ppg
         h = value.hex
         value = "  "
@@ -191,25 +195,30 @@ module Retain
     def decode(value)
       case @cvt
       when :int
+        RAILS_DEFAULT_LOGGER.debug("XXX #{"%02x %02x" % [ value[0], value[1]]}")
         v = 0; value.each_byte { |b| v = v * 256 + b }; v
       when :ebcdic_queue
         value.retain_to_user.strip
       when :upper_ebcdic
         value.retain_to_user
+      when :ebcdic_y_or_n
+        value.retain_to_user == 'Y'
       when :ebcdic
         value.retain_to_user
       when :nls
-        ccsid = value[0, 2].net2short
-        encoding = @@ccsid2encoding[ccsid]
+        ccsid = value[0, 2].ret2ushort
+        cs = Ccsid.to_cs(ccsid)
         # This seems to be the fastest way to trim off two bytes from
         # the front of a string.  The 10^9 is roughly MAXINT.
-        value[2, 1000000000].retain_to_user(encoding)
+        value[2, 1000000000].retain_to_user(cs)
       when :binary_center
         decode_center(value)
       when :binary
         value
+      when :short
+        value.ret2short
       when :nls_text_lines
-        TextLine.new(value[2, 1000000000], value[0, 2].net2short)
+        TextLine.new(value[2, 1000000000], value[0, 2].ret2ushort)
       when :text_lines
         TextLine.new(value, 37)
       when :znumber

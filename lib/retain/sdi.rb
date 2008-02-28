@@ -1,4 +1,4 @@
-
+puts "start load retain sdi"
 module Retain
   #
   # This class will implement as a set of objects that will implement
@@ -45,7 +45,7 @@ module Retain
     def initialize(options = {})
       @options = { :request => self.class.fetch_request }.merge(options)
       @fields = Fields.new
-      logger.debug("RTN: initializing #{self.class}")
+      # self.logger.debug("RTN: initializing #{self.class}")
       
       # Look at the default_fields for a list of fields to use as
       # defaults.
@@ -74,15 +74,18 @@ module Retain
     def sendit(req_fields, send_options = {})
       fields = @fields.merge(req_fields)
       options = @options.merge(send_options)
-      if false
-        logger.debug("RTN: fields = #{fields.to_yaml}")
-        logger.debug("RTN: options = #{options.to_yaml}")
+      if true
+        logger.debug("RTN: sendit for #{self.class} called")
+        logger.debug("RTN: fields")
+        fields.dump_fields
+        logger.debug("RTN: options")
+        logger.debug("RTN: #{options.to_yaml}")
       end
 
       request = Request.new(options)
       self.class.required_fields.each do |sym|
         if true
-          logger.debug("RTN: req sym is #{sym} class is #{sym.class}")
+          logger.debug("RTN: required symbol: #{sym}")
         end
         index = Fields.sym_to_index(sym)
         raise "required field #{sym} not present" unless fields.has_key?(sym)
@@ -94,7 +97,7 @@ module Retain
       end
       self.class.optional_fields.each do |sym|
         if true
-          logger.debug("RTN: opt sym is #{sym} class is #{sym.class}")
+          logger.debug("RTN: optional symbol: #{sym}")
         end
         index = Fields.sym_to_index(sym)
         next unless fields.has_key?(sym)
@@ -114,7 +117,7 @@ module Retain
       f = @connection.read(24)
       raise "read returned nil in sendit" if f.nil?
       raise "short read in sendit" if f.length != 24
-      len = f[20...24].net2int
+      len = f[20...24].ret2uint
       if len > 24
         b = @connection.read(len - 24)
       else
@@ -122,14 +125,13 @@ module Retain
       end
       @reply = f + b
       @header = @reply[0...128]
-      @rc = @header[8...12].net2int
+      @rc = @header[8...12].ret2uint
       if true
         logger.debug("RTN: self is of class #{self.class}")
         logger.debug("RTN: rc should be #{@rc}")
       end
 
-      new_fields = Fields.new
-      scan_fields(new_fields, @reply[128...@reply.length])
+      new_fields = scan_fields(Fields.new, @reply[128...@reply.length])
       req_fields.merge!(new_fields)
 
       logger.info(new_fields.to_debug)
@@ -201,10 +203,10 @@ module Retain
     def scan_fields(fields, s, six_byte_headers = true)
       de32 = Array.new
       until s.nil?
-        len = s[0...2].net2short
-        ele = s[2...4].net2short
+        len = s[0...2].ret2ushort
+        ele = s[2...4].ret2ushort
         if six_byte_headers
-          tpe = s[4...6].net2short
+          tpe = s[4...6].ret2ushort
           dat = s[6...len]
         else
           dat = s[4...len]
@@ -216,12 +218,13 @@ module Retain
         end
         case ele
         when Fields::DE32
-          de32 << scan_fields(Fields.new(nil), dat, false)
+          de32 << scan_fields(Fields.new, dat, false)
           next
         end
         fields.add_raw(ele, dat)
       end
-      fields[Fields::DE32] = de32 unless de32.empty?
+      # fields[Fields::DE32] = de32 unless de32.empty?
+      fields[:de32] = de32 unless de32.empty?
       fields
     end
     
@@ -242,3 +245,4 @@ module Retain
     end
   end
 end
+puts "end load retain sdi"

@@ -9,7 +9,7 @@ module Retain
         :h_or_s => queue.h_or_s
       }
       cq = Retain::Cq.new(options)
-      cq.hits
+      cq.hit_count
     end
   end
 end

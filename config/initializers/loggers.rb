@@ -1,4 +1,4 @@
-
+puts "start loading loggers"
 require 'retain'
 Retain::Base.logger = RAILS_DEFAULT_LOGGER
 Retain::Connection.logger = RAILS_DEFAULT_LOGGER
@@ -12,3 +12,4 @@ Combined::AssociationProxy.logger = RAILS_DEFAULT_LOGGER
 
 require 'cached'
 Cached::Base.logger = RAILS_DEFAULT_LOGGER
+puts "end loading loggers"
