@@ -26,7 +26,15 @@ module Retain
     # GET /combined_queue_infos/new.xml
     def new
       @queue_info = Combined::QueueInfo.new
-      
+      @queue_list = (Combined::Queue.team_queues +
+                     Combined::Queue.personal_queues).collect { |q|
+        [ q.to_param, q.id ]
+      }
+      @reg_list = Combined::Registration.find(:all,
+                                              :order => "name").collect { |r|
+        [ r.name, r.id ]
+      }
+
       respond_to do |format|
         format.html # new.html.erb
         format.xml  { render :xml => @queue_info }

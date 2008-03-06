@@ -628,10 +628,11 @@ module Retain
     # return its value.  If all this fails, we raise an exception.
     #
     def reader(sym, cvt, width, plural)
-      # If we have to go talk to retain, figure it out here...
-      logger.debug("RTN: reader #{sym} has_key? is #{self.has_key?(sym)}")
-      logger.debug("RTN: reader @fetched=#{@fetched}, @fetch_fields=#{@fetch_fields}")
-      unless self.has_key?(sym) || @fetched || @fetch_fields.nil?
+      # If we need to go talk to retain, figure it out here...
+      flag = @fetch_fields.nil?
+      logger.debug("RTN: reader #{sym} has_key? is #{self.has_key?(sym)}, " +
+                   "@fetched=#{@fetched}, @fetch_fields.nil?=#{flag}")
+      unless self.has_key?(sym) || @fetched || flag
         fetch_fields
       end
 
@@ -682,6 +683,7 @@ module Retain
     def move_raw_value_to_field(sym)
       index = field_name_to_index(sym)
       unless (raw_values = @raw_values[index]).nil?
+        logger.debug("RTN: moving raw value at index #{index} to #{sym}")
         @raw_values[index] = nil
         @fields[sym] = Field.new(field_name_to_cvt(sym),
                                  field_name_to_width(sym),

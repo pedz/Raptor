@@ -6,9 +6,21 @@ module Cached
     has_many :queue_infos,     :class_name => "Cached::QueueInfo", :foreign_key => "queue_id"
     has_many :owners,          :through    => :queue_infos
 
-    # def initialize(*args)
-    #   debugger
-    #   super
-    # end
+    def self.team_queues
+      @@team_queues ||= self.find(:all,
+                                  :include => :owners,
+                                  :order => "queue_name, center, h_or_s").select { |q|
+        q.owners.empty?
+      }
+    end
+
+    def self.personal_queues
+      @@personal_queues = self.find(:all,
+                                    :include => :owners,
+                                    :order => "queue_name, center, h_or_s").select { |q|
+        not q.owners.empty?
+      }
+    end
+
   end
 end

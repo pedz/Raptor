@@ -1,35 +1,52 @@
-<h1>Listing favorite queues</h1>
+<!-- retain/favorite_queues/index.html.erb -->
+<% @title = "Favorite Queues" %>
+<% content_for(:center) do %>
+  <h1>Listing favorite queues</h1>
+  
+  <table>
+    <tr>
+  <% if admin? %>
+      <th>User</th>
+  <% end %>
+      <th>Sel#</th>
+      <th>Queue</th>
+      <th>T/P</th>
+      <th>Calls</th>
+    </tr>
+  
+  <% index = 0 -%>
+  <% for favorite_queue in @favorite_queues -%>
+  <%   queue = favorite_queue.queue -%>
+  <%   hits = queue_hits(queue)     -%>
+  <%   team = queue.owners.empty?   -%>
+  <%   if team                      -%>
+  <%     q_class = "team"           -%>
+  <%   else                         -%>
+  <%     q_class = "personal"       -%>
+  <%   end                          -%>
+  <%   if hits == 0                 -%>
+  <%     q_class += "-empty"        -%>
+  <%   else                         -%>
+  <%     q_class += "-nonempty"     -%>
+  <%   end                          -%>
+    <tr class='<%= q_class %>'>
+      <td><%= button_url(index += 1, combined_q_url(queue.to_param)) %></td>
+  <% if admin? %>
+      <td><%=h queue.user_id %></td>
+  <% end %>
+      <td><%=h queue.to_param %></td>
+      <td><%= team ? "T" : "P"%></td>
+      <td align='right'><%= h hits %></td>
+      <td><%= link_to 'Queue Status', combined_q_path(queue.to_param) %></td>
+      <td><%= link_to 'Queue', queue %></td>
+      <td><%= link_to 'Show', favorite_queue %></td>
+      <td><%= link_to 'Edit', edit_polymorphic_path(favorite_queue) %></td>
+      <td><%= link_to 'Destroy', favorite_queue, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </table>
 
-<table>
-  <tr>
-<% if admin? %>
-    <th>User</th>
+  <br />
+
+  <%= link_to 'New Favorite Queue', new_combined_favorite_queue_path %>
 <% end %>
-    <th>Queue</th>
-    <th>Center</th>
-    <th>H/S</th>
-    <th>Calls</th>
-  </tr>
-
-<% for favorite_queue in @favorite_queues %>
-<%   queue = favorite_queue.queue %>
-  <tr>
-<% if admin? %>
-    <td><%=h queue.user_id %></td>
-<% end %>
-    <td><%=h queue.queue_name %></td>
-    <td><%=h queue.center %></td>
-    <td><%=h queue.h_or_s %></td>
-    <td align='right'><%= h queue_hits(queue) %></td>
-    <td><%= link_to 'Queue Status', combined_q_path(queue.to_param) %></td>
-    <td><%= link_to 'Queue', queue %></td>
-    <td><%= link_to 'Show', favorite_queue %></td>
-    <td><%= link_to 'Edit', edit_polymorphic_path(favorite_queue) %></td>
-    <td><%= link_to 'Destroy', favorite_queue, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Favorite Queue', new_combined_favorite_queue_path %>

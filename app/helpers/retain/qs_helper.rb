@@ -124,6 +124,7 @@ module Retain
       pmr = call.pmr
       country = pmr.country
       if country == '000'       # U. S.
+        logger.debug("initial response US")
         if prime_shift(call)
           return US_PRIME_INITIAL_RESPONSE_TIME[pmr.severity.to_i]
         else
@@ -135,7 +136,8 @@ module Retain
           end
         end
       else                      # WT
-        case pmr.severity
+        logger.debug("initial response WT #{pmr.severity.class}")
+        case pmr.severity.to_i
         when 1
           # 2.business_hours(country)
           2.hours
@@ -148,6 +150,8 @@ module Retain
         when 4
           # 8.business_hours(country)
           8.hours
+        else
+          raise "Invalid PMR severity"
         end
       end
     end

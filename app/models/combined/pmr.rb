@@ -151,10 +151,21 @@ module Combined
       owner.name = pmr.pmr_owner_name if owner.name.nil?
       @cached.owner = owner
 
-      # Hook up resolver
-      resolver = Cached::Registration.find_or_initialize_by_signon(pmr.pmr_resolver_id)
-      resolver.name = pmr.pmr_resolver_name if resolver.name.nil?
-      @cached.resolver = resolver
+      # Special case... if the pmr_owner_id and the pmr_resolver_id
+      # are both the same AND the owner is a new record, we need to
+      # just point the resolver to the owner.  Otherwise, when the PMR
+      # is saved, we try to create the same registration twice and we
+      # die.  I decided to do this all the time which will save a db
+      # hit.
+
+      if pmr.pmr_owner_id == pmr.pmr_resolver_id
+        @cached.resolver = owner
+      else
+        # Hook up resolver
+        resolver = Cached::Registration.find_or_initialize_by_signon(pmr.pmr_resolver_id)
+        resolver.name = pmr.pmr_resolver_name if resolver.name.nil?
+        @cached.resolver = resolver
+      end
 
       # Hook up customer
       cntry = pmr.country

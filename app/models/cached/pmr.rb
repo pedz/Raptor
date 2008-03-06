@@ -38,10 +38,12 @@ module Cached
       signature_lines.select { |sig| sig.stype == stype }
     end
     
+    # The creation_date and creation_time appear to be from the
+    # perspective of the person who opened the PMR.  To get that back
+    # to UTC would be really hard.  So, we find the first CE entry and
+    # use its date.
     def create_time
-      cd = self.creation_date
-      ct = self.creation_time
-      Time.mktime(cd[1..2], cd[4..5], cd[7..8], ct[0..1], ct[3..4])
+      signature_line_stypes('CE').first.date
     end
     
     def last_ct
@@ -58,7 +60,7 @@ module Cached
     
     # age of the PMR in days -- not truncated
     def age
-      (Time.now - create_time) / 86400
+      (Time.now.gmtime - create_time) / 86400
     end
   end
 end

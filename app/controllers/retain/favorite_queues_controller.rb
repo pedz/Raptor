@@ -8,7 +8,7 @@ module Retain
         @favorite_queues = Combined::FavoriteQueue.find(:all)
       else
         @favorite_queues = session[:user].favorite_queues.map { |queue|
-          Combined::FavoriteQueue.new(queue)
+          queue.wrap_with_combined
         }
       end
       
