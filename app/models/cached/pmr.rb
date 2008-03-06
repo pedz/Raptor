@@ -4,6 +4,7 @@ module Cached
     has_many   :calls,    :class_name => "Cached::Call"
     belongs_to :owner,    :class_name => "Cached::Registration"
     belongs_to :resolver, :class_name => "Cached::Registration"
+    belongs_to :customer, :class_name => "Cached::Customer"
     has_many(:scratch_pad_lines,
              :conditions => "line_type = #{Cached::TextLine::LineTypes::SCRATCH_PAD}",
              :class_name => "Cached::TextLine",
@@ -33,6 +34,10 @@ module Cached
       }
     end
     
+    def signature_line_stypes(stype)
+      signature_lines.select { |sig| sig.stype == stype }
+    end
+    
     def create_time
       cd = self.creation_date
       ct = self.creation_time
@@ -40,7 +45,7 @@ module Cached
     end
     
     def last_ct
-      signature_lines.select { |line| line.stype == 'CT' }.last
+      signature_line_stypes('CT').last
     end
 
     def last_ct_time

@@ -9,6 +9,7 @@ module Retain
     ELEMENT_COUNT = 24...28
 
     def initialize(options = {})
+      super()
       # Set up options with valid defaults
       @options = {              # Default options
         :billing_id => "AIX",

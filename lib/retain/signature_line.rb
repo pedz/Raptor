@@ -1,6 +1,8 @@
 
 module Retain
   class SignatureLine
+    cattr_accessor :logger, :instance_writer => false
+
   SIG_FLAG = ' (.)'     		# match  1
   SIG_NAME = '(......................)' # match  2
   SIG_COMP = '-(...........)'		# match  3
@@ -17,7 +19,19 @@ module Retain
                                  SIG_COMP + SIG_BLAH + SIG_PRI +
                                  SIG_SEV + SIG_DATE + SIG_PTYPE + SIG_STYPE)
     def initialize(text)
+      super()
+      @text = text
       @md = SIGNATURE_PATTERN.match(text)
+      # self.logger.debug("SGN: #{text}")
+    end
+
+    def to_s
+      if @md
+        " #{flag}#{name}-#{component}#{other}-P#{pri}S#{sev}-" +
+          "#{date.localtime.strftime("%y/%m/%d-%H:%M")} #{ptype}#{stype}"
+      else
+        @text
+      end
     end
 
     def flag
@@ -30,6 +44,11 @@ module Retain
 
     def component
       @md[3] if @md
+    end
+
+    # This is the center/queue or the HONE thingy
+    def other
+      @md[4] if @md
     end
 
     def center
@@ -64,7 +83,7 @@ module Retain
 
     def date
       if (rd = raw_date)
-        Time.mktime(rd[0..1], rd[3..4], rd[6..7], rd[9..10], rd[12..13])
+        Time.utc(rd[0..1], rd[3..4], rd[6..7], rd[9..10], rd[12..13])
       end
     end
 

@@ -1,4 +1,5 @@
-puts "start load retain sdi"
+puts "sdi being loaded: logger is #{RAILS_DEFAULT_LOGGER}"
+
 module Retain
   #
   # This class will implement as a set of objects that will implement
@@ -6,7 +7,7 @@ module Retain
   # I am making them objects so they can contain settings.  Not sure
   # how this is going to work... lets see...
   class Sdi
-    cattr_accessor :logger
+    cattr_accessor :logger, :instance_writer => false
 
     ### Class methods to set the class instance variables.
     class << self
@@ -43,6 +44,7 @@ module Retain
     ### instance methods
     ###
     def initialize(options = {})
+      super()
       @options = { :request => self.class.fetch_request }.merge(options)
       @fields = Fields.new
       # self.logger.debug("RTN: initializing #{self.class}")
@@ -75,6 +77,7 @@ module Retain
       fields = @fields.merge(req_fields)
       options = @options.merge(send_options)
       if true
+        RAILS_DEFAULT_LOGGER.debug("class is #{self.class}")
         logger.debug("RTN: sendit for #{self.class} called")
         logger.debug("RTN: fields")
         fields.dump_fields
@@ -245,4 +248,3 @@ module Retain
     end
   end
 end
-puts "end load retain sdi"

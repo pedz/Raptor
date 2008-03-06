@@ -14,7 +14,12 @@ module Retain
       else
         div_string = nil
       end
-      text_line = line.text.gsub(/ /, '&nbsp;')
+      if line.text_type == :signature
+        sig_line = Retain::SignatureLine.new(line.text)
+        text_line = sig_line.to_s.gsub(/ /, '&nbsp;')
+      else
+        text_line = line.text.gsub(/ /, '&nbsp;')
+      end
       render(:partial => "show_line",
              :locals => {
                :text_line => text_line,

@@ -7,6 +7,7 @@ module Retain
     cattr_accessor :logger
     
     def initialize
+      super()
       @socket = Socket.new( AF_INET, SOCK_STREAM, 0 )
     end
 

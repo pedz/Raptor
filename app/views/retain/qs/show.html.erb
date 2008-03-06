@@ -26,7 +26,7 @@
 	    <br>
 	    <span title='Severity Days is the age of the PMR in days multiplied by a factor based upon the current severity'>SevD</span>
 	  </th>
-	  <th>Last CT</th>
+	  <th>Customer Time of Day</th>
 	  <th>Next CT</th>
 	</tr>
       </thead>
@@ -41,7 +41,7 @@
 	    <%= next_queue(call) %>
 	    <%= age(call) %>
 	    <%= jeff(call) %>
-	    <%= last_ct(call) %>
+	    <%= cust_tod(call) %>
 	    <%= next_ct(call) %>
   	  </tr>
         <% end -%>

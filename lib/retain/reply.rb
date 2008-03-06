@@ -13,6 +13,7 @@ module Retain
   class Reply
     class Field
       def initialize
+        super()
         @fields = []
       end
 

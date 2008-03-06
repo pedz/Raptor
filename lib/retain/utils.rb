@@ -1,3 +1,4 @@
+puts "loading retain/utils"
 
 class String
   ASCIITABLE = [

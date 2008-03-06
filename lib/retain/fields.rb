@@ -1,7 +1,8 @@
-
 #
 # Right now, the Fields class is just a place to put constants that
 # mnemonically map to the data element fields.
+puts "loading retain/fields"
+require 'retain/utils'
 
 module Retain
   class Fields
@@ -421,7 +422,7 @@ module Retain
     attr_reader :fields, :raw_values
 
     def initialize(fetch_fields = nil)
-      @logger = RAILS_DEFAULT_LOGGER
+      super()
       @fetch_fields = fetch_fields
       @fields = Hash.new
       @raw_values = Array.new
@@ -518,13 +519,15 @@ module Retain
       # exception for anything that is unexpected.  has_key? gets
       # called for all sorts of bogus stuff.  So, we have to do it all
       # by hand.
-      field = FIELD_DEFINITIONS[sym]
-      logger.debug("RTN: has_key? field=#{field.inspect}")
-      if field
-        v = @raw_values[field[0]]
-        logger.debug("RTN: has_key? v.nil? is #{v.nil?}")
+      if false
+        field = FIELD_DEFINITIONS[sym]
+        logger.debug("RTN: has_key? field=#{field.inspect}")
+        if field
+          v = @raw_values[field[0]]
+          logger.debug("RTN: has_key? v.nil? is #{v.nil?}")
+        end
+        logger.debug("RTN: has_key? @fields[sym].inspect is #{@fields[sym].inspect}")
       end
-      logger.debug("RTN: has_key? @fields[sym].inspect is #{@fields[sym].inspect}")
       ((field = FIELD_DEFINITIONS[sym]) && @raw_values[field[0]] && true) ||
         @fields.has_key?(sym)
     end
@@ -540,23 +543,8 @@ module Retain
     # Later, when an access is requested, the value is interpreted.
     #
     def add_raw(index, value)
-      logger.debug("RTN: add_raw #{index}")
+      logger.debug("RTN: add_raw #{index} = '#{value.retain_to_user}'")
       (@raw_values[index] ||= Array.new) << value
-#       index = index_or_sym_to_index(index)
-#       cvt = field_name_to_cvt(index)
-#       width = field_name_to_width(index)
-#       if @fields.has_key?(index)
-#         field = @fields[index]
-#         tmp = field.raw_value
-#         if tmp.is_a?(Array)
-#           tmp << value
-#         else
-#           tmp = [ tmp, value ]
-#         end
-#         @fields[index].raw_value = tmp
-#       else
-#         @fields[index] = Field.new(cvt, width, value, true)
-#       end
     end
 
     def []=(sym, value)
@@ -564,17 +552,6 @@ module Retain
       width = field_name_to_width(sym)
       @fields[sym] = Field.new(cvt, width, value)
     end
-    
-#    def keys
-#      @fields.keys
-#       @fields.keys.map { |key|
-#         if key.kind_of? Symbol
-#           key
-#         else
-#           Fields.index_to_sym(key)
-#         end
-#       }
-#    end
 
     def each_pair
       @fields.each_pair do |k, v|
@@ -598,8 +575,6 @@ module Retain
 
     private
 
-    attr_reader :logger
-
     def field_name_to_index(sym)
       raise "#{sym} not known as a field to retain" if (a = FIELD_DEFINITIONS[sym]).nil?
       a[0]
@@ -618,32 +593,29 @@ module Retain
     def merge_fields!(new_fields)
       logger.debug("RTN: merge_fields called")
       new_fields.each_raw_pair do |sym, v|
-        logger.debug("RTN: merge: #{sym}")
+        logger.debug("RTN: merge_fields: #{sym}")
         @fields[sym] = v
       end
       new_fields.raw_values.each_with_index do |item, index|
-        logger.debug("RTN: merge: index #{index}") if item
+        logger.debug("RTN: merge_fields: index #{index}") if item
         @raw_values[index] = item
       end
     end
     
     def merge_hash!(new_fields)
+      RAILS_DEFAULT_LOGGER.debug("self is #{self.class}")
       logger.debug("RTN: merge_hash called")
       new_fields.each_pair do |sym, v|
-        logger.debug("RTN: merge: #{sym} = #{v}")
+        if v.is_a? Array
+          logger.debug("RTN: merge_hash: #{sym} = #{v.inspect}")
+        else
+          logger.debug("RTN: merge_hash: #{sym} = #{v}")
+        end
         cvt = field_name_to_cvt(sym)
         width = field_name_to_width(sym)
         @fields[sym] = Field.new(cvt, width, v)
       end
     end
-    
-#     def index_or_sym_to_index(index)
-#       if index.is_a?(Symbol)
-#         index
-#       else
-#         raise "numeric index no longer supported"
-#       end
-#     end
     
     #
     # If the attribute or field is already present, then just return
@@ -664,7 +636,7 @@ module Retain
       end
 
       move_raw_value_to_field(sym)
-      if (v = get_value(sym, plural))      
+      unless (v = get_value(sym, plural)).nil?
         return v
       end
       raise "reader did not read attribute"
@@ -752,7 +724,10 @@ module Retain
         if self.error_message?
           msg = self.error_message
           if msg =~ /I\/O ERR=/
-            msg = parse_io_err(self[:error_message].raw_value)
+            if (raw_msg = self[:error_message].raw_value).is_a? Array
+              raw_msg = raw_msg[0]
+            end
+            msg = parse_io_err(raw_msg)
           end
         else
           msg = Errors[base_obj.rc] || "Unknown Error"

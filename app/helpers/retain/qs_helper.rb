@@ -1,3 +1,5 @@
+require 'time'
+
 module Retain
   module QsHelper
     def owner(call)
@@ -100,12 +102,20 @@ module Retain
 
     def last_ct(call)
       td do
-        "#{call.pmr.last_ct_time.strftime("%a, %d %b %Y %H:%M")}"
+        "#{call.pmr.last_ct_time.localtime.strftime("%a, %d %b %Y %H:%M")}"
       end
     end
 
-    def needs_initial_response(call)
-      false
+    def cust_tod(call)
+      # Local Time
+      n = Time.now
+      # Convert to GMT Time
+      n -= Time.zone_offset(n.zone)
+      # Convert to Customer Time
+      n += call.pmr.customer.time_zone_binary * 60
+      td do
+        "#{n.strftime("%a, %d %b %Y %H:%M")}"
+      end
     end
 
     US_PRIME_INITIAL_RESPONSE_TIME = [ 0, 2.hours, 2.hours, 2.hours, 2.hours ]
@@ -145,8 +155,8 @@ module Retain
     FOLLOW_UP_RESPONSE_TIME = [ 0, 1.day, 2.days, 5.days, 5.days ]
 
     def ct_requirement(call)
-      if needs_initial_response(call)
-        ct_initial_requirements(call)
+      if call.needs_initial_response?
+        ct_initial_response_requirements(call)
       else
         FOLLOW_UP_RESPONSE_TIME[call.pmr.severity.to_i]
       end

@@ -6,6 +6,7 @@ module Retain
     attr_reader :host, :port, :signon, :password, :failed
     
     def initialize(options)
+      super()
       @host     = options[:host]
       @port     = options[:port]
       @signon   = options[:signon].trim(6)

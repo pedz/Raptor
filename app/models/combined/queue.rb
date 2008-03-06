@@ -63,6 +63,17 @@ module Combined
         # then we will create a new PMR if we hit the case of a
         # duplicate problem,branch,country.
         db_pmr = Cached::Pmr.new_from_retain(call)
+
+        # This code is duplicated three times presently.  The problem
+        # is that we do not want the center or other fields from the
+        # call to enter in to the search or values for the customer.
+        # So, we do a specific search for the customer by country and
+        # customer number.
+        cntry = call.country
+        cnum = call.customer_number
+        customer = Cached::Customer.f_or_i_by_cntry_and_cust(cntry, cnum)
+        db_pmr.customer = customer
+        
         db_call.pmr = db_pmr
         cached.calls << db_call
       end

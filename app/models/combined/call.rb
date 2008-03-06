@@ -1,7 +1,7 @@
 module Combined
   class Call < Base
     add_skipped_fields :queue_id, :pmr_id, :ppg, :p_s_b
-    add_extra_fields :problem, :branch, :country
+    add_extra_fields :problem, :branch, :country, :customer_number
 
     set_expire_time 30.minutes
     
@@ -199,6 +199,12 @@ module Combined
       call.priority
       call_options = Cached::Call.options_from_retain(call)
       cached.pmr = Cached::Pmr.new_from_retain(call)
+
+      cntry = call.country
+      cnum = call.customer_number
+      customer = Cached::Customer.f_or_i_by_cntry_and_cust(cntry, cnum)
+
+      cached.pmr.customer = customer
       cached.update_attributes(call_options)
     end
   end

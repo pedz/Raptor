@@ -17,6 +17,7 @@ module Retain
   #
   class Field
     def initialize(cvt, width, value = nil, raw = false)
+      super()
       @cvt = cvt
       @width = width
       if raw

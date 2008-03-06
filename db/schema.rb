@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 14) do
+ActiveRecord::Schema.define(:version => 15) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                        :null => false
@@ -34,8 +34,8 @@ ActiveRecord::Schema.define(:version => 14) do
   create_table "cached_customers", :force => true do |t|
     t.string   "country",            :limit => 3,  :null => false
     t.string   "customer_number",    :limit => 7,  :null => false
-    t.string   "company_name",       :limit => 36, :null => false
-    t.string   "center",             :limit => 3,  :null => false
+    t.string   "company_name",       :limit => 36
+    t.string   "center",             :limit => 3
     t.boolean  "daylight_time_flag"
     t.string   "time_zone",          :limit => 5
     t.integer  "time_zone_binary"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(:version => 14) do
     t.string   "alteration_time", :limit => 5
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "customer_id",                   :null => false
   end
 
   add_index "cached_pmrs", ["problem", "branch", "country", "creation_date"], :name => "unique_pmrs", :unique => true

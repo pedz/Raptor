@@ -6,6 +6,7 @@ module Retain
     attr_reader :fields
     
     def initialize(s)
+      super()
       @header = s[0...128]
       @rc = @header[8...12].ret2uint
       @fields = scan(s[128...s.length])

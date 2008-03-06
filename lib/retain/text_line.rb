@@ -17,6 +17,7 @@ module Retain
     end
 
     def initialize(text, ccsid)
+      super()
       @text_type = @@special_line[text[0]]
       cs = Ccsid.to_cs(ccsid)
 

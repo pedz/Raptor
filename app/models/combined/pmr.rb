@@ -1,8 +1,15 @@
 module Combined
   class Pmr < Base
-    add_skipped_fields :problem, :branch, :country, :owner_id, :resolver_id
+    add_skipped_fields :problem, :branch, :country
+
+    add_skipped_fields :owner_id
     add_extra_fields :pmr_owner_id,    :pmr_owner_name
+
+    add_skipped_fields :resolver_id
     add_extra_fields :pmr_resolver_id, :pmr_resolver_name
+
+    add_skipped_fields :customer_id
+    add_extra_fields :customer_number
 
     set_expire_time 30.minutes
 
@@ -142,10 +149,19 @@ module Combined
       # new records because we can not retrive all registrations.
       owner = Cached::Registration.find_or_initialize_by_signon(pmr.pmr_owner_id)
       owner.name = pmr.pmr_owner_name if owner.name.nil?
+      @cached.owner = owner
+
+      # Hook up resolver
       resolver = Cached::Registration.find_or_initialize_by_signon(pmr.pmr_resolver_id)
       resolver.name = pmr.pmr_resolver_name if resolver.name.nil?
-      @cached.owner = owner
       @cached.resolver = resolver
+
+      # Hook up customer
+      cntry = pmr.country
+      cnum = pmr.customer_number
+      customer = Cached::Customer.f_or_i_by_cntry_and_cust(cntry, cnum)
+      @cached.customer = customer
+
       # Update other attributes
       @cached.update_attributes(Cached::Pmr.options_from_retain(pmr))
     end
