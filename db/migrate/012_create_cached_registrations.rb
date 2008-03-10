@@ -20,6 +20,8 @@ class CreateCachedRegistrations < ActiveRecord::Migration
       t.string :hardware_center
       t.timestamps
     end
+    execute "ALTER TABLE cached_registrations ADD CONSTRAINT uq_cached_registrations_signon
+             UNIQUE (signon)"
   end
 
   def self.down

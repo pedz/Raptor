@@ -15,8 +15,14 @@ class CreateCachedCalls < ActiveRecord::Migration
       t.string  :category,          :limit => 3
       t.timestamps 
     end
-    execute("ALTER TABLE cached_calls ADD CONSTRAINT unique_calls UNIQUE " +
-            "(queue_id, ppg)")
+    execute "ALTER TABLE cached_calls ADD CONSTRAINT uq_cached_calls_pair
+             UNIQUE (queue_id, ppg)"
+    execute "ALTER TABLE cached_calls ADD CONSTRAINT fk_cached_calls_queue_id
+             FOREIGN KEY (queue_id) REFERENCES cached_queues(id)
+             ON DELETE CASCADE"
+    execute "ALTER TABLE cached_calls ADD CONSTRAINT fk_cached_calls_pmr_id
+             FOREIGN KEY (pmr_id) REFERENCES cached_pmrs(id)
+             ON DELETE CASCADE"
   end
 
   def self.down

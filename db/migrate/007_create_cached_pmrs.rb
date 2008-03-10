@@ -17,8 +17,14 @@ class CreateCachedPmrs < ActiveRecord::Migration
       t.string  :alteration_time, :limit => 5
       t.timestamps 
     end
-    execute("ALTER TABLE cached_pmrs ADD CONSTRAINT unique_pmrs " +
-            "UNIQUE (problem, branch, country, creation_date)")
+    execute "ALTER TABLE cached_pmrs ADD CONSTRAINT uq_cached_pmrs_triple
+             UNIQUE (problem, branch, country, creation_date)"
+    execute "ALTER TABLE cached_pmrs ADD CONSTRAINT fk_cached_pmrs_owner_id
+             FOREIGN KEY (owner_id) REFERENCES cached_registrations(id)
+             ON DELETE CASCADE"
+    execute "ALTER TABLE cached_pmrs ADD CONSTRAINT fk_cached_pmrs_resolver_id
+             FOREIGN KEY (resolver_id) REFERENCES cached_registrations(id)
+             ON DELETE CASCADE"
   end
 
   def self.down

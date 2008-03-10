@@ -5,6 +5,9 @@ class CreateFeedbackNotes < ActiveRecord::Migration
       t.text    :note
       t.timestamps 
     end
+    execute "ALTER TABLE feedback_notes ADD CONSTRAINT fk_feedback_notes_feedback_id
+             FOREIGN KEY (feedback_id) REFERENCES feedbacks(id)
+             ON DELETE CASCADE"
   end
 
   def self.down

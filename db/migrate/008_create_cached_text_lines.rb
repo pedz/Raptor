@@ -23,8 +23,11 @@ class CreateCachedTextLines < ActiveRecord::Migration
       t.string  :text,          :null => false, :limit => 72
       t.timestamps 
     end
-    execute("ALTER TABLE cached_text_lines ADD CONSTRAINT unique_text_lines " +
-            "UNIQUE (pmr_id, line_type, line_number)")
+    execute "ALTER TABLE cached_text_lines ADD CONSTRAINT uq_cached_text_lines_triple
+             UNIQUE (pmr_id, line_type, line_number)"
+    execute "ALTER TABLE cached_text_lines ADD CONSTRAINT fk_cached_text_lines_pmr_id
+             FOREIGN KEY (pmr_id) REFERENCES cached_pmrs(id)
+             ON DELETE CASCADE"
   end
 
   def self.down

@@ -14,6 +14,11 @@ class CreateRetusers < ActiveRecord::Migration
       t.boolean    :failed, :default => false
       t.timestamps 
     end
+    execute "ALTER TABLE retusers ADD CONSTRAINT uq_retusers_user_id UNIQUE (user_id)"
+    execute "ALTER TABLE retusers ADD CONSTRAINT uq_retusers_retid UNIQUE (retid)"
+    execute "ALTER TABLE retusers ADD CONSTRAINT fk_retusers_user_id
+             FOREIGN KEY (user_id) REFERENCES users(id)
+             ON DELETE CASCADE"
   end
 
   def self.down

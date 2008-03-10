@@ -11,6 +11,11 @@ class CreateFavoriteQueues < ActiveRecord::Migration
       t.integer :queue_id, :null => false
       t.timestamps 
     end
+    execute "ALTER TABLE favorite_queues ADD CONSTRAINT fk_favorite_queue_user_id
+             FOREIGN KEY (user_id) REFERENCES users(id)"
+    execute "ALTER TABLE favorite_queues ADD CONSTRAINT fk_favorite_queue_queue_id
+             FOREIGN KEY (queue_id) REFERENCES cached_queues(id)
+             ON DELETE CASCADE"
   end
 
   def self.down
