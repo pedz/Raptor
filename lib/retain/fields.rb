@@ -1,7 +1,7 @@
 #
 # Right now, the Fields class is just a place to put constants that
 # mnemonically map to the data element fields.
-puts "loading retain/fields"
+
 require 'retain/utils'
 
 module Retain

@@ -1,4 +1,3 @@
-puts "sdi being loaded: logger is #{RAILS_DEFAULT_LOGGER}"
 
 module Retain
   #
