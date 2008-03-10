@@ -8,7 +8,7 @@ class CreateCachedQueues < ActiveRecord::Migration
     end
     execute "ALTER TABLE cached_queues ADD CONSTRAINT uq_cached_queues_triple
              UNIQUE (queue_name, h_or_s, center_id)"
-    execute "ALTER TABLE cached_queues ADD CONSTRAINT fk_cacued_queue_center_id
+    execute "ALTER TABLE cached_queues ADD CONSTRAINT fk_cached_queues_center_id
              FOREIGN KEY (center_id) REFERENCES cached_centers(id)
              ON DELETE CASCADE"
   end

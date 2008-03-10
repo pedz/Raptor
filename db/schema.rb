@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 14) do
+ActiveRecord::Schema.define(:version => 13) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                        :null => false
@@ -45,8 +45,8 @@ ActiveRecord::Schema.define(:version => 14) do
   create_table "cached_customers", :force => true do |t|
     t.string   "country",            :limit => 3,  :null => false
     t.string   "customer_number",    :limit => 7,  :null => false
+    t.integer  "center_id"
     t.string   "company_name",       :limit => 36
-    t.string   "center",             :limit => 3
     t.boolean  "daylight_time_flag"
     t.string   "time_zone",          :limit => 5
     t.integer  "time_zone_binary"
@@ -54,16 +54,17 @@ ActiveRecord::Schema.define(:version => 14) do
     t.datetime "updated_at"
   end
 
-  add_index "cached_customers", ["country", "customer_number"], :name => "uq_cached_customers", :unique => true
+  add_index "cached_customers", ["country", "customer_number"], :name => "uq_cached_customers_pair", :unique => true
 
   create_table "cached_pmrs", :force => true do |t|
     t.string   "problem",         :limit => 5,  :null => false
     t.string   "branch",          :limit => 3,  :null => false
     t.string   "country",         :limit => 3,  :null => false
-    t.string   "severity",        :limit => 1
-    t.string   "component_id",    :limit => 12
+    t.integer  "customer_id",                   :null => false
     t.integer  "owner_id"
     t.integer  "resolver_id"
+    t.string   "severity",        :limit => 1
+    t.string   "component_id",    :limit => 12
     t.string   "problem_e_mail",  :limit => 64
     t.string   "next_queue",      :limit => 6
     t.string   "next_center",     :limit => 3
@@ -71,6 +72,22 @@ ActiveRecord::Schema.define(:version => 14) do
     t.string   "creation_time",   :limit => 5
     t.string   "alteration_date", :limit => 9
     t.string   "alteration_time", :limit => 5
+    t.string   "queue_name",      :limit => 6
+    t.string   "center",          :limit => 3
+    t.string   "h_or_s",          :limit => 1
+    t.string   "ppg",             :limit => 3
+    t.string   "sec_1_queue",     :limit => 6
+    t.string   "sec_1_center",    :limit => 3
+    t.string   "sec_1_h_or_s",    :limit => 1
+    t.string   "sec_1_ppg",       :limit => 3
+    t.string   "sec_2_queue",     :limit => 6
+    t.string   "sec_2_center",    :limit => 3
+    t.string   "sec_2_h_or_s",    :limit => 1
+    t.string   "sec_2_ppg",       :limit => 3
+    t.string   "sec_3_queue",     :limit => 6
+    t.string   "sec_3_center",    :limit => 3
+    t.string   "sec_3_h_or_s",    :limit => 1
+    t.string   "sec_3_ppg",       :limit => 3
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -97,12 +114,15 @@ ActiveRecord::Schema.define(:version => 14) do
   add_index "cached_queues", ["queue_name", "h_or_s", "center_id"], :name => "uq_cached_queues_triple", :unique => true
 
   create_table "cached_registrations", :force => true do |t|
-    t.string   "signon",           :null => false
+    t.string   "signon",                :null => false
+    t.integer  "center_id",             :null => false
     t.string   "psar_number"
     t.string   "name"
     t.string   "telephone_number"
     t.string   "software_center"
     t.string   "hardware_center"
+    t.boolean  "daylight_savings_time"
+    t.integer  "time_zone_adjustment"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
