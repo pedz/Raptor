@@ -20,6 +20,12 @@ module Retain
       End
     end
 
+    def signon_user
+      @signon_user ||=
+        Combined::Registration.find_or_initialize_by_signon(Retain::Logon.instance.signon)
+    end
+    helper_method :signon_user
+
     private
     
     #

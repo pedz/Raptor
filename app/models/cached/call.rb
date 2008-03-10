@@ -14,5 +14,40 @@ module Cached
       @needs_initial_response
     end
 
+    def center_entry_time(center = queue.center)
+      if sig = center_entry_sig(center)
+        sig.date
+      else
+        self.pmr.create_time
+      end
+    end
+
+    # Returns the signature for the CR that put the call into the
+    # designated center
+    def center_entry_sig(center = queue.center)
+      if @entry_sig.nil?
+        @entry_sig = { }
+      end
+
+      return @entry_sig[center] if @entry_sig[center]
+
+      # We look at the call requeues for the primary call only (ptype
+      # is blank).  If we hit a CR with the center, we return the
+      # previous signature.  Otherwise, we return the last signature
+      # for the primary.
+      sig = pmr.signature_line_stypes('CR').inject(nil) { |prev, s|
+        if s.ptype == ' '
+          if s.center == center
+            return @entry_sig[center] = prev
+          else
+            s
+          end
+        else
+          prev
+        end
+      }
+      @entry_sig[center] = sig
+    end
+
   end
 end

@@ -3,13 +3,17 @@ module Combined
 
     set_expire_time 30.minutes
 
-    def self.from_param(param)
-      registration = Combined::Registration.default_user
-      options = { 
-        :center => registration.default_center,
-        :h_or_s => registration.default_h_or_s
-      }
+    def self.from_param(param, fetch_user = nil)
       words = param.split(',')
+      if words.length < 3 && fetch_user
+        registration = fetch_user.call
+        options = { 
+          :center => registration.default_center,
+          :h_or_s => registration.default_h_or_s
+        }
+      else
+        options = { }
+      end
       options[:queue_name] = words[0].upcase.strip
       options[:center] = words[1].upcase if words.length > 1
       options[:h_or_s] = words[2].upcase if words.length > 2
@@ -62,17 +66,25 @@ module Combined
         # create date at this point but if we exclude expired PMRs,
         # then we will create a new PMR if we hit the case of a
         # duplicate problem,branch,country.
-        db_pmr = Cached::Pmr.new_from_retain(call)
+
+        # Make or find PMR
+        pmr_options = {
+          :problem => call.problem,
+          :branch  => call.branch,
+          :country => call.country
+        }
+        db_pmr = Cached::Pmr.find_or_new(pmr_options)
 
         # This code is duplicated three times presently.  The problem
         # is that we do not want the center or other fields from the
         # call to enter in to the search or values for the customer.
         # So, we do a specific search for the customer by country and
         # customer number.
-        cntry = call.country
-        cnum = call.customer_number
-        customer = Cached::Customer.f_or_i_by_cntry_and_cust(cntry, cnum)
-        db_pmr.customer = customer
+        cust_options = {
+          :country => call.country,
+          :customer_number => call.customer_number
+        }
+        db_pmr.customer = Cached::Customer.find_or_new(cust_options)
         
         db_call.pmr = db_pmr
         cached.calls << db_call

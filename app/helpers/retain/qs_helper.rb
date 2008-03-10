@@ -9,7 +9,7 @@ module Retain
       if name.blank?
         name = "blank"
       end
-      css_class, title, editable = call.validate_owner
+      css_class, title, editable = call.validate_owner(signon_user)
       td do
         if editable
           span(:id => "#{pmr.pbc}-pmr_owner_id",
@@ -38,7 +38,7 @@ module Retain
       if name.blank?
         name = "blank"
       end
-      css_class, title, editable = call.validate_resolver
+      css_class, title, editable = call.validate_resolver(signon_user)
       td do
         if editable
           span(:id => "#{pmr.pbc}-pmr_resolver_id",
@@ -60,10 +60,19 @@ module Retain
       end
     end
 
+    def pri_sev(call)
+      p = call.priority
+      s = call.pmr.severity
+      td_class = p == s ? "good" : "wag-wag"
+      td :class => td_class do
+        "#{p}/#{s}"
+      end
+    end
+    
     def next_queue(call)
       pmr = call.pmr
       nq_text = pmr.next_queue + "," + pmr.next_center
-      css_class, title, editable = call.validate_next_queue
+      css_class, title, editable = call.validate_next_queue(signon_user)
       td do
         if editable
           span(:id => "#{pmr.pbc}-next_queue",
@@ -102,36 +111,47 @@ module Retain
 
     def last_ct(call)
       td do
-        "#{call.pmr.last_ct_time.localtime.strftime("%a, %d %b %Y %H:%M")}"
+        "#{call.pmr.last_ct_time.strftime("%a, %d %b %Y %H:%M")}"
       end
     end
 
     def cust_tod(call)
-      # Local Time
-      n = Time.now
-      # Convert to GMT Time
-      n -= Time.zone_offset(n.zone)
-      # Convert to Customer Time
-      n += call.pmr.customer.time_zone_binary * 60
+      # Current Time in customer's time zone
+      n = DateTime.now.new_offset(call.pmr.customer.tz)
       td do
         "#{n.strftime("%a, %d %b %Y %H:%M")}"
       end
     end
 
-    US_PRIME_INITIAL_RESPONSE_TIME = [ 0, 2.hours, 2.hours, 2.hours, 2.hours ]
+    # True if call queued to center during its prime time.
+    def prime_shift(time)
+      # 8 a.m. to 5 p.m. Monday thru Friday
+      t = time
+      t.hour === (8 .. 17) && t.wday === (1 .. 5)
+    end
 
-    def ct_initial_response_requirements(call)
+    # Return the UTC time of the next business day in the given time
+    # zone... how am I going to do this?
+    def start_next_bus_day(time, tz)
+      their_time = time + tz
+    end
+
+    def ct_initial_response_requirement(call)
       pmr = call.pmr
-      country = pmr.country
-      if country == '000'       # U. S.
+      cust = pmr.customer
+      # time_zone_binary is in minutes; tz will be in seconds
+      tz = cust.time_zone_binary * 60
+      entry_time = call.center_entry_time
+      if pmr.country == '000'       # U. S.
         logger.debug("initial response US")
-        if prime_shift(call)
-          return US_PRIME_INITIAL_RESPONSE_TIME[pmr.severity.to_i]
+        if prime_shift(entry_time)
+          return entry_time + 2.hours
         else
           if pmr.severity == 1
-            return 2.hours
+            return entry_time + 2.hours
           else       # off shift initial response is next business day
             # return 1.business_day(country)
+            new_time = next_bus_day(entry_time)
             return 1.day
           end
         end
@@ -158,20 +178,31 @@ module Retain
 
     FOLLOW_UP_RESPONSE_TIME = [ 0, 1.day, 2.days, 5.days, 5.days ]
 
+    def ct_normal_response_requirement(call)
+      FOLLOW_UP_RESPONSE_TIME[call.pmr.severity.to_i]
+    end
+
     def ct_requirement(call)
       if call.needs_initial_response?
-        ct_initial_response_requirements(call)
+        ct_initial_response_requirement(call)
       else
-        FOLLOW_UP_RESPONSE_TIME[call.pmr.severity.to_i]
+        ct_normal_response_requirement(call)
       end
     end
 
     def next_ct_time(call)
-      ct_requirement(call) - (Time.now - call.pmr.last_ct_time)
+      ct_requirement(call) - (DateTime.now - call.pmr.last_ct_time)
     end
 
     def next_ct(call)
-      nt = next_ct_time(call).to_i
+      logger.debug("pmr's center is #{call.pmr.center}")
+      is_initial = call.needs_initial_response?
+      if is_initial
+        nt = ct_initial_response_requirement(call)
+      else
+        nt = next_ct_time(call).to_i
+      end
+
       if nt <= 0
         text = "CT Overdue"
         css_class = "wag-wag"

@@ -7,17 +7,17 @@ module Cached
     has_many :owners,          :through    => :queue_infos
 
     def self.team_queues
-      @@team_queues ||= self.find(:all,
-                                  :include => :owners,
-                                  :order => "queue_name, center, h_or_s").select { |q|
+      self.find(:all,
+                :include => :owners,
+                :order => "queue_name, center, h_or_s").select { |q|
         q.owners.empty?
       }
     end
 
     def self.personal_queues
-      @@personal_queues = self.find(:all,
-                                    :include => :owners,
-                                    :order => "queue_name, center, h_or_s").select { |q|
+      self.find(:all,
+                :include => :owners,
+                :order => "queue_name, center, h_or_s").select { |q|
         not q.owners.empty?
       }
     end

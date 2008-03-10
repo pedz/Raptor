@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 15) do
+ActiveRecord::Schema.define(:version => 17) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                        :null => false
@@ -63,6 +63,22 @@ ActiveRecord::Schema.define(:version => 15) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "customer_id",                   :null => false
+    t.string   "queue_name",      :limit => 6
+    t.string   "center",          :limit => 3
+    t.string   "h_or_s",          :limit => 1
+    t.string   "ppg",             :limit => 3
+    t.string   "sec_1_queue",     :limit => 6
+    t.string   "sec_1_center",    :limit => 3
+    t.string   "sec_1_h_or_s",    :limit => 1
+    t.string   "sec_1_ppg",       :limit => 3
+    t.string   "sec_2_queue",     :limit => 6
+    t.string   "sec_2_center",    :limit => 3
+    t.string   "sec_2_h_or_s",    :limit => 1
+    t.string   "sec_2_ppg",       :limit => 3
+    t.string   "sec_3_queue",     :limit => 6
+    t.string   "sec_3_center",    :limit => 3
+    t.string   "sec_3_h_or_s",    :limit => 1
+    t.string   "sec_3_ppg",       :limit => 3
   end
 
   add_index "cached_pmrs", ["problem", "branch", "country", "creation_date"], :name => "unique_pmrs", :unique => true
@@ -89,7 +105,7 @@ ActiveRecord::Schema.define(:version => 15) do
   add_index "cached_queues", ["queue_name", "center", "h_or_s"], :name => "uq_cached_queues_triple", :unique => true
 
   create_table "cached_registrations", :force => true do |t|
-    t.string   "signon",           :null => false
+    t.string   "signon",                :null => false
     t.string   "psar_number"
     t.string   "name"
     t.string   "telephone_number"
@@ -97,6 +113,8 @@ ActiveRecord::Schema.define(:version => 15) do
     t.string   "hardware_center"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "daylight_savings_time"
+    t.integer  "time_zone_adjustment"
   end
 
   add_index "cached_registrations", ["signon"], :name => "uq_cached_registrations_signon", :unique => true

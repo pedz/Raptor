@@ -5,13 +5,26 @@ module Cached
     class << self
       # list of fields as symbols in this record.
       def db_fields
-        @db_fields ||= columns.map { |c| c.name.to_sym }
+        (@db_fields ||= [columns.map { |c| c.name.to_sym }])[0]
       end
 
       # list of associations as symbols in this record.
       def db_associations
-        @db_associations ||= reflections.values.map{ |r| r.name }
+        (@db_associations ||= [reflections.values.map{ |r| r.name }])[0]
       end
+
+      def once(*ids) # :nodoc:
+        for id in ids
+          module_eval <<-"end;"
+	    alias_method :__#{id.to_i}__, :#{id.to_s}
+	    private :__#{id.to_i}__
+	    def #{id.to_s}(*args, &block)
+	      (@__#{id.to_i}__ ||= [__#{id.to_i}__(*args, &block)])[0]
+	    end
+	  end;
+        end
+      end
+      private :once
     end
 
     # Return a hash of options based upon the Retain record
@@ -25,13 +38,17 @@ module Cached
       Hash[ * a ]
     end
 
+    def self.find_or_new(options)
+      find(:first, :conditions => options) || new(options)
+    end
+    
     # Fetch or create the DB record from a Retain record  -- probably
     # should not be called "new"
     def self.new_from_retain(retain)
       # Get the fields for the cached class
       # logger.debug("CHC: new #{@subclass} from retain")
       options = options_from_retain(retain)
-      find(:first, :conditions => options) || new(options)
+      find_or_new(options)
     end
 
     def to_combined

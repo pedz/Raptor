@@ -41,14 +41,14 @@ module Retain
     
     # Show a Retain call
     def show
-      @call, @queue = Combined::Call.from_param_pair(params[:id])
+      @call, @queue = Combined::Call.from_param_pair(params[:id], method(:signon_user))
       @call.mark_cache_invalid
       @pmr = @call.pmr
       @pmr.mark_cache_invalid
 
       # This is just for the button.  Probably needs to be removed
       # anyway
-      @registration =  Combined::Registration.default_user
+      @registration = signon_user
     end
 
     # Not used currently
@@ -59,7 +59,7 @@ module Retain
     # this routine.  I might want to split it apart.  Not sure what to
     # do here.
     def alter
-      @call, @queue = Combined::Call.from_param_pair(params[:id])
+      @call, @queue = Combined::Call.from_param_pair(params[:id], method(:signon_user))
       pmr = @call.pmr
       field = params[:editorId].split('-')[1].to_sym
       new_text = params[:value]
@@ -92,13 +92,13 @@ module Retain
           case field
           when :next_queue
             new_text = pmr.next_queue + "," + pmr.next_center
-            css_class, title, editable = @call.validate_next_queue
+            css_class, title, editable = @call.validate_next_queue(signon_user)
           when :pmr_owner_id
             new_text = pmr.owner.name
-            css_class, title, editable = @call.validate_owner
+            css_class, title, editable = @call.validate_owner(signon_user)
           when :pmr_resolver_id
             new_text = pmr.resolver.name
-            css_class, title, editable = @call.validate_resolver
+            css_class, title, editable = @call.validate_resolver(signon_user)
           end
           replace_text = "<span class='#{css_class}' title='#{title + ":Click to Edit"}'>#{new_text}</span>"
           format.html { render :text => replace_text }
@@ -114,7 +114,7 @@ module Retain
     def queue_list
       @exception_json = [ "Call Not Found"].to_json
       @exception_type = :json
-      call = Combined::Call.from_param(params[:id])
+      call = Combined::Call.from_param(params[:id], method(:signon_user))
       queue = call.queue
       h_or_s = queue.h_or_s
       center = queue.center

@@ -5,10 +5,10 @@ module Combined
 
     set_expire_time 30.minutes
     
-    def self.from_param_pair(param)
+    def self.from_param_pair(param, fetch_user = nil)
       words = param.split(',')
       ppg = words.pop
-      queue = Combined::Queue.from_param(words.join(','))
+      queue = Combined::Queue.from_param(words.join(','), fetch_user)
       [ queue.calls.find_or_initialize_by_ppg(ppg), queue ]
     end
     
@@ -24,9 +24,8 @@ module Combined
     # The validate_xxx methods problem need a name change.  They
     # return a three element array of a class name, help string, and a
     # boolean if the field is editable.
-    def validate_owner
+    def validate_owner(user)
       queue = self.queue
-      user = Combined::Registration.default_user
       user_center = user.center(queue.h_or_s)
       if user_center != queue.center
         return [ "normal", "Queue outside center not editable or judged", false]
@@ -71,9 +70,8 @@ module Combined
       return [ "wag-wag", "PMR Owner not in same center", true ]
     end
 
-    def validate_resolver
+    def validate_resolver(user)
       queue = self.queue
-      user = Combined::Registration.default_user
       user_center = user.center(queue.h_or_s)
       if user_center != queue.center
         return [ "normal", "Queue outside center not editable or judged", false]
@@ -112,9 +110,8 @@ module Combined
       return [ "wag-wag", "PMR Resolver not in same center", true ]
     end
 
-    def validate_next_queue
+    def validate_next_queue(user)
       queue = self.queue
-      user = Combined::Registration.default_user
       user_center = user.center(queue.h_or_s)
       if user_center != queue.center
         return [ "normal", "Queue outside center not editable or judged", false]
@@ -197,15 +194,24 @@ module Combined
 
       # Touch something
       call.priority
-      call_options = Cached::Call.options_from_retain(call)
-      cached.pmr = Cached::Pmr.new_from_retain(call)
 
-      cntry = call.country
-      cnum = call.customer_number
-      customer = Cached::Customer.f_or_i_by_cntry_and_cust(cntry, cnum)
+      # Make or find PMR
+      pmr_options = {
+        :problem => call.problem,
+        :branch  => call.branch,
+        :country => call.country
+      }
+      cached.pmr = Cached::Pmr.find_or_new(pmr_options)
 
-      cached.pmr.customer = customer
-      cached.update_attributes(call_options)
+      # Make or find customer
+      cust_options = {
+        :country => call.country,
+        :customer_number => call.customer_number
+      }
+      cached.pmr.customer = Cached::Customer.find_or_new(cust_options)
+
+      # Update call record
+      cached.update_attributes(Cached::Call.options_from_retain(call))
     end
   end
 end

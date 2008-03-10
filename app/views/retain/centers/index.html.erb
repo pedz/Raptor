@@ -1,0 +1,24 @@
+
+<table>
+  <thead>
+    <tr>
+      <th>Center</th>
+      <th>Software Center Mnemonic</th>
+      <th>Center Daylight Time Flag</th>
+      <th>Delay To Time</th>
+      <th>Minutes From GMT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for center in @centers -%>
+    <tr>
+      <td><%= h center.center %></td>
+      <td><%= h center.software_center_mnemonic %></td>
+      <td><%= h center.center_daylight_time_flag %></td>
+      <td><%= h center.delay_to_time %></td>
+      <td><%= h center.minutes_from_gmt %></td>
+    </tr>
+    <% end -%>
+  </tbody>
+</table>
+

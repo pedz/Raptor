@@ -1,6 +1,6 @@
 module Combined
   class Customer < Base
-    set_expire_time :never
+    set_expire_time 30.minutes
 
     def to_param
       @cached.country + @cached.customer_number
@@ -19,7 +19,7 @@ module Combined
       end
       find_or_initialize_by_country_and_customer_number(country, cnum)
     end
-    
+
     private
     
     def load

@@ -7,47 +7,6 @@ module Combined
       @cached.signon
     end
 
-    def self.default_user
-      find_or_initialize_by_signon(Retain::Logon.instance.signon)
-    end
-    
-    def default_center
-      if software_center != "000"
-        software_center
-      elsif hardware_center != "000"
-        hardware_center
-      else
-        nil
-      end
-    end
-
-    def default_h_or_s
-      if software_center != "000"
-        'S'
-      elsif hardware_center != "000"
-        'H'
-      else
-        'S'
-      end
-    end
-    
-    # If h_or_s is 'S' returns the software center if it is not null.
-    # Else If h_or_s is 'H' returns the hardware center if it is not null.
-    # Else return software center if it is not null,
-    # Else return hardware center if it is not null,
-    # Else return null.
-    def center(h_or_s)
-      case
-        # Simple cases
-      when h_or_s == 'S' && self.software_center != "000"
-        center = self.software_center
-      when h_or_s == 'H' && self.hardware_center != "000"
-        center = self.hardware_center
-      else # Odd cases... sorta just guess.
-        default_center
-      end
-    end
-
     private
     
     def load

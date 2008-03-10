@@ -1,17 +1,23 @@
 <!-- retain/favorite_queues/index.html.erb -->
-<% @title = "Favorite Queues" %>
-<% content_for(:center) do %>
-  <h1>Listing favorite queues</h1>
-  
+<% @title = "Favorite Queues" -%>
+<% content_for(:center) do -%>
+  <h1>Listing of Favorite Queues</h1>
   <table>
     <tr>
-  <% if admin? %>
+      <th colspan=<%= admin? ? 5 : 4 %>></th>
+      <th colspan=3>Favorite Queue</th>
+    </tr>
+    <tr>
+  <% if admin?-%>
       <th>User</th>
-  <% end %>
-      <th>Sel#</th>
+  <% end -%>
+      <th>Queue<br/>Status</th>
       <th>Queue</th>
       <th>T/P</th>
       <th>Calls</th>
+      <th>Show</th>
+      <th>Edit</th>
+      <th>Destroy</th>
     </tr>
   
   <% index = 0 -%>
@@ -29,24 +35,22 @@
   <%   else                         -%>
   <%     q_class += "-nonempty"     -%>
   <%   end                          -%>
-    <tr class='<%= q_class %>'>
-      <td><%= button_url(index += 1, combined_q_url(queue.to_param)) %></td>
-  <% if admin? %>
-      <td><%=h queue.user_id %></td>
-  <% end %>
-      <td><%=h queue.to_param %></td>
+    <tr class='<%= q_class -%>'>
+      <td><%= button_url(index += 1, combined_q_url(queue.to_param)) -%></td>
+  <% if admin? -%>
+      <td><%=h queue.user_id -%></td>
+  <% end -%>
+      <td><%= button_url queue.to_param, queue -%></td>
       <td><%= team ? "T" : "P"%></td>
-      <td align='right'><%= h hits %></td>
-      <td><%= link_to 'Queue Status', combined_q_path(queue.to_param) %></td>
-      <td><%= link_to 'Queue', queue %></td>
-      <td><%= link_to 'Show', favorite_queue %></td>
-      <td><%= link_to 'Edit', edit_polymorphic_path(favorite_queue) %></td>
-      <td><%= link_to 'Destroy', favorite_queue, :confirm => 'Are you sure?', :method => :delete %></td>
+      <td align='right'><%= h hits -%></td>
+      <td><%= button_url "S#{index}", favorite_queue -%></td>
+      <td><%= button_url "E#{index}", edit_polymorphic_path(favorite_queue) -%></td>
+      <td><%= link_to 'Destroy', favorite_queue, :confirm => 'Are you sure?', :method => :delete -%></td>
     </tr>
-  <% end %>
+  <% end -%>
   </table>
 
   <br />
 
-  <%= link_to 'New Favorite Queue', new_combined_favorite_queue_path %>
-<% end %>
+  <%= button_url 'New Favorite Queue', new_combined_favorite_queue_path -%>
+<% end -%>

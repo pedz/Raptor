@@ -168,7 +168,9 @@ module Combined
       sum = (updated_at + expire)
       now = Time.now
       r = sum > Time.now
-      logger.debug("CMB: cache_valid?: updated_at:#{updated_at}, expire:#{expire}, sum:#{updated_at + expire}, now:#{Time.now}, r:#{r}")
+      logger.debug("CMB: cache_valid?: updated_at:#{updated_at}, " +
+                   "expire:#{expire}, sum:#{updated_at + expire}, " +
+                   "now:#{Time.now}, r:#{r}")
       r
     end
   end

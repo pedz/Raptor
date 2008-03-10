@@ -32,9 +32,8 @@ module Retain
     # GET /favorite_queues/new
     # GET /favorite_queues/new.xml
     def new
-      registration = Combined::Registration.default_user
-      default_center = registration.default_center
-      default_h_or_s = registration.default_h_or_s
+      default_center = signon_user.default_center
+      default_h_or_s = signon_user.default_h_or_s
       o = {
         :center => default_center,
         :h_or_s => default_h_or_s

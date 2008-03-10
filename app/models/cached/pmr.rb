@@ -27,15 +27,16 @@ module Cached
              :foreign_key => "pmr_id")
 
     def signature_lines
-      @sig_lines ||= self.text_lines.select { |text_line|
+      to_combined.text_lines.find_all { |text_line|
         text_line.text_type == :signature
       }.map { |text_line|
         Retain::SignatureLine.new(text_line.text)
       }
     end
+    once :signature_lines
     
     def signature_line_stypes(stype)
-      signature_lines.select { |sig| sig.stype == stype }
+      signature_lines.find_all { |sig| sig.stype == stype }
     end
     
     # The creation_date and creation_time appear to be from the
@@ -43,12 +44,34 @@ module Cached
     # to UTC would be really hard.  So, we find the first CE entry and
     # use its date.
     def create_time
-      signature_line_stypes('CE').first.date
+      if (sig = signature_line_stypes('CE')).empty?
+        # should never be true but just in case.
+        cd = self.creation_date
+        ct = self.creation_time
+        # Note, the creation date and time from the PMR is in the time
+        # zone of the specialist who created the PMR.  I don't know
+        # how to find out who that specialist was and, even if I
+        # could, I don't know his time zone.  So, I fudge and put the
+        # create time according to the time zone of the customer.  So
+        # this is going to be wrong sometimes.  But, it should never
+        # be used anyway.
+        DateTime.civil(2000 + cd[1..2].to_i, # not Y2K but who cares?
+                       cd[4..5].to_i,        # month
+                       cd[7..8].to_i,        # day
+                       ct[0..1].to_i,        # hour
+                       ct[3..4].to_i,        # minute
+                       0,                    # second
+                       customer.tz)          # time zone
+      else
+        sig.first.date
+      end
     end
+    once :create_time
     
     def last_ct
       signature_line_stypes('CT').last
     end
+    once :last_ct
 
     def last_ct_time
       if (last = last_ct)
@@ -57,10 +80,15 @@ module Cached
         create_time
       end
     end
-    
-    # age of the PMR in days -- not truncated
+    once :last_ct_time
+
+    # age of the PMR in days
     def age
-      (Time.now.gmtime - create_time) / 86400
+      # Note that DateTime does this subtraction correctly even if
+      # they are different time zones.
+      DateTime.now - create_time
     end
+    once :age
+
   end
 end

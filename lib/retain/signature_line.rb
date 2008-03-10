@@ -28,7 +28,7 @@ module Retain
     def to_s
       if @md
         " #{flag}#{name}-#{component}#{other}-P#{pri}S#{sev}-" +
-          "#{date.localtime.strftime("%y/%m/%d-%H:%M")} #{ptype}#{stype}"
+          "#{date.strftime("%y/%m/%d-%H:%M")} #{ptype}#{stype}"
       else
         @text
       end
@@ -83,7 +83,13 @@ module Retain
 
     def date
       if (rd = raw_date)
-        Time.utc(rd[0..1], rd[3..4], rd[6..7], rd[9..10], rd[12..13])
+        year = 2000 + rd[0..1].to_i
+        # second default to 0, timezone defaults to UTC
+        DateTime.civil(year,
+                       rd[3..4].to_i,
+                       rd[6..7].to_i,
+                       rd[9..10].to_i,
+                       rd[12..13].to_i)
       end
     end
 

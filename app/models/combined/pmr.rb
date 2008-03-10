@@ -167,11 +167,12 @@ module Combined
         @cached.resolver = resolver
       end
 
-      # Hook up customer
-      cntry = pmr.country
-      cnum = pmr.customer_number
-      customer = Cached::Customer.f_or_i_by_cntry_and_cust(cntry, cnum)
-      @cached.customer = customer
+      # Make or find customer
+      cust_options = {
+        :country => pmr.country,
+        :customer_number => pmr.customer_number
+      }
+      @cached.customer = Cached::Customer.find_or_new(cust_options)
 
       # Update other attributes
       @cached.update_attributes(Cached::Pmr.options_from_retain(pmr))

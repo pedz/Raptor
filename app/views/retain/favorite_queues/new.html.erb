@@ -1,27 +1,31 @@
-<h1>Create a favorite Retain queue</h1>
+<!-- retain/favorite_queues/new.html.erb -->
+<% @title = "New Favorite Queue" %>
+<% content_for(:center) do %>
+  <h1>Create a favorite Retain queue</h1>
+  
+  <%= error_messages_for :queue %>
+  
+  <% form_for(@favorite_queue) do |f| %>
+  <%   fields_for @favorite_queue.queue do |queue| %>
+    <p>
+      <b>Queue name</b><br />
+      <%= queue.text_field :queue_name, :size => 6 %>
+    </p>
+  
+    <p>
+      <b>Center</b><br />
+      <%= queue.text_field :center, :size => 3 %>
+    </p>
+  
+    <p>
+      <b>Hardware (H) or Software (S)</b><br />
+      <%= queue.text_field :h_or_s, :size => 1 %>
+    </p>
+  <% end %>
+    <p>
+      <%= f.submit "Create" %>
+    </p>
+  <% end %>
 
-<%= error_messages_for :queue %>
-
-<% form_for(@favorite_queue) do |f| %>
-<%   fields_for @favorite_queue.queue do |queue| %>
-  <p>
-    <b>Queue name</b><br />
-    <%= queue.text_field :queue_name, :size => 6 %>
-  </p>
-
-  <p>
-    <b>Center</b><br />
-    <%= queue.text_field :center, :size => 3 %>
-  </p>
-
-  <p>
-    <b>Hardware (H) or Software (S)</b><br />
-    <%= queue.text_field :h_or_s, :size => 1 %>
-  </p>
+  <%= button_url 'Index of Favorite Queues', combined_favorite_queues_path %>
 <% end %>
-  <p>
-    <%= f.submit "Create" %>
-  </p>
-<% end %>
-
-<%= link_to 'Index of Favorite Queues', combined_favorite_queues_path %>

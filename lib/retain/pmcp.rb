@@ -6,7 +6,6 @@ module Retain
 
     def initialize(options = {})
       super(options)
-      RAILS_DEFAULT_LOGGER.debug("pmcp logger is #{logger.inspect}")
     end
   end
 end
