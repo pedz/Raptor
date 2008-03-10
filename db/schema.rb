@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 17) do
+ActiveRecord::Schema.define(:version => 12) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                        :null => false
@@ -28,22 +28,19 @@ ActiveRecord::Schema.define(:version => 17) do
     t.datetime "updated_at"
   end
 
-  add_index "cached_calls", ["queue_id", "ppg"], :name => "unique_calls", :unique => true
   add_index "cached_calls", ["queue_id", "ppg"], :name => "uq_cached_calls_pair", :unique => true
 
-  create_table "cached_customers", :force => true do |t|
-    t.string   "country",            :limit => 3,  :null => false
-    t.string   "customer_number",    :limit => 7,  :null => false
-    t.string   "company_name",       :limit => 36
-    t.string   "center",             :limit => 3
-    t.boolean  "daylight_time_flag"
-    t.string   "time_zone",          :limit => 5
-    t.integer  "time_zone_binary"
+  create_table "cached_centers", :force => true do |t|
+    t.string   "center",                    :limit => 3, :null => false
+    t.string   "software_center_mnemonic",  :limit => 3
+    t.string   "center_daylight_time_flag", :limit => 1
+    t.string   "delay_to_time",             :limit => 2
+    t.string   "minutes_from_gmt",          :limit => 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "cached_customers", ["country", "customer_number"], :name => "uq_cached_customers", :unique => true
+  add_index "cached_centers", ["center"], :name => "uq_cached_centers", :unique => true
 
   create_table "cached_pmrs", :force => true do |t|
     t.string   "problem",         :limit => 5,  :null => false
@@ -62,27 +59,9 @@ ActiveRecord::Schema.define(:version => 17) do
     t.string   "alteration_time", :limit => 5
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "customer_id",                   :null => false
-    t.string   "queue_name",      :limit => 6
-    t.string   "center",          :limit => 3
-    t.string   "h_or_s",          :limit => 1
-    t.string   "ppg",             :limit => 3
-    t.string   "sec_1_queue",     :limit => 6
-    t.string   "sec_1_center",    :limit => 3
-    t.string   "sec_1_h_or_s",    :limit => 1
-    t.string   "sec_1_ppg",       :limit => 3
-    t.string   "sec_2_queue",     :limit => 6
-    t.string   "sec_2_center",    :limit => 3
-    t.string   "sec_2_h_or_s",    :limit => 1
-    t.string   "sec_2_ppg",       :limit => 3
-    t.string   "sec_3_queue",     :limit => 6
-    t.string   "sec_3_center",    :limit => 3
-    t.string   "sec_3_h_or_s",    :limit => 1
-    t.string   "sec_3_ppg",       :limit => 3
   end
 
-  add_index "cached_pmrs", ["problem", "branch", "country", "creation_date"], :name => "unique_pmrs", :unique => true
-  add_index "cached_pmrs", ["problem", "branch", "country"], :name => "uq_cached_pmrs_triple", :unique => true
+  add_index "cached_pmrs", ["problem", "branch", "country", "creation_date"], :name => "uq_cached_pmrs_triple", :unique => true
 
   create_table "cached_queue_infos", :force => true do |t|
     t.integer  "queue_id",   :null => false
@@ -94,18 +73,17 @@ ActiveRecord::Schema.define(:version => 17) do
   add_index "cached_queue_infos", ["queue_id", "owner_id"], :name => "uq_cached_queue_infos_queue_owner", :unique => true
 
   create_table "cached_queues", :force => true do |t|
-    t.string   "queue_name", :limit => 6,                  :null => false
-    t.string   "center",     :limit => 3,                  :null => false
-    t.string   "h_or_s",     :limit => 1, :default => "S", :null => false
+    t.string   "queue_name", :limit => 6, :null => false
+    t.string   "h_or_s",     :limit => 1, :null => false
+    t.integer  "center_id",               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "cached_queues", ["queue_name", "center", "h_or_s"], :name => "unique_queues", :unique => true
-  add_index "cached_queues", ["queue_name", "center", "h_or_s"], :name => "uq_cached_queues_triple", :unique => true
+  add_index "cached_queues", ["queue_name", "h_or_s", "center_id"], :name => "uq_cached_queues_triple", :unique => true
 
   create_table "cached_registrations", :force => true do |t|
-    t.string   "signon",                :null => false
+    t.string   "signon",           :null => false
     t.string   "psar_number"
     t.string   "name"
     t.string   "telephone_number"
@@ -113,8 +91,6 @@ ActiveRecord::Schema.define(:version => 17) do
     t.string   "hardware_center"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "daylight_savings_time"
-    t.integer  "time_zone_adjustment"
   end
 
   add_index "cached_registrations", ["signon"], :name => "uq_cached_registrations_signon", :unique => true
@@ -129,7 +105,6 @@ ActiveRecord::Schema.define(:version => 17) do
     t.datetime "updated_at"
   end
 
-  add_index "cached_text_lines", ["pmr_id", "line_type", "line_number"], :name => "unique_text_lines", :unique => true
   add_index "cached_text_lines", ["pmr_id", "line_type", "line_number"], :name => "uq_cached_text_lines_triple", :unique => true
 
   create_table "favorite_queues", :force => true do |t|
@@ -174,7 +149,6 @@ ActiveRecord::Schema.define(:version => 17) do
     t.datetime "updated_at"
   end
 
-  add_index "users", ["ldap_id"], :name => "unique_ldap_id", :unique => true
   add_index "users", ["ldap_id"], :name => "uq_ldap_id", :unique => true
 
 end
