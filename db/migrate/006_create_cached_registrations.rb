@@ -13,20 +13,22 @@ class CreateCachedRegistrations < ActiveRecord::Migration
   def self.up
     create_table :cached_registrations do |t|
       t.string  :signon,    :null => false
-      t.integer :center_id, :null => false
+      t.integer :software_center_id
+      t.integer :hardware_center_id
       t.string  :psar_number
       t.string  :name
       t.string  :telephone_number
-      t.string  :software_center
-      t.string  :hardware_center
       t.boolean :daylight_savings_time
       t.integer :time_zone_adjustment
       t.timestamps
     end
     execute "ALTER TABLE cached_registrations ADD CONSTRAINT uq_cached_registrations_signon
              UNIQUE (signon)"
-    execute "ALTER TABLE cached_registrations ADD CONSTRAINT fk_cached_registrations_center_id
-             FOREIGN KEY (center_id) REFERENCES cached_centers(id)
+    execute "ALTER TABLE cached_registrations ADD CONSTRAINT fk_cached_registrations_software_center_id
+             FOREIGN KEY (software_center_id) REFERENCES cached_centers(id)
+             ON DELETE CASCADE"
+    execute "ALTER TABLE cached_registrations ADD CONSTRAINT fk_cached_registrations_hardware_center_id
+             FOREIGN KEY (hardware_center_id) REFERENCES cached_centers(id)
              ON DELETE CASCADE"
   end
 

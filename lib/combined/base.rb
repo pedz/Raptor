@@ -1,4 +1,16 @@
 module Combined
+  class QueueNotFound < Exception
+    def initialize(spec)
+      super("Queue #{spec} Not Found")
+    end
+  end
+  
+  class CenterNotFound < Exception
+    def initialize(spec)
+      super("Center #{spec} Not Found")
+    end
+  end
+  
   class Base
     cattr_accessor :logger
 

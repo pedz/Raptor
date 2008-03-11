@@ -21,7 +21,7 @@ class Object
   #
   def wrap_with_combined
     if self.respond_to? :to_combined
-      raise "Object#unwrap_to_cached called with Cached object"
+      raise "Object#wrap_with_combined called with Combined object"
     else
       # RAILS_DEFAULT_LOGGER.debug("CMB: wrap Object <#{self.class}:#{self.object_id}> #{self.class.object_id}")
       self

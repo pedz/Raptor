@@ -115,12 +115,11 @@ ActiveRecord::Schema.define(:version => 13) do
 
   create_table "cached_registrations", :force => true do |t|
     t.string   "signon",                :null => false
-    t.integer  "center_id",             :null => false
+    t.integer  "software_center_id"
+    t.integer  "hardware_center_id"
     t.string   "psar_number"
     t.string   "name"
     t.string   "telephone_number"
-    t.string   "software_center"
-    t.string   "hardware_center"
     t.boolean  "daylight_savings_time"
     t.integer  "time_zone_adjustment"
     t.datetime "created_at"

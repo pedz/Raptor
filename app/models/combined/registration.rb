@@ -1,7 +1,10 @@
 module Combined
   class Registration < Base
-    add_skipped_fields :signon
     set_expire_time :never
+
+    add_skipped_fields :signon
+    add_skipped_fields :software_center_id, :hardware_center_id
+    add_extra_fields   :software_center,    :hardware_center
 
     def to_param
       @cached.signon
@@ -31,16 +34,20 @@ module Combined
         retain_registration.name
       rescue Retain::SdiReaderError => err
         raise err unless err.rc == 251
-        # We set software and hardware center to "000" to tell us we
-        # don't really know.
-        cache_options = {
-          :software_center => "000",
-          :hardware_center => "000"
-        }
       else
         cache_options = Cached::Registration.options_from_retain(retain_registration)
         cache_options.delete(:signon)
         logger.debug("CMB: cache_option in registration = #{cache_options.inspect}")
+        unless (c = retain_registration.software_center).blank?
+          @cached.software_center = first_center = Cached::Center.find_or_new(:center => c)
+        end
+        unless (d = retain_registration.hardware_center).blank?
+          if c == d
+            @cached.hardware_center = first_center
+          else
+            @cached.hardware_center = Cached::Center.find_or_new(:center => d)
+          end
+        end
       end
       @cached.update_attributes(cache_options)
     end

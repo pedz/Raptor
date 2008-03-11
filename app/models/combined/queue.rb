@@ -7,27 +7,32 @@ module Combined
       words = param.split(',')
       if words.length < 3 && fetch_user
         registration = fetch_user.call
-        options = { 
-          :center => registration.default_center,
-          :h_or_s => registration.default_h_or_s
-        }
-      else
-        options = { }
       end
-      options[:queue_name] = words[0].upcase.strip
-      options[:center] = words[1].upcase if words.length > 1
-      options[:h_or_s] = words[2].upcase if words.length > 2
-      q = Combined::Queue.find(:first, :conditions => options)
+      if words.length > 2
+        center = Combined::Center.from_param(words[2].upcase)
+      else
+        center = registration.default_center
+      end
+      options = {
+        :queue_name => words[0].upcase.strip,
+        :h_or_s => words.length > 1 ? words[1].upcase : registration.default_h_or_s
+      }
+      q = center.queues.find(:first, :conditions => options)
 
       # Create the queue if we need to but only if it is valid.
-      if q.nil? && Retain::Cq.check_queue(options)
-        q = Combined::Queue.new(options)
+      if q.nil?
+        center_options = { :center => center.to_param }
+        if Retain::Cq.check_queue(center_options.merge(options))
+          q = center.queues.build(options)
+        else
+          raise QueueNotFound.new(param)
+        end
       end
       q
     end
 
     def to_param
-      queue_name.strip + ',' + center + ',' + (h_or_s || 'S')
+      queue_name.strip + ',' + (h_or_s || 'S') + ',' + center.to_param
     end
     
     private
@@ -40,8 +45,9 @@ module Combined
       return if cached.queue_name.nil?
       
       # Pull the fields we need from the cached record into an options_hash
-      options_hash = Hash[ *%w{  queue_name center h_or_s }.map { |field|
+      options_hash = Hash[ *%w{  queue_name h_or_s }.map { |field|
                              [ field.to_sym, cached.attributes[field] ] }.flatten ]
+      options_hash[:center] = cached.center.center
 
       # :requested_elements is a special case
       requested_elements = Combined::Call.retain_fields.map { |field| field.to_sym }

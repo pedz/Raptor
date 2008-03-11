@@ -1,17 +1,19 @@
 module Cached
   class Registration < Base
     set_table_name "cached_registrations"
-    has_many :pmrs_as_owner,    :class_name => "Cached::Pmr",       :foreign_key => "owner_id"
-    has_many :pmrs_as_resolver, :class_name => "Cached::Pmr",       :foreign_key => "resolver_id"
-    has_many :queue_infos,      :class_name => "Cached::QueueInfo", :foreign_key => "owner_id"
-    has_many :queues,           :through    => :queue_infos
+    belongs_to :software_center,  :class_name => "Cached::Center"
+    belongs_to :hardware_center,  :class_name => "Cached::Center"
+    has_many   :pmrs_as_owner,    :class_name => "Cached::Pmr",       :foreign_key => "owner_id"
+    has_many   :pmrs_as_resolver, :class_name => "Cached::Pmr",       :foreign_key => "resolver_id"
+    has_many   :queue_infos,      :class_name => "Cached::QueueInfo", :foreign_key => "owner_id"
+    has_many   :queues,           :through    => :queue_infos
     
     def default_center
       cmb = to_combined
-      if cmb.software_center != "000"
-        cmb.software_center
-      elsif cmb.hardware_center != "000"
-        cmb.hardware_center
+      if cmb.software_center
+        software_center
+      elsif cmb.hardware_center
+        hardware_center
       else
         nil
       end
@@ -20,9 +22,9 @@ module Cached
 
     def default_h_or_s
       cmb = to_combined
-      if cmb.software_center != "000"
+      if cmb.software_center
         'S'
-      elsif cmb.hardware_center != "000"
+      elsif cmb.hardware_center
         'H'
       else
         'S'
@@ -39,10 +41,10 @@ module Cached
       cmb = to_combined
       case
         # Simple cases
-      when h_or_s == 'S' && cmb.software_center != "000"
-        center = cmb.software_center
-      when h_or_s == 'H' && cmb.hardware_center != "000"
-        center = cmb.hardware_center
+      when h_or_s == 'S' && cmb.software_center
+        software_center
+      when h_or_s == 'H' && cmb.hardware_center
+        hardware_center
       else # Odd cases... sorta just guess.
         default_center
       end
