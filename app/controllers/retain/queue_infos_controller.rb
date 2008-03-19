@@ -29,7 +29,7 @@ module Retain
       center = signon_user.default_center
       queues = center.queues.team_queues + center.queues.personal_queues
       @queue_list = queues.collect { |q| [ q.to_param, q.id ] }
-      @reg_list = center.registrations.collect { |r| [ r.name, r.id ] }
+      @reg_list = Combined::Registrations.find(:all).collect { |r| [ r.name, r.id ] }
 
       respond_to do |format|
         format.html # new.html.erb
