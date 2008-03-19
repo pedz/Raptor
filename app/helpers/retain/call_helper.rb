@@ -4,7 +4,7 @@ module Retain
     # line should be a Retain::TextLine.  index is the line number
     # within the PMR
     #
-    def show_line(line, index)
+    def show_line(line, index, tz)
       # Retain pages start on two -- go figure.
       span_classes = line.text_type.to_s.gsub('_', '-')
       page = (index / 16)
@@ -16,7 +16,7 @@ module Retain
       end
       if line.text_type == :signature
         sig_line = Retain::SignatureLine.new(line.text)
-        text_line = sig_line.to_s.gsub(/ /, '&nbsp;')
+        text_line = sig_line.to_s(tz).gsub(/ /, '&nbsp;')
       else
         text_line = line.text.gsub(/ /, '&nbsp;')
       end

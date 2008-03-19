@@ -32,14 +32,11 @@ module Retain
     # GET /favorite_queues/new
     # GET /favorite_queues/new.xml
     def new
-      default_center = signon_user.default_center
-      default_h_or_s = signon_user.default_h_or_s
-      o = {
-        :center => default_center,
-        :h_or_s => default_h_or_s
-      }
-      queue = Combined::Queue.new(o)
+      center = signon_user.default_center
+      queue = center.queues.build(:h_or_s => signon_user.default_h_or_s)
       @favorite_queue = Combined::FavoriteQueue.new(:queue => queue)
+      logger.debug("queue is of class #{@favorite_queue.queue.class}")
+      logger.debug("center is of class #{@favorite_queue.queue.center.class}")
 
       respond_to do |format|
         format.html # new.html.erb
@@ -55,22 +52,28 @@ module Retain
     # POST /favorite_queues
     # POST /favorite_queues.xml
     def create
-      queue_options = params[:combined_queue]
-      queue_options[:queue_name].upcase!
-      queue_options[:queue_name].strip!
-      queue_options[:center].upcase!
-      queue_options[:h_or_s].upcase!
-      
-      # The favorite queue is new -- that much is sure.  But the queue
-      # might already exist.
-      queue = Combined::Queue.find(:first, :conditions => queue_options) ||
-        Combined::Queue.new(queue_options)
+      options = params[:combined_center].symbolize_keys
+      options.merge!(params[:combined_queue].symbolize_keys)
+      options[:center].upcase!
+      options[:queue_name].upcase!
+      options[:queue_name].strip!
+      options[:h_or_s].upcase!
+
+      if (center = Combined::Center.from_options(options)).nil?
+        flash[:error] = "Center is not valid"
+        center = Combined::Center.new(options)
+        queue = center.queues.build(options)
+        queue_valid = false
+      elsif (queue = center.queues.from_options(options)).nil?
+        flash[:error] = "Queue is not valid"
+        queue = center.queues.build(options)
+        queue_valid = false
+      else
+        queue_valid = true
+      end
+
       @favorite_queue = Combined::FavoriteQueue.new(:queue => queue,
                                                     :user => session[:user])
-
-      if ! (queue_valid = Retain::Cq.check_queue(queue_options.symbolize_keys))
-        flash[:error] = "Queue is not valid"
-      end
 
       respond_to do |format|
         if queue_valid && @favorite_queue.save

@@ -100,7 +100,7 @@
 	</span>
 	<span id='scratch-lines' class='click-data'>
 	  <% for sp_line in @pmr.scratch_pad_lines %>
-	    <%= show_line(sp_line, 1) %>
+	    <%= show_line(sp_line, 1, signon_user.tz) %>
 	  <% end %>
 	</span>
 	<span id='contact-lines' class='click-data'>
@@ -146,8 +146,9 @@ function newUrl(to,sub)
 
 <% content_for(:center) do %>
   <div class='even'>
+    <% tz = signon_user.tz %>
     <% all_lines.each_with_index do |line, index| %>
-      <%= show_line(line, index) %>
+      <%= show_line(line, index, tz) %>
     <% end %>
   </div>
 <% end %>

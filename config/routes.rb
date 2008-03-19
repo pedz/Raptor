@@ -21,6 +21,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :combined_customers,         :controller => 'retain/customers'
   map.resources :combined_centers,           :controller => 'retain/centers'
+  map.resources :combined_apars,             :controller => 'retain/apars'
 
   # Reasonably well flushed out resources
   map.resources(:combined_call,

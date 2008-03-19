@@ -1,40 +1,53 @@
 module Combined
   class Queue < Base
-
     set_expire_time 30.minutes
+    set_db_keys :queue_name, :h_or_s
+    add_skipped_fields :queue_name, :h_or_s
 
-    def self.from_param(param, fetch_user = nil)
-      words = param.split(',')
-      if words.length < 3 && fetch_user
-        registration = fetch_user.call
-      end
-      if words.length > 2
-        center = Combined::Center.from_param(words[2].upcase)
-      else
-        center = registration.default_center
-      end
-      options = {
-        :queue_name => words[0].upcase.strip,
-        :h_or_s => words.length > 1 ? words[1].upcase : registration.default_h_or_s
-      }
-      q = center.queues.find(:first, :conditions => options)
-
-      # Create the queue if we need to but only if it is valid.
+    # Param is queue_name,h_or_s,center.  Raises QueueNotFound if
+    # queue is not in database or Retain.
+    def self.from_param!(param)
+      q = from_param(param)
       if q.nil?
-        center_options = { :center => center.to_param }
-        if Retain::Cq.check_queue(center_options.merge(options))
-          q = center.queues.build(options)
-        else
-          raise QueueNotFound.new(param)
-        end
+        raise QueueNotFound.new(param)
       end
       q
     end
 
+    # Param is queue_name,h_or_s,center
+    def self.from_param(param)
+      words = param.upcase.split(',')
+      center = Combined::Center.from_param(words[2])
+      return nil if center.nil?
+      
+      options = {
+        :queue_name => words[0].strip,
+        :h_or_s => words[1]
+      }
+      q = find(:first, :conditions => options)
+      if q.nil?
+        q = center.queues.build(options)
+        return nil unless q.valid?
+      end
+      q
+    end
+    
     def to_param
       queue_name.strip + ',' + (h_or_s || 'S') + ',' + center.to_param
     end
     
+    def to_options
+      { :queue_name => queue_name, :h_or_s => h_or_s }.merge(center.to_options)
+    end
+    
+    def valid?
+      Retain::Cq.valid?(to_options)
+    end
+    
+    def hits
+      Retain::Cq.new(to_options).hit_count
+    end
+
     private
 
     def load
@@ -45,9 +58,11 @@ module Combined
       return if cached.queue_name.nil?
       
       # Pull the fields we need from the cached record into an options_hash
-      options_hash = Hash[ *%w{  queue_name h_or_s }.map { |field|
-                             [ field.to_sym, cached.attributes[field] ] }.flatten ]
-      options_hash[:center] = cached.center.center
+      options_hash = {
+        :queue_name => cached.queue_name,
+        :h_or_s => cached.h_or_s,
+        :center => cached.center.center
+      }
 
       # :requested_elements is a special case
       requested_elements = Combined::Call.retain_fields.map { |field| field.to_sym }
@@ -64,6 +79,12 @@ module Combined
       # Create a Retain::Queue from the options cache.
       retain_queue = Retain::Queue.new(options_hash)
 
+      # We have to keep track of the new customers we create so we do
+      # not try and create duplicates.  The same is true for PMRs
+      # since a queue can have secondaries of the same PMR.
+      new_customers = { }
+      new_pmrs = { }
+      
       # Now we get our create the list of calls
       retain_queue.calls.each do |call|
         db_call = Cached::Call.new_from_retain(call)
@@ -79,7 +100,15 @@ module Combined
           :branch  => call.branch,
           :country => call.country
         }
-        db_pmr = Cached::Pmr.find_or_new(pmr_options)
+        pmr_key = call.problem + call.branch + call.country
+        if new_pmrs.has_key?(pmr_key)
+          db_pmr = new_pmrs[pmr_key]
+        else
+          db_pmr = Cached::Pmr.find_or_new(pmr_options)
+          if db_pmr.new_record?
+            new_pmrs[pmr_key] = db_pmr
+          end
+        end
 
         # This code is duplicated three times presently.  The problem
         # is that we do not want the center or other fields from the
@@ -90,8 +119,16 @@ module Combined
           :country => call.country,
           :customer_number => call.customer_number
         }
-        db_pmr.customer = Cached::Customer.find_or_new(cust_options)
-        
+        cust_key = call.country + call.customer_number
+        if new_customers.has_key?(cust_key)
+          db_customer = new_customers[cust_key]
+        else
+          db_customer = Cached::Customer.find_or_new(cust_options)
+          if db_customer.new_record?
+            new_customers[cust_key] = db_customer
+          end
+        end
+        db_pmr.customer = db_customer
         db_call.pmr = db_pmr
         cached.calls << db_call
       end

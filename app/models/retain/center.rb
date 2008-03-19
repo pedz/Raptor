@@ -6,7 +6,7 @@ module Retain
       super(options)
     end
 
-    def self.check_center(options)
+    def self.valid?(options)
       gr = { :group_request => [ :software_center_mnemonic ] }
       center = new(gr.merge(options))
       begin

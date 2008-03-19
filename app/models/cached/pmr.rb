@@ -1,10 +1,15 @@
 module Cached
   class Pmr < Base
     set_table_name "cached_pmrs"
-    has_many   :calls,    :class_name => "Cached::Call"
-    belongs_to :owner,    :class_name => "Cached::Registration"
-    belongs_to :resolver, :class_name => "Cached::Registration"
-    belongs_to :customer, :class_name => "Cached::Customer"
+    has_many   :calls,       :class_name => "Cached::Call"
+    belongs_to :owner,       :class_name => "Cached::Registration"
+    belongs_to :resolver,    :class_name => "Cached::Registration"
+    belongs_to :customer,    :class_name => "Cached::Customer"
+    belongs_to :center,      :class_name => "Cached::Center"
+    belongs_to :queue,       :class_name => "Cached::Queue"
+    belongs_to :primary,     :class_name => "Cached::Call"
+    belongs_to :next_center, :class_name => "Cached::Center"
+    belongs_to :next_queue,  :class_name => "Cached::Queue"
     has_many(:scratch_pad_lines,
              :conditions => "line_type = #{Cached::TextLine::LineTypes::SCRATCH_PAD}",
              :class_name => "Cached::TextLine",

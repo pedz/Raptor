@@ -7,11 +7,14 @@ class CreateCachedPmrs < ActiveRecord::Migration
       t.integer :customer_id,                   :null => false
       t.integer :owner_id       # id into Registrations
       t.integer :resolver_id    # id into Registrations
-      t.string  :severity,        :limit => 1
+      t.integer :center_id      # id into Centers
+      t.integer :queue_id       # id into Queues
+      t.integer :primary        # id into Calls
+      t.integer :next_center_id # id into Centers
+      t.integer :next_queue_id  # id into Queues
+      t.integer :severity
       t.string  :component_id,    :limit => 12
       t.string  :problem_e_mail,  :limit => 64
-      t.string  :next_queue,      :limit => 6
-      t.string  :next_center,     :limit => 3
       t.string  :creation_date,   :limit => 9
       t.string  :creation_time,   :limit => 5
       t.string  :alteration_date, :limit => 9
@@ -25,10 +28,6 @@ class CreateCachedPmrs < ActiveRecord::Migration
       # into weird states with PMRs on a queue that do not show up on
       # the queue, etc.
       #
-      t.string  :queue_name,      :limit => 6
-      t.string  :center,          :limit => 3
-      t.string  :h_or_s,          :limit => 1
-      t.string  :ppg,             :limit => 3
       t.string  :sec_1_queue,     :limit => 6
       t.string  :sec_1_center,    :limit => 3
       t.string  :sec_1_h_or_s,    :limit => 1

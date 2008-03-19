@@ -4,7 +4,7 @@ class CreateCachedCalls < ActiveRecord::Migration
       t.integer :queue_id,          :null  => false
       t.string  :ppg,               :null  => false, :limit => 3
       t.integer :pmr_id,            :null  => false
-      t.string  :priority,          :limit => 1
+      t.integer :priority
       t.string  :p_s_b,             :limit => 1
       t.string  :comments,          :limit => 54
       t.string  :nls_customer_name, :limit => 28
@@ -13,6 +13,7 @@ class CreateCachedCalls < ActiveRecord::Migration
       t.string  :contact_phone_2,   :limit => 19
       t.string  :cstatus,           :limit => 7
       t.string  :category,          :limit => 3
+      t.boolean :system_down
       t.timestamps 
     end
     execute "ALTER TABLE cached_calls ADD CONSTRAINT uq_cached_calls_pair

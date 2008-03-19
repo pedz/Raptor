@@ -41,7 +41,7 @@ module Retain
     
     # Show a Retain call
     def show
-      @call, @queue = Combined::Call.from_param_pair(params[:id], method(:signon_user))
+      @call, @queue = Combined::Call.from_param_pair!(params[:id])
       @call.mark_cache_invalid
       @pmr = @call.pmr
       @pmr.mark_cache_invalid
@@ -59,7 +59,7 @@ module Retain
     # this routine.  I might want to split it apart.  Not sure what to
     # do here.
     def alter
-      @call, @queue = Combined::Call.from_param_pair(params[:id], method(:signon_user))
+      @call, @queue = Combined::Call.from_param_pair!(params[:id])
       pmr = @call.pmr
       field = params[:editorId].split('-')[1].to_sym
       new_text = params[:value]
@@ -114,7 +114,11 @@ module Retain
     def queue_list
       @exception_json = [ "Call Not Found"].to_json
       @exception_type = :json
-      call = Combined::Call.from_param(params[:id], method(:signon_user))
+      call = Combined::Call.from_param(params[:id])
+      if call.nil?
+        render :json => nil
+      end
+
       queue = call.queue
       h_or_s = queue.h_or_s
       center = queue.center

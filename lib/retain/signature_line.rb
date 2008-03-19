@@ -25,10 +25,10 @@ module Retain
       # self.logger.debug("SGN: #{text}")
     end
 
-    def to_s
+    def to_s(tz)
       if @md
         " #{flag}#{name}-#{component}#{other}-P#{pri}S#{sev}-" +
-          "#{date.strftime("%y/%m/%d-%H:%M")} #{ptype}#{stype}"
+          "#{date.new_offset(tz).strftime("%y/%m/%d-%H:%M")} #{ptype}#{stype}"
       else
         @text
       end

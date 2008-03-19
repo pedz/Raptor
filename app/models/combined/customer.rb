@@ -1,7 +1,9 @@
 module Combined
   class Customer < Base
     set_expire_time 30.minutes
-
+    set_db_keys :country, :customer_number
+    add_skipped_fields :country, :customer_number
+    
     add_skipped_fields :center_id
     add_extra_fields   :center
 

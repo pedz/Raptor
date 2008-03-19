@@ -19,13 +19,15 @@
     </p>
   
     <p>
-      <b>Center</b><br />
-      <%= queue.text_field :center, :size => 3 %>
-    </p>
-  
-    <p>
       <b>Hardware (H) or Software (S)</b><br />
       <%= queue.text_field :h_or_s, :size => 1 %>
+    </p>
+  <% end %>
+    
+  <% fields_for @favorite_queue.queue.center do |center| %>
+    <p>
+      <b>Center</b><br />
+      <%= center.text_field :center, :size => 3 %>
     </p>
   <% end %>
     <p>

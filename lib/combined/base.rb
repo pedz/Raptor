@@ -56,12 +56,34 @@ module Combined
         @cached_class
       end
     
+      # The fields in the cached database class that are not
+      # associations
       def db_fields
-        @db_fields ||= cached_class.db_fields
+        (@db_fields ||= [cached_class.db_fields])[0]
       end
       
+      # The associations in the cached database class
       def db_associations
-        @db_associations ||= cached_class.db_associations
+        (@db_associations ||= [cached_class.db_associations])[0]
+      end
+      
+      # The combined model specifies which of the retain fields are
+      # used as the keys. e.g. :center is the key for a center.  Note
+      # that this is only the fields in the db record (a subset of
+      # db_fields).
+      def set_db_keys(*args)
+        a = [ *args ]
+        logger.debug("CMB: db_keys for #{self} set to #{a.inspect}")
+        @db_keys = a
+      end
+      attr_reader :db_keys
+      
+      def keys_only(options)
+        Hash[ *options.select { |k, v| db_keys.include?(k) }.flatten ]
+      end
+
+      def fields_only(options)
+        Hash[ *options.select { |k, v| db_fields.include?(k) }.flatten ]
       end
       
       def add_skipped_fields(*args)

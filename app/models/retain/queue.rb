@@ -6,6 +6,19 @@ module Retain
     def initialize(options = {})
       super(options)
     end
+
+    # Returns true if the call is a valid call.  For now, we just
+    # return true.  We might do a fetch from retain if we find we need
+    # to.
+    def self.valid?(options)
+      cq = Retain::Cq.new(options)
+      begin
+        hit_count = cq.hit_count # get hit_count to see if the queue is valid
+        return true
+      rescue Retain::SdiReaderError => e
+        return false
+      end
+    end
     
     def to_s
       ret = queue_name.strip + ',' + center

@@ -2,6 +2,13 @@ require 'time'
 
 module Retain
   module QsHelper
+    # Returns a class for the call row based upon the call
+    def call_class(call)
+      return "system-down" if call.system_down
+      return "initial-response" if call.needs_initial_response?
+      return "normal"
+    end
+    
     def owner(call)
       retid = Logon.instance.signon
       pmr = call.pmr
@@ -71,7 +78,7 @@ module Retain
     
     def next_queue(call)
       pmr = call.pmr
-      nq_text = pmr.next_queue + "," + pmr.next_center
+      nq_text = pmr.next_queue.nil? ? "" : pmr.next_queue.to_param
       css_class, title, editable = call.validate_next_queue(signon_user)
       td do
         if editable
@@ -104,14 +111,17 @@ module Retain
     MULT = [ 0, 10, 2, 0.5, 0.1 ]
     def jeff(call)
       pmr = call.pmr
-      td :style => "text-align: right" do 
-        "#{(MULT[pmr.severity.to_i] * pmr.age).round}"
+      jeff_days = (MULT[pmr.severity] * pmr.age).round
+      jeff_class = jeff_days > 300 ? "wag-wag" : (jeff_days > 50 ? "warn" : "normal")
+      td :class => jeff_class do
+        "#{jeff_days}"
       end
     end
 
     def last_ct(call)
+      last_ct_time = call.pmr.last_ct_time.new_offset(signon_user.tz)
       td do
-        "#{call.pmr.last_ct_time.strftime("%a, %d %b %Y %H:%M")}"
+        "#{last_ct_time.strftime("%a, %d %b %Y %H:%M")}"
       end
     end
 
@@ -123,13 +133,6 @@ module Retain
       end
     end
 
-    # True if call queued to center during its prime time.
-    def prime_shift(time)
-      # 8 a.m. to 5 p.m. Monday thru Friday
-      t = time
-      t.hour === (8 .. 17) && t.wday === (1 .. 5)
-    end
-
     # Return the UTC time of the next business day in the given time
     # zone... how am I going to do this?
     def start_next_bus_day(time, tz)
@@ -137,61 +140,63 @@ module Retain
     end
 
     def ct_initial_response_requirement(call)
+      logger.debug("ct_initial_response_requirement for #{call.to_param}")
       pmr = call.pmr
-      cust = pmr.customer
-      # time_zone_binary is in minutes; tz will be in seconds
-      tz = cust.time_zone_binary * 60
+      customer = pmr.customer
       entry_time = call.center_entry_time
       if pmr.country == '000'       # U. S.
         logger.debug("initial response US")
-        if prime_shift(entry_time)
-          return entry_time + 2.hours
-        else
-          if pmr.severity == 1
-            return entry_time + 2.hours
-          else       # off shift initial response is next business day
-            # return 1.business_day(country)
-            new_time = next_bus_day(entry_time)
-            return 1.day
-          end
+
+        # Sev 1  System Down during Primeshift or Offshift: Initial
+        #        customer callback - every effort should be made to
+        #        contact customer within 1 hr
+        if call.system_down
+          logger.debug("system down")
+          return entry_time + (1.to_r / 24) # clock hours
         end
-      else                      # WT
+        
+        # Sev 1 Primeshift or Offshift: Initial customer callback is
+        #       within 2 business hours, but try for one hour
+        if pmr.severity == 1
+          logger.debug("sev 1")
+          return customer.business_hours(entry_time, 2)
+        end
+        
+        # Sev 2,3,4 during Primeshift: Initial customer callback is
+        #           within 2 business hours
+        if pmr.center.prime_shift(entry_time)
+          logger.debug("prime_shift")
+          return customer.business_hours(entry_time, 2)
+        end
+        
+        # SEV 2,3,4 during Offshift: Initial customer callback is the
+        #           next business day
+        return customer.business_day(entry_time, 1)
+      else
         logger.debug("initial response WT #{pmr.severity.class}")
-        case pmr.severity.to_i
+        case pmr.severity
         when 1
-          # 2.business_hours(country)
-          2.hours
+          return customer.business_hours(entry_time, 2)
         when 2
-          # 4.business_hours(country)
-          4.hours
+          return customer.business_hours(entry_time, 4)
         when 3
-          # 8.business_hours(country)
-          8.hours
+          return customer.business_hours(entry_time, 8)
         when 4
-          # 8.business_hours(country)
-          8.hours
-        else
-          raise "Invalid PMR severity"
+          return customer.business_hours(entry_time, 8)
         end
       end
+      raise "Did not figure out response time"
     end
 
-    FOLLOW_UP_RESPONSE_TIME = [ 0, 1.day, 2.days, 5.days, 5.days ]
+    FOLLOW_UP_RESPONSE_TIME = [ 0, 1, 2, 5, 5 ] # business days
 
     def ct_normal_response_requirement(call)
-      FOLLOW_UP_RESPONSE_TIME[call.pmr.severity.to_i]
-    end
-
-    def ct_requirement(call)
-      if call.needs_initial_response?
-        ct_initial_response_requirement(call)
-      else
-        ct_normal_response_requirement(call)
-      end
-    end
-
-    def next_ct_time(call)
-      ct_requirement(call) - (DateTime.now - call.pmr.last_ct_time)
+      pmr = call.pmr
+      customer = pmr.customer
+      days = FOLLOW_UP_RESPONSE_TIME[pmr.severity]
+      start_time = pmr.last_ct_time
+      logger.debug("TIME: ---- #{start_time}")
+      customer.business_days(start_time, days)
     end
 
     def next_ct(call)
@@ -200,16 +205,21 @@ module Retain
       if is_initial
         nt = ct_initial_response_requirement(call)
       else
-        nt = next_ct_time(call).to_i
+        nt = ct_normal_response_requirement(call)
       end
 
-      if nt <= 0
+      now = DateTime.now
+      if now > nt
         text = "CT Overdue"
         css_class = "wag-wag"
       else
-        nt /= (60 * 60)
-        text = "#{(nt / 24).truncate} days and #{(nt % 24).truncate} hours"
-        css_class = "good"
+        text = nt.new_offset(signon_user.tz).strftime("%a, %d %b %Y %H:%M")
+        now += 1
+        if now > nt
+          css_class = "warn"
+        else
+          css_class = "normal"
+        end
       end
       td :class => css_class do
         text

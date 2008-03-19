@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(:version => 13) do
     t.integer  "queue_id",                        :null => false
     t.string   "ppg",               :limit => 3,  :null => false
     t.integer  "pmr_id",                          :null => false
-    t.string   "priority",          :limit => 1
+    t.integer  "priority"
     t.string   "p_s_b",             :limit => 1
     t.string   "comments",          :limit => 54
     t.string   "nls_customer_name", :limit => 28
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(:version => 13) do
     t.string   "contact_phone_2",   :limit => 19
     t.string   "cstatus",           :limit => 7
     t.string   "category",          :limit => 3
+    t.boolean  "system_down"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -34,8 +35,8 @@ ActiveRecord::Schema.define(:version => 13) do
     t.string   "center",                    :limit => 3, :null => false
     t.string   "software_center_mnemonic",  :limit => 3
     t.string   "center_daylight_time_flag", :limit => 1
-    t.string   "delay_to_time",             :limit => 2
-    t.string   "minutes_from_gmt",          :limit => 2
+    t.integer  "delay_to_time"
+    t.integer  "minutes_from_gmt"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -63,19 +64,18 @@ ActiveRecord::Schema.define(:version => 13) do
     t.integer  "customer_id",                   :null => false
     t.integer  "owner_id"
     t.integer  "resolver_id"
-    t.string   "severity",        :limit => 1
+    t.integer  "center_id"
+    t.integer  "queue_id"
+    t.integer  "primary"
+    t.integer  "next_center_id"
+    t.integer  "next_queue_id"
+    t.integer  "severity"
     t.string   "component_id",    :limit => 12
     t.string   "problem_e_mail",  :limit => 64
-    t.string   "next_queue",      :limit => 6
-    t.string   "next_center",     :limit => 3
     t.string   "creation_date",   :limit => 9
     t.string   "creation_time",   :limit => 5
     t.string   "alteration_date", :limit => 9
     t.string   "alteration_time", :limit => 5
-    t.string   "queue_name",      :limit => 6
-    t.string   "center",          :limit => 3
-    t.string   "h_or_s",          :limit => 1
-    t.string   "ppg",             :limit => 3
     t.string   "sec_1_queue",     :limit => 6
     t.string   "sec_1_center",    :limit => 3
     t.string   "sec_1_h_or_s",    :limit => 1
@@ -146,6 +146,8 @@ ActiveRecord::Schema.define(:version => 13) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "favorite_queues", ["user_id", "queue_id"], :name => "uq_favorite_queues", :unique => true
 
   create_table "feedback_notes", :force => true do |t|
     t.integer  "feedback_id"

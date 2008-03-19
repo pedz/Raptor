@@ -22,7 +22,7 @@ module Retain
       :customer_name               => [   14, :ebcdic,         28 ],
       :customer_contact_name       => [   19, :ebcdic,         28 ],
       :cpu_type                    => [   22, :ebcdic,          4 ],
-      :priority                    => [   23, :ebcdic,          1 ],
+      :priority                    => [   23, :znumber,         1 ],
       :queue_name                  => [   27, :ebcdic_strip,    6 ],
       :de32                        => [   32, :binary,          0 ],
       :cpu_serial_number           => [   39, :ebcdic,          7 ],
@@ -31,6 +31,7 @@ module Retain
       :comment                     => [   42, :ebcdic,         54 ],
       :business_unit               => [   48, :ebcdic,          3 ],
       :queue_level                 => [   54, :ebcdic,          1 ],
+      :apar_abstract               => [   72, :ebcdic,         68 ],
       :creator_serial              => [   87, :binary,          9 ],
       :q_or_d                      => [   89, :ebcdic,          1 ],
       :nls_creator_name            => [   97, :nls,            30 ],
@@ -84,8 +85,7 @@ module Retain
       :previous_level              => [  278, :ebcdic,          1 ],
       :previous_category           => [  279, :ebcdic,          3 ],
       :call_complete_code          => [  280, :ebcdic,          1 ],
-      :crit_sit                    => [  282, :upper_ebcdic,    1 ],
-      :critical_situation          => [  284, :ebcdic,          1 ],
+      :system_down                 => [  284, :ebcdic_y_or_n,   1 ],
       :call_back_time              => [  285, :ebcdic,          1 ],
       :entered_by_employee         => [  293, :ebcdic,          6 ],
       :p_s_b                       => [  298, :upper_ebcdic,    1 ],
@@ -196,7 +196,7 @@ module Retain
       :apar_number                 => [  650, :ebcdic,          7 ],
       :current_text_start          => [  651, :ebcdic,          1 ],
       :follow_up_info              => [  652, :ebcdic,         12 ],
-      :severity                    => [  657, :ebcdic,          1 ],
+      :severity                    => [  657, :znumber,         1 ],
       :call_search_result          => [  658, :ebcdic,         86 ],
       :sec_call_symbol_1           => [  660, :ebcdic,         12 ],
       :sec_call_symbol_2           => [  661, :ebcdic,         12 ],
@@ -372,12 +372,17 @@ module Retain
       :beginning_page_number       => [ 1391, :znumber,         3 ],
       :ending_page_number          => [ 1392, :znumber,         3 ],
       :total_page                  => [ 1393, :ebcdic,         32 ],
+      :problem_error_description   => [ 1449, :ebcdic,         64 ],
+      :apar_free_text              => [ 1455, :ebcdic,         64 ],
+      :apar_problem_summary        => [ 1469, :ebcdic,         64 ],
       :external_problem_w_country  => [ 1550, :ebcdic,         10 ],
       :cstatus                     => [ 1633, :upper_ebcdic,    7 ],
+      :apar_fix_component          => [ 1713, :upper_ebcdic,   12 ],
+      :apar_fix_component_name     => [ 1714, :upper_ebcdic,   15 ],
       :problem_flag_bit            => [ 2150, :ebcdic,          1 ],
       :invalid_reason_code         => [ 2151, :ebcdic,          8 ],
       :component_id_or_device      => [ 2152, :ebcdic,         12 ],
-      :onsite_prob_det_required    => [ 2153, :ebcdic,        2153 ],
+      :onsite_prob_det_required    => [ 2153, :ebcdic,          1 ],
       :expected_duration           => [ 2154, :ebcdic,          4 ],
       :target_arrival_time         => [ 2155, :ebcdic,         12 ],
       :m_s_branch_office           => [ 2156, :ebcdic,          3 ],
@@ -492,7 +497,10 @@ module Retain
 
     def dump_fields
       @fields.each_pair do |k, v|
-        if v.value.is_a? Array
+        rv = v.raw_value
+        if v.raw_value.nil?
+          logger.debug("RTN: field:#{k} is nil")
+        elsif rv.is_a? Array
           logger.debug("RTN: field:#{k} is #{v.value.inspect}")
         else
           logger.debug("RTN: field:#{k} is #{v.value}")

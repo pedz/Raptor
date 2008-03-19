@@ -171,6 +171,8 @@ module Retain
         encode_center(value.trim(3))
       when :binary
         value
+      when :number              # space filled number
+        ("%#{width}d" % value).user_to_retain
       when :znumber             # zero filled number
         RAILS_DEFAULT_LOGGER.debug("width=#{width}, value=#{value}, value.class=#{value.class}")
         ("%0#{width}d" % value).user_to_retain
@@ -222,6 +224,8 @@ module Retain
         TextLine.new(value[2, 1000000000], value[0, 2].ret2ushort)
       when :text_lines
         TextLine.new(value, 37)
+      when :number
+        value.retain_to_user.to_i
       when :znumber
         value.retain_to_user.to_i
       when :ppg

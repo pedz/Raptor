@@ -5,15 +5,13 @@ module Cached
     belongs_to :pmr,   :class_name => "Cached::Pmr"
 
     def needs_initial_response?
-      if @needs_initial_response.nil?
-        center = self.queue.center
-        @needs_initial_response = self.pmr.signature_line_stypes('CT').all? { |sig|
-          sig.center != center
-        }
-      end
-      @needs_initial_response
+      center = self.queue.center.center
+      self.pmr.signature_line_stypes('CT').all? { |sig|
+        sig.center != center
+      }
     end
-
+    once :needs_initial_response?
+    
     def center_entry_time(center = queue.center)
       if sig = center_entry_sig(center)
         sig.date

@@ -27,12 +27,13 @@
 	    <span title='Severity Days is the age of the PMR in days multiplied by a factor based upon the current severity'>SevD</span>
 	  </th>
 	  <th>Customer Time of Day</th>
+	  <th>Last CT</th>
 	  <th>Next CT</th>
 	</tr>
       </thead>
       <tbody>
 	<% @queue.calls.each_with_index do |call, index| -%>
-          <tr>
+          <tr class='<%= call_class(call) %>'>
   	    <td><%= button_url(index += 1, call) %></td>
   	    <td><%= link_to call.pmr.pbc, call %></td>
   	    <td><%= call.p_s_b %></td>
@@ -43,6 +44,7 @@
 	    <%= age(call) %>
 	    <%= jeff(call) %>
 	    <%= cust_tod(call) %>
+	    <%= last_ct(call) %>
 	    <%= next_ct(call) %>
   	  </tr>
         <% end -%>

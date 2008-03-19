@@ -1,4 +1,12 @@
 
+.system-down {
+    background-color: red;
+}
+
+.initial-response {
+    background-color: orange;
+}
+
 .smaller {
     font-family: verdana, arial, helvetica, sans-serif;
     font-size: 11.2px;

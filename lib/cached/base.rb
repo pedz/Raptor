@@ -13,6 +13,22 @@ module Cached
         (@db_associations ||= [reflections.values.map{ |r| r.name }])[0]
       end
 
+      def db_keys
+        (@db_keys ||= [combined_class.db_keys])[0]
+      end
+      
+      def keys_only(options)
+        r = Hash[ *options.select { |k, v| db_keys.include?(k) }.flatten ]
+        logger.debug("CHC: keys_only for #{self} returning: #{r.inspect}")
+        r
+      end
+
+      def fields_only(options)
+        r = Hash[ *options.select { |k, v| db_fields.include?(k) }.flatten ]
+        logger.debug("CHC: fields_only for #{self} returning: #{r.inspect}")
+        r
+      end
+
       def once(*ids) # :nodoc:
         for id in ids
           module_eval <<-"end;"
@@ -49,6 +65,15 @@ module Cached
       # logger.debug("CHC: new #{@subclass} from retain")
       options = options_from_retain(retain)
       find_or_new(options)
+    end
+
+    def self.from_options(options)
+      logger.debug("CHC: from_options #{self} with #{options.inspect}")
+      temp = find(:first, :conditions => keys_only(options))
+      if temp.nil? && retain_class.valid?(options)
+        temp = new(fields_only(options))
+      end
+      temp
     end
 
     def to_combined

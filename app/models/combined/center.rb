@@ -1,24 +1,31 @@
 module Combined
   class Center < Base
     set_expire_time :never
+    set_db_keys :center
+    add_skipped_fields :center
+
+    # Param is center.  Raises CenterNotFound if center is not in
+    # database or Retain.
+    def self.from_param!(param)
+      c = from_param(param)
+      if c.nil?
+        raise CenterNotFound.new(param)
+      end
+      c
+    end
+
+    def self.from_param(param)
+      from_options(:center => param)
+    end
 
     def to_param
       @cached.center
     end
 
-    def self.from_param(param)
-      options = { :center => param }
-      c = find(:first, :conditions => options)
-      if c.nil?
-        if Retain::Center.check_center(options)
-          c = new(options)
-        else
-          raise CenterNotFound.new(param)
-        end
-      end
-      c
+    def to_options
+      { :center => center }
     end
-
+    
     private
 
     def load

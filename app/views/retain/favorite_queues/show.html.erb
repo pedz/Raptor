@@ -11,7 +11,7 @@
   <p>
     <b>Queue:</b>
     <% queue = @favorite_queue.queue %>
-    <%=h queue.queue_name %>,<%=h queue.center %>,<%=h queue.h_or_s %><br/>
+    <%=h queue.to_param %><br/>
     <%= button_url('Edit Settings', edit_polymorphic_path(@favorite_queue)) %>
     <%= button_url 'New Favorite Queue', new_combined_favorite_queue_path %>
     <%= button_url 'Index of favorite queues', combined_favorite_queues_path %>

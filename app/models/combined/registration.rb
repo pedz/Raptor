@@ -1,8 +1,9 @@
 module Combined
   class Registration < Base
     set_expire_time :never
-
+    set_db_keys :signon
     add_skipped_fields :signon
+    
     add_skipped_fields :software_center_id, :hardware_center_id
     add_extra_fields   :software_center,    :hardware_center
 

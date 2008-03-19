@@ -1,6 +1,6 @@
 module Retain
-  class Customer < Base
-    set_fetch_sdi Pmcp
+  class Apar < Base
+    set_fetch_sdi Ssbr
 
     def initialize(options = {})
       super(options)

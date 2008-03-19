@@ -1,18 +1,20 @@
 module Combined
   class Call < Base
-    add_skipped_fields :queue_id, :pmr_id, :ppg, :p_s_b
-    add_extra_fields :problem, :branch, :country, :customer_number
-
     set_expire_time 30.minutes
+    set_db_keys :ppg
+    add_skipped_fields :ppg
+    add_skipped_fields :queue_id, :pmr_id, :p_s_b
+    add_extra_fields :problem, :branch, :country, :customer_number
     
-    def self.from_param_pair(param, fetch_user = nil)
+    # Params must include queue_name,h_or_s,center,ppg
+    def self.from_param_pair!(param)
       words = param.split(',')
       ppg = words.pop
-      queue = Combined::Queue.from_param(words.join(','), fetch_user)
+      queue = Combined::Queue.from_param!(words.join(','))
       [ queue.calls.find_or_initialize_by_ppg(ppg), queue ]
     end
     
-    def self.from_param(param)
+    def self.from_param!(param)
       call, queue = from_param_pair(param)
       call
     end
@@ -27,7 +29,7 @@ module Combined
     def validate_owner(user)
       queue = self.queue
       user_center = user.center(queue.h_or_s)
-      if user_center != queue.center
+      if user_center.center != queue.center.center
         return [ "normal", "Queue outside center not editable or judged", false]
       end
 
@@ -62,8 +64,8 @@ module Combined
         end
       end
 
-      center = queue_owner.center(queue.h_or_s)
-      if center && center == queue.center
+      owner_center = queue_owner.center(queue.h_or_s)
+      if owner_center && owner_center.center == queue.center.center
         return [ "warn", "PMR Owner in same center but not queue owner", true ]
       end
 
@@ -73,7 +75,7 @@ module Combined
     def validate_resolver(user)
       queue = self.queue
       user_center = user.center(queue.h_or_s)
-      if user_center != queue.center
+      if user_center.center != queue.center.center
         return [ "normal", "Queue outside center not editable or judged", false]
       end
 
@@ -102,8 +104,8 @@ module Combined
         end
       end
 
-      center = pmr_resolver.center(queue.h_or_s)
-      if center && center == queue.center
+      resolver_center = pmr_resolver.center(queue.h_or_s)
+      if resolver_center && resolver_center.center == queue.center.center
         return [ "warn", "PMR Resolver in same center but not queue owner", true ]
       end
 
@@ -113,7 +115,7 @@ module Combined
     def validate_next_queue(user)
       queue = self.queue
       user_center = user.center(queue.h_or_s)
-      if user_center != queue.center
+      if user_center.center != queue.center.center
         return [ "normal", "Queue outside center not editable or judged", false]
       end
 
@@ -132,26 +134,13 @@ module Combined
         return ["normal", "Next Queue for WT not editable or judged", false ]
       end
 
-      if pmr.next_queue.blank?
-        return [ "wag-wag", "Next Queue queue name is blank", true ]
+      if pmr.next_center.nil?
+        return [ "wag-wag", "Next Queue center is invalid", true ]
       end
 
-      if pmr.next_center.blank?
-        return [ "wag-wag", "Next Queue center is blank", true ]
-      end
-
-      nq_options = {
-        :queue_name => pmr.next_queue.upcase.strip,
-        :center => pmr.next_center.upcase
-      }
-      nq = Combined::Queue.find(:first, :conditions => nq_options)
-      if nq.nil?
-        # Take the 'S' or 'H' flag from the queue we are looking at.
-        nq_options[:h_or_s] = queue.h_or_s
-        unless Retain::Cq.check_queue(nq_options)
-          return [ "warn", "Next Queue does not exist", true ]
-        end
-        nq = Combined::Queue.create(nq_options)
+      next_queue = pmr.next_queue
+      if next_queue.nil?
+        return [ "wag-wag", "Next Queue queue name is invalid", true ]
       end
 
       # We are going to assume that if we have no queue info records
@@ -161,11 +150,11 @@ module Combined
       end
 
       # Personal queue set to next queue... bad dog.
-      if nq.id == queue.id
+      if next_queue.id == queue.id
         return [ "wag-wag", "Next queue set to personal queue", true ]
       end
 
-      unless nq.queue_infos.empty?
+      unless next_queue.queue_infos.empty?
         return [ "warn", "Next queue is a personal queue", true ]
       end
 
@@ -180,9 +169,12 @@ module Combined
 
       # Pull the fields we need from the cached record into an options_hash
       queue = cached.queue
-      options_hash = Hash[ *%w{  queue_name center h_or_s }.map { |field|
-                             [ field.to_sym, queue.attributes[field] ] }.flatten ]
-      options_hash[:ppg] = cached.ppg
+      options_hash = {
+        :queue_name => queue.queue_name,
+        :h_or_s => queue.h_or_s,
+        :center => queue.center.center,
+        :ppg => cached.ppg
+      }
       logger.debug("CMB: options_hash = #{options_hash.inspect}")
 
       # :group_request is a special case

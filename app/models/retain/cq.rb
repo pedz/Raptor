@@ -8,7 +8,7 @@ module Retain
       super(options)
     end
 
-    def self.check_queue(options)
+    def self.valid?(options)
       cq = Retain::Cq.new(options)
       begin
         hit_count = cq.hit_count # get hit_count to see if the queue is valid

@@ -1,17 +1,23 @@
 module Combined
   class Pmr < Base
+    set_expire_time 30.minutes
+    set_db_keys :problem, :branch, :country
     add_skipped_fields :problem, :branch, :country
 
     add_skipped_fields :owner_id
-    add_extra_fields :pmr_owner_id,    :pmr_owner_name
+    add_extra_fields :pmr_owner_id, :pmr_owner_name
 
     add_skipped_fields :resolver_id
     add_extra_fields :pmr_resolver_id, :pmr_resolver_name
 
     add_skipped_fields :customer_id
-    add_extra_fields :customer_number
+    add_extra_fields   :customer_number
 
-    set_expire_time 30.minutes
+    add_skipped_fields :center_id, :queue_id, :primary
+    add_extra_fields   :queue_name, :center, :h_or_s, :ppg
+
+    add_skipped_fields :next_center_id, :next_queue_id
+    add_extra_fields   :next_center,    :next_queue
 
     def self.from_param(param)
       words = param.split(',')
@@ -174,6 +180,47 @@ module Combined
       }
       @cached.customer = Cached::Customer.find_or_new(cust_options)
 
+      # Make or find the primary call and its associated queue and center
+      @cached.center = nil
+      @cached.queue = nil
+      @cached.primary = nil
+
+      primary_options = {
+        :center => pmr.center,
+        :queue_name => pmr.queue_name,
+        :h_or_s => pmr.h_or_s,
+        :ppg => pmr.ppg
+      }
+      center_cmb = Combined::Center.from_options(primary_options)
+      if center_cmb
+        @cached.center = center_cmb.unwrap_to_cached
+        queue_cmb = center_cmb.queues.from_options(primary_options)
+        if queue_cmb
+          @cached.queue = queue_cmb.unwrap_to_cached
+          call_cmb = queue_cmb.calls.from_options(primary_options)
+          if call_cmb
+            @cached.primary = call_cmb.unwrap_to_cached
+          end
+        end
+      end
+      
+      # Make or find next_center and next_queue
+      @cached.next_center = nil
+      @cached.next_queue = nil
+      nc_options = {
+        :center => pmr.next_center,
+        :queue_name => pmr.next_queue,
+        :h_or_s => pmr.h_or_s
+      }
+      nc_cmb = Combined::Center.from_options(nc_options)
+      if nc_cmb
+        @cached.next_center = nc_cmb.unwrap_to_cached
+        nq_cmb = nc_cmb.queues.from_options(nc_options)
+        if nq_cmb
+          @cached.next_queue = nq_cmb.unwrap_to_cached
+        end
+      end
+
       # Update other attributes
       @cached.update_attributes(Cached::Pmr.options_from_retain(pmr))
     end
@@ -198,7 +245,9 @@ module Combined
           text_line = cached_lines[line_number]
           if text_line_options.keys.any? { |key|
               if text_line_options[key] != text_line.send(key)
-                logger.debug("CMB: mismatch on #{key}: '#{text_line_options[key]}' != '#{text_line.send(key)}'")
+                logger.debug("CMB: mismatch on #{key}: " +
+                             "'#{text_line_options[key]}' " +
+                             "!= '#{text_line.send(key)}'")
                 true
               end
             }

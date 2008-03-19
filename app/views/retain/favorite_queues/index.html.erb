@@ -23,7 +23,7 @@
   <% index = 0 -%>
   <% for favorite_queue in @favorite_queues -%>
   <%   queue = favorite_queue.queue -%>
-  <%   hits = queue_hits(queue)     -%>
+  <%   hits = queue.hits            -%>
   <%   team = queue.owners.empty?   -%>
   <%   if team                      -%>
   <%     q_class = "team"           -%>
