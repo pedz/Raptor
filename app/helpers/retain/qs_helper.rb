@@ -171,7 +171,7 @@ module Retain
         
         # SEV 2,3,4 during Offshift: Initial customer callback is the
         #           next business day
-        return customer.business_day(entry_time, 1)
+        return customer.business_days(entry_time, 1)
       else
         logger.debug("initial response WT #{pmr.severity.class}")
         case pmr.severity
