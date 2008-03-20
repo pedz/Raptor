@@ -121,7 +121,7 @@ module Retain
 
       queue = call.queue
       center = queue.center
-      personal_queues = center.queues.personal_queues.map(&to_param)
+      personal_queues = center.queues.personal_queues.map(&:to_param)
       logger.info("personal_queues are #{personal_queues.inspect}")
 
       # Walk through the signatures of the PMR adding to the pmr_queue
