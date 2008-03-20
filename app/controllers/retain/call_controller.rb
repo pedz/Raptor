@@ -120,41 +120,23 @@ module Retain
       end
 
       queue = call.queue
-      h_or_s = queue.h_or_s
       center = queue.center
-      pmr_queues = []
-
-      # owned_queues is a list of all the queues that have owners.
-      owned_queues = Combined::QueueInfo.find(:all, :include => :queue).map { |qi|
-        qi.queue.to_param
-      }.uniq
-
-      # team queues are queues in the same center that do not have an
-      # owner.
-      team_queues =
-        Combined::Queue.find(:all,
-                             :conditions => {
-                               :center => center,
-                               :h_or_s => h_or_s
-                             },
-                             :include => :queue_infos).select { |q|
-        q.queue_infos.empty?
-      }.map { |q|
-        q.to_param
-      }.sort
+      personal_queues = center.queues.personal_queues
 
       # Walk through the signatures of the PMR adding to the pmr_queue
       # list only those not seen before and do not have owners.  Note
       # that I want to preseve order in the list so I can not use uniq
       # after the fact.
+      h_or_s = queue.h_or_s
+      pmr_queues = []
       call.pmr.signature_lines.each do |sig|
         if sig && (queue = sig.queue(h_or_s))
-          unless pmr_queues.include?(queue) || owned_queues.include?(queue)
+          unless pmr_queues.include?(queue) || personal_queues.include?(queue)
             pmr_queues << queue
           end
         end
       end
-      result = pmr_queues.reverse + team_queues
+      result = pmr_queues.reverse + center.queues.team_queues
       render :json => result.to_json
     end
 
