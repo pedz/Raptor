@@ -15,7 +15,7 @@ module Combined
     end
     
     def self.from_param!(param)
-      call, queue = from_param_pair(param)
+      call, queue = from_param_pair!(param)
       call
     end
 
