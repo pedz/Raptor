@@ -654,7 +654,7 @@ module Retain
       unless (v = get_value(sym, plural)).nil?
         return v
       end
-      raise "reader did not read attribute"
+      raise "reader did not read attribute #{sym}"
     end
     
     def writer(sym, cvt, width, value, plural)

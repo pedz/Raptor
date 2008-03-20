@@ -87,7 +87,19 @@ module Combined
       
       # Now we get our create the list of calls
       retain_queue.calls.each do |call|
-        db_call = Cached::Call.new_from_retain(call)
+        # The call only has the bare essentials.  This will touch the
+        # call and cause a fetch.  So when the db record is created,
+        # it will be more complete.
+        group_request = Combined::Call.retain_fields.map { |field| field.to_sym }
+        call.group_requests = group_request
+        pmr_options = {
+          :problem => call.problem,
+          :branch  => call.branch,
+          :country => call.country
+        }
+        db_call = cached.calls.new_from_retain(call)
+        logger.debug("here #{__LINE__}")
+        
         # If/when we start keeping expired PMRs we need to augment
         # this call to not find expired PMRs.  We do not have the
         # create date at this point but if we exclude expired PMRs,
@@ -95,11 +107,6 @@ module Combined
         # duplicate problem,branch,country.
 
         # Make or find PMR
-        pmr_options = {
-          :problem => call.problem,
-          :branch  => call.branch,
-          :country => call.country
-        }
         pmr_key = call.problem + call.branch + call.country
         if new_pmrs.has_key?(pmr_key)
           db_pmr = new_pmrs[pmr_key]
@@ -109,6 +116,7 @@ module Combined
             new_pmrs[pmr_key] = db_pmr
           end
         end
+        logger.debug("here #{__LINE__}")
 
         # This code is duplicated three times presently.  The problem
         # is that we do not want the center or other fields from the
@@ -119,6 +127,7 @@ module Combined
           :country => call.country,
           :customer_number => call.customer_number
         }
+        logger.debug("here #{__LINE__}")
         cust_key = call.country + call.customer_number
         if new_customers.has_key?(cust_key)
           db_customer = new_customers[cust_key]
@@ -128,10 +137,15 @@ module Combined
             new_customers[cust_key] = db_customer
           end
         end
+        logger.debug("here #{__LINE__}")
         db_pmr.customer = db_customer
+        logger.debug("here #{__LINE__}")
         db_call.pmr = db_pmr
+        logger.debug("here #{__LINE__}")
         cached.calls << db_call
+        logger.debug("here #{__LINE__}")
       end
+      logger.debug("here #{__LINE__}")
       cached.save
     end
   end

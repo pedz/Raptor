@@ -55,7 +55,7 @@ module Cached
     end
 
     def self.find_or_new(options)
-      find(:first, :conditions => options) || new(options)
+      find(:first, :conditions => keys_only(options)) || new(options)
     end
     
     # Fetch or create the DB record from a Retain record  -- probably

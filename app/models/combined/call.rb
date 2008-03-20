@@ -165,6 +165,7 @@ module Combined
     
     def load
       logger.debug("CMB: load for <#{self.class.to_s}:#{"0x%x" % self.object_id}>")
+      # debugger()
       cached = self.cached
 
       # Pull the fields we need from the cached record into an options_hash

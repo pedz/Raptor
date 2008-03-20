@@ -152,7 +152,7 @@ module Combined
         # Define getter methods for each field
         db_fields.each do |name|
           eval("def  #{name}
-                  unless cache_valid? && (temp = cached.#{name})
+                  unless cache_valid? && !(temp = cached.#{name}).nil?
                     call_load
                     temp = cached.#{name}
                   end
@@ -164,7 +164,7 @@ module Combined
         db_associations.each do |name|
           eval("def #{name}
                   logger.debug(\"CMB: #{name} called as association for <\#{self.class}:\#{self.object_id}>\")
-                  unless cache_valid? && (temp = @cached.#{name})
+                  unless cache_valid? && !(temp = @cached.#{name}).nil?
                     call_load
                     temp = @cached.#{name}
                   end
@@ -182,19 +182,19 @@ module Combined
     def cache_valid?
       # If we are not cached at all, then cache is invalid
       if (updated_at = @cached.updated_at).nil?
-        logger.debug("CMB: cache_valid?: return false: updated_at is nil")
+        logger.debug("CMB: #{self.to_s} cache_valid?: return false: updated_at is nil")
         return false
       end
       
       # If data type says cache never expires then we are good to go
       if (expire = expire_time) == :never
-        logger.debug("CMB: cache_valid?: return true: expire set to :never")
+        logger.debug("CMB: #{self.to_s} cache_valid?: return true: expire set to :never")
         return true
       end
       
       # If item has been explicitly marked to be re-fetched
       if @invalid_cache
-        logger.debug("CMB: cache_valid?: return false: invalid_cache set")
+        logger.debug("CMB: #{self.to_s} cache_valid?: return false: invalid_cache set")
         return false
       end
       
@@ -202,7 +202,7 @@ module Combined
       sum = (updated_at + expire)
       now = Time.now
       r = sum > Time.now
-      logger.debug("CMB: cache_valid?: updated_at:#{updated_at}, " +
+      logger.debug("CMB: #{self.to_s} cache_valid?: updated_at:#{updated_at}, " +
                    "expire:#{expire}, sum:#{updated_at + expire}, " +
                    "now:#{Time.now}, r:#{r}")
       r

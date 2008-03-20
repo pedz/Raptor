@@ -1,9 +1,7 @@
 <!-- app/views/layouts/shared/_body.html.erb -->
   <body>
     <% if divs.nil? || divs.empty? -%>
-      <% flash.keys.each do |key| %>
-        <p id="<%= key.to_s %>"><%= flash[key] %></p>
-      <% end %>
+      <%= render :partial => 'layouts/shared/flash' %>
       <%= yield %>
     <% else -%>
       <% for div in divs -%>

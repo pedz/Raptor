@@ -1,7 +1,7 @@
 
 module Retain
   class Queue < Base
-    set_fetch_sdi Scs0
+    set_fetch_sdi Pmcs
 
     def initialize(options = {})
       super(options)
@@ -33,14 +33,39 @@ module Retain
     # objects.
     #
     def calls
-      temp = de32s
-      if temp.length == 1 && temp[0].ppg? == false
-        return []
-      end
-      temp.map do |fields|
-        logger.debug("RTN: make a call")
-        Call.new :fields => fields
+      return [] if hit_count == 0
+      de32s.map do |fields|
+        temp = fields[:call_search_result].raw_value[0]
+        options = { 
+          :center => decode_center(temp[0 ... 2]),
+          :queue_name => temp[2 ... 8].retain_to_user.strip,
+          :h_or_s => 'S',
+          :ppg => "%x" % (temp[10] * 256 + temp[11]),
+          :p_s_b => fields.p_s_b,
+          :system_down => fields.system_down
+        }
+        logger.debug("RTN: raw iris is #{temp[0 ... 12]}")
+        logger.debug("RTN: make a call options: #{options.inspect}")
+        Call.new options
       end
     end
+
+    private
+
+    def decode_center(v)
+      s = v.ret2ushort
+      i1 = s / 100;
+      i2 = s % 100;
+      i3 = i1 - 10;
+
+      ## if it is less than 26, than it's an alphanumeric
+      ## center like 13L
+      return ("%02d%c" % [ i2, (?A + i3)]) if i3 >= 0 && i3 <= 25
+
+      ## Otherwise it is pure numeric
+      return ("%03d" % s)
+    end
+
+
   end
 end

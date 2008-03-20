@@ -52,21 +52,22 @@ module Retain
     # POST /favorite_queues
     # POST /favorite_queues.xml
     def create
-      options = params[:combined_center].symbolize_keys
-      options.merge!(params[:combined_queue].symbolize_keys)
-      options[:center].upcase!
-      options[:queue_name].upcase!
-      options[:queue_name].strip!
-      options[:h_or_s].upcase!
+      center_options = params[:combined_center].symbolize_keys
+      queue_options = params[:combined_queue].symbolize_keys
+      center_options[:center].upcase!
+      queue_options[:queue_name].upcase!
+      queue_options[:queue_name].strip!
+      queue_options[:h_or_s].upcase!
+      options = center_options.merge(queue_options)
 
       if (center = Combined::Center.from_options(options)).nil?
         flash[:error] = "Center is not valid"
         center = Combined::Center.new(options)
-        queue = center.queues.build(options)
+        queue = center.queues.build(queue_options)
         queue_valid = false
       elsif (queue = center.queues.from_options(options)).nil?
         flash[:error] = "Queue is not valid"
-        queue = center.queues.build(options)
+        queue = center.queues.build(queue_options)
         queue_valid = false
       else
         queue_valid = true
