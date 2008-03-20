@@ -114,7 +114,7 @@ module Retain
     def queue_list
       @exception_json = [ "Call Not Found"].to_json
       @exception_type = :json
-      call = Combined::Call.from_param(params[:id])
+      call = Combined::Call.from_param!(params[:id])
       if call.nil?
         render :json => nil
       end
