@@ -53,6 +53,14 @@
   </div>
 <% end %>
 <% content_for(:bottom) do %>
+  <ul style='color: green'>
+    <li>Setting of Next Queue is fixed</li>
+    <li>"Customer Time of Day" likely will go away -- let me know if you want it to stay</li>
+    <li>"Last CT" likely will go away -- let me know if you want it to stay</li>
+    <li>By the way, type "Home" and hit return to go home.  Similar
+    for all buttons. e.g. 1&lt;return&gt; will show the first
+    call</li>
+  </ul>
   <div>
     <%= button_url("Home", "/") %>
     <%= button_url 'Favorite Queues', combined_favorite_queues_path %>
