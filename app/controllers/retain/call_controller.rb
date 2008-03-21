@@ -70,7 +70,7 @@ module Retain
       }
       case field
       when :next_queue
-        new_queue_name, new_center, new_h_or_s = new_text.split(',')
+        new_queue_name, new_h_or_s, new_center = new_text.split(',')
         options[:next_queue] = new_queue_name.strip
         options[:next_center] = new_center
       else
@@ -91,7 +91,7 @@ module Retain
           # Figure out what to send back
           case field
           when :next_queue
-            new_text = pmr.next_queue + "," + pmr.next_center
+            new_text = pmr.next_queue.to_param
             css_class, title, editable = @call.validate_next_queue(signon_user)
           when :pmr_owner_id
             new_text = pmr.owner.name
@@ -120,6 +120,7 @@ module Retain
       queue = call.queue
       center = queue.center
       personal_queues = center.queues.personal_queues.map(&:to_param)
+      logger.debug("call_controller: queue_list: personal_queues=#{personal_queues.inspect}")
 
       # Walk through the signatures of the PMR adding to the pmr_queue
       # list only those not seen before and do not have owners.  Note
@@ -134,7 +135,7 @@ module Retain
           end
         end
       end
-      result = pmr_queues.reverse + center.queues.team_queues
+      result = pmr_queues.reverse + center.queues.team_queues.map(&:to_param)
       render :json => result.to_json
     end
 
