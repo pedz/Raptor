@@ -4,8 +4,10 @@ module Retain
     before_filter :validate_retuser
     
     rescue_from Retain::LogonFailed, :with => :logon_failed
-    rescue_from Retain::FailedMarkedTrue, :with => :failed_marked_true
+    rescue_from Retain::FailedMarkedTrue, :with => :failed_marked_true 
     rescue_from Retain::SdiReaderError do |exception|
+      logger.debug("SDI Exception Stack")
+      logger.debug("#{exception.backtrace.join("\n")}")
       render :text => <<-End
         <h2 style='text-align: center; color: red;'>Retain SDI Error<br/>
             #{exception.message}<br/>

@@ -1,9 +1,12 @@
 module Combined
   class Registration < Base
     set_expire_time :never
+
     set_db_keys :signon
     add_skipped_fields :signon
     
+    set_db_constants :signon, :software_center, :hardware_center
+
     add_skipped_fields :software_center_id, :hardware_center_id
     add_extra_fields   :software_center,    :hardware_center
 
@@ -14,7 +17,7 @@ module Combined
     private
     
     def load
-      logger.debug("CMB: load for <#{self.class}:#{self.object_id}> called")
+      logger.debug("CMB: load for #{self.to_s}")
       if @cached.signon.blank?
         @cached.name = ""
         return

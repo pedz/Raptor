@@ -1,8 +1,11 @@
 module Combined
   class Pmr < Base
     set_expire_time 30.minutes
+
     set_db_keys :problem, :branch, :country
     add_skipped_fields :problem, :branch, :country
+
+    set_db_constants :problem, :branch, :country, :customer
 
     add_skipped_fields :owner_id
     add_extra_fields :pmr_owner_id, :pmr_owner_name
@@ -42,7 +45,7 @@ module Combined
     private
 
     def load
-      logger.debug("CMB: load for <#{self.class.to_s}:#{"0x%x" % self.object_id}>")
+      logger.debug("CMB: load for #{self.to_s}")
       
       # Fields used for the lookup
       lookup_fields = %w{ problem branch country }

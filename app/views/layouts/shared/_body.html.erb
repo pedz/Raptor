@@ -1,7 +1,7 @@
 <!-- app/views/layouts/shared/_body.html.erb -->
   <body>
     <% if divs.nil? || divs.empty? -%>
-      <%= render :partial => 'layouts/shared/flash' %>
+      <%= render :partial => 'layouts/shared/display_flash' %>
       <%= yield %>
     <% else -%>
       <% for div in divs -%>

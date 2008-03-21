@@ -102,11 +102,9 @@ module Retain
           end
           replace_text = "<span class='#{css_class}' title='#{title + ":Click to Edit"}'>#{new_text}</span>"
           format.html { render :text => replace_text }
-          format.xml  { logger.info("RTN: xml")  }
         else
           format.html { render(:text => new_text,
                                :status => :unprocessable_entity) }
-          format.xml  { logger.info("RTN: xml")  }
         end
       end
     end
@@ -122,7 +120,6 @@ module Retain
       queue = call.queue
       center = queue.center
       personal_queues = center.queues.personal_queues.map(&:to_param)
-      logger.info("personal_queues are #{personal_queues.inspect}")
 
       # Walk through the signatures of the PMR adding to the pmr_queue
       # list only those not seen before and do not have owners.  Note

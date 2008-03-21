@@ -1,8 +1,11 @@
 module Combined
   class Center < Base
     set_expire_time :never
+
     set_db_keys :center
     add_skipped_fields :center
+
+    set_db_constants :center
 
     # Param is center.  Raises CenterNotFound if center is not in
     # database or Retain.
@@ -29,7 +32,7 @@ module Combined
     private
 
     def load
-      logger.debug("CMB: load for <#{self.class}:#{self.object_id}> called")
+      logger.debug("CMB: load for #{self.to_s}")
 
       # Pull the fields we need from the cached record into an options_hash
       options_hash = Hash[ *%w{ center }.map { |field|

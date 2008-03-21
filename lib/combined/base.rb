@@ -77,7 +77,38 @@ module Combined
         @db_keys = a
       end
       attr_reader :db_keys
-      
+
+      # db_constants are fields which will never change once they have
+      # been filled in.  So, we do not ask if the cache is valid.
+      def set_db_constants(*args)
+        a = [ *args ]
+        logger.debug("CMB: db_constants for #{self} set to #{a.inspect}")
+        a.each do |name|
+          if db_fields.include?(name)
+            logger.debug("CMB: define #{name} as constant field")
+            class_eval("def #{name}
+                    unless !(temp = @cached.#{name}).nil?
+                      call_load
+                      temp = @cached.#{name}
+                    end
+                    return temp
+                  end", __FILE__, __LINE__ - 6)
+          end
+          if db_associations.include?(name)
+            logger.debug("CMB: define #{name} as constant association")
+            class_eval("def #{name}
+                    unless !(temp = @cached.#{name}).nil?
+                      call_load
+                      temp = @cached.#{name}
+                    end
+                    temp.wrap_with_combined
+                  end", __FILE__, __LINE__ - 7)
+          end
+        end
+        @db_constants = a
+      end
+      attr_reader :db_constants
+
       def keys_only(options)
         Hash[ *options.select { |k, v| db_keys.include?(k) }.flatten ]
       end
@@ -150,26 +181,27 @@ module Combined
         @retain_fields = db_fields - @skipped_fields + @extra_fields
 
         # Define getter methods for each field
+        logger.debug("CMB: define fields and associations for #{subclass}")
         db_fields.each do |name|
-          eval("def  #{name}
-                  unless cache_valid? && !(temp = cached.#{name}).nil?
+          eval("def #{name}
+                  unless cache_valid? && !(temp = @cached.#{name}).nil?
                     call_load
-                    temp = cached.#{name}
+                    temp = @cached.#{name}
                   end
                   return temp
-                end", nil, __FILE__, __LINE__)
+                end", nil, __FILE__, __LINE__ - 6)
         end
 
         # Define getter methods for each association
         db_associations.each do |name|
           eval("def #{name}
-                  logger.debug(\"CMB: #{name} called as association for <\#{self.class}:\#{self.object_id}>\")
+                  logger.debug(\"CMB: #{name} called as association for \#{self.to_s}\")
                   unless cache_valid? && !(temp = @cached.#{name}).nil?
                     call_load
                     temp = @cached.#{name}
                   end
                   temp.wrap_with_combined
-                end", nil, __FILE__, __LINE__)
+                end", nil, __FILE__, __LINE__ - 7)
         end
       }
     end

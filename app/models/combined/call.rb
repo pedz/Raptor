@@ -1,8 +1,12 @@
 module Combined
   class Call < Base
     set_expire_time 30.minutes
+
     set_db_keys :ppg
     add_skipped_fields :ppg
+
+    set_db_constants :ppg, :queue, :pmr
+
     add_skipped_fields :queue_id, :pmr_id, :p_s_b
     add_extra_fields :problem, :branch, :country, :customer_number
     
@@ -164,7 +168,7 @@ module Combined
     private
     
     def load
-      logger.debug("CMB: load for <#{self.class.to_s}:#{"0x%x" % self.object_id}>")
+      logger.debug("CMB: load for #{self.to_s}")
       # debugger()
       cached = self.cached
 

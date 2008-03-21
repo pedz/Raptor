@@ -582,7 +582,18 @@ module Retain
     def to_debug
       r = ''
       @fields.each_pair do |k, v|
-        r << "RTN: #{k}: '#{v.value}'\n"
+        r << "RTN: #{k}: '#{v.value.inspect}'\n"
+      end
+      @raw_values.each_with_index do |item, index|
+        unless item.nil?
+          if index > 32768
+            istr = "err index #{"%4d" % (index - 32768)}"
+          else
+            istr = "    index #{"%4d" % index}"
+          end
+          value = item.map(&:retain_to_user).join(", ")
+          r << "RTN: #{istr}: [#{value}]\n" unless item.nil?
+        end
       end
       r
     end
@@ -611,7 +622,7 @@ module Retain
         @fields[sym] = v
       end
       new_fields.raw_values.each_with_index do |item, index|
-        logger.debug("RTN: merge_fields: index #{index}") if item
+        logger.debug("RTN: merge_fields: index #{index}") unless item.nil?
         @raw_values[index] = item
       end
     end

@@ -1,2 +1,14 @@
 
 td.ret-time { text-align: right; }
+
+#flash-error {
+    color: red;
+}
+
+#flash-warn {
+    color: orange;
+}
+
+#flash-notice {
+    color: green;
+}

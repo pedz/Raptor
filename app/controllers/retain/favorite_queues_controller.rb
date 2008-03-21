@@ -61,11 +61,13 @@ module Retain
       options = center_options.merge(queue_options)
 
       if (center = Combined::Center.from_options(options)).nil?
+        logger.debug("bad center")
         flash[:error] = "Center is not valid"
         center = Combined::Center.new(options)
         queue = center.queues.build(queue_options)
         queue_valid = false
       elsif (queue = center.queues.from_options(options)).nil?
+        logger.debug("bad queue")
         flash[:error] = "Queue is not valid"
         queue = center.queues.build(queue_options)
         queue_valid = false

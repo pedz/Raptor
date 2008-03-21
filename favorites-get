@@ -1,0 +1,3 @@
+select u.ldap_id, q.queue_name, q.h_or_s, c.center
+  from favorite_queues f, users u, cached_queues q, cached_centers c
+  where f.user_id = u.id and f.queue_id = q.id and q.center_id = c.id;

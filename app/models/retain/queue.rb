@@ -7,7 +7,7 @@ module Retain
       super(options)
     end
 
-    # Returns true if the call is a valid call.  For now, we just
+    # Returns true if the queue is a valid queue.  For now, we just
     # return true.  We might do a fetch from retain if we find we need
     # to.
     def self.valid?(options)

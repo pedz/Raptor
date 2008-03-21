@@ -1,8 +1,11 @@
 module Combined
   class Queue < Base
     set_expire_time 30.minutes
+
     set_db_keys :queue_name, :h_or_s
     add_skipped_fields :queue_name, :h_or_s
+
+    set_db_constants :queue_name, :h_or_s, :center
 
     # Param is queue_name,h_or_s,center.  Raises QueueNotFound if
     # queue is not in database or Retain.
@@ -51,7 +54,7 @@ module Combined
     private
 
     def load
-      logger.debug("CMB: load for <#{self.class}:#{self.object_id}> called")
+      logger.debug("CMB: load for #{self.to_s}")
       cached = self.cached
       
       # This could be generallized but for now lets just do this

@@ -4,6 +4,8 @@ module Combined
     set_db_keys :country, :customer_number
     add_skipped_fields :country, :customer_number
     
+    set_db_constants :country, :customer_number, :center
+
     add_skipped_fields :center_id
     add_extra_fields   :center
 
@@ -28,7 +30,7 @@ module Combined
     private
     
     def load
-      logger.debug("CMB: load for <#{self.class}:#{self.object_id}> called")
+      logger.debug("CMB: load for #{self.to_s}")
 
       # Pull the fields we need from the cached record into an options_hash
       options_hash = Hash[ *%w{  country customer_number }.map { |field|

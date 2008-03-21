@@ -76,15 +76,11 @@ module Cached
       temp
     end
 
-    def to_combined
-      # logger.debug("CHC: to_combined <#{self.class}:#{self.object_id}>")
-      self.class.combined_class.new(self)
-    end
-
     def wrap_with_combined
       # logger.debug("CHC: wrap Cached <#{self.class}:#{self.object_id}>")
-      self.class.combined_class.new(self)
+      @combined ||= self.class.combined_class.new(self)
     end
+    alias to_combined wrap_with_combined
 
     def self.inherited(subclass)
       super(subclass)

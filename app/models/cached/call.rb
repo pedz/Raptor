@@ -5,8 +5,9 @@ module Cached
     belongs_to :pmr,   :class_name => "Cached::Pmr"
 
     def needs_initial_response?
-      center = self.queue.center.center
-      self.pmr.signature_line_stypes('CT').all? { |sig|
+      cmb = to_combined
+      center = cmb.queue.center.center
+      cmb.pmr.signature_line_stypes('CT').all? { |sig|
         sig.center != center
       }
     end
@@ -16,7 +17,7 @@ module Cached
       if sig = center_entry_sig(center)
         sig.date
       else
-        self.pmr.create_time
+        to_combined.pmr.create_time
       end
     end
 
@@ -33,7 +34,7 @@ module Cached
       # is blank).  If we hit a CR with the center, we return the
       # previous signature.  Otherwise, we return the last signature
       # for the primary.
-      sig = pmr.signature_line_stypes('CR').inject(nil) { |prev, s|
+      sig = to_combined.pmr.signature_line_stypes('CR').inject(nil) { |prev, s|
         if s.ptype == ' '
           if s.center == center
             return @entry_sig[center] = prev

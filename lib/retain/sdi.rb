@@ -136,10 +136,10 @@ module Retain
       new_fields = scan_fields(Fields.new, @reply[128...@reply.length])
       req_fields.merge!(new_fields)
 
-      logger.info(new_fields.to_debug)
       unless @rc == 0
+        logger.error("RTN: request fields:\n#{fields.to_debug}")
         hex_dump("#{options[:request]} request", send)
-        logger.info(new_fields.to_debug)
+        logger.error("RTN: return fields:\n#{new_fields.to_debug}")
         hex_dump("#{options[:request]} reply", @reply)
       end
     end
@@ -231,17 +231,17 @@ module Retain
     end
     
     def hex_dump(title, s)
-      logger.info("RTN: #{title}")
+      logger.error("RTN: #{title}")
       line = "     "
       (0..19).each { |b| line << ("%2d " % b) }
-      logger.info("RTN: #{line}")
+      logger.error("RTN: #{line}")
       foo = 0
       until s.nil?
         line = ("%3d:" % foo)
         foo += 20
         l = s.length > 20 ? 20 : s.length
         s[0...l].each_byte { |b| line << (" %02x" % b) }
-        logger.info("RTN: #{line}")
+        logger.error("RTN: #{line}")
         s = s[20...s.length]
       end
     end

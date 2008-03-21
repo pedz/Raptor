@@ -18,7 +18,7 @@ module Retain
       "BlahBlahBlah"
     end
 
-    # Returns true if the call is a valid call.  For now, we just
+    # Returns true if the psar is a valid psar.  For now, we just
     # return true.  We might do a fetch from retain if we find we need
     # to.
     def self.valid?(options)

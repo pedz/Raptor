@@ -1,0 +1,6 @@
+<!-- app/views/layouts/shared/_display_flash.html.erb -->
+<% unless flash.nil? -%>
+  <% flash.keys.each do |key| -%>
+    <p id="flash-<%= key.to_s %>"><%= flash[key] %></p>
+  <% end -%>
+<% end -%>
