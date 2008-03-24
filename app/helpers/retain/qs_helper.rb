@@ -264,11 +264,12 @@ module Retain
     end
     
     def popup(hash = { })
-      "<popup-wrapper>" +
-      "<popup#{hash.keys.map { |key| " #{key}='#{hash[key]}'"}}>" +
+      hash = { :class => "popup"}.merge(hash)
+      "<div class='popup-wrapper'>" +
+      "<span#{hash.keys.map { |key| " #{key}='#{hash[key]}'"}}>" +
       yield +
-      "</popup>" +
-      "</popup-wrapper>"
+      "</span>" +
+      "</div>"
     end
     
     def div(hash = { })

@@ -3,14 +3,14 @@ span.ecpaat-heading {
 }
 
 /* needed to get pop ups to position */
-popup-wrapper {
+.popup-wrapper {
   position: relative;
   display: block;
 }
 
 /* defined new element called popup */
-popup {
-  display: block;
+.popup {
+  display: none;
   position: absolute;
   top: -5px;
   left: 25px;
@@ -21,13 +21,14 @@ popup {
   text-align: left;
 }
 
-/* normally popups are not seen */
-div.links a popup {
+/* normally popups are not seen
+div.links a span.popup {
   display: none;
 }
+ */
 
 /* hover over a popup to display it */
-div.links a:hover popup {
+div.links a:hover .popup {
   display: block;
 }
 
