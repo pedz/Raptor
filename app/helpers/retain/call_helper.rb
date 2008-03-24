@@ -1,5 +1,17 @@
 module Retain
   module CallHelper
+    def ecpaat_lines(pmr)
+      temp_hash = pmr.ecpaat
+      temp_lines = []
+      Cached::Pmr::ECPAAT_HEADINGS.each { |heading|
+        unless (lines = temp_hash[heading]).nil?
+          temp_lines << "<span class='ecpaat-heading'>" + heading + ": " + "</span>" +
+            lines.shift
+          temp_lines += temp_hash[heading]
+        end
+      }
+      temp_lines.join("<br/>\n")
+    end
     #
     # line should be a Retain::TextLine.  index is the line number
     # within the PMR

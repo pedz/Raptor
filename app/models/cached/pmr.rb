@@ -31,8 +31,13 @@ module Cached
              :order => "line_number",
              :foreign_key => "pmr_id")
 
+    def all_text_lines
+      to_combined.text_lines
+    end
+    once :all_text_lines
+    
     def signature_lines
-      to_combined.text_lines.find_all { |text_line|
+      all_text_lines.find_all { |text_line|
         text_line.text_type == :signature
       }.map { |text_line|
         Retain::SignatureLine.new(text_line.text)
@@ -94,6 +99,90 @@ module Cached
       DateTime.now - create_time
     end
     once :age
+
+    ENVIRONMENT  = "environment|env".freeze
+    CUSTOMER     = "customer rep".freeze
+    PROBLEM      = "problem".freeze
+    ACTION_TAKEN = "action taken".freeze
+    ACTION_PLAN  = "action plan".freeze
+    TESTCASE     = "testcase".freeze
+    ECPAAT_HEADINGS = [ "Environment",
+                        "Customer Rep",
+                        "Problem",
+                        "Action Taken",
+                        "Action Plan",
+                        "Testcase" ].freeze
+    ECPAAT_REGEXP = Regexp.new("^(" +
+                               "(#{ENVIRONMENT})|" +
+                               "(#{CUSTOMER})|" +
+                               "(#{PROBLEM})|" +
+                               "(#{ACTION_TAKEN})|" +
+                               "(#{ACTION_PLAN})|" +
+                               "(#{TESTCASE})" +
+                               "): *(.*)$", Regexp::IGNORECASE).freeze
+
+    #
+    # The Anderson tools puts a '.' on a line to create an empty line.
+    # The regexp below is true if the whole line is blank or if the
+    # initial character is a period followed by blanks.
+    BLANK_REGEXP = Regexp.new("^[. ] *$").freeze
+    
+    def ecpaat_lines
+      temp_hash = ecpaat
+      temp_lines = []
+      ECPAAT_HEADINGS.each { |heading|
+        unless (lines = temp_hash[heading]).nil?
+          temp_lines << heading + ": " + lines.shift
+          temp_lines += temp_hash[heading]
+        end
+      }
+      temp_lines
+    end
+    once :ecpaat_lines
+    
+    def ecpaat
+      h = { }
+      current_section = nil
+      add_blank_line = false
+      first_line = false
+      all_text_lines.find_all { |text_line|
+        if text_line.text_type == :normal
+          text = text_line.text
+          if (md = ECPAAT_REGEXP.match(text))
+            current_section = get_current_section(md)
+            h[current_section] = []
+            text = md[8]
+            add_blank_line = false
+            first_line = true
+            logger.debug("CHC: ECPAAT found #{current_section}")
+          end
+          if current_section
+            if BLANK_REGEXP.match(text)
+              add_blank_line = true unless first_line
+            else
+              first_line = false
+              if add_blank_line
+                h[current_section] << ""
+              end
+              h[current_section] << text
+              add_blank_line = false
+            end
+          end
+        else                    # end of section
+          current_section = nil
+        end
+      }
+      h
+    end
+    once :ecpaat
+
+    private
+
+    def get_current_section(md)
+      logger.debug("CHC: get_current_section: md[2]=#{md[2].inspect}, md[3]=#{md[3].inspect}")
+      index = (0 .. 5).select { |i| !md[i+2].nil? }.first
+      ECPAAT_HEADINGS[index]
+    end
 
   end
 end

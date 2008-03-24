@@ -2,6 +2,31 @@ require 'time'
 
 module Retain
   module QsHelper
+    def ecpaat_lines(pmr)
+      temp_hash = pmr.ecpaat
+      temp_lines = []
+      Cached::Pmr::ECPAAT_HEADINGS.each { |heading|
+        unless (lines = temp_hash[heading]).nil?
+          temp_lines << "<span class='ecpaat-heading'>" + heading + ": " + "</span>" +
+            lines.shift
+          temp_lines += temp_hash[heading]
+        end
+      }
+      temp_lines.join("<br/>\n")
+    end
+
+    def link_etc(call)
+      popup_text = popup do
+        ecpaat_lines(call.pmr)
+      end
+      text = call.pmr.pbc + popup_text
+      td do
+        div :class => "links" do
+          link_to text, call
+        end
+      end
+    end
+
     # Returns a class for the call row based upon the call
     def call_class(call)
       return "system-down" if call.system_down
@@ -236,6 +261,20 @@ module Retain
       "<span#{hash.keys.map { |key| " #{key}='#{hash[key]}'"}}>" +
       yield +
       "</span>"
+    end
+    
+    def popup(hash = { })
+      "<popup-wrapper>" +
+      "<popup#{hash.keys.map { |key| " #{key}='#{hash[key]}'"}}>" +
+      yield +
+      "</popup>" +
+      "</popup-wrapper>"
+    end
+    
+    def div(hash = { })
+      "<div#{hash.keys.map { |key| " #{key}='#{hash[key]}'"}}>" +
+      yield +
+      "</div>"
     end
   end
 end

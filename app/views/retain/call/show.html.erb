@@ -96,7 +96,7 @@
 	<span id='scratch-header' class='click-tag' for='scratch-lines'>Scratch Pad</span>,
 	<span id='contact-header' class='click-tag' for='contact-lines'>Contact Info</span><br/>
 	<span id='ecpaat-lines' class='click-data'>
-	  <%= @ecpaat_lines %>
+	  <%= ecpaat_lines(@pmr) %>
 	</span>
 	<span id='scratch-lines' class='click-data'>
 	  <% for sp_line in @pmr.scratch_pad_lines %>

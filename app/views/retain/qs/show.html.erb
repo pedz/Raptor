@@ -35,7 +35,7 @@
 	<% @queue.calls.each_with_index do |call, index| -%>
           <tr class='<%= call_class(call) %>'>
   	    <td><%= button_url(index += 1, call) %></td>
-  	    <td><%= link_to call.pmr.pbc, call %></td>
+	    <%= link_etc(call) %>
   	    <td><%= call.p_s_b %></td>
 	    <%= pri_sev(call) %>
 	    <%= owner(call) %>
@@ -54,12 +54,7 @@
 <% end %>
 <% content_for(:bottom) do %>
   <ul style='color: green'>
-    <li>Setting of Next Queue is fixed</li>
-    <li>"Customer Time of Day" likely will go away -- let me know if you want it to stay</li>
-    <li>"Last CT" likely will go away -- let me know if you want it to stay</li>
-    <li>By the way, type "Home" and hit return to go home.  Similar
-    for all buttons. e.g. 1&lt;return&gt; will show the first
-    call</li>
+    <li>Hover over PMR number to see ECPAAT</li>
   </ul>
   <div>
     <%= button_url("Home", "/") %>

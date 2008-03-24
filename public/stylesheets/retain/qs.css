@@ -1,3 +1,35 @@
+span.ecpaat-heading {
+    color: green;
+}
+
+/* needed to get pop ups to position */
+popup-wrapper {
+  position: relative;
+  display: block;
+}
+
+/* defined new element called popup */
+popup {
+  display: block;
+  position: absolute;
+  top: -5px;
+  left: 25px;
+  color: #AAA;
+  width: 80ex;
+  z-index: 100;
+  background: black;
+  text-align: left;
+}
+
+/* normally popups are not seen */
+div.links a popup {
+  display: none;
+}
+
+/* hover over a popup to display it */
+div.links a:hover popup {
+  display: block;
+}
 
 .system-down {
     background-color: red;

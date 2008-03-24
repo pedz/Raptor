@@ -1,32 +1,5 @@
 module Retain
   class CallController < RetainController
-    ENVIRONMENT  = "environment|env".freeze
-    CUSTOMER     = "customer rep".freeze
-    PROBLEM      = "problem".freeze
-    ACTION_TAKEN = "action taken".freeze
-    ACTION_PLAN  = "action plan".freeze
-    TESTCASE     = "testcase".freeze
-    ECPAAT_HEADINGS = [ "Environment",
-                        "Customer Rep",
-                        "Problem",
-                        "Action Taken",
-                        "Action Plan",
-                        "Testcase" ].freeze
-    ECPAAT_REGEXP = Regexp.new("^(" +
-                               "#{ENVIRONMENT}|" +
-                               "#{CUSTOMER}|" +
-                               "#{PROBLEM}|" +
-                               "#{ACTION_TAKEN}|" +
-                               "#{ACTION_PLAN}|" +
-                               "#{TESTCASE}" +
-                               "): *(.*)$", Regexp::IGNORECASE).freeze
-
-    #
-    # The Anderson tools puts a '.' on a line to create an empty line.
-    # The regexp below is true if the whole line is blank or if the
-    # initial character is a period followed by blanks.
-    BLANK_REGEXP = Regexp.new("^[. ] *$").freeze
-    
     rescue_from Retain::SdiReaderError do |exception|
       raise exception unless exception.rc == 251
       case @exception_type
