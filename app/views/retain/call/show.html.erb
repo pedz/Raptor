@@ -107,33 +107,9 @@
 	  <%= h @call.nls_contact_name %><br/>
 	  <%= h @call.contact_phone_1 %><br/>
 	  <%= h @call.contact_phone_2 %><br/>
-	  <script>
-function getSelText()
-{
-    if (window.getSelection) {
-        console.log("1");
-        return window.getSelection();
-    }
-    if (document.getSelection) {
-        console.log("2");
-        return document.getSelection();
-    }
-    if (document.selection) {
-        console.log("3");
-        return document.selection.createRange().text;
-    }
-    return '';
-}
-
-function newUrl(to,sub)
-{
-   txt = getSelText();
-   $("blahblah").href = "mailto:" + to + "?subject=" + sub + "&body=" + txt
-}
-	  </script>
-	  <a id='blahblah'
+	  <a id='mailto'
 	     href="#"
-	     onclick='newUrl("<%= h @pmr.problem_e_mail %>", "PMR <%= @pmr.pbc.upcase %>");'>
+	     onclick='Raptor.newUrl("<%= h @pmr.problem_e_mail.strip %>", "PMR <%= @pmr.pbc.upcase %>");'>
 	    <%= h @pmr.problem_e_mail %>
 	  </a><br/>
 	</span>

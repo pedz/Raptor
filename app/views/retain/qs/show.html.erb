@@ -5,6 +5,7 @@
 <% end %>
 <% content_for(:center) do %>
   <div class="smaller">
+    <span id="blah"></span>
     <table class='sortable' style='font-family : courier, monospace'>
       <thead>
 	<tr>
@@ -26,9 +27,9 @@
 	    <br>
 	    <span title='Severity Days is the age of the PMR in days multiplied by a factor based upon the current severity'>SevD</span>
 	  </th>
-	  <th>Customer Time of Day</th>
-	  <th>Last CT</th>
+	  <th>Email Customer</th>
 	  <th>Next CT</th>
+	  <th>Dispatch</th>
 	</tr>
       </thead>
       <tbody>
@@ -43,9 +44,9 @@
 	    <%= next_queue(call) %>
 	    <%= age(call) %>
 	    <%= jeff(call) %>
-	    <%= cust_tod(call) %>
-	    <%= last_ct(call) %>
+	    <%= cust_email(call) %>
 	    <%= next_ct(call) %>
+	    <td><%= link_to_remote("dispatch", :url => dispatch_combined_call_path(call)) %></td>
   	  </tr>
         <% end -%>
       </tbody>
@@ -55,6 +56,11 @@
 <% content_for(:bottom) do %>
   <ul style='color: green'>
     <li>Hover over PMR number to see ECPAAT</li>
+    <li>Each section of ECPAAT is now limited to 5 lines</li>
+    <li>Customer Time of Day moved into ECPAAT section</li>
+    <li>Time of last CT can be seen by hovering over Next CT</li>
+    <li>"dispatch" will dispatch you to the pmr... I'd advise against
+    using it yet.</li>
   </ul>
   <div>
     <%= button_url("Home", "/") %>

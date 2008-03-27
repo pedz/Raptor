@@ -155,6 +155,7 @@ module Retain
       :region_of_call_origin       => [  582, :ebcdic,          2 ],
       :call_survey_code            => [  583, :ebcdic,          4 ],
       :call_bypass_list            => [  584, :ebcdic,         19 ],
+      :operand                     => [  585, :upper_ebcdic,    4 ],
       :secondary_login             => [  586, :upper_ebcdic,    6 ],
       :profile_exceptions_message  => [  596, :ebcdic,         64 ],
       :new_excessive_call          => [  597, :ebcdic,          1 ],

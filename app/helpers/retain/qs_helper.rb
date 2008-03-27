@@ -2,14 +2,34 @@ require 'time'
 
 module Retain
   module QsHelper
+    def cust_email(call)
+      pmr = call.pmr
+      if (mail = pmr.problem_e_mail.strip).blank?
+        td do
+          "No Email Given"
+        end
+      else
+        href = "mailto:#{mail}?subject=#{pmr.pbc.upcase}"
+        td do
+          a :href => href do
+            mail
+          end
+        end
+      end
+    end
+
     def ecpaat_lines(pmr)
       temp_hash = pmr.ecpaat
-      temp_lines = []
+      n = DateTime.now.new_offset(pmr.customer.tz)
+      
+      temp_lines =[ "<span class='ecpaat-heading'>Customer Time of Day: </span>" +
+                    "#{n.strftime("%a, %d %b %Y %H:%M")}" ]
       Cached::Pmr::ECPAAT_HEADINGS.each { |heading|
         unless (lines = temp_hash[heading]).nil?
           temp_lines << "<span class='ecpaat-heading'>" + heading + ": " + "</span>" +
             lines.shift
-          temp_lines += temp_hash[heading]
+          lines = lines[0 .. 4] + [ " ..." ] if lines.length > 5
+          temp_lines += lines
         end
       }
       temp_lines.join("<br/>\n")
@@ -233,6 +253,9 @@ module Retain
         nt = ct_normal_response_requirement(call)
       end
 
+      last_ct_time = call.pmr.last_ct_time.new_offset(signon_user.tz)
+      title = "Last CT: #{last_ct_time.strftime("%a, %d %b %Y %H:%M")}"
+
       now = DateTime.now
       if now > nt
         text = "CT Overdue"
@@ -246,7 +269,7 @@ module Retain
           css_class = "normal"
         end
       end
-      td :class => css_class do
+      td :class => css_class, :title => title do
         text
       end
     end
@@ -276,6 +299,12 @@ module Retain
       "<div#{hash.keys.map { |key| " #{key}='#{hash[key]}'"}}>" +
       yield +
       "</div>"
+    end
+    
+    def a(hash = { })
+      "<a#{hash.keys.map { |key| " #{key}='#{hash[key]}'"}}>" +
+      yield +
+      "</a>"
     end
   end
 end

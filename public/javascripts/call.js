@@ -1,4 +1,25 @@
 
+Raptor.getSelText = function () {
+    if (window.getSelection) {
+        return window.getSelection();
+    }
+    if (document.getSelection) {
+        return document.getSelection();
+    }
+    if (document.selection) {
+        return document.selection.createRange().text;
+    }
+    return '';
+};
+
+Raptor.newUrl = function(to, sub) {
+    Raptor.didNewUrl = true;
+    txt = Raptor.getSelText();
+    $("mailto").href = "mailto:" + to + "?subject=" + sub + "&body=" + txt
+};
+
+Raptor.didNewUrl = false;
+
 document.observe('dom:loaded', function() {
     Raptor.right = $('right');
     Raptor.right_tab = $('right-tab');
@@ -30,9 +51,13 @@ document.observe('dom:loaded', function() {
     $$('.click-data').each(function (ele) {
 	ele.hide();
 	ele.observe('click', function (event) {
-	    event.stop();
-	    ele.hide();
-	    Raptor.recalc_dimensions();
+	    if (Raptor.didNewUrl) {
+		Raptor.didNewUrl = false
+	    } else {
+		event.stop();
+		ele.hide();
+		Raptor.recalc_dimensions();
+	    }
 	});
     });
 

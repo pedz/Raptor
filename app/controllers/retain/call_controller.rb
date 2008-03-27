@@ -28,6 +28,26 @@ module Retain
     def update
     end
     
+    def dispatch
+      logger.debug("here")
+      fields = params[:id].split(',')
+      options = {
+        :operand => "CD  ",
+        :queue_name => fields[0],
+        :h_or_s => fields[1],
+        :center => fields[2],
+        :ppg => fields[3]
+      }
+      dispatch = Retain::Pmcu.new(options)
+      begin
+        dispatch.sendit(Retain::Fields.new)
+      rescue
+        true
+      end
+      logger.debug("rc = #{dispatch.rc}")
+      render(:update) { |page| page.replace_html 'blah', "rc is #{dispatch.rc}"}
+    end
+
     # Currently all the editable attributes that call PMPU fall into
     # this routine.  I might want to split it apart.  Not sure what to
     # do here.
