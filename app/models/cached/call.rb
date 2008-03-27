@@ -5,6 +5,7 @@ module Cached
     belongs_to :pmr,   :class_name => "Cached::Pmr"
 
     def needs_initial_response?
+      return false if p_s_b != 'P'
       cmb = to_combined
       center = cmb.queue.center.center
       cmb.pmr.signature_line_stypes('CT').all? { |sig|
