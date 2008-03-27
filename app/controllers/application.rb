@@ -24,6 +24,19 @@ class ApplicationController < ActionController::Base
   # the session.
   #
   def authenticate
+    last_uri = session[:last_uri]
+    uri =  request.env["REQUEST_URI"]
+    logger.debug("last_uri = #{last_uri}, uri = #{uri}")
+    if last_uri == uri
+      flash[:notice] = "Fully Refreshed"
+      @refresh_time = Time.now
+      logger.debug("doing a refresh")
+    else
+      @refresh_time = nil
+      logger.debug("not refreshing")
+    end
+    session[:last_uri] = uri
+    
     return true if session[:user]
     ActiveLdap::Base.establish_connection
     authenticate_or_request_with_http_basic "Raptor" do |user_name, password|

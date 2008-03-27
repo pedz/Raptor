@@ -2,6 +2,7 @@
 <% @title = "Retain queue: #{@queue.to_param}" -%>
 <% content_for(:top) do %>
   <h1>Retain Queue: <%= h @queue.to_param %></h1>
+  <%= render :partial => 'layouts/shared/display_flash' %>
 <% end %>
 <% content_for(:center) do %>
   <div class="smaller">
@@ -61,6 +62,7 @@
     <li>Time of last CT can be seen by hovering over Next CT</li>
     <li>"dispatch" will dispatch you to the pmr... I'd advise against
     using it yet.</li>
+    <li>Refresh (reload) now causes db for queue, calls, and pmrs to be refreshed</li>
   </ul>
   <div>
     <%= button_url("Home", "/") %>

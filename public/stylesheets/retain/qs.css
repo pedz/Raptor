@@ -1,5 +1,5 @@
 span.ecpaat-heading {
-    color: green;
+    color: #0F0;
 }
 
 /* needed to get pop ups to position */
@@ -14,7 +14,7 @@ span.ecpaat-heading {
   position: absolute;
   top: -5px;
   left: 25px;
-  color: #AAA;
+  color: #FFF;
   width: 80ex;
   z-index: 100;
   background: black;
