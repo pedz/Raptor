@@ -7,7 +7,7 @@ module Retain
     end
 
     def self.valid?(options)
-      gr = { :group_request => [ :software_center_mnemonic ] }
+      gr = { :group_request => [[ :software_center_mnemonic ]] }
       center = new(gr.merge(options))
       begin
         mnemonic = center.software_center_mnemonic

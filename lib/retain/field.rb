@@ -33,7 +33,11 @@ module Retain
     # done
     #
     def value
-      get_value
+      if @value.is_a?(Array)
+        @value.map { |line| decode(line) }
+      else
+        decode(@value)
+      end
     end
 
     #
@@ -72,15 +76,9 @@ module Retain
       @dirty
     end
 
-    #
-    # This is the raw value as a string
-    #
+    # Raw Retain value as a string (a sequence of bytes)
     def to_s
-      if @value.is_a?(Array)
-        group_request(@value)
-      else
-        @value.to_s
-      end
+      @value.to_s
     end
 
     private
@@ -125,21 +123,23 @@ module Retain
       if value.nil?
         return @value = value
       end
-      if value.is_a?(Array)
+      # :group is a special case.  I can't figure out how to not make
+      # it one.  So, if the @cvt is :group, we expect value to be an
+      # array.  We look at the first value.  If IT is also an array,
+      # when we treat it as an array of :group's.
+      if @cvt == :group
+        is_array = value.is_a?(Array) && value[0].is_a?(Array)
+      else
+        is_array = value.is_a? Array
+      end
+      
+      if is_array
         @value = value.map { |line| encode(line) }
       else
         @value = encode(value)
       end
     end
     
-    def get_value
-      if @value.is_a?(Array)
-        @value.map { |line| decode(line) }
-      else
-        decode(@value)
-      end
-    end
-
     def encode(value)
       if @width.nil? || @width < 0
         width = value.length
@@ -171,6 +171,8 @@ module Retain
         encode_center(value.trim(3))
       when :binary
         value
+      when :group
+        group_request(value)
       when :number              # space filled number
         ("%#{width}d" % value).user_to_retain
       when :znumber             # zero filled number
@@ -189,7 +191,7 @@ module Retain
       when :nls_text_lines
         raise "Can not encode nls text lines yet"
       when :text_lines
-        raise "Can not encode text lines yet"
+        value.trim(width).user_to_retain
       else
         raise "Unknown version method: #{@cvt}"
       end
@@ -216,6 +218,8 @@ module Retain
         value[2, 1000000000].retain_to_user(cs)
       when :binary_center
         decode_center(value)
+      when :group
+        value.unpack("n*").map { |index| Fields.index_to_sym(index) }
       when :binary
         value
       when :short

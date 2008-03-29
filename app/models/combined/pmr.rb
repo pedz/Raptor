@@ -63,7 +63,7 @@ module Combined
       temp_id = "%s,%s,%s" % [ @cached.problem, @cached.branch, @cached.country ]
       if @cached.alteration_date
         logger.debug("CMB: #{temp_id} alteration date set")
-        options_hash[:group_request] = [ :alteration_date, :alteration_time ]
+        options_hash[:group_request] = [[ :alteration_date, :alteration_time ]]
         pmr = Retain::Pmr.new(options_hash)
         if (@cached.alteration_date == pmr.alteration_date) &&
             (@cached.alteration_time == pmr.alteration_time)
@@ -80,13 +80,14 @@ module Combined
       group_request_elements = Combined::Pmr.retain_fields.map { |field| field.to_sym }
       
       # Fields we need for the scratch pad, text_lines, etc.
-      group_request_elements += [ :scratch_pad_signature,
-                                  :nls_scratch_pad_1,
-                                  :nls_scratch_pad_2, 
-                                  :nls_scratch_pad_3,
-                                  :alterable_format_lines,
-                                  :nls_text_lines,
-                                  :information_text_lines
+      group_request_elements += [
+                                 :scratch_pad_signature,
+                                 :nls_scratch_pad_1,
+                                 :nls_scratch_pad_2, 
+                                 :nls_scratch_pad_3,
+                                 :alterable_format_lines,
+                                 :nls_text_lines,
+                                 :information_text_lines
                                 ]
       
       if @cached.alteration_date
@@ -98,7 +99,7 @@ module Combined
       end
       
       # Fields we need for the add text lines.
-      options_hash[:group_request] = group_request_elements
+      options_hash[:group_request] = [ group_request_elements ]
       
       pmr = Retain::Pmr.new(options_hash)
       # Touch something to do the fetch from retain

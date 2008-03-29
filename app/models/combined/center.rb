@@ -40,7 +40,7 @@ module Combined
 
       # :group_request is a special case
       group_request = self.class.combined_class.retain_fields.map { |field| field.to_sym }
-      options_hash[:group_request] = group_request
+      options_hash[:group_request] = [ group_request ]
 
       # Setup Retain object
       retain_object = self.class.retain_class.new(options_hash)

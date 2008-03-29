@@ -89,25 +89,16 @@ module Retain
         if true
           logger.debug("RTN: required symbol: #{sym}")
         end
-        index = Fields.sym_to_index(sym)
         raise "required field #{sym} not present" unless fields.has_key?(sym)
-        v = fields[sym]
-        if false
-          logger.debug("RTN: v.class is #{v.class}")
-        end
-        request.data_element(index, v.to_s)
+        fields.add_to_req(request, sym)
       end
+
       self.class.optional_fields.each do |sym|
         if true
           logger.debug("RTN: optional symbol: #{sym}")
         end
-        index = Fields.sym_to_index(sym)
         next unless fields.has_key?(sym)
-        v = fields[sym]
-        if false
-          logger.debug("RTN: v.class is #{v.class}")
-        end
-        request.data_element(index, v.to_s)
+        fields.add_to_req(request, sym)
       end
 
       login
@@ -225,8 +216,7 @@ module Retain
         end
         fields.add_raw(ele, dat)
       end
-      # fields[Fields::DE32] = de32 unless de32.empty?
-      fields[:de32] = de32 unless de32.empty?
+      fields[:de32s] = de32 unless de32.empty?
       fields
     end
     

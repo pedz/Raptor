@@ -11,21 +11,22 @@ module Retain
     def initialize(options = {})
       super(options)
       unless @fields.has_key?(:group_request)
-        @fields[:group_request] = [
-                                   :problem,
-                                   :branch,
-                                   :country,
-                                   :psar_file_and_symbol,
-                                   :psar_fesn,
-                                   :psar_service_code,
-                                   :psar_action_code,
-                                   :psar_cia,
-                                   :psar_apar,
-                                   :psar_activity_stop_time,
-                                   :psar_system_date,
-                                   :psar_stop_date_year,
-                                   :psar_activity_date,
-                                   :psar_actual_time ]
+        @fields[:group_request] = [[
+                                    :problem,
+                                    :branch,
+                                    :country,
+                                    :psar_file_and_symbol,
+                                    :psar_fesn,
+                                    :psar_service_code,
+                                    :psar_action_code,
+                                    :psar_cia,
+                                    :psar_apar,
+                                    :psar_activity_stop_time,
+                                    :psar_system_date,
+                                    :psar_stop_date_year,
+                                    :psar_activity_date,
+                                    :psar_actual_time
+                                   ]]
       end
     end
   end

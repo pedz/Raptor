@@ -205,32 +205,24 @@ module Retain
     def initialize(options = {})
       super(options)
       unless @fields.has_key?(:group_request)
-        @fields[:group_request] = [
-                                   # :country,
-                                   :queue_name,
-                                   :center,
-                                   :queue_level,
-                                   :software_center,
-                                   :site,
-                                   # :cd_employee_number,
-                                   # :cd_employee_name,
-                                   :special_conditions
-                                  ]
+        @fields[:group_request] = [[
+                                    :queue_name,
+                                    :center,
+                                    :queue_level,
+                                    :software_center,
+                                    :site,
+                                    :special_conditions
+                                   ]]
       end
 
       unless @fields.has_key?(:list_request)
-        @fields[:list_request] = [
-                                  :signon2,
-                                  :name,
-                                  :telephone_number,
-                                  # :authority_level,
-                                  # :psar_collector_indicator,
-                                  # :dyalight_savings_time,
-                                  # :app_driver_signon,
-                                  # :time_zone_adjustment,
-                                  :user_status_information,
-                                  :queue_status_flag
-                                 ]
+        @fields[:list_request] = [[
+                                   :signon2,
+                                   :name,
+                                   :telephone_number,
+                                   :user_status_information,
+                                   :queue_status_flag
+                                  ]]
       end
     end
   end

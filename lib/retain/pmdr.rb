@@ -138,10 +138,10 @@ module Retain
     def initialize(options = {})
       super(options)
       unless @fields.has_key?(:group_request)
-        @fields[:group_request] = [
-                                   :name,
-                                   :secondary_support_list
-                                  ]
+        @fields[:group_request] = [[
+                                    :name,
+                                    :secondary_support_list
+                                   ]]
       end
     end
   end

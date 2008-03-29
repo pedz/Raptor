@@ -30,7 +30,7 @@
 	  </th>
 	  <th>Email Customer</th>
 	  <th>Next CT</th>
-	  <th>Dispatch</th>
+	  <th>CT</th>
 	</tr>
       </thead>
       <tbody>
@@ -47,7 +47,7 @@
 	    <%= jeff(call) %>
 	    <%= cust_email(call) %>
 	    <%= next_ct(call) %>
-	    <td><%= link_to_remote("dispatch", :url => dispatch_combined_call_path(call)) %></td>
+	    <td><%= link_to_remote("ct", :url => ct_combined_call_path(call)) %></td>
   	  </tr>
         <% end -%>
       </tbody>
@@ -60,8 +60,7 @@
     <li>Each section of ECPAAT is now limited to 5 lines</li>
     <li>Customer Time of Day moved into ECPAAT section</li>
     <li>Time of last CT can be seen by hovering over Next CT</li>
-    <li>"dispatch" will dispatch you to the pmr... I'd advise against
-    using it yet.</li>
+    <li>"CT" will CT the pmr.  It has worked once...</li>
     <li>Refresh (reload) now causes db for queue, calls, and pmrs to be refreshed</li>
   </ul>
   <div>

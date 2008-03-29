@@ -32,20 +32,27 @@ module Retain
       logger.debug("here")
       fields = params[:id].split(',')
       options = {
-        :operand => "CD  ",
         :queue_name => fields[0],
         :h_or_s => fields[1],
         :center => fields[2],
         :ppg => fields[3]
       }
-      dispatch = Retain::Pmcu.new(options)
-      begin
-        dispatch.sendit(Retain::Fields.new)
-      rescue
-        true
+      dispatch = do_pmcu("CD  ", options)
+      logger.debug("dispatch rc = #{dispatch.rc}")
+      if dispatch.rc != 0
+        render(:update) { |page| page.replace_html 'blah', "dispatch rc is #{dispatch.rc}"}
       end
-      logger.debug("rc = #{dispatch.rc}")
-      render(:update) { |page| page.replace_html 'blah', "rc is #{dispatch.rc}"}
+      ct = do_pmcu("CT  ", options)
+      logger.debug("ct rc = #{ct.rc}")
+      if ct.rc != 0
+        render(:update) { |page| page.replace_html 'blah', "ct rc is #{ct.rc}"}
+      end
+      undispatch = do_pmcu("NOCH", options)
+      logger.debug("undispatch rc = #{undispatch.rc}")
+      if undispatch.rc != 0
+        render(:update) { |page| page.replace_html 'blah', "undispatch rc is #{undispatch.rc}"}
+      end
+      render(:update) { |page| page.replace_html 'blah', "ct completed"}
     end
 
     # Currently all the editable attributes that call PMPU fall into
@@ -130,6 +137,19 @@ module Retain
       end
       result = pmr_queues.reverse + center.queues.team_queues.map(&:to_param)
       render :json => result.to_json
+    end
+
+    private
+
+    def do_pmcu(cmd, options)
+      options = { :operand => cmd }.merge(options)
+      pmcu = Retain::Pmcu.new(options)
+      begin
+        pmcu.sendit(Retain::Fields.new)
+      rescue
+        return nil
+      end
+      return pmcu
     end
 
   end

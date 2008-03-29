@@ -10,7 +10,7 @@ module Retain
                       ]
       options = {
         :apar_number => params[:id],
-        :group_request => group_request
+        :group_request => [ group_request ]
       }
       @apar = Retain::Apar.new(options)
     end

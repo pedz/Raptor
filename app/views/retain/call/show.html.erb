@@ -187,13 +187,17 @@
     <%= button_url("PSAR", retain_psar_path) %>
     <%= button_url("Registration", @registration) %>
     <%= button("Update", "Raptor.updateToggle();") %>
-    <form id='update-form'>
-      <textarea rows="10" cols="72">Action Taken:
+    <div id="update-form">
+      <span id="addtxt-reply">&nbsp;</span>
+      <% form_remote_tag :url => addtxt_combined_pmr_path(@pmr) do %>
+        <textarea name="newtext" rows="10" cols="72">Action Taken:
 
 
 Action Plan:
 
-      </textarea>
-    </form>
+        </textarea><br/>
+	<%= submit_tag "Addtxt" %>
+      <% end %>
+    </div>
   </div>
 <% end %>

@@ -9,19 +9,19 @@ module Retain
     def initialize(options = {})
       super(options)
       unless @fields.has_key?(:group_request)
-        @fields[:group_request] = [
-                                   :problem,
-                                   :branch,
-                                   :country,
-                                   :cpu_type,
-                                   :comments,
-                                   :nls_customer_name,
-                                   :nls_contact_name,
-                                   :contact_phone_1,
-                                   :contact_phone_2,
-                                   :priority,
-                                   :category,
-                                  ]
+        @fields[:group_request] = [[
+                                    :problem,
+                                    :branch,
+                                    :country,
+                                    :cpu_type,
+                                    :comments,
+                                    :nls_customer_name,
+                                    :nls_contact_name,
+                                    :contact_phone_1,
+                                    :contact_phone_2,
+                                    :priority,
+                                    :category,
+                                   ]]
       end
     end
   end

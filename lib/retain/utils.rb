@@ -105,6 +105,38 @@ class String
   def ret2ushort
     self.unpack("n")[0]
   end
+
+  def singular?
+    singularize == self
+  end
+
+  def plural?
+    pluralize == self
+  end
+end
+
+class Symbol
+  def singularize
+    self.to_s.singularize.to_sym
+  end
+
+  def pluralize
+    self.to_s.pluralize.to_sym
+  end
+
+  def singular?
+    singularize == self
+  end
+
+  def plural?
+    pluralize == self
+  end
+
+  # Returns an tuple [ singular of sym, boolean if sym is plural ]
+  def to_singular_tuple
+    ssym = singularize
+    [ ssym, (self != ssym) ]
+  end
 end
 
 class Integer

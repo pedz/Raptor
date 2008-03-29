@@ -185,7 +185,7 @@ module Combined
       # :group_request is a special case
       group_request = Combined::Call.retain_fields.map { |field| field.to_sym }
       logger.debug("CMB: group_request = #{group_request.inspect}")
-      options_hash[:group_request] = group_request
+      options_hash[:group_request] = [ group_request ]
 
       call = Retain::Call.new(options_hash)
 

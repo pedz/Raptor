@@ -35,7 +35,7 @@ module Retain
     def calls
       return [] if hit_count == 0
       de32s.map do |fields|
-        temp = fields[:call_search_result].raw_value[0]
+        temp = fields.raw_field(:call_search_result).raw_value[0]
         options = { 
           :center => decode_center(temp[0 ... 2]),
           :queue_name => temp[2 ... 8].retain_to_user.strip,

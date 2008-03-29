@@ -84,5 +84,52 @@ module Retain
       end
     end
 
+    def addtxt
+      logger.debug("hi")
+      fields = params[:id].split(',')
+      options = {
+        :problem => fields[0],
+        :branch => fields[1],
+        :country => fields[2]
+      }
+      logger.debug("options=#{options.inspect}")
+      lines = params[:newtext].split("\n")
+      logger.debug("lines before=#{lines.inspect}")
+      lines = lines.map { |line|
+        if line.length <= 72
+          next [ line ]
+        end
+        l = []
+        while line.length > 72
+          this_end = 72
+          while this_end > 0 && line[this_end] != 0x20
+            this_end -= 1
+          end
+          if this_end == 0      # no spaces found
+            l << line[0 ... 72]
+            line = line[72 ... line.length]
+            next
+          end
+          
+          new_start = this_end + 1
+          while new_start < line.length && line[new_start] == 0x20
+            new_start += 1
+          end
+          l << line[0 ... this_end]
+          line = line[new_start ... line.length]
+        end
+        l
+      }.flatten
+      logger.debug("lines after=#{lines.inspect}")
+      options[:addtxt_lines] = lines
+      addtxt = Retain::Pmat.new(options)
+      begin
+        addtxt.sendit(Retain::Fields.new)
+      rescue Retain::SdiReaderError => e
+        true
+      end
+      render(:update) { |page| page.replace_html 'addtxt-reply', "Addtxt rc = #{addtxt.rc}"}
+    end
+
   end
 end

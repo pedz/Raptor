@@ -265,7 +265,7 @@ module Retain
       :time_zone                   => [  766, :ebcdic,          5 ],
       :time_zone_binary            => [  767, :short,           2 ],
       :embargoed_country           => [  878, :ebcdic,          3 ],
-      :list_request                => [  879, :binary,          0 ],
+      :list_request                => [  879, :group,           0 ],
       :software_center_mnemonic    => [  881, :ebcdic,          3 ],
       :cd_employee_number          => [  882, :ebcdic,          6 ],
       :cd_employee_name            => [  883, :ebcdic,         22 ],
@@ -343,7 +343,7 @@ module Retain
       :division                    => [ 1250, :ebcdic,          2 ],
       :askq_country_watermark      => [ 1251, :ebcdic,          9 ],
       :user_binary_id              => [ 1252, :ebcdic,          4 ],
-      :group_request               => [ 1253, :binary,          0 ],
+      :group_request               => [ 1253, :group,           0 ],
       :sub_function_control        => [ 1254, :ebcdic,          1 ],
       :xcel_contract_number        => [ 1255, :ebcdic,          8 ],
       :flag_byte                   => [ 1256, :ebcdic,          1 ],
@@ -440,26 +440,19 @@ module Retain
       @raw_values = Array.new
     end
     
-#     # Convert each of the entries from the table above into a
-#     # constant.  These might not be used any more...
-#     #
-#     # Also create @@field_num_to_name and @@field_num_to_cvt.  These
-#     # might not get used either.
-#     #
-#     @@field_num_to_name   = Array.new
-#     @@field_num_to_cvt    = Array.new
-#     @@field_num_to_width  = Array.new
-    
-#     FIELD_DEFINITIONS.each_pair do |k, v|
-#       index, convert, width = v
-#       @@field_num_to_name[index] = k
-#       @@field_num_to_cvt[index] =  convert
-#       @@field_num_to_width[index] = width
-#    end
+    # Create @@field_num_to_name.  This is not exact -- more than one
+    # symbol maps to the same index.  But this is only used for debug
+    # output.
+    @@field_num_to_name = Array.new
+  
+    FIELD_DEFINITIONS.each_pair do |k, v|
+      index, convert, width = v
+      @@field_num_to_name[index] = k
+    end
 
-#     def self.index_to_sym(index)
-#       @@field_num_to_name[index]
-#     end
+    def self.index_to_sym(index)
+      @@field_num_to_name[index]
+    end
 
     def self.sym_to_index(sym)
       raise "#{sym} not known as a field to retain" if (a = FIELD_DEFINITIONS[sym]).nil?
@@ -471,7 +464,7 @@ module Retain
     #
     FIELD_DEFINITIONS.dup.each_pair do |k, v|
       index, convert, width = v
-      ks = k.to_s.pluralize.to_sym
+      ks = k.pluralize
 
       # Check everything is o.k.
       raise "#{k} (singular) already defined" if self.method_defined?(k)
@@ -482,14 +475,14 @@ module Retain
       FIELD_DEFINITIONS[ks] = v
 
       # Create singular versions
-      eval "def #{k}; reader(:#{k}, :#{convert}, #{width}, false); end", nil, __FILE__, __LINE__
+      eval "def #{k}; reader(:#{k}, :#{convert}, #{width}); end", nil, __FILE__, __LINE__
       eval "def #{k}?; has_key?(:#{k}); end", nil, __FILE__, __LINE__
-      eval "def #{k}=(data); writer(:#{k}, :#{convert}, #{width}, data, false); end", nil, __FILE__, __LINE__
+      eval "def #{k}=(data); writer(:#{k}, :#{convert}, #{width}, data); end", nil, __FILE__, __LINE__
 
       # Create plural versions
-      eval "def #{ks}; reader(:#{k}, :#{convert}, #{width}, true); end", nil, __FILE__, __LINE__
-      eval "def #{ks}?; has_key?(:#{k}); end", nil, __FILE__, __LINE__
-      eval "def #{ks}=(data); writer(:#{k}, :#{convert}, #{width}, data, true); end", nil, __FILE__, __LINE__
+      eval "def #{ks}; reader(:#{ks}, :#{convert}, #{width}); end", nil, __FILE__, __LINE__
+      eval "def #{ks}?; has_key?(:#{ks}); end", nil, __FILE__, __LINE__
+      eval "def #{ks}=(data); writer(:#{ks}, :#{convert}, #{width}, data); end", nil, __FILE__, __LINE__
 
       # Create constants
       const_set(k.to_s.upcase, index)
@@ -501,10 +494,10 @@ module Retain
         rv = v.raw_value
         if v.raw_value.nil?
           logger.debug("RTN: field:#{k} is nil")
-        elsif rv.is_a? Array
-          logger.debug("RTN: field:#{k} is #{v.value.inspect}")
+        elsif (value = v.value).is_a? Array
+          logger.debug("RTN: field:#{k} is #{value.inspect}")
         else
-          logger.debug("RTN: field:#{k} is #{v.value}")
+          logger.debug("RTN: field:#{k} is #{value}")
         end
       end
     end
@@ -529,14 +522,15 @@ module Retain
     
     # We don't move it yet.  We could but I'm worried that it might
     # bite me if I do.
-    def has_key?(sym)
+    def has_key?(orig_sym)
       # We can't use field_name_to_index because it raises an
       # exception for anything that is unexpected.  has_key? gets
       # called for all sorts of bogus stuff.  So, we have to do it all
       # by hand.
-      if false
+      sym = orig_sym.singularize
+      if true
         field = FIELD_DEFINITIONS[sym]
-        logger.debug("RTN: has_key? field=#{field.inspect}")
+        logger.debug("RTN: has_key? for #{orig_sym} => #{sym}: field=#{field.inspect}")
         if field
           v = @raw_values[field[0]]
           logger.debug("RTN: has_key? v.nil? is #{v.nil?}")
@@ -547,10 +541,16 @@ module Retain
         @fields.has_key?(sym)
     end
     
+    def raw_field(sym)
+      move_raw_value_to_field(sym)
+      @fields[sym]
+    end
+
     def [](sym)
       move_raw_value_to_field(sym)
       @fields[sym]
     end
+    private :[]
 
     #
     # Used to set values received from retain into a field.  The new
@@ -565,7 +565,7 @@ module Retain
     def []=(sym, value)
       cvt = field_name_to_cvt(sym)
       width = field_name_to_width(sym)
-      @fields[sym] = Field.new(cvt, width, value)
+      writer(sym, cvt, width, value)
     end
 
     def each_pair
@@ -597,6 +597,19 @@ module Retain
         end
       end
       r
+    end
+
+    # Returns field for sym in format for a Retain request.
+    def add_to_req(req, sym)
+      v = get_raw_value(sym)
+      index = Fields.sym_to_index(sym)
+      if v.is_a? Array
+        v.each { |value|
+          req.data_element(index, value)
+        }
+      else
+        req.data_element(index, v)
+      end
     end
 
     private
@@ -639,7 +652,7 @@ module Retain
         end
         cvt = field_name_to_cvt(sym)
         width = field_name_to_width(sym)
-        @fields[sym] = Field.new(cvt, width, v)
+        writer(sym, cvt, width, v)
       end
     end
     
@@ -653,7 +666,7 @@ module Retain
     # we were originally trying to get was returned.  If it is, we
     # return its value.  If all this fails, we raise an exception.
     #
-    def reader(sym, cvt, width, plural)
+    def reader(sym, cvt, width)
       # If we need to go talk to retain, figure it out here...
       flag = @fetch_fields.nil?
       logger.debug("RTN: reader #{sym} has_key? is #{self.has_key?(sym)}, " +
@@ -663,13 +676,14 @@ module Retain
       end
 
       move_raw_value_to_field(sym)
-      unless (v = get_value(sym, plural)).nil?
+      unless (v = get_value(sym)).nil?
         return v
       end
       raise "reader did not read attribute #{sym}"
     end
     
-    def writer(sym, cvt, width, value, plural)
+    def writer(sym, cvt, width, value)
+      sym, plural = sym.to_singular_tuple
       if plural
         unless value.is_a? Array
           value = [ value ]
@@ -707,6 +721,7 @@ module Retain
     end
 
     def move_raw_value_to_field(sym)
+      sym = sym.singularize
       index = field_name_to_index(sym)
       unless (raw_values = @raw_values[index]).nil?
         logger.debug("RTN: moving raw value at index #{index} to #{sym}")
@@ -718,24 +733,34 @@ module Retain
       end
     end
 
-    def get_value(sym, plural)
-      if f = @fields[sym]
-        v = f.value
-        if plural
-          if v.is_a? Array
-            v
-          else
-            [ v ]
-          end
+    def get_raw_value(sym)
+      xxx(sym, Field.instance_method(:raw_value))
+    end
+
+    def get_value(sym)
+      xxx(sym, Field.instance_method(:value))
+    end
+
+    def xxx(osym, unbound_method)
+      sym, plural = osym.to_singular_tuple
+      return nil if (f = @fields[sym]).nil?
+      value = unbound_method.bind(f).call
+      if plural
+        if value.is_a? Array
+          logger.debug("RTN: xxx: #{osym} plural array")
+          value
         else
-          if v.is_a? Array
-            v[0]
-          else
-            v
-          end
+          logger.debug("RTN: xxx: #{osym} plural value")
+          [ value ]
         end
       else
-        nil
+        if value.is_a? Array
+          logger.debug("RTN: xxx: #{osym} singular array")
+          value[0]
+        else
+          logger.debug("RTN: xxx: #{osym} singular value")
+          value
+        end
       end
     end
 
