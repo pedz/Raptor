@@ -28,7 +28,7 @@ module Retain
     def update
     end
     
-    def dispatch
+    def ct
       logger.debug("here")
       fields = params[:id].split(',')
       options = {
