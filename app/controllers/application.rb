@@ -10,19 +10,16 @@ class ApplicationController < ActionController::Base
     render :text => "<h2 style='text-align: center; color: red;'>LDAP Error: #{exception.message}</h2>"
   end
   
+  # Return true if current user is an administrator of the site
   def admin?
     session[:user].admin
   end
 
-  private
-  
-  #
   # A before_filter for the entire application.  This authenticates
   # against bluepages.  If authentication succeeds, the matching user
   # record is found.  If it does not exist, it is created and
   # initialized with the ldap_id field.  The user model is stored in
   # the session.
-  #
   def authenticate
     last_uri = session[:last_uri]
     uri =  request.env["REQUEST_URI"]

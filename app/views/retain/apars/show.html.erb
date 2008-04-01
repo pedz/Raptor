@@ -1,17 +1,36 @@
 
-<table>
-  <tr><th>APAR</th><td><%= @apar.apar_number %></td></tr>
-  <tr><th>Fix Component</th><td><%= @apar.apar_fix_component %></td></tr>
-  <tr><th>Fix Component Name</th><td><%= @apar.apar_fix_component_name %></td></tr>
-  <tr><th>Problem Error Description</th><td>
-      <% for line in @apar.problem_error_descriptions %>
-      <%= line %></br>
-      <% end %>
-  </td></tr>
-  <tr><th>Problem Summary</th><td>
-      <% for line in @apar.apar_problem_summaries %>
-      <%= line %></br>
-      <% end %>
-  </td></tr>
+<table rules="all" border="1px" >
+  <% @apar.fields.fields.each_key do |sym| -%>
+  <%   value = @apar.send(sym.pluralize) -%>
+    <tr>
+      <th><%= sym -%></th>
+      <td>
+	<% if value.is_a? Array -%>
+	<%   value.each do |v| -%>
+	<%=    v %><br/>
+	<%   end -%>
+	<% else -%>
+	<%=  value %>
+	<% end -%>
+      </td>
+    </tr>
+  <% end -%>
+  <% @apar.fields.raw_values.each_with_index do |temp, index| -%>
+  <%   next if temp.nil? -%>
+  <%   sym = Retain::Fields.index_to_sym(index).pluralize -%>
+  <%   value = @apar.send(sym) -%>
+    <tr>
+      <th><%= sym -%></th>
+      <td>
+	<% if value.is_a? Array -%>
+	<%   value.each do |v| -%>
+	<%=    v %><br/>
+	<%   end -%>
+	<% else -%>
+	<%=  value %>
+	<% end -%>
+      </td>
+    </tr>
+  <% end -%>
 </table>
 

@@ -1,3 +1,7 @@
+#
+# The Retain module creates a number of classes.  The objective for
+# all the modules is to use the SDI interface.
+#
 require 'retain/base'
 require 'retain/sdi'
 require 'retain/ccsid'

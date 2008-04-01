@@ -1,22 +1,25 @@
 
 require 'retain/utils'
-#
-# The Fields class I think is going to be just a bunch of utility
-# methods, two for each retain data element.  Given a name like
-# "signon", it will create a signon= (writer) and a signon (reader)
-# method.  Generally, the write will be used to create a request while
-# the reader will be used to pull data out of the replys.  They are
-# not going to work together (yet).  But I want the definitions of the
-# fields in one place.
-#
 module Retain
+  #
+  # This class is currently not used.
+  #
   class Reply
+    #
+    # The Fields class I think is going to be just a bunch of utility
+    # methods, two for each retain data element.  Given a name like
+    # "signon", it will create a signon= (writer) and a signon (reader)
+    # method.  Generally, the write will be used to create a request while
+    # the reader will be used to pull data out of the replys.  They are
+    # not going to work together (yet).  But I want the definitions of the
+    # fields in one place.
+    #
     class Field
       def initialize
         super()
         @fields = []
       end
-
+      
       # Add field +num+ that contains +data+
       # If this is the first +data+ item at index +num+, then +@reply_fields+
       # at +num+ is set to the +data+.  Otherwise, +@reply_fields+ at +num+ is
@@ -56,7 +59,7 @@ module Retain
       @rc = @header[8...12].ret2uint
       @fields = scan(s[128...s.length])
     end
-
+    
     # Scan string s and return an array of structures.  The structures
     # will be a two element structure of element number and the raw
     # data.

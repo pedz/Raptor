@@ -368,15 +368,62 @@ module Retain
       :psar_remote_write           => [ 1278, :ebcdic,          1 ],
       :psar_file_and_symbol        => [ 1279, :ebcdic,         16 ],
       :nls_family_abstract         => [ 1312, :nls,            53 ],
+      :format_title                => [ 1319, :ebcdic,         50 ],
       :error_message               => [ 1384, :ebcdic,         79 ],
       :information_text_line       => [ 1390, :text_lines,     72 ],
       :beginning_page_number       => [ 1391, :znumber,         3 ],
       :ending_page_number          => [ 1392, :znumber,         3 ],
       :total_page                  => [ 1393, :ebcdic,         32 ],
+
+      :apar_ptf_bpid_1             => [ 1440, :ebcdic,          8 ],
+      :apar_ptf_bpid_2             => [ 1441, :ebcdic,          8 ],
+      :apar_ptf_bpid_3             => [ 1442, :ebcdic,          8 ],
+      :apar_ptf_team_date_1        => [ 1443, :ebcdic,          8 ],
+      :apar_ptf_team_date_2        => [ 1444, :ebcdic,          8 ],
+      :apar_ptf_team_date_3        => [ 1445, :ebcdic,          8 ],
+      :apar_fix_required_date      => [ 1446, :ebcdic,          8 ],
+      :apar_solution_type          => [ 1447, :ebcdic,          1 ],
+      :apar_ptf_test_date          => [ 1448, :ebcdic,          1 ],
       :problem_error_description   => [ 1449, :ebcdic,         64 ],
-      :apar_free_text              => [ 1455, :ebcdic,         64 ],
-      :apar_problem_summary        => [ 1469, :ebcdic,         64 ],
+      :local_fix_description       => [ 1450, :ebcdic,         64 ],
+      :aqs_record_code_            => [ 1451, :ebcdic,          1 ],
+      :aqs_routing_id_description  => [ 1452, :ebcdic,         52 ],
+      :aqs_support_level_entry_    => [ 1453, :ebcdic,         67 ],
+      :aqs_parent_id               => [ 1454, :ebcdic,         12 ],
+      :apar_ptf_free_form_text     => [ 1455, :ebcdic,         64 ],
+      :sysrouted_to_apars_counter  => [ 1456, :ebcdic,          1 ],
+      :apar_sysrouted_numbers__80_ => [ 1457, :ebcdic,        720 ],
+      :apar_ptf_name_of_programmer => [ 1458, :ebcdic,         30 ],
+      :apar_material_submitted__16 => [ 1459, :ebcdic,        320 ],
+      :apar_ptf_programmer_man_hou => [ 1460, :ebcdic,          5 ],
+      :apar_ptf_system_hour        => [ 1461, :ebcdic,          5 ],
+      :apar_integration_entry_poin => [ 1462, :ebcdic,          4 ],
+      :apar_requested_publication_ => [ 1463, :ebcdic,         10 ],
+      :apar_type_of_relief         => [ 1464, :ebcdic,          1 ],
+      :apar_reason_code            => [ 1465, :ebcdic,          1 ],
+      :apar_support_code           => [ 1466, :ebcdic,          8 ],
+      :apar_ast_tracking_count     => [ 1467, :ebcdic,          4 ],
+      :apar_interested_parties_cou => [ 1468, :ebcdic,          1 ],
+      :problem_summary_in_apar_re  => [ 1469, :ebcdic,         64 ],
+      :problem_conclusion_in_apar_ => [ 1470, :ebcdic,         64 ],
+      :temporary_fix_in_apar_respo => [ 1471, :ebcdic,         64 ],
+      :modules_macros_in_apar_resp => [ 1472, :ebcdic,         64 ],
+      :slrs_in_apar_responder_page => [ 1473, :ebcdic,         64 ],
+      :return_codes_in_apar_respon => [ 1474, :ebcdic,         64 ],
+      :applicable_lvl_su_in_apar_r => [ 1475, :ebcdic,         64 ],
+      :circumvention_in_apar_respo => [ 1476, :ebcdic,         64 ],
+      :message_to_submittor_in_apa => [ 1477, :ebcdic,         64 ],
+      :error_description_in_apar_r => [ 1478, :ebcdic,         64 ],
+      :applicable_release_in_ptf_c => [ 1479, :ebcdic,         64 ],
+      :environment_in_ptf_coverlet => [ 1480, :ebcdic,         64 ],
+      :apars_fixed_from_ptf_coverl => [ 1481, :ebcdic,         64 ],
+      :supersedes_from_ptf_coverle => [ 1482, :ebcdic,         64 ],
+      :prerequisite_corequisite_fr => [ 1483, :ebcdic,         64 ],
+      :applicable_level_from_ptf_c => [ 1484, :ebcdic,         64 ],
+
       :external_problem_w_country  => [ 1550, :ebcdic,         10 ],
+      :tdr_abstract                => [ 1608, :ebcdic,         60 ],
+      :symptom_text__line          => [ 1613, :ebcdic,         64 ],
       :cstatus                     => [ 1633, :upper_ebcdic,    7 ],
       :apar_fix_component          => [ 1713, :upper_ebcdic,   12 ],
       :apar_fix_component_name     => [ 1714, :upper_ebcdic,   15 ],
@@ -451,6 +498,7 @@ module Retain
     end
 
     def self.index_to_sym(index)
+      logger.debug("RNT: index_to_sym for #{index} is #{@@field_num_to_name[index]}")
       @@field_num_to_name[index]
     end
 
@@ -528,7 +576,7 @@ module Retain
       # called for all sorts of bogus stuff.  So, we have to do it all
       # by hand.
       sym = orig_sym.singularize
-      if true
+      if false
         field = FIELD_DEFINITIONS[sym]
         logger.debug("RTN: has_key? for #{orig_sym} => #{sym}: field=#{field.inspect}")
         if field
@@ -568,18 +616,47 @@ module Retain
       writer(sym, cvt, width, value)
     end
 
-    def each_pair
-      @fields.each_pair do |k, v|
-        yield(k, v.value)
-      end
-    end
-    
-    def each_raw_pair
-      @fields.each_pair do |k, v|
-        yield(k, v)
-      end
-    end
-    
+    # def each_pair
+    #   @fields.each_pair do |k, v|
+    #     logger.debug("RTN: v for #{k} is #{v.inspect}")
+    #     if v.is_a? Array
+    #       yield(k, v.map(&:value))
+    #     else
+    #       yield(k, v.value)
+    #     end
+    #   end
+    #   @raw_values.each_with_index do |v, index|
+    #     unless v.nil?
+    #       if sym = Fields.index_to_sym(index)
+    #         k = sym
+    #       else
+    #         k = index
+    #       end
+    #       if v.is_a? Array
+    #         yield(k, v.map(&:value))
+    #       else
+    #         yield(k, v.value)
+    #       end
+    #     end
+    #   end
+    # end
+
+    # def each_raw_pair
+    #   @fields.each_pair do |k, v|
+    #     yield(k, v)
+    #   end
+    #   @raw_values.each_with_index do |v, index|
+    #     unless v.nil?
+    #       if sym = Fields.index_to_sym(index)
+    #         k = sym
+    #       else
+    #         k = index
+    #       end
+    #       yield(k, v)
+    #     end
+    #   end
+    # end
+
     def to_debug
       r = ''
       @fields.each_pair do |k, v|
@@ -631,7 +708,7 @@ module Retain
 
     def merge_fields!(new_fields)
       logger.debug("RTN: merge_fields called")
-      new_fields.each_raw_pair do |sym, v|
+      new_fields.fields.each_pair do |sym, v|
         logger.debug("RTN: merge_fields: #{sym}")
         @fields[sym] = v
       end
