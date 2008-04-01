@@ -19,6 +19,7 @@ module Retain
     end
 
     def ecpaat_lines(pmr)
+      logger.info("QS: ecpaat #{pmr.pbc}")
       temp_hash = pmr.ecpaat
       n = DateTime.now.new_offset(pmr.customer.tz)
       
