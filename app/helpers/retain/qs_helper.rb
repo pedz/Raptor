@@ -26,8 +26,10 @@ module Retain
                     "#{n.strftime("%a, %d %b %Y %H:%M")}" ]
       Cached::Pmr::ECPAAT_HEADINGS.each { |heading|
         unless (lines = temp_hash[heading]).nil?
-          temp_lines << "<span class='ecpaat-heading'>" + heading + ": " + "</span>" +
-            lines.shift
+          temp_lines << ("<span class='ecpaat-heading'>" +
+                         heading + ": " + "</span>" +
+                         lines.shift)
+          logger.debug("QS: ecpaat #{pmr.pbc}: #{heading} #{lines.length}")
           lines = lines[0 .. 4] + [ " ..." ] if lines.length > 5
           temp_lines += lines
         end
