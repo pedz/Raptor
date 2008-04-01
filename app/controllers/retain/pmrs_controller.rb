@@ -96,9 +96,6 @@ module Retain
       lines = params[:newtext].split("\n")
       logger.debug("lines before=#{lines.inspect}")
       lines = lines.map { |line|
-        if line.length <= 72
-          next [ line ]
-        end
         l = []
         while line.length > 72
           this_end = 72
@@ -118,6 +115,7 @@ module Retain
           l << line[0 ... this_end]
           line = line[new_start ... line.length]
         end
+        l << line
         l
       }.flatten
       logger.debug("lines after=#{lines.inspect}")
