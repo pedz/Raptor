@@ -18,8 +18,7 @@ module Retain
       end
     end
 
-    def ecpaat_lines(pmr)
-      logger.info("QS: ecpaat #{pmr.pbc}")
+    def qs_ecpaat_lines(pmr)
       temp_hash = pmr.ecpaat
       n = DateTime.now.new_offset(pmr.customer.tz)
       
@@ -30,7 +29,6 @@ module Retain
           temp_lines << ("<span class='ecpaat-heading'>" +
                          heading + ": " + "</span>" +
                          lines.shift)
-          logger.info("QS: ecpaat #{pmr.pbc}: #{heading} #{lines.length}")
           lines = lines[0 .. 4] + [ " ..." ] if lines.length > 5
           temp_lines += lines
         end
@@ -39,8 +37,9 @@ module Retain
     end
 
     def link_etc(call)
+      logger.info("QS: here")
       popup_text = popup do
-        ecpaat_lines(call.pmr)
+        qs_ecpaat_lines(call.pmr)
       end
       text = call.pmr.pbc + popup_text
       td do
