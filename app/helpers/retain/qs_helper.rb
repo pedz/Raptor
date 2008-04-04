@@ -149,8 +149,16 @@ module Retain
 
     def age(call)
       age_value = call.pmr.age.round
-      age_class = age_value > 100 ? "wag-wag" : "normal"
-      td :class => age_class, :style => "text-align: right" do
+      if age_value > 100
+        age_class = "wag-wag"
+        age_title = "Over 100 days old"
+      else
+        age_class = "normal"
+        age_title = "Young pup"
+      end
+      td(:title => age_title,
+         :class => age_class,
+         :style => "text-align: right") do
         "#{age_value}"
       end
     end
@@ -160,8 +168,18 @@ module Retain
     def jeff(call)
       pmr = call.pmr
       jeff_days = (MULT[pmr.severity] * pmr.age).round
+      if jeff_days > 300
+        jeff_class = "wag-wag"
+        jeff_title = "Over 300 Jeff Days"
+      elsif jeff_days > 50
+        jeff_class = "warn"
+        jeff_title = "Over 50 Jeff Days"
+      else
+        jeff_class = "normal"
+        jeff_title = "You are a happy puppy"
+      end
       jeff_class = jeff_days > 300 ? "wag-wag" : (jeff_days > 50 ? "warn" : "normal")
-      td :class => jeff_class do
+      td :class => jeff_class, :title => jeff_title do
         "#{jeff_days}"
       end
     end
