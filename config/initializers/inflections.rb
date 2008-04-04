@@ -19,4 +19,12 @@ Inflector.inflections do |inflect|
   inflect.plural /^(.*_)?(ipar_mes)$/i, '\1\2es'
   inflect.singular /^(.*_)?(ipar_mes)$/i, '\1\2'
   inflect.singular /^(.*_)?(ipar_mes)es$/i, '\1\2'
+
+  inflect.singular /^(.*_)?(cstatus)$/i, '\1\2'
+  inflect.singular /^(.*_)?(psar_cia)$/i, '\1\2'
+  inflect.singular /^(.*_)?(psar_optional_data)$/i, '\1\2'
+  inflect.singular /^(.*_)?(comp_id_or_alias)$/i, '\1\2'
+  inflect.singular /^(.*_)?(nls_street_address)$/i, '\1\2'
+  inflect.singular /^(.*_)?(exception_process)$/i, '\1\2'
+  inflect.singular /^(.*_)?(call_class)$/i, '\1\2'
 end

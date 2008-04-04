@@ -1,6 +1,6 @@
 
 require 'retain'
-
+puts "setting loggers"
 Retain::Base.logger = RAILS_DEFAULT_LOGGER
 Retain::Connection.logger = RAILS_DEFAULT_LOGGER
 Retain::Fields.logger = RAILS_DEFAULT_LOGGER

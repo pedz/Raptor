@@ -280,6 +280,7 @@ module Retain
       :psar_record_id              => [ 1079, :ebcdic,          1 ],
       :psar_cia                    => [ 1080, :ebcdic,          1 ],
       :psar_impact                 => [ 1081, :ebcdic,          1 ],
+      :psar_solution               => [ 1082, :ebcdic,          1 ],
       :psar_action_code            => [ 1083, :ebcdic,          2 ],
       :ipar_action                 => [ 1084, :ebcdic,          1 ],
       :ipar_action_code            => [ 1085, :ebcdic,          1 ],
@@ -515,6 +516,7 @@ module Retain
       ks = k.pluralize
 
       # Check everything is o.k.
+      raise "#{k} (singular) does not return self when singularized" if k != k.singularize
       raise "#{k} (singular) already defined" if self.method_defined?(k)
       raise "#{ks} (plural) already defined" if self.method_defined?(ks)
       raise "#{k} (singular) and #{ks} (plural) the same" if ks === k
@@ -576,7 +578,7 @@ module Retain
       # called for all sorts of bogus stuff.  So, we have to do it all
       # by hand.
       sym = orig_sym.singularize
-      if false
+      if true
         field = FIELD_DEFINITIONS[sym]
         logger.debug("RTN: has_key? for #{orig_sym} => #{sym}: field=#{field.inspect}")
         if field

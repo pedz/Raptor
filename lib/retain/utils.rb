@@ -125,7 +125,7 @@ class Symbol
   end
 
   def singular?
-    singularize == self
+    ! plural?
   end
 
   def plural?

@@ -1,9 +1,9 @@
-
+puts "loading retain/request"
 require 'retain/utils'
 
 module Retain
   class Request
-    cattr_accessor :logger
+    cattr_accessor :logger, :instance_writer => false
 
     PACKET_LENGTH = 20...24
     ELEMENT_COUNT = 24...28

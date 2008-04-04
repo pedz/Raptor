@@ -37,7 +37,6 @@ module Retain
     end
 
     def link_etc(call)
-      logger.info("QS: here")
       popup_text = popup do
         qs_ecpaat_lines(call.pmr)
       end
@@ -149,8 +148,10 @@ module Retain
     end
 
     def age(call)
-      td :style => "text-align: right" do
-        "#{call.pmr.age.round}"
+      age_value = call.pmr.age.round
+      age_class = age_value > 100 ? "wag-wag" : "normal"
+      td :class => age_class, :style => "text-align: right" do
+        "#{age_value}"
       end
     end
 
