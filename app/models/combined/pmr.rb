@@ -225,8 +225,31 @@ module Combined
         end
       end
 
+      #
+      # Clean up the fields.  This piece cleans up the email address.
+      retain_options = Cached::Pmr.options_from_retain(pmr)
+      unless (email = retain_options[:problem_e_mail]).blank?
+        addr_pattern = Regexp.new("^([^a-zA-Z0-9_.]*)([a-zA-Z0-9_.]+@[a-zA-Z0-9_.]+)([^a-zA-Z0-9_.]*)$")
+        email = email.split(",").find_all { |addr|
+          addr.match(addr_pattern)
+        }.map { |addr|
+          addr.sub(addr_pattern, '\2').sub(/[ _]+$/, "")
+        }.join(', ')
+        retain_options[:problem_e_mail] = email
+      end
+
+      # Clean up these fields to be upper case and stripped of blanks.
+      %w{ sec_1_queue sec_1_center sec_1_h_or_s sec_1_ppg
+          sec_2_queue sec_2_center sec_2_h_or_s sec_2_ppg
+          sec_3_queue sec_3_center sec_3_h_or_s sec_3_ppg
+        }.map(&:to_sym).each { |sym|
+        unless (field = retain_options[sym]).nil?
+          retain_options[sym] = field.upcase.strip
+        end
+      }
+
       # Update other attributes
-      @cached.update_attributes(Cached::Pmr.options_from_retain(pmr))
+      @cached.update_attributes(retain_options)
     end
 
     # Merges pmr_lines into cached_lines.  Offset is the offset into

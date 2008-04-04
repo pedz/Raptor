@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 13) do
+ActiveRecord::Schema.define(:version => 14) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                        :null => false
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(:version => 13) do
     t.boolean  "system_down"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "slot"
   end
 
   add_index "cached_calls", ["queue_id", "ppg"], :name => "uq_cached_calls_pair", :unique => true

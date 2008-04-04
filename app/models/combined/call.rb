@@ -4,6 +4,7 @@ module Combined
 
     set_db_keys :ppg
     add_skipped_fields :ppg
+    add_skipped_fields :slot    # pure db field
 
     set_db_constants :ppg, :queue, :pmr
 

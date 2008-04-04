@@ -89,6 +89,7 @@ module Combined
       new_pmrs = { }
       
       # Now we get our create the list of calls
+      slot = 1
       retain_queue.calls.each do |call|
         # The call only has the bare essentials.  This will touch the
         # call and cause a fetch.  So when the db record is created,
@@ -101,6 +102,8 @@ module Combined
           :country => call.country
         }
         db_call = cached.calls.new_from_retain(call)
+        db_call.slot = slot
+        slot += 1
         logger.debug("here #{__LINE__}")
         
         # If/when we start keeping expired PMRs we need to augment
