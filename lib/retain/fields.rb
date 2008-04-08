@@ -368,7 +368,7 @@ module Retain
       :external_system_problem     => [ 1270, :ebcdic,          7 ],
       :external_system_country     => [ 1271, :ebcdic,          3 ],
       :iin_account_code            => [ 1272, :ebcdic,          8 ],
-      :last_alter_timestamp        => [ 1273, :ebcdic,          6 ],
+      :last_alter_timestamp        => [ 1273, :binary,          6 ],
       :psear_chargeable_time       => [ 1275, :ebcdic,          2 ],
       :psar_chargeable_after_hour  => [ 1276, :ebcdic,          2 ],
       :psar_remote_write           => [ 1278, :ebcdic,          1 ],

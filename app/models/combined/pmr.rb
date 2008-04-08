@@ -65,12 +65,11 @@ module Combined
       # was last altered.  This step is skipped if alteration_date (in
       # the cached entry) are nil.
       temp_id = "%s,%s,%s" % [ @cached.problem, @cached.branch, @cached.country ]
-      if @cached.alteration_date
-        logger.debug("CMB: #{temp_id} alteration date set")
-        options_hash[:group_request] = [[ :alteration_date, :alteration_time ]]
+      if @cached.last_alter_timestamp
+        logger.debug("CMB: #{temp_id} last_alter_timestamp set")
+        options_hash[:group_request] = [[ :last_alter_timestamp ]]
         pmr = Retain::Pmr.new(options_hash)
-        if (@cached.alteration_date == pmr.alteration_date) &&
-            (@cached.alteration_time == pmr.alteration_time)
+        if @cached.last_alter_timestamp == pmr.last_alter_timestamp
           logger.debug("CMB: #{temp_id} touched")
           @cached.save
           return
