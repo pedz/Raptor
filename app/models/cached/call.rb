@@ -8,18 +8,20 @@ module Cached
     # every time the call is queued back to the center.  In theory,
     # this applies to world trade and not U.S.  For U.S., I don't have
     # a clear definition but in practical terms it is the same since
-    # PMRs are never queued back out of the center.
+    # PMRs are never queued out of the center.
     #
     # For secondary and backups, needs initial response is always
     # false.
     #
     # For the primary, we run through the signature lines looking for
-    # CR's of the primary setting +ret+ to +true+.  The last of these
-    # will be the requeue to the current location.  If we find a CT
-    # signature line after this with the same center, we turn +ret+
-    # back to +false+.  After all the signature lines are processed,
-    # we return +ret+.  Note that +center+ in this case is the center
-    # that the call (which is the primary call) is currently in.
+    # CR's of the primary setting with the center for the center *not*
+    # equal to the center the call is on and we set +ret+ to +true+.
+    # The last of these will be the requeue to the current location.
+    # If we find a CT signature line after this with the same center,
+    # we turn +ret+ back to +false+.  After all the signature lines
+    # are processed, we return +ret+.  Note that +center+ in this case
+    # is the center that the call (which is the primary call) is
+    # currently in.
     def needs_initial_response?
       logger.debug("CHC: needs_initial_response '#{p_s_b}'")
       return false if p_s_b != 'P'
@@ -31,7 +33,7 @@ module Cached
         logger.debug("CHC: stype=#{sig.stype} ptype=#{sig.ptype}")
         # Set ret to true for any requeue of the primary.  The last
         # one will be the requeue to the current location.
-        if sig.stype == 'CR' && sig.ptype == '-'
+        if sig.stype == 'CR' && sig.ptype == '-' && sig.center != center
           logger.debug("CHC: CR line at #{sig.date}")
           ret = true
         end
