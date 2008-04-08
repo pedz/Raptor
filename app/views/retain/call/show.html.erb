@@ -200,18 +200,22 @@ Action Plan:</textarea><br/>
     <div id="add-time-form">
       <span id="add-time-reply">&nbsp;</span>
         <% form_remote_for :psar, @psar, :url => addtime_combined_pmr_path(@pmr) do |psar| %>
-	psar_service_code
-	<%= psar.text_field :psar_service_code %><br />
-	psar_action_code
-	<%= psar.text_field :psar_action_code %><br />
-	psar_cause
-	<%= psar.text_field :psar_cause %><br />
-	psar_solution
-	<%= psar.text_field :psar_solution %><br />
-	psar_impact
-	<%= psar.text_field :psar_impact %><br />
-	psar_actual_time
-	<%= psar.text_field :psar_actual_time %><br />
+	Service Code:
+	<%= psar.text_field :psar_service_code, :size => 2 %>
+	Action Code
+	<%= psar.text_field :psar_action_code, :size => 2 %>
+	Cause
+	<%= psar.text_field :psar_cause, :size => 2 %>
+	Solution
+	<%= psar.text_field :psar_solution, :size => 1 %>
+	Impact
+	<%= psar.text_field :psar_impact, :size => 1 %>
+	<span style='color: white'>(probably don't want to muck with these)</span>
+	<br />
+	Time <span style='text-decoration: line-through'>wasted</span> spent
+	<%= psar.text_field :psar_actual_time, :size => 3 %>
+	(in tenths of hours)
+	<br />
 	<%= submit_tag "addtime" %>
       <% end %>
     </div>
