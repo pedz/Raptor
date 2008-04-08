@@ -15,6 +15,8 @@ module Retain
                                     :problem,
                                     :branch,
                                     :country,
+                                    :cpu_type,
+                                    :cpu_serial_number,
                                     :psar_file_and_symbol,
                                     :psar_fesn,
                                     :psar_service_code,

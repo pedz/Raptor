@@ -12,3 +12,15 @@ td.ret-time { text-align: right; }
 #flash-notice {
     color: green;
 }
+
+.sdi-normal {
+    color: green;
+}
+
+.sdi-warning {
+    color: orange;
+}
+
+.sdi-error {
+    color: red;
+}

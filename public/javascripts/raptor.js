@@ -77,12 +77,6 @@ var Raptor = {
 	window.location = url;
     },
 
-    // Toggles the update (add text and requeue) form
-    updateToggle : function() {
-	$('update-form').toggle();
-	Raptor.recalc_dimensions();
-    },
-
     recalc_dimensions: function() {
 	Raptor.top.style.height = "1em";
 	var newTop = Raptor.top.scrollHeight + "px";

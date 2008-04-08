@@ -83,15 +83,38 @@ module Retain
         format.xml  { head :ok }
       end
     end
+    
+    def addtime
+      options = Combined::Pmr.param_to_options(params[:id])
+      options.merge!(params[:psar].symbolize_keys)
+      logger.debug("options: #{options.inspect}")
+      psar = Retain::Psrc.new(options)
+      begin
+        psar.sendit(Retain::Fields.new)
+      rescue
+        true
+      end
+      if psar.rc == 0
+        err_text = "Add Time Succeeded"
+        err_code = 0
+        err_class = "sdi-normal"
+      else
+        err_text = psar.error_message
+        err_code = err_text[-3 ... err_text.length].to_i
+        
+        if (600 .. 700) === err_code
+          err_class = "sdi-warning"
+        else
+          err_class = "sdi-error"
+        end
+      end
+      full_text = "<span class='#{err_class}'>#{err_text}</span>"
+
+      render(:update) { |page| page.replace_html 'add-time-reply', full_text}
+    end
 
     def addtxt
-      logger.debug("hi")
-      fields = params[:id].split(',')
-      options = {
-        :problem => fields[0],
-        :branch => fields[1],
-        :country => fields[2]
-      }
+      options = Combined::Pmr.param_to_options(params[:id])
       logger.debug("options=#{options.inspect}")
       lines = params[:newtext].split("\n")
       logger.debug("lines before=#{lines.inspect}")

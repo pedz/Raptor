@@ -12,6 +12,18 @@ Raptor.getSelText = function () {
     return '';
 };
 
+// Toggles the update (add text and requeue) form
+Raptor.updateToggle = function() {
+    $('update-form').toggle();
+    Raptor.recalc_dimensions();
+};
+
+// Toggles the update (add text and requeue) form
+Raptor.addTimeToggle = function() {
+    $('add-time-form').toggle();
+    Raptor.recalc_dimensions();
+};
+
 Raptor.newUrl = function(to, sub) {
     Raptor.didNewUrl = true;
     txt = Raptor.getSelText();
@@ -43,6 +55,12 @@ document.observe('dom:loaded', function() {
     // hide the left and right panels at page load.
     $('left').hide();
     $('right').hide();
+
+    // Hide add time form.  I suppose we could do all this in the HTML
+    // part of the page.
+    if ($('add-time-form')) {
+	$('add-time-form').hide();
+    }
 
     // hide the click-data elements at page load.  These are the
     // elements that the "for" attribute of click-tag reference.  We

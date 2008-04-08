@@ -192,11 +192,25 @@
       <% form_remote_tag :url => addtxt_combined_pmr_path(@pmr) do %>
         <textarea name="newtext" rows="10" cols="72">Action Taken:
 
-
-Action Plan:
-
-        </textarea><br/>
+Action Plan:</textarea><br/>
 	<%= submit_tag "Addtxt" %>
+      <% end %>
+    </div>
+    <%= button("Add Time", "Raptor.addTimeToggle();") %>
+    <div id="add-time-form">
+      <span id="add-time-reply">&nbsp;</span>
+        <% form_remote_for :psar, @psar, :url => addtime_combined_pmr_path(@pmr) do |psar| %>
+	psar_service_code
+	<%= psar.text_field :psar_service_code %><br />
+	psar_action_code
+	<%= psar.text_field :psar_action_code %><br />
+	psar_cause
+	<%= psar.text_field :psar_cause %><br />
+	psar_impact
+	<%= psar.text_field :psar_impact %><br />
+	psar_actual_time
+	<%= psar.text_field :psar_actual_time %><br />
+	<%= submit_tag "addtime" %>
       <% end %>
     </div>
   </div>

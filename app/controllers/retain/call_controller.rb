@@ -12,13 +12,20 @@ module Retain
       end
     end
     
+    Psar = Struct.new(:psar_service_code,
+                      :psar_action_code,
+                      :psar_cause,
+                      :psar_impact,
+                      :psar_actual_time)
+    
     # Show a Retain call
     def show
       @call, @queue = Combined::Call.from_param_pair!(params[:id])
       @call.mark_cache_invalid
       @pmr = @call.pmr
       @pmr.mark_cache_invalid
-
+      @psar = Psar.new
+      
       # This is just for the button.  Probably needs to be removed
       # anyway
       @registration = signon_user
@@ -27,7 +34,7 @@ module Retain
     # Not used currently
     def update
     end
-    
+
     def ct
       logger.debug("here")
       fields = params[:id].split(',')
@@ -40,17 +47,20 @@ module Retain
       dispatch = do_pmcu("CD  ", options)
       logger.debug("dispatch rc = #{dispatch.rc}")
       if dispatch.rc != 0
-        render(:update) { |page| page.replace_html 'blah', "dispatch rc is #{dispatch.rc}"}
+        render_error(dispatch)
+        return
       end
       ct = do_pmcu("CT  ", options)
       logger.debug("ct rc = #{ct.rc}")
       if ct.rc != 0
-        render(:update) { |page| page.replace_html 'blah', "ct rc is #{ct.rc}"}
+        render_error(ct)
+        return
       end
       undispatch = do_pmcu("NOCH", options)
       logger.debug("undispatch rc = #{undispatch.rc}")
       if undispatch.rc != 0
-        render(:update) { |page| page.replace_html 'blah', "undispatch rc is #{undispatch.rc}"}
+        render_error(undispatch)
+        return
       end
       render(:update) { |page| page.replace_html 'blah', "ct completed"}
     end
@@ -147,10 +157,22 @@ module Retain
       begin
         pmcu.sendit(Retain::Fields.new)
       rescue
-        return nil
+        true
       end
       return pmcu
     end
 
+    def render_error(sdi)
+      err_text = sdi.error_message
+      err_code = err_text[-3 ... err_text.length].to_i
+        
+      if (600 .. 700) === err_code
+        err_class = "sdi-warning"
+      else
+        err_class = "sdi-error"
+      end
+      full_text = "<span class='#{err_class}'>#{err_text}</span>"
+      render(:update) { |page| page.replace_html 'blah', full_text}
+    end
   end
 end

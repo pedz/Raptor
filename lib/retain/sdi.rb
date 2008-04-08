@@ -73,13 +73,13 @@ module Retain
     end
 
     def sendit(req_fields, send_options = {})
-      fields = @fields.merge(req_fields)
+      @snd_fields = @fields.merge(req_fields)
       options = @options.merge(send_options)
       if true
         RAILS_DEFAULT_LOGGER.debug("class is #{self.class}")
         logger.debug("RTN: sendit for #{self.class} called")
-        logger.debug("RTN: fields")
-        fields.dump_fields
+        logger.debug("RTN: @snd_fields")
+        @snd_fields.dump_fields
         logger.debug("RTN: options")
         logger.debug("RTN: #{options.to_yaml}")
       end
@@ -89,22 +89,22 @@ module Retain
         if true
           logger.debug("RTN: required symbol: #{sym}")
         end
-        raise "required field #{sym} not present" unless fields.has_key?(sym)
-        fields.add_to_req(request, sym)
+        raise "required field #{sym} not present" unless @snd_fields.has_key?(sym)
+        @snd_fields.add_to_req(request, sym)
       end
 
       self.class.optional_fields.each do |sym|
         if true
           logger.debug("RTN: optional symbol: #{sym}")
         end
-        next unless fields.has_key?(sym)
-        fields.add_to_req(request, sym)
+        next unless @snd_fields.has_key?(sym)
+        @snd_fields.add_to_req(request, sym)
       end
 
       login
 
-      send = request.to_s
-      if  @connection.write(send) != send.length
+      @snd = request.to_s
+      if  @connection.write(@snd) != @snd.length
         raise "write to socket failed in sendit"
       end
       f = @connection.read(24)
@@ -124,14 +124,16 @@ module Retain
         logger.debug("RTN: rc should be #{@rc}")
       end
 
-      new_fields = scan_fields(Fields.new, @reply[128...@reply.length])
-      req_fields.merge!(new_fields)
+      @rcv_fields = scan_fields(Fields.new, @reply[128...@reply.length])
+      req_fields.merge!(@rcv_fields)
+      @request_type = options[:request]
+      @fields.error_message = @rcv_fields.error_message if @rcv_fields.has_key?(:error_message)
 
       unless @rc == 0
-        logger.error("RTN: request fields:\n#{fields.to_debug}")
-        hex_dump("#{options[:request]} request", send)
-        logger.error("RTN: return fields:\n#{new_fields.to_debug}")
-        hex_dump("#{options[:request]} reply", @reply)
+        logger.error("RTN: request fields:\n#{@snd_fields.to_debug}")
+        hex_dump("#{@request_type} request", @snd)
+        logger.error("RTN: return fields:\n#{@rcv_fields.to_debug}")
+        hex_dump("#{@request_type} reply", @reply)
       end
     end
 

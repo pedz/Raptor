@@ -22,13 +22,17 @@ module Combined
     add_skipped_fields :next_center_id, :next_queue_id
     add_extra_fields   :next_center,    :next_queue
 
-    def self.from_param(param)
+    def self.param_to_options(param)
       words = param.split(',')
       options = {
         :problem => words[0],
         :branch => words[1],
         :country => words[2]
       }
+    end
+    
+    def self.from_param(param)
+      optins = param_to_options(param)
       find(:first, :conditions => options) || new(options)
     end
 

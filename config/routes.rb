@@ -17,7 +17,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources(:combined_pmrs,
                 :controller => 'retain/pmrs',
                 :member => {
-                  :addtxt => :post
+                  :addtime => :post,
+                  :addtxt  => :post
                 })
 
   # "Queue Status" -- my Techjump page
@@ -31,10 +32,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources(:combined_call,
                 :controller => 'retain/call',
                 :member => {
-                  :alter => :post,
+                  :alter      => :post,
                   :queue_list => :get,
-                  :ct => :post,
-                  :requeue => :post })
+                  :ct         => :post,
+                  :requeue    => :post })
   map.resources(:combined_registration,
                 :controller => 'retain/registration',
                 :member => {

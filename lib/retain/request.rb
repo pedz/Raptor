@@ -1,4 +1,4 @@
-puts "loading retain/request"
+
 require 'retain/utils'
 
 module Retain

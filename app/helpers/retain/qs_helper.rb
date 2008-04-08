@@ -116,8 +116,15 @@ module Retain
     def pri_sev(call)
       p = call.priority
       s = call.pmr.severity
-      td_class = p == s ? "good" : "wag-wag"
-      td :class => td_class do
+      if p == s
+        td_class =  "good"
+        td_title = "Nothing wrong here"
+      else
+        td_class = "wag-wag"
+        td_title = "Priority and Severity should match"
+      end
+      
+      td :title => td_title, :class => td_class do
         "#{p}/#{s}"
       end
     end
