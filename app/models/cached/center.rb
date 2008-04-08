@@ -24,8 +24,10 @@ module Cached
     # time is assumed to be a DateTime object (or something that acts
     # like it).
     def prime_shift(time)
+      logger.debug("CHC: prime_shift tz=#{tz}, time=#{time}")
       t = time.new_offset(tz)
-      t.hour === (8 .. 17) && t.wday === (1 .. 5)
+      logger.debug("CHC: prime_shift new t = #{t}")
+       (8 .. 17) === t.hour && (1 .. 5) === t.wday
     end
 
     # Center Time Zone as a rational fraction of a day

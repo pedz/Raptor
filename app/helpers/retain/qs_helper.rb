@@ -237,6 +237,8 @@ module Retain
         
         # Sev 2,3,4 during Primeshift: Initial customer callback is
         #           within 2 business hours
+        logger.debug("center is #{pmr.center.center}")
+        logger.debug("entry time is #{entry_time}")
         if pmr.center.prime_shift(entry_time)
           logger.debug("prime_shift")
           return customer.business_hours(entry_time, 2)
@@ -244,6 +246,7 @@ module Retain
         
         # SEV 2,3,4 during Offshift: Initial customer callback is the
         #           next business day
+        logger.debug("off shift")
         return customer.business_days(entry_time, 1)
       else
         logger.debug("initial response WT #{pmr.severity.class}")

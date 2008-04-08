@@ -21,18 +21,23 @@ module Cached
     # we return +ret+.  Note that +center+ in this case is the center
     # that the call (which is the primary call) is currently in.
     def needs_initial_response?
+      logger.debug("CHC: needs_initial_response '#{p_s_b}'")
       return false if p_s_b != 'P'
+      logger.debug("CHC: needs_initial_response still here")
       cmb = to_combined
       center = cmb.queue.center.center
       ret = false
-      cmb.pmr.signature_lines do |sig|
+      cmb.pmr.signature_lines.each do |sig|
+        logger.debug("CHC: stype=#{sig.stype} ptype=#{sig.ptype}")
         # Set ret to true for any requeue of the primary.  The last
         # one will be the requeue to the current location.
         if sig.stype == 'CR' && sig.ptype == '-'
+          logger.debug("CHC: CR line at #{sig.date}")
           ret = true
         end
         # Set ret to false for any CT from this center.
         if sig.stype == 'CT'  && sig.center == center
+          logger.debug("CHC: CT line at #{sig.date}")
           ret = false
         end
       end
@@ -48,22 +53,17 @@ module Cached
         to_combined.pmr.create_time
       end
     end
+    once :center_entry_time
 
     # Returns the signature for the CR that put the call into the
     # designated center
     def center_entry_sig(center = queue.center)
-      if @entry_sig.nil?
-        @entry_sig = { }
-      end
-
-      return @entry_sig[center] if @entry_sig[center]
-
       # We look at the call requeues for the primary call only (ptype
       # is blank).  If we hit a CR with the center, we return the
       # previous signature.  Otherwise, we return the last signature
       # for the primary.
       sig = to_combined.pmr.signature_line_stypes('CR').inject(nil) { |prev, s|
-        if s.ptype == ' '
+        if s.ptype == '-'
           if s.center == center
             return @entry_sig[center] = prev
           else
@@ -73,8 +73,9 @@ module Cached
           prev
         end
       }
-      @entry_sig[center] = sig
+      sig
     end
-
+    once :center_entry_sig
+    
   end
 end
