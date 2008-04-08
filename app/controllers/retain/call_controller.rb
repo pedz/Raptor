@@ -16,6 +16,7 @@ module Retain
                       :psar_action_code,
                       :psar_cause,
                       :psar_impact,
+                      :psar_solution,
                       :psar_actual_time)
     
     # Show a Retain call
@@ -24,7 +25,7 @@ module Retain
       @call.mark_cache_invalid
       @pmr = @call.pmr
       @pmr.mark_cache_invalid
-      @psar = Psar.new
+      @psar = Psar.new(75, 57, 50, @pmr.severity, 9)
       
       # This is just for the button.  Probably needs to be removed
       # anyway
