@@ -184,6 +184,7 @@ module Combined
         logger.debug("CMB: define fields and associations for #{subclass}")
         db_fields.each do |name|
           eval("def #{name}
+                  logger.debug(\"CMB: #{name} called as field for \#{self.to_s}\")
                   unless cache_valid? && !(temp = @cached.#{name}).nil?
                     call_load
                     temp = @cached.#{name}
@@ -209,6 +210,7 @@ module Combined
     def call_load
       load
       @invalid_cache = false
+      @loaded = true
     end
     
     def cache_valid?
@@ -230,6 +232,12 @@ module Combined
         return false
       end
       
+      # If this has already been loaded, then cache must be valid
+      if @loaded
+        logger.debug("CMB: #{self.to_s} cache_valid?: return true: @loaded is set")
+        return true
+      end
+
       # else, return if cache time has expired or not
       sum = (updated_at + expire)
       now = Time.now

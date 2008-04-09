@@ -1,6 +1,6 @@
 module Combined
   class Registration < Base
-    set_expire_time :never
+    set_expire_time 1.week
 
     set_db_keys :signon
     add_skipped_fields :signon

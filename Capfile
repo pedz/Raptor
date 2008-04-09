@@ -9,6 +9,11 @@ namespace :deploy do
     run "echo #{deploy_to}"
   end
   
+  desc "Clear the production log via rake"
+  task :log_clear, :roles => :app do
+    run "cd #{current_path}/ && rake log:clear"
+  end
+
   desc "The start task is used by :cold_deploy to start the application up"
   task :start, :roles => :app do
     run "cd #{current_path}/ && mongrel_rails cluster::start"
