@@ -9,7 +9,7 @@ module Retain
     def initialize(options = {})
       super(options)
       unless @fields.has_key?(:last_alter_timestamp)
-        @fields[:last_alter_timestamp] = 'NOTMCK'
+        @fields[:last_alter_timestamp] = 'NOTMCK'.user_to_retain
       end
     end
   end
