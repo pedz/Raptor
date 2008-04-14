@@ -213,8 +213,8 @@ Action Plan:</textarea><br/>
 	<span style='color: white'>(probably don't want to muck with these)</span>
 	<br />
 	Time <span style='text-decoration: line-through'>wasted</span> spent
-	<%= psar.text_field :psar_actual_time, :size => 3 %>
-	(in tenths of hours)
+	<%= psar.text_field :hours, :size => 2 %>Hours
+	<%= psar.text_field :minutes, :size => 2 %>Minutes
 	<br />
 	<%= submit_tag "addtime" %>
       <% end %>

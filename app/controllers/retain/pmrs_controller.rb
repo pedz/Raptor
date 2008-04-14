@@ -87,6 +87,10 @@ module Retain
     def addtime
       options = Combined::Pmr.param_to_options(params[:id])
       options.merge!(params[:psar].symbolize_keys)
+      hours = options.delete(:hours).to_i
+      minutes = options.delete(:minutes).to_i
+      options[:psar_actual_time] = (hours * 10) + (minutes / 6).to_i
+      options[:psar_chargeable_time] = hours * 256 + minutes
       logger.debug("options: #{options.inspect}")
       psar = Retain::Psrc.new(options)
       begin

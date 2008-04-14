@@ -30,7 +30,14 @@ module Retain
                                     :psar_system_date,
                                     :psar_stop_date_year,
                                     :psar_activity_date,
-                                    :psar_actual_time
+                                    :psar_actual_time,
+                                    :psar_chargeable_src_ind,
+                                    :chargeable_queue_name,
+                                    :chargeable_center,
+                                    :psar_chargeable_time,
+                                    :psar_chargeable_after_hour,
+                                    :chargeable_time_hex,
+                                    :after_hours_time_hex
                                    ]]
       end
     end

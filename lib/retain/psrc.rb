@@ -103,7 +103,7 @@ module Retain
                         :ipar_technical_activity,
                         :psar_apar_number,
                         :h_or_s,
-                        :psear_chargeable_time,
+                        :psar_chargeable_time,
                         :psar_chargeable_after_hour,
                         :error_message,
                         :call_received_time,

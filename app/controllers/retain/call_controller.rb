@@ -17,7 +17,10 @@ module Retain
                       :psar_cause,
                       :psar_impact,
                       :psar_solution,
-                      :psar_actual_time)
+                      :psar_actual_time,
+                      :psar_chargeable_time,
+                      :hours,
+                      :minutes)
     
     # Show a Retain call
     def show
