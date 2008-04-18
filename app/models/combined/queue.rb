@@ -113,7 +113,6 @@ module Combined
         db_call = cached.calls.new_from_retain(call)
         db_call.slot = slot
         slot += 1
-        logger.debug("here #{__LINE__}")
         
         # If/when we start keeping expired PMRs we need to augment
         # this call to not find expired PMRs.  We do not have the
@@ -131,7 +130,6 @@ module Combined
             new_pmrs[pmr_key] = db_pmr
           end
         end
-        logger.debug("here #{__LINE__}")
 
         # This code is duplicated three times presently.  The problem
         # is that we do not want the center or other fields from the
@@ -142,7 +140,6 @@ module Combined
           :country => call.country,
           :customer_number => call.customer_number
         }
-        logger.debug("here #{__LINE__}")
         cust_key = call.country + call.customer_number
         if new_customers.has_key?(cust_key)
           db_customer = new_customers[cust_key]
@@ -152,15 +149,11 @@ module Combined
             new_customers[cust_key] = db_customer
           end
         end
-        logger.debug("here #{__LINE__}")
         db_pmr.customer = db_customer
-        logger.debug("here #{__LINE__}")
         db_call.pmr = db_pmr
-        logger.debug("here #{__LINE__}")
         cached.calls << db_call
-        logger.debug("here #{__LINE__}")
       end
-      logger.debug("here #{__LINE__}")
+      cached.dirty = false
       cached.save
     end
   end
