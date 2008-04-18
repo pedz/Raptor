@@ -6,8 +6,25 @@ module Retain
   class Connection
     cattr_accessor :logger
     
+    @@count = 0
+    @@time = 0
+
+    def self.reset_time
+      @@count = 0
+      @@time = 0
+    end
+
+    def self.request_count
+      @@count
+    end
+
+    def self.total_time
+      @@time
+    end
+
     def initialize
       super()
+      @@count += 1
       @socket = Socket.new( AF_INET, SOCK_STREAM, 0 )
     end
 
@@ -25,5 +42,32 @@ module Retain
     def read(n)
       @socket.read(n)
     end
+
+    private
+
+    def connect_with_benchmark
+      result = nil
+      real_time = Benchmark.realtime { result = connect_without_benchmark }
+      @@time += real_time
+      result
+    end
+    alias_method_chain :connect, :benchmark
+
+    def write_with_benchmark(s)
+      result = nil
+      real_time = Benchmark.realtime { result = write_without_benchmark(s) }
+      @@time += real_time
+      result
+    end
+    alias_method_chain :write, :benchmark
+
+    def read_with_benchmark(n)
+      result = nil
+      real_time = Benchmark.realtime { result = read_without_benchmark(n) }
+      @@time += real_time
+      result
+    end
+    alias_method_chain :read, :benchmark
+
   end
 end

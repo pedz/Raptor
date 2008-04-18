@@ -5,6 +5,11 @@ module Combined
     set_db_keys :ppg
     add_skipped_fields :ppg
     add_skipped_fields :slot    # pure db field
+    # This field comes from Retain in the PMCS call (fetch the queue)
+    # and is used to see if the calls on the queue have changed.  But,
+    # when we get the call itself, we don't want to fetch this field
+    # (because we can't)
+    add_skipped_fields :call_search_result
 
     set_db_constants :ppg, :queue, :pmr
 

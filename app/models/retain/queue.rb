@@ -11,6 +11,8 @@ module Retain
     # return true.  We might do a fetch from retain if we find we need
     # to.
     def self.valid?(options)
+      # short circuit asking if queue_name or center is blank
+      return false if options[:queue_name].blank? || options[:center].blank?
       cq = Retain::Cq.new(options)
       begin
         hit_count = cq.hit_count # get hit_count to see if the queue is valid
@@ -34,15 +36,17 @@ module Retain
     #
     def calls
       return [] if hit_count == 0
+      local_h_or_s = h_or_s
       de32s.map do |fields|
-        temp = fields.raw_field(:call_search_result).raw_value[0]
+        temp = fields.call_search_result
         options = { 
           :center => decode_center(temp[0 ... 2]),
           :queue_name => temp[2 ... 8].retain_to_user.strip,
-          :h_or_s => 'S',
+          :h_or_s => local_h_or_s,
           :ppg => "%x" % (temp[10] * 256 + temp[11]),
           :p_s_b => fields.p_s_b,
-          :system_down => fields.system_down
+          :system_down => fields.system_down,
+          :call_search_result => temp
         }
         logger.debug("RTN: raw iris is #{temp[0 ... 12]}")
         logger.debug("RTN: make a call options: #{options.inspect}")

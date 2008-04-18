@@ -22,9 +22,7 @@
       <th>Chargeable Queue Name</th>
       <th>Chargeable Center</th>
       <th>Chargeable Time HHMM</th>
-      <th>Chargeable After Hour HHMM</th>
       <th>Chargeable Time Minutes</th>
-      <th>Chargeable After Hour Minutes</th>
     </tr>
   </thead>
   <tbody>
@@ -49,10 +47,8 @@
       <td><%= h psar.psar_chargeable_src_ind %></td>
       <td><%= h psar.chargeable_queue_name %></td>
       <td><%= h psar.chargeable_center %></td>
-      <td><%= h psar.psar_chargeable_time %></td>
-      <td><%= h psar.psar_chargeable_after_hour %></td>
+      <td><%= "%d:%02d" % psar.psar_chargeable_time.divmod(256) %></td>
       <td><%= h psar.chargeable_time_hex %></td>
-      <td><%= h psar.after_hours_time_hex %></td>
     </tr>
     <% end %>
   </tbody>

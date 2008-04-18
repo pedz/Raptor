@@ -20,6 +20,18 @@ module ApplicationHelper
            })
   end
 
+  def print_stats
+    calls = Retain::Connection.request_count
+    time = Retain::Connection.total_time
+    avg = time / [ calls, 1.0 ].max
+    res = "<span id='retain-stats'>"
+    res << "#{calls} Retain calls executed used "
+    res << "#{"%.3f" % time} seconds or "
+    res << "#{"%.3f" % avg} seconds per call. "
+    res << "</span>"
+    res
+  end
+
   def std_scripts(*extras)
     [ "prototype",
       "scriptaculous",

@@ -40,7 +40,6 @@ module Retain
     end
 
     def ct
-      logger.debug("here")
       fields = params[:id].split(',')
       options = {
         :queue_name => fields[0],
@@ -66,7 +65,11 @@ module Retain
         render_error(undispatch)
         return
       end
-      render(:update) { |page| page.replace_html 'blah', "ct completed"}
+      full_text = "<span class='sdi-normal'>CT completed successfully</span>"
+      render(:update) { |page|
+        page.replace_html 'message-area', full_text
+        page.visual_effect :fade, 'message-area'
+      }
     end
 
     # Currently all the editable attributes that call PMPU fall into
@@ -176,7 +179,9 @@ module Retain
         err_class = "sdi-error"
       end
       full_text = "<span class='#{err_class}'>#{err_text}</span>"
-      render(:update) { |page| page.replace_html 'blah', full_text}
+      render(:update) { |page|
+        page.replace_html 'message-area', full_text
+      }
     end
   end
 end

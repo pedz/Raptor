@@ -35,7 +35,8 @@ class ApplicationController < ActionController::Base
     session[:last_uri] = uri
     
     return true if session[:user]
-    ActiveLdap::Base.establish_connection
+    ldap_time = Benchmark.realtime { ActiveLdap::Base.establish_connection }
+    logger.debug("LDAP: took #{ldap_time} to establish the connection")
     authenticate_or_request_with_http_basic "Raptor" do |user_name, password|
       next nil unless LdapUser.authenticate_from_email(user_name, password)
       user = User.find_by_ldap_id(user_name)

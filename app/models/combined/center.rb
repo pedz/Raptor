@@ -6,6 +6,7 @@ module Combined
     add_skipped_fields :center
 
     set_db_constants :center
+    add_non_retain_associations :queues
 
     # Param is center.  Raises CenterNotFound if center is not in
     # database or Retain.

@@ -137,6 +137,12 @@ module Retain
       end
     end
 
+    # def sendit_with_benchmark(*args)
+    #   realtime = Benchmark.realtime{ sendit_without_benchmark(*args) }
+    #   controller.increment_retain_time(realtime)
+    # end
+    # alias_method_chain :sendit, :benchmark
+
     def rc
       @rc
     end

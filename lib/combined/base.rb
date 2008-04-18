@@ -67,6 +67,17 @@ module Combined
         (@db_associations ||= [cached_class.db_associations])[0]
       end
       
+      def add_non_retain_associations(*list)
+        a = [ *list ]
+        logger.debug("CMB: non_retain_associations for #{self} set to #{a.inspect}")
+        a.each do |name|
+          logger.debug("CMB: defining #{name} as non_retain_association")
+          class_eval("def #{name}; @cached.#{name}; end", __FILE__, __LINE__)
+        end
+        @non_retain_associations += a
+      end
+      attr_reader :non_retain_associations
+
       # The combined model specifies which of the retain fields are
       # used as the keys. e.g. :center is the key for a center.  Note
       # that this is only the fields in the db record (a subset of
@@ -102,7 +113,7 @@ module Combined
                       temp = @cached.#{name}
                     end
                     temp.wrap_with_combined
-                  end", __FILE__, __LINE__ - 7)
+                  end", __FILE__, __LINE__ - 6)
           end
         end
         @db_constants = a
@@ -120,6 +131,9 @@ module Combined
       def add_skipped_fields(*args)
         @skipped_fields += [ *args ]
         @retain_fields  -= [ *args ]
+        args.each do |name|
+          class_eval("def #{name}; @cached.#{name}; end", __FILE__, __LINE__)
+        end
       end
 
       def add_extra_fields(*args)
@@ -176,33 +190,46 @@ module Combined
         # Specify default extra fields and skipped fields
         @skipped_fields = [ :id, :created_at, :updated_at ]
         @extra_fields = [ ]
-    
+        @non_retain_associations = [ ]
+
         # Set up fields fetched from retain
         @retain_fields = db_fields - @skipped_fields + @extra_fields
 
         # Define getter methods for each field
         logger.debug("CMB: define fields and associations for #{subclass}")
         db_fields.each do |name|
-          eval("def #{name}
-                  logger.debug(\"CMB: #{name} called as field for \#{self.to_s}\")
-                  unless cache_valid? && !(temp = @cached.#{name}).nil?
-                    call_load
-                    temp = @cached.#{name}
-                  end
-                  return temp
-                end", nil, __FILE__, __LINE__ - 6)
+          if @skipped_fields.include?(name)
+            eval("def #{name}
+                    logger.debug(\"CMB: #{name} called as skipped field for \#{self.to_s}\")
+                    @cached.#{name}
+                  end", nil, __FILE__, __LINE__ - 3)
+          else
+            eval("def #{name}
+                    logger.debug(\"CMB: #{name} called as field for \#{self.to_s}\")
+                    unless cache_valid? && !(temp = @cached.#{name}).nil?
+                      call_load
+                      temp = @cached.#{name}
+                    end
+                    return temp
+                  end", nil, __FILE__, __LINE__ - 7)
+          end
         end
 
         # Define getter methods for each association
+        # For associations, we accept a null value as possible.  So,
+        # we only ask if the cache is valid before calling load.
         db_associations.each do |name|
-          eval("def #{name}
-                  logger.debug(\"CMB: #{name} called as association for \#{self.to_s}\")
-                  unless cache_valid? && !(temp = @cached.#{name}).nil?
-                    call_load
-                    temp = @cached.#{name}
-                  end
-                  temp.wrap_with_combined
-                end", nil, __FILE__, __LINE__ - 7)
+          if @non_retain_associations.include?(name)
+            logger.debug("CMB: defining #{name} as non_retain_association")
+            eval("def #{name}; @cached.#{name}; end", __FILE__, __LINE__)
+          else
+            logger.debug("CMB: defining #{name} as association")
+            eval("def #{name}
+                    logger.debug(\"CMB: #{name} called as association for \#{self.to_s}\")
+                    call_load unless cache_valid?
+                    @cached.#{name}.wrap_with_combined
+                  end", nil, __FILE__, __LINE__ - 4)
+          end
         end
       }
     end

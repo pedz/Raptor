@@ -30,6 +30,17 @@ module Retain
 
     private
     
+    def perform_action_with_retain_benchmark
+      Retain::Connection.reset_time
+      logger.debug("perform_action_with_retain_benchmark: self is #{self}")
+      perform_action_without_benchmark
+      calls = Retain::Connection.request_count
+      time = Retain::Connection.total_time
+      avg = time / [ calls, 1 ].max
+      logger.debug("perform_action_with_retain_benchmark: #{calls} calls, #{time} time, #{avg} average")
+    end
+    alias_method_chain :perform_action, :retain_benchmark
+
     #
     # A before filter for the retain part of the application.  Any
     # controller that might call in to retain should be subclassed as

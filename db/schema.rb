@@ -9,25 +9,26 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 15) do
+ActiveRecord::Schema.define(:version => 16) do
 
   create_table "cached_calls", :force => true do |t|
-    t.integer  "queue_id",                        :null => false
-    t.string   "ppg",               :limit => 3,  :null => false
-    t.integer  "pmr_id",                          :null => false
+    t.integer  "queue_id",                         :null => false
+    t.string   "ppg",                :limit => 3,  :null => false
+    t.integer  "pmr_id",                           :null => false
     t.integer  "priority"
-    t.string   "p_s_b",             :limit => 1
-    t.string   "comments",          :limit => 54
-    t.string   "nls_customer_name", :limit => 28
-    t.string   "nls_contact_name",  :limit => 30
-    t.string   "contact_phone_1",   :limit => 19
-    t.string   "contact_phone_2",   :limit => 19
-    t.string   "cstatus",           :limit => 7
-    t.string   "category",          :limit => 3
+    t.string   "p_s_b",              :limit => 1
+    t.string   "comments",           :limit => 54
+    t.string   "nls_customer_name",  :limit => 28
+    t.string   "nls_contact_name",   :limit => 30
+    t.string   "contact_phone_1",    :limit => 19
+    t.string   "contact_phone_2",    :limit => 19
+    t.string   "cstatus",            :limit => 7
+    t.string   "category",           :limit => 3
     t.boolean  "system_down"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "slot"
+    t.binary   "call_search_result"
   end
 
   add_index "cached_calls", ["queue_id", "ppg"], :name => "uq_cached_calls_pair", :unique => true

@@ -4,7 +4,7 @@ module Combined
 
     set_db_keys :queue_name, :h_or_s
     add_skipped_fields :queue_name, :h_or_s
-
+    add_non_retain_associations :owners, :queue_infos, :favorite_queues
     set_db_constants :queue_name, :h_or_s, :center
 
     # Param is queue_name,h_or_s,center.  Raises QueueNotFound if
@@ -74,13 +74,22 @@ module Combined
       logger.debug("CMB: requested_elements = #{requested_elements.inspect}")
       options_hash[:requested_elements] = requested_elements
 
-      # We need to clean out any cached calls.
-      @calls_cache = nil
-      logger.debug("CMB: cached is of type #{cached.class}")
-      cached.calls.clear
       
       # Create a Retain::Queue from the options cache.
       retain_queue = Retain::Queue.new(options_hash)
+
+      retain_calls = retain_queue.calls
+      db_calls = cached.calls
+      if retain_calls.length == db_calls.length &&
+          (0 ... retain_calls.length).all? { |index|
+          retain_calls[index].call_search_result === db_calls[index].call_search_result
+        }
+        logger.debug("CMB: Queue appears to have not changed")
+        return
+      end
+      
+      # We need to clean out any cached calls.
+      cached.calls.clear
 
       # We have to keep track of the new customers we create so we do
       # not try and create duplicates.  The same is true for PMRs
@@ -90,7 +99,7 @@ module Combined
       
       # Now we get our create the list of calls
       slot = 1
-      retain_queue.calls.each do |call|
+      retain_calls.each do |call|
         # The call only has the bare essentials.  This will touch the
         # call and cause a fetch.  So when the db record is created,
         # it will be more complete.

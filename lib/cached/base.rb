@@ -16,7 +16,7 @@ module Cached
       def db_keys
         (@db_keys ||= [combined_class.db_keys])[0]
       end
-      
+
       def keys_only(options)
         r = Hash[ *options.select { |k, v| db_keys.include?(k) }.flatten ]
         logger.debug("CHC: keys_only for #{self} returning: #{r.inspect}")

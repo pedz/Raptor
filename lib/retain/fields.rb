@@ -198,7 +198,7 @@ module Retain
       :current_text_start          => [  651, :ebcdic,          1 ],
       :follow_up_info              => [  652, :ebcdic,         12 ],
       :severity                    => [  657, :znumber,         1 ],
-      :call_search_result          => [  658, :ebcdic,         86 ],
+      :call_search_result          => [  658, :binary,         86 ],
       :sec_call_symbol_1           => [  660, :ebcdic,         12 ],
       :sec_call_symbol_2           => [  661, :ebcdic,         12 ],
       :sec_call_symbol_3           => [  662, :ebcdic,         12 ],
@@ -591,7 +591,7 @@ module Retain
       # called for all sorts of bogus stuff.  So, we have to do it all
       # by hand.
       sym = orig_sym.singularize
-      if true
+      if false
         field = FIELD_DEFINITIONS[sym]
         logger.debug("RTN: has_key? for #{orig_sym} => #{sym}: field=#{field.inspect}")
         if field

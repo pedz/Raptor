@@ -4,11 +4,11 @@ module Combined
 
     set_db_keys :signon
     add_skipped_fields :signon
-    
     set_db_constants :signon, :software_center, :hardware_center
-
     add_skipped_fields :software_center_id, :hardware_center_id
     add_extra_fields   :software_center,    :hardware_center
+    add_non_retain_associations :queues, :queue_infos
+
 
     def to_param
       @cached.signon
