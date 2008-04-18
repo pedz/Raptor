@@ -53,6 +53,7 @@ module Combined
           end
         end
       end
+      cache_options[:dirty] = false if @cached.respond_to?("dirty")
       @cached.update_attributes(cache_options)
     end
   end

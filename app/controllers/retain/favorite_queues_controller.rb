@@ -66,18 +66,20 @@ module Retain
         center = Combined::Center.new(options)
         queue = center.queues.build(queue_options)
         queue_valid = false
-      elsif (queue = center.queues.from_options(options)).nil?
-        logger.debug("bad queue")
-        flash[:error] = "Queue is not valid"
-        queue = center.queues.build(queue_options)
-        queue_valid = false
       else
-        queue_valid = true
+        center.save if center.new_record?
+        if (queue = center.queues.from_options(options)).nil?
+          logger.debug("bad queue")
+          flash[:error] = "Queue is not valid"
+          queue = center.queues.build(queue_options)
+          queue_valid = false
+        else
+          queue_valid = true
+        end
       end
 
       @favorite_queue = Combined::FavoriteQueue.new(:queue => queue,
                                                     :user => session[:user])
-
       respond_to do |format|
         if queue_valid && @favorite_queue.save
           flash[:notice] = 'FavoriteQueue was successfully created.'

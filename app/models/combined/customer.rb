@@ -51,9 +51,10 @@ module Combined
         @cached.center = Cached::Center.find_or_new(:center => c)
       end
 
-      # Retrieve good stuff
-      cache_options = self.class.cached_class.options_from_retain(retain_object)
-      @cached.update_attributes(cache_options)
+      # Update call record
+      options = self.class.cached_class.options_from_retain(retain_object)
+      options[:dirty] = false if @cached.respond_to?("dirty")
+      @cached.update_attributes(options)
     end
   end
 end

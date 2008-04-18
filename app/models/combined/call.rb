@@ -33,6 +33,10 @@ module Combined
       queue.to_param + ',' + ppg
     end
 
+    def to_options
+      { :ppg => ppg }.merge(queue.to_options)
+    end
+
     # The validate_xxx methods problem need a name change.  They
     # return a three element array of a class name, help string, and a
     # boolean if the field is editable.
@@ -176,15 +180,14 @@ module Combined
     def load
       logger.debug("CMB: load for #{self.to_s}")
       # debugger()
-      cached = self.cached
 
       # Pull the fields we need from the cached record into an options_hash
-      queue = cached.queue
+      queue = @cached.queue
       options_hash = {
         :queue_name => queue.queue_name,
         :h_or_s => queue.h_or_s,
         :center => queue.center.center,
-        :ppg => cached.ppg
+        :ppg => @cached.ppg
       }
       logger.debug("CMB: options_hash = #{options_hash.inspect}")
 
@@ -193,10 +196,11 @@ module Combined
       logger.debug("CMB: group_request = #{group_request.inspect}")
       options_hash[:group_request] = [ group_request ]
 
+      # Create retain object
       call = Retain::Call.new(options_hash)
 
-      # Touch something
-      call.priority
+      # Touch to force a fetch from Retain
+      call.send(group_request[0])
 
       # Make or find PMR
       pmr_options = {
@@ -204,17 +208,19 @@ module Combined
         :branch  => call.branch,
         :country => call.country
       }
-      cached.pmr = Cached::Pmr.find_or_new(pmr_options)
+      @cached.pmr = Cached::Pmr.find_or_new(pmr_options)
 
       # Make or find customer
       cust_options = {
         :country => call.country,
         :customer_number => call.customer_number
       }
-      cached.pmr.customer = Cached::Customer.find_or_new(cust_options)
+      @cached.pmr.customer = Cached::Customer.find_or_new(cust_options)
 
       # Update call record
-      cached.update_attributes(Cached::Call.options_from_retain(call))
+      options = self.class.cached_class.options_from_retain(call)
+      options[:dirty] = false if @cached.respond_to?("dirty")
+      @cached.update_attributes(options)
     end
   end
 end

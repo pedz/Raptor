@@ -189,6 +189,7 @@ module Combined
         
         # Specify default extra fields and skipped fields
         @skipped_fields = [ :id, :created_at, :updated_at ]
+        @skipped_fields += [ :dirty ] if db_fields.include?(:dirty)
         @extra_fields = [ ]
         @non_retain_associations = [ ]
 
@@ -241,6 +242,11 @@ module Combined
     end
     
     def cache_valid?
+      if @cached.respond_to?("dirty") && @cached.dirty
+        logger.debug("CMB: #{self.to_s} cache_valid?: return false: @cached.dirty is true")
+        return false
+      end
+      
       # If we are not cached at all, then cache is invalid
       if (updated_at = @cached.updated_at).nil?
         logger.debug("CMB: #{self.to_s} cache_valid?: return false: updated_at is nil")

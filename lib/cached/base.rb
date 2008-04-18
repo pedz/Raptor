@@ -67,6 +67,8 @@ module Cached
       find_or_new(options)
     end
 
+    # Very similar to find_or_new except calls valid? in the Retain
+    # class
     def self.from_options(options)
       logger.debug("CHC: from_options #{self} with #{options.inspect}")
       temp = find(:first, :conditions => keys_only(options))
@@ -91,5 +93,13 @@ module Cached
         @subclass = subclass
       }
     end
+
+    # Mark the underlying cached object as dirty
+    def mark_as_dirty
+      if respond_to?("dirty")
+        update_attributes :dirty => true
+      end
+    end
+
   end
 end

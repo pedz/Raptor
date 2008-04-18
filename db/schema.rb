@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 16) do
+ActiveRecord::Schema.define(:version => 17) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                         :null => false
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(:version => 16) do
     t.datetime "updated_at"
     t.integer  "slot"
     t.binary   "call_search_result"
+    t.boolean  "dirty"
   end
 
   add_index "cached_calls", ["queue_id", "ppg"], :name => "uq_cached_calls_pair", :unique => true
@@ -93,6 +94,7 @@ ActiveRecord::Schema.define(:version => 16) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.binary   "last_alter_timestamp"
+    t.boolean  "dirty"
   end
 
   add_index "cached_pmrs", ["problem", "branch", "country", "creation_date"], :name => "uq_cached_pmrs_triple", :unique => true

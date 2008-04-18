@@ -40,31 +40,35 @@ module Retain
     end
 
     def ct
-      fields = params[:id].split(',')
-      options = {
-        :queue_name => fields[0],
-        :h_or_s => fields[1],
-        :center => fields[2],
-        :ppg => fields[3]
-      }
+      @call, @queue = Combined::Call.from_param_pair!(params[:id])
+      pmr = @call.pmr
+      options = @call.to_options
+
+      # Three step process.  Dispatch, CT, Undispatch
       dispatch = do_pmcu("CD  ", options)
       logger.debug("dispatch rc = #{dispatch.rc}")
       if dispatch.rc != 0
         render_error(dispatch)
         return
       end
+
       ct = do_pmcu("CT  ", options)
       logger.debug("ct rc = #{ct.rc}")
       if ct.rc != 0
         render_error(ct)
         return
       end
+
+      # At this point, the PMR has changed, so mark it as dirty
+      pmr.mark_as_dirty
+      
       undispatch = do_pmcu("NOCH", options)
       logger.debug("undispatch rc = #{undispatch.rc}")
       if undispatch.rc != 0
         render_error(undispatch)
         return
       end
+
       full_text = "<span class='sdi-normal'>CT completed successfully</span>"
       render(:update) { |page|
         page.replace_html 'message-area', full_text
@@ -103,7 +107,7 @@ module Retain
       respond_to do |format|
         if rc == 0
           # Cause PMR to get reloaded from retain
-          pmr.mark_cache_invalid
+          pmr.mark_as_dirty
 
           # Figure out what to send back
           case field

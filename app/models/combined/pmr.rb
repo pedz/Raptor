@@ -198,15 +198,27 @@ module Combined
         :h_or_s => pmr.h_or_s,
         :ppg => pmr.ppg
       }
-      center_cmb = Combined::Center.from_options(primary_options)
-      if center_cmb
-        @cached.center = center_cmb.unwrap_to_cached
-        queue_cmb = center_cmb.queues.from_options(primary_options)
-        if queue_cmb
-          @cached.queue = queue_cmb.unwrap_to_cached
-          call_cmb = queue_cmb.calls.from_options(primary_options)
-          if call_cmb
-            @cached.primary = call_cmb.unwrap_to_cached
+      center = Cached::Center.from_options(primary_options)
+      if center
+        # We have to save the center if it is a new record.  This is
+        # also true for the queue.  We are creating this complex
+        # structure that is not flat.  The pmr points to the center,
+        # queue, and primary call.  The queue points to the center,
+        # and the call points to the queue.  During the save, if these
+        # are new records, things get confused.
+        center.save if center.new_record?
+        @cached.center = center
+        queue = center.queues.from_options(primary_options)
+        if queue
+          queue.save if queue.new_record?
+          @cached.queue = queue
+          call = queue.calls.from_options(primary_options)
+          if call
+            if call.new_record?
+              call.pmr = @cached
+              call.save
+            end
+            @cached.primary = call
           end
         end
       end
@@ -219,12 +231,13 @@ module Combined
         :queue_name => pmr.next_queue,
         :h_or_s => pmr.h_or_s
       }
-      nc_cmb = Combined::Center.from_options(nc_options)
-      if nc_cmb
-        @cached.next_center = nc_cmb.unwrap_to_cached
-        nq_cmb = nc_cmb.queues.from_options(nc_options)
-        if nq_cmb
-          @cached.next_queue = nq_cmb.unwrap_to_cached
+      nc = Cached::Center.from_options(nc_options)
+      if nc
+        nc.save if nc.new_record?
+        @cached.next_center = nc
+        nq = nc.queues.from_options(nc_options)
+        if nq
+          @cached.next_queue = nq
         end
       end
 
@@ -252,6 +265,7 @@ module Combined
       }
 
       # Update other attributes
+      retain_options[:dirty] = false if @cached.respond_to?("dirty")
       @cached.update_attributes(retain_options)
     end
 

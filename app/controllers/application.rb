@@ -29,6 +29,7 @@ class ApplicationController < ActionController::Base
       @refresh_time = Time.now
       logger.debug("doing a refresh")
     else
+      flash.delete :notice
       @refresh_time = nil
       logger.debug("not refreshing")
     end
