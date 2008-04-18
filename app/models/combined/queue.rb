@@ -85,6 +85,10 @@ module Combined
           retain_calls[index].call_search_result === db_calls[index].call_search_result
         }
         logger.debug("CMB: Queue appears to have not changed")
+        if cached.dirty
+          cached.dirty = false
+          cached.save
+        end
         return
       end
       
