@@ -4,7 +4,8 @@ module Retain
     set_required_fields(:problem, :branch, :country,
                         :signon, :password, :last_alter_timestamp)
     set_optional_fields(:pmr_owner_id, :pmr_resolver_id,
-                        :next_queue, :next_center)
+                        :queue_name, :center, :ppg, :h_or_s,
+                        :next_queue, :next_center, :comment)
 
     def initialize(options = {})
       super(options)

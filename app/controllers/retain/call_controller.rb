@@ -84,19 +84,20 @@ module Retain
       pmr = @call.pmr
       field = params[:editorId].split('-')[1].to_sym
       new_text = params[:value]
-      options = {
-        :problem => pmr.problem,
-        :branch => pmr.branch,
-        :country => pmr.country,
-      }
+      options = pmr.to_options
+
       case field
       when :next_queue
         new_queue_name, new_h_or_s, new_center = new_text.split(',')
         options[:next_queue] = new_queue_name.strip
         options[:next_center] = new_center
+      when :comments
+        options.merge!(@call.to_options)
+        options[:comment] = new_text
       else
         options[field] = new_text
       end
+      logger.debug("call alter options: #{options.inspect}")
 
       # Perform the update.
       pmpu = Retain::Pmpu.new(options)
@@ -107,21 +108,28 @@ module Retain
       respond_to do |format|
         if rc == 0
           # Cause PMR to get reloaded from retain
-          pmr.mark_as_dirty
 
           # Figure out what to send back
           case field
           when :next_queue
+            pmr.mark_as_dirty
             new_text = pmr.next_queue.to_param
             css_class, title, editable = @call.validate_next_queue(signon_user)
+            replace_text = "<span class='#{css_class}' title='#{title + ":Click to Edit"}'>#{new_text}</span>"
           when :pmr_owner_id
+            pmr.mark_as_dirty
             new_text = pmr.owner.name
             css_class, title, editable = @call.validate_owner(signon_user)
+            replace_text = "<span class='#{css_class}' title='#{title + ":Click to Edit"}'>#{new_text}</span>"
           when :pmr_resolver_id
+            pmr.mark_as_dirty
             new_text = pmr.resolver.name
             css_class, title, editable = @call.validate_resolver(signon_user)
+            replace_text = "<span class='#{css_class}' title='#{title + ":Click to Edit"}'>#{new_text}</span>"
+          when :comments
+            @call.mark_as_dirty
+            replace_text = @call.comments
           end
-          replace_text = "<span class='#{css_class}' title='#{title + ":Click to Edit"}'>#{new_text}</span>"
           format.html { render :text => replace_text }
         else
           format.html { render(:text => new_text,

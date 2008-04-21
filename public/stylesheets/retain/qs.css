@@ -1,3 +1,16 @@
+body {
+    background: #f0f0f0;
+    color: black;
+}
+
+.rowodd {
+    background: #e0e0e0;
+}
+
+.roweven {
+    background: #e0e0f8;
+}
+
 span.ecpaat-heading {
     color: #0F0;
 }
@@ -69,11 +82,24 @@ div.links a:hover .popup {
     background-color: red;
 }
 
-.click-to-edit {
-    border: 3px outset grey;
+.customer {
+    padding-bottom: 3px;
+    margin-bottom: 3px;
+}
+
+.pmr-link {
+    text-decoration: none;
 }
 
 .click-to-edit:hover {
+    cursor: pointer;
+}
+
+.click-to-edit-button {
+    border: 3px outset grey;
+}
+
+.click-to-edit-button:hover {
     cursor: pointer;
 }
 

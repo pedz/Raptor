@@ -9,61 +9,57 @@
     <span id="message-area"></span>
     <table class='sortable' style='font-family : courier, monospace'>
       <thead>
-	<tr>
-	  <th colspan='10'>
-	    Click on column headings to sort by that column
-	  </th>
-	</tr>
-	<tr>
-	  <th>Sel#</th>
-	  <th>Prblm,bnc,cty</th>
-	  <th>S</th>
-	  <th>P/S</th>
-	  <th>Owner</th>
-	  <th>Resolver</th>
-	  <th>Next Queue</th>
-	  <th>Age</th>
-	  <th>
-	    <span title='Jeff Smith originated the concept of Severity Days.  He was the original level two manager of the AIX RS/6000 version 3 change team'>JS</span>
-	    <br>
-	    <span title='Severity Days is the age of the PMR in days multiplied by a factor based upon the current severity'>SevD</span>
-	  </th>
-	  <th>Email Customer</th>
-	  <th>Next CT</th>
-	  <th>CT</th>
-	</tr>
+	<%= display_qs_headers_1 %>
       </thead>
       <tbody>
-	<% @queue.calls.each_with_index do |call, index| -%>
-          <tr class='<%= call_class(call) %>'>
-  	    <td><%= button_url(index += 1, call) %></td>
-	    <%= link_etc(call) %>
-  	    <td><%= call.p_s_b %></td>
-	    <%= pri_sev(call) %>
-	    <%= owner(call) %>
-	    <%= resolver(call) %>
-	    <%= next_queue(call) %>
-	    <%= age(call) %>
-	    <%= jeff(call) %>
-	    <%= cust_email(call) %>
-	    <%= next_ct(call) %>
-	    <td><%= link_to_remote("ct", :url => ct_combined_call_path(call)) %></td>
-  	  </tr>
-        <% end -%>
+	<%= display_qs_body_1 %>
       </tbody>
     </table>
   </div>
 <% end %>
 <% content_for(:bottom) do %>
-  <ul style='color: green'>
-    <li>"CT" error messages are better -- like, they exist. ya know?</li>
-    <li>Hover over PMR number to see ECPAAT</li>
-    <li>Each section of ECPAAT is now limited to 5 lines</li>
-    <li>Customer Time of Day moved into ECPAAT section</li>
-    <li>Time of last CT can be seen by hovering over Next CT</li>
-  </ul>
+  <div style='color: green; display: none;' id='help'>
+    <ol>
+      <li>
+	Hover over PMR number to see Customer's name, Comments,
+	Customer's time of day, and ECPAAT
+      </li>
+      <li>
+	Each section of ECPAAT is limited to first 5 lines
+      </li>
+      <li>
+	Time of last CT can be seen by hovering over Next CT
+      </li>
+      <li>
+	Hover over red or orange fields to see cause of error or
+	warning
+      </li>
+      <li>
+	Text of buttons can be typed into text box for mouseless
+        navigation e.g. "1" goes to the first PMR, "home" goes to home
+        page
+      </li>
+      <li>
+	Click on Customer's name to invoke email to customer
+      </li>
+      <li>
+	Click on Comments to alter them
+      </li>
+      <li>
+	Click on Owner, Resolver, and Next Queue to alter them.  Owner
+	and Next Queue are not alterable for WT PMRs.
+      </li>
+      <li>
+	PMR colored in orange is under "initial contact" criteria
+      </li>
+      <li>
+	PMR colored red is "system down" criteria
+      </li>
+    </ol>
+  </div>
   <div>
     <%= button_url("Home", "/") %>
     <%= button_url 'Favorite Queues', combined_favorite_queues_path %>
+    <%= button "Help", "$(\"help\").toggle()" %>
   </div>
 <% end %>

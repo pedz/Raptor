@@ -2,7 +2,110 @@ require 'time'
 
 module Retain
   module QsHelper
-    def cust_email(call)
+
+    DISP_LIST_1 = [ :call_button, :link_etc, :p_s_b, :pri_sev, :duo,
+                    :owner, :resolver, :next_queue, :age, :jeff,
+                    :next_ct, :ct ]
+
+    HELP_TEXT = <<-EOF
+	<tr>
+	  <th colspan='10'>
+	    Click on column headings to sort by that column
+	  </th>
+	</tr>
+      EOF
+
+    # The "1" style of header and body is the original version
+    def display_qs_headers_1
+      HELP_TEXT + tr { DISP_LIST_1.map { |sym| self.send sym, true, nil, nil }.join("\n") }
+    end
+
+    def display_qs_body_1
+      ret = ""
+      @queue.calls.each_with_index do |call, index|
+        ret << tr do 
+          DISP_LIST_1.map { |sym| self.send sym, false, call, index }.join("\n")
+        end
+      end
+      ret
+    end
+
+    def duo(header, call, index)
+      return "<th>Customer<br>Comments</th>" if header
+      td do
+        customer_span(call) +
+          "<br>" +
+          comments_span(call)
+      end
+    end
+
+    def customer_span(call)
+      pmr = call.pmr
+      if (mail = pmr.problem_e_mail.strip).blank?
+        span :title => "No email given", :class => "customer" do
+          call.nls_customer_name
+        end
+      else
+        title = "Click to send email to #{mail}"
+        href = "mailto:#{mail}?subject=#{pmr.pbc.upcase}"
+        span :title => title, :class => "customer" do
+          a :href => href do
+            call.nls_customer_name
+          end
+        end
+      end
+    end
+
+    def customer(header, call, index)
+      return "<th>Customer</th>" if header
+      pmr = call.pmr
+      if (mail = pmr.problem_e_mail.strip).blank?
+        td :title => "No email given" do
+          call.nls_customer_name
+        end
+      else
+        title = "Click to send email to #{mail}"
+        href = "mailto:#{mail}?subject=#{pmr.pbc.upcase}"
+        td :title => title do
+          a :href => href do
+            call.nls_customer_name
+          end
+        end
+      end
+    end
+
+    def comments_span(call)
+      pmr = call.pmr
+      span(:id => "#{pmr.pbc}-comments",
+           :class => "edit-name click-to-edit",
+           :title => "Click to Edit",
+           :url => alter_combined_call_path(call)) do
+        call.comments
+      end
+    end
+
+    def comments(header, call, index)
+      return "<th>Comments</th>" if header
+      td { call.comments }
+    end
+
+    def ct(header, call, index)
+      return "<th>CT</th>" if header
+      td { link_to_remote("ct", :url => ct_combined_call_path(call)) }
+    end
+    
+    def call_button(header, call, index)
+      return "<th>Sel#</th>" if header
+      td { button_url(index + 1, call) }
+    end
+
+    def p_s_b(header, call, index)
+      return "<th>S</th>" if header
+      td { call.p_s_b }
+    end
+    
+    def cust_email(header, call, index)
+      return "<th>Email Customer</th>" if header
       pmr = call.pmr
       if (mail = pmr.problem_e_mail.strip).blank?
         td do
@@ -18,12 +121,17 @@ module Retain
       end
     end
 
-    def qs_ecpaat_lines(pmr)
+    def qs_ecpaat_lines(call)
+      pmr = call.pmr
       temp_hash = pmr.ecpaat
       n = DateTime.now.new_offset(pmr.customer.tz)
       
-      temp_lines =[ "<span class='ecpaat-heading'>Customer Time of Day: </span>" +
-                    "#{n.strftime("%a, %d %b %Y %H:%M")}" ]
+      temp_lines = [ "<span class='ecpaat-heading'>Customer: </span>" +
+                     "#{call.nls_customer_name}" ]
+      temp_lines << [ "<span class='ecpaat-heading'>Comments: </span>" +
+                     "#{call.comments}" ]
+      temp_lines << [ "<span class='ecpaat-heading'>Customer Time of Day: </span>" +
+                      "#{n.strftime("%a, %d %b %Y %H:%M")}" ]
       Cached::Pmr::ECPAAT_HEADINGS.each { |heading|
         unless (lines = temp_hash[heading]).nil?
           temp_lines << ("<span class='ecpaat-heading'>" +
@@ -36,14 +144,17 @@ module Retain
       temp_lines.join("<br/>\n")
     end
 
-    def link_etc(call)
+    def link_etc(header, call, index)
+      return "<th>Prblm,bnc,cty</th>" if header
       popup_text = popup do
-        qs_ecpaat_lines(call.pmr)
+        qs_ecpaat_lines(call)
       end
-      text = call.pmr.pbc + popup_text
+      text = span(:style => "text-decoration: underline;") do
+        call.pmr.pbc
+      end + popup_text
       td do
         div :class => "links" do
-          link_to text, call
+          link_to text, call, :class => 'pmr-link'
         end
       end
     end
@@ -55,7 +166,8 @@ module Retain
       return "normal"
     end
     
-    def owner(call)
+    def owner(header, call, index)
+      return "<th>Owner</th>" if header
       retid = Logon.instance.signon
       pmr = call.pmr
       name = pmr.owner.name
@@ -66,7 +178,7 @@ module Retain
       td do
         if editable
           span(:id => "#{pmr.pbc}-pmr_owner_id",
-               :class => "edit-name click-to-edit",
+               :class => "collection-edit-name click-to-edit-button",
                :url => alter_combined_call_path(call),
                :options => {
                  :loadCollectionURL => owner_list_combined_registration_path(retid)
@@ -84,7 +196,8 @@ module Retain
       end
     end
 
-    def resolver(call)
+    def resolver(header, call, index)
+      return "<th>Resolver</th>" if header
       retid = Logon.instance.signon
       pmr = call.pmr
       name = pmr.resolver.name
@@ -95,7 +208,7 @@ module Retain
       td do
         if editable
           span(:id => "#{pmr.pbc}-pmr_resolver_id",
-               :class => "edit-name click-to-edit",
+               :class => "collection-edit-name click-to-edit-button",
                :url => alter_combined_call_path(call),
                :options => {
                  :loadCollectionURL => owner_list_combined_registration_path(retid)
@@ -113,7 +226,8 @@ module Retain
       end
     end
 
-    def pri_sev(call)
+    def pri_sev(header, call, index)
+      return "<th>P/S</th>" if header
       p = call.priority
       s = call.pmr.severity
       if p == s
@@ -129,14 +243,15 @@ module Retain
       end
     end
     
-    def next_queue(call)
+    def next_queue(header, call, index)
+      return "<th>Next Queue</th>" if header
       pmr = call.pmr
       nq_text = pmr.next_queue.nil? ? "" : pmr.next_queue.to_param
       css_class, title, editable = call.validate_next_queue(signon_user)
       td do
         if editable
           span(:id => "#{pmr.pbc}-next_queue",
-               :class => "edit-name click-to-edit",
+               :class => "collection-edit-name click-to-edit-button",
                :url => alter_combined_call_path(call),
                :options => {
                  :loadCollectionURL => queue_list_combined_call_path(call)
@@ -154,7 +269,8 @@ module Retain
       end
     end
 
-    def age(call)
+    def age(header, call, index)
+      return "<th>Age</th>" if header
       age_value = call.pmr.age.round
       if age_value > 100
         age_class = "wag-wag"
@@ -172,7 +288,17 @@ module Retain
 
     # Calculate the Jeff Smith days...
     MULT = [ 0, 10, 2, 0.5, 0.1 ]
-    def jeff(call)
+    JEFF_TEXT = "Jeff Smith originated the concept of Severity Days. He was the " +
+      "original level two manager of the AIX RS/6000 version 3 change team"
+    SEV_TEXT = "Severity Days is the age of the PMR in days multiplied by a " +
+      "factor based upon the current severity"
+    def jeff(header, call, index)
+      return <<-EOF if header
+          <th>
+	    <span title='#{JEFF_TEXT}'>JS</span><br>
+	    <span title='#{SEV_TEXT}'>SevD</span>
+	  </th>
+        EOF
       pmr = call.pmr
       jeff_days = (MULT[pmr.severity] * pmr.age).round
       if jeff_days > 300
@@ -275,7 +401,8 @@ module Retain
       customer.business_days(start_time, days)
     end
 
-    def next_ct(call)
+    def next_ct(header, call, index)
+      return "<th>Next CT</th>" if header
       logger.debug("pmr's center is #{call.pmr.center}")
       is_initial = call.needs_initial_response?
       if is_initial
@@ -305,6 +432,13 @@ module Retain
       end
     end
 
+    def tr(hash = { })
+      logger.debug("In TR HEY!!!")
+      "<tr#{hash.keys.map { |key| " #{key}='#{hash[key]}'"}}>" +
+      yield +
+      "</tr>"
+    end
+    
     def td(hash = { })
       "<td#{hash.keys.map { |key| " #{key}='#{hash[key]}'"}}>" +
       yield +

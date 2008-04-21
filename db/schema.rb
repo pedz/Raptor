@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(:version => 17) do
     t.integer  "center_id",               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "dirty"
   end
 
   add_index "cached_queues", ["queue_name", "h_or_s", "center_id"], :name => "uq_cached_queues_triple", :unique => true

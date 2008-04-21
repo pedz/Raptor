@@ -40,6 +40,14 @@ module Combined
       pbc
     end
 
+    def to_options
+      {
+        :problem => problem,
+        :branch => branch,
+        :country => country
+      }
+    end
+
     # A convenience method to give back the usual form of
     # problem,branch,country for a call.
     def pbc
