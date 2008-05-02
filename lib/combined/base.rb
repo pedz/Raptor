@@ -72,7 +72,7 @@ module Combined
         logger.debug("CMB: non_retain_associations for #{self} set to #{a.inspect}")
         a.each do |name|
           logger.debug("CMB: defining #{name} as non_retain_association")
-          class_eval("def #{name}; @cached.#{name}; end", __FILE__, __LINE__)
+          class_eval("def #{name}; @cached.#{name}.wrap_with_combined; end", __FILE__, __LINE__)
         end
         @non_retain_associations += a
       end
@@ -222,7 +222,7 @@ module Combined
         db_associations.each do |name|
           if @non_retain_associations.include?(name)
             logger.debug("CMB: defining #{name} as non_retain_association")
-            eval("def #{name}; @cached.#{name}; end", __FILE__, __LINE__)
+            eval("def #{name}; @cached.#{name}.wrap_with_combined; end", __FILE__, __LINE__)
           else
             logger.debug("CMB: defining #{name} as association")
             eval("def #{name}
@@ -236,7 +236,8 @@ module Combined
     end
 
     def call_load
-      load
+      logger.debug("db only = #{DB_ONLY}")
+      load unless DB_ONLY
       @invalid_cache = false
       @loaded = true
     end
