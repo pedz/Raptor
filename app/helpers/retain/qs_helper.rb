@@ -3,117 +3,185 @@ require 'time'
 module Retain
   module QsHelper
 
-    DISP_LIST_1 = [ :call_button, :link_etc, :p_s_b, :pri_sev, :duo,
-                    :owner, :resolver, :next_queue, :age, :jeff,
-                    :next_ct, :ct ]
+    DISP_LIST = [
+                 :call_button, :link_etc, :pri_sev, :p_s_b,
+                 :biggem,
+                 :age, :jeff, :next_ct, :ct
+                ]
 
     HELP_TEXT = <<-EOF
 	<tr>
-	  <th colspan='10'>
+	  <th colspan='5'>
 	    Click on column headings to sort by that column
 	  </th>
 	</tr>
       EOF
 
     # The "1" style of header and body is the original version
-    def display_qs_headers_1
-      HELP_TEXT + tr { DISP_LIST_1.map { |sym| self.send sym, true, nil, nil }.join("\n") }
+    def display_qs_headers(binding)
+      concat(HELP_TEXT, binding)
+      tr binding do |binding|
+        DISP_LIST.map { |sym| self.send sym, binding, true, nil, nil }.join("\n")
+      end
     end
 
-    def display_qs_body_1
-      ret = ""
+    def display_qs_body(binding)
       @queue.calls.each_with_index do |call, index|
-        ret << tr do 
-          DISP_LIST_1.map { |sym| self.send sym, false, call, index }.join("\n")
+        tr binding, :class => call_class(call) + " pmr-row" do |binding|
+          DISP_LIST.map { |sym| self.send sym, binding, false, call, index }.join("\n")
         end
       end
-      ret
     end
 
-    def duo(header, call, index)
-      return "<th>Customer<br>Comments</th>" if header
-      td do
-        customer_span(call) +
-          "<br>" +
-          comments_span(call)
-      end
-    end
-
-    def customer_span(call)
-      pmr = call.pmr
-      if (mail = pmr.problem_e_mail.strip).blank?
-        span :title => "No email given", :class => "customer" do
-          call.nls_customer_name
+    private
+    
+    BIGGEM_COLUMNS = [
+                      [ :customer, :owner, :resolver, :next_queue ],
+                      [ :comments, :update_field ],
+                      [ :update_form ]
+                     ]
+    def biggem(binding, header, call, index)
+      logger.debug("defined?(_erbout) is #{defined?(_erbout).inspect} at #{__LINE__}")
+      if header
+        th binding, :class => 'biggem' do |binding|
+          table binding, :class => 'nested-table' do |binding|
+            thead binding do |binding|
+              BIGGEM_COLUMNS.inject("") do |memo, cols|
+                tr binding do |binding|
+                  cols.each { |sym|
+                    self.send sym, binding, header, call, index
+                  }
+                  concat("\n", binding)
+                end
+              end
+            end
+          end
         end
       else
-        title = "Click to send email to #{mail}"
-        href = "mailto:#{mail}?subject=#{pmr.pbc.upcase}"
-        span :title => title, :class => "customer" do
-          a :href => href do
-            call.nls_customer_name
+        td binding, :class => 'biggem' do |binding|
+          table binding, :class => 'nested-table' do |binding|
+            tbody binding do |binding|
+              BIGGEM_COLUMNS.inject("") do |memo, cols|
+                tr binding do |binding|
+                  cols.map { |sym|
+                    self.send sym, binding, header, call, index
+                  }
+                  concat("\n", binding)
+                end
+              end
+            end
           end
         end
       end
     end
 
-    def customer(header, call, index)
-      return "<th>Customer</th>" if header
-      pmr = call.pmr
-      if (mail = pmr.problem_e_mail.strip).blank?
-        td :title => "No email given" do
-          call.nls_customer_name
+    def update_form(binding, header, call, index)
+      if header
+        th binding, :class => 'update-form', :colspan => 4 do |binding|
+          concat("", binding)
         end
       else
-        title = "Click to send email to #{mail}"
-        href = "mailto:#{mail}?subject=#{pmr.pbc.upcase}"
-        td :title => title do
-          a :href => href do
-            call.nls_customer_name
-          end
+        td binding, :id => "update-form-#{index+1}", :class => 'update-form', :colspan => 4 do |binding|
+          concat(render(:partial => "shared/retain/call_update",
+                        :locals => { :call => call, :index => index }),
+                 binding)
         end
       end
     end
 
-    def comments_span(call)
-      pmr = call.pmr
-      span(:id => "#{pmr.pbc}-comments",
-           :class => "edit-name click-to-edit",
-           :title => "Click to Edit",
-           :url => alter_combined_call_path(call)) do
-        call.comments
+    def update_field(binding, header, call, index)
+      if header
+        th binding, :class => 'update' do |binding|
+          concat("Update", binding)
+        end
+      else
+        td binding, :class => 'update' do |binding|
+          concat(button("U#{index + 1}", "$(\"update-form-#{index + 1}\").toggleUpdateForm();"), binding)
+        end
       end
-    end
-
-    def comments(header, call, index)
-      return "<th>Comments</th>" if header
-      td { call.comments }
-    end
-
-    def ct(header, call, index)
-      return "<th>CT</th>" if header
-      td { link_to_remote("ct", :url => ct_combined_call_path(call)) }
     end
     
-    def call_button(header, call, index)
-      return "<th>Sel#</th>" if header
-      td { button_url(index + 1, call) }
+    def customer(binding, header, call, index)
+      if header
+        th binding, :class => 'customer' do |binding|
+          concat("Customer".center(28).gsub(/ /, '&nbsp;'), binding)
+        end
+      else
+        pmr = call.pmr
+        if (mail = pmr.problem_e_mail.strip).blank?
+          td binding, :title => "No email given", :class => "customer" do |binding|
+            concat(call.nls_customer_name.ljust(28).gsub(/ /, '&nbsp;'), binding)
+          end
+        else
+          title = "Click to send email to #{mail}"
+          href = "mailto:#{mail}?subject=#{pmr.pbc.upcase}"
+          td binding, :title => title, :class => "customer" do |binding|
+            a binding, :href => href do |binding|
+              concat(call.nls_customer_name.ljust(28).gsub(/ /, '&nbsp;'), binding)
+            end
+          end
+        end
+      end
     end
 
-    def p_s_b(header, call, index)
-      return "<th>S</th>" if header
-      td { call.p_s_b }
+    def comments(binding, header, call, index)
+      if header
+        th binding, :class => 'comments', :colspan => 3 do |binding|
+          concat("Comments", binding)
+        end
+      else
+        td binding, :colspan => 3, :class => 'comments' do |binding|
+          concat(call.comments, binding)
+        end
+      end
+    end
+
+    def ct(binding, header, call, index)
+      if header
+        th binding, :class => 'ct' do |binding|
+          concat("CT", binding)
+        end
+      else
+        td binding, :class => 'ct' do |binding|
+          concat(link_to_remote("ct", :url => ct_combined_call_path(call)), binding)
+        end
+      end
+    end
+    
+    def call_button(binding, header, call, index)
+      if header
+        th binding, :class => 'call-button' do |binding|
+          concat("Sel#", binding)
+        end
+      else
+        td binding, :class => 'call-button' do |binding|
+          concat(button_url(index + 1, call), binding)
+        end
+      end
+    end
+
+    def p_s_b(binding, header, call, index)
+      if header
+        th binding, :class => 'p-s-b' do |binding|
+          concat("S", binding)
+        end
+      else
+        td binding, :class => 'p-s-b' do |binding|
+          concat(call.p_s_b, binding)
+        end
+      end
     end
     
     def cust_email(header, call, index)
-      return "<th>Email Customer</th>" if header
+      return "<th class='cust-email'>Email Customer</th>" if header
       pmr = call.pmr
       if (mail = pmr.problem_e_mail.strip).blank?
-        td do
+        td :class => 'cust-email' do
           "No Email Given"
         end
       else
         href = "mailto:#{mail}?subject=#{pmr.pbc.upcase}"
-        td do
+        td :class => 'cust-email' do
           a :href => href do
             mail
           end
@@ -144,17 +212,23 @@ module Retain
       temp_lines.join("<br/>\n")
     end
 
-    def link_etc(header, call, index)
-      return "<th>Prblm,bnc,cty</th>" if header
-      popup_text = popup do
-        qs_ecpaat_lines(call)
-      end
-      text = span(:style => "text-decoration: underline;") do
-        call.pmr.pbc
-      end + popup_text
-      td do
-        div :class => "links" do
-          link_to text, call, :class => 'pmr-link'
+    def link_etc(binding, header, call, index)
+      if header
+        th binding, :class => 'link-etc' do |binding|
+          concat("Prblm,bnc,cty", binding)
+        end
+      else
+        td binding, :class => 'link-etc' do |binding|
+          div binding, :class => 'links' do |binding|
+            a binding, :class => 'pmr-link', :href => url_for(call) do |binding|
+              span binding, :style => "text-decoration: underline" do |binding|
+                concat(call.pmr.pbc, binding)
+              end
+              popup binding do |binding|
+                concat(qs_ecpaat_lines(call), binding)
+              end
+            end
+          end
         end
       end
     end
@@ -166,123 +240,157 @@ module Retain
       return "normal"
     end
     
-    def owner(header, call, index)
-      return "<th>Owner</th>" if header
-      retid = Logon.instance.signon
-      pmr = call.pmr
-      name = pmr.owner.name
-      if name.blank?
-        name = "blank"
-      end
-      css_class, title, editable = call.validate_owner(signon_user)
-      td do
-        if editable
-          span(:id => "#{pmr.pbc}-pmr_owner_id",
-               :class => "collection-edit-name click-to-edit-button",
-               :url => alter_combined_call_path(call),
-               :options => {
-                 :loadCollectionURL => owner_list_combined_registration_path(retid)
-               }.to_json ) do
-            title += ": Click to Edit"
-            span :class => css_class, :title => title  do
-              "#{name}"
-            end
-          end
-        else
-          span :class => css_class, :title => title  do
-            "#{name}"
-          end
+    def owner(binding, header, call, index)
+      if header
+        th binding, :class => 'owner not-editable' do |binding|
+          concat("Owner".center(22).gsub(/ /, '&nbsp;'), binding)
         end
-      end
-    end
-
-    def resolver(header, call, index)
-      return "<th>Resolver</th>" if header
-      retid = Logon.instance.signon
-      pmr = call.pmr
-      name = pmr.resolver.name
-      if name.blank?
-        name = "blank"
-      end
-      css_class, title, editable = call.validate_resolver(signon_user)
-      td do
-        if editable
-          span(:id => "#{pmr.pbc}-pmr_resolver_id",
-               :class => "collection-edit-name click-to-edit-button",
-               :url => alter_combined_call_path(call),
-               :options => {
-                 :loadCollectionURL => owner_list_combined_registration_path(retid)
-               }.to_json ) do
-            title += ": Click to Edit"
-            span :class => css_class, :title => title  do
-              "#{name}"
-            end
-          end
-        else
-          span :class => css_class, :title => title  do
-            "#{name}"
-          end
-        end
-      end
-    end
-
-    def pri_sev(header, call, index)
-      return "<th>P/S</th>" if header
-      p = call.priority
-      s = call.pmr.severity
-      if p == s
-        td_class =  "good"
-        td_title = "Nothing wrong here"
       else
-        td_class = "wag-wag"
-        td_title = "Priority and Severity should match"
+        retid = Logon.instance.signon
+        pmr = call.pmr
+        name = pmr.owner.name
+        if name.blank?
+          name = "blank"
+        end
+        name = name.ljust(22).gsub(/ /, '&nbsp;')
+        css_class, title, editable = call.validate_owner(signon_user)
+        td binding, :class => "owner" do |binding|
+          if editable
+            span(binding,
+                 :id => "#{pmr.pbc}-pmr_owner_id",
+                 :class => "collection-edit-name click-to-edit-button",
+                 :url => alter_combined_call_path(call),
+                 :options => {
+                   :loadCollectionURL => owner_list_combined_registration_path(retid)
+                 }.to_json ) do
+              title += ": Click to Edit"
+              span binding, :class => css_class, :title => title  do |binding|
+                concat("#{name}", binding)
+              end
+            end
+          else
+            span binding, :class => css_class + " not-editable", :title => title  do |binding|
+              concat("#{name}", binding)
+            end
+          end
+        end
       end
-      
-      td :title => td_title, :class => td_class do
-        "#{p}/#{s}"
+    end
+
+    def resolver(binding, header, call, index)
+      if header
+        th binding, :class => 'resolver not-editable' do |binding|
+          concat("Resolver".center(22).gsub(/ /, '&nbsp;'), binding)
+        end
+      else
+        retid = Logon.instance.signon
+        pmr = call.pmr
+        name = pmr.resolver.name
+        if name.blank?
+          name = "blank"
+        end
+        name = name.ljust(22).gsub(/ /, '&nbsp;')
+        css_class, title, editable = call.validate_resolver(signon_user)
+        td binding, :class => "resolver" do |binding|
+          if editable
+            span(binding,
+                 :id => "#{pmr.pbc}-pmr_resolver_id",
+                 :class => "collection-edit-name click-to-edit-button",
+                 :url => alter_combined_call_path(call),
+                 :options => {
+                   :loadCollectionURL => owner_list_combined_registration_path(retid)
+                 }.to_json ) do
+              title += ": Click to Edit"
+              span binding, :class => css_class, :title => title  do |binding|
+                concat("#{name}", binding)
+              end
+            end
+          else
+            span binding, :class => css_class + " not-editable", :title => title  do |binding|
+              concat("#{name}", binding)
+            end
+          end
+        end
+      end
+    end
+
+    def pri_sev(binding, header, call, index)
+      if header
+        th binding, :class => 'pri-sev' do |binding|
+          concat("P/S", binding)
+        end
+      else
+        p = call.priority
+        s = call.pmr.severity
+        if p == s
+          td_class =  "good"
+          td_title = "Nothing wrong here"
+        else
+          td_class = "wag-wag"
+          td_title = "Priority and Severity should match"
+        end
+        td_class << " pri-sev"
+        td binding, :title => td_title, :class => td_class do |binding|
+          concat("#{p}/#{s}", binding)
+        end
       end
     end
     
-    def next_queue(header, call, index)
-      return "<th>Next Queue</th>" if header
-      pmr = call.pmr
-      nq_text = pmr.next_queue.nil? ? "" : pmr.next_queue.to_param
-      css_class, title, editable = call.validate_next_queue(signon_user)
-      td do
-        if editable
-          span(:id => "#{pmr.pbc}-next_queue",
-               :class => "collection-edit-name click-to-edit-button",
-               :url => alter_combined_call_path(call),
-               :options => {
-                 :loadCollectionURL => queue_list_combined_call_path(call)
-               }.to_json ) do
-            title += ": Click to Edit"
-            span :class => css_class, :title => title  do
-              nq_text
+    def next_queue(binding, header, call, index)
+      width = 12
+      if header
+        th binding, :class => "next-queue not-editable" do |binding|
+          concat("Next Queue".center(width).gsub(/ /, '&nbsp;'), binding)
+        end
+      else
+        pmr = call.pmr
+        nq_text = pmr.next_queue.nil? ? "" : pmr.next_queue.to_param
+        nq_text = nq_text.ljust(width).gsub(/ /, '&nbsp;')
+        css_class, title, editable = call.validate_next_queue(signon_user)
+        td binding, :class => "next-queue" do |binding|
+          if editable
+            span(binding,
+                 :id => "#{pmr.pbc}-next_queue",
+                 :class => "collection-edit-name click-to-edit-button",
+                 :url => alter_combined_call_path(call),
+                 :options => {
+                   :loadCollectionURL => queue_list_combined_call_path(call)
+                 }.to_json ) do
+              title += ": Click to Edit"
+              span binding, :class => css_class, :title => title  do |binding|
+                concat(nq_text, binding)
+              end
             end
-          end
-        else
-          span :class => css_class, :title => title  do
-            nq_text
+          else
+            span binding, :class => css_class + " not-editable", :title => title  do |binding|
+              concat(nq_text, binding)
+            end
           end
         end
       end
     end
 
-    def age(header, call, index)
-      return "<th>Age</th>" if header
-      age_value = call.pmr.age.round
-      if age_value > 100
-        age_class = "wag-wag"
-        age_title = "Over 100 days old"
+    def age(binding, header, call, index)
+      if header
+        th binding, :class => 'age' do |binding|
+          concat("Age", binding)
+        end
       else
-        age_class = "normal"
-        age_title = "Young pup"
-      end
-      td(:title => age_title,
-         :class => age_class,
-         :style => "text-align: right") do
-        "#{age_value}"
+        age_value = call.pmr.age.round
+        if age_value > 100
+          age_class = "wag-wag"
+          age_title = "Over 100 days old"
+        else
+          age_class = "normal"
+          age_title = "Young pup"
+        end
+        age_class << ' age'
+        td(binding,
+           :title => age_title,
+           :class => age_class,
+           :style => "text-align: right") do |binding|
+          concat("#{age_value}", binding)
+        end
       end
     end
 
@@ -292,28 +400,33 @@ module Retain
       "original level two manager of the AIX RS/6000 version 3 change team"
     SEV_TEXT = "Severity Days is the age of the PMR in days multiplied by a " +
       "factor based upon the current severity"
-    def jeff(header, call, index)
-      return <<-EOF if header
-          <th>
-	    <span title='#{JEFF_TEXT}'>JS</span><br>
-	    <span title='#{SEV_TEXT}'>SevD</span>
-	  </th>
-        EOF
-      pmr = call.pmr
-      jeff_days = (MULT[pmr.severity] * pmr.age).round
-      if jeff_days > 300
-        jeff_class = "wag-wag"
-        jeff_title = "Over 300 Jeff Days"
-      elsif jeff_days > 50
-        jeff_class = "warn"
-        jeff_title = "Over 50 Jeff Days"
+    def jeff(binding, header, call, index)
+      if header
+        th binding do |binding|
+          span binding, :title => JEFF_TEXT do |binding|
+            concat("JS", binding)
+          end
+          concat("<br />", binding)
+          span binding, :title => SEV_TEXT do |binding|
+            concat("SevD", binding)
+          end
+        end
       else
-        jeff_class = "normal"
-        jeff_title = "You are a happy puppy"
-      end
-      jeff_class = jeff_days > 300 ? "wag-wag" : (jeff_days > 50 ? "warn" : "normal")
-      td :class => jeff_class, :title => jeff_title do
-        "#{jeff_days}"
+        pmr = call.pmr
+        jeff_days = (MULT[pmr.severity] * pmr.age).round
+        if jeff_days > 300
+          jeff_class = "wag-wag"
+          jeff_title = "Over 300 Jeff Days"
+        elsif jeff_days > 50
+          jeff_class = "warn"
+          jeff_title = "Over 50 Jeff Days"
+        else
+          jeff_class = "normal"
+          jeff_title = "You are a happy puppy"
+        end
+        td binding, :class => jeff_class, :title => jeff_title do |binding|
+          concat("#{jeff_days}", binding)
+        end
       end
     end
 
@@ -401,75 +514,103 @@ module Retain
       customer.business_days(start_time, days)
     end
 
-    def next_ct(header, call, index)
-      return "<th>Next CT</th>" if header
-      logger.debug("pmr's center is #{call.pmr.center}")
-      is_initial = call.needs_initial_response?
-      if is_initial
-        nt = ct_initial_response_requirement(call)
+    def next_ct(binding, header, call, index)
+      if header
+        th binding, :class => 'next-ct' do |binding|
+          concat("Next CT", binding)
+        end
       else
-        nt = ct_normal_response_requirement(call)
-      end
-
-      last_ct_time = call.pmr.last_ct_time.new_offset(signon_user.tz)
-      title = "Last CT: #{last_ct_time.strftime("%a, %d %b %Y %H:%M")}"
-
-      now = DateTime.now
-      if now > nt
-        text = "CT Overdue"
-        css_class = "wag-wag"
-      else
-        text = nt.new_offset(signon_user.tz).strftime("%a, %d %b %Y %H:%M")
-        now += 1
-        if now > nt
-          css_class = "warn"
+        logger.debug("pmr's center is #{call.pmr.center}")
+        is_initial = call.needs_initial_response?
+        if is_initial
+          nt = ct_initial_response_requirement(call)
         else
-          css_class = "normal"
+          nt = ct_normal_response_requirement(call)
+        end
+        
+        last_ct_time = call.pmr.last_ct_time.new_offset(signon_user.tz)
+        title = "Last CT: #{last_ct_time.strftime("%a, %d %b %Y %H:%M")}"
+        
+        now = DateTime.now
+        if now > nt
+          text = "CT Overdue"
+          css_class = "wag-wag"
+        else
+          text = nt.new_offset(signon_user.tz).strftime("%a, %d %b %Y %H:%M")
+          now += 1
+          if now > nt
+            css_class = "warn"
+          else
+            css_class = "normal"
+          end
+        end
+        css_class << ' next-ct'
+        td binding, :class => css_class, :title => title do |binding|
+          concat(text, binding)
         end
       end
-      td :class => css_class, :title => title do
-        text
+    end
+
+    def duo(header, call, index)
+      if header
+        return th(:class => 'duo') do 
+          "Customer".center(28).gsub(/ /, '&nbsp;') + "<br>" + "Comments"
+        end
+      end
+      td :class => "duo" do
+        customer_span(call) +
+          "<br>" +
+          comments_span(call)
       end
     end
 
-    def tr(hash = { })
-      logger.debug("In TR HEY!!!")
-      "<tr#{hash.keys.map { |key| " #{key}='#{hash[key]}'"}}>" +
-      yield +
-      "</tr>"
+    def customer_span(call)
+      pmr = call.pmr
+      if (mail = pmr.problem_e_mail.strip).blank?
+        span :title => "No email given", :class => "customer" do
+          call.nls_customer_name
+        end
+      else
+        title = "Click to send email to #{mail}"
+        href = "mailto:#{mail}?subject=#{pmr.pbc.upcase}"
+        span :title => title, :class => "customer" do
+          a :href => href do
+            call.nls_customer_name
+          end
+        end
+      end
+    end
+
+    def comments_span(call)
+      pmr = call.pmr
+      span(:id => "#{pmr.pbc}-comments",
+           :class => "edit-name click-to-edit",
+           :title => "Click to Edit",
+           :url => alter_combined_call_path(call)) do
+        call.comments
+      end
     end
     
-    def td(hash = { })
-      "<td#{hash.keys.map { |key| " #{key}='#{hash[key]}'"}}>" +
-      yield +
-      "</td>"
-    end
-    
-    def span(hash = { })
-      "<span#{hash.keys.map { |key| " #{key}='#{hash[key]}'"}}>" +
-      yield +
-      "</span>"
-    end
-    
-    def popup(hash = { })
+    def popup(binding, hash = { })
       hash = { :class => "popup"}.merge(hash)
-      "<div class='popup-wrapper'>" +
-      "<span#{hash.keys.map { |key| " #{key}='#{hash[key]}'"}}>" +
-      yield +
-      "</span>" +
-      "</div>"
+      div binding, :class => 'popup-wrapper' do
+        span binding, hash do
+          yield binding
+        end
+      end
     end
-    
-    def div(hash = { })
-      "<div#{hash.keys.map { |key| " #{key}='#{hash[key]}'"}}>" +
-      yield +
-      "</div>"
+
+    [ :tr, :th, :td, :span, :div, :a, :table, :thead, :tbody, :tfooter ].each do |sym|
+      eval("def #{sym}(binding, hash = { })
+              @nesting ||= 0
+              padding = \" \" * @nesting
+              @nesting += 2
+              concat(\"\#{padding}<#{sym}\#{hash.keys.map { |key| \" \#{key}='\#{hash[key]}'\"}}>\n\", binding)
+              yield(binding)
+              concat(\"\#{padding}</#{sym}>\n\", binding)
+              @nesting -= 2
+            end", nil, __FILE__, __LINE__ - 8)
     end
-    
-    def a(hash = { })
-      "<a#{hash.keys.map { |key| " #{key}='#{hash[key]}'"}}>" +
-      yield +
-      "</a>"
-    end
+
   end
 end

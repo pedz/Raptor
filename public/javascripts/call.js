@@ -96,8 +96,8 @@ document.observe('dom:loaded', function() {
     // not be complete and working yet but preserves the previous code
     // for now.
     $$('.inplace-edit').each(function (ele) {
-	var url = ele.getAttribute('href');
-	var v = ele.getAttribute('value');
+	var url = ele.readAttribute('href');
+	var v = ele.readAttribute('value');
 	var ajaxOptions = { method: 'post' };
 	var options = {
 	    callback: function(form, value) { return v + '=' + escape(value) },

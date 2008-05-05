@@ -1,6 +1,9 @@
 <!-- app/views/layouts/shared/_header.html.erb -->
   <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <% if defined?(@refresh) && @refresh %>
+    <meta http-equiv="refresh" content="<%= @refresh %>; URL=<%= request.env["REQUEST_URI"] %>">
+    <% end %>
     <link rel="Shortcut Icon" href="/raptor.ico">
     <title><%= h @title %></title>
     <%= stylesheet_link_tag(*stylesheets) unless stylesheets.nil? %>

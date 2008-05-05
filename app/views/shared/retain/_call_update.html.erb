@@ -1,0 +1,31 @@
+<!-- app/views/shared/retain/_call_update.html.erb -->
+<%  content_tag :div, :style => 'border:solid 1px' do %>
+<%    form_remote_tag(:url => addtxt_combined_pmr_path(call.pmr)) do %>
+<%=     check_box_tag "#{call.to_param}-update", 1, true, :class => "update-checkbox" %>Update the PMR
+<%      content_tag :span, :id => "#{call.to_param}-action-span" do %>
+<%=       radio_button_tag "#{call.to_param}-action", "addtxt", true, :class => "addtxt-radio"  %>Add Text Only
+<%=       radio_button_tag "#{call.to_param}-action", "requeue", false, :class => "requeue-radio" %>Requeue
+<%=       radio_button_tag "#{call.to_param}-action", "close", false, :class => "close-radio" %>Close
+<%      end %>
+<%=     tag("br") %>
+<%=     content_tag :button, "Send Email" %>
+<%=     check_box_tag "do_ct" %>CT
+<%=     tag("br") %>
+<%=     text_area_tag "#{call.to_param}-newtext", "Action Taken:\n\nAction Plan:", :rows => 10, :cols => 72 %>
+<%=     tag("br") %>
+<%=     check_box_tag "add_time" %>Add Time
+<%      content_tag :span do %>
+          Service Code:<%= text_field_tag "service_code", 99, :size => 2 %>
+          Action Code: <%= text_field_tag "action_code", 99, :size => 2 %>
+          Cause:       <%= text_field_tag "cause", 99, :size => 2 %>
+          Solution:    <%= text_field_tag "solution", 99, :size => 1 %>
+          Impact:      <%= text_field_tag "impact", 99, :size => 1 %>
+<%=       tag("br") %>
+          Time <span style='text-decoration: line-through'>wasted</span> spent
+<%=       text_field_tag "hours", nil, :size => 2 %>Hours
+<%=       text_field_tag "minutes", nil, :size => 2 %>Minutes
+<%      end %>
+<%=     tag("br") %>
+<%=     submit_tag "Submit" %>
+<%    end %>
+<%  end %>

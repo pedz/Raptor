@@ -9,10 +9,10 @@
     <span id="message-area"></span>
     <table class='sortable' style='font-family : courier, monospace'>
       <thead>
-	<%= display_qs_headers_1 %>
+	<% display_qs_headers(binding) %>
       </thead>
       <tbody>
-	<%= display_qs_body_1 %>
+	<% display_qs_body(binding) %>
       </tbody>
     </table>
   </div>

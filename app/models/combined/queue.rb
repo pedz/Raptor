@@ -48,6 +48,7 @@ module Combined
     end
     
     def hits
+      logger.debug("HERE")
       Retain::Cq.new(to_options).hit_count
     end
 

@@ -12,6 +12,11 @@ var Raptor = {
     // field to have focus when the page is first loaded.  Text typed
     // in this field will act as a command line interface.
     addUserInput : function(element) {
+	var navHelpText = document.createElement('span');
+	navHelpText.id = 'nav-help-text';
+	navHelpText.style.color = 'Black';
+	navHelpText.innerHTML = "<= Type text of a button to navigate";
+
 	var ambiguousText = document.createElement('span');
 	ambiguousText.id = 'ambiguous-text';
 	ambiguousText.style.color = 'Red';
@@ -22,9 +27,11 @@ var Raptor = {
 	newField.setAttribute('type', 'text');
 	newField.name = 'userInput';
 
+
 	var newForm = document.createElement('form');
 	newForm.appendChild(newField);
 	newForm.appendChild(ambiguousText);
+	newForm.appendChild(navHelpText);
 	newForm.onsubmit = function (e) {
 	    return false;
 	};
@@ -66,6 +73,8 @@ var Raptor = {
 		    foundElement.click();
 		    return false;
 		}
+	    } else {
+		$('ambiguous-text').hide();
 	    }
 	    return true;
 	};

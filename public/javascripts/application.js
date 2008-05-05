@@ -4,6 +4,10 @@
 //
 
 document.observe('dom:loaded', function() {
+    if (Raptor.updateLoadHook) {
+	Raptor.updateLoadHook();
+    }
+
     bottom = $('bottom');
     if (bottom) {
 	Raptor.addUserInput(bottom);

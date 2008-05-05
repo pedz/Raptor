@@ -1,9 +1,11 @@
+puts "point a"
 require 'action_controller'
-
+puts "point c"
 module ActionController
   module Rescue
     protected
       def rescue_action_with_handler(exception)
+        RAILS_DEFAULT_LOGGER.debug("happy dog")
         # Special case ActionView::TemplateError exception.  Look at
         # original exception as well
         if ((handler = handler_for_rescue(exception)).nil? &&

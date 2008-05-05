@@ -33,7 +33,7 @@ module Retain
     def perform_action_with_retain_benchmark
       Retain::Connection.reset_time
       logger.debug("perform_action_with_retain_benchmark: self is #{self}")
-      perform_action_without_benchmark
+      perform_action_without_retain_benchmark
       calls = Retain::Connection.request_count
       time = Retain::Connection.total_time
       avg = time / [ calls, 1 ].max
@@ -85,12 +85,14 @@ module Retain
     end
     
     def logon_failed
+      logger.debug("logon failed")
       # Find the retuser record and set the failed bit to true so we
       # do not retry until the user resets his password.
       user = session[:user]
       retuser = user.retusers[0]
       retuser.failed = true
       retuser.save
+      session[:retain] = nil
 
       flash[:error] = "Login failed -- bad password?"
       # Remember what we were trying to do
@@ -100,6 +102,7 @@ module Retain
     end
 
     def failed_marked_true
+      logger.debug("failed marked true")
       flash[:warning] = "'failed' flag set.  Check password, clear 'failed' flag, and try again"
 
       # Remember what we were trying to do
