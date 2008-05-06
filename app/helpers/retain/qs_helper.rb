@@ -372,7 +372,7 @@ module Retain
 
     def age(binding, header, call, index)
       if header
-        th binding, :class => 'age' do |binding|
+        th binding, :class => 'age number' do |binding|
           concat("Age", binding)
         end
       else
@@ -402,7 +402,7 @@ module Retain
       "factor based upon the current severity"
     def jeff(binding, header, call, index)
       if header
-        th binding do |binding|
+        th binding, :class => 'jeff number' do |binding|
           span binding, :title => JEFF_TEXT do |binding|
             concat("JS", binding)
           end
@@ -516,7 +516,7 @@ module Retain
 
     def next_ct(binding, header, call, index)
       if header
-        th binding, :class => 'next-ct' do |binding|
+        th binding, :class => 'next-ct date' do |binding|
           concat("Next CT", binding)
         end
       else

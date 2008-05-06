@@ -1,6 +1,5 @@
-puts "point a"
 require 'action_controller'
-puts "point c"
+
 module ActionController
   module Rescue
     protected
