@@ -56,11 +56,11 @@ module Retain
     end
 
     def queue_name
-      @md[7].strip if @md
+      @md[7].strip if @md && @md[7]
     end
 
     def queue(h_or_s = 'S')
-      if @md && (qn = queue_name) != "------"
+      if @md && (qn = queue_name) && qn != "------"
         (qn + "," + h_or_s + "," + center)
       end
     end
