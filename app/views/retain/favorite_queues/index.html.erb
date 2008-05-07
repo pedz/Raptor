@@ -5,8 +5,9 @@
   <h1>Listing of Favorite Queues</h1>
   <table>
     <tr>
-      <th colspan=<%= admin? ? 5 : 4 %>></th>
-      <th colspan=3>Favorite Queue</th>
+      <th colspan=<%= admin? ? 8 : 7 %>>
+	Favorite Queues last updated <%= Time.now %>
+      </th>
     </tr>
     <tr>
   <% if admin?-%>
