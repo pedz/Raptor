@@ -86,6 +86,68 @@ Raptor.unhookInPlaceEditor = function() {
     this.ipe = null;
 };
 
+Raptor.myDateSort = function(a, b) {
+    var toMonth = function(m) {
+	var months = [ "Jan", "Feb", "Mar", "Arp", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+	for (i = 0; i < 12; ++i) {
+	    if (months[i] == m) {
+		return i;
+	    }
+	}
+    };
+    var calc = function(v) {
+	var d = new Date();
+	var reg = /[^A-Z]*([A-Z]..) *@ *([0-9][0-9]):([0-9][0-9])[^A-Z]*([A-Z]..) *([0-9][0-9]*)/;
+	var m = v.match(reg);
+	if (m) {
+	    d.setMilliseconds(0);
+	    d.setSeconds(0);
+	    d.setHours(m[2]);
+	    d.setMinutes(m[3]);
+	    d.setDate(m[5]);
+	    d.setMonth(toMonth(m[4]));
+	    return d.valueOf();
+	}
+	// Return 0 for "CT Overdue" and map it to infinity
+	return 0;
+    };
+    if (a && b) {
+	/*
+         * Since we do not have the year, we try and catch a wrap
+         * where one date is Jan and the other date is Dec of the
+         * previous year.  maxDiff is 200 days in milliseconds;
+         */
+	var aTemp = calc(a);
+	var bTemp = calc(b);
+	var diff = aTemp - bTemp;
+	if (diff == 0) {
+	    return 0;
+	}
+	var maxDiff = 200 * 24 * 60 * 60 * 1000;
+	if (diff > 0) {
+	    if (bTemp == 0) {	// "Overdue" is infinity so
+		return -1;	// a < b
+	    }
+	    if (diff > maxDiff) { // We wrapped so
+		return -1;	  // a < b
+	    }
+	    return 1;		// a > b
+	} else {
+	    if (aTemp == 0) {	// "Overdue" is infinity so
+		return 1;	// a > b
+	    }
+	    if (diff < -maxDiff) { // We wrapped so
+		return 1;	   // a > b
+	    }
+	    return -1;		// a < b
+	}
+    }
+    console.log("here");
+    return SortableTable.compare(a ? calc(a) : 0, b ? calc(b) : 0);
+};
+
+SortableTable.addSortType("my-date", Raptor.myDateSort);
+
 document.observe('dom:loaded', function() {
     $$('.collection-edit-name').each(function (ele) {
 	ele.hookup = Raptor.hookupInPlaceCollectionEditor.bind(ele);

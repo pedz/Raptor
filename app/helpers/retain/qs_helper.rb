@@ -516,7 +516,7 @@ module Retain
 
     def next_ct(binding, header, call, index)
       if header
-        th binding, :class => 'next-ct date' do |binding|
+        th binding, :class => 'next-ct my-date' do |binding|
           concat("Next CT", binding)
         end
       else
@@ -536,7 +536,7 @@ module Retain
           text = "CT Overdue"
           css_class = "wag-wag"
         else
-          text = nt.new_offset(signon_user.tz).strftime("%a, %d %b %Y %H:%M")
+          text = nt.new_offset(signon_user.tz).strftime("%a @ %H:%M<br />%b %d")
           now += 1
           if now > nt
             css_class = "warn"
