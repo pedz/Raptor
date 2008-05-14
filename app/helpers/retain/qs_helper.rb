@@ -131,7 +131,12 @@ module Retain
         end
       else
         td binding, :colspan => 3, :class => 'comments' do |binding|
-          concat(call.comments, binding)
+          span(binding,
+               :id => "#{call.to_param}-comments",
+               :class => "edit-name",
+               :url => alter_combined_call_path(call)) do |binding|
+            concat(call.comments, binding)
+          end
         end
       end
     end
@@ -262,7 +267,7 @@ module Retain
                  :url => alter_combined_call_path(call),
                  :options => {
                    :loadCollectionURL => owner_list_combined_registration_path(retid)
-                 }.to_json ) do
+                 }.to_json ) do |binding|
               title += ": Click to Edit"
               span binding, :class => css_class, :title => title  do |binding|
                 concat("#{name}", binding)
