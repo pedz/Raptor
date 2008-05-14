@@ -108,7 +108,8 @@ Raptor.myDateSort = function(a, b) {
 	    d.setMonth(toMonth(m[4]));
 	    return d.valueOf();
 	}
-	// Return 0 for "CT Overdue" and map it to infinity
+	// Return 0 for "CT Overdue" which effectively maps to
+	// negative infinity
 	return 0;
     };
     if (a && b) {
@@ -125,17 +126,11 @@ Raptor.myDateSort = function(a, b) {
 	}
 	var maxDiff = 200 * 24 * 60 * 60 * 1000;
 	if (diff > 0) {
-	    if (bTemp == 0) {	// "Overdue" is infinity so
-		return -1;	// a < b
-	    }
 	    if (diff > maxDiff) { // We wrapped so
 		return -1;	  // a < b
 	    }
 	    return 1;		// a > b
 	} else {
-	    if (aTemp == 0) {	// "Overdue" is infinity so
-		return 1;	// a > b
-	    }
 	    if (diff < -maxDiff) { // We wrapped so
 		return 1;	   // a > b
 	    }
