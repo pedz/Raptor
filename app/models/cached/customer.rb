@@ -41,7 +41,7 @@ module Cached
       # Move clock forward by minutes until we hit the start of a new
       # hour
       while minutes > 0 && cust_time.min != 0
-        # logger.debug("TIME: #{cust_time} #{minutes} minute")
+        logger.debug("TIME: #{cust_time} #{minutes} minute")
         minutes -= 1 if during_business?(cust_time)
         cust_time += ONE_MINUTE
       end
@@ -49,7 +49,7 @@ module Cached
       # Move clock forward by hours until we hit the start of a new
       # work day
       while minutes >= MINS_PER_HOUR && cust_time.hour != WORK_HOURS.first
-        # logger.debug("TIME: #{cust_time} #{minutes } hour")
+        logger.debug("TIME: #{cust_time} #{minutes } hour")
         minutes -= MINS_PER_HOUR if during_business?(cust_time)
         cust_time += ONE_HOUR
       end
@@ -57,15 +57,28 @@ module Cached
       # Now move the clock forward by days until was have less than a
       # day
       while minutes >= MINS_PER_WORK_DAY
-        # logger.debug("TIME: #{cust_time} #{minutes} day")
+        logger.debug("TIME: #{cust_time} #{minutes} day")
         minutes -= MINS_PER_WORK_DAY if during_business?(cust_time)
         cust_time += ONE_DAY
+      end
+
+      # If we hit exactly 0 minutes at this point, that means that we
+      # need to back up to the end of the customer's business day.  We
+      # know that cust_time.minutes is 0.  We back up a minute (to
+      # 59), then back up hours until we hit business time, then move
+      # forward the minute we took off at the start.
+      if minutes == 0
+        cust_time -= ONE_MINUTE
+        until during_business?(cust_time)
+          cust_time -= ONE_HOUR
+        end
+        cust_time += ONE_MINUTE
       end
 
       # Now move the clock forward by hours until was have less than
       # an hour
       while minutes >= MINS_PER_HOUR
-        # logger.debug("TIME: #{cust_time} #{minutes} last hours")
+        logger.debug("TIME: #{cust_time} #{minutes} last hours")
         minutes -= MINS_PER_HOUR if during_business?(cust_time)
         cust_time += ONE_HOUR
       end
@@ -73,7 +86,7 @@ module Cached
       # Now move the clock forward by minutes until was have less than
       # a minute
       while minutes > 0
-        # logger.debug("TIME: #{cust_time} #{minutes} last minutes")
+        logger.debug("TIME: #{cust_time} #{minutes} last minutes")
         minutes -= 1 if during_business?(cust_time)
         cust_time += ONE_MINUTE
       end
@@ -82,7 +95,7 @@ module Cached
     
     def during_business?(t)
       # NOTE! The === operator is not symetric for ranges
-      # logger.debug("TIME: during_business? = #{(WORK_HOURS === t.hour) && (WORK_DAYS === t.wday)}")
+      logger.debug("TIME: during_business? #{t.hour} #{t.wday} = #{(WORK_HOURS === t.hour) && (WORK_DAYS === t.wday)}")
       (WORK_HOURS === t.hour) && (WORK_DAYS === t.wday)
     end
   end
