@@ -41,7 +41,7 @@ module Retain
                       [ :update_form ]
                      ]
     def biggem(binding, header, call, index)
-      logger.debug("defined?(_erbout) is #{defined?(_erbout).inspect} at #{__LINE__}")
+      logger.debug("QS: biggem #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'biggem' do |binding|
           table binding, :class => 'nested-table' do |binding|
@@ -76,6 +76,7 @@ module Retain
     end
 
     def update_form(binding, header, call, index)
+      logger.debug("QS: update_form #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'update-form', :colspan => 4 do |binding|
           concat("", binding)
@@ -90,6 +91,7 @@ module Retain
     end
 
     def update_field(binding, header, call, index)
+      logger.debug("QS: update_field #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'update' do |binding|
           concat("Update", binding)
@@ -102,6 +104,7 @@ module Retain
     end
     
     def customer(binding, header, call, index)
+      logger.debug("QS: customer #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'customer' do |binding|
           concat("Customer".center(28).gsub(/ /, '&nbsp;'), binding)
@@ -125,6 +128,7 @@ module Retain
     end
 
     def comments(binding, header, call, index)
+      logger.debug("QS: comments #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'comments', :colspan => 3 do |binding|
           concat("Comments", binding)
@@ -142,6 +146,7 @@ module Retain
     end
 
     def ct(binding, header, call, index)
+      logger.debug("QS: ct #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'ct' do |binding|
           concat("CT", binding)
@@ -154,6 +159,7 @@ module Retain
     end
     
     def call_button(binding, header, call, index)
+      logger.debug("QS: call_button #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'call-button' do |binding|
           concat("Sel#", binding)
@@ -166,6 +172,7 @@ module Retain
     end
 
     def p_s_b(binding, header, call, index)
+      logger.debug("QS: p_s_b #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'p-s-b' do |binding|
           concat("S", binding)
@@ -218,6 +225,7 @@ module Retain
     end
 
     def link_etc(binding, header, call, index)
+      logger.debug("QS: link_etc #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'link-etc' do |binding|
           concat("Prblm,bnc,cty", binding)
@@ -246,6 +254,7 @@ module Retain
     end
     
     def owner(binding, header, call, index)
+      logger.debug("QS: owner #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'owner not-editable' do |binding|
           concat("Owner".center(22).gsub(/ /, '&nbsp;'), binding)
@@ -283,6 +292,7 @@ module Retain
     end
 
     def resolver(binding, header, call, index)
+      logger.debug("QS: resolver #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'resolver not-editable' do |binding|
           concat("Resolver".center(22).gsub(/ /, '&nbsp;'), binding)
@@ -320,6 +330,7 @@ module Retain
     end
 
     def pri_sev(binding, header, call, index)
+      logger.debug("QS: pri_sev #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'pri-sev' do |binding|
           concat("P/S", binding)
@@ -342,6 +353,7 @@ module Retain
     end
     
     def next_queue(binding, header, call, index)
+      logger.debug("QS: next_queue #{call.nil? ? "header" : call.to_param}")
       width = 12
       if header
         th binding, :class => "next-queue not-editable" do |binding|
@@ -376,6 +388,7 @@ module Retain
     end
 
     def age(binding, header, call, index)
+      logger.debug("QS: age #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'age number' do |binding|
           concat("Age", binding)
@@ -406,6 +419,7 @@ module Retain
     SEV_TEXT = "Severity Days is the age of the PMR in days multiplied by a " +
       "factor based upon the current severity"
     def jeff(binding, header, call, index)
+      logger.debug("QS: jeff #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'jeff number' do |binding|
           span binding, :title => JEFF_TEXT do |binding|
@@ -511,6 +525,7 @@ module Retain
     FOLLOW_UP_RESPONSE_TIME = [ 0, 1, 2, 5, 5 ] # business days
 
     def ct_normal_response_requirement(call)
+      logger.debug("ct_normal_response_requirement for #{call.to_param}")
       pmr = call.pmr
       customer = pmr.customer
       days = FOLLOW_UP_RESPONSE_TIME[pmr.severity]
@@ -520,12 +535,13 @@ module Retain
     end
 
     def next_ct(binding, header, call, index)
+      logger.debug("QS: next_ct #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'next-ct my-date' do |binding|
           concat("Next CT", binding)
         end
       else
-        logger.debug("pmr's center is #{call.pmr.center}")
+        logger.debug("pmr's center is #{call.pmr.center.center}")
         is_initial = call.needs_initial_response?
         if is_initial
           nt = ct_initial_response_requirement(call)
