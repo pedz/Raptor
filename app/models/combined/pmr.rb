@@ -253,7 +253,7 @@ module Combined
       # Clean up the fields.  This piece cleans up the email address.
       retain_options = Cached::Pmr.options_from_retain(pmr)
       unless (email = retain_options[:problem_e_mail]).blank?
-        addr_pattern = Regexp.new("^([^a-zA-Z0-9_.]*)([a-zA-Z0-9_.]+@[a-zA-Z0-9_.]+)([^a-zA-Z0-9_.]*)$")
+        addr_pattern = Regexp.new("^([^a-zA-Z0-9_.]*)([-a-zA-Z0-9_.]+@[-a-zA-Z0-9_.]+)([^a-zA-Z0-9_.]*)$")
         email = email.split(",").find_all { |addr|
           addr.match(addr_pattern)
         }.map { |addr|
