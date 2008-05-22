@@ -2,6 +2,11 @@
 <table>
   <thead>
     <tr>
+      <th>Minutes From GMT</th>
+      <th>PSAR Sequence Number</th>
+      <th>Stop Time MOC</th>
+      <th>PSAR File and Symbol</th>
+      <th>PSAR Mailed Flag</th>
       <th>Problem</th>
       <th>SC</th>
       <th>AC</th>
@@ -28,6 +33,11 @@
   <tbody>
     <% for psar in @psars %>
     <tr>
+      <td><%= h psar.minutes_from_gmt %></td>
+      <td><%= h psar.psar_sequence_number %></td>
+      <td><%= h psar.stop_time_moc %></td>
+      <td><%= h psar.psar_file_and_symbol %></td>
+      <td><%= h psar.psar_mailed_flag %></td>
       <td><%= h psar.problem %>,<%= h psar.branch %>,<%= h psar.country %></td>
       <td><%= h psar.psar_service_code %></td>
       <td><%= h psar.psar_action_code %></td>

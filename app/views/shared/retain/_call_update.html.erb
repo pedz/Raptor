@@ -1,11 +1,14 @@
 <!-- app/views/shared/retain/_call_update.html.erb -->
 <%  content_tag :div, :style => 'border:solid 1px' do %>
-<%    form_remote_tag(:url => addtxt_combined_pmr_path(call.pmr)) do %>
-<%=     check_box_tag "#{call.to_param}-update", 1, true, :class => "update-checkbox" %>Update the PMR
+<%    form_remote_tag(:url => call, :method => "put",
+                      :html => { :id => "#{call.to_param}-call-update-form" }) do %>
+<%=     check_box_tag "#{call.to_param}[update]", 1, true, :class => "update-checkbox" %>Update the PMR
 <%      content_tag :span, :id => "#{call.to_param}-action-span" do %>
-<%=       radio_button_tag "#{call.to_param}-action", "addtxt", true, :class => "addtxt-radio"  %>Add Text Only
-<%=       radio_button_tag "#{call.to_param}-action", "requeue", false, :class => "requeue-radio" %>Requeue
-<%=       radio_button_tag "#{call.to_param}-action", "close", false, :class => "close-radio" %>Close
+<%=       radio_button_tag "#{call.to_param}[action]", "addtxt", true, :class => "addtxt-radio"  %>Add Text Only
+<%=       radio_button_tag "#{call.to_param}[action]", "requeue", false,
+	  :class => "requeue-radio", :disabled => "disabled" %>Requeue
+<%=       radio_button_tag "#{call.to_param}[action]", "close", false,
+	  :class => "close-radio", :disabled => "disabled" %>Close
 <%      end %>
 <%=     tag("br") %>
 <%=     content_tag :button, "Send Email" %>

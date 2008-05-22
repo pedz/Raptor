@@ -37,6 +37,9 @@ module Retain
 
     # Not used currently
     def update
+      logger.debug('HERE')
+      logger.debug(params.inspect)
+      render :text => "done"
     end
 
     def ct

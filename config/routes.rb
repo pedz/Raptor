@@ -1,4 +1,12 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :combined_psars
+
+  map.resources :combined_psars, :controller => 'combined/psars'
+
+  map.resources :retusers do |retuser|
+    retuser.resources "combined_psars", :controller => 'combined/psars'
+  end
+
   # Feedback messages, etc.
   map.resources :feedbacks do |feedback|
     feedback.resources :feedback_notes
@@ -34,8 +42,7 @@ ActionController::Routing::Routes.draw do |map|
                 :member => {
                   :alter      => :post,
                   :queue_list => :get,
-                  :ct         => :post,
-                  :requeue    => :post })
+                  :ct         => :post })
   map.resources(:combined_registration,
                 :controller => 'retain/registration',
                 :member => {
@@ -44,7 +51,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :combined_queue,           :controller => 'retain/queue'
   map.resources :combined_favorite_queues, :controller => 'retain/favorite_queues'
-  map.resources :retusers
+  # map.resources :retusers
   map.resources :users
 
   # The priority is based upon order of creation: first created ->

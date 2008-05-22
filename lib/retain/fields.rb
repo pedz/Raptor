@@ -389,6 +389,7 @@ module Retain
       :chargeable_time_hex         => [ 1396, :short,           2 ],
       :after_hours_time_hex        => [ 1397, :short,           2 ],
       :local_stop_time_hex         => [ 1398, :short,           2 ],
+      :stop_time_moc               => [ 1399, :int,             4 ],
       :apar_ptf_bpid_1             => [ 1440, :ebcdic,          8 ],
       :apar_ptf_bpid_2             => [ 1441, :ebcdic,          8 ],
       :apar_ptf_bpid_3             => [ 1442, :ebcdic,          8 ],

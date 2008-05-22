@@ -12,6 +12,10 @@ module Retain
       super(options)
       unless @fields.has_key?(:group_request)
         @fields[:group_request] = [[
+                                    :minutes_from_gmt,
+                                    :psar_sequence_number,
+                                    :stop_time_moc,
+                                    :psar_mailed_flag,
                                     :problem,
                                     :branch,
                                     :country,

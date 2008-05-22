@@ -10,7 +10,15 @@ module Retain
       # Now move it back another week
       temp_date -= 7 * 24 * 60 * 60
 
-      @psars = Retain::Psar.range(temp_date, Time.now)
+      # temp_date = Time.mktime(2008, "jan", 1, 0, 0, 0, 0)
+      if true
+        @psars = Retain::Psar.range(temp_date, Time.now)
+        # @psars = Retain::Psar.range(temp_date, temp_date)
+      else
+        @psars = Retain::Psar.new.de32s.map do |fields|
+          Psar.new :fields => fields
+        end
+      end
     end
   end
 end

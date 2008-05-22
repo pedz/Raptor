@@ -1,0 +1,70 @@
+<h1>Listing combined_psars</h1>
+
+<table>
+  <tr>
+    <th>Pmr</th>
+    <th>Apar</th>
+    <th>Queue</th>
+    <th>Chargeable time hex</th>
+    <th>Cpu serial number</th>
+    <th>Cpu type</th>
+    <th>Minutes from gmt</th>
+    <th>Psar action code</th>
+    <th>Psar activity date</th>
+    <th>Psar activity stop time</th>
+    <th>Psar actual time</th>
+    <th>Psar cause</th>
+    <th>Psar chargeable src ind</th>
+    <th>Psar chargeable time</th>
+    <th>Psar cia</th>
+    <th>Psar fesn</th>
+    <th>Psar file and symbol</th>
+    <th>Psar impact</th>
+    <th>Psar mailed flag</th>
+    <th>Psar sequence number</th>
+    <th>Psar service code</th>
+    <th>Psar solution</th>
+    <th>Psar stop date year</th>
+    <th>Psar system date</th>
+    <th>Stop time moc</th>
+    <th>Dirty</th>
+  </tr>
+
+<% for combined_psar in @combined_psars %>
+  <tr>
+    <td><%=h combined_psar.pmr_id %></td>
+    <td><%=h combined_psar.apar_id %></td>
+    <td><%=h combined_psar.queue_id %></td>
+    <td><%=h combined_psar.chargeable_time_hex %></td>
+    <td><%=h combined_psar.cpu_serial_number %></td>
+    <td><%=h combined_psar.cpu_type %></td>
+    <td><%=h combined_psar.minutes_from_gmt %></td>
+    <td><%=h combined_psar.psar_action_code %></td>
+    <td><%=h combined_psar.psar_activity_date %></td>
+    <td><%=h combined_psar.psar_activity_stop_time %></td>
+    <td><%=h combined_psar.psar_actual_time %></td>
+    <td><%=h combined_psar.psar_cause %></td>
+    <td><%=h combined_psar.psar_chargeable_src_ind %></td>
+    <td><%=h combined_psar.psar_chargeable_time %></td>
+    <td><%=h combined_psar.psar_cia %></td>
+    <td><%=h combined_psar.psar_fesn %></td>
+    <td><%=h combined_psar.psar_file_and_symbol %></td>
+    <td><%=h combined_psar.psar_impact %></td>
+    <td><%=h combined_psar.psar_mailed_flag %></td>
+    <td><%=h combined_psar.psar_sequence_number %></td>
+    <td><%=h combined_psar.psar_service_code %></td>
+    <td><%=h combined_psar.psar_solution %></td>
+    <td><%=h combined_psar.psar_stop_date_year %></td>
+    <td><%=h combined_psar.psar_system_date %></td>
+    <td><%=h combined_psar.stop_time_moc %></td>
+    <td><%=h combined_psar.dirty %></td>
+    <td><%= link_to 'Show', combined_psar %></td>
+    <td><%= link_to 'Edit', edit_combined_psar_path(combined_psar) %></td>
+    <td><%= link_to 'Destroy', combined_psar, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New combined_psar', new_combined_psar_path %>
