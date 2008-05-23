@@ -372,7 +372,7 @@ module Retain
       :psar_chargeable_time        => [ 1275, :short,           2 ],
       :psar_chargeable_after_hour  => [ 1276, :short,           2 ],
       :psar_remote_write           => [ 1278, :ebcdic,          1 ],
-      :psar_file_and_symbol        => [ 1279, :ebcdic,         16 ],
+      :psar_file_and_symbol        => [ 1279, :psarfs,         16 ],
       :nls_family_abstract         => [ 1312, :nls,            53 ],
       :format_title                => [ 1319, :ebcdic,         50 ],
       :error_message               => [ 1384, :ebcdic,         79 ],

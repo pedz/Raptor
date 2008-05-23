@@ -12,6 +12,7 @@ module Retain
       super(options)
       unless @fields.has_key?(:group_request)
         @fields[:group_request] = [[
+                                    :signon2,
                                     :minutes_from_gmt,
                                     :psar_sequence_number,
                                     :stop_time_moc,

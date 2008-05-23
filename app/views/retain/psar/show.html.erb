@@ -2,6 +2,7 @@
 <table>
   <thead>
     <tr>
+      <th>Signon</th>
       <th>Minutes From GMT</th>
       <th>PSAR Sequence Number</th>
       <th>Stop Time MOC</th>
@@ -33,6 +34,7 @@
   <tbody>
     <% for psar in @psars %>
     <tr>
+      <td><%= h psar.signon2 %></td>
       <td><%= h psar.minutes_from_gmt %></td>
       <td><%= h psar.psar_sequence_number %></td>
       <td><%= h psar.stop_time_moc %></td>
