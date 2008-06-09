@@ -23,6 +23,8 @@ module Cached
         r
       end
 
+      # Takes a hash and returns a hash containing only fields in the
+      # db record.
       def fields_only(options)
         r = Hash[ *options.select { |k, v| db_fields.include?(k) }.flatten ]
         logger.debug("CHC: fields_only for #{self} returning: #{r.inspect}")
@@ -45,8 +47,10 @@ module Cached
 
     # Return a hash of options based upon the Retain record
     def self.options_from_retain(retain)
+      logger.debug("CHC: options_from_retain retain.fields=#{retain.fields.inspect}")
+      logger.debug("CHC: options_from_retain db_fields=#{db_fields.inspect}")
       a = db_fields.select { |sym|
-        retain.fields.has_key?(sym)
+        retain.has_key?(sym)
       }.map { |sym|
         [ sym, retain.send(sym) ]
       }.flatten

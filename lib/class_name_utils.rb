@@ -11,7 +11,7 @@ module ClassNameUtils
   
   # Returns the Cached class name (as a string) for this class
   def cached_class_name
-    @cached_class_name ||= "Cached::" + @subclass.to_s.sub(/.*::/, "")
+    @cached_class_name ||= "Cached::" + my_class_name.to_s.sub(/.*::/, "")
   end
   
   # Returns the Combined class (as a constant) for this class
@@ -21,7 +21,7 @@ module ClassNameUtils
   
   # Returns the Combined class name (as a string) for this class
   def combined_class_name
-    @combined_class_name ||= "Combined::" + @subclass.to_s.sub(/.*::/, "")
+    @combined_class_name ||= "Combined::" + my_class_name.to_s.sub(/.*::/, "")
   end
   
   # Returns the Retain class (as a constant) for this class
@@ -31,6 +31,14 @@ module ClassNameUtils
   
   # Returns the Retain class name (as a string) for this class
   def retain_class_name
-    @retain_class_name ||= "Retain::" + @subclass.to_s.sub(/.*::/, "")
+    @retain_class_name ||= "Retain::" + my_class_name.to_s.sub(/.*::/, "")
+  end
+
+  def my_class_name
+    if self.is_a? Class
+      self.to_s
+    else
+      self.class.to_s
+    end
   end
 end

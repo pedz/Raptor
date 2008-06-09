@@ -42,14 +42,17 @@ module Combined
       # plus extra_fields
       attr_reader :retain_fields
 
-      def cached_class_name
-        # logger.debug("CMB: class name is #{self.to_s}")
-        @cached_class_name ||= "Cached::" + self.to_s.sub(/.*::/, "")
-      end
-
-      def cached_class
-        @cached_class ||= cached_class_name.constantize
-      end
+      include ClassNameUtils
+      
+      # I think these are redundant...?
+      # def cached_class_name
+      #   # logger.debug("CMB: class name is #{self.to_s}")
+      #   @cached_class_name ||= "Cached::" + self.to_s.sub(/.*::/, "")
+      # end
+      # 
+      # def cached_class
+      #   @cached_class ||= cached_class_name.constantize
+      # end
 
       def unwrap_to_cached
         # logger.debug("CMB: class unwrap <#{self.class}:#{self.object_id}>")
@@ -138,7 +141,7 @@ module Combined
 
       def add_extra_fields(*args)
         @extra_fields += [ *args ]
-        @retain_fields  += [ *args ]
+        @retain_fields += [ *args ]
       end
 
       attr_reader :expire_time
@@ -175,6 +178,11 @@ module Combined
 
     def expire_time
       self.class.expire_time
+    end
+
+    def to_xml(options = { }, &block)
+      options[:root] ||= self.class.to_s
+      @cached.to_xml(options, &block)
     end
 
     private
@@ -260,6 +268,13 @@ module Combined
         return true
       end
       
+      # See if expire_time is a symbol pointing to a method
+      if expire.is_a?(Symbol) && self.respond_to?(expire)
+        value = self.send(expire)
+        logger.debug("CMB: #{self.to_s} cache_valid? return result from #{expire} of #{value}")
+        return value
+      end
+
       # If item has been explicitly marked to be re-fetched
       if @invalid_cache
         logger.debug("CMB: #{self.to_s} cache_valid?: return false: invalid_cache set")

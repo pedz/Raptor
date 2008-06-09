@@ -6,4 +6,7 @@ class Retuser < ActiveRecord::Base
   attr_accessor :password_confirmation
   validates_confirmation_of :password
 
+  def to_param
+    self.retid
+  end
 end

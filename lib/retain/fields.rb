@@ -814,8 +814,11 @@ module Retain
     end
 
     def move_raw_value_to_field(sym)
+      # logger.debug("RTN: move_raw_value_to_field: sym=#{sym}")
       sym = sym.singularize
+      # logger.debug("RTN: move_raw_value_to_field: after singularize sym=#{sym}")
       index = field_name_to_index(sym)
+      # logger.debug("RTN: move_raw_value_to_field: index is #{index}")
       unless (raw_values = @raw_values[index]).nil?
         logger.debug("RTN: moving raw value at index #{index} to #{sym}")
         @raw_values[index] = nil
@@ -878,7 +881,7 @@ module Retain
         else
           msg = Errors[base_obj.rc] || "Unknown Error"
         end
-        raise Retain::SdiReaderError.new(msg, base_obj.rc)
+        raise Retain::SdiReaderError.new(msg, base_obj)
       end
       @fetched = true
     end

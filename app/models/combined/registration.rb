@@ -24,7 +24,9 @@ module Combined
       end
 
       # :group_request is a special case
-      group_request = Combined::Registration.retain_fields.map { |field| field.to_sym }
+      group_request = Combined::Registration.retain_fields.map { |field|
+        field.to_sym
+      }
       retain_options = {
         :group_request => [ group_request ],
         :secondary_login => @cached.signon

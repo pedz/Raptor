@@ -128,13 +128,13 @@ module Retain
       req_fields.merge!(@rcv_fields)
       @request_type = options[:request]
       @fields.error_message = @rcv_fields.error_message if @rcv_fields.has_key?(:error_message)
+    end
 
-      unless @rc == 0
-        logger.error("RTN: request fields:\n#{@snd_fields.to_debug}")
-        hex_dump("#{@request_type} request", @snd)
-        logger.error("RTN: return fields:\n#{@rcv_fields.to_debug}")
-        hex_dump("#{@request_type} reply", @reply)
-      end
+    def dump_debug
+      logger.error("RTN: request fields:\n#{@snd_fields.to_debug}")
+      hex_dump("#{@request_type} request", @snd)
+      logger.error("RTN: return fields:\n#{@rcv_fields.to_debug}")
+      hex_dump("#{@request_type} reply", @reply)
     end
 
     # def sendit_with_benchmark(*args)
@@ -202,6 +202,7 @@ module Retain
     end
     
     def scan_fields(fields, s, six_byte_headers = true)
+      logger.debug("RTN: start scan_fields")
       de32 = Array.new
       until s.nil?
         len = s[0...2].ret2ushort
@@ -225,6 +226,7 @@ module Retain
         fields.add_raw(ele, dat)
       end
       fields[:de32s] = de32 unless de32.empty?
+      logger.debug("RTN: end scan_fields")
       fields
     end
     

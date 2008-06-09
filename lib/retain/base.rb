@@ -5,10 +5,17 @@ require 'retain/fields'
 
 module Retain
   class SdiReaderError < Exception
-    attr_reader :rc
-    def initialize(msg, rc)
+    def initialize(msg, base_obj)
       super(msg)
-      @rc = rc
+      @base_obj = base_obj
+    end
+
+    def rc
+      @base_obj.rc
+    end
+
+    def dump_debug
+      @base_obj.dump_debug
     end
   end
 
@@ -51,14 +58,17 @@ module Retain
     end
 
     def rc
-      @rc
+      @fetch_sdi.rc
     end
 
+    def dump_debug
+      @fetch_sdi.dump_debug
+    end
+    
     def fetch_fields
       logger.debug("RTN: fetch fields for #{self.class}")
-      fetch_sdi = self.class.fetch_sdi
-      fetch_sdi.sendit(@fields, @options)
-      @rc = fetch_sdi.rc
+      @fetch_sdi = self.class.fetch_sdi
+      @fetch_sdi.sendit(@fields, @options)
       self
     end
 
@@ -70,6 +80,10 @@ module Retain
       eval "def #{k};  @fields.#{k}; end", nil, __FILE__, __LINE__
       eval "def #{k}?; @fields.#{k}?; end", nil, __FILE__, __LINE__
       eval "def #{k}=(data); @fields.#{k} = data; end", nil, __FILE__, __LINE__
+    end
+
+    def has_key?(sym)
+      @fields.has_key?(sym)
     end
 
     protected

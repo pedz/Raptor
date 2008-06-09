@@ -1,6 +1,6 @@
-class CreateCombinedPsars < ActiveRecord::Migration
+class CreateCachedPsars < ActiveRecord::Migration
   def self.up
-    create_table :combined_psars do |t|
+    create_table :cached_psars do |t|
       t.integer :pmr_id
       t.integer :apar_id
       t.integer :queue_id
@@ -34,6 +34,6 @@ class CreateCombinedPsars < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :combined_psars
+    drop_table :cached_psars
   end
 end

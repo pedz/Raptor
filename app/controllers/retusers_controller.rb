@@ -122,7 +122,7 @@ class RetusersController < ApplicationController
   
   # A normal user can only look around at their own record.
   def this_user?
-    @retuser = Retuser.find(params[:id])
+    @retuser = Retuser.find_by_retid(params[:id])
     admin? || @retuser.user_id == session[:user].id
   end
 end

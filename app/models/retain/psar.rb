@@ -13,9 +13,9 @@ module Retain
     def initialize(options = {})
       super(options)
     end
-    
+
     def to_s
-      "BlahBlahBlah"
+      psar_file_and_symbol
     end
 
     # Returns true if the psar is a valid psar.  For now, we just

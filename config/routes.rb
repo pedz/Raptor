@@ -1,10 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :combined_psars
-
   map.resources :combined_psars, :controller => 'combined/psars'
 
   map.resources :retusers do |retuser|
-    retuser.resources "combined_psars", :controller => 'combined/psars'
+    retuser.resources :combined_psars, :controller => 'combined/psars'
   end
 
   # Feedback messages, etc.
