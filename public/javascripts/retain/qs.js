@@ -127,12 +127,20 @@ Raptor.myDateSort = function(a, b) {
 	var maxDiff = 200 * 24 * 60 * 60 * 1000;
 	if (diff > 0) {
 	    if (diff > maxDiff) { // We wrapped so
-		return -1;	  // a < b
+		if (bTemp == 0) { // b is "Overdue"
+		    return 1;	  // a is greater -- futher in future
+		} else {
+		    return -1;	  // a < b
+		}
 	    }
 	    return 1;		// a > b
 	} else {
 	    if (diff < -maxDiff) { // We wrapped so
-		return 1;	   // a > b
+		if (aTemp == 0) {  // a is "Overdue"
+		    return -1;	   // b is greater -- futher in future
+		} else {
+		    return 1;	   // a > b
+		}
 	    }
 	    return -1;		// a < b
 	}
