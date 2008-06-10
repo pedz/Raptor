@@ -96,7 +96,7 @@ module Retain
         options[:next_center] = new_center
       when :comments
         options.merge!(@call.to_options)
-        options[:comment] = new_text
+        options[:comment] = new_text.gsub(/\A +/, '')
       else
         options[field] = new_text
       end
