@@ -405,8 +405,7 @@ module Retain
         age_class << ' age'
         td(binding,
            :title => age_title,
-           :class => age_class,
-           :style => "text-align: right") do |binding|
+           :class => age_class) do |binding|
           concat("#{age_value}", binding)
         end
       end
@@ -443,6 +442,7 @@ module Retain
           jeff_class = "normal"
           jeff_title = "You are a happy puppy"
         end
+        jeff_class << " jeff"
         td binding, :class => jeff_class, :title => jeff_title do |binding|
           concat("#{jeff_days}", binding)
         end
