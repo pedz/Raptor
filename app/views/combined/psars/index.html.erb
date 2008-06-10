@@ -61,8 +61,13 @@
     <td><%=h combined_psar.stop_time_moc %></td>
     <td><%=h combined_psar.dirty %></td>
     <td><%= link_to 'Show', combined_psar %></td>
-    <td><%= link_to 'Edit', edit_combined_psar_path(combined_psar) %></td>
-    <td><%= link_to 'Destroy', combined_psar, :confirm => 'Are you sure?', :method => :delete %></td>
+    <% if combined_psar.psar_mailed_flag == "M" -%>
+      <td>Mailed</td>
+      <td>Mailed</td>
+    <% else -%>
+      <td><%= link_to 'Edit', edit_combined_psar_path(combined_psar) %></td>
+      <td><%= link_to 'Destroy', combined_psar, :confirm => 'Are you sure?', :method => :delete %></td>
+    <% end -%>
   </tr>
 <% end %>
 </table>

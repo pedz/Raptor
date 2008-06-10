@@ -3,6 +3,14 @@ body {
     color: black;
 }
 
+td.age {
+    text-align: right;
+}
+
+td.jeff {
+    text-align: right;
+}
+
 .rowodd {
     background: #e0e0e0;
 }
@@ -38,12 +46,6 @@ span.ecpaat-heading {
   text-align: left;
 }
 
-/* normally popups are not seen
-div.links a span.popup {
-  display: none;
-}
- */
-
 /* hover over a popup to display it */
 div.links a:hover .popup {
   display: block;
@@ -56,22 +58,6 @@ div.links a:hover .popup {
 .initial-response {
     background-color: yellow;
 }
-
-/*
-
-.smaller {
-    font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 11.2px;
-    line-height: normal;
-}
-
-.smaller td {
-    font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 11.2px;
-    line-height: normal;
-}
-
-*/
 
 .smaller {
     font-family: courier, monospace;
