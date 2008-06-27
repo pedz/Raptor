@@ -4,8 +4,12 @@
 # But, that will happen over time.
 #
 class LdapUser < ActiveLdap::Base
-  ldap_mapping :prefix => 'ou=bluepages', :dn_attribute => 'uid'
-  belongs_to :manager, :class => 'LdapUser', :foreign_key => 'manager', :primary_key => 'dn'
+  ldap_mapping(:dn_attribute => 'uid',
+               :prefix => 'c=us,ou=bluepages,o=ibm.com',
+               :classes => ['person'])
+
+  belongs_to :mgr, :class => 'LdapUser', :foreign_key => 'manager', :primary_key => 'dn'
+  belongs_to :deptmnt, :class => 'LdapDept', :foreign_key => 'department', :primary_key => 'dn'
   has_many   :manages, :class => 'LdapUser', :foreign_key => 'dn', :primary_key => 'manager'
 
   def self.authenticate_from_email(email, password)
@@ -18,5 +22,12 @@ class LdapUser < ActiveLdap::Base
       logger.debug("authenticate_from_email denied")
       nil
     end
+  end
+
+  private
+
+  def to_real_attribute_name(name, allow_normalized_name=nil)
+    allow_normalized_name = true if allow_normalized_name.nil?
+    super(name, allow_normalized_name)
   end
 end

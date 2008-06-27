@@ -23,8 +23,7 @@ module Cached
     set_table_name "cached_text_lines"
     belongs_to(:pmr,
                :class_name => "Cached::Pmr",
-               :foreign_key => "pmr_id",
-               :order => "line_number ASC")
+               :foreign_key => "pmr_id")
 
     # The public interface has text_type.  We map it to an integer
     # when we go to and from the database.
