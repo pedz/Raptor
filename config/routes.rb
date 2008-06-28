@@ -34,6 +34,12 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :combined_centers,           :controller => 'retain/centers'
   map.resources :combined_apars,             :controller => 'retain/apars'
 
+  # Call Update map.
+  map.retain_call_update('retain/call/:id',
+                         :controller => 'retain/call',
+                         :action => 'update',
+                         :method => :post)
+  
   # Reasonably well flushed out resources
   map.resources(:combined_call,
                 :controller => 'retain/call',
@@ -41,6 +47,7 @@ ActionController::Routing::Routes.draw do |map|
                   :alter      => :post,
                   :queue_list => :get,
                   :ct         => :post })
+
   map.resources(:combined_registration,
                 :controller => 'retain/registration',
                 :member => {

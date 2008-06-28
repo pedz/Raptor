@@ -41,39 +41,45 @@ Raptor.requeueUnpicked = function(ele, event) {
     console.log("requeue unpicked");
 };
 
-Raptor.redrawCheckBox = function(ele) {
+/*
+ * Redraws the check box for "Update the PMR".
+ * This needs to update the span of controls and the new text box
+ * that apply to updating the PMR.
+ */
+Raptor.redrawUpdateCheckBox = function(ele) {
     value = this.getValue();
-    call_name = this.id.sub(/-.*/, "");
+    call_name = this.id.sub(/_.*/, "");
+    console.log(call_name);
     if (value) {
-	$( call_name + "-action-span" ).show();
-	$( call_name + "-newtext" ).show();
+	$( call_name + "_call_update_action_span" ).show();
+	$( call_name + "_call_update_newtxt" ).show();
     } else {
-	$( call_name + "-action-span" ).hide();
-	$( call_name + "-newtext" ).hide();
+	$( call_name + "_call_update_action_span" ).hide();
+	$( call_name + "_call_update_newtxt" ).hide();
     }
 };
 
 /* Add this to the document.observe('dom:loaded') list of functions */
 Raptor.updateLoadHook = function() {
-    $$('.update-form').each(function (ele) {
-	/* Hide the form at page load time */
+    /* This has to be here or firefox draws the initial page wrong */
+    $$('.call-update-td').each(function (ele) {
 	ele.hide();
     });
 
-    $$('.update-checkbox').each(function (ele) {
+    $$('.call-update-update-pmr').each(function (ele) {
 	ele.observe('click', Raptor.updateClicked.bindAsEventListener(ele));
-	ele.redraw = Raptor.redrawCheckBox.bind(ele);
+	ele.redraw = Raptor.redrawUpdateCheckBox.bind(ele);
     });
 
-    $$('.requeue-radio').each(function (ele) {
+    $$('.call-update-requeue-radio').each(function (ele) {
 	ele.observe('click', Raptor.requeueClicked.bindAsEventListener(ele));
     });
 
-    $$('.addtxt-radio').each(function (ele) {
+    $$('.call-update-addtxt-radio').each(function (ele) {
 	ele.observe('click', Raptor.addtxtClicked.bindAsEventListener(ele));
     });
 
-    $$('.close-radio').each(function (ele) {
+    $$('.call-update-close-radio').each(function (ele) {
 	ele.observe('click', Raptor.closeClicked.bindAsEventListener(ele));
     });
 };

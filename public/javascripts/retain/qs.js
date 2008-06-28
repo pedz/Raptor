@@ -1,14 +1,14 @@
 /*
  * When a button to toggle the update form is pressed, the toggleForm
  * method on the form element is triggered.  This is sent here.  This
- * calls the proper rowUpdateFormShow or rowUpdateFormHide.
+ * calls the proper rowCallUpdateFormShow or rowCallUpdateFormHide.
  */
 
 /* Called when the button to show the update form is poked */
-Raptor.toggleUpdateForm = function() {
+Raptor.toggleCallUpdateForm = function() {
     this.toggle();
     if (this.visible()) {
-	update_box = this.getElementsByClassName('update-checkbox')[0];
+	update_box = this.select('.call-update-update-pmr')[0];
 	update_box.redraw();
 	this.ancestors().each(function (ancestor) {
 	    if (ancestor.hasClassName('pmr-row')) {
@@ -28,8 +28,8 @@ Raptor.toggleUpdateForm = function() {
 /*
  * A row specific hook called when the update form is shown
  */
-Raptor.rowUpdateFormShow = function () {
-    this.getElementsByClassName('collection-edit-name').each(function (ele) {
+Raptor.rowCallUpdateFormShow = function () {
+    this.select('.collection-edit-name').each(function (ele) {
 	ele.unhook();
 	ele.removeClassName('click-to-edit-button');
 	child = ele.firstDescendant();
@@ -42,8 +42,8 @@ Raptor.rowUpdateFormShow = function () {
 /*
  * A row specific hook called when the update form is hidden
  */
-Raptor.rowUpdateFormHide = function () {
-    this.getElementsByClassName('collection-edit-name').each(function (ele) {
+Raptor.rowCallUpdateFormHide = function () {
+    this.select('.collection-edit-name').each(function (ele) {
 	ele.hookup();
 	ele.addClassName('click-to-edit-button');
 	child = ele.firstDescendant();
@@ -165,11 +165,11 @@ document.observe('dom:loaded', function() {
     });
 
     $$('.pmr-row').each(function (ele) {
-	ele.updateFormShow = Raptor.rowUpdateFormShow.bind(ele);
-	ele.updateFormHide = Raptor.rowUpdateFormHide.bind(ele);
+	ele.updateFormShow = Raptor.rowCallUpdateFormShow.bind(ele);
+	ele.updateFormHide = Raptor.rowCallUpdateFormHide.bind(ele);
     });
 
-    $$('.update-form').each(function (ele) {
-	ele.toggleUpdateForm = Raptor.toggleUpdateForm.bind(ele);
+    $$('.call-update-td').each(function (ele) {
+	ele.toggleCallUpdateForm = Raptor.toggleCallUpdateForm.bind(ele);
     });
 });

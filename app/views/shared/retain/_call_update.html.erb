@@ -1,34 +1,36 @@
 <!-- app/views/shared/retain/_call_update.html.erb -->
-<%  content_tag :div, :style => 'border:solid 1px' do %>
-<%    form_remote_tag(:url => call, :method => "put",
-                      :html => { :id => "#{call.to_param}-call-update-form" }) do %>
-<%=     check_box_tag "#{call.to_param}[update]", 1, true, :class => "update-checkbox" %>Update the PMR
-<%      content_tag :span, :id => "#{call.to_param}-action-span" do %>
-<%=       radio_button_tag "#{call.to_param}[action]", "addtxt", true, :class => "addtxt-radio"  %>Add Text Only
-<%=       radio_button_tag "#{call.to_param}[action]", "requeue", false,
-	  :class => "requeue-radio", :disabled => "disabled" %>Requeue
-<%=       radio_button_tag "#{call.to_param}[action]", "close", false,
-	  :class => "close-radio", :disabled => "disabled" %>Close
+<%  extend Retain::CallUpdateHelper -%>
+<%  content_tag :div, :style => 'border:solid 1px' do -%>
+<%    remote_form_for call_update, :html => html_tag(call_update, "form") do |cu| -%>
+<%=     cu.check_box :update_pmr, html_tag(call_update, "update-pmr") -%>
+        Update PMR
+<%      content_tag :span, html_tag(call_update, 'action-span') do %>
+<%=       cu.radio_button :update_type, "addtxt", html_tag(call_update, "addtxt-radio") -%>
+          Add Text Only
+<%=       cu.radio_button :update_type, "requeue", html_tag(call_update, "requeue-radio") -%>
+          Requeue
+<%=       cu.radio_button :update_type, "close", html_tag(call_update, "close-radio") -%>
+          Close
 <%      end %>
 <%=     tag("br") %>
 <%=     content_tag :button, "Send Email" %>
-<%=     check_box_tag "do_ct" %>CT
+<%=     cu.check_box :do_ct, html_tag(call_update, "do-ct") %>CT
 <%=     tag("br") %>
-<%=     text_area_tag "#{call.to_param}-newtext", "Action Taken:\n\nAction Plan:", :rows => 10, :cols => 72 %>
+<%=     cu.text_area :newtxt, html_tag(call_update, "newtxt", :rows => 10, :cols => 72) %>
 <%=     tag("br") %>
-<%=     check_box_tag "add_time" %>Add Time
+<%=     cu.check_box :add_time, html_tag(call_update, "add-time") %>Add Time
 <%      content_tag :span do %>
-          Service Code:<%= text_field_tag "service_code", 99, :size => 2 %>
-          Action Code: <%= text_field_tag "action_code", 99, :size => 2 %>
-          Cause:       <%= text_field_tag "cause", 99, :size => 2 %>
-          Solution:    <%= text_field_tag "solution", 99, :size => 1 %>
-          Impact:      <%= text_field_tag "impact", 99, :size => 1 %>
+          Service Code:<%= cu.text_field :service_code, html_tag(call_update, "service-code", :size => 2) %>
+          Action Code: <%= cu.text_field :action_code, html_tag(call_update, "action-code", :size => 2) %>
+          Cause:       <%= cu.text_field :cause, html_tag(call_update, "cause", :size => 2) %>
+          Solution:    <%= cu.text_field :solution, html_tag(call_update, "solution", :size => 1) %>
+          Impact:      <%= cu.text_field :impact, html_tag(call_update, "impact", :size => 1) %>
 <%=       tag("br") %>
           Time <span style='text-decoration: line-through'>wasted</span> spent
-<%=       text_field_tag "hours", nil, :size => 2 %>Hours
-<%=       text_field_tag "minutes", nil, :size => 2 %>Minutes
+<%=       cu.text_field :hours, html_tag(call_update, "hours", :size => 2) %>Hours
+<%=       cu.text_field :minutes, html_tag(call_update, "minutes", :size => 2) %>Minutes
 <%      end %>
 <%=     tag("br") %>
-<%=     submit_tag "Submit" %>
-<%    end %>
-<%  end %>
+<%=     cu.submit "Submit", html_tag(call_update, "submit") %>
+<%    end -%>
+<%  end -%>

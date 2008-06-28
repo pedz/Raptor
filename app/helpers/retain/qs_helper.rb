@@ -37,8 +37,8 @@ module Retain
     
     BIGGEM_COLUMNS = [
                       [ :customer, :owner, :resolver, :next_queue ],
-                      [ :comments, :update_field ],
-                      [ :update_form ]
+                      [ :comments, :call_update_field ],
+                      [ :call_update_form ]
                      ]
     def biggem(binding, header, call, index)
       logger.debug("QS: biggem #{call.nil? ? "header" : call.to_param}")
@@ -75,30 +75,33 @@ module Retain
       end
     end
 
-    def update_form(binding, header, call, index)
-      logger.debug("QS: update_form #{call.nil? ? "header" : call.to_param}")
+    def call_update_form(binding, header, call, index)
+      logger.debug("QS: call_update_form #{call.nil? ? "header" : call.to_param}")
       if header
-        th binding, :class => 'update-form', :colspan => 4 do |binding|
+        th binding, :class => 'call-update-td', :colspan => 4 do |binding|
           concat("", binding)
         end
       else
-        td binding, :id => "update-form-#{index+1}", :class => 'update-form', :colspan => 4 do |binding|
+        td(binding,
+           :id => "call-update-td-#{index+1}",
+           :class => 'call-update-td',
+           :colspan => 4) do |binding|
           concat(render(:partial => "shared/retain/call_update",
-                        :locals => { :call => call, :index => index }),
+                        :locals => { :call_update => CallUpdate.new(call) }),
                  binding)
         end
       end
     end
 
-    def update_field(binding, header, call, index)
-      logger.debug("QS: update_field #{call.nil? ? "header" : call.to_param}")
+    def call_update_field(binding, header, call, index)
+      logger.debug("QS: call_update_field #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'update' do |binding|
           concat("Update", binding)
         end
       else
         td binding, :class => 'update' do |binding|
-          concat(button("U#{index + 1}", "$(\"update-form-#{index + 1}\").toggleUpdateForm();"), binding)
+          concat(button("U#{index + 1}", "$(\"call-update-td-#{index + 1}\").toggleCallUpdateForm();"), binding)
         end
       end
     end

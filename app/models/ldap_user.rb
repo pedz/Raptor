@@ -13,7 +13,7 @@ class LdapUser < ActiveLdap::Base
   has_many   :manages, :class => 'LdapUser', :foreign_key => 'dn', :primary_key => 'manager'
 
   def self.authenticate_from_email(email, password)
-    return nil unless (u = find(:attribute => "mail", :value => email))
+    return nil unless (u = find(:attribute => 'mail', :value => email))
     begin
       dn = u.dn.gsub(/\+/, "\\\\+")
       logger.debug("authenticate_from_email #{email} => #{dn}")
