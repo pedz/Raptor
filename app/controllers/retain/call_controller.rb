@@ -24,7 +24,8 @@ module Retain
     
     # Show a Retain call
     def show
-      @call, @queue = Combined::Call.from_param_pair!(params[:id])
+      @call = Combined::Call.from_param!(params[:id])
+      @queue = @call.queue
       @call.mark_cache_invalid
       @pmr = @call.pmr
       @pmr.mark_cache_invalid
@@ -35,15 +36,138 @@ module Retain
       @registration = signon_user
     end
 
-    # Not used currently
+    # Update the call
     def update
-      logger.debug('HERE')
-      logger.debug(params.inspect)
-      render :text => "done"
+      @call = Combined::Call.from_param!(params[:id])
+      call_options = @call.to_options
+      @pmr = @call.pmr
+      pmr_options = @pmr.to_options
+      call_update = params[:retain_call_update].symbolize_keys
+
+      # Convert the check box values to real true / false values.  I'm
+      # worried I'm going to make a silly mistake if I don't.
+      [ :do_ct, :add_time, :update_pmr ].each { |sym|
+        if call_update.has_key?(sym)
+          call_update[sym] = call_update[sym] == "1"
+        end
+      }
+
+      reply_span = "call_update_reply_span_#{@call.to_id}"
+      newtxt = format_lines(call_update[:newtxt])
+
+      if call_update[:update_pmr]
+        case call_update[:update_type]
+        when "addtxt"
+          update_type = :addtxt
+          need_undispatch = need_dispatch = call_update[:do_ct]
+        when "requeue"
+          update_type = :requeue
+          need_dispatch = true
+          need_undispatch = false
+        when "close"
+          update_type = :close
+          need_dispatch = true
+          need_undispatch = false
+        end
+      else
+        update_type = :none
+        need_undispatch = need_dispatch = call_update[:do_ct]
+      end
+
+      if need_dispatch
+        dispatch = do_pmcu("CD  ", call_options)
+        if dispatch.rc != 0
+          render_error(dispatch, reply_span)
+          return
+        end
+      end
+
+      if call_update[:do_ct]
+        ct = do_pmcu("CT  ", call_options)
+        if ct.rc != 0
+          render_error(ct, reply_span)
+          return
+        end
+      end
+
+      case update_type
+      when :addtxt
+        addtxt_options = pmr_options.dup
+        addtxt_options[:addtxt_lines] = newtxt
+        addtxt = Retain::Pmat.new(addtxt_options)
+        begin
+          addtxt.sendit(Retain::Fields.new)
+        rescue
+          true
+        end
+        if addtxt.rc != 0
+          render_error(addtxt, reply_span)
+          return
+        end
+
+        if call_update[:add_time]
+          psar_options = call_update[:psar_update].symbolize_keys
+          psar_options.merge!(pmr_options)
+          hours = psar_options.delete(:hours).to_i
+          minutes = psar_options.delete(:minutes).to_i
+          psar_options[:psar_actual_time] = (hours * 10) + (minutes / 6).to_i
+          psar_options[:psar_chargeable_time] = hours * 256 + minutes
+          psar = Retain::Psrc.new(psar_options)
+          begin
+            psar.sendit(Retain::Fields.new)
+          rescue
+            true
+          end
+          if psar.rc != 0
+            render_error(psar, reply_span)
+            return
+          end
+        end
+        
+        when :requeue
+        undispatch = do_pmcu("NOCH", call_options)
+        if undispatch.rc != 0
+          render_error(undispatch, reply_span)
+          return
+        end
+        render(:update) { |page|
+          page.replace_html reply_span, "<span class='sdi-error'>Not implemented yet... Sorry...</span>"
+          page.visual_effect :fade, reply_span
+        }
+        
+      when :close
+        undispatch = do_pmcu("NOCH", call_options)
+        if undispatch.rc != 0
+          render_error(undispatch, reply_span)
+          return
+        end
+        render(:update) { |page|
+          page.replace_html reply_span, "<span class='sdi-error'>Not implemented yet... Sorry...</span>"
+          page.visual_effect :fade, reply_span
+        }
+        
+      when :none
+      end
+
+      if need_undispatch
+        undispatch = do_pmcu("NOCH", call_options)
+        logger.debug("got to this point")
+        if undispatch.rc != 0
+          logger.debug("got to this point also")
+          render_error(undispatch, reply_span)
+          return
+        end
+      end
+
+      render(:update) { |page|
+        page.replace_html reply_span, "Update Completed Successfully"
+        page.visual_effect :fade, reply_span
+      }
     end
 
     def ct
-      @call, @queue = Combined::Call.from_param_pair!(params[:id])
+      @call = Combined::Call.from_param!(params[:id])
+      @queue = @call.queue
       pmr = @call.pmr
       options = @call.to_options
 
@@ -51,14 +175,14 @@ module Retain
       dispatch = do_pmcu("CD  ", options)
       logger.debug("dispatch rc = #{dispatch.rc}")
       if dispatch.rc != 0
-        render_error(dispatch)
+        render_error(dispatch, 'message-area')
         return
       end
 
       ct = do_pmcu("CT  ", options)
       logger.debug("ct rc = #{ct.rc}")
       if ct.rc != 0
-        render_error(ct)
+        render_error(ct, 'message-area')
         return
       end
 
@@ -68,7 +192,7 @@ module Retain
       undispatch = do_pmcu("NOCH", options)
       logger.debug("undispatch rc = #{undispatch.rc}")
       if undispatch.rc != 0
-        render_error(undispatch)
+        render_error(undispatch, 'message-area')
         return
       end
 
@@ -83,7 +207,8 @@ module Retain
     # this routine.  I might want to split it apart.  Not sure what to
     # do here.
     def alter
-      @call, @queue = Combined::Call.from_param_pair!(params[:id])
+      @call = Combined::Call.from_param!(params[:id])
+      @queue = @call.queue
       pmr = @call.pmr
       field = params[:editorId].split('-')[1].to_sym
       new_text = params[:value]
@@ -184,7 +309,7 @@ module Retain
       return pmcu
     end
 
-    def render_error(sdi)
+    def render_error(sdi, area)
       err_text = sdi.error_message
       err_code = err_text[-3 ... err_text.length].to_i
         
@@ -195,8 +320,36 @@ module Retain
       end
       full_text = "<span class='#{err_class}'>#{err_text}</span>"
       render(:update) { |page|
-        page.replace_html 'message-area', full_text
+        page.replace_html area, full_text
+        page.show area
       }
+    end
+
+    def format_lines(lines)
+      return nil if lines.nil?
+      lines.split("\n").map { |line|
+        l = []
+        while line.length > 72
+          this_end = 72
+          while this_end > 0 && line[this_end] != 0x20
+            this_end -= 1
+          end
+          if this_end == 0      # no spaces found
+            l << line[0 ... 72]
+            line = line[72 ... line.length]
+            next
+          end
+          
+          new_start = this_end + 1
+          while new_start < line.length && line[new_start] == 0x20
+            new_start += 1
+          end
+          l << line[0 ... this_end]
+          line = line[new_start ... line.length]
+        end
+        l << line
+        l
+      }.flatten
     end
   end
 end

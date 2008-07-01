@@ -1,6 +1,7 @@
 <!-- app/views/shared/retain/_call_update.html.erb -->
 <%  extend Retain::CallUpdateHelper -%>
 <%  content_tag :div, :style => 'border:solid 1px' do -%>
+<%=   content_tag :span, "", html_tag(call_update, 'reply-span') %>
 <%    remote_form_for call_update, :html => html_tag(call_update, "form") do |cu| -%>
 <%=     cu.check_box :update_pmr, html_tag(call_update, "update-pmr") -%>
         Update PMR
@@ -15,20 +16,45 @@
 <%=     tag("br") %>
 <%=     content_tag :button, "Send Email" %>
 <%=     cu.check_box :do_ct, html_tag(call_update, "do-ct") %>CT
+<%      content_tag :span, html_tag(call_update, 'requeue-span') do -%>
+          New Queue
+<%=       cu.text_field :new_queue, html_tag(call_update, "new-queue", :size => 6) %>
+          New Center
+<%=       cu.text_field :new_center, html_tag(call_update, "new-center", :size => 3) %>
+          New Priority
+<%=       cu.text_field :new_priority, html_tag(call_update, "new-priority", :size => 1) %>
+<%      end -%>
 <%=     tag("br") %>
 <%=     cu.text_area :newtxt, html_tag(call_update, "newtxt", :rows => 10, :cols => 72) %>
 <%=     tag("br") %>
 <%=     cu.check_box :add_time, html_tag(call_update, "add-time") %>Add Time
-<%      content_tag :span do %>
-          Service Code:<%= cu.text_field :service_code, html_tag(call_update, "service-code", :size => 2) %>
-          Action Code: <%= cu.text_field :action_code, html_tag(call_update, "action-code", :size => 2) %>
-          Cause:       <%= cu.text_field :cause, html_tag(call_update, "cause", :size => 2) %>
-          Solution:    <%= cu.text_field :solution, html_tag(call_update, "solution", :size => 1) %>
-          Impact:      <%= cu.text_field :impact, html_tag(call_update, "impact", :size => 1) %>
-<%=       tag("br") %>
-          Time <span style='text-decoration: line-through'>wasted</span> spent
-<%=       cu.text_field :hours, html_tag(call_update, "hours", :size => 2) %>Hours
-<%=       cu.text_field :minutes, html_tag(call_update, "minutes", :size => 2) %>Minutes
+<%      content_tag :span, html_tag(call_update, 'add-time-span') do -%>
+<%        cu.fields_for :psar_update, call_update.psar_update do |psar| -%>
+<%=         content_tag :label, "Service:", :for => id_for(call_update, "service-code") %>
+            <%= psar.text_field(:psar_service_code,
+		               html_tag(call_update, "service-code",
+                                        :size => 2, :maxlength => 2)) %>
+            Action:
+	    <%= psar.text_field(:psar_action_code,
+		               html_tag(call_update, "service-code",
+                                        :size => 2, :maxlength => 2)) %>
+            Cause:
+	    <%= psar.text_field(:psar_cause,
+		               html_tag(call_update, "service-code",
+                                        :size => 2, :maxlength => 2)) %>
+            Solution:
+	    <%= psar.text_field(:psar_solution,
+		               html_tag(call_update, "service-code",
+		                        :size => 1, :maxlength => 1)) %>
+            Impact:
+	    <%= psar.text_field(:psar_impact,
+		               html_tag(call_update, "service-code",
+		                        :size => 1, :maxlength => 1)) %>
+<%=         tag("br") %>
+            Time <span style='text-decoration: line-through'>wasted</span> spent
+<%=         psar.text_field :hours, html_tag(call_update, "hours", :size => 2) %>Hours
+<%=         psar.text_field :minutes, html_tag(call_update, "minutes", :size => 2) %>Minutes
+<%        end %>
 <%      end %>
 <%=     tag("br") %>
 <%=     cu.submit "Submit", html_tag(call_update, "submit") %>

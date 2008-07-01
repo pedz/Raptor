@@ -16,7 +16,21 @@ module Combined
     add_skipped_fields :queue_id, :pmr_id, :p_s_b
     add_extra_fields :problem, :branch, :country, :customer_number
     
-    # Params must include queue_name,h_or_s,center,ppg
+    # words is an array of strings in the order of
+    # queue_name,h_or_s,center,ppg
+    def self.words_to_options(words)
+      ppg = words.pop
+      Combined::Queue.words_to_options(words).merge :ppg => ppg
+    end
+    
+    def self.from_words(words)
+      options = words_to_optins(words)
+      if queue = Combined::Queue.from_options(options)
+        call = queue.calls.find_or_initialize_by_ppg(options[:ppg])
+     end
+    end
+
+    # Params must include 
     def self.from_param_pair!(param)
       words = param.split(',')
       ppg = words.pop
@@ -29,6 +43,10 @@ module Combined
       call
     end
 
+    def to_id
+      queue.to_id + '_' + ppg
+    end
+    
     def to_param
       queue.to_param + ',' + ppg
     end

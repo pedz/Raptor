@@ -7,6 +7,18 @@ module Combined
     add_non_retain_associations :owners, :queue_infos, :favorite_queues
     set_db_constants :queue_name, :h_or_s, :center
 
+    # Words is an array of string in the order of
+    # queue_name,h_or_s,center
+    def self.words_to_options(words)
+      logger.debug("words is of clas #{words.class}")
+      logger.debug("words is #{words.inspect}")
+      options = { 
+        :queue_name => words.shift,
+        :h_or_s => words.shift
+        }
+      Combined::Center.words_to_options(words).merge(options)
+    end
+
     # Param is queue_name,h_or_s,center.  Raises QueueNotFound if
     # queue is not in database or Retain.
     def self.from_param!(param)
@@ -33,6 +45,10 @@ module Combined
         return nil unless q.valid?
       end
       q
+    end
+    
+    def to_id
+      queue_name.strip + '_' + (h_or_s || 'S') + '_' + center.to_param
     end
     
     def to_param

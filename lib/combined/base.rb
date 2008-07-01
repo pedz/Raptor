@@ -150,6 +150,10 @@ module Combined
       def set_expire_time(duration)
         @expire_time = duration
       end
+
+      def param_to_options(param)
+        words_to_options(param.split(/,/))
+      end
     end
 
     # new for the Combined subclasses takes a hash of options or an

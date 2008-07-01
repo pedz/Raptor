@@ -8,6 +8,16 @@ module Combined
     set_db_constants :center
     add_non_retain_associations :queues
 
+    # words in an array of words whose first element is the name of
+    # the center
+    def self.words_to_options(words)
+      { :center => words[0] }
+    end
+
+    def self.param_to_options(param)
+      words_to_options(param.split(/,/))
+    end
+
     # Param is center.  Raises CenterNotFound if center is not in
     # database or Retain.
     def self.from_param!(param)

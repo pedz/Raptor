@@ -22,9 +22,10 @@ module Combined
     add_skipped_fields :next_center_id, :next_queue_id
     add_extra_fields   :next_center,    :next_queue
 
-    def self.param_to_options(param)
-      words = param.split(',')
-      options = {
+    # words is an array of string in the order:
+    # problem, branch, country
+    def self.words_to_options(words)
+      {
         :problem => words[0],
         :branch => words[1],
         :country => words[2]
@@ -32,10 +33,14 @@ module Combined
     end
     
     def self.from_param(param)
-      optins = param_to_options(param)
+      options = param_to_options(param)
       find(:first, :conditions => options) || new(options)
     end
 
+    def to_id
+      (problem + '_' + branch + '_' + country).upcase
+    end
+    
     def to_param
       pbc
     end
@@ -51,7 +56,7 @@ module Combined
     # A convenience method to give back the usual form of
     # problem,branch,country for a call.
     def pbc
-      (problem + "," + branch + "," + country).upcase
+      (problem + ',' + branch + ',' + country).upcase
     end
     
     private

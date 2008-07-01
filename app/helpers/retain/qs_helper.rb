@@ -55,6 +55,13 @@ module Retain
                 end
               end
             end
+            # The html validator says I gotta have a body.
+            tbody binding do |binding|
+              tr binding do |binding|
+                td binding do |binding|
+                end
+              end
+            end
           end
         end
       else
@@ -83,11 +90,13 @@ module Retain
         end
       else
         td(binding,
-           :id => "call-update-td-#{index+1}",
+           :id => "call_update_td_#{index+1}",
            :class => 'call-update-td',
            :colspan => 4) do |binding|
+          call_update = CallUpdate.new(call)
+          logger.debug("call-update-psar-update-psar-service-code = #{call_update.psar_update.psar_service_code}")
           concat(render(:partial => "shared/retain/call_update",
-                        :locals => { :call_update => CallUpdate.new(call) }),
+                        :locals => { :call_update => call_update }),
                  binding)
         end
       end
@@ -101,7 +110,7 @@ module Retain
         end
       else
         td binding, :class => 'update' do |binding|
-          concat(button("U#{index + 1}", "$(\"call-update-td-#{index + 1}\").toggleCallUpdateForm();"), binding)
+          concat(button("U#{index + 1}", "$(\"call_update_td_#{index + 1}\").toggleCallUpdateForm();"), binding)
         end
       end
     end
@@ -123,7 +132,7 @@ module Retain
           href = "mailto:#{mail}?subject=#{pmr.pbc.upcase}"
           td binding, :title => title, :class => "customer" do |binding|
             a binding, :href => href do |binding|
-              concat(call.nls_customer_name.ljust(28).gsub(/ /, '&nbsp;'), binding)
+              concat(h(call.nls_customer_name).ljust(28).gsub(/ /, '&nbsp;'), binding)
             end
           end
         end
@@ -139,7 +148,7 @@ module Retain
       else
         td binding, :colspan => 3, :class => 'comments' do |binding|
           span(binding,
-               :id => "#{call.to_param}-comments",
+               :id => "comments_#{call.to_id}",
                :class => "edit-name",
                :url => alter_combined_call_path(call)) do |binding|
             concat(call.comments, binding)
@@ -169,7 +178,7 @@ module Retain
         end
       else
         td binding, :class => 'call-button' do |binding|
-          concat(button_url(index + 1, call), binding)
+          concat(button_url("C#{index + 1}", call), binding)
         end
       end
     end
@@ -210,18 +219,18 @@ module Retain
       n = DateTime.now.new_offset(pmr.customer.tz)
       
       temp_lines = [ "<span class='ecpaat-heading'>Customer: </span>" +
-                     "#{call.nls_customer_name}" ]
+                     "#{h(call.nls_customer_name)}" ]
       temp_lines << [ "<span class='ecpaat-heading'>Comments: </span>" +
-                     "#{call.comments}" ]
+                     "#{h(call.comments)}" ]
       temp_lines << [ "<span class='ecpaat-heading'>Customer Time of Day: </span>" +
-                      "#{n.strftime("%a, %d %b %Y %H:%M")}" ]
+                      "#{h(n.strftime("%a, %d %b %Y %H:%M"))}" ]
       Cached::Pmr::ECPAAT_HEADINGS.each { |heading|
         unless (lines = temp_hash[heading]).nil?
           temp_lines << ("<span class='ecpaat-heading'>" +
-                         heading + ": " + "</span>" +
-                         lines.shift)
+                         h(heading) + ": " + "</span>" +
+                         h(lines.shift))
           lines = lines[0 .. 4] + [ " ..." ] if lines.length > 5
-          temp_lines += lines
+          temp_lines += lines.map{ |l| h(l) }
         end
       }
       temp_lines.join("<br/>\n")
@@ -274,7 +283,7 @@ module Retain
         td binding, :class => "owner" do |binding|
           if editable
             span(binding,
-                 :id => "#{pmr.pbc}-pmr_owner_id",
+                 :id => "pmr_owner_id_#{pmr.to_id}",
                  :class => "collection-edit-name click-to-edit-button",
                  :url => alter_combined_call_path(call),
                  :options => {
@@ -312,7 +321,7 @@ module Retain
         td binding, :class => "resolver" do |binding|
           if editable
             span(binding,
-                 :id => "#{pmr.pbc}-pmr_resolver_id",
+                 :id => "pmr_resolver_id_#{pmr.to_id}",
                  :class => "collection-edit-name click-to-edit-button",
                  :url => alter_combined_call_path(call),
                  :options => {
@@ -370,7 +379,7 @@ module Retain
         td binding, :class => "next-queue" do |binding|
           if editable
             span(binding,
-                 :id => "#{pmr.pbc}-next_queue",
+                 :id => "next_queue_#{pmr.to_id}",
                  :class => "collection-edit-name click-to-edit-button",
                  :url => alter_combined_call_path(call),
                  :options => {
@@ -607,7 +616,7 @@ module Retain
 
     def comments_span(call)
       pmr = call.pmr
-      span(:id => "#{pmr.pbc}-comments",
+      span(:id => "comments_#{pmr.to_id}",
            :class => "edit-name click-to-edit",
            :title => "Click to Edit",
            :url => alter_combined_call_path(call)) do
@@ -617,7 +626,7 @@ module Retain
     
     def popup(binding, hash = { })
       hash = { :class => "popup"}.merge(hash)
-      div binding, :class => 'popup-wrapper' do
+      span binding, :class => 'popup-wrapper' do
         span binding, hash do
           yield binding
         end

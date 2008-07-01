@@ -18,7 +18,16 @@ Raptor.closeClicked = function(event) {
     Raptor.requeueUnpicked(this, event);
 };
 
-/* called when update radio button clicked */
+/* called when the add time check box is clicked */
+Raptor.addTimeClicked = function(event) {
+    var span = this.up(1).down('.call-update-add-time-span');
+    if (this.getValue())
+	span.show();
+    else
+	span.hide();
+};
+
+/* called when update check box clicked */
 Raptor.updateClicked = function(event) {
     /*
      * call redraw function which has been added on to the check box
@@ -28,17 +37,25 @@ Raptor.updateClicked = function(event) {
 };
 
 /*
+ * Given an element which is one of the update type radio buttons,
+ * this returns the requeue span
+ */
+Raptor.updateTypeRadioToRequeueSpan = function(ele) {
+    return ele.up(2).down('.call-update-requeue-span');
+};
+
+/*
  * Call this when "Requeue" is picked in list of possible actions.
  */
 Raptor.requeuePicked = function(ele, event) {
-    console.log("requeue picked");
+    ele.requeueSpan.show();
 };
 
 /*
  * Call this when "Requeue" is unpicked in list of possible actions.
  */
 Raptor.requeueUnpicked = function(ele, event) {
-    console.log("requeue unpicked");
+    ele.requeueSpan.hide();
 };
 
 /*
@@ -47,15 +64,13 @@ Raptor.requeueUnpicked = function(ele, event) {
  * that apply to updating the PMR.
  */
 Raptor.redrawUpdateCheckBox = function(ele) {
-    value = this.getValue();
-    call_name = this.id.sub(/_.*/, "");
-    console.log(call_name);
-    if (value) {
-	$( call_name + "_call_update_action_span" ).show();
-	$( call_name + "_call_update_newtxt" ).show();
+    var call_name = this.id.replace(/^.*_(.*_.*_.*_.*)$/, "$1");
+    if (this.getValue()) {
+	$( "call_update_action_span_" + call_name).show();
+	$( "call_update_newtxt_" + call_name).show();
     } else {
-	$( call_name + "_call_update_action_span" ).hide();
-	$( call_name + "_call_update_newtxt" ).hide();
+	$( "call_update_action_span_" + call_name).hide();
+	$( "call_update_newtxt_" + call_name).hide();
     }
 };
 
@@ -72,14 +87,25 @@ Raptor.updateLoadHook = function() {
     });
 
     $$('.call-update-requeue-radio').each(function (ele) {
+	ele.requeueSpan = Raptor.updateTypeRadioToRequeueSpan(ele);
 	ele.observe('click', Raptor.requeueClicked.bindAsEventListener(ele));
+	if (ele.getValue() == "requeue")
+	    ele.requeueSpan.show();
+	else
+	    ele.requeueSpan.hide();
     });
 
     $$('.call-update-addtxt-radio').each(function (ele) {
+	ele.requeueSpan = Raptor.updateTypeRadioToRequeueSpan(ele);
 	ele.observe('click', Raptor.addtxtClicked.bindAsEventListener(ele));
     });
 
     $$('.call-update-close-radio').each(function (ele) {
+	ele.requeueSpan = Raptor.updateTypeRadioToRequeueSpan(ele);
 	ele.observe('click', Raptor.closeClicked.bindAsEventListener(ele));
+    });
+
+    $$('.call-update-add-time').each(function (ele) {
+	ele.observe('click', Raptor.addTimeClicked.bindAsEventListener(ele));
     });
 };

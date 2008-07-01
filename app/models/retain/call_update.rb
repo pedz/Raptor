@@ -7,9 +7,9 @@ module Retain
   class CallUpdate
 
     attr_accessor :update_pmr, :update_type, :do_ct, :newtxt, :add_time
-    attr_accessor :service_code, :action_code, :cause, :solution, :impact
-    attr_accessor :hours, :minutes
-
+    attr_accessor :new_queue, :new_center, :new_priority
+    attr_accessor :psar_update
+    
     def initialize(call)
       RAILS_DEFAULT_LOGGER.debug("call_update initialize")
       @call = call
@@ -18,13 +18,14 @@ module Retain
       @do_ct = :true
       @newtxt = "Action Taken:\n\nAction Plan:\n"
       @add_time = :true
-      @service_code = 75
-      @action_code = 57
-      @cause = 50
-      @solution = 9
-      @impact = 3
-      @hours = 0
-      @minutes = 30
+      @psar_update = PsarUpdate.new(75, 57, 50, call.priority, 9, 0, 30)
+      @new_queue = call.queue.queue_name
+      @new_center = call.queue.center.center
+      @new_priority = call.priority
+    end
+
+    def to_id
+      @call.to_id
     end
 
     def to_param

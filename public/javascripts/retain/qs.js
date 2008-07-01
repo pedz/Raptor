@@ -8,7 +8,7 @@
 Raptor.toggleCallUpdateForm = function() {
     this.toggle();
     if (this.visible()) {
-	update_box = this.select('.call-update-update-pmr')[0];
+	var update_box = this.select('.call-update-update-pmr')[0];
 	update_box.redraw();
 	this.ancestors().each(function (ancestor) {
 	    if (ancestor.hasClassName('pmr-row')) {
@@ -32,9 +32,9 @@ Raptor.rowCallUpdateFormShow = function () {
     this.select('.collection-edit-name').each(function (ele) {
 	ele.unhook();
 	ele.removeClassName('click-to-edit-button');
-	child = ele.firstDescendant();
-	title = child.readAttribute('title').sub(/: Click .*/, '');
-	console.log(title);
+	var child = ele.firstDescendant();
+	var title = child.readAttribute('title').sub(/: Click .*/, '');
+	// console.log(title);	
 	child.writeAttribute('title', title);
     });
 };
@@ -46,9 +46,9 @@ Raptor.rowCallUpdateFormHide = function () {
     this.select('.collection-edit-name').each(function (ele) {
 	ele.hookup();
 	ele.addClassName('click-to-edit-button');
-	child = ele.firstDescendant();
-	title = child.readAttribute('title').sub(/: Click .*/, '');
-	console.log(title);
+	var child = ele.firstDescendant();
+	var title = child.readAttribute('title').sub(/: Click .*/, '');
+	// console.log(title);
 	child.writeAttribute('title', title + ": Click to edit");
     });
 };
@@ -89,7 +89,7 @@ Raptor.unhookInPlaceEditor = function() {
 Raptor.myDateSort = function(a, b) {
     var toMonth = function(m) {
 	var months = [ "Jan", "Feb", "Mar", "Arp", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
-	for (i = 0; i < 12; ++i) {
+	for (var i = 0; i < 12; ++i) {
 	    if (months[i] == m) {
 		return i;
 	    }
@@ -145,7 +145,6 @@ Raptor.myDateSort = function(a, b) {
 	    return -1;		// a < b
 	}
     }
-    console.log("here");
     return SortableTable.compare(a ? calc(a) : 0, b ? calc(b) : 0);
 };
 
