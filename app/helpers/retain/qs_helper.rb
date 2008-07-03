@@ -385,8 +385,9 @@ module Retain
     
     def next_queue(binding, header, call, index)
       logger.debug("QS: next_queue #{call.nil? ? "header" : call.to_param}")
-      width = (Retain::Fields.field_width(:next_queue) +
-               Retain::Fields.field_width(:next_center) + 1)
+      width = (Retain::Fields.field_width(:next_queue) + 1 # +1 for commma
+               Retain::Fields.field_width(:h_or_s) + 1 +
+               Retain::Fields.field_width(:next_center))
       if header
         th binding, :class => "next-queue not-editable" do |binding|
           concat("Next Queue".center(width).gsub(/ /, '&nbsp;'), binding)

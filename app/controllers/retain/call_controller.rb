@@ -256,8 +256,9 @@ module Retain
                      :css_class => css_class,
                      :title => title,
                      :name => pmr.next_queue.nil? ? "blank" : pmr.next_queue.to_param,
-                     :width => (Retain::Fields.field_width(:next_queue) +
-                                Retain::Fields.field_width(:next_center) + 1)
+                     :width => (Retain::Fields.field_width(:next_queue) + 1 # +1 for commma
+                                Retain::Fields.field_width(:h_or_s) + 1 +
+                                Retain::Fields.field_width(:next_center))
                    })
             return
 
