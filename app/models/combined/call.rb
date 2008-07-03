@@ -238,6 +238,16 @@ module Combined
       # Update call record
       options = self.class.cached_class.options_from_retain(call)
       options[:dirty] = false if @cached.respond_to?("dirty")
+      # This comment applies generally to all the places where
+      # updated_at is changed directly: the new Rails 2.1 keeps track
+      # of what is and is not dirty.  Raptor uses the updated_at field
+      # to see if it is time for Raptor to get a fresh copy from
+      # Retain.  If nothing changes, the update_attributes by itself
+      # has no affect.  So, the updated_at field is changed to
+      # Time.now so at least that gets changed.  Otherwise, Raptor is
+      # constantly fetching things from Retain which are suppose to be
+      # cached.
+      @cached.updated_at = Time.now
       @cached.update_attributes(options)
     end
   end

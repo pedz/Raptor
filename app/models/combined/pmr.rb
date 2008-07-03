@@ -84,6 +84,7 @@ module Combined
         pmr = Retain::Pmr.new(options_hash)
         if @cached.last_alter_timestamp == pmr.last_alter_timestamp
           logger.debug("CMB: #{temp_id} touched")
+          @cached.updated_at = Time.now
           @cached.save
           return
         end
@@ -279,6 +280,7 @@ module Combined
 
       # Update other attributes
       retain_options[:dirty] = false if @cached.respond_to?("dirty")
+      @cached.updated_at = Time.now
       @cached.update_attributes(retain_options)
     end
 

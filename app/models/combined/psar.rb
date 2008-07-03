@@ -69,6 +69,7 @@ module Combined
       # Update psar record
       options = self.class.cached_class.options_from_retain(psar)
       options[:dirty] = false if @cached.respond_to?("dirty")
+      @cached.updated_at = Time.now
       @cached.update_attributes(options)
     end
   end

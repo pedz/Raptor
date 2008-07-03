@@ -435,7 +435,6 @@ module Retain
       :supersedes_from_ptf_coverle => [ 1482, :ebcdic,         64 ],
       :prerequisite_corequisite_fr => [ 1483, :ebcdic,         64 ],
       :applicable_level_from_ptf_c => [ 1484, :ebcdic,         64 ],
-
       :external_problem_w_country  => [ 1550, :ebcdic,         10 ],
       :tdr_abstract                => [ 1608, :ebcdic,         60 ],
       :symptom_text__line          => [ 1613, :ebcdic,         64 ],
@@ -493,6 +492,10 @@ module Retain
       :monday_start_2              => [ 2679, :ebcdic,          5 ]
     }
     
+    def self.field_width(sym)
+      FIELD_DEFINITIONS[sym][2]
+    end
+
     attr_reader :fields, :raw_values
 
     def initialize(fetch_fields = nil)

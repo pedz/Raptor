@@ -32,6 +32,21 @@ module ApplicationHelper
     res
   end
 
+  def add_page_setting(name, object)
+    (@page_settings ||= { })[name] = object
+  end
+
+  # As the page is rendered, calls, can be made to add_page_setting
+  # which takes name and an arbitrary object and adds it to a has.
+  # push_page_settings is called at the bottom of the body of the page
+  # and produces a script take with the objects wrapped in the
+  # pageSettings object.
+  def push_page_settings
+    unless @page_settings.nil? || @page_settings.empty?
+      render :partial => 'layouts/shared/page_settings'
+    end
+  end
+
   def std_scripts(*extras)
     [ "prototype",
       "scriptaculous",
@@ -49,7 +64,7 @@ module ApplicationHelper
   end
 
   def button(text, action)
-    "<button onclick='#{action}' class='auto-button' id='#{text.to_s}'>#{text.to_s}</button>"
+    "<button onclick='#{action}' class='auto-button' id='#{text.to_s.gsub(/[-, ]/, '_')}'>#{text.to_s}</button>"
   end
 
   def button_url(text, url)

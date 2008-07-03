@@ -30,25 +30,25 @@
 <%=     cu.check_box :add_time, html_tag(call_update, "add-time") %>Add Time
 <%      content_tag :span, html_tag(call_update, 'add-time-span') do -%>
 <%        cu.fields_for :psar_update, call_update.psar_update do |psar| -%>
-<%=         content_tag :label, "Service:", :for => id_for(call_update, "service-code") %>
+<%=         content_tag :label, "Service:", :for => id_for(call_update, "psar-service-code") %>
             <%= psar.text_field(:psar_service_code,
-		               html_tag(call_update, "service-code",
+		               html_tag(call_update, "psar_service-code",
                                         :size => 2, :maxlength => 2)) %>
             Action:
 	    <%= psar.text_field(:psar_action_code,
-		               html_tag(call_update, "service-code",
+		               html_tag(call_update, "psar_action_code",
                                         :size => 2, :maxlength => 2)) %>
             Cause:
 	    <%= psar.text_field(:psar_cause,
-		               html_tag(call_update, "service-code",
+		               html_tag(call_update, "psar_cause",
                                         :size => 2, :maxlength => 2)) %>
             Solution:
 	    <%= psar.text_field(:psar_solution,
-		               html_tag(call_update, "service-code",
+		               html_tag(call_update, "psar_solution",
 		                        :size => 1, :maxlength => 1)) %>
             Impact:
 	    <%= psar.text_field(:psar_impact,
-		               html_tag(call_update, "service-code",
+		               html_tag(call_update, "psar_impact",
 		                        :size => 1, :maxlength => 1)) %>
 <%=         tag("br") %>
             Time <span style='text-decoration: line-through'>wasted</span> spent

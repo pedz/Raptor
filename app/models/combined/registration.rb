@@ -56,6 +56,7 @@ module Combined
         end
       end
       cache_options[:dirty] = false if @cached.respond_to?("dirty")
+      @cached.updated_at = Time.now
       @cached.update_attributes(cache_options)
     end
   end

@@ -102,10 +102,9 @@ module Combined
           retain_calls[index].call_search_result === db_calls[index].call_search_result
         }
         logger.debug("CMB: Queue appears to have not changed")
-        if cached.dirty
-          cached.dirty = false
-          cached.save
-        end
+        cached.dirty = false
+        cached.updated_at = Time.now
+        cached.save
         return
       end
       
@@ -175,6 +174,7 @@ module Combined
         cached.calls << db_call
       end
       cached.dirty = false
+      cached.updated_at = Time.now
       cached.save
     end
   end

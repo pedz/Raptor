@@ -43,7 +43,7 @@ module Retain
       @pmr = @call.pmr
       pmr_options = @pmr.to_options
       call_update = params[:retain_call_update].symbolize_keys
-
+      
       # Convert the check box values to real true / false values.  I'm
       # worried I'm going to make a silly mistake if I don't.
       [ :do_ct, :add_time, :update_pmr ].each { |sym|
@@ -51,10 +51,10 @@ module Retain
           call_update[sym] = call_update[sym] == "1"
         end
       }
-
+      
       reply_span = "call_update_reply_span_#{@call.to_id}"
       newtxt = format_lines(call_update[:newtxt])
-
+      
       if call_update[:update_pmr]
         case call_update[:update_type]
         when "addtxt"
@@ -73,7 +73,7 @@ module Retain
         update_type = :none
         need_undispatch = need_dispatch = call_update[:do_ct]
       end
-
+      
       if need_dispatch
         dispatch = do_pmcu("CD  ", call_options)
         if dispatch.rc != 0
@@ -81,84 +81,93 @@ module Retain
           return
         end
       end
-
-      if call_update[:do_ct]
-        ct = do_pmcu("CT  ", call_options)
-        if ct.rc != 0
-          render_error(ct, reply_span)
-          return
-        end
-      end
-
-      case update_type
-      when :addtxt
-        addtxt_options = pmr_options.dup
-        addtxt_options[:addtxt_lines] = newtxt
-        addtxt = Retain::Pmat.new(addtxt_options)
-        begin
-          addtxt.sendit(Retain::Fields.new)
-        rescue
-          true
-        end
-        if addtxt.rc != 0
-          render_error(addtxt, reply_span)
-          return
-        end
-
-        if call_update[:add_time]
-          psar_options = call_update[:psar_update].symbolize_keys
-          psar_options.merge!(pmr_options)
-          hours = psar_options.delete(:hours).to_i
-          minutes = psar_options.delete(:minutes).to_i
-          psar_options[:psar_actual_time] = (hours * 10) + (minutes / 6).to_i
-          psar_options[:psar_chargeable_time] = hours * 256 + minutes
-          psar = Retain::Psrc.new(psar_options)
-          begin
-            psar.sendit(Retain::Fields.new)
-          rescue
-            true
-          end
-          if psar.rc != 0
-            render_error(psar, reply_span)
+      
+      rendered = false
+      begin
+        if call_update[:do_ct]
+          ct = do_pmcu("CT  ", call_options)
+          if ct.rc != 0
+            render_error(ct, reply_span)
+            rendered = true
             return
           end
         end
         
+        case update_type
+        when :addtxt
+          addtxt_options = pmr_options.dup
+          addtxt_options[:addtxt_lines] = newtxt
+          addtxt = Retain::Pmat.new(addtxt_options)
+          begin
+            addtxt.sendit(Retain::Fields.new)
+          rescue
+            true
+          end
+          if addtxt.rc != 0
+            render_error(addtxt, reply_span)
+            rendered = true
+            return
+          end
+          
+          if call_update[:add_time]
+            psar_options = call_update[:psar_update].symbolize_keys
+            psar_options.merge!(pmr_options)
+            hours = psar_options.delete(:hours).to_i
+            minutes = psar_options.delete(:minutes).to_i
+            psar_options[:psar_actual_time] = (hours * 10) + (minutes / 6).to_i
+            psar_options[:psar_chargeable_time] = hours * 256 + minutes
+            psar = Retain::Psrc.new(psar_options)
+            begin
+              psar.sendit(Retain::Fields.new)
+            rescue
+              true
+            end
+            if psar.rc != 0
+              render_error(psar, reply_span)
+              rendered = true
+              return
+            end
+          end
+          
         when :requeue
-        undispatch = do_pmcu("NOCH", call_options)
-        if undispatch.rc != 0
-          render_error(undispatch, reply_span)
-          return
+          need_undispatch = false
+          undispatch = do_pmcu("NOCH", call_options)
+          if undispatch.rc != 0
+            render_error(undispatch, reply_span)
+            rendered = true
+            return
+          end
+          render(:update) { |page|
+            page.replace_html reply_span, "<span class='sdi-error'>Not implemented yet... Sorry...</span>"
+            page.visual_effect :fade, reply_span
+          }
+          
+        when :close
+          need_undispatch = false
+          undispatch = do_pmcu("NOCH", call_options)
+          if undispatch.rc != 0
+            render_error(undispatch, reply_span)
+            rendered = true
+            return
+          end
+          render(:update) { |page|
+            page.replace_html reply_span, "<span class='sdi-error'>Not implemented yet... Sorry...</span>"
+            page.visual_effect :fade, reply_span
+          }
+          
+        when :none
         end
-        render(:update) { |page|
-          page.replace_html reply_span, "<span class='sdi-error'>Not implemented yet... Sorry...</span>"
-          page.visual_effect :fade, reply_span
-        }
         
-      when :close
-        undispatch = do_pmcu("NOCH", call_options)
-        if undispatch.rc != 0
-          render_error(undispatch, reply_span)
-          return
-        end
-        render(:update) { |page|
-          page.replace_html reply_span, "<span class='sdi-error'>Not implemented yet... Sorry...</span>"
-          page.visual_effect :fade, reply_span
-        }
+      ensure
         
-      when :none
-      end
-
-      if need_undispatch
-        undispatch = do_pmcu("NOCH", call_options)
-        logger.debug("got to this point")
-        if undispatch.rc != 0
-          logger.debug("got to this point also")
-          render_error(undispatch, reply_span)
-          return
+        if need_undispatch
+          undispatch = do_pmcu("NOCH", call_options)
+          if undispatch.rc != 0
+            render_error(undispatch, reply_span) unless rendered
+            return
+          end
         end
       end
-
       render(:update) { |page|
         page.replace_html reply_span, "Update Completed Successfully"
         page.visual_effect :fade, reply_span
@@ -173,14 +182,12 @@ module Retain
 
       # Three step process.  Dispatch, CT, Undispatch
       dispatch = do_pmcu("CD  ", options)
-      logger.debug("dispatch rc = #{dispatch.rc}")
       if dispatch.rc != 0
         render_error(dispatch, 'message-area')
         return
       end
 
       ct = do_pmcu("CT  ", options)
-      logger.debug("ct rc = #{ct.rc}")
       if ct.rc != 0
         render_error(ct, 'message-area')
         return
@@ -190,7 +197,6 @@ module Retain
       pmr.mark_as_dirty
       
       undispatch = do_pmcu("NOCH", options)
-      logger.debug("undispatch rc = #{undispatch.rc}")
       if undispatch.rc != 0
         render_error(undispatch, 'message-area')
         return
@@ -210,7 +216,10 @@ module Retain
       @call = Combined::Call.from_param!(params[:id])
       @queue = @call.queue
       pmr = @call.pmr
-      field = params[:editorId].split('-')[1].to_sym
+      # The field we are changing is the editor id which has the field
+      # name with the call's id appended on separated with a '_'
+      suffix_len = params[:id].length + 1
+      field = params[:editorId][0...-suffix_len].to_sym
       new_text = params[:value]
       options = pmr.to_options
 
@@ -241,28 +250,54 @@ module Retain
           case field
           when :next_queue
             pmr.mark_as_dirty
-            new_text = pmr.next_queue.to_param
             css_class, title, editable = @call.validate_next_queue(signon_user)
+            render(:partial => "shared/retain/fixed_width_span",
+                   :locals => {
+                     :css_class => css_class,
+                     :title => title,
+                     :name => pmr.next_queue.nil? ? "blank" : pmr.next_queue.to_param,
+                     :width => (Retain::Fields.field_width(:next_queue) +
+                                Retain::Fields.field_width(:next_center) + 1)
+                   })
+            return
+
+            new_text = pmr.next_queue.to_param
             replace_text = "<span class='#{css_class}' title='#{title + ":Click to Edit"}'>#{new_text}</span>"
+
           when :pmr_owner_id
             pmr.mark_as_dirty
-            new_text = pmr.owner.name
             css_class, title, editable = @call.validate_owner(signon_user)
-            replace_text = "<span class='#{css_class}' title='#{title + ":Click to Edit"}'>#{new_text}</span>"
+            render(:partial => "shared/retain/fixed_width_span",
+                   :locals => {
+                     :css_class => css_class,
+                     :title => title,
+                     :name => pmr.owner.name,
+                     :width => Retain::Fields.field_width(:pmr_owner_name)
+                   })
+            return
+
           when :pmr_resolver_id
             pmr.mark_as_dirty
             new_text = pmr.resolver.name
             css_class, title, editable = @call.validate_resolver(signon_user)
             replace_text = "<span class='#{css_class}' title='#{title + ":Click to Edit"}'>#{new_text}</span>"
+
           when :comments
             @call.mark_as_dirty
             replace_text = @call.comments
+
           end
-          format.html { render :text => replace_text }
+          format.html {
+            logger.debug("about to render replace_text")
+            render :text => replace_text
+          }
         else
-          format.html { render(:text => new_text,
-                               :status => :unprocessable_entity) }
+          format.html {
+            logger.debug("about to render bad status")
+            render :text => new_text, :status => :unprocessable_entity, :layout => false
+          }
         end
+        logger.debug("all done with respond_to")
       end
     end
 

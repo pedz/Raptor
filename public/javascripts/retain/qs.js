@@ -53,9 +53,20 @@ Raptor.rowCallUpdateFormHide = function () {
     });
 };
 
+Raptor.addAuthenticityToken = function(ele, form) {
+    var hdn = document.createElement('input');
+    hdn.type = 'hidden';
+    hdn.name = 'authenticity_token';
+    hdn.value = pageSettings.authenticityToken;
+    form.appendChild(hdn);
+};
+
 Raptor.hookupInPlaceCollectionEditor = function() {
-    var options = this.readAttribute('options').evalJSON();
-    var url = this.readAttribute('url')
+    var id = this.id;
+    var p = pageSettings[id];
+    var options = p.options;
+    options.onFormCustomization = Raptor.addAuthenticityToken;
+    var url = p.url;
     if (this.ipe) {
 	this.ipe.destroy();
     }
@@ -72,11 +83,16 @@ Raptor.unhookInPlaceCollectionEditor = function() {
 };
 
 Raptor.hookupInPlaceEditor = function() {
-    var url = this.readAttribute('url')
+    var id = this.id;
+    var p = pageSettings[id];
+    var options = { onFormCustomization: Raptor.addAuthenticityToken };
+    var url = p.url;
     if (this.ipe) {
 	this.ipe.destroy();
     }
-    this.ipe = new Ajax.InPlaceEditor(this, url)
+    this.ipe = new Ajax.InPlaceEditor(this,
+				      url,
+				      options);
 };
 
 Raptor.unhookInPlaceEditor = function() {
