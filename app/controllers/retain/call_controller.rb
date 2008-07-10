@@ -151,27 +151,29 @@ module Retain
             requeue_options[:severity] = new_priority
           end
           
-          queue, h_or_s, center = new_queue.upcase.split(',')
-          if h_or_s != @call.queue.h_or_s
-            if @call.queue.h_or_s == 'S' && h_or_s == 'H' # from software to hardware
-              requeue_options[:operand] = 'HW  '
-            elsif @call.queue.h_or_s == 'H' && h_or_s == 'S' # from hardware to software
-              requeue_options[:operand] = 'SW  '
-            else
-              render(:update) { |page|
-                page.replace_html(reply_span,
-                                  "<span class='sdi-error>" +
-                                  "Can only requeue to and from software or hardware" +
-                                  "</span>")
-                page.show area
-              }
-              return
+          if new_queue = call_update[:new_queue]
+            queue, h_or_s, center = new_queue.upcase.split(',')
+            if h_or_s != @call.queue.h_or_s
+              if @call.queue.h_or_s == 'S' && h_or_s == 'H' # from software to hardware
+                requeue_options[:operand] = 'HW  '
+              elsif @call.queue.h_or_s == 'H' && h_or_s == 'S' # from hardware to software
+                requeue_options[:operand] = 'SW  '
+              else
+                render(:update) { |page|
+                  page.replace_html(reply_span,
+                                    "<span class='sdi-error>" +
+                                    "Can only requeue to and from software or hardware" +
+                                    "</span>")
+                  page.show area
+                }
+                return
+              end
+              # Note that the new h_or_s is not in the request.
             end
-            # Note that the new h_or_s is not in the request.
-          end
-          requeue_options[:target_queue] = queue
-          if center != @call.queue.center.center
-            requeue_options[:target_center] = center
+            requeue_options[:target_queue] = queue
+            if center != @call.queue.center.center
+              requeue_options[:target_center] = center
+            end
           end
           requeue = Retain::Pmcr.new(requeue_options)
           begin
@@ -184,6 +186,8 @@ module Retain
           # warning) will leave us dispatched.
           unless requeue.rc == 0 || (600 .. 700) === requeue.rc
             need_undispatch = true
+            @call.queue.dirty = true
+            @call.save!
           end
           if requeue.rc != 0
             render_error(requeue, reply_span)
