@@ -150,29 +150,28 @@ module Retain
             requeue_options[:priority] = new_priority
             requeue_options[:severity] = new_priority
           end
-          if (new_queue = call_update[:new_queue]) && @call.queue.to_param != new_queue
-            queue, h_or_s, center = new_queue.upcase.split(',')
-            if h_or_s != @call.queue.h_or_s
-              if @call.queue.h_or_s == 'S' && h_or_s == 'H' # from software to hardware
-                requeue_options[:operand] = 'HW  '
-              elsif @call.queue.h_or_s == 'H' && h_or_s == 'S' # from hardware to software
-                requeue_options[:operand] = 'SW  '
-              else
-                render(:update) { |page|
-                  page.replace_html(reply_span,
-                                    "<span class='sdi-error>" +
-                                    "Can only requeue to and from software or hardware" +
-                                    "</span>")
-                  page.show area
-                }
-                return
-              end
-              # Note that the new h_or_s is not in the request.
+          
+          queue, h_or_s, center = new_queue.upcase.split(',')
+          if h_or_s != @call.queue.h_or_s
+            if @call.queue.h_or_s == 'S' && h_or_s == 'H' # from software to hardware
+              requeue_options[:operand] = 'HW  '
+            elsif @call.queue.h_or_s == 'H' && h_or_s == 'S' # from hardware to software
+              requeue_options[:operand] = 'SW  '
+            else
+              render(:update) { |page|
+                page.replace_html(reply_span,
+                                  "<span class='sdi-error>" +
+                                  "Can only requeue to and from software or hardware" +
+                                  "</span>")
+                page.show area
+              }
+              return
             end
-            requeue_options[:target_queue] = queue
-            if center != @call.queue.center.center
-              requeue_options[:target_center] = center
-            end
+            # Note that the new h_or_s is not in the request.
+          end
+          requeue_options[:target_queue] = queue
+          if center != @call.queue.center.center
+            requeue_options[:target_center] = center
           end
           requeue = Retain::Pmcr.new(requeue_options)
           begin
@@ -180,7 +179,7 @@ module Retain
           rescue
             true
           end
-
+          
           # This is a guess for now.  An error (and not just a
           # warning) will leave us dispatched.
           unless requeue.rc == 0 || (600 .. 700) === requeue.rc
