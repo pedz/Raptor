@@ -47,6 +47,7 @@ module Retain
       :nls_user_keyword            => [  118, :ebcdic,         16 ],
       :assignee                    => [  119, :ebcdic,          9 ],
       :nominate_flag               => [  121, :ebcdic,          1 ],
+      :send_askq_reply             => [  127, :ebcdic_y_or_n,   1 ],
       :nls_comment                 => [  128, :nls,            56 ],
       :return_data_indicator       => [  130, :ebcdic_y_or_n,   1 ],
       :author_type                 => [  131, :ebcdic,          1 ],

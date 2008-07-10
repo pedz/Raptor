@@ -43,6 +43,7 @@ module Retain
     # Update the call
     def update
       @call = Combined::Call.from_param!(params[:id])
+      @queue = @call.queue
       call_options = @call.to_options
       @pmr = @call.pmr
       pmr_options = @pmr.to_options
@@ -153,10 +154,10 @@ module Retain
           
           if new_queue = call_update[:new_queue]
             queue, h_or_s, center = new_queue.upcase.split(',')
-            if h_or_s != @call.queue.h_or_s
-              if @call.queue.h_or_s == 'S' && h_or_s == 'H' # from software to hardware
+            if h_or_s != @queue.h_or_s
+              if @queue.h_or_s == 'S' && h_or_s == 'H' # from software to hardware
                 requeue_options[:operand] = 'HW  '
-              elsif @call.queue.h_or_s == 'H' && h_or_s == 'S' # from hardware to software
+              elsif @queue.h_or_s == 'H' && h_or_s == 'S' # from hardware to software
                 requeue_options[:operand] = 'SW  '
               else
                 render(:update) { |page|
@@ -171,7 +172,7 @@ module Retain
               # Note that the new h_or_s is not in the request.
             end
             requeue_options[:target_queue] = queue
-            if center != @call.queue.center.center
+            if center != @queue.center.center
               requeue_options[:target_center] = center
             end
           end
@@ -186,8 +187,8 @@ module Retain
           # warning) will leave us dispatched.
           unless requeue.rc == 0 || (600 .. 700) === requeue.rc
             need_undispatch = true
-            @call.queue.dirty = true
-            @call.save!
+            @queue.dirty = true
+            @queue.save!
           end
           if requeue.rc != 0
             render_error(requeue, reply_span)
@@ -196,17 +197,40 @@ module Retain
           end
           
         when :close
-          need_undispatch = false
-          undispatch = do_pmcu("NOCH", call_options)
-          if undispatch.rc != 0
-            render_error(undispatch, reply_span)
+          close_options = call_options.dup
+          if @call.p_s_b != 'B'
+            close_options[:addtxt_lines] = newtxt
+          end
+          if @call.p_s_b == 'P'
+            close_options[:problem_status_code] = 'CL1L1 '
+          end
+          if call_update[:add_time]
+            psar_options = call_update[:psar_update].symbolize_keys
+            hours = psar_options.delete(:hours).to_i
+            minutes = psar_options.delete(:minutes).to_i
+            psar_options[:psar_actual_time] = (hours * 10) + (minutes / 6).to_i
+            psar_options[:psar_chargeable_time] = hours * 256 + minutes
+            close_options.merge!(psar_options)
+          end
+          close = Retain::Pmcc.new(close_options)
+          begin
+            close.sendit(Retain::Fields.new)
+          rescue
+            true
+          end
+          
+          # This is a guess for now.  An error (and not just a
+          # warning) will leave us dispatched.
+          unless close.rc == 0 || (600 .. 700) === close.rc
+            need_undispatch = true
+            @queue.dirty = true
+            @queue.save!
+          end
+          if close.rc != 0
+            render_error(close, reply_span)
             rendered = true
             return
           end
-          render(:update) { |page|
-            page.replace_html reply_span, "<span class='sdi-error'>Not implemented yet... Sorry...</span>"
-            page.visual_effect :fade, reply_span
-          }
           
         when :none
         end
