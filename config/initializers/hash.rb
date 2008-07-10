@@ -33,7 +33,7 @@ end
 module ActiveRecord
   class Base
     def to_xml_with_colon_fixer(options = { }, &block)
-      new_root = (options[:root] || self.class.to_s).gsub(/:/, "__colon__")
+      new_root = (options[:root] || self.class).to_s.gsub(/:/, "__colon__")
       options[:root] = new_root
       to_xml_without_colon_fixer(options, &block)
     end

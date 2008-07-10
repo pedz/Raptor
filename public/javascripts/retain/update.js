@@ -41,7 +41,7 @@ Raptor.updateClicked = function(event) {
  * this returns the requeue span
  */
 Raptor.updateTypeRadioToRequeueSpan = function(ele) {
-    return ele.up(2).down('.call-update-requeue-span');
+    return ele.up(1).down('.call-update-requeue-span');
 };
 
 /*
@@ -74,10 +74,21 @@ Raptor.redrawUpdateCheckBox = function(ele) {
     }
 };
 
+Raptor.sendEmail = function(event) {
+    event.stop();
+    var customer = this.up('.nested-table').down('.customer');
+    var href = customer.down('a').readAttribute('href');
+    var textField = this.next('.call-update-newtxt');
+    var text = textField.getValue().escapeHTML().gsub('\n', '%0A');
+    href = href + "&body=" + text;
+    Raptor.loadPage(href);
+};
+
 /* Add this to the document.observe('dom:loaded') list of functions */
 Raptor.updateLoadHook = function() {
     /* This has to be here or firefox draws the initial page wrong */
     $$('.call-update-td').each(function (ele) {
+	ele.select('.input-with-list').each(Raptor.textInputWithList);
 	ele.hide();
     });
 
@@ -107,5 +118,9 @@ Raptor.updateLoadHook = function() {
 
     $$('.call-update-add-time').each(function (ele) {
 	ele.observe('click', Raptor.addTimeClicked.bindAsEventListener(ele));
+    });
+
+    $$('.send-email-button').each(function (ele) {
+	ele.observe('click', Raptor.sendEmail.bindAsEventListener(ele));
     });
 };

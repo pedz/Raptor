@@ -6,8 +6,9 @@
 module Retain
   class CallUpdate
 
+    attr_reader   :call
     attr_accessor :update_pmr, :update_type, :do_ct, :newtxt, :add_time
-    attr_accessor :new_queue, :new_center, :new_priority
+    attr_accessor :new_queue, :new_priority
     attr_accessor :psar_update
     
     def initialize(call)
@@ -19,8 +20,7 @@ module Retain
       @newtxt = "Action Taken:\n\nAction Plan:\n"
       @add_time = :true
       @psar_update = PsarUpdate.new(75, 57, 50, call.priority, 9, 0, 30)
-      @new_queue = call.queue.queue_name
-      @new_center = call.queue.center.center
+      @new_queue = call.queue.to_param
       @new_priority = call.priority
     end
 

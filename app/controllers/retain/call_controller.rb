@@ -34,6 +34,10 @@ module Retain
       # This is just for the button.  Probably needs to be removed
       # anyway
       @registration = signon_user
+      respond_to do |format|
+        format.html # show.html.erb
+        format.xml { render :xml => @call.to_xml(:include => { :pmr => { :include => :text_lines }}) }
+      end
     end
 
     # Update the call
@@ -130,17 +134,63 @@ module Retain
           end
           
         when :requeue
-          need_undispatch = false
-          undispatch = do_pmcu("NOCH", call_options)
-          if undispatch.rc != 0
-            render_error(undispatch, reply_span)
+          requeue_options = call_options.dup
+          requeue_options[:addtxt_lines] = newtxt
+          requeue_options[:operand] = '    '
+          if call_update[:add_time]
+            psar_options = call_update[:psar_update].symbolize_keys
+            hours = psar_options.delete(:hours).to_i
+            minutes = psar_options.delete(:minutes).to_i
+            psar_options[:psar_actual_time] = (hours * 10) + (minutes / 6).to_i
+            psar_options[:psar_chargeable_time] = hours * 256 + minutes
+            requeue_options.merge!(psar_options)
+          end
+          if (new_priority = call_update[:new_priority]) && @call.priority != new_priority
+            requeue_options[:priority] = new_priority
+          end
+          if (new_queue = call_update[:new_queue]) && @call.queue.to_param != new_queue
+            queue, h_or_s, center = new_queue.upcase.split(',')
+            if h_or_s != @call.queue.h_or_s
+              if @call.queue.h_or_s == 'S' && h_or_s == 'H' # from software to hardware
+                requeue_options[:operand] = 'HW  '
+              elsif @call.queue.h_or_s == 'H' && h_or_s == 'S' # from hardware to software
+                requeue_options[:operand] = 'SW  '
+              else
+                render(:update) { |page|
+                  page.replace_html(reply_span,
+                                    "<span class='sdi-error>" +
+                                    "Can only requeue to and from software or hardware" +
+                                    "</span>")
+                  page.show area
+                }
+                return
+              end
+              # Note that the new h_or_s is not in the request.
+            end
+            if queue != @call.queue.queue_name
+              requeue_options[:target_queue] = queue
+            end
+            if center != @call.queue.center.center
+              requeue_options[:target_center] = center
+            end
+          end
+          requeue = Retain::Pmcr.new(requeue_options)
+          begin
+            requeue.sendit(Retain::Fields.new)
+          rescue
+            true
+          end
+
+          # This is a guess for now.  An error (and not just a
+          # warning) will leave us dispatched.
+          unless requeue.rc == 0 || (600 .. 700) === requeue.rc
+            need_undispatch = true
+          end
+          if requeue.rc != 0
+            render_error(requeue, reply_span)
             rendered = true
             return
           end
-          render(:update) { |page|
-            page.replace_html reply_span, "<span class='sdi-error'>Not implemented yet... Sorry...</span>"
-            page.visual_effect :fade, reply_span
-          }
           
         when :close
           need_undispatch = false

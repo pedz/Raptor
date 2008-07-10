@@ -101,6 +101,12 @@ module Retain
         @snd_fields.add_to_req(request, sym)
       end
 
+      if Retain::NO_SENDIT
+        logger.debug("NO_SENDIT true")
+        @rc = 0
+        return
+      end
+
       login
 
       @snd = request.to_s

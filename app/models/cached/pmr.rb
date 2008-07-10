@@ -176,6 +176,17 @@ module Cached
     end
     once :ecpaat
 
+    def visited_queues
+      queues = []
+      signature_lines.each do |sig|
+        unless (queue = sig.queue).nil? || queues.include?(queue)
+          queues << queue
+        end
+      end
+      queues
+    end
+    once :visited_queues
+
     private
 
     def get_current_section(md)

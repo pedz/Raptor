@@ -192,7 +192,7 @@ module Combined
 
       return [ "good", "I can not find anything to complain about", true ]
     end
-    
+
     private
     
     def load

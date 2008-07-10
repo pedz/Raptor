@@ -14,13 +14,18 @@
           Close
 <%      end %>
 <%=     tag("br") %>
-<%=     content_tag :button, "Send Email" %>
+<%=     content_tag :button, "Send Email", :class => 'send-email-button' %>
 <%=     cu.check_box :do_ct, html_tag(call_update, "do-ct") %>CT
 <%      content_tag :span, html_tag(call_update, 'requeue-span') do -%>
           New Queue
-<%=       cu.text_field :new_queue, html_tag(call_update, "new-queue", :size => 6) %>
-          New Center
-<%=       cu.text_field :new_center, html_tag(call_update, "new-center", :size => 3) %>
+<%        content_tag :span, :class => 'input-with-list' do -%>
+<%=         cu.text_field :new_queue, html_tag(call_update, "new-queue", :size => 12) %>
+<%          content_tag :span do -%>
+<%            call_update.call.pmr.visited_queues.each do |queue| -%>
+<%=             content_tag(:span, queue.to_param, :class => 'pick-list-item') + tag("br") %>
+<%            end -%>
+<%          end -%>
+<%        end -%>
           New Priority
 <%=       cu.text_field :new_priority, html_tag(call_update, "new-priority", :size => 1) %>
 <%      end -%>

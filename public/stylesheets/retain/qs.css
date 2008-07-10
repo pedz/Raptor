@@ -114,3 +114,11 @@ div.links a:hover .popup {
 
 .backup {
 }
+
+.pick-list-item {
+    cursor: pointer;
+}
+
+.pick-list-item:hover {
+    background-color: #ffb;
+}
