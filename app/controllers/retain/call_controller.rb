@@ -56,6 +56,7 @@ module Retain
         end
       }
       
+      form = "call_update_form_#{@call.to_id}"
       reply_span = "call_update_reply_span_#{@call.to_id}"
       newtxt = format_lines(call_update[:newtxt])
       
@@ -147,6 +148,7 @@ module Retain
           end
           if (new_priority = call_update[:new_priority]) && @call.priority != new_priority
             requeue_options[:priority] = new_priority
+            requeue_options[:severity] = new_priority
           end
           if (new_queue = call_update[:new_queue]) && @call.queue.to_param != new_queue
             queue, h_or_s, center = new_queue.upcase.split(',')
@@ -167,9 +169,7 @@ module Retain
               end
               # Note that the new h_or_s is not in the request.
             end
-            if queue != @call.queue.queue_name
-              requeue_options[:target_queue] = queue
-            end
+            requeue_options[:target_queue] = queue
             if center != @call.queue.center.center
               requeue_options[:target_center] = center
             end
@@ -221,6 +221,7 @@ module Retain
       render(:update) { |page|
         page.replace_html reply_span, "Update Completed Successfully"
         page.visual_effect :fade, reply_span
+        page[form].reset
       }
     end
 
