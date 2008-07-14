@@ -77,7 +77,12 @@ module Cached
       logger.debug("CHC: from_options #{self} with #{options.inspect}")
       temp = find(:first, :conditions => keys_only(options))
       if temp.nil? && retain_class.valid?(options)
-        temp = new(fields_only(options))
+        # I changed this July 14, 2008.  It use to be new instead of
+        # create.  But, if the queue is valid, lets go ahead and save
+        # it in the database.  This makes the cascade of objects more
+        # stable (when this object is used to create another object).
+        # This might turn out to be a hugh mistake... Lets see...
+        temp = create(fields_only(options))
       end
       temp
     end
