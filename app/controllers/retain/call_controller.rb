@@ -429,7 +429,7 @@ module Retain
       when 600 .. 700; span_class = 'sdi-warning'
       else span_class = 'sdi-error'
       end
-      content_tag :span, msg, :class => span_class
+      ApplicationController.helpers.content_tag :span, msg, :class => span_class
     end
 
     def create_error_reply(sdi)
