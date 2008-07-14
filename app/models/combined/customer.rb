@@ -31,28 +31,33 @@ module Combined
     
     def load
       logger.debug("CMB: load for #{self.to_s}")
-
+      
       # Pull the fields we need from the cached record into an options_hash
       options_hash = Hash[ *%w{  country customer_number }.map { |field|
                              [ field.to_sym, cached.attributes[field] ] }.flatten ]
-
+      
       # :group_request is a special case
       group_request = self.class.combined_class.retain_fields.map { |field| field.to_sym }
       options_hash[:group_request] = [ group_request ]
-
+      
       # Setup Retain object
       retain_object = self.class.retain_class.new(options_hash)
-
+      
       # Touch to cause a fetch
-      retain_object.send(group_request[0])
-
-      # Hook up center
-      unless (c = retain_object.center).blank?
-        @cached.center = Cached::Center.find_or_new(:center => c)
+      begin
+        retain_object.send(group_request[0])
+      rescue Retain::SdiReaderError => err
+        raise err unless err.rc == 251
+        options = { }
+      else
+        # Hook up center
+        unless (c = retain_object.center).blank?
+          @cached.center = Cached::Center.find_or_new(:center => c)
+        end
+        
+        # Update call record
+        options = self.class.cached_class.options_from_retain(retain_object)
       end
-
-      # Update call record
-      options = self.class.cached_class.options_from_retain(retain_object)
       options[:dirty] = false if @cached.respond_to?("dirty")
       @cached.updated_at = Time.now
       @cached.update_attributes(options)

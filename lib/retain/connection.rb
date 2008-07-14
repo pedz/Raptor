@@ -22,16 +22,25 @@ module Retain
       @@time
     end
 
-    def initialize
+    def initialize(h_or_s)
       super()
+      logger.debug("here #{h_or_s}")
       @@count += 1
       @socket = Socket.new( AF_INET, SOCK_STREAM, 0 )
+      @h_or_s = h_or_s
     end
 
     # open the connection.  +config+ is a hash of host and port
     # Can raise various exceptions -- see Socket#connect
     def connect
-      sockaddr = Socket.pack_sockaddr_in(Logon.instance.port, Logon.instance.host)
+      if @h_or_s == 'H' then
+        node = RetainConfig::HARDWARE_NODES[0]
+      else
+        node = RetainConfig::SOFTWARE_NODES[0]
+      end
+      node_hash = Retain::Config[node][0]
+      logger.debug("RTN: Connecting to #{node_hash[:host]} #{node_hash[:port]}")
+      sockaddr = Socket.pack_sockaddr_in(node_hash[:port], node_hash[:host])
       @socket.connect(sockaddr)
     end
 

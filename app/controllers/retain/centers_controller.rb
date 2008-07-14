@@ -15,17 +15,7 @@ module Retain
     end
     
     def show
-      group_request = [
-                       :software_center_mnemonic,
-                       :center_daylight_time_flag,
-                       :delay_to_time,
-                       :minutes_from_gmt                        
-                      ]
-      options = {
-        :center => params[:id],
-        :group_request => [ group_request ]
-      }
-      @center = Retain::Center.new(options)
+      @center = Combined::Center.new({ :center => params[:id]})
     end
   end
 end

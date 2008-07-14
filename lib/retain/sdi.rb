@@ -107,7 +107,13 @@ module Retain
         return
       end
 
-      login
+      if @snd_fields.has_key? :h_or_s
+        h_or_s = @snd_fields.h_or_s
+      else
+        h_or_s = 'S'
+      end
+      
+      login(h_or_s)
 
       @snd = request.to_s
       if  @connection.write(@snd) != @snd.length
@@ -169,12 +175,13 @@ module Retain
 
     private
       
-    def connect
-      @connection = Connection.new
+    def connect(h_or_s)
+      @connection = Connection.new(h_or_s)
+      logger.debug("connect is of type #{@connection.class}")
       @connection.connect
     end
 
-    def login
+    def login(h_or_s)
       #
       # Abort early if the failed flag is already true
       #
@@ -192,7 +199,7 @@ module Retain
       # "encrypt" the password
       send = first50.user_to_retain
       ( 21..28 ).each { |i| send[i] -= 0x3f }
-      connect
+      connect(h_or_s)
       @connection.write(send)
       reply = @login_reply = @connection.read(50)
       if  reply

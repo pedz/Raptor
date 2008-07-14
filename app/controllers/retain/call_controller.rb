@@ -423,16 +423,23 @@ module Retain
       return pmcu
     end
 
-    def render_error(sdi, area)
+    def create_reply_span(msg, rc)
+      case rc
+      when 0; span_class = 'sdi-normal'
+      when 600 .. 700; span_class = 'sdi-warning'
+      else span_class = 'sdi-error'
+      end
+      content_tag :span, msg, :class => span_class
+    end
+
+    def create_error_reply(sdi)
       err_text = sdi.error_message
       err_code = err_text[-3 ... err_text.length].to_i
-        
-      if (600 .. 700) === err_code
-        err_class = "sdi-warning"
-      else
-        err_class = "sdi-error"
-      end
-      full_text = "<span class='#{err_class}'>#{err_text}</span>"
+      create_reply_span(err_text, err_code)
+    end
+    
+    def render_error(sdi, area)
+      full_text = create_error_reply(sdi)
       render(:update) { |page|
         page.replace_html area, full_text
         page.show area

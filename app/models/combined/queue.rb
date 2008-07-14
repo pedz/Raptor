@@ -42,25 +42,25 @@ module Combined
       q = find(:first, :conditions => options)
       if q.nil?
         q = center.queues.build(options)
-        return nil unless q.valid?
+        return nil unless q.valid?(options.merge({ :center => words[2]}))
       end
       q
     end
     
     def to_id
-      queue_name.strip + '_' + (h_or_s || 'S') + '_' + center.to_param
+      queue_name.strip + '_' + (h_or_s || 'S') + '_' + self.center.to_param
     end
     
     def to_param
-      queue_name.strip + ',' + (h_or_s || 'S') + ',' + center.to_param
+      queue_name.strip + ',' + (h_or_s || 'S') + ',' + self.center.to_param
     end
     
     def to_options
       { :queue_name => queue_name, :h_or_s => h_or_s }.merge(center.to_options)
     end
     
-    def valid?
-      Retain::Cq.valid?(to_options)
+    def valid?(options = to_options)
+      Retain::Cq.valid?(options)
     end
     
     def hits

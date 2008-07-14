@@ -219,14 +219,20 @@ module Retain
     def qs_ecpaat_lines(call)
       pmr = call.pmr
       temp_hash = pmr.ecpaat
-      n = DateTime.now.new_offset(pmr.customer.tz)
+      tz = pmr.customer.tz
+      if tz
+        n = DateTime.now.new_offset(tz)
+        tz_text = n.strftime("%a, %d %b %Y %H:%M")
+      else
+        tz_text = "Can't retrieve Customer Record"
+      end
       
       temp_lines = [ "<span class='ecpaat-heading'>Customer: </span>" +
                      "#{h(call.nls_customer_name)}" ]
       temp_lines << [ "<span class='ecpaat-heading'>Comments: </span>" +
                      "#{h(call.comments)}" ]
       temp_lines << [ "<span class='ecpaat-heading'>Customer Time of Day: </span>" +
-                      "#{h(n.strftime("%a, %d %b %Y %H:%M"))}" ]
+                      "#{h(tz_text)}" ]
       Cached::Pmr::ECPAAT_HEADINGS.each { |heading|
         unless (lines = temp_hash[heading]).nil?
           temp_lines << ("<span class='ecpaat-heading'>" +
@@ -497,14 +503,6 @@ module Retain
       last_ct_time = call.pmr.last_ct_time.new_offset(signon_user.tz)
       td do
         "#{last_ct_time.strftime("%a, %d %b %Y %H:%M")}"
-      end
-    end
-
-    def cust_tod(call)
-      # Current Time in customer's time zone
-      n = DateTime.now.new_offset(call.pmr.customer.tz)
-      td do
-        "#{n.strftime("%a, %d %b %Y %H:%M")}"
       end
     end
 

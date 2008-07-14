@@ -55,6 +55,9 @@ module Cached
     # use its date.
     def create_time
       if (sig = signature_line_stypes('CE')).empty?
+        unless tz = customer.tz
+          tz = 0
+        end
         # should never be true but just in case.
         cd = self.creation_date
         ct = self.creation_time
@@ -71,7 +74,7 @@ module Cached
                        ct[0..1].to_i,        # hour
                        ct[3..4].to_i,        # minute
                        0,                    # second
-                       customer.tz)          # time zone
+                       tz)                   # time zone
       else
         sig.first.date
       end

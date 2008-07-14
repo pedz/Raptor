@@ -40,6 +40,7 @@ module Combined
         retain_registration.name
       rescue Retain::SdiReaderError => err
         raise err unless err.rc == 251
+        cache_optins = { }
       else
         cache_options = Cached::Registration.options_from_retain(retain_registration)
         cache_options.delete(:signon)

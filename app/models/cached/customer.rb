@@ -11,7 +11,11 @@ module Cached
     
     # Customer Time Zone as a rational fraction of a day
     def tz
-      to_combined.time_zone_binary.to_r / MINS_PER_DAY
+      if tzb = to_combined.time_zone_binary
+        tzb.to_r / MINS_PER_DAY
+      else
+        nil
+      end
     end
     once :tz
 
@@ -37,7 +41,8 @@ module Cached
     MINS_PER_WORK_DAY = HOURS_PER_WORK_DAY * MINS_PER_HOUR
 
     def business_minutes(start_time, minutes)
-      cust_time = cust_start_time = start_time.new_offset(tz)
+      local_tz = tz || 0
+      cust_time = cust_start_time = start_time.new_offset(local_tz)
       # Move clock forward by minutes until we hit the start of a new
       # hour
       while minutes > 0 && cust_time.min != 0
