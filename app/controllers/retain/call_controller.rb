@@ -185,11 +185,14 @@ module Retain
           
           # This is a guess for now.  An error (and not just a
           # warning) will leave us dispatched.
-          unless requeue.rc == 0 || (600 .. 700) === requeue.rc
-            need_undispatch = true
+          if requeue.rc == 0 || (600 .. 700) === requeue.rc
+            logger.debug("mark queue as dirty -- 1")
             @queue.dirty = true
             @queue.save!
+          else
+            need_undispatch = true
           end
+
           if requeue.rc != 0
             render_error(requeue, reply_span)
             rendered = true
@@ -221,11 +224,14 @@ module Retain
           
           # This is a guess for now.  An error (and not just a
           # warning) will leave us dispatched.
-          unless close.rc == 0 || (600 .. 700) === close.rc
-            need_undispatch = true
+          if close.rc == 0 || (600 .. 700) === close.rc
+            logger.debug("mark queue as dirty -- 2")
             @queue.dirty = true
             @queue.save!
+          else
+            need_undispatch = true
           end
+
           if close.rc != 0
             render_error(close, reply_span)
             rendered = true
