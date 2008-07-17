@@ -251,9 +251,10 @@ module Retain
           end
         end
       end
+      text = create_reply_span("Update Completed Successfully", 0)
       render(:update) { |page|
-        page.replace_html reply_span, "Update Completed Successfully"
-        page.visual_effect :fade, reply_span
+        page.replace_html reply_span, text                          
+        page.visual_effect :fade, reply_span, :duration => 2.0
         page[form].reset
       }
     end
