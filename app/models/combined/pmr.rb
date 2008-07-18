@@ -226,8 +226,10 @@ module Combined
         if queue
           queue.save if queue.new_record?
           @cached.queue = queue
-          call = queue.calls.from_options(primary_options)
+          call = queue.calls.from_options(primary_options.merge({ :pmr_id => @cached.id }))
           if call
+            # After chaning from_options to create instead of just
+            # initialize, this should never be true.
             if call.new_record?
               call.pmr = @cached
               call.save
