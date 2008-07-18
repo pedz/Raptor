@@ -5,7 +5,7 @@
  */
 
 /* Called when the button to show the update form is poked */
-Raptor.toggleCallUpdateForm = function() {
+Raptor.qsToggleCallUpdateForm = function() {
     this.toggle();
     if (this.visible()) {
 	var update_box = this.select('.call-update-update-pmr')[0];
@@ -184,7 +184,7 @@ document.observe('dom:loaded', function() {
 	ele.updateFormHide = Raptor.rowCallUpdateFormHide.bind(ele);
     });
 
-    $$('.call-update-td').each(function (ele) {
-	ele.toggleCallUpdateForm = Raptor.toggleCallUpdateForm.bind(ele);
+    $$('.call-update-container').each(function (ele) {
+	ele.toggleCallUpdateForm = Raptor.qsToggleCallUpdateForm.bind(ele);
     });
 });

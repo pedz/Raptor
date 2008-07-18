@@ -87,7 +87,7 @@ Raptor.sendEmail = function(event) {
 /* Add this to the document.observe('dom:loaded') list of functions */
 Raptor.updateLoadHook = function() {
     /* This has to be here or firefox draws the initial page wrong */
-    $$('.call-update-td').each(function (ele) {
+    $$('.call-update-container').each(function (ele) {
 	ele.select('.input-with-list').each(Raptor.textInputWithList);
 	ele.hide();
     });

@@ -1,6 +1,7 @@
 <%= app_doctype %>
 <!-- layouts/retain/call.html.erb -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <%= app_header(std_styles("pmrs", "retain/call"), std_scripts("call")) %>
+  <%= app_header(std_styles("retain/pmrs", "retain/call"),
+                 std_scripts("retain/call", "text_input_list", "retain/update")) %>
   <%= app_body :top, :left_tab, :left, :center, :right_tab, :right, :bottom %>
 </html>

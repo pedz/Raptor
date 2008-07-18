@@ -43,5 +43,20 @@ module Retain
                :index => index,
                :page => page })
     end
+
+    def display_update_button(binding)
+      span binding, :class => 'call-update-span' do |binding|
+        concat(button("Update", "$(\"call_update_span\").toggleCallUpdateForm();"), binding)
+      end
+    end
+
+    def display_update_form(binding, call)
+      span binding, :id => 'call_update_span', :class => 'call-update-container' do |binding|
+        call_update = CallUpdate.new(call)
+        concat(render(:partial => 'shared/retain/call_update',
+                      :locals => { :call_update => call_update }),
+               binding)
+      end
+    end
   end
 end

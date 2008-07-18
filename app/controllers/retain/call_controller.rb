@@ -97,6 +97,7 @@ module Retain
             rendered = true
             return
           end
+          @pmr.mark_as_dirty
         end
         
         case update_type
@@ -114,6 +115,7 @@ module Retain
             rendered = true
             return
           end
+          @pmr.mark_as_dirty
           
           if call_update[:add_time]
             psar_options = call_update[:psar_update].symbolize_keys
@@ -187,8 +189,7 @@ module Retain
           # warning) will leave us dispatched.
           if requeue.rc == 0 || (600 .. 700) === requeue.rc
             logger.debug("mark queue as dirty -- 1")
-            @queue.dirty = true
-            @queue.save!
+            @queue.mark_as_dirty
           else
             need_undispatch = true
           end
@@ -226,8 +227,7 @@ module Retain
           # warning) will leave us dispatched.
           if close.rc == 0 || (600 .. 700) === close.rc
             logger.debug("mark queue as dirty -- 2")
-            @queue.dirty = true
-            @queue.save!
+            @queue.mark_as_dirty
           else
             need_undispatch = true
           end

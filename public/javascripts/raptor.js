@@ -86,7 +86,7 @@ var Raptor = {
 	window.location = url;
     },
 
-    recalc_dimensions: function() {
+    recalcDimensions: function() {
 	Raptor.top.style.height = "1em";
 	var newTop = Raptor.top.scrollHeight + "px";
 

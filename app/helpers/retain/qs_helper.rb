@@ -85,13 +85,13 @@ module Retain
     def call_update_form(binding, header, call, index)
       logger.debug("QS: call_update_form #{call.nil? ? "header" : call.to_param}")
       if header
-        th binding, :class => 'call-update-td', :colspan => 4 do |binding|
+        th binding, :class => 'call-update-container', :colspan => 4 do |binding|
           concat("", binding)
         end
       else
         td(binding,
            :id => "call_update_td_#{index+1}",
-           :class => 'call-update-td',
+           :class => 'call-update-container',
            :colspan => 4) do |binding|
           call_update = CallUpdate.new(call)
           logger.debug("call-update-psar-update-psar-service-code = #{call_update.psar_update.psar_service_code}")

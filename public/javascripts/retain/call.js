@@ -12,18 +12,6 @@ Raptor.getSelText = function () {
     return '';
 };
 
-// Toggles the update (add text and requeue) form
-Raptor.updateToggle = function() {
-    $('update-form').toggle();
-    Raptor.recalc_dimensions();
-};
-
-// Toggles the update (add text and requeue) form
-Raptor.addTimeToggle = function() {
-    $('add-time-form').toggle();
-    Raptor.recalc_dimensions();
-};
-
 Raptor.newUrl = function(to, sub) {
     Raptor.didNewUrl = true;
     txt = Raptor.getSelText();
@@ -32,7 +20,21 @@ Raptor.newUrl = function(to, sub) {
 
 Raptor.didNewUrl = false;
 
+/* Called when the button to show the update form is poked */
+Raptor.callToggleCallUpdateForm = function() {
+    this.toggle();
+    if (this.visible()) {
+	var update_box = this.select('.call-update-update-pmr')[0];
+	update_box.redraw();
+    }
+    Raptor.recalcDimensions();
+};
+
 document.observe('dom:loaded', function() {
+    $$('.call-update-container').each(function (ele) {
+	ele.toggleCallUpdateForm = Raptor.callToggleCallUpdateForm.bind(ele);
+    });
+
     Raptor.right = $('right');
     Raptor.right_tab = $('right-tab');
     Raptor.right_width = parseInt(window.getComputedStyle(Raptor.right, null).width);
@@ -74,7 +76,7 @@ document.observe('dom:loaded', function() {
 	    } else {
 		event.stop();
 		ele.hide();
-		Raptor.recalc_dimensions();
+		Raptor.recalcDimensions();
 	    }
 	});
     });
@@ -88,7 +90,7 @@ document.observe('dom:loaded', function() {
 	ele.observe('click', function(event) {
 	    event.stop();
 	    other.toggle();
-	    Raptor.recalc_dimensions();
+	    Raptor.recalcDimensions();
 	}.bindAsEventListener(ele));
     });
 
@@ -118,7 +120,7 @@ document.observe('dom:loaded', function() {
 	// console.log("left-tab click");
 	event.stop();
 	Raptor.left_stays_open = !Raptor.left_stays_open;
-	Raptor.recalc_dimensions();
+	Raptor.recalcDimensions();
     });
 
     $('right-tab').observe('mouseover', function (event) {
@@ -132,7 +134,7 @@ document.observe('dom:loaded', function() {
 	// console.log("right-tab click");
 	event.stop();
 	Raptor.right_stays_open = !Raptor.right_stays_open;
-	Raptor.recalc_dimensions();
+	Raptor.recalcDimensions();
     });
 
     $('center').observe('mouseover', function (event) {
@@ -152,5 +154,5 @@ document.observe('dom:loaded', function() {
 
     // After everything is set up, recalc the dimentions to get the
     // proper display.
-    Raptor.recalc_dimensions();
+    Raptor.recalcDimensions();
 });

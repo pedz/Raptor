@@ -186,38 +186,7 @@
     <%= button_url("QS #{@queue.to_param}", combined_q_path(@queue)) %>
     <%= button_url("PSAR", retain_psar_path) %>
     <%= button_url("Registration", @registration) %>
-    <%= button("Update", "Raptor.updateToggle();") %>
-    <div id="update-form">
-      <span id="addtxt-reply">&nbsp;</span>
-      <% form_remote_tag :url => addtxt_combined_pmr_path(@pmr) do %>
-        <textarea name="newtext" rows="10" cols="72">Action Taken:
-
-Action Plan:</textarea><br/>
-	<%= submit_tag "Addtxt" %>
-      <% end %>
-    </div>
-    <%= button("Add Time", "Raptor.addTimeToggle();") %>
-    <div id="add-time-form">
-      <span id="add-time-reply">&nbsp;</span>
-        <% form_remote_for :psar, @psar, :url => addtime_combined_pmr_path(@pmr) do |psar| %>
-	Service Code:
-	<%= psar.text_field :psar_service_code, :size => 2 %>
-	Action Code
-	<%= psar.text_field :psar_action_code, :size => 2 %>
-	Cause
-	<%= psar.text_field :psar_cause, :size => 2 %>
-	Solution
-	<%= psar.text_field :psar_solution, :size => 1 %>
-	Impact
-	<%= psar.text_field :psar_impact, :size => 1 %>
-	<span style='color: white'>(probably don't want to muck with these)</span>
-	<br />
-	Time <span style='text-decoration: line-through'>wasted</span> spent
-	<%= psar.text_field :hours, :size => 2 %>Hours
-	<%= psar.text_field :minutes, :size => 2 %>Minutes
-	<br />
-	<%= submit_tag "addtime" %>
-      <% end %>
-    </div>
+    <% display_update_button(binding) %>
+    <% display_update_form(binding, @call) %>
   </div>
 <% end %>
