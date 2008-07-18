@@ -23,6 +23,8 @@ module Retain
       if (page * 16) == index
         even_odd = ((page % 2) == 0) ? "even" : "odd"
         div_string = "</div><div class='#{even_odd}'>"
+        float_string = "<div class='#{even_odd}-float'>#{page + 2}</div>"
+        div_string += float_string
       else
         div_string = nil
       end

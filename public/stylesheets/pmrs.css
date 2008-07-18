@@ -133,6 +133,18 @@ body {
     background-color: #f8f8ff;
 }
 
+.even-float {
+    font-size: 300%;
+    float: right;
+    color: Gray;
+}
+
+.odd-float {
+    font-size: 300%;
+    float: right;
+    color: DarkGray;
+}
+
 #click-header {
     color: gold;
 }
