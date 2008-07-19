@@ -35,7 +35,11 @@ module Combined
       words = param.split(',')
       ppg = words.pop
       queue = Combined::Queue.from_param!(words.join(','))
-      [ queue.calls.find_or_initialize_by_ppg(ppg), queue ]
+      c = queue.calls.find_or_initialize_by_ppg(ppg)
+      if c.nil?
+        raise CallNotFound.new(param)
+      end
+      [ c, queue ]
     end
     
     def self.from_param!(param)

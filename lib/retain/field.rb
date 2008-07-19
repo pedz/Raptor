@@ -159,8 +159,10 @@ module Retain
         # The first 12 bytes are characters that we encode to ebcdic.
         # The last 8 characters are actually four bytes encoded as
         # hex.
-        value[0 ... 12].user_to_retain +
+        new_value = value[0 ... 12].user_to_retain +
           value[12 ... 20].scan(/../).map { |s| s.hex }.pack("cccc")
+        Rails.logger.debug("XXX: encode before #{value} after #{new_value}")
+        new_value
       when :ebcdic_strip
         value.trim(width).upcase.user_to_retain
       when :upper_ebcdic
@@ -182,7 +184,7 @@ module Retain
       when :number              # space filled number
         ("%#{width}d" % value).user_to_retain
       when :znumber             # zero filled number
-        RAILS_DEFAULT_LOGGER.debug("width=#{width}, value=#{value}, value.class=#{value.class}")
+        Rails.logger.debug("width=#{width}, value=#{value}, value.class=#{value.class}")
         ("%0#{width}d" % value).user_to_retain
       when :short
         value.short2ret
@@ -206,13 +208,15 @@ module Retain
     def decode(value)
       case @cvt
       when :int
-        RAILS_DEFAULT_LOGGER.debug("XXX #{"%02x %02x" % [ value[0], value[1]]}")
+        Rails.logger.debug("XXX #{"%02x %02x" % [ value[0], value[1]]}")
         v = 0; value.each_byte { |b| v = v * 256 + b }; v
       when :psarfs
         # The first 12 bytes are ebcdic characters.  The last four are
         # not so we encode each byte as hex (two bytes each)
-        value[0 ... 12].retain_to_user +
+        new_value = value[0 ... 12].retain_to_user +
           value[12 ... 16].unpack("CCCC").map { |c| "%02x" % c }.join("")
+        Rails.logger.debug("XXX: decode before #{value} after #{new_value}")
+        new_value
       when :ebcdic_strip
         value.retain_to_user.strip
       when :upper_ebcdic

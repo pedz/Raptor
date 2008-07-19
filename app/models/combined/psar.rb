@@ -35,7 +35,23 @@ module Combined
       retain_object = self.class.retain_class.new(options_hash)
 
       # Special case for psar.
-      psar = retain_object.de32
+      begin
+        psar = retain_object.de32
+      rescue Retain::SdiReaderError => err
+        # If the err.rc is 254, it means that the symbol was not
+        # found.  If psar_mailed_flag is set but not set to "M", then
+        # we have this record in our cache but it has expired from
+        # retain before we retrieved it in the "mailed" state.  In
+        # that case, we flip the psar_mailed_flag to M, save the
+        # record, and go home.
+        if err.rc == 254 && @cached && @cached.psar_mailed_flag != nil &&
+            @cached.psar_mailed_flag != "M"
+          @cached.psar_mailed_flag = "M"
+          @cached.save!
+          return
+        end
+        raise err
+      end
 
       # Make or find PMR
       # This is duplicate code ####

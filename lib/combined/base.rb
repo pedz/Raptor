@@ -11,6 +11,18 @@ module Combined
     end
   end
   
+  class CallNotFound < Exception
+    def initialize(spec)
+      super("Call #{spec} Not Found")
+    end
+  end
+  
+  class PmrNotFound < Exception
+    def initialize(spec)
+      super("PMR #{spec} Not Found")
+    end
+  end
+  
   class Base
     cattr_accessor :logger
 

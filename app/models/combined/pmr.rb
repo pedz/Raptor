@@ -36,6 +36,14 @@ module Combined
       options = param_to_options(param)
       find(:first, :conditions => options) || new(options)
     end
+    
+    def self.from_param!(param)
+      pmr = from_param(param)
+      if pmr.nil?
+        raise PmrNotFound.new(param)
+      end
+      pmr
+    end
 
     def to_id
       (problem + '_' + branch + '_' + country).upcase
@@ -212,8 +220,10 @@ module Combined
         :h_or_s => pmr.h_or_s,
         :ppg => pmr.ppg
       }
+      logger.debug("CMB: primary_options = #{primary_options.inspect}")
       center = Cached::Center.from_options(primary_options)
       if center
+        logger.debug("CMB: got center")
         # We have to save the center if it is a new record.  This is
         # also true for the queue.  We are creating this complex
         # structure that is not flat.  The pmr points to the center,
@@ -224,17 +234,19 @@ module Combined
         @cached.center = center
         queue = center.queues.from_options(primary_options)
         if queue
+          logger.debug("CMB: got queue")
           queue.save if queue.new_record?
           @cached.queue = queue
           call = queue.calls.from_options(primary_options.merge({ :pmr_id => @cached.id }))
           if call
+            logger.debug("CMB: got call")
             # After chaning from_options to create instead of just
             # initialize, this should never be true.
             if call.new_record?
               call.pmr = @cached
               call.save
             end
-            @cached.primary = call
+            @cached.primary_call = call
           end
         end
       end
