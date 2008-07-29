@@ -4,7 +4,7 @@
     <% if defined?(@refresh) && @refresh %>
     <meta http-equiv="refresh" content="<%= @refresh %>; URL=<%= request.env["REQUEST_URI"] %>">
     <% end %>
-    <link rel="Shortcut Icon" href="/raptor.ico"/>
+    <link rel="Shortcut Icon" href="<%= compute_public_path("/raptor.ico", "") %>"/>
     <title><%= h @title %></title>
     <%= stylesheet_link_tag(*stylesheets) unless stylesheets.nil? %>
     <%= javascript_include_tag(*javascript_files) unless javascript_files.nil? %>
