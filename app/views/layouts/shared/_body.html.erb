@@ -1,8 +1,10 @@
 <!-- app/views/layouts/shared/_body.html.erb -->
   <body>
     <% if divs.nil? || divs.empty? -%>
-      <%= render :partial => 'layouts/shared/display_flash' %>
-      <%= yield %>
+      <div>
+	<%= render :partial => 'layouts/shared/display_flash' %>
+	<%= yield %>
+      </div>
     <% else -%>
       <% for div in divs -%>
         <div id="<%= div.to_s.gsub(/_/, '-') %>">

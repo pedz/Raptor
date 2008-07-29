@@ -36,7 +36,9 @@ class ApplicationController < ActionController::Base
   def authenticate
     set_last_uri
     return true if session[:user]
-    if NONE_AUTHENTICATE
+    if request.env.has_key? "REMOTE_USER"
+      apache_authenticate
+    elsif NONE_AUTHENTICATE
       none_authenticate
     else
       ldap_authenticate
@@ -47,6 +49,7 @@ class ApplicationController < ActionController::Base
   # the user wants to refresh the cache if he does.
   def set_last_uri
     last_uri = session[:last_uri]
+    logger.debug("REMOTE_USER = #{request.env["REMOTE_USER"]}")
     uri =  request.env["REQUEST_URI"]
     logger.debug("last_uri = #{last_uri}, uri = #{uri}")
     if last_uri == uri
@@ -63,11 +66,12 @@ class ApplicationController < ActionController::Base
 
   # This authenticates against bluepages using LDAP.
   def ldap_authenticate
+    logger.debug("ldap_authenticate")
     ldap_time = Benchmark.realtime { ActiveLdap::Base.establish_connection }
     logger.debug("LDAP: took #{ldap_time} to establish the connection")
     authenticate_or_request_with_http_basic "Raptor" do |user_name, password|
       next nil unless LdapUser.authenticate_from_email(user_name, password)
-      common_authenticate(user_name, password)
+      common_authenticate(user_name)
       return true
     end
     return false
@@ -76,18 +80,26 @@ class ApplicationController < ActionController::Base
   # No authentication although an http basic authentication sequence
   # still occurs
   def none_authenticate
+    logger.debug("none_authenticate")
     authenticate_or_request_with_http_basic "Raptor" do |user_name, password|
-      common_authenticate(user_name, password)
+      common_authenticate(user_name)
       return true
     end
     return false
+  end
+
+  # Apache has already authenticated so let the user in.
+  def apache_authenticate
+    logger.debug("apache_authenticate")
+    common_authenticate(request.env["REMOTE_USER"])
+    return true
   end
 
   # Common set up steps in the authentication process After
   # authentication succeeds, the matching user record is found.  If it
   # does not exist, it is created and initialized with the ldap_id
   # field.  The user model is stored in the session.
-  def common_authenticate(user_name, password)
+  def common_authenticate(user_name)
     user = User.find_by_ldap_id(user_name)
     if user.nil?
       # Can not use this because ldap_id is protected
@@ -100,5 +112,4 @@ class ApplicationController < ActionController::Base
     session[:user] = user
     session[:retain] = nil
   end
-
 end

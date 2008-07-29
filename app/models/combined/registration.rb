@@ -8,10 +8,36 @@ module Combined
     add_skipped_fields :software_center_id, :hardware_center_id
     add_extra_fields   :software_center,    :hardware_center
     add_non_retain_associations :queues, :queue_infos
-
+    # These are DB fields used to keep track of when the PSARs were fetched.
+    add_skipped_fields :last_day_fetch, :last_all_fetch
 
     def to_param
       @cached.signon
+    end
+
+    def psars
+      if @cached.last_all_fetch.nil? || @cached.last_all_fetch < 1.day.ago
+        logger.debug("Fetching all PSAR")
+        search_hash = {
+          :signon2 => @cached.psar_number,
+          :psar_start_date => 14.days.ago.strftime("%Y%m%d"),
+          :psar_end_date => Time.now.strftime("%Y%m%d")
+        }
+        Combined::Psar.fetch(search_hash)
+        @cached.last_all_fetch = Time.now
+        @cached.last_day_fetch = Time.now
+        @cached.save!
+      elsif @cached.last_day_fetch.nil? || @cached.last_day_fetch < 30.minutes.ago
+        logger.debug("Fetching days PSAR")
+        search_hash = {
+          :signon2 => @cached.psar_number,
+          :psar_start_date => Time.now.strftime("%Y%m%d")
+        }
+        Combined::Psar.fetch(search_hash)
+        @cached.last_day_fetch = Time.now
+        @cached.save!
+      end
+      @cached.psars.wrap_with_combined
     end
 
     private

@@ -1,5 +1,5 @@
 # This file is auto-generated from the current state of the database. Instead of editing this file, 
-# please use the migrations feature of ActiveRecord to incrementally modify your database, and
+# please use the migrations feature of Active Record to incrementally modify your database, and
 # then regenerate this schema definition.
 #
 # Note that this schema.rb definition is the authoritative source for your database schema. If you need
@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 18) do
+ActiveRecord::Schema.define(:version => 20080723002526) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                         :null => false
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(:version => 18) do
     t.boolean  "dirty"
   end
 
-  add_index "cached_calls", ["queue_id", "ppg"], :name => "uq_cached_calls_pair", :unique => true
+  add_index "cached_calls", ["ppg", "queue_id"], :name => "uq_cached_calls_pair", :unique => true
 
   create_table "cached_centers", :force => true do |t|
     t.string   "center",                    :limit => 3, :null => false
@@ -97,13 +97,12 @@ ActiveRecord::Schema.define(:version => 18) do
     t.boolean  "dirty"
   end
 
-  add_index "cached_pmrs", ["problem", "branch", "country", "creation_date"], :name => "uq_cached_pmrs_triple", :unique => true
+  add_index "cached_pmrs", ["branch", "country", "creation_date", "problem"], :name => "uq_cached_pmrs_triple", :unique => true
 
   create_table "cached_psars", :force => true do |t|
     t.integer  "pmr_id"
     t.integer  "apar_id"
     t.integer  "queue_id"
-    t.string   "signon2",                 :limit => 6
     t.integer  "chargeable_time_hex"
     t.string   "cpu_serial_number",       :limit => 7
     t.string   "cpu_type",                :limit => 4
@@ -129,6 +128,7 @@ ActiveRecord::Schema.define(:version => 18) do
     t.boolean  "dirty"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "registration_id",                       :null => false
   end
 
   create_table "cached_queue_infos", :force => true do |t|
@@ -138,7 +138,7 @@ ActiveRecord::Schema.define(:version => 18) do
     t.datetime "updated_at"
   end
 
-  add_index "cached_queue_infos", ["queue_id", "owner_id"], :name => "uq_cached_queue_infos_queue_owner", :unique => true
+  add_index "cached_queue_infos", ["owner_id", "queue_id"], :name => "uq_cached_queue_infos_queue_owner", :unique => true
 
   create_table "cached_queues", :force => true do |t|
     t.string   "queue_name", :limit => 6, :null => false
@@ -149,7 +149,7 @@ ActiveRecord::Schema.define(:version => 18) do
     t.boolean  "dirty"
   end
 
-  add_index "cached_queues", ["queue_name", "h_or_s", "center_id"], :name => "uq_cached_queues_triple", :unique => true
+  add_index "cached_queues", ["center_id", "h_or_s", "queue_name"], :name => "uq_cached_queues_triple", :unique => true
 
   create_table "cached_registrations", :force => true do |t|
     t.string   "signon",                :null => false
@@ -162,6 +162,8 @@ ActiveRecord::Schema.define(:version => 18) do
     t.integer  "time_zone_adjustment"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "last_day_fetch"
+    t.datetime "last_all_fetch"
   end
 
   add_index "cached_registrations", ["signon"], :name => "uq_cached_registrations_signon", :unique => true
@@ -176,7 +178,7 @@ ActiveRecord::Schema.define(:version => 18) do
     t.datetime "updated_at"
   end
 
-  add_index "cached_text_lines", ["pmr_id", "line_type", "line_number"], :name => "uq_cached_text_lines_triple", :unique => true
+  add_index "cached_text_lines", ["line_number", "line_type", "pmr_id"], :name => "uq_cached_text_lines_triple", :unique => true
 
   create_table "favorite_queues", :force => true do |t|
     t.integer  "user_id",    :null => false
@@ -185,7 +187,7 @@ ActiveRecord::Schema.define(:version => 18) do
     t.datetime "updated_at"
   end
 
-  add_index "favorite_queues", ["user_id", "queue_id"], :name => "uq_favorite_queues", :unique => true
+  add_index "favorite_queues", ["queue_id", "user_id"], :name => "uq_favorite_queues", :unique => true
 
   create_table "feedback_notes", :force => true do |t|
     t.integer  "feedback_id"

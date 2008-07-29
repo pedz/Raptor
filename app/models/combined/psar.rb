@@ -14,14 +14,41 @@ module Combined
     add_skipped_fields :apar_id
     add_extra_fields :psar_apar
     
+    add_skipped_fields :registration_id
+    add_extra_fields :signon2
+
     def to_param
       psar_file_and_symbol
     end
     
     def check_mail_flag
-      return @cached && @cached.psar_mailed_flag == "M"
+      ret = (@cached && (@cached.psar_mailed_flag == "M") || @cached.updated_at > 1.day.ago)
+      logger.debug("check_mail_flag for #{@cached.psar_file_and_symbol} is #{ret}")
+      return ret
     end
 
+    def self.fetch(search_hash)
+      # Cuurently we do this in two steps.  We fetch just the "IRIS"s
+      # and then we fetch the contents of each PSAR that is not in our
+      # cache.
+      search_hash = search_hash.dup
+      search_hash[:group_request] = [ [ :psar_file_and_symbol ] ]
+      begin
+        de32s = Retain::Psar.new(search_hash).de32s
+      rescue Retain::SdiReaderError => e
+        raise e unless e.rc == 256
+      else
+        first_field = Combined::Psar.retain_fields.first
+        de32s.each do |fields|
+          combined = Combined::Psar.find_or_new :psar_file_and_symbol => fields.psar_file_and_symbol
+          # Cause a touch
+          combined.send first_field
+        end
+      end
+    end
+
+    private
+    
     def load
       logger.debug("CMB: load for #{self.to_s}")
       # Pull the fields we need from the cached record into an options_hash
@@ -85,6 +112,7 @@ module Combined
       # Update psar record
       options = self.class.cached_class.options_from_retain(psar)
       options[:dirty] = false if @cached.respond_to?("dirty")
+      @cached.registration = Cached::Registration.find_or_initialize_by_psar_number(psar.signon2)
       @cached.updated_at = Time.now
       @cached.update_attributes(options)
     end

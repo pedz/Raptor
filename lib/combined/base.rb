@@ -304,11 +304,9 @@ module Combined
       end
 
       # else, return if cache time has expired or not
-      sum = (updated_at + expire)
-      now = Time.now
-      r = sum > Time.now
+      r = updated_at > expire.ago
       logger.debug("CMB: #{self.to_s} cache_valid?: updated_at:#{updated_at}, " +
-                   "expire:#{expire}, sum:#{updated_at + expire}, " +
+                   "expire:#{expire}, expire.ago:#{expire.ago}" +
                    "now:#{Time.now}, r:#{r}")
       r
     end
