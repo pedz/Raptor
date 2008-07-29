@@ -28,6 +28,10 @@ module Retain
       @call.to_id
     end
 
+    def id
+      @call.id
+    end
+    
     def to_param
       @call.to_param
     end
