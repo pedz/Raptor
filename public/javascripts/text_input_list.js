@@ -1,7 +1,23 @@
 Raptor = Object.extend(Raptor, {
     effectTime: 0.50,
     embossSize: 10,
+    imagePath: null,
 
+    // retrieve imagePath.  This assumes that the directory structure
+    // is the standard Rails structure with javascript a subdirectory
+    // call javascripts and images in a sibling directory called images
+    getImagePath: function (path) {
+	if (Raptor.imagePath == null) {
+	    Raptor.imagePath = "/"; // default is root
+	    $A(document.getElementsByTagName("script")).findAll( function(s) {
+		return (s.src && s.src.match(/javascripts\/scriptaculous\.js(\?.*)?$/))
+	    }).each( function(s) {
+		Raptor.imagePath = s.src.replace(/javascripts\/scriptaculous\.js(\?.*)?$/,'images/');
+	    });
+	}
+	return Raptor.imagePath + path;
+    },
+    
     // 'this' is set to the element passed to textInputWithList
     pickItem: function(event) {
 	this.textInput.setValue(event.element().innerHTML);
@@ -44,7 +60,10 @@ Raptor = Object.extend(Raptor, {
 	var bottom = (-parseInt(textInput.getStyle('borderBottomWidth'))) + 'px';
 	textInput.remove();
 
-	var showButton = new Element('img', { src: '/images/BlueArrow.png', alt: 'Show List of Choices' });
+	var showButton = new Element('img', {
+	    src: Raptor.getImagePath('BlueArrow.png'),
+	    alt: 'Show List of Choices'
+	});
 	showButton.setStyle({ width: inputHeightPX,
 			      height: inputHeightPX,
 			      position: 'absolute',
@@ -85,17 +104,26 @@ Raptor = Object.extend(Raptor, {
 	var imageSpan = new Element('span');
 	var topRow = new Element('span');
 	imageSpan.appendChild(topRow);
-	var topLeft = new Element('img', { src: '/images/BlueBar_tl.gif', alt: 'Top Left Corner' });
+	var topLeft = new Element('img', {
+	    src: Raptor.getImagePath('BlueBar_tl.gif'),
+	    alt: 'Top Left Corner'
+	});
 	var embossSizePX = Raptor.embossSize + 'px';
 	topLeft.setStyle({ width: embossSizePX,
 			   height: embossSizePX });
 	topRow.appendChild(topLeft);
-	var topCenter = new Element('img', { src: '/images/BlueBar_top.gif', alt: 'Top Center' });
+	var topCenter = new Element('img', {
+	    src: Raptor.getImagePath('BlueBar_top.gif'),
+	    alt: 'Top Center'
+	});
 	topCenter.setStyle({ width: listWidth,
 			     height: embossSizePX,
 			     backgroundRepeat: 'repeat-x' });
 	topRow.appendChild(topCenter);
-	var topRight = new Element('img', { src: '/images/BlueBar_tr.gif', alt: 'Top Right Corner' });
+	var topRight = new Element('img', {
+	    src: Raptor.getImagePath('BlueBar_tr.gif'),
+	    alt: 'Top Right Corner'
+	});
 	topRight.setStyle({ width: embossSizePX,
 			   height: embossSizePX });
 	topRow.appendChild(topRight);
@@ -103,17 +131,26 @@ Raptor = Object.extend(Raptor, {
 
 	var midRow = new Element('span');
 	imageSpan.appendChild(midRow);
-	var midLeft = new Element('img', { src: '/images/BlueBar_left.gif', alt: 'Mid Left Corner' });
+	var midLeft = new Element('img', {
+	    src: Raptor.getImagePath('BlueBar_left.gif'),
+	    alt: 'Mid Left Corner'
+	});
 	midLeft.setStyle({ width: embossSizePX,
 			   height: listHeight,
 			   backgroundRepeat: 'repeat-y' });
 	midRow.appendChild(midLeft);
-	var midCenter = new Element('img', { src: '/images/BlueBar_center.gif', alt: 'Mid Center' });
+	var midCenter = new Element('img', {
+	    src: Raptor.getImagePath('BlueBar_center.gif'),
+	    alt: 'Mid Center'
+	});
 	midCenter.setStyle({ width: listWidth,
 			     height: listHeight,
 			     backgroundRepeat: 'repeat' });
 	midRow.appendChild(midCenter);
-	var midRight = new Element('img', { src: '/images/BlueBar_right.gif', alt: 'Mid Right Corner' });
+	var midRight = new Element('img', {
+	    src: Raptor.getImagePath('BlueBar_right.gif'),
+	    alt: 'Mid Right Corner'
+	});
 	midRight.setStyle({ width: embossSizePX,
 			    height: listHeight,
 			    backgroundRepeat: 'repeat-y' });
@@ -122,16 +159,25 @@ Raptor = Object.extend(Raptor, {
 
 	var botRow = new Element('span');
 	imageSpan.appendChild(botRow);
-	var botLeft = new Element('img', { src: '/images/BlueBar_bl.gif', alt: 'Bot Left Corner' });
+	var botLeft = new Element('img', {
+	    src: Raptor.getImagePath('BlueBar_bl.gif'),
+	    alt: 'Bot Left Corner'
+	});
 	botLeft.setStyle({ width: embossSizePX,
 			   height: embossSizePX });
 	botRow.appendChild(botLeft);
-	var botCenter = new Element('img', { src: '/images/BlueBar_bot.gif', alt: 'Bot Center' });
+	var botCenter = new Element('img', {
+	    src: Raptor.getImagePath('BlueBar_bot.gif'),
+	    alt: 'Bot Center'
+	});
 	botCenter.setStyle({ width: listWidth,
 			     height: embossSizePX,
 			     backgroundRepeat: 'repeat-x' });
 	botRow.appendChild(botCenter);
-	var botRight = new Element('img', { src: '/images/BlueBar_br.gif', alt: 'Bot Right Corner' });
+	var botRight = new Element('img', {
+	    src: Raptor.getImagePath('BlueBar_br.gif'),
+	    alt: 'Bot Right Corner'
+	});
 	botRight.setStyle({ width: embossSizePX,
 			    height: embossSizePX });
 	botRow.appendChild(botRight);
