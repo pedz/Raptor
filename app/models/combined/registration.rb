@@ -27,7 +27,7 @@ module Combined
         @cached.last_all_fetch = Time.now
         @cached.last_day_fetch = Time.now
         @cached.save!
-      elsif @cached.last_day_fetch.nil? || @cached.last_day_fetch < 30.minutes.ago
+      elsif @cached.last_day_fetch.nil? || @cached.last_day_fetch < 10.minutes.ago
         logger.debug("Fetching days PSAR")
         search_hash = {
           :signon2 => @cached.psar_number,

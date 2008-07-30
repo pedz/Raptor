@@ -7,5 +7,6 @@ module Cached
     belongs_to :registration, :class_name => "Cached::Registration"
     # There is also a belongs_to for APARs but it is not used in our
     # area so it is not hooked up yet.
+    named_scope :today, lambda { { :conditions => { :psar_system_date => Time.now.strftime('%y%m%d') } } }
   end
 end

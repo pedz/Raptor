@@ -6,7 +6,7 @@ module Retain
     DISP_LIST = [
                  :call_button, :link_etc, :pri_sev, :p_s_b,
                  :biggem,
-                 :age, :jeff, :next_ct, :ct
+                 :age, :jeff, :next_ct, :ct, :psar_time
                 ]
 
     HELP_TEXT = <<-EOF
@@ -25,16 +25,47 @@ module Retain
       end
     end
 
+    def qs_show_time(time)
+      h, m = time.divmod(60)
+      sprintf("%02d:%02d", h, m)
+    end
+
+    def sum_psar_time(psars)
+      psars.inject(0) { |sum, psar| sum += psar.chargeable_time_hex }
+    end
+
     def display_qs_body(binding)
+      total_time = @todays_psars.inject(0) { |sum, psar_thing|
+        sum += sum_psar_time(psar_thing[1])
+      }
       @queue.calls.each_with_index do |call, index|
         tr binding, :class => call_class(call) + " pmr-row" do |binding|
           DISP_LIST.map { |sym| self.send sym, binding, false, call, index }.join("\n")
         end
       end
+      other_time = @todays_psars.inject(0) { |sum, psar_thing|
+        sum += sum_psar_time(psar_thing[1])
+      }
+      tr binding do |binding|
+        td binding, :colspan => DISP_LIST.length - 1, :class => 'other-time' do |binding|
+          concat("Other PMRs", binding)
+        end
+        td binding do |binding|
+          concat(qs_show_time(other_time), binding)
+        end
+      end
+      tr binding do |binding|
+        td binding, :colspan => DISP_LIST.length - 1, :class => 'total-time' do |binding|
+          concat("Day's Total", binding)
+        end
+        td binding do |binding|
+          concat(qs_show_time(total_time), binding)
+        end
+      end
     end
 
     private
-    
+
     BIGGEM_COLUMNS = [
                       [ :customer, :owner, :resolver, :next_queue ],
                       [ :comments, :call_update_field ],
@@ -78,6 +109,24 @@ module Retain
               end
             end
           end
+        end
+      end
+    end
+    
+    def psar_time(binding, header, call, index)
+      if header
+        th binding do |binding|
+          concat("Time", binding)
+        end
+      else
+        td binding, :class => 'colon-time' do |binding|
+          pmr_id = call.pmr.id
+          if psars = @todays_psars.delete(pmr_id)
+            pmr_time = sum_psar_time(psars)
+          else
+            pmr_time = 0
+          end
+          concat(qs_show_time(pmr_time), binding)
         end
       end
     end

@@ -66,7 +66,7 @@ module Combined
     def pbc
       (problem + ',' + branch + ',' + country).upcase
     end
-    
+
     private
 
     def load

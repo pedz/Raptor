@@ -10,6 +10,7 @@ module Cached
     belongs_to :primary_call, :class_name => "Cached::Call", :foreign_key => "primary"
     belongs_to :next_center,  :class_name => "Cached::Center"
     belongs_to :next_queue,   :class_name => "Cached::Queue"
+    has_many   :psars,        :class_name => "Cached::Psar"
     has_many(:scratch_pad_lines,
              :conditions => "line_type = #{Cached::TextLine::LineTypes::SCRATCH_PAD}",
              :class_name => "Cached::TextLine",

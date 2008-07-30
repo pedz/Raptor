@@ -122,3 +122,11 @@ div.links a:hover .popup {
 .pick-list-item:hover {
     background-color: #ffb;
 }
+
+td.other-time {
+    text-align: right;
+}
+
+td.total-time {
+    text-align: right;
+}

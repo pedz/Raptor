@@ -1,6 +1,7 @@
 module Retain
   class QsController < RetainController
     def show
+      @todays_psars = signon_user.psars.today.group_by(&:pmr_id)
       if @queue = Combined::Queue.from_param!(params[:id])
         unless @refresh_time.nil?
           @queue.mark_cache_invalid

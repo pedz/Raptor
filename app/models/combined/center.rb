@@ -14,10 +14,6 @@ module Combined
       { :center => words[0] }
     end
 
-    def self.param_to_options(param)
-      words_to_options(param.split(/,/))
-    end
-
     # Param is center.  Raises CenterNotFound if center is not in
     # database or Retain.
     def self.from_param!(param)

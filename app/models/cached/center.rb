@@ -5,6 +5,7 @@ module Cached
     has_many :customers,        :class_name => "Cached::Customer"
     has_many :queues,           :class_name => "Cached::Queue"
     has_many :next_center_pmrs, :class_name => "Cached::Pmr", :foreign_key => "next_center_id"
+    has_many :psars,            :class_name => "Cached::Psar"
     has_many(:software_registrations,
              :class_name => "Cached::Registration",
              :foreign_key => "software_center_id",
