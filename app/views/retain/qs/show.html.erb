@@ -8,12 +8,8 @@
   <div class="smaller">
     <span id="message-area"></span>
     <table class='sortable' style='font-family : courier, monospace'>
-      <thead>
-	<% display_qs_headers(binding) %>
-      </thead>
-      <tbody>
-	<% display_qs_body(binding) %>
-      </tbody>
+      <% display_qs_headers(binding) %>
+      <% display_qs_body(binding) %>
     </table>
   </div>
 <% end %>

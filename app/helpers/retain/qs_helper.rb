@@ -19,9 +19,11 @@ module Retain
 
     # The "1" style of header and body is the original version
     def display_qs_headers(binding)
-      concat(HELP_TEXT, binding)
-      tr binding do |binding|
-        DISP_LIST.map { |sym| self.send sym, binding, true, nil, nil }.join("\n")
+      thead binding do |binding|
+        concat(HELP_TEXT, binding)
+        tr binding do |binding|
+          DISP_LIST.map { |sym| self.send sym, binding, true, nil, nil }.join("\n")
+        end
       end
     end
 
@@ -38,28 +40,32 @@ module Retain
       total_time = @todays_psars.inject(0) { |sum, psar_thing|
         sum += sum_psar_time(psar_thing[1])
       }
-      @queue.calls.each_with_index do |call, index|
-        tr binding, :class => call_class(call) + " pmr-row" do |binding|
-          DISP_LIST.map { |sym| self.send sym, binding, false, call, index }.join("\n")
+      tbody binding do |binding|
+        @queue.calls.each_with_index do |call, index|
+          tr binding, :class => call_class(call) + " pmr-row" do |binding|
+            DISP_LIST.map { |sym| self.send sym, binding, false, call, index }.join("\n")
+          end
         end
       end
       other_time = @todays_psars.inject(0) { |sum, psar_thing|
         sum += sum_psar_time(psar_thing[1])
       }
-      tr binding do |binding|
-        td binding, :colspan => DISP_LIST.length - 1, :class => 'other-time' do |binding|
-          concat("Other PMRs", binding)
+      tfoot binding do |binding|
+        tr binding do |binding|
+          td binding, :colspan => DISP_LIST.length - 1, :class => 'other-time' do |binding|
+            concat("Other PMRs", binding)
+          end
+          td binding do |binding|
+            concat(qs_show_time(other_time), binding)
+          end
         end
-        td binding do |binding|
-          concat(qs_show_time(other_time), binding)
-        end
-      end
-      tr binding do |binding|
-        td binding, :colspan => DISP_LIST.length - 1, :class => 'total-time' do |binding|
-          concat("Day's Total", binding)
-        end
-        td binding do |binding|
-          concat(qs_show_time(total_time), binding)
+        tr binding do |binding|
+          td binding, :colspan => DISP_LIST.length - 1, :class => 'total-time' do |binding|
+            concat("Day's Total", binding)
+          end
+          td binding do |binding|
+            concat(qs_show_time(total_time), binding)
+          end
         end
       end
     end
@@ -712,7 +718,7 @@ module Retain
       end
     end
 
-    [ :tr, :th, :td, :span, :div, :a, :table, :thead, :tbody, :tfooter ].each do |sym|
+    [ :tr, :th, :td, :span, :div, :a, :table, :thead, :tbody, :tfoot ].each do |sym|
       eval("def #{sym}(binding, hash = { })
               @nesting ||= 0
               padding = \" \" * @nesting
