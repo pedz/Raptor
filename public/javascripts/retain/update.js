@@ -82,7 +82,7 @@ Raptor.sendEmail = function(event) {
     var name = settings.name;
     var textField = this.next('.call-update-newtxt');
     var text = textField.getValue().escapeHTML().gsub('\n', '%0A');
-    href = "mailto:" + mail_addr + "?subject=" + subject + "&body=Dear " + name + ':%0A%0A' + text;
+    var href = "mailto:" + mail_addr + "?subject=" + subject + "&body=Dear " + name + ':%0A%0A' + text;
     Raptor.loadPage(href);
 };
 
