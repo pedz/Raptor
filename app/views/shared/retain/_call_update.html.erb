@@ -14,7 +14,7 @@
           Close
 <%      end %>
 <%=     tag("br") %>
-<%=     content_tag :button, "Send Email", :class => 'send-email-button' %>
+<%=     send_mail_button(call_update) %>
 <%=     cu.check_box :do_ct, html_tag(call_update, "do-ct") %>CT
 <%      content_tag :span, html_tag(call_update, 'requeue-span') do -%>
           New Queue

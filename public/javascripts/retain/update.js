@@ -76,11 +76,13 @@ Raptor.redrawUpdateCheckBox = function(ele) {
 
 Raptor.sendEmail = function(event) {
     event.stop();
-    var customer = this.up('.nested-table').down('.customer');
-    var href = customer.down('a').readAttribute('href');
+    var settings = pageSettings[this.id];
+    var mail_addr = settings.mail_addr;
+    var subject = settings.subject;
+    var name = settings.name;
     var textField = this.next('.call-update-newtxt');
     var text = textField.getValue().escapeHTML().gsub('\n', '%0A');
-    href = href + "&body=" + text;
+    href = "mailto:" + mail_addr + "?subject=" + subject + "&body=Dear " + name + ':%0A%0A' + text;
     Raptor.loadPage(href);
 };
 
