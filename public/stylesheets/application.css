@@ -27,3 +27,11 @@ td.ret-time { text-align: right; }
     color: black;
     background-color: red;
 }
+
+.click-to-edit-button {
+    border: 3px outset grey;
+}
+
+.click-to-edit-button:hover {
+    cursor: pointer;
+}

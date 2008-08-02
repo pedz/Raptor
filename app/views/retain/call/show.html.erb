@@ -32,41 +32,13 @@
       </td>
     </tr>
     <tr>
-      <td>
-	<span id='owner' class='field-left'>
-	  <span id='owner-header' class='field-header'>
-	    Owner
-	  </span>
-	  <span id='owner-spec' class='field'>
-	    <%= h @pmr.owner.name %>
-	    <span class='inplace-edit'
-		  href='<%= alter_combined_call_path(@call) %>'
-		  value='owner_signon'>
-	      <%= h @pmr.owner.signon %>
-	    </span>
-	  </span>
-	</span>
-      </td>
+      <% display_pmr_owner(binding, @call) %>
       <td>
 	<span id='customer-name' class='field field-center'>
 	  <%= h @call.nls_customer_name %>
 	</span>
       </td>
-      <td>
-	<span id='resolver' class='field-right'>
-	  <span id='resolver-header' class='field-header'>
-	    Resolver
-	  </span>
-	  <span id='resolver-spec' class='field'>
-	    <%= h @pmr.resolver.name %>
-	    <span class='inplace-edit'
-		  href='<%= alter_combined_call_path(@call) %>'
-		  value='resolver_signon'>
-	      <%= h @pmr.resolver.signon %>
-	    </span>
-	  </span>
-	</span>
-      </td>
+      <% display_pmr_resolver(binding, @call) %>
     </tr>
     <tr>
       <td>

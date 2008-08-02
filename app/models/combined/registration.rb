@@ -65,6 +65,7 @@ module Combined
         # Touch the name to force a fetch
         retain_registration.name
       rescue Retain::SdiReaderError => err
+        logger.debug("Can not get to registration")
         raise err unless err.rc == 251
         cache_optins = { }
       else

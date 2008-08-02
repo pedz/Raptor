@@ -104,8 +104,13 @@ module Combined
       end
       attr_reader :db_keys
 
-      # db_constants are fields which will never change once they have
-      # been filled in.  So, we do not ask if the cache is valid.
+      # db_constants are fields which will never change (or rarely
+      # change) once they have been filled in.  So, we do not ask if
+      # the cache is valid.  BUT... in the case of values which are
+      # not present like the software center for a registration, we do
+      # not want to constantly fetch the registration just because the
+      # software center is null.  So, if the cache is valid, we do not
+      # fetch it.
       def set_db_constants(*args)
         a = [ *args ]
         logger.debug("CMB: db_constants for #{self} set to #{a.inspect}")
@@ -113,7 +118,8 @@ module Combined
           if db_fields.include?(name)
             logger.debug("CMB: define #{name} as constant field")
             class_eval("def #{name}
-                    unless !(temp = @cached.#{name}).nil?
+                    logger.debug(\"CMB: #{name} called as constant field for \#{self.to_s}\")
+                    unless !(temp = @cached.#{name}).nil? || cache_valid?
                       call_load
                       temp = @cached.#{name}
                     end
@@ -123,7 +129,8 @@ module Combined
           if db_associations.include?(name)
             logger.debug("CMB: define #{name} as constant association")
             class_eval("def #{name}
-                    unless !(temp = @cached.#{name}).nil?
+                    logger.debug(\"CMB: #{name} called as constant association for \#{self.to_s}\")
+                    unless !(temp = @cached.#{name}).nil? || cache_valid?
                       call_load
                       temp = @cached.#{name}
                     end
@@ -277,11 +284,18 @@ module Combined
         logger.debug("CMB: #{self.to_s} cache_valid?: return false: updated_at is nil")
         return false
       end
-      
+
       # If data type says cache never expires then we are good to go
       if (expire = expire_time) == :never
         logger.debug("CMB: #{self.to_s} cache_valid?: return true: expire set to :never")
         return true
+      end
+      
+      # If the udpated at is equal to the creted at, that might mean
+      # that we have never really fetched the whole object.
+      if updated_at == created_at
+        logger.debug("CMB: #{self.to_s} cache_valid?: return false: updated_at == created_at")
+        return false
       end
       
       # See if expire_time is a symbol pointing to a method

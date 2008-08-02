@@ -53,55 +53,6 @@ Raptor.rowCallUpdateFormHide = function () {
     });
 };
 
-Raptor.addAuthenticityToken = function(ele, form) {
-    var hdn = document.createElement('input');
-    hdn.type = 'hidden';
-    hdn.name = 'authenticity_token';
-    hdn.value = pageSettings.authenticityToken;
-    form.appendChild(hdn);
-};
-
-Raptor.hookupInPlaceCollectionEditor = function() {
-    var id = this.id;
-    var p = pageSettings[id];
-    var options = p.options;
-    options.onFormCustomization = Raptor.addAuthenticityToken;
-    var url = p.url;
-    if (this.ipe) {
-	this.ipe.destroy();
-    }
-    this.ipe = new Ajax.InPlaceCollectionEditor(this,
-						url,
-						options);
-};
-
-Raptor.unhookInPlaceCollectionEditor = function() {
-    if (this.ipe) {
-	this.ipe.destroy();
-    }
-    this.ipe = null;
-};
-
-Raptor.hookupInPlaceEditor = function() {
-    var id = this.id;
-    var p = pageSettings[id];
-    var options = { onFormCustomization: Raptor.addAuthenticityToken };
-    var url = p.url;
-    if (this.ipe) {
-	this.ipe.destroy();
-    }
-    this.ipe = new Ajax.InPlaceEditor(this,
-				      url,
-				      options);
-};
-
-Raptor.unhookInPlaceEditor = function() {
-    if (this.ipe) {
-	this.ipe.destroy();
-    }
-    this.ipe = null;
-};
-
 Raptor.myDateSort = function(a, b) {
     var toMonth = function(m) {
 	var months = [ "Jan", "Feb", "Mar", "Arp", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
@@ -167,18 +118,6 @@ Raptor.myDateSort = function(a, b) {
 SortableTable.addSortType("my-date", Raptor.myDateSort);
 
 document.observe('dom:loaded', function() {
-    $$('.collection-edit-name').each(function (ele) {
-	ele.hookup = Raptor.hookupInPlaceCollectionEditor.bind(ele);
-	ele.unhook = Raptor.unhookInPlaceCollectionEditor.bind(ele);
-	ele.hookup();
-    });
-
-    $$('.edit-name').each(function (ele) {
-	ele.hookup = Raptor.hookupInPlaceEditor.bind(ele);
-	ele.unhook = Raptor.unhookInPlaceEditor.bind(ele);
-	ele.hookup();
-    });
-
     $$('.pmr-row').each(function (ele) {
 	ele.updateFormShow = Raptor.rowCallUpdateFormShow.bind(ele);
 	ele.updateFormHide = Raptor.rowCallUpdateFormHide.bind(ele);

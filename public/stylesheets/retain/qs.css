@@ -97,15 +97,7 @@ div.links a:hover .popup {
     text-decoration: none;
 }
 
-.click-to-edit:hover {
-    cursor: pointer;
-}
-
-.click-to-edit-button {
-    border: 3px outset grey;
-}
-
-.click-to-edit-button:hover {
+.edit-name:hover {
     cursor: pointer;
 }
 

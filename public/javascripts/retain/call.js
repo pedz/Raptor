@@ -97,16 +97,16 @@ document.observe('dom:loaded', function() {
     // The elements of class inplace-edit need to be set up.  This may
     // not be complete and working yet but preserves the previous code
     // for now.
-    $$('.inplace-edit').each(function (ele) {
-	var url = ele.readAttribute('href');
-	var v = ele.readAttribute('value');
-	var ajaxOptions = { method: 'post' };
-	var options = {
-	    callback: function(form, value) { return v + '=' + escape(value) },
-	    ajaxOptions: ajaxOptions
-	};
-	new Ajax.InPlaceEditor(ele, url, options);
-    });
+    // $$('.inplace-edit').each(function (ele) {
+    //     var url = ele.readAttribute('href');
+    //     var v = ele.readAttribute('value');
+    //     var ajaxOptions = { method: 'post' };
+    //     var options = {
+    //         callback: function(form, value) { return v + '=' + escape(value) },
+    //         ajaxOptions: ajaxOptions
+    //     };
+    //     new Ajax.InPlaceEditor(ele, url, options);
+    // });
 
     $('left-tab').observe('mouseover', function (event) {
 	// console.log("left-tab mouseoever");

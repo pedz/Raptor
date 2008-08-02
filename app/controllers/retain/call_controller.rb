@@ -335,38 +335,24 @@ module Retain
           case field
           when :next_queue
             pmr.mark_as_dirty
-            css_class, title, editable = @call.validate_next_queue(signon_user)
-            render(:partial => "shared/retain/fixed_width_span",
-                   :locals => {
-                     :css_class => css_class,
-                     :title => title,
-                     :name => pmr.next_queue.nil? ? "blank" : pmr.next_queue.to_param,
-                     :width => (Retain::Fields.field_width(:next_queue) + 1 # +1 for commma
-                                Retain::Fields.field_width(:h_or_s) + 1 +
-                                Retain::Fields.field_width(:next_center))
-                   })
+            hash = @call.validate_next_queue(signon_user)
+            self.extend Retain::RetainHelper
+            fixed_width_span(hash)
             return
-
-            new_text = pmr.next_queue.to_param
-            replace_text = "<span class='#{css_class}' title='#{title + ":Click to Edit"}'>#{new_text}</span>"
 
           when :pmr_owner_id
             pmr.mark_as_dirty
-            css_class, title, editable = @call.validate_owner(signon_user)
-            render(:partial => "shared/retain/fixed_width_span",
-                   :locals => {
-                     :css_class => css_class,
-                     :title => title,
-                     :name => pmr.owner.name,
-                     :width => Retain::Fields.field_width(:pmr_owner_name)
-                   })
+            hash = @call.validate_owner(signon_user)
+            self.extend Retain::RetainHelper
+            fixed_width_span(hash)
             return
 
           when :pmr_resolver_id
             pmr.mark_as_dirty
-            new_text = pmr.resolver.name
-            css_class, title, editable = @call.validate_resolver(signon_user)
-            replace_text = "<span class='#{css_class}' title='#{title + ":Click to Edit"}'>#{new_text}</span>"
+            hash = @call.validate_resolver(signon_user)
+            self.extend Retain::RetainHelper
+            fixed_width_span(hash)
+            return
 
           when :comments
             @call.mark_as_dirty

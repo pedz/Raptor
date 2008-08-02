@@ -331,92 +331,44 @@ module Retain
 
     def owner(binding, header, call, index)
       logger.debug("QS: owner #{call.nil? ? "header" : call.to_param}")
-      width = Retain::Fields.field_width(:pmr_owner_name)
       if header
         th binding, :class => 'owner not-editable' do |binding|
+          width = Retain::Fields.field_width(:pmr_owner_name)
           concat("Owner".center(width).gsub(/ /, '&nbsp;'), binding)
         end
       else
-        retid = Logon.instance.signon
-        pmr = call.pmr
-        css_class, title, editable = call.validate_owner(signon_user)
         td binding, :class => "owner" do |binding|
-          if editable
-            add_page_setting("pmr_owner_id_#{call.to_id}",
-                             { 
-                               :url => alter_combined_call_path(call),
-                               :options => {
-                                 :loadCollectionURL => owner_list_combined_registration_path(retid)
-                               }
-                             })
-            span(binding,
-                 :id => "pmr_owner_id_#{call.to_id}",
-                 :class => "collection-edit-name click-to-edit-button") do |binding|
-              concat(render(:partial => "shared/retain/fixed_width_span",
-                            :locals => {
-                              :css_class => css_class,
-                              :title => title,
-                              :name => pmr.owner.name,
-                              :width => width
-                            }),
-                     binding)
-            end
-          else
-            concat(render(:partial => "shared/retain/fixed_width_span",
-                          :locals => {
-                            :css_class => css_class + " not-editable",
-                            :title => title,
-                            :name => pmr.owner.name,
-                            :width => width
-                          }),
-                   binding)
-          end
+          common_display_pmr_owner(binding, call)
         end
       end
     end
 
     def resolver(binding, header, call, index)
       logger.debug("QS: resolver #{call.nil? ? "header" : call.to_param}")
-      width = Retain::Fields.field_width(:pmr_resolver_name)
       if header
         th binding, :class => 'resolver not-editable' do |binding|
+          width = Retain::Fields.field_width(:pmr_resolver_name)
           concat("Resolver".center(width).gsub(/ /, '&nbsp;'), binding)
         end
       else
-        retid = Logon.instance.signon
-        pmr = call.pmr
-        css_class, title, editable = call.validate_resolver(signon_user)
         td binding, :class => "resolver" do |binding|
-          if editable
-            add_page_setting("pmr_resolver_id_#{call.to_id}",
-                             {
-                               :url => alter_combined_call_path(call),
-                               :options => {
-                                 :loadCollectionURL => owner_list_combined_registration_path(retid)
-                               }
-                             })
-            span(binding,
-                 :id => "pmr_resolver_id_#{call.to_id}",
-                 :class => "collection-edit-name click-to-edit-button") do
-              concat(render(:partial => "shared/retain/fixed_width_span",
-                            :locals => {
-                              :css_class => css_class,
-                              :title => title,
-                              :name => pmr.resolver.name,
-                              :width => width
-                            }),
-                     binding)
-            end
-          else
-              concat(render(:partial => "shared/retain/fixed_width_span",
-                            :locals => {
-                              :css_class => css_class + " not-editable",
-                              :title => title,
-                              :name => pmr.resolver.name,
-                              :width => width
-                            }),
-                     binding)
-          end
+          common_display_pmr_resolver(binding, call)
+        end
+      end
+    end
+    
+    def next_queue(binding, header, call, index)
+      logger.debug("QS: next_queue #{call.nil? ? "header" : call.to_param}")
+      if header
+        th binding, :class => "next-queue not-editable" do |binding|
+          width = (Retain::Fields.field_width(:next_queue) + 1 # +1 for commma
+                   Retain::Fields.field_width(:h_or_s) + 1 +
+                   Retain::Fields.field_width(:next_center))
+          concat("Next Queue".center(width).gsub(/ /, '&nbsp;'), binding)
+        end
+      else
+        td binding, :class => "next-queue" do |binding|
+          common_display_pmr_next_queue(binding, call)
         end
       end
     end
@@ -440,54 +392,6 @@ module Retain
         td_class << " pri-sev"
         td binding, :title => td_title, :class => td_class do |binding|
           concat("#{p}/#{s}", binding)
-        end
-      end
-    end
-    
-    def next_queue(binding, header, call, index)
-      logger.debug("QS: next_queue #{call.nil? ? "header" : call.to_param}")
-      width = (Retain::Fields.field_width(:next_queue) + 1 # +1 for commma
-               Retain::Fields.field_width(:h_or_s) + 1 +
-               Retain::Fields.field_width(:next_center))
-      if header
-        th binding, :class => "next-queue not-editable" do |binding|
-          concat("Next Queue".center(width).gsub(/ /, '&nbsp;'), binding)
-        end
-      else
-        pmr = call.pmr
-        nq_text = pmr.next_queue.nil? ? "" : pmr.next_queue.to_param
-        css_class, title, editable = call.validate_next_queue(signon_user)
-        td binding, :class => "next-queue" do |binding|
-          if editable
-            add_page_setting("next_queue_#{call.to_id}",
-                             {
-                               :url => alter_combined_call_path(call),
-                               :options => {
-                                 :loadCollectionURL => queue_list_combined_call_path(call)
-                               }
-                             })
-            span(binding,
-                 :id => "next_queue_#{call.to_id}",
-                 :class => "collection-edit-name click-to-edit-button") do
-              concat(render(:partial => "shared/retain/fixed_width_span",
-                            :locals => {
-                              :css_class => css_class,
-                              :title => title,
-                              :name => nq_text,
-                              :width => width
-                            }),
-                     binding)
-            end
-          else
-            concat(render(:partial => "shared/retain/fixed_width_span",
-                          :locals => {
-                            :css_class => css_class + " not-editable",
-                            :title => title,
-                            :name => nq_text,
-                            :width => width
-                          }),
-                   binding)
-          end
         end
       end
     end

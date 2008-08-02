@@ -4,6 +4,18 @@
 //
 
 document.observe('dom:loaded', function() {
+    $$('.collection-edit-name').each(function (ele) {
+	ele.hookup = Raptor.hookupInPlaceCollectionEditor.bind(ele);
+	ele.unhook = Raptor.unhookInPlaceCollectionEditor.bind(ele);
+	ele.hookup();
+    });
+
+    $$('.edit-name').each(function (ele) {
+	ele.hookup = Raptor.hookupInPlaceEditor.bind(ele);
+	ele.unhook = Raptor.unhookInPlaceEditor.bind(ele);
+	ele.hookup();
+    });
+
     if (Raptor.updateLoadHook) {
 	Raptor.updateLoadHook();
     }

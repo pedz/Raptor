@@ -58,5 +58,23 @@ module Retain
                binding)
       end
     end
+
+    def display_pmr_owner(binding, call)
+      td binding, :class => "owner" do |binding|
+        span binding, :class => "field-header" do |binding|
+          concat("Owner:", binding)
+        end
+        common_display_pmr_owner(binding, call)
+      end
+    end
+
+    def display_pmr_resolver(binding, call)
+      td binding, :class => "resolver" do |binding|
+        span binding, :class => "field-header" do |binding|
+          concat("Resolver:", binding)
+        end
+        common_display_pmr_resolver(binding, call)
+      end
+    end
   end
 end

@@ -3,10 +3,10 @@
 //
 
 var Raptor = {
-    left_is_open: false,
-    left_stays_open: false,
-    right_is_open: false,
-    right_stays_open: false,
+    left_is_open : false,
+    left_stays_open : false,
+    right_is_open : false,
+    right_stays_open : false,
 
     // Appends a text field to element and arranges for that text
     // field to have focus when the page is first loaded.  Text typed
@@ -137,5 +137,54 @@ var Raptor = {
 	if (!Raptor.right_stays_open && Raptor.right_is_open) {
 	    $('right').hide();
 	}
+    },
+
+    addAuthenticityToken : function(ele, form) {
+	var hdn = document.createElement('input');
+	hdn.type = 'hidden';
+	hdn.name = 'authenticity_token';
+	hdn.value = pageSettings.authenticityToken;
+	form.appendChild(hdn);
+    },
+
+    hookupInPlaceCollectionEditor : function() {
+	var id = this.id;
+	var p = pageSettings[id];
+	var options = p.options;
+	options.onFormCustomization = Raptor.addAuthenticityToken;
+	var url = p.url;
+	if (this.ipe) {
+	    this.ipe.destroy();
+	}
+	this.ipe = new Ajax.InPlaceCollectionEditor(this,
+						    url,
+						    options);
+    },
+
+    unhookInPlaceCollectionEditor : function() {
+	if (this.ipe) {
+	    this.ipe.destroy();
+	}
+	this.ipe = null;
+    },
+
+    hookupInPlaceEditor : function() {
+	var id = this.id;
+	var p = pageSettings[id];
+	var options = { onFormCustomization: Raptor.addAuthenticityToken };
+	var url = p.url;
+	if (this.ipe) {
+	    this.ipe.destroy();
+	}
+	this.ipe = new Ajax.InPlaceEditor(this,
+					  url,
+					  options);
+    },
+
+    unhookInPlaceEditor : function() {
+	if (this.ipe) {
+	    this.ipe.destroy();
+	}
+	this.ipe = null;
     }
 };
