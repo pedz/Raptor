@@ -136,7 +136,8 @@ module Combined
       else
         @combined_psar = Combined::Psar.find(params[:id])
       end
-      @combined_psar.destroy
+      value = @combined_psar.destroy
+      logger.debug("Value is #{value}")
       
       respond_to do |format|
         format.html { redirect_to(combined_psars_url) }

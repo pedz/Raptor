@@ -177,7 +177,6 @@ module Retain
       
     def connect(h_or_s)
       @connection = Connection.new(h_or_s)
-      logger.debug("connect is of type #{@connection.class}")
       @connection.connect
     end
 
@@ -217,7 +216,7 @@ module Retain
     def scan_fields(fields, s, six_byte_headers = true)
       logger.debug("RTN: start scan_fields")
       de32 = Array.new
-      until s.nil?
+      until s.nil? || s.length == 0
         len = s[0...2].ret2ushort
         ele = s[2...4].ret2ushort
         if six_byte_headers

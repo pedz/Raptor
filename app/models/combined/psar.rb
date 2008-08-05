@@ -51,6 +51,11 @@ module Combined
     
     def load
       logger.debug("CMB: load for #{self.to_s}")
+      if @cached.psar_mailed_flag == "M"
+        logger.debug("CMB: skipping load for #{self.to_s} -- mailed flag set to M")
+        return
+      end
+
       # Pull the fields we need from the cached record into an options_hash
       options_hash = { :psar_file_and_symbol => @cached.psar_file_and_symbol }
 
@@ -67,14 +72,31 @@ module Combined
       rescue Retain::SdiReaderError => err
         # If the err.rc is 254, it means that the symbol was not
         # found.  If psar_mailed_flag is set but not set to "M", then
-        # we have this record in our cache but it has expired from
-        # retain before we retrieved it in the "mailed" state.  In
-        # that case, we flip the psar_mailed_flag to M, save the
-        # record, and go home.
-        if err.rc == 254 && @cached && @cached.psar_mailed_flag != nil &&
-            @cached.psar_mailed_flag != "M"
-          @cached.psar_mailed_flag = "M"
-          @cached.save!
+        # one of two things happened.  If the PSAR is old, retain
+        # probably archived it and its no longer in Retain.  But if
+        # the PSAR is new, someone may have deleted the PSAR.  So, we
+        # test the psar_system_date which is the date that the PSAR
+        # was created.  If the system date is before the previous
+        # saturday, we assume Retain archived the PSAR.  In that case,
+        # we flip the mailed flag to 'M' and keep the PSAR.  This
+        # should be a very rare case.
+        # Otherwise, we assume that someone deleted the PSAR and so we
+        # delete it from the database.
+        logger.debug("mail flag is #{@cached.psar_mailed_flag}")
+        if err.rc == 254 && @cached && @cached.psar_mailed_flag != nil
+          # The purge date is the previous Saturday.
+          purge_date = Time.now
+          purge_date -= 1.day until purge_date.wday == 6
+          purge_date -= 1.week
+          purge_string = purge_date.strftime("%y%m%d")
+          if @cached.psar_system_date < purge_string
+            logger.debug("Converting PSAR to mailed")
+            @cached.psar_mailed_flag = "M"
+            @cached.save!
+          else
+            logger.debug("Destroying PSAR")
+            @cached.destroy
+          end
           return
         end
         raise err

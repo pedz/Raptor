@@ -24,7 +24,7 @@ module Retain
 
     def initialize(h_or_s)
       super()
-      logger.debug("here #{h_or_s}")
+      logger.debug("RTN: Connection initialize h_or_s is '#{h_or_s}'")
       @@count += 1
       @socket = Socket.new( AF_INET, SOCK_STREAM, 0 )
       @h_or_s = h_or_s

@@ -10,6 +10,18 @@ module Retain
       @base_obj = base_obj
     end
 
+    def sr
+      if md = /SR([0-9][0-9][0-9])EX([0-9][0-9][0-9])/.match(self.message)
+        md[1].to_i
+      end
+    end
+
+    def ex
+      if md = /SR([0-9][0-9][0-9])EX([0-9][0-9][0-9])/.match(self.message)
+        md[2].to_i
+      end
+    end
+
     def rc
       @base_obj.rc
     end
