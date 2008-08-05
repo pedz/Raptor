@@ -221,7 +221,7 @@ module Combined
         :ppg => pmr.ppg
       }
       logger.debug("CMB: primary_options = #{primary_options.inspect}")
-      center = Cached::Center.from_options(primary_options)
+      center = Cached::Center.create_from_options(primary_options)
       if center
         logger.debug("CMB: got center")
         # We have to save the center if it is a new record.  This is
@@ -232,16 +232,14 @@ module Combined
         # are new records, things get confused.
         center.save if center.new_record?
         @cached.center = center
-        queue = center.queues.from_options(primary_options)
+        queue = center.queues.create_from_options(primary_options)
         if queue
           logger.debug("CMB: got queue")
           queue.save if queue.new_record?
           @cached.queue = queue
-          call = queue.calls.from_options(primary_options.merge({ :pmr_id => @cached.id }))
+          call = queue.calls.new_from_options(primary_options.merge({ :pmr_id => @cached.id }))
           if call
             logger.debug("CMB: got call")
-            # After chaning from_options to create instead of just
-            # initialize, this should never be true.
             if call.new_record?
               call.pmr = @cached
               call.save
