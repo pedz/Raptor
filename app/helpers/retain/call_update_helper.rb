@@ -33,5 +33,9 @@ module Retain
       end
       content_tag :button, text, hash
     end
+
+    def do_text_field(base, field, size, call_update)
+      base.text_field field, html_tag(call_update, field.to_s, :size => size, :maxlength => size)
+    end
   end
 end

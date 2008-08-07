@@ -19,7 +19,7 @@
 <%      content_tag :span, html_tag(call_update, 'requeue-span') do -%>
           New Queue
 <%        content_tag :span, :class => 'input-with-list' do -%>
-<%=         cu.text_field :new_queue, html_tag(call_update, "new-queue", :size => 12) %>
+<%=         do_text_field cu, :new_queue, 12, call_update %>
 <%          content_tag :span do -%>
 <%            call_update.call.pmr.visited_queues.each do |queue| -%>
 <%=             content_tag(:span, queue.to_param, :class => 'pick-list-item') + tag("br") %>
@@ -27,7 +27,7 @@
 <%          end -%>
 <%        end -%>
           New Priority
-<%=       cu.text_field :new_priority, html_tag(call_update, "new-priority", :size => 1) %>
+<%=       do_text_field cu, :new_priority, 1, call_update %>
 <%      end -%>
 <%=     tag("br") %>
 <%=     cu.text_area :newtxt, html_tag(call_update, "newtxt", :rows => 10, :cols => 72) %>
@@ -36,29 +36,26 @@
 <%      content_tag :span, html_tag(call_update, 'add-time-span') do -%>
 <%        cu.fields_for :psar_update, call_update.psar_update do |psar| -%>
 <%=         content_tag :label, "Service:", :for => id_for(call_update, "psar-service-code") %>
-            <%= psar.text_field(:psar_service_code,
-		               html_tag(call_update, "psar_service-code",
-                                        :size => 2, :maxlength => 2)) %>
+            <%= do_text_field psar, :psar_service_code, 2, call_update %>
             Action:
-	    <%= psar.text_field(:psar_action_code,
-		               html_tag(call_update, "psar_action_code",
-                                        :size => 2, :maxlength => 2)) %>
+	    <%= do_text_field psar, :psar_action_code, 2, call_update %>
             Cause:
-	    <%= psar.text_field(:psar_cause,
-		               html_tag(call_update, "psar_cause",
-                                        :size => 2, :maxlength => 2)) %>
+	    <%= do_text_field psar, :psar_cause, 2, call_update %>
             Solution:
-	    <%= psar.text_field(:psar_solution,
-		               html_tag(call_update, "psar_solution",
-		                        :size => 1, :maxlength => 1)) %>
+<%=         do_text_field psar, :psar_solution, 1, call_update %>
             Impact:
-	    <%= psar.text_field(:psar_impact,
-		               html_tag(call_update, "psar_impact",
-		                        :size => 1, :maxlength => 1)) %>
+<%=         do_text_field psar, :psar_impact, 1, call_update %>
 <%=         tag("br") %>
             Time <span style='text-decoration: line-through'>wasted</span> spent
-<%=         psar.text_field :hours, html_tag(call_update, "hours", :size => 2) %>Hours
-<%=         psar.text_field :minutes, html_tag(call_update, "minutes", :size => 2) %>Minutes
+<%=         do_text_field psar, :hours, 2, call_update %>Hours
+<%=         do_text_field psar, :minutes, 2, call_update %>Minutes
+<%=         tag("br") %>
+            Stop Time and Date:
+<%=         do_text_field psar, :stop_year, 4, call_update %>/<%=
+            do_text_field psar, :stop_month,2, call_update %>/<%=
+            do_text_field psar, :stop_day, 2, call_update %>
+<%=         do_text_field psar, :stop_hour, 2, call_update %>:<%=
+            do_text_field psar, :stop_minute, 2, call_update %>
 <%        end %>
 <%      end %>
 <%=     tag("br") %>

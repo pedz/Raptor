@@ -3,136 +3,46 @@
 <%= error_messages_for :combined_psar %>
 
 <% form_for(@combined_psar) do |f| %>
-  <p>
-    <b>Pmr</b><br />
-    <%= f.text_field :pmr_id %>
-  </p>
-
-  <p>
-    <b>Apar</b><br />
-    <%= f.text_field :apar_id %>
-  </p>
-
-  <p>
-    <b>Queue</b><br />
-    <%= f.text_field :queue_id %>
-  </p>
-
-  <p>
-    <b>Chargeable time hex</b><br />
-    <%= f.text_field :chargeable_time_hex %>
-  </p>
-
-  <p>
-    <b>Cpu serial number</b><br />
-    <%= f.text_field :cpu_serial_number %>
-  </p>
-
-  <p>
-    <b>Cpu type</b><br />
-    <%= f.text_field :cpu_type %>
-  </p>
-
-  <p>
-    <b>Minutes from gmt</b><br />
-    <%= f.text_field :minutes_from_gmt %>
-  </p>
-
-  <p>
-    <b>Psar action code</b><br />
-    <%= f.text_field :psar_action_code %>
-  </p>
-
-  <p>
-    <b>Psar activity date</b><br />
-    <%= f.text_field :psar_activity_date %>
-  </p>
-
-  <p>
-    <b>Psar activity stop time</b><br />
-    <%= f.text_field :psar_activity_stop_time %>
-  </p>
-
-  <p>
-    <b>Psar actual time</b><br />
-    <%= f.text_field :psar_actual_time %>
-  </p>
-
-  <p>
-    <b>Psar cause</b><br />
-    <%= f.text_field :psar_cause %>
-  </p>
-
-  <p>
-    <b>Psar chargeable src ind</b><br />
-    <%= f.text_field :psar_chargeable_src_ind %>
-  </p>
-
-  <p>
-    <b>Psar chargeable time</b><br />
-    <%= f.text_field :psar_chargeable_time %>
-  </p>
-
-  <p>
-    <b>Psar cia</b><br />
-    <%= f.text_field :psar_cia %>
-  </p>
-
-  <p>
-    <b>Psar fesn</b><br />
-    <%= f.text_field :psar_fesn %>
-  </p>
-
-  <p>
-    <b>Psar file and symbol</b><br />
-    <%= f.text_field :psar_file_and_symbol %>
-  </p>
-
-  <p>
-    <b>Psar impact</b><br />
-    <%= f.text_field :psar_impact %>
-  </p>
-
-  <p>
-    <b>Psar mailed flag</b><br />
-    <%= f.text_field :psar_mailed_flag %>
-  </p>
-
-  <p>
-    <b>Psar sequence number</b><br />
-    <%= f.text_field :psar_sequence_number %>
-  </p>
-
-  <p>
-    <b>Psar service code</b><br />
-    <%= f.text_field :psar_service_code %>
-  </p>
-
-  <p>
-    <b>Psar solution</b><br />
-    <%= f.text_field :psar_solution %>
-  </p>
-
-  <p>
-    <b>Psar stop date year</b><br />
-    <%= f.text_field :psar_stop_date_year %>
-  </p>
-
-  <p>
-    <b>Psar system date</b><br />
-    <%= f.text_field :psar_system_date %>
-  </p>
-
-  <p>
-    <b>Stop time moc</b><br />
-    <%= f.text_field :stop_time_moc %>
-  </p>
-
-  <p>
-    <b>Dirty</b><br />
-    <%= f.check_box :dirty %>
-  </p>
-
+  <table>
+    <tr>
+      <td><b>PMR</b></td><td><%= @combined_psar.pmr.to_param %></td>
+      <td><b>Service Code</b></td><td><%= f.text_field :psar_service_code, :size => 2, :maxlength => 2 %></td>
+      <td><b>Action Code</b></td><td><%= f.text_field :psar_action_code, :size => 2, :maxlength => 2 %></td>
+    </tr>
+    <tr>
+      <td><b>Cause</b></td><td><%= f.text_field :psar_cause, :size => 2, :maxlength => 2 %></td>
+      <td><b>Impact</b></td><td><%= f.text_field :psar_impact, :size => 1, :maxlength => 1 %></td>
+      <td><b>Solution</b></td><td><%= f.text_field :psar_solution, :size => 1, :maxlength => 1 %><br /></td>
+    </tr>
+    <tr>
+      <td><b>Actual Time (HHT)</b></td><td><%= f.text_field :psar_actual_time, :size => 3, :maxlength => 3 %></td>
+      <td><b>Chargeable Time (Minutes)</b></td><td><%= f.text_field :psar_chargeable_time, :size => 2, :maxlength => 2 %></td>
+      <td><b>Chargeable time hex</b></td><td><%= f.text_field :chargeable_time_hex, :size => 2, :maxlength => 2 %><br /></td>
+    </tr>
+    <tr>
+      <td><b>Cpu serial number</b></td><td><%= f.text_field :cpu_serial_number, :size => 7, :maxlength => 7 %></td>
+      <td><b>Cpu type</b></td><td><%= f.text_field :cpu_type, :size => 4, :maxlength => 4 %></td>
+      <td><b>Minutes from gmt</b></td><td><%= f.text_field :minutes_from_gmt, :size => 2, :maxlength => 2 %><br /></td>
+    </tr>
+    <tr>
+      <td><b>Psar activity date</b></td><td><%= f.text_field :psar_activity_date, :size => 4, :maxlength => 4 %></td>
+      <td><b>Psar activity stop time</b></td><td><%= f.text_field :psar_activity_stop_time, :size => 3, :maxlength => 3 %></td>
+      <td><b>Psar chargeable src ind</b></td><td><%= f.text_field :psar_chargeable_src_ind, :size => 1, :maxlength => 1 %><br /></td>
+    </tr>
+    <tr>
+      <td><b>Psar cia</b></td><td><%= f.text_field :psar_cia, :size => 1, :maxlength => 1 %></td><td><b>Psar file and symbol</b></td>
+      <td><%= f.text_field :psar_file_and_symbol, :size => 16, :maxlength => 16, :disabled => :disabled %><br /></td>
+      <td><b>Psar mailed flag</b></td><td><%= f.text_field :psar_mailed_flag, :size => 1, :maxlength => 1 %></td>
+    </tr>
+    <tr>
+      <td><b>Psar sequence number</b></td><td><%= f.text_field :psar_sequence_number, :size => 5, :maxlength => 5 %></td>
+      <td><b>Psar stop date year</b></td><td><%= f.text_field :psar_stop_date_year, :size => 2, :maxlength => 2 %><br /></td>
+      <td><b>Psar system date</b></td><td><%= f.text_field :psar_system_date, :size => 6, :maxlength => 6, :disabled => :disabled %></td>
+    </tr>
+    <tr>
+      <td><b>Stop time moc</b></td><td><%= f.text_field :stop_time_moc, :size => 4, :maxlength => 4 %></td>
+    </tr>
+  </table>
   <p>
     <%= f.submit "Update" %>
   </p>

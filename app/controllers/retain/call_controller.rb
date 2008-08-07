@@ -118,12 +118,8 @@ module Retain
           @pmr.mark_as_dirty
           
           if call_update[:add_time]
-            psar_options = call_update[:psar_update].symbolize_keys
+            psar_options = get_psar_options(call_update)
             psar_options.merge!(pmr_options)
-            hours = psar_options.delete(:hours).to_i
-            minutes = psar_options.delete(:minutes).to_i
-            psar_options[:psar_actual_time] = (hours * 10) + (minutes / 6).to_i
-            psar_options[:psar_chargeable_time] = hours * 256 + minutes
             psar = Retain::Psrc.new(psar_options)
             begin
               psar.sendit(Retain::Fields.new)
@@ -141,14 +137,7 @@ module Retain
           requeue_options = call_options.dup
           requeue_options[:addtxt_lines] = newtxt
           requeue_options[:operand] = '    '
-          if call_update[:add_time]
-            psar_options = call_update[:psar_update].symbolize_keys
-            hours = psar_options.delete(:hours).to_i
-            minutes = psar_options.delete(:minutes).to_i
-            psar_options[:psar_actual_time] = (hours * 10) + (minutes / 6).to_i
-            psar_options[:psar_chargeable_time] = hours * 256 + minutes
-            requeue_options.merge!(psar_options)
-          end
+          requeue_options.merge!(get_psar_options(call_update)) if call_update[:add_time]
           if (new_priority = call_update[:new_priority]) && @call.priority != new_priority
             requeue_options[:priority] = new_priority
             requeue_options[:severity] = new_priority
@@ -202,20 +191,9 @@ module Retain
           
         when :close
           close_options = call_options.dup
-          if @call.p_s_b != 'B'
-            close_options[:addtxt_lines] = newtxt
-          end
-          if @call.p_s_b == 'P'
-            close_options[:problem_status_code] = 'CL1L1 '
-          end
-          if call_update[:add_time]
-            psar_options = call_update[:psar_update].symbolize_keys
-            hours = psar_options.delete(:hours).to_i
-            minutes = psar_options.delete(:minutes).to_i
-            psar_options[:psar_actual_time] = (hours * 10) + (minutes / 6).to_i
-            psar_options[:psar_chargeable_time] = hours * 256 + minutes
-            close_options.merge!(psar_options)
-          end
+          close_options[:addtxt_lines] = newtxt if @call.p_s_b != 'B'
+          close_options[:problem_status_code] = 'CL1L1 ' if @call.p_s_b == 'P'
+          close_options.merge!(get_psar_options(call_update)) if call_update[:add_time]
           close = Retain::Pmcc.new(close_options)
           begin
             close.sendit(Retain::Fields.new)
@@ -404,6 +382,25 @@ module Retain
     end
 
     private
+
+    def get_psar_options(call_update)
+      psar_options = call_update[:psar_update].symbolize_keys
+      # Amount of time spent
+      hours   = psar_options.delete(:hours).to_i
+      minutes = psar_options.delete(:minutes).to_i
+      # Stop time and date
+      year    = psar_options.delete(:stop_year).to_i
+      month   = psar_options.delete(:stop_month).to_i
+      day     = psar_options.delete(:stop_day).to_i
+      hour    = psar_options.delete(:stop_hour).to_i
+      minute  = psar_options.delete(:stop_minute).to_i
+      # Munge the psar_options that we need to munge
+      psar_options[:psar_actual_time] = (hours * 10) + (minutes / 6).to_i
+      psar_options[:psar_chargeable_time] = hours * 256 + minutes
+      psar_options[:local_stop_date] = format("%02d/%02d%02d", year % 100, month, day)
+      psar_options[:psar_activity_stop_time] = format("%02d%1d", hour, minute / 6)
+      psar_options
+    end
 
     def do_pmcu(cmd, options)
       options = { :operand => cmd }.merge(options)
