@@ -93,6 +93,7 @@ module Retain
       end
       
       rendered = false
+      text = create_reply_span("Update Completed Successfully", 0)
       begin
         if call_update[:do_ct]
           ct = do_pmcu("CT  ", call_options)
@@ -119,6 +120,7 @@ module Retain
             rendered = true
             return
           end
+          text = create_reply_span("ADDTXT Completed Successfully", 0)
           @pmr.mark_as_dirty
           
           if call_update[:add_time]
@@ -131,9 +133,9 @@ module Retain
               true
             end
             if psar.rc != 0
-              render_error(psar, reply_span)
-              rendered = true
-              return
+              text += create_error_reply(psar)
+            else
+              text += create_reply_span("PSAR Added Successfully")
             end
           end
           
@@ -187,9 +189,9 @@ module Retain
           end
 
           if requeue.rc != 0
-            render_error(requeue, reply_span)
-            rendered = true
-            return
+            text = create_error_reply(requeue)
+          else
+            text = create_reply_span("Requeue Completed Successfully")
           end
           
         when :close
@@ -213,9 +215,9 @@ module Retain
           end
 
           if close.rc != 0
-            render_error(close, reply_span)
-            rendered = true
-            return
+            text = create_error_reply(close)
+          else
+            text = create_reply_span("Close Completed Successfully")
           end
           
         when :none
@@ -226,12 +228,13 @@ module Retain
         if need_undispatch
           undispatch = do_pmcu("NOCH", call_options)
           if undispatch.rc != 0
+            # I'm not sure what to do here.  We should rarely hit it
+            # anyway.
             render_error(undispatch, reply_span) unless rendered
             return
           end
         end
       end
-      text = create_reply_span("Update Completed Successfully", 0)
       render(:update) { |page|
         page.replace_html reply_span, text                          
         page.visual_effect :fade, reply_span, :duration => 2.0
@@ -433,9 +436,12 @@ module Retain
     end
     
     def render_error(sdi, area)
-      full_text = create_error_reply(sdi)
+      render_message(create_error_reply(sdi), area)
+    end
+
+    def render_message(msg, area)
       render(:update) { |page|
-        page.replace_html area, full_text
+        page.replace_html area, msg
         page.show area
       }
     end
