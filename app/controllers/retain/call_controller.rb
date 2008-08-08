@@ -63,17 +63,21 @@ module Retain
       
       if call_update[:update_pmr]
         case call_update[:update_type]
+          # We always set need_undispatch to be equal to
+          # need_dispatch.  Some commands like requeue and close do
+          # the undispatch as well.  But, in those cases, we set it to
+          # false *after* the call has returned happy.  This allows
+          # the ensure clause to undispatch the call when things
+          # really go amuck.
         when "addtxt"
           update_type = :addtxt
           need_undispatch = need_dispatch = call_update[:do_ct]
         when "requeue"
           update_type = :requeue
-          need_dispatch = true
-          need_undispatch = false
+          need_undispatch = need_dispatch = true
         when "close"
           update_type = :close
-          need_dispatch = true
-          need_undispatch = false
+          need_undispatch = need_dispatch = true
         end
       else
         update_type = :none
@@ -174,13 +178,12 @@ module Retain
             true
           end
           
-          # This is a guess for now.  An error (and not just a
-          # warning) will leave us dispatched.
+          # An error (and not just a warning) will leave us
+          # dispatched.
           if requeue.rc == 0 || (600 .. 700) === requeue.rc
             logger.debug("mark queue as dirty -- 1")
             @queue.mark_as_dirty
-          else
-            need_undispatch = true
+            need_undispatch = false
           end
 
           if requeue.rc != 0
@@ -201,13 +204,12 @@ module Retain
             true
           end
           
-          # This is a guess for now.  An error (and not just a
-          # warning) will leave us dispatched.
+          # An error (and not just a warning) will leave us
+          # dispatched.
           if close.rc == 0 || (600 .. 700) === close.rc
             logger.debug("mark queue as dirty -- 2")
             @queue.mark_as_dirty
-          else
-            need_undispatch = true
+            need_undispatch = false
           end
 
           if close.rc != 0
@@ -397,8 +399,10 @@ module Retain
       # Munge the psar_options that we need to munge
       psar_options[:psar_actual_time] = (hours * 10) + (minutes / 6).to_i
       psar_options[:psar_chargeable_time] = hours * 256 + minutes
-      psar_options[:local_stop_date] = format("%02d/%02d%02d", year % 100, month, day)
-      psar_options[:psar_activity_stop_time] = format("%02d%1d", hour, minute / 6)
+      psar_options[:local_stop_date] =
+        format("%02d/%02d/%02d", month, day, year % 100)
+      psar_options[:psar_activity_stop_time] =
+        format("%02d%1d", hour, minute / 6)
       psar_options
     end
 
