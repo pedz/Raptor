@@ -47,6 +47,16 @@ module Combined
       end
     end
 
+    # Returns the Saturday of the week that this PSAR applies to.
+    def saturday
+      t = Time.local(psar_stop_date_year.to_i,
+                     psar_activity_date[0...2].to_i,
+                     psar_activity_date[2...4].to_i)
+      t -= 1.day until t.wday == 6
+      t.strftime("%Y%m%d")
+    end
+    once :saturday
+
     private
     
     def load

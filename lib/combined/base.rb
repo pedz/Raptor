@@ -173,7 +173,20 @@ module Combined
       def param_to_options(param)
         words_to_options(param.split(/,/))
       end
-    end
+      
+      def once(*ids) # :nodoc:
+        for id in ids
+          module_eval <<-mod_end
+	    alias_method :__#{id.to_i}__, :#{id.to_s}
+	    private :__#{id.to_i}__
+	    def #{id.to_s}(*args, &block)
+	      (@__#{id.to_i}__ ||= [__#{id.to_i}__(*args, &block)])[0]
+	    end
+          mod_end
+        end
+      end
+      private :once
+    end                         # end of class methods
 
     # new for the Combined subclasses takes a hash of options or an
     # instance of the equivalent Cached class

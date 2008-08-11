@@ -1,12 +1,23 @@
 module Combined
   class PsarsController < Retain::RetainController
+    # This is not currently used but it is the list of attributes that
+    # can be searched via the retain interface.
+    SEARCHABLE_FIELDS = [ :psar_number,
+                          :psar_start_date,
+                          :psar_end_date,
+                          :h_or_s,
+                          :psar_file_and_symbol ]
+
     # GET /combined_psars
     # GET /combined_psars.xml
-    SEARCHABLE_FIELDS = [ :psar_number, :psar_start_date, :psar_end_date, :h_or_s, :psar_file_and_symbol ]
-
     # Retrieve the PSARs.  Accepts various search conditions.
     # Admins may retrieve PSARs for users other than themselves.
     def index
+      if request.env["REMOTE_USER"] == "brf@us.ibm.com"
+        render :action => :brf
+        return
+      end
+
       # Note that the "signon2" field in the SDI "PSRR" request is for
       # the PSAR Employee number -- not the normal Retain signon.
       local_params = params.symbolize_keys
@@ -91,10 +102,13 @@ module Combined
         if @combined_psar.save
           flash[:notice] = 'CombinedPsar was successfully created.'
           format.html { redirect_to(@combined_psar) }
-          format.xml  { render :xml => @combined_psar, :status => :created, :location => @combined_psar }
+          format.xml  { render(:xml => @combined_psar,
+                               :status => :created,
+                               :location => @combined_psar) }
         else
           format.html { render :action => "new" }
-          format.xml  { render :xml => @combined_psar.errors, :status => :unprocessable_entity }
+          format.xml  { render(:xml => @combined_psar.errors,
+                               :status => :unprocessable_entity) }
         end
       end
     end
@@ -119,7 +133,8 @@ module Combined
           format.xml  { head :ok }
         else
           format.html { render :action => "edit" }
-          format.xml  { render :xml => @combined_psar.errors, :status => :unprocessable_entity }
+          format.xml  { render(:xml => @combined_psar.errors,
+                               :status => :unprocessable_entity) }
         end
       end
     end

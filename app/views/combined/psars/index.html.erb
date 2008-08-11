@@ -2,32 +2,36 @@
 
 <table>
   <tr>
-    <th>Pmr</th>
+    <th>PMR</th>
     <th>Chargeable Time</th>
     <th>Date</th>
   </tr>
-<%- @combined_psars.sort{ |a, b| a.psar_activity_date <=> b.psar_activity_date }.group_by(&:psar_activity_date).each do |day, psars| -%>
-<%-  total = 0 -%>
-<%-  psars.each do |psar| -%>
-<%-    total += psar.chargeable_time_hex -%>
-       <tr>
-         <td><%=h psar.pmr.to_param %></td>
-         <td><%= chargeable_time(psar) %></td>
-         <td><%=h psar.psar_activity_date %></td>
-         <td><%= link_to 'Show', psar %></td>
-         <% if psar.psar_mailed_flag == "M" -%>
-           <td>Mailed</td>
-           <td>Mailed</td>
-         <% else -%>
-           <td><%= link_to 'Edit', edit_combined_psar_path(psar) %></td>
-           <td><%= link_to 'Destroy', psar, :confirm => 'Are you sure?', :method => :delete %></td>
-         <% end -%>
-       </tr>
-<%-   end -%>
-       <tr>
-	 <td></td>
-	 <td><%= display_time(total) %></td>
-       </tr>
-<%- end -%>
+  <%- regroup(@combined_psars).each do |week_name, week| -%>
+  <%-   week_total = 0 -%>
+  <%-   week.each do |day_name, day| -%>
+  <%-     day_total = 0 -%>
+  <%-     day.each do |psar| -%>
+	    <tr>
+	      <td><%=h psar.pmr.to_param %></td>
+	      <td><%= chargeable_time(psar) %></td>
+	      <td><%=h psar.psar_activity_date %></td>
+	      <td><%= link_to 'Show', psar %></td>
+	      <% if psar.psar_mailed_flag == "M" -%>
+		<td>Mailed</td>
+		<td>Mailed</td>
+	      <% else -%>
+		<td><%= link_to 'Edit', edit_combined_psar_path(psar) %></td>
+		<td><%= link_to 'Destroy', psar, :confirm => 'Are you sure?', :method => :delete %></td>
+	      <% end -%>
+	    </tr>
+  <%-       day_total += psar.chargeable_time_hex -%>
+  <%-     end -%>
+          <tr><td>Day Total</td><td><%= display_time(day_total) %></td></tr>
+	  <tr><td>&nbsp;</td></tr>
+  <%-     week_total += day_total -%>
+  <%-   end -%>
+        <tr><td>Week Total</td><td><%= display_time(week_total) %></td></tr>
+        <tr><td>&nbsp;</td></tr>
+  <%- end -%>
 </table>
 <%= link_to 'New psar', new_combined_psar_path %>

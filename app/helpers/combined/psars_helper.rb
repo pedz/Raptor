@@ -16,5 +16,13 @@ module Combined
       end
       return ret
     end
+    
+    def regroup(psars)
+      psars.sort do |a, b|
+        a.psar_activity_date <=> b.psar_activity_date
+      end.group_by(&:psar_activity_date).group_by { |days_list|
+        days_list[1][0].saturday
+      }
+    end
   end
 end
