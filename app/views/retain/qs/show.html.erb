@@ -56,6 +56,7 @@
   <div>
     <%= button_url("Home", "/") %>
     <%= button_url 'Favorite Queues', combined_favorite_queues_path %>
+    <%= button_url 'PSAR', combined_psars_path(:psar_start_date => Time.previous_saturday.strftime("%Y%m%d")) %>
     <%= button "Help", "$(\"help\").toggle()" %>
   </div>
 <% end %>

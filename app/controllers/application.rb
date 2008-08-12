@@ -17,7 +17,9 @@ class ApplicationController < ActionController::Base
 
   # For development mode, we do not do the authentication with
   # Bluepages
-  NONE_AUTHENTICATE = File.exists?(RAILS_ROOT + "/config/no_ldap")
+  unless defined? NONE_AUTHENTICATE
+    NONE_AUTHENTICATE = File.exists?(RAILS_ROOT + "/config/no_ldap")
+  end
 
   rescue_from 'ActiveLdap::LdapError' do |exception|
     render :text => "<h2 style='text-align: center; color: red;'>LDAP Error: #{exception.message}</h2>"

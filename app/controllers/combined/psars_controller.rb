@@ -13,18 +13,17 @@ module Combined
     # Retrieve the PSARs.  Accepts various search conditions.
     # Admins may retrieve PSARs for users other than themselves.
     def index
-      if request.env["REMOTE_USER"] == "brf@us.ibm.com"
+      local_params = params.symbolize_keys
+
+      if local_params.has_key? :ice_cream
         render :action => :brf
         return
       end
 
       # Note that the "signon2" field in the SDI "PSRR" request is for
-      # the PSAR Employee number -- not the normal Retain signon.
-      local_params = params.symbolize_keys
-      retuser = local_params.delete(:retuser_id)
-      
-      # Default to current user
-      retuser = signon_user.signon if retuser.nil?
+      # the PSAR Employee number -- not the normal Retain signon.  The
+      # default is the current user
+      retuser = local_params.delete(:retuser_id) || signon_user.signon
       
       # Only admins can search for others
       unless admin? || retuser == signon_user.signon
@@ -32,16 +31,10 @@ module Combined
         return
       end
       req_user = Combined::Registration.from_options :signon => retuser
-      
+
       db_search_fields = Cached::Psar.fields_only(local_params)
       
-      if db_search_fields.empty?
-        logger.debug("psars_controller 1 #{req_user.class}")
-        @combined_psars = req_user.psars.find(:all)
-      else
-        logger.debug("psars_controller 2")
-        @combined_psars = req_user.psars.find(:all, :conditions => db_search_fields)
-      end
+      @combined_psars = req_user.psars.find(:all, :conditions => db_search_fields)
       
       logger.debug("psars_controller #{@combined_psars[0].class}")
       respond_to do |format|

@@ -1,6 +1,9 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-  
+  def first_name
+    session[:user].first_name
+  end
+
   def app_doctype
     render :partial => 'layouts/shared/doctype'
   end
