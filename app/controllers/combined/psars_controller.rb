@@ -34,7 +34,24 @@ module Combined
 
       db_search_fields = Cached::Psar.fields_only(local_params)
       
-      @combined_psars = req_user.psars.find(:all, :conditions => db_search_fields)
+      if local_params.has_key? :psar_start_date
+        str = local_params[:psar_start_date]
+        start_moc = Time.local(str[0...4].to_i, str[4...6].to_i, str[6...8].to_i).moc
+      else
+        start_moc = 0
+      end
+      
+      if local_params.has_key? :psar_stop_date
+        str = local_params[:psar_stop_date]
+        stop_moc = Time.local(str[0...4].to_i, str[4...6].to_i, str[6...8].to_i).moc
+      else
+        stop_moc = start_moc + (60 * 24 * 14) # two weeks
+      end
+
+      # s = %Q{"cached_psars"."stop_time_moc" + "cached_psar"."minutes_from_gmt"}
+      # ActiveRecord::Base.with_scope(:find => { :conditions => "#{s} >= #{start_moc} AND #{s} < #{stop_moc}"}) do 
+      db_search_fields[:stop_time_moc] = start_moc .. stop_moc
+      @combined_psars = req_user.psars.find(:all, :conditions => db_search_fields, :include => :pmr)
       
       logger.debug("psars_controller #{@combined_psars[0].class}")
       respond_to do |format|
