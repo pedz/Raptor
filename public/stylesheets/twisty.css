@@ -1,0 +1,32 @@
+.twisty:hover {
+    background-color: #f0f0f0;
+    border: 1px solid #e0e0e0;
+    margin-left: -1px;
+}
+
+.collapsible {
+    margin-top: 5px;
+}
+
+.twisty-link {
+    color: #3465a4;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.twisty-link:link {
+    color: #666666;
+}
+
+.twisty-link img {
+    border: none;
+}
+    
+.collapsible>div{
+    border-left: 1px dashed #c0c0c0;
+    margin: 2px;
+}
+
+.collapsible>div>div{
+    padding: 6px;
+}

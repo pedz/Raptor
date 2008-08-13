@@ -22,7 +22,7 @@ module Combined
     end
     
     def check_mail_flag
-      ret = (@cached && (@cached.psar_mailed_flag == "M") || @cached.updated_at > 1.day.ago)
+      ret = (@cached && (@cached.psar_mailed_flag == "M") || @cached.updated_at > 12.hours.ago)
       logger.debug("check_mail_flag for #{@cached.psar_file_and_symbol} is #{ret}")
       return ret
     end
@@ -53,7 +53,7 @@ module Combined
                      psar_activity_date[0...2].to_i,
                      psar_activity_date[2...4].to_i)
       t -= 1.day until t.wday == 6
-      t.strftime("%Y%m%d")
+      t
     end
     once :saturday
 

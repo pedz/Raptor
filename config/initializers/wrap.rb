@@ -115,3 +115,34 @@ module ActiveRecord
     end
   end
 end
+
+module ActiveRecord
+  module NamedScope
+    class Scope #:nodoc:
+      undef_method :unwrap_to_cached
+      # undef_method :wrap_with_combined
+
+      # For now, we are going to wrap a proxy object if it is
+      # pretending to be an array.  Otherwise, we ask if it responds
+      # to :to_combined.  If it does, we call it.  Otherwise, we just
+      # return self.
+      #
+      # Its not clear if, in the first case of an object acting like
+      # an Array if we need to wrap each of the elements.  Right now,
+      # we are not going to do that.  We'll see how that goes.
+      #
+      # Oh... the reason for not wrapping single objects is because it
+      # defeats methods specific to a Combined class.
+      #
+      def wrap_with_combined
+        if self.kind_of? Array
+          Combined::AssociationProxy.new(self)
+        elsif self.respond_to? :to_combined
+          self.to_combined
+        else
+          self
+        end
+      end
+    end
+  end
+end

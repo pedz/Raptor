@@ -37,7 +37,7 @@ module Retain
       calls = Retain::Connection.request_count
       time = Retain::Connection.total_time
       avg = time / [ calls, 1 ].max
-      logger.debug("perform_action_with_retain_benchmark: #{calls} calls, #{time} time, #{avg} average")
+      logger.info("perform_action_with_retain_benchmark: #{calls} calls, #{time} time, #{avg} average")
     end
     alias_method_chain :perform_action, :retain_benchmark
 
