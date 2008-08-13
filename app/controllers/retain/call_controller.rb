@@ -93,6 +93,7 @@ module Retain
       end
       
       rendered = false
+      fad = true
       text = create_reply_span("Update Completed Successfully", 0)
       begin
         if call_update[:do_ct]
@@ -109,12 +110,9 @@ module Retain
         when :addtxt
           addtxt_options = pmr_options.dup
           addtxt_options[:addtxt_lines] = newtxt
-          addtxt = Retain::Pmat.new(addtxt_options)
-          begin
-            addtxt.sendit(Retain::Fields.new)
-          rescue
-            true
-          end
+          addtxt = safe_new(Retain::Pmat, addtxt_options, reply_span)
+          return if addtxt.nil?
+          safe_sendit(addtxt)
           if addtxt.rc != 0
             render_error(addtxt, reply_span)
             rendered = true
@@ -126,12 +124,9 @@ module Retain
           if call_update[:add_time]
             psar_options = get_psar_options(call_update)
             psar_options.merge!(pmr_options)
-            psar = Retain::Psrc.new(psar_options)
-            begin
-              psar.sendit(Retain::Fields.new)
-            rescue
-              true
-            end
+            psar = safe_new(Retain::Psrc, psar_options, reply_span)
+            return if psar.nil?
+            safe_sendit(psar)
             if psar.rc != 0
               text += create_error_reply(psar)
             else
@@ -173,13 +168,11 @@ module Retain
               requeue_options[:target_center] = center
             end
           end
-          requeue = Retain::Pmcr.new(requeue_options)
-          begin
-            requeue.sendit(Retain::Fields.new)
-          rescue
-            true
-          end
-          
+
+          requeue = safe_new(Retain::Pmcr, requeue_options, reply_span)
+          return if requeue.nil?
+          safe_sendit(requeue)
+
           # An error (and not just a warning) will leave us
           # dispatched.
           if requeue.rc == 0 || (600 .. 700) === requeue.rc
@@ -199,12 +192,9 @@ module Retain
           close_options[:addtxt_lines] = newtxt if @call.p_s_b != 'B'
           close_options[:problem_status_code] = 'CL1L1 ' if @call.p_s_b == 'P'
           close_options.merge!(get_psar_options(call_update)) if call_update[:add_time]
-          close = Retain::Pmcc.new(close_options)
-          begin
-            close.sendit(Retain::Fields.new)
-          rescue
-            true
-          end
+          close = safe_new(Retain::Pmcc,close_options, reply_span)
+          return if close.nil?
+          safe_sendit(close)
           
           # An error (and not just a warning) will leave us
           # dispatched.
@@ -221,6 +211,19 @@ module Retain
           end
           
         when :none
+          # Yes, this is duplicate code...  Not sure how to clean it up.
+          if call_update[:add_time]
+            psar_options = get_psar_options(call_update)
+            psar_options.merge!(pmr_options)
+            psar = safe_new(Retain::Psrc, psar_options, reply_span)
+            return if psar.nil?
+            safe_sendit(psar)
+            if psar.rc != 0
+              text += create_error_reply(psar)
+            else
+              text += create_reply_span("PSAR Added Successfully", 0)
+            end
+          end
         end
         
       ensure
@@ -240,6 +243,25 @@ module Retain
         page.visual_effect :fade, reply_span, :duration => 2.0
         page[form].reset
       }
+    end
+
+    def safe_new(klass, options, area)
+      begin
+        obj = klass.new(options)
+      rescue ArgumentError => e
+        text = create_reply_span(e.message, 1)
+        render_message(text, area)
+        return nil
+      end
+      return obj
+    end
+    
+    def safe_sendit(obj)
+      begin
+        obj.sendit(Retain::Fields.new)
+      rescue
+        true
+      end
     end
 
     def ct

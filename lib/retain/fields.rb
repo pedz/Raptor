@@ -801,7 +801,11 @@ module Retain
           value = value[0]
         end
       end
-      @fields[sym] = Field.new(cvt, width, value)
+      begin
+        @fields[sym] = Field.new(cvt, width, value)
+      rescue Exception => e
+        raise ArgumentError, e.message + " for #{sym}", e.backtrace
+      end
     end
 
     def parse_io_err(raw_msg)
