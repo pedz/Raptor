@@ -1,9 +1,9 @@
 <!-- retain/queue/show.html.erb -->
 <% @title = "Retain queue: #{@queue.to_param}" -%>
-<% content_for(:top) do %>
+<%- content_for(:top) do -%>
   <h1>Retain Queue: <%= h @queue.to_param %></h1>
   <%= render :partial => 'layouts/shared/display_flash' %>
-<% end %>
+<%- end -%>
 <% content_for(:center) do %>
   <div class="smaller">
     <span id="message-area"></span>
@@ -54,9 +54,9 @@
     </ol>
   </div>
   <div>
-    <%= button_url("Home", "/") %>
+    <%= home_button %>
     <%= button_url 'Favorite Queues', combined_favorite_queues_path %>
-    <%= button_url 'PSAR', combined_psars_path(:psar_start_date => Time.previous_saturday.strftime("%Y%m%d")) %>
+    <%= psar_button %>
     <%= button "Help", "$(\"help\").toggle()" %>
   </div>
 <% end %>

@@ -1,48 +1,57 @@
-<table>
-  <tr>
-    <td><b>Action Code</b></td><td><%= @combined_psar.psar_action_code %></td>
-    <td><b>Activity Date</b></td><td><%= @combined_psar.psar_activity_date %></td>
-    <td><b>Activity Stop Time</b></td><td><%= @combined_psar.psar_activity_stop_time %></td>
-  </tr>
-  <tr>
-    <td><b>Actual Time</b></td><td><%= @combined_psar.psar_actual_time %></td>
-    <td><b>Cause</b></td><td><%= @combined_psar.psar_cause %></td>
-    <td><b>Chargeable Src Ind</b></td><td><%= @combined_psar.psar_chargeable_src_ind %></td>
-  </tr>
-  <tr>
-    <td><b>Chargeable Time Hex</b></td><td><%= @combined_psar.chargeable_time_hex %></td>
-    <td><b>Chargeable Time</b></td><td><%= @combined_psar.psar_chargeable_time %></td>
-    <td><b>Cia</b></td><td><%= @combined_psar.psar_cia %></td>
-  </tr>
-  <tr>
-    <td><b>Cpu Serial Number</b></td><td><%= @combined_psar.cpu_serial_number %></td>
-    <td><b>Cpu Type</b></td><td><%= @combined_psar.cpu_type %></td>
-    <td><b>Fesn</b></td><td><%= @combined_psar.psar_fesn %></td>
-  </tr>
-  <tr>
-    <td><b>File And Symbol</b></td><td><%= @combined_psar.psar_file_and_symbol %></td>
-    <td><b>Impact</b></td><td><%= @combined_psar.psar_impact %></td>
-    <td><b>Mailed Flag</b></td><td><%= @combined_psar.psar_mailed_flag %></td>
-  </tr>
-  <tr>
-    <td><b>Minutes From GMT</b></td><td><%= @combined_psar.minutes_from_gmt %></td>
-    <td><b>PMR</b></td><td><%= (pmr = @combined_psar.pmr).nil? ? "None" : pmr.to_param %></td>
-    <td><b>Queue Id</b></td><td><%= (q = @combined_psar.queue).nil? ? "None" : q.to_param %></td>
-  </tr>
-  <tr>
-    <td><b>Sequence Number</b></td><td><%= @combined_psar.psar_sequence_number %></td>
-    <td><b>Service Code</b></td><td><%= @combined_psar.psar_service_code %></td>
-    <td><b>Solution</b></td><td><%= @combined_psar.psar_solution %></td>
-  </tr>
-  <tr>
-    <td><b>Stop Date Year</b></td><td><%= @combined_psar.psar_stop_date_year %></td>
-    <td><b>Stop Time Moc</b></td><td><%= @combined_psar.stop_time_moc %></td>
-    <td><b>System Date</b></td><td><%= @combined_psar.psar_system_date %></td>
-  </tr>
-  <tr>
-    <td><b>Dirty</b></td><td><%= @combined_psar.dirty %></td>
-  </tr>
-</table>
-
-<%= link_to 'Edit', edit_combined_psar_path(@combined_psar) %> |
-<%= link_to 'Back', combined_psars_path %>
+<%- @title = "Show PSAR" -%>
+<%- content_for(:top) do -%>
+  <h1><%= @title %></h1>
+<%- end -%>
+<%- content_for(:center) do -%>
+  <table>
+    <tr>
+      <td><b>Action Code</b></td><td><%= @combined_psar.psar_action_code %></td>
+      <td><b>Activity Date</b></td><td><%= @combined_psar.psar_activity_date %></td>
+      <td><b>Activity Stop Time</b></td><td><%= @combined_psar.psar_activity_stop_time %></td>
+    </tr>
+    <tr>
+      <td><b>Actual Time</b></td><td><%= @combined_psar.psar_actual_time %></td>
+      <td><b>Cause</b></td><td><%= @combined_psar.psar_cause %></td>
+      <td><b>Chargeable Src Ind</b></td><td><%= @combined_psar.psar_chargeable_src_ind %></td>
+    </tr>
+    <tr>
+      <td><b>Chargeable Time Hex</b></td><td><%= @combined_psar.chargeable_time_hex %></td>
+      <td><b>Chargeable Time</b></td><td><%= @combined_psar.psar_chargeable_time %></td>
+      <td><b>Cia</b></td><td><%= @combined_psar.psar_cia %></td>
+    </tr>
+    <tr>
+      <td><b>Cpu Serial Number</b></td><td><%= @combined_psar.cpu_serial_number %></td>
+      <td><b>Cpu Type</b></td><td><%= @combined_psar.cpu_type %></td>
+      <td><b>Fesn</b></td><td><%= @combined_psar.psar_fesn %></td>
+    </tr>
+    <tr>
+      <td><b>File And Symbol</b></td><td><%= @combined_psar.psar_file_and_symbol %></td>
+      <td><b>Impact</b></td><td><%= @combined_psar.psar_impact %></td>
+      <td><b>Mailed Flag</b></td><td><%= @combined_psar.psar_mailed_flag %></td>
+    </tr>
+    <tr>
+      <td><b>Minutes From GMT</b></td><td><%= @combined_psar.minutes_from_gmt %></td>
+      <td><b>PMR</b></td><td><%= (pmr = @combined_psar.pmr).nil? ? "None" : pmr.to_param %></td>
+      <td><b>Queue Id</b></td><td><%= (q = @combined_psar.queue).nil? ? "None" : q.to_param %></td>
+    </tr>
+    <tr>
+      <td><b>Sequence Number</b></td><td><%= @combined_psar.psar_sequence_number %></td>
+      <td><b>Service Code</b></td><td><%= @combined_psar.psar_service_code %></td>
+      <td><b>Solution</b></td><td><%= @combined_psar.psar_solution %></td>
+    </tr>
+    <tr>
+      <td><b>Stop Date Year</b></td><td><%= @combined_psar.psar_stop_date_year %></td>
+      <td><b>Stop Time Moc</b></td><td><%= @combined_psar.stop_time_moc %></td>
+      <td><b>System Date</b></td><td><%= @combined_psar.psar_system_date %></td>
+    </tr>
+    <tr>
+      <td><b>Dirty</b></td><td><%= @combined_psar.dirty %></td>
+    </tr>
+  </table>
+<%- end -%>
+<%- content_for(:bottom) do -%>
+  <%= home_button %>
+  <%= favorites_button %>
+  <%= button_url 'Edit PSAR', edit_combined_psar_path(@combined_psar) %>
+  <%= button_url 'Full PSAR list', combined_psars_path %>
+<%- end -%>

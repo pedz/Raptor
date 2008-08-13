@@ -1,52 +1,59 @@
-<h1>Editing combined_psar</h1>
-
-<%= error_messages_for :combined_psar %>
-
-<% form_for(@combined_psar) do |f| %>
-  <table>
-    <tr>
-      <td><b>PMR</b></td><td><%= @combined_psar.pmr.to_param %></td>
-      <td><b>Service Code</b></td><td><%= f.text_field :psar_service_code, :size => 2, :maxlength => 2 %></td>
-      <td><b>Action Code</b></td><td><%= f.text_field :psar_action_code, :size => 2, :maxlength => 2 %></td>
-    </tr>
-    <tr>
-      <td><b>Cause</b></td><td><%= f.text_field :psar_cause, :size => 2, :maxlength => 2 %></td>
-      <td><b>Impact</b></td><td><%= f.text_field :psar_impact, :size => 1, :maxlength => 1 %></td>
-      <td><b>Solution</b></td><td><%= f.text_field :psar_solution, :size => 1, :maxlength => 1 %><br /></td>
-    </tr>
-    <tr>
-      <td><b>Actual Time (HHT)</b></td><td><%= f.text_field :psar_actual_time, :size => 3, :maxlength => 3 %></td>
-      <td><b>Chargeable Time (Minutes)</b></td><td><%= f.text_field :psar_chargeable_time, :size => 2, :maxlength => 2 %></td>
-      <td><b>Chargeable time hex</b></td><td><%= f.text_field :chargeable_time_hex, :size => 2, :maxlength => 2 %><br /></td>
-    </tr>
-    <tr>
-      <td><b>Cpu serial number</b></td><td><%= f.text_field :cpu_serial_number, :size => 7, :maxlength => 7 %></td>
-      <td><b>Cpu type</b></td><td><%= f.text_field :cpu_type, :size => 4, :maxlength => 4 %></td>
-      <td><b>Minutes from gmt</b></td><td><%= f.text_field :minutes_from_gmt, :size => 2, :maxlength => 2 %><br /></td>
-    </tr>
-    <tr>
-      <td><b>Psar activity date</b></td><td><%= f.text_field :psar_activity_date, :size => 4, :maxlength => 4 %></td>
-      <td><b>Psar activity stop time</b></td><td><%= f.text_field :psar_activity_stop_time, :size => 3, :maxlength => 3 %></td>
-      <td><b>Psar chargeable src ind</b></td><td><%= f.text_field :psar_chargeable_src_ind, :size => 1, :maxlength => 1 %><br /></td>
-    </tr>
-    <tr>
-      <td><b>Psar cia</b></td><td><%= f.text_field :psar_cia, :size => 1, :maxlength => 1 %></td><td><b>Psar file and symbol</b></td>
-      <td><%= f.text_field :psar_file_and_symbol, :size => 16, :maxlength => 16, :disabled => :disabled %><br /></td>
-      <td><b>Psar mailed flag</b></td><td><%= f.text_field :psar_mailed_flag, :size => 1, :maxlength => 1 %></td>
-    </tr>
-    <tr>
-      <td><b>Psar sequence number</b></td><td><%= f.text_field :psar_sequence_number, :size => 5, :maxlength => 5 %></td>
-      <td><b>Psar stop date year</b></td><td><%= f.text_field :psar_stop_date_year, :size => 2, :maxlength => 2 %><br /></td>
-      <td><b>Psar system date</b></td><td><%= f.text_field :psar_system_date, :size => 6, :maxlength => 6, :disabled => :disabled %></td>
-    </tr>
-    <tr>
-      <td><b>Stop time moc</b></td><td><%= f.text_field :stop_time_moc, :size => 4, :maxlength => 4 %></td>
-    </tr>
-  </table>
-  <p>
-    <%= f.submit "Update" %>
-  </p>
-<% end %>
-
-<%= link_to 'Show', @combined_psar %> |
-<%= link_to 'Back', combined_psars_path %>
+<%- @title = "Edit PSAR" -%>
+<%- content_for(:top) do -%>
+  <h1><%= @title %></h1>
+  <%= error_messages_for :combined_psar %>
+<%- end -%>
+<%- content_for(:center) do -%>
+  <% form_for(@combined_psar) do |f| %>
+    <table>
+      <tr>
+	<td><b>PMR</b></td><td><%= @combined_psar.pmr.to_param %></td>
+	<td><b>Service Code</b></td><td><%= f.text_field :psar_service_code, :size => 2, :maxlength => 2 %></td>
+	<td><b>Action Code</b></td><td><%= f.text_field :psar_action_code, :size => 2, :maxlength => 2 %></td>
+      </tr>
+      <tr>
+	<td><b>Cause</b></td><td><%= f.text_field :psar_cause, :size => 2, :maxlength => 2 %></td>
+	<td><b>Impact</b></td><td><%= f.text_field :psar_impact, :size => 1, :maxlength => 1 %></td>
+	<td><b>Solution</b></td><td><%= f.text_field :psar_solution, :size => 1, :maxlength => 1 %><br /></td>
+      </tr>
+      <tr>
+	<td><b>Actual Time (HHT)</b></td><td><%= f.text_field :psar_actual_time, :size => 3, :maxlength => 3 %></td>
+	<td><b>Chargeable Time (Minutes)</b></td><td><%= f.text_field :psar_chargeable_time, :size => 2, :maxlength => 2 %></td>
+	<td><b>Chargeable time hex</b></td><td><%= f.text_field :chargeable_time_hex, :size => 2, :maxlength => 2 %><br /></td>
+      </tr>
+      <tr>
+	<td><b>Cpu serial number</b></td><td><%= f.text_field :cpu_serial_number, :size => 7, :maxlength => 7 %></td>
+	<td><b>Cpu type</b></td><td><%= f.text_field :cpu_type, :size => 4, :maxlength => 4 %></td>
+	<td><b>Minutes from gmt</b></td><td><%= f.text_field :minutes_from_gmt, :size => 2, :maxlength => 2 %><br /></td>
+      </tr>
+      <tr>
+	<td><b>Psar activity date</b></td><td><%= f.text_field :psar_activity_date, :size => 4, :maxlength => 4 %></td>
+	<td><b>Psar activity stop time</b></td><td><%= f.text_field :psar_activity_stop_time, :size => 3, :maxlength => 3 %></td>
+	<td><b>Psar chargeable src ind</b></td><td><%= f.text_field :psar_chargeable_src_ind, :size => 1, :maxlength => 1 %><br /></td>
+      </tr>
+      <tr>
+	<td><b>Psar cia</b></td><td><%= f.text_field :psar_cia, :size => 1, :maxlength => 1 %></td><td><b>Psar file and symbol</b></td>
+	<td><%= f.text_field :psar_file_and_symbol, :size => 16, :maxlength => 16, :disabled => :disabled %><br /></td>
+	<td><b>Psar mailed flag</b></td><td><%= f.text_field :psar_mailed_flag, :size => 1, :maxlength => 1 %></td>
+      </tr>
+      <tr>
+	<td><b>Psar sequence number</b></td><td><%= f.text_field :psar_sequence_number, :size => 5, :maxlength => 5 %></td>
+	<td><b>Psar stop date year</b></td><td><%= f.text_field :psar_stop_date_year, :size => 2, :maxlength => 2 %><br /></td>
+	<td><b>Psar system date</b></td><td><%= f.text_field :psar_system_date, :size => 6, :maxlength => 6, :disabled => :disabled %></td>
+      </tr>
+      <tr>
+	<td><b>Stop time moc</b></td><td><%= f.text_field :stop_time_moc, :size => 4, :maxlength => 4 %></td>
+      </tr>
+    </table>
+    <p>
+      <%= f.submit "Update", :disabled => :disabled %>
+      <span style='color:red'>Sorry... this is not implemented yet</span>
+    </p>
+  <% end %>
+<%- end -%>
+<%- content_for(:bottom) do -%>
+  <%= home_button %>
+  <%= favorites_button %>
+  <%= button_url 'Show', @combined_psar %>
+  <%= button_url 'Full PSAR List', combined_psars_path %>
+<%- end -%>

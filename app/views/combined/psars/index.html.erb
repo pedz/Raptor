@@ -1,57 +1,66 @@
 <%- @title = "PSAR Listing" -%>
-<h1>PSARs Listing</h1>
-<ul id='psar-list'>
-  <%- summarize(regroup(@combined_psars)).each do |week_name, week, week_total| -%>
-  <div class="collapsible">
-    <%- week_id = "week" + week_name.strftime("%Y%m%d") -%>
-    <a href="javascript:toggleTwisty('<%= week_id %>');" class='twisty-link'>
-      Week of <%= week_name.strftime("%b %d") %> through <%= (week_name + 6.days).strftime("%b %d") %>:
-      Total Time: <%= display_time(week_total) %>
-      <%= image_tag "twisty-down.gif", :class => "twisty" %>
-    </a>
-    <div id="<%= week_id %>" class='week-div'>
-      <div>
-	<%- week.each do |day_name, psars, day_total| -%>
-	<div class="collapsible">
-	  <%- day_id = "day" + day_name.strftime("%Y%m%d") -%>
-	  <a href="javascript:toggleTwisty('<%= day_id %>');" class='twisty-link'>
-	    <%= day_name.strftime("%a %b %d") %> Total Time: <%= display_time(day_total) %>
-	    <%= image_tag "twisty-down.gif", :class => "twisty" %>
-	  </a>
-	  <div id="<%= day_id %>" class='day-div'>
-	    <div>
-	      <ul class='day-list'>
-		<%- psars.each do |psar| -%>
-		<li>
-		  <span class='psar-pmr'>
-		    <%= h(psar.pmr ? psar.pmr.to_param : "No PMR") %>
-		  </span>
-		  <span class='psar-time'>
-		    <%= chargeable_time(psar) %>
-		  </span>
-		  <span class='psar-show'>
-		    <%= link_to 'Show', psar %>
-		  </span>
-		  <% if psar.psar_mailed_flag == "M" -%>
-		  <span class='psar-mailed'>Mailed</span>
-		  <% else -%>
-		  <span class='psar-edit'>
-		    <%= link_to 'Edit', edit_combined_psar_path(psar) %>
-		  </span>
-		  <span class='psar-destroy'>
-		    <%= link_to 'Destroy', psar, :confirm => 'Are you sure?', :method => :delete %>
-		  </span>
-		  <% end -%>
-		</li>
-		<%- end -%>
-	      </ul>
+<%- content_for(:top) do -%>
+  <h1>PSARs Listing</h1>
+  <%= render :partial => 'layouts/shared/display_flash' %>
+<%- end -%>
+<%- content_for(:center) do -%>
+  <ul id='psar-list'>
+    <%- summarize(regroup(@combined_psars)).each do |week_name, week, week_total| -%>
+    <div class="collapsible">
+      <%- week_id = "week" + week_name.strftime("%Y%m%d") -%>
+      <a href="javascript:toggleTwisty('<%= week_id %>');" class='twisty-link'>
+	Week of <%= week_name.strftime("%b %d") %> through <%= (week_name + 6.days).strftime("%b %d") %>:
+	Total Time: <%= display_time(week_total) %>
+	<%= image_tag "twisty-down.gif", :class => "twisty" %>
+      </a>
+      <div id="<%= week_id %>" class='week-div'>
+	<div>
+	  <%- week.each do |day_name, psars, day_total| -%>
+	  <div class="collapsible">
+	    <%- day_id = "day" + day_name.strftime("%Y%m%d") -%>
+	    <a href="javascript:toggleTwisty('<%= day_id %>');" class='twisty-link'>
+	      <%= day_name.strftime("%a %b %d") %> Total Time: <%= display_time(day_total) %>
+	      <%= image_tag "twisty-down.gif", :class => "twisty" %>
+	    </a>
+	    <div id="<%= day_id %>" class='day-div'>
+	      <div>
+		<ul class='day-list'>
+		  <%- psars.each do |psar| -%>
+		  <li>
+		    <span class='psar-pmr'>
+		      <%= h(psar.pmr ? psar.pmr.to_param : "No PMR") %>
+		    </span>
+		    <span class='psar-time'>
+		      <%= chargeable_time(psar) %>
+		    </span>
+		    <span class='psar-show'>
+		      <%= link_to 'Show', psar %>
+		    </span>
+		    <% if psar.psar_mailed_flag == "M" -%>
+		    <span class='psar-mailed'>Mailed</span>
+		    <% else -%>
+		    <span class='psar-edit'>
+		      <%= link_to 'Edit', edit_combined_psar_path(psar) %>
+		    </span>
+		    <span class='psar-destroy'>
+		      <%= link_to 'Destroy', psar, :confirm => 'Are you sure?', :method => :delete %>
+		    </span>
+		    <% end -%>
+		  </li>
+		  <%- end -%>
+		</ul>
+	      </div>
 	    </div>
 	  </div>
+	  <%- end -%>
 	</div>
-	<%- end -%>
       </div>
     </div>
-  </div>
-  <%- end -%>
-</ul>
-<%= link_to 'New psar', new_combined_psar_path %>
+    <%- end -%>
+  </ul>
+<%- end -%>
+<%- content_for(:bottom) do -%>
+  <%= home_button %>
+  <%= favorites_button %>
+  <%= button_url 'New psar', new_combined_psar_path %>
+<%- end -%>

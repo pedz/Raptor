@@ -152,12 +152,11 @@
 
 <% content_for(:bottom) do %>
   <div>
-    <%= button_url("Home", "/") %>
-    <%= button_url("Favorites", combined_favorite_queues_path) %>
-    <%= button_url("Queue #{@queue.to_param}", combined_queue_path(@queue)) %>
+    <%= home_button %>
+    <%= favorites_button %>
     <%= button_url("QS #{@queue.to_param}", combined_q_path(@queue)) %>
-    <%= button_url 'PSAR', combined_psars_path(:psar_start_date => Time.previous_saturday.strftime("%Y%m%d")) %>
-    <%= button_url("Registration", @registration) %>
+    <%= psar_button %>
+    <%= registration_button %>
     <% display_update_button(binding) %>
     <% display_update_form(binding, @call) %>
   </div>

@@ -73,4 +73,12 @@ module ApplicationHelper
   def button_url(text, url)
     button(text, "Raptor.loadPage(\"#{url_for(url)}\")")
   end
+
+  def home_button
+    button_url "Home", root_path
+  end
+
+  def favorites_button
+    button_url("Favorites", combined_favorite_queues_path)
+  end
 end

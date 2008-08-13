@@ -49,7 +49,8 @@
 <p>
   Other links
   <ul>
-    <li><a href='retain_psar'>PSAR</a></li>
+    <li><%= link_to('PSAR',
+            combined_psars_path(:psar_start_date => Time.previous_saturday.strftime("%Y%m%d"))) %></li>
     <li><a href='feedbacks'>Feedbacks</a></li>
     <li><a href='retain_registration'>Registration</a></li>
   </ul>

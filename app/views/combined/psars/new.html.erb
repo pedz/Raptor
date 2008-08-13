@@ -1,141 +1,148 @@
-<h1>New combined_psar</h1>
+<%- @title = "New PSAR" -%>
+<%- content_for(:top) do -%>
+  <h1><%= @title %></h1>
+  <%= error_messages_for :combined_psar %>
+<%- end -%>
+<%- content_for(:center) do -%>
+  <% form_for(@combined_psar) do |f| %>
+    <p>
+      <b>Pmr</b><br />
+      <%= f.text_field :pmr_id %>
+    </p>
 
-<%= error_messages_for :combined_psar %>
+    <p>
+      <b>Apar</b><br />
+      <%= f.text_field :apar_id %>
+    </p>
 
-<% form_for(@combined_psar) do |f| %>
-  <p>
-    <b>Pmr</b><br />
-    <%= f.text_field :pmr_id %>
-  </p>
+    <p>
+      <b>Queue</b><br />
+      <%= f.text_field :queue_id %>
+    </p>
 
-  <p>
-    <b>Apar</b><br />
-    <%= f.text_field :apar_id %>
-  </p>
+    <p>
+      <b>Chargeable time hex</b><br />
+      <%= f.text_field :chargeable_time_hex %>
+    </p>
 
-  <p>
-    <b>Queue</b><br />
-    <%= f.text_field :queue_id %>
-  </p>
+    <p>
+      <b>Cpu serial number</b><br />
+      <%= f.text_field :cpu_serial_number %>
+    </p>
 
-  <p>
-    <b>Chargeable time hex</b><br />
-    <%= f.text_field :chargeable_time_hex %>
-  </p>
+    <p>
+      <b>Cpu type</b><br />
+      <%= f.text_field :cpu_type %>
+    </p>
 
-  <p>
-    <b>Cpu serial number</b><br />
-    <%= f.text_field :cpu_serial_number %>
-  </p>
+    <p>
+      <b>Minutes from gmt</b><br />
+      <%= f.text_field :minutes_from_gmt %>
+    </p>
 
-  <p>
-    <b>Cpu type</b><br />
-    <%= f.text_field :cpu_type %>
-  </p>
+    <p>
+      <b>Psar action code</b><br />
+      <%= f.text_field :psar_action_code %>
+    </p>
 
-  <p>
-    <b>Minutes from gmt</b><br />
-    <%= f.text_field :minutes_from_gmt %>
-  </p>
+    <p>
+      <b>Psar activity date</b><br />
+      <%= f.text_field :psar_activity_date %>
+    </p>
 
-  <p>
-    <b>Psar action code</b><br />
-    <%= f.text_field :psar_action_code %>
-  </p>
+    <p>
+      <b>Psar activity stop time</b><br />
+      <%= f.text_field :psar_activity_stop_time %>
+    </p>
 
-  <p>
-    <b>Psar activity date</b><br />
-    <%= f.text_field :psar_activity_date %>
-  </p>
+    <p>
+      <b>Psar actual time</b><br />
+      <%= f.text_field :psar_actual_time %>
+    </p>
 
-  <p>
-    <b>Psar activity stop time</b><br />
-    <%= f.text_field :psar_activity_stop_time %>
-  </p>
+    <p>
+      <b>Psar cause</b><br />
+      <%= f.text_field :psar_cause %>
+    </p>
 
-  <p>
-    <b>Psar actual time</b><br />
-    <%= f.text_field :psar_actual_time %>
-  </p>
+    <p>
+      <b>Psar chargeable src ind</b><br />
+      <%= f.text_field :psar_chargeable_src_ind %>
+    </p>
 
-  <p>
-    <b>Psar cause</b><br />
-    <%= f.text_field :psar_cause %>
-  </p>
+    <p>
+      <b>Psar chargeable time</b><br />
+      <%= f.text_field :psar_chargeable_time %>
+    </p>
 
-  <p>
-    <b>Psar chargeable src ind</b><br />
-    <%= f.text_field :psar_chargeable_src_ind %>
-  </p>
+    <p>
+      <b>Psar cia</b><br />
+      <%= f.text_field :psar_cia %>
+    </p>
 
-  <p>
-    <b>Psar chargeable time</b><br />
-    <%= f.text_field :psar_chargeable_time %>
-  </p>
+    <p>
+      <b>Psar fesn</b><br />
+      <%= f.text_field :psar_fesn %>
+    </p>
 
-  <p>
-    <b>Psar cia</b><br />
-    <%= f.text_field :psar_cia %>
-  </p>
+    <p>
+      <b>Psar file and symbol</b><br />
+      <%= f.text_field :psar_file_and_symbol %>
+    </p>
 
-  <p>
-    <b>Psar fesn</b><br />
-    <%= f.text_field :psar_fesn %>
-  </p>
+    <p>
+      <b>Psar impact</b><br />
+      <%= f.text_field :psar_impact %>
+    </p>
 
-  <p>
-    <b>Psar file and symbol</b><br />
-    <%= f.text_field :psar_file_and_symbol %>
-  </p>
+    <p>
+      <b>Psar mailed flag</b><br />
+      <%= f.text_field :psar_mailed_flag %>
+    </p>
 
-  <p>
-    <b>Psar impact</b><br />
-    <%= f.text_field :psar_impact %>
-  </p>
+    <p>
+      <b>Psar sequence number</b><br />
+      <%= f.text_field :psar_sequence_number %>
+    </p>
 
-  <p>
-    <b>Psar mailed flag</b><br />
-    <%= f.text_field :psar_mailed_flag %>
-  </p>
+    <p>
+      <b>Psar service code</b><br />
+      <%= f.text_field :psar_service_code %>
+    </p>
 
-  <p>
-    <b>Psar sequence number</b><br />
-    <%= f.text_field :psar_sequence_number %>
-  </p>
+    <p>
+      <b>Psar solution</b><br />
+      <%= f.text_field :psar_solution %>
+    </p>
 
-  <p>
-    <b>Psar service code</b><br />
-    <%= f.text_field :psar_service_code %>
-  </p>
+    <p>
+      <b>Psar stop date year</b><br />
+      <%= f.text_field :psar_stop_date_year %>
+    </p>
 
-  <p>
-    <b>Psar solution</b><br />
-    <%= f.text_field :psar_solution %>
-  </p>
+    <p>
+      <b>Psar system date</b><br />
+      <%= f.text_field :psar_system_date %>
+    </p>
 
-  <p>
-    <b>Psar stop date year</b><br />
-    <%= f.text_field :psar_stop_date_year %>
-  </p>
+    <p>
+      <b>Stop time moc</b><br />
+      <%= f.text_field :stop_time_moc %>
+    </p>
 
-  <p>
-    <b>Psar system date</b><br />
-    <%= f.text_field :psar_system_date %>
-  </p>
+    <p>
+      <b>Dirty</b><br />
+      <%= f.check_box :dirty %>
+    </p>
 
-  <p>
-    <b>Stop time moc</b><br />
-    <%= f.text_field :stop_time_moc %>
-  </p>
-
-  <p>
-    <b>Dirty</b><br />
-    <%= f.check_box :dirty %>
-  </p>
-
-  <p>
-    <%= f.submit "Create" %>
-  </p>
-<% end %>
-
-<%= link_to 'Back', combined_psars_path %>
+    <p>
+      <%= f.submit "Create", :disabled => :disabled %>
+      <span style='color:red'>Sorry... this is not implemented yet</span>
+    </p>
+  <% end %>
+<%- end -%>
+<%- content_for(:bottom) do -%>
+  <%= home_button %>
+  <%= favorites_button %>
+  <%= button_url 'Full PSAR List', combined_psars_path %>
+<%- end -%>

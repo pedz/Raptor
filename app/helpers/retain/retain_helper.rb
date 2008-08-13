@@ -75,5 +75,14 @@ module Retain
         add_fixed_width_span(binding, hash)
       end
     end
+
+    def psar_button
+      button_url('PSAR',
+                 combined_psars_path(:psar_start_date => Time.previous_saturday.strftime("%Y%m%d")))
+    end
+
+    def registration_button
+      button_url("Registration", signon_user)
+    end
   end
 end

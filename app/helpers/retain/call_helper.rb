@@ -46,7 +46,7 @@ module Retain
 
     def display_update_button(binding)
       span binding, :class => 'call-update-span' do |binding|
-        concat(button("Update", "$(\"call_update_span\").toggleCallUpdateForm();"), binding)
+        concat(button("Update Call", "$(\"call_update_span\").toggleCallUpdateForm();"), binding)
       end
     end
 
