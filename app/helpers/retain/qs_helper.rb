@@ -127,6 +127,7 @@ module Retain
       else
         td binding, :class => 'colon-time' do |binding|
           pmr_id = call.pmr.id
+          logger.debug("qs_helper#psar_time: pmr_id=#{pmr_id}")
           if psars = @todays_psars.delete(pmr_id)
             pmr_time = sum_psar_time(psars)
           else
