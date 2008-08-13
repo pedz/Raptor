@@ -156,7 +156,7 @@
     <%= button_url("Favorites", combined_favorite_queues_path) %>
     <%= button_url("Queue #{@queue.to_param}", combined_queue_path(@queue)) %>
     <%= button_url("QS #{@queue.to_param}", combined_q_path(@queue)) %>
-    <%= button_url("PSAR", retain_psar_path) %>
+    <%= button_url 'PSAR', combined_psars_path(:psar_start_date => Time.previous_saturday.strftime("%Y%m%d")) %>
     <%= button_url("Registration", @registration) %>
     <% display_update_button(binding) %>
     <% display_update_form(binding, @call) %>
