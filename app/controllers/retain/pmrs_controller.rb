@@ -14,7 +14,11 @@ module Retain
         pmr.last_alter_timestamp = nil
         pmr.mark_cache_invalid
       end
-      redirect_to(pmr.primary_call)
+      
+      respond_to do |format|
+        format.html { redirect_to(pmr.primary_call) }
+        format.xml { render :xml => pmr.to_xml( :include => :text_lines ) }
+      end
     end
 
     private
