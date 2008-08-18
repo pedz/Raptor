@@ -15,7 +15,15 @@ module Combined
       @cached.signon
     end
 
+    def refresh(time)
+      logger.debug("refreshing registration #{to_param}")
+      self.last_all_fetch = nil
+      self.last_day_fetch = nil
+      self.save!
+    end
+
     def psars
+      logger.debug("psars for registration #{to_param}")
       if @cached.last_all_fetch.nil? || @cached.last_all_fetch < 1.day.ago
         logger.debug("Fetching all PSAR")
         search_hash = {
