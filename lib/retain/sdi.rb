@@ -136,9 +136,11 @@ module Retain
         logger.debug("RTN: rc should be #{@rc}")
       end
 
+      # Set request type before calling scan_fields just in case it
+      # has to produce some error logs.
+      @request_type = options[:request]
       @rcv_fields = scan_fields(Fields.new, @reply[128...@reply.length])
       req_fields.merge!(@rcv_fields)
-      @request_type = options[:request]
       @fields.error_message = @rcv_fields.error_message if @rcv_fields.has_key?(:error_message)
     end
 
@@ -219,6 +221,12 @@ module Retain
       until s.nil? || s.length == 0
         len = s[0...2].ret2ushort
         ele = s[2...4].ret2ushort
+        if len == 0
+          logger.error("SDI ERROR: len = 0. s.length is #{s.length}")
+          hex_dump("#{@request_type} request", @snd)
+          hex_dump("#{@request_type} reply", @reply)
+          break
+        end
         if six_byte_headers
           tpe = s[4...6].ret2ushort
           dat = s[6...len]
