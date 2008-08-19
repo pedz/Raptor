@@ -40,15 +40,13 @@ module Retain
       total_time = @todays_psars.inject(0) { |sum, psar_thing|
         sum += sum_psar_time(psar_thing[1])
       }
-      tbody binding do |binding|
-        @queue.calls.each_with_index do |call, index|
-          tr binding, :class => call_class(call) + " pmr-row" do |binding|
-            DISP_LIST.map { |sym| self.send sym, binding, false, call, index }.join("\n")
-          end
-        end
-      end
+      pmr_ids = @queue.calls.map { |call| call.pmr.id }
       other_time = @todays_psars.inject(0) { |sum, psar_thing|
-        sum += sum_psar_time(psar_thing[1])
+        pmr_id, psars = psar_thing
+        unless pmr_id && pmr_ids.include?(pmr_id)
+          sum += sum_psar_time(psars)
+        end
+        sum
       }
       tfoot binding do |binding|
         tr binding do |binding|
@@ -65,6 +63,14 @@ module Retain
           end
           td binding do |binding|
             concat(qs_show_time(total_time), binding)
+          end
+        end
+      end
+
+      tbody binding do |binding|
+        @queue.calls.each_with_index do |call, index|
+          tr binding, :class => call_class(call) + " pmr-row" do |binding|
+            DISP_LIST.map { |sym| self.send sym, binding, false, call, index }.join("\n")
           end
         end
       end
@@ -237,7 +243,7 @@ module Retain
         end
       else
         td binding, :class => 'call-button' do |binding|
-          concat(button_url("C#{index + 1}", call), binding)
+          concat(button_url("#{index + 1}", call), binding)
         end
       end
     end

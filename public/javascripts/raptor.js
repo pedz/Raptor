@@ -49,7 +49,7 @@ var Raptor = {
 		     ++elementIndex) {
 		    var ele = elements[elementIndex];
 		    var eleId = ele.id.toLowerCase();
-		    var match = eleId.substr(0, textLength) == textValue;
+		    var match = eleId.substr(1, textLength) == textValue;
 		    if (match) {
 			// Exact match takes precidence
 			if (eleId.length == textLength) {

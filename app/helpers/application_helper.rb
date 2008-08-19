@@ -67,7 +67,7 @@ module ApplicationHelper
   end
 
   def button(text, action)
-    "<button onclick='#{action}' class='auto-button' id='#{text.to_s.gsub(/[-, ]/, '_')}'>#{text.to_s}</button>"
+    "<button onclick='#{action}' class='auto-button' id='B#{text.to_s.gsub(/[-, ]/, '_')}'>#{text.to_s}</button>"
   end
 
   def button_url(text, url)
