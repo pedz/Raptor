@@ -2,7 +2,11 @@
 <%  extend Retain::CallUpdateHelper -%>
 <%  content_tag :div, :style => 'border:solid 1px' do -%>
 <%=   content_tag :span, "", html_tag(call_update, 'reply-span') %>
-<%    remote_form_for call_update, :html => html_tag(call_update, "form") do |cu| -%>
+<%-   submit_id = id_for(call_update, "submit") -%>
+<%-   remote_form_for(call_update,
+                      :loading => "Raptor.disableSubmit($('#{submit_id}'));",
+                      :complete => "Raptor.enableSubmit($('#{submit_id}'));",
+                      :html => html_tag(call_update, "form")) do |cu| -%>
 <%=     cu.check_box :update_pmr, html_tag(call_update, "update-pmr") -%>
         Update PMR
 <%      content_tag :span, html_tag(call_update, 'action-span') do %>

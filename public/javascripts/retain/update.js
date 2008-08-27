@@ -86,6 +86,17 @@ Raptor.sendEmail = function(event) {
     Raptor.loadPage(href);
 };
 
+Raptor.disableSubmit = function(ele) {
+    ele.savedValue = ele.value;
+    ele.value = "Sent...";
+    ele.disable();
+};
+
+Raptor.enableSubmit = function(ele) {
+    ele.value = ele.savedValue;
+    ele.enable();
+};
+
 /* Add this to the document.observe('dom:loaded') list of functions */
 Raptor.updateLoadHook = function() {
     /* This has to be here or firefox draws the initial page wrong */
