@@ -28,11 +28,12 @@ ActionController::Routing::Routes.draw do |map|
                 })
 
   # "Queue Status" -- my Techjump page
-  map.resources :combined_qs,                :controller => 'retain/qs'
-
-  map.resources :combined_customers,         :controller => 'retain/customers'
-  map.resources :combined_centers,           :controller => 'retain/centers'
-  map.resources :combined_apars,             :controller => 'retain/apars'
+  map.resources(:combined_qs,        :controller => 'retain/qs')
+  map.resources(:combined_customers, :controller => 'retain/customers')
+  map.resources(:combined_centers,   :controller => 'retain/centers')
+  map.resources(:combined_apars,     :controller => 'retain/apars')
+  map.resources(:combined_queues,    :controller => 'combined/queues')
+  
 
   # Call Update map.
   map.retain_call_update('retain/call/:id',
@@ -54,6 +55,8 @@ ActionController::Routing::Routes.draw do |map|
                   :owner_list => :get
                 })
 
+
+  # This needs to be removed
   map.resources :combined_queue,           :controller => 'retain/queue'
   map.resources :combined_favorite_queues, :controller => 'retain/favorite_queues'
   # map.resources :retusers
