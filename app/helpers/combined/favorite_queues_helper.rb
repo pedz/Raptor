@@ -1,4 +1,4 @@
-module Retain
+module Combined
   module FavoriteQueuesHelper
   end
 end

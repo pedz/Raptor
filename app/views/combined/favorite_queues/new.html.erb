@@ -1,17 +1,11 @@
-<% @title = "Edit Favorite Queue #{@favorite_queue.queue.to_param}" %>
+<% @title = "New Favorite Queue" %>
 <% content_for(:center) do %>
-<!-- retain/favorite_queues/edit.html.erb -->
-  <h1>Editing a favorite queue</h1>
+<!-- combined/favorite_queues/new.html.erb -->
+  <h1>Create a favorite Retain queue</h1>
   
   <%= error_messages_for :queue %>
   
   <% form_for(@favorite_queue) do |f| %>
-  <% if admin? %>
-    <p>
-      <b>User</b><br />
-      <%= f.text_field :user_id %>
-    </p>
-  <% end %>
   <%   fields_for @favorite_queue.queue do |queue| %>
     <p>
       <b>Queue name</b><br />
@@ -31,10 +25,9 @@
     </p>
   <% end %>
     <p>
-      <%= f.submit "Update" %>
+      <%= f.submit "Create" %>
     </p>
   <% end %>
-  
-  <%= button_url 'Show', @favorite_queue %>
+
   <%= button_url 'Index of Favorite Queues', combined_favorite_queues_path %>
 <% end %>

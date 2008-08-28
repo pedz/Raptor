@@ -10,11 +10,8 @@ ActionController::Routing::Routes.draw do |map|
     feedback.resources :feedback_notes
   end
 
-  # Shows PSAR data
-  map.resource :retain_psar, :controller => 'retain/psar'
-
-  # Does a PMRQQ.  Debug and test. No useful info that I can find.
-  map.resources :retain_qq, :controller => 'retain/qq'
+  # Shows the user's favorite queues.
+  map.resources :combined_favorite_queues, :controller => 'combined/favorite_queues'
 
   # Mapping between Queue and Person... Needs much work.
   map.resources :combined_queue_infos, :controller => 'retain/queue_infos'
@@ -56,11 +53,12 @@ ActionController::Routing::Routes.draw do |map|
                 })
 
 
-  # This needs to be removed
-  map.resources :combined_queue,           :controller => 'retain/queue'
-  map.resources :combined_favorite_queues, :controller => 'retain/favorite_queues'
   # map.resources :retusers
   map.resources :users
+
+  # These Controllers are simple things just to poke retain
+  # Does a PMRQQ.  Debug and test. No useful info that I can find.
+  map.resources :retain_qq, :controller => 'retain/qq'
 
   # The priority is based upon order of creation: first created ->
   # highest priority.
@@ -77,12 +75,14 @@ ActionController::Routing::Routes.draw do |map|
   # map.resources :products
 
   # Sample resource route with options:
-  # map.resources :products, :member => { :short => :get, :toggle => :post }, :collection => { :sold => :get }
+  # map.resources :products, :member => { :short => :get, :toggle => :post },
+  #    :collection => { :sold => :get }
 
   # Sample resource route with sub-resources:
   # map.resources :products, :has_many => [ :comments, :sales ], :has_one => :seller
 
-  # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
+  # You can have the root of your site routed with map.root --
+  # just remember to delete public/index.html.
   map.root :controller => "welcome"
 
   # Install the default routes as the lowest priority.

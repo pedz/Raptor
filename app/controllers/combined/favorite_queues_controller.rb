@@ -1,5 +1,5 @@
-module Retain
-  class FavoriteQueuesController < RetainController
+module Combined
+  class FavoriteQueuesController < Retain::RetainController
     # GET /favorite_queues
     # GET /favorite_queues.xml
     def index
