@@ -115,6 +115,33 @@ Raptor.myDateSort = function(a, b) {
     return SortableTable.compare(a ? calc(a) : 0, b ? calc(b) : 0);
 };
 
+Raptor.popupDelayStart = function (event) {
+    this.popupDelayId = this.showPopup.delay(0.25);
+};
+
+Raptor.popupDelayKill = function (event) {
+    if (this.popupDelayId) {
+	window.clearTimeout(this.popupDelayId);
+	this.popupDelayId = null;
+    } else {
+	/* Might want to do this all the time just in case */
+	this.hidePopup();
+    }
+};
+
+/* 'this' is set to the div.links element */
+Raptor.showPopup = function () {
+    this.popupDelayId = null;
+    /* this.popupElement.setStyle({ display: 'block' }); */
+    Effect.Grow(this.popupElement, { duration: 0.5 });
+};
+
+/* 'this' is set to the div.links element */
+Raptor.hidePopup = function () {
+    Effect.Shrink(this.popupElement, { duration: 0.5 });
+    /* this.popupElement.setStyle({ display: 'none' }); */
+};
+
 SortableTable.addSortType("my-date", Raptor.myDateSort);
 
 document.observe('dom:loaded', function() {
@@ -125,5 +152,14 @@ document.observe('dom:loaded', function() {
 
     $$('.call-update-container').each(function (ele) {
 	ele.toggleCallUpdateForm = Raptor.qsToggleCallUpdateForm.bind(ele);
+    });
+
+    $$('.links').each(function (ele) {
+	ele.observe('mouseover', Raptor.popupDelayStart.bindAsEventListener(ele));
+	ele.observe('mouseout', Raptor.popupDelayKill.bindAsEventListener(ele));
+	ele.showPopup = Raptor.showPopup.bind(ele);
+	ele.hidePopup = Raptor.hidePopup.bind(ele);
+	ele.popupElement = ele.down('.popup');
+	ele.popupElement.hide();
     });
 });
