@@ -124,3 +124,7 @@ td.other-time {
 td.total-time {
     text-align: right;
 }
+
+td.service-given {
+    text-align: center;
+}

@@ -33,9 +33,20 @@ module Cached
              :foreign_key => "pmr_id")
 
     def all_text_lines
-      to_combined.text_lines
+      # to_combined.text_lines
+      text_lines
     end
     once :all_text_lines
+    
+    def system_inserted_lines
+      all_text_lines.find_all { |text_line| text_line.text_type == :system_inserted }
+    end
+    once :system_inserted_lines
+    
+    def service_given_lines
+      system_inserted_lines.find_all { |text_line| text_line.service_given }
+    end
+    once :service_given_lines
     
     def signature_lines
       all_text_lines.find_all { |text_line|

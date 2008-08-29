@@ -25,6 +25,14 @@ module Cached
                :class_name => "Cached::Pmr",
                :foreign_key => "pmr_id")
 
+    SERVICE_GIVEN_REGEXP = Regexp.new("SERVICE GIVEN= ([1234]9)")
+    def service_given
+      if (md = SERVICE_GIVEN_REGEXP.match(self.text))
+        md[1]
+      end
+    end
+    once :service_given
+
     # The public interface has text_type.  We map it to an integer
     # when we go to and from the database.
     def text_type=(value)

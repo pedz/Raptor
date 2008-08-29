@@ -6,7 +6,7 @@ module Retain
     DISP_LIST = [
                  :call_button, :link_etc, :pri_sev, :p_s_b,
                  :biggem,
-                 :age, :jeff, :next_ct, :ct, :psar_time
+                 :age, :jeff, :next_ct, :ct, :psar_time, :sg
                 ]
 
     HELP_TEXT = <<-EOF
@@ -125,6 +125,41 @@ module Retain
       end
     end
     
+    # Service Given
+    def sg(binding, header, call, index)
+      if header
+        th binding do |binding|
+          concat("SG", binding)
+        end
+      else
+        sig_text = nil
+        if (sg_lines = call.pmr.service_given_lines).empty?
+          title = "Get Off your ASS!!!"
+          sg = "NG"
+        else
+          last_sg = sg_lines.last
+          sig_text = call.pmr.all_text_lines.reverse.find { |line|
+            line.text_type == :signature && line.line_number < last_sg.line_number
+          }
+          title = Retain::SignatureLine.new(sig_text.text).date.new_offset(signon_user.tz).strftime("%b %d, %Y")
+          sg = last_sg.service_given
+          link = combined_call_path(call)
+        end
+        td binding, :class => 'service-given', :title => title do |binding|
+          if sig_text
+            hash = hash_for_combined_call_path(:id => call.to_param)
+            hash.merge!(:anchor => "line_#{sig_text.line_number}")
+            href = url_for(hash)
+            a binding, :href => href do |binding|
+              concat(sg, binding)
+            end
+          else
+            concat(sg, binding)
+          end
+        end
+      end
+    end
+
     def psar_time(binding, header, call, index)
       if header
         th binding do |binding|
