@@ -139,7 +139,7 @@ module Retain
       :online_start_timestamp      => [  559, :ebcdic,          4 ], # date/time
       :two_assisting_specialist    => [  560, :ebcdic,         24 ],
       :call_control_flag_2         => [  561, :ebcdic,          1 ],
-      :service_given_code          => [  562, :ebcdic,          2 ],
+      :service_given               => [  562, :ebcdic,          2 ],
       :acc_time_before_contact     => [  563, :ebcdic,          2 ], # time
       :exception_process           => [  564, :ebcdic,          1 ],
       :software_center             => [  565, :binary_center,   2 ],

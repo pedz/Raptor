@@ -32,6 +32,8 @@
 <%        end -%>
           New Priority
 <%=       do_text_field cu, :new_priority, 1, call_update %>
+          Service Given
+<%=       do_text_field cu, :service_given, 2, call_update %>
 <%      end -%>
 <%=     tag("br") %>
 <%=     cu.text_area :newtxt, html_tag(call_update, "newtxt", :rows => 10, :cols => 72) %>

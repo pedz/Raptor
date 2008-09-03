@@ -8,7 +8,7 @@ module Retain
 
     attr_reader   :call
     attr_accessor :update_pmr, :update_type, :do_ct, :newtxt, :add_time
-    attr_accessor :new_queue, :new_priority
+    attr_accessor :new_queue, :new_priority, :service_given
     attr_accessor :psar_update
     
     def initialize(call)
@@ -22,6 +22,7 @@ module Retain
       @psar_update = PsarUpdate.new(75, 57, 50, call.priority, 9, 0, 30)
       @new_queue = call.queue.to_param
       @new_priority = call.priority
+      @service_given = "99"
     end
 
     def to_id

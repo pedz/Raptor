@@ -39,7 +39,7 @@ module Retain
                         :contact_phone_2,
                         :hardware_territory,
                         :comp_id_or_alias,
-                        :service_given_code,
+                        :service_given,
                         :log_comment,
                         :call_class,
                         :call_disposition,

@@ -109,7 +109,7 @@ module Retain
         case update_type
         when :addtxt
           addtxt_options = pmr_options.dup
-          addtxt_options[:addtxt_lines] = newtxt
+          addtxt_options[:addtxt_lines] = newtxt unless newtxt.empty?
           addtxt = safe_new(Retain::Pmat, addtxt_options, reply_span)
           return if addtxt.nil?
           safe_sendit(addtxt)
@@ -136,14 +136,16 @@ module Retain
           
         when :requeue
           requeue_options = call_options.dup
-          requeue_options[:addtxt_lines] = newtxt
+          requeue_options[:addtxt_lines] = newtxt unless newtxt.empty?
           requeue_options[:operand] = '    '
           requeue_options.merge!(get_psar_options(call_update)) if call_update[:add_time]
           if (new_priority = call_update[:new_priority]) && @call.priority != new_priority
             requeue_options[:priority] = new_priority
             requeue_options[:severity] = new_priority
           end
-          
+          unless (sg = call_update[:service_given]).nil? || sg == "99"
+            requeue_options[:service_given] = sg
+          end
           if new_queue = call_update[:new_queue]
             queue, h_or_s, center = new_queue.upcase.split(',')
             if h_or_s != @queue.h_or_s
@@ -189,7 +191,7 @@ module Retain
           
         when :close
           close_options = call_options.dup
-          close_options[:addtxt_lines] = newtxt if @call.p_s_b != 'B'
+          close_options[:addtxt_lines] = newtxt unless @call.p_s_b == 'B' || newtxt.empty?
           close_options[:problem_status_code] = 'CL1L1 ' if @call.p_s_b == 'P'
           close_options.merge!(get_psar_options(call_update)) if call_update[:add_time]
           close = safe_new(Retain::Pmcc,close_options, reply_span)

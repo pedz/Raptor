@@ -116,7 +116,7 @@ module Retain
                         :scratch_pad_line_3,
                         :security_classification,
                         :service_contract,
-                        :service_given_code,
+                        :service_given,
                         :service_hour,
                         :severity,
                         :special_message,
