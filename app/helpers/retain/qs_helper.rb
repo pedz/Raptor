@@ -80,7 +80,7 @@ module Retain
 
     BIGGEM_COLUMNS = [
                       [ :customer, :owner, :resolver, :next_queue ],
-                      [ :comments, :call_update_field ],
+                      [ :comments, :component_check, :call_update_field ],
                       [ :call_update_form ]
                      ]
     def biggem(binding, header, call, index)
@@ -125,6 +125,57 @@ module Retain
       end
     end
     
+    CompRegex = Regexp.new("CompID:(.........)")
+    GoodComps = [
+                 "5765E6200",   # AIX 5.2
+                 "5765G0300",   # AIX 5.3
+                 "5765G6200",   # AIX 6.1
+                 "5765E6199"    # AIX 5.1 Extended
+                ]
+    def component_check(binding, header, call, index)
+      if header
+        th binding do |binding|
+          concat("Component", binding)
+        end
+      else
+        pmr = call.pmr
+        pmr_comp = pmr.component_id[0,9]
+        entitled_comp = pmr.information_text_lines.inject(nil) { |comp, text_line|
+          unless comp
+            if (md = CompRegex.match(text_line.text))
+              comp = md[1]
+            end
+          end
+          comp
+        }
+        if entitled_comp.nil?
+          td_class = "wag-wag"
+          td_title = "Not entitled"
+        elsif entitled_comp != pmr_comp
+          td_class = "wag-wag"
+          td_title = "Entitled for #{entitled_comp}"
+        elsif GoodComps.include?(pmr_comp)
+          td_class = "good"
+          td_title = "Valid entitled component"
+        else
+          td_class = "warn"
+          td_title = "Entitled component not valid"
+        end
+        # Hack for now -- WT does not seem to be checked and Hitachi
+        # does not seem to be checked.
+        if pmr.country != "000"
+          td_class = "good"
+          td_title = "WT not checked"
+        elsif pmr.customer.customer_number == "4285384"
+          td_class = "good"
+          td_title = "Hitachi not checked"
+        end
+        td binding, :class => td_class, :title => td_title do |binding|
+          concat(pmr_comp, binding)
+        end
+      end
+    end
+
     # Service Given
     def sg(binding, header, call, index)
       if header
@@ -239,11 +290,11 @@ module Retain
     def comments(binding, header, call, index)
       logger.debug("QS: comments #{call.nil? ? "header" : call.to_param}")
       if header
-        th binding, :class => 'comments', :colspan => 3 do |binding|
+        th binding, :class => 'comments', :colspan => 2 do |binding|
           concat("Comments", binding)
         end
       else
-        td binding, :colspan => 3, :class => 'comments' do |binding|
+        td binding, :colspan => 2, :class => 'comments' do |binding|
           add_page_setting("comments_#{call.to_id}",
                            {
                              :url => alter_combined_call_path(call)
