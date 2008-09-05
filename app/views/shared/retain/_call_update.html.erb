@@ -56,12 +56,18 @@
 <%=         do_text_field psar, :hours, 2, call_update %>Hours
 <%=         do_text_field psar, :minutes, 2, call_update %>Minutes
 <%=         tag("br") %>
-            Stop Time and Date:
-<%=         do_text_field psar, :stop_year, 4, call_update %>/<%=
-            do_text_field psar, :stop_month,2, call_update %>/<%=
-            do_text_field psar, :stop_day, 2, call_update %>
-<%=         do_text_field psar, :stop_hour, 2, call_update %>:<%=
-            do_text_field psar, :stop_minute, 2, call_update %>
+<%=         psar.check_box :alter_time, html_tag(call_update, "alter-time") %>
+<%          content_tag :span, :class => 'alter-time-off' do -%>
+              Set Stop Time
+<%          end %>
+<%          content_tag :span, :class => 'alter-time-on' do -%>
+              Stop Time and Date:
+<%=           do_text_field psar, :stop_year, 4, call_update %>/<%=
+              do_text_field psar, :stop_month,2, call_update %>/<%=
+              do_text_field psar, :stop_day, 2, call_update %>
+<%=           do_text_field psar, :stop_hour, 2, call_update %>:<%=
+              do_text_field psar, :stop_minute, 2, call_update %>
+<%          end %>
 <%        end %>
 <%      end %>
 <%=     tag("br") %>

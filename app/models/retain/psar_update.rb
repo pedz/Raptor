@@ -4,6 +4,7 @@ module Retain
     attr_accessor :psar_service_code, :psar_action_code, :psar_cause
     attr_accessor :psar_impact, :psar_solution, :psar_actual_time
     attr_accessor :psar_chargeable_time, :hours, :minutes
+    attr_accessor :alter_time
     attr_accessor :stop_year, :stop_month, :stop_day, :stop_hour, :stop_minute
 
     def initialize(service, action, cause, impact, solution, hours, minutes)
@@ -20,6 +21,7 @@ module Retain
       @stop_day    = t.day
       @stop_hour   = t.hour
       @stop_minute = t.min
+      @alter_time = false
     end
   end
 end

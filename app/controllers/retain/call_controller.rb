@@ -426,10 +426,12 @@ module Retain
       # Munge the psar_options that we need to munge
       psar_options[:psar_actual_time] = (hours * 10) + (minutes / 6).to_i
       psar_options[:psar_chargeable_time] = hours * 256 + minutes
-      psar_options[:local_stop_date] =
-        format("%02d/%02d/%02d", month, day, year % 100)
-      psar_options[:psar_activity_stop_time] =
-        format("%02d%1d", hour, minute / 6)
+      if psar_options[:alter_time] == "1"
+        psar_options[:local_stop_date] =
+          format("%02d/%02d/%02d", month, day, year % 100)
+        psar_options[:psar_activity_stop_time] =
+          format("%02d%1d", hour, minute / 6)
+      end
       psar_options
     end
 

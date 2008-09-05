@@ -97,6 +97,16 @@ Raptor.enableSubmit = function(ele) {
     ele.enable();
 };
 
+Raptor.alterTimeToggle = function(event) {
+    if (this.getValue()) {
+	this.next('.alter-time-off').hide();
+	this.next('.alter-time-on').show();
+    } else {
+	this.next('.alter-time-on').hide();
+	this.next('.alter-time-off').show();
+    }
+};
+
 /* Add this to the document.observe('dom:loaded') list of functions */
 Raptor.updateLoadHook = function() {
     /* This has to be here or firefox draws the initial page wrong */
@@ -135,5 +145,10 @@ Raptor.updateLoadHook = function() {
 
     $$('.send-email-button').each(function (ele) {
 	ele.observe('click', Raptor.sendEmail.bindAsEventListener(ele));
+    });
+
+    $$('.call-update-alter-time').each(function (ele) {
+	ele.observe('click', Raptor.alterTimeToggle.bindAsEventListener(ele));
+	ele.next('.alter-time-on').hide();
     });
 };
