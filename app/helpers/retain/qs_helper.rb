@@ -11,7 +11,7 @@ module Retain
 
     HELP_TEXT = <<-EOF
 	<tr>
-	  <th colspan='5'>
+	  <th colspan='#{DISP_LIST.length}'>
 	    Click on column headings to sort by that column
 	  </th>
 	</tr>

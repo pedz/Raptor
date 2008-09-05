@@ -1,6 +1,30 @@
 body {
-    background: #8f8f8f;
+    background-color: #4477BB;
     color: black;
+}
+
+#flash-error {
+    color: red;
+}
+
+#flash-warn {
+    color: yellow;
+}
+
+#flash-notice {
+    color: LightBlue;
+}
+
+table.sortable {
+    background-color: DarkBlue;
+}
+
+thead {
+    background-color: LightBlue;
+}
+
+tfoot {
+    background-color: LightBlue;
 }
 
 td.age {
@@ -12,11 +36,11 @@ td.jeff {
 }
 
 .rowodd {
-    background: #e0e0e0;
+    background-color: #e0e0e0;
 }
 
 .roweven {
-    background: #e0e0f8;
+    background-color: #e0e0f8;
 }
 
 .not-editable {
@@ -43,7 +67,7 @@ span.ecpaat-heading {
     color: #FFF;
     width: 80ex;
     z-index: 100;
-    background: black;
+    background-color: black;
     text-align: left;
 }
 

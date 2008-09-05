@@ -38,9 +38,9 @@ class ApplicationController < ActionController::Base
   def authenticate
     set_last_uri
     return true if session[:user]
-    if request.env.has_key? "REMOTE_USER"
+    if request.env.has_key? "REMOTE_USER" && false
       apache_authenticate
-    elsif NONE_AUTHENTICATE
+    elsif NONE_AUTHENTICATE && false
       none_authenticate
     else
       ldap_authenticate
@@ -71,7 +71,8 @@ class ApplicationController < ActionController::Base
     logger.debug("ldap_authenticate")
     ldap_time = Benchmark.realtime { ActiveLdap::Base.establish_connection }
     logger.debug("LDAP: took #{ldap_time} to establish the connection")
-    authenticate_or_request_with_http_basic "Raptor" do |user_name, password|
+    authenticate_or_request_with_http_basic "Bluepages Authentication" do |user_name, password|
+      logger.debug("TEMP: user_name #{user_name} password #{password}")
       next nil unless LdapUser.authenticate_from_email(user_name, password)
       common_authenticate(user_name)
       return true
