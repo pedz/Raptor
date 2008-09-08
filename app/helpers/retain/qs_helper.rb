@@ -6,7 +6,7 @@ module Retain
     DISP_LIST = [
                  :call_button, :link_etc, :pri_sev, :p_s_b,
                  :biggem,
-                 :age, :jeff, :next_ct, :ct, :psar_time, :sg
+                 :age, :jeff, :next_ct, :ct, :sg, :psar_time
                 ]
 
     HELP_TEXT = <<-EOF
@@ -49,20 +49,31 @@ module Retain
         sum
       }
       tfoot binding do |binding|
+        index = DISP_LIST.index(:psar_time)
         tr binding do |binding|
-          td binding, :colspan => DISP_LIST.length - 1, :class => 'other-time' do |binding|
+          td binding, :colspan => index, :class => 'other-time' do |binding|
             concat("Other PMRs", binding)
           end
           td binding do |binding|
             concat(qs_show_time(other_time), binding)
           end
+          if (diff = (DISP_LIST.length - index - 1)) > 0
+            td binding, :colspan => diff do |binding|
+              concat("&nbsp;", binding)
+            end
+          end
         end
         tr binding do |binding|
-          td binding, :colspan => DISP_LIST.length - 1, :class => 'total-time' do |binding|
+          td binding, :colspan => DISP_LIST.index(:psar_time), :class => 'total-time' do |binding|
             concat("Day's Total", binding)
           end
           td binding do |binding|
             concat(qs_show_time(total_time), binding)
+          end
+          if (diff = (DISP_LIST.length - index - 1)) > 0
+            td binding, :colspan => diff do |binding|
+              concat("&nbsp;", binding)
+            end
           end
         end
       end
