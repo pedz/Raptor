@@ -94,6 +94,7 @@ module Retain
       
       rendered = false
       fad = true
+      rc = :normal
       text = create_reply_span("Update Completed Successfully", 0)
       begin
         if call_update[:do_ct]
@@ -128,6 +129,7 @@ module Retain
             return if psar.nil?
             safe_sendit(psar)
             if psar.rc != 0
+              rc = rc2type(psar.rc)
               text += create_error_reply(psar)
             else
               text += create_reply_span("PSAR Added Successfully", 0)
@@ -184,6 +186,7 @@ module Retain
           end
 
           if requeue.rc != 0
+            rc = rc2type(requeue.rc)
             text = create_error_reply(requeue)
           else
             text = create_reply_span("Requeue Completed Successfully", 0)
@@ -207,6 +210,7 @@ module Retain
           end
 
           if close.rc != 0
+            rc = rc2type(close.rc)
             text = create_error_reply(close)
           else
             text = create_reply_span("Close Completed Successfully", 0)
@@ -221,6 +225,7 @@ module Retain
             return if psar.nil?
             safe_sendit(psar)
             if psar.rc != 0
+              rc = rc2type(psar.rc)
               text += create_error_reply(psar)
             else
               text += create_reply_span("PSAR Added Successfully", 0)
@@ -242,7 +247,7 @@ module Retain
       end
       render(:update) { |page|
         page.replace_html reply_span, text                          
-        page.visual_effect :fade, reply_span, :duration => 2.0
+        page.visual_effect(:fade, reply_span, :duration => 2.0) unless rc == :error
         page[form].reset
       }
     end
@@ -446,10 +451,18 @@ module Retain
       return pmcu
     end
 
-    def create_reply_span(msg, rc = 0)
+    def rc2type(rc)
       case rc
-      when 0; span_class = 'sdi-normal'
-      when 600 .. 700; span_class = 'sdi-warning'
+      when 0; :normal
+      when 600 .. 700; :warning
+      else :error
+      end
+    end
+
+    def create_reply_span(msg, rc = 0)
+      case rc2type(rc)
+      when :normal; span_class = 'sdi-normal'
+      when :warning; span_class = 'sdi-warning'
       else span_class = 'sdi-error'
       end
       ApplicationController.helpers.content_tag :span, msg, :class => span_class
