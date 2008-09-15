@@ -14,6 +14,8 @@
           Add Text Only
 <%=       cu.radio_button :update_type, "requeue", html_tag(call_update, "requeue-radio") -%>
           Requeue
+<%=       cu.radio_button :update_type, "dup", html_tag(call_update, "dup-radio") -%>
+          Dup
 <%=       cu.radio_button :update_type, "close", html_tag(call_update, "close-radio") -%>
           Close
 <%      end %>
@@ -30,8 +32,12 @@
 <%            end -%>
 <%          end -%>
 <%        end -%>
+<%      end -%>
+<%      content_tag :span, html_tag(call_update, 'priority-span') do -%>
           New Priority
 <%=       do_text_field cu, :new_priority, 1, call_update %>
+<%      end -%>
+<%      content_tag :span, html_tag(call_update, 'service-given-span') do -%>
           Service Given
 <%=       do_text_field cu, :service_given, 2, call_update %>
 <%      end -%>

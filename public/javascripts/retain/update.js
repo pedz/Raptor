@@ -3,19 +3,32 @@
  * page as well as the call page and probably other pages
  */
 
-/* called when requeue radio button clicked */
-Raptor.requeueClicked = function(event) {
-    Raptor.requeuePicked(this, event);
-};
-
 /* called when addtxt radio button clicked */
 Raptor.addtxtClicked = function(event) {
-    Raptor.requeueUnpicked(this, event);
+    this.requeueSpan.hide();
+    this.prioritySpan.hide();
+    this.serviceGivenSpan.hide();
+};
+
+/* called when requeue radio button clicked */
+Raptor.requeueClicked = function(event) {
+    this.requeueSpan.show();
+    this.prioritySpan.show();
+    this.serviceGivenSpan.show();
+};
+
+/* called when dup radio button clicked */
+Raptor.dupClicked = function(event) {
+    this.requeueSpan.show();
+    this.prioritySpan.show();
+    this.serviceGivenSpan.hide();
 };
 
 /* called when close radio button clicked */
 Raptor.closeClicked = function(event) {
-    Raptor.requeueUnpicked(this, event);
+    this.requeueSpan.hide();
+    this.prioritySpan.hide();
+    this.serviceGivenSpan.show();
 };
 
 /* called when the add time check box is clicked */
@@ -37,25 +50,12 @@ Raptor.updateClicked = function(event) {
 };
 
 /*
- * Given an element which is one of the update type radio buttons,
- * this returns the requeue span
+ * Sets up the spans to control for a radio button in an update box
  */
-Raptor.updateTypeRadioToRequeueSpan = function(ele) {
-    return ele.up(1).down('.call-update-requeue-span');
-};
-
-/*
- * Call this when "Requeue" is picked in list of possible actions.
- */
-Raptor.requeuePicked = function(ele, event) {
-    ele.requeueSpan.show();
-};
-
-/*
- * Call this when "Requeue" is unpicked in list of possible actions.
- */
-Raptor.requeueUnpicked = function(ele, event) {
-    ele.requeueSpan.hide();
+Raptor.setupRadioButtonSpans = function(ele) {
+    ele.requeueSpan      = ele.up(1).down('.call-update-requeue-span');
+    ele.prioritySpan     = ele.up(1).down('.call-update-priority-span');
+    ele.serviceGivenSpan = ele.up(1).down('.call-update-service-given-span');
 };
 
 /*
@@ -121,22 +121,35 @@ Raptor.updateLoadHook = function() {
     });
 
     $$('.call-update-requeue-radio').each(function (ele) {
-	ele.requeueSpan = Raptor.updateTypeRadioToRequeueSpan(ele);
-	ele.observe('click', Raptor.requeueClicked.bindAsEventListener(ele));
+	Raptor.setupRadioButtonSpans(ele);
+	ele.doClicked        = Raptor.requeueClicked.bindAsEventListener(ele);
+	ele.observe('click', ele.doClicked);
 	if (ele.getValue() == "requeue")
-	    ele.requeueSpan.show();
-	else
-	    ele.requeueSpan.hide();
+	    ele.doClicked();
     });
 
     $$('.call-update-addtxt-radio').each(function (ele) {
-	ele.requeueSpan = Raptor.updateTypeRadioToRequeueSpan(ele);
-	ele.observe('click', Raptor.addtxtClicked.bindAsEventListener(ele));
+	Raptor.setupRadioButtonSpans(ele);
+	ele.doClicked        = Raptor.addtxtClicked.bindAsEventListener(ele);
+	ele.observe('click', ele.doClicked);
+	if (ele.getValue() == "addtxt")
+	    ele.doClicked();
+    });
+
+    $$('.call-update-dup-radio').each(function (ele) {
+	Raptor.setupRadioButtonSpans(ele);
+	ele.doClicked        = Raptor.dupClicked.bindAsEventListener(ele);
+	ele.observe('click', ele.doClicked);
+	if (ele.getValue() == "dup")
+	    ele.doClicked();
     });
 
     $$('.call-update-close-radio').each(function (ele) {
-	ele.requeueSpan = Raptor.updateTypeRadioToRequeueSpan(ele);
-	ele.observe('click', Raptor.closeClicked.bindAsEventListener(ele));
+	Raptor.setupRadioButtonSpans(ele);
+	ele.doClicked        = Raptor.closeClicked.bindAsEventListener(ele);
+	ele.observe('click', ele.doClicked);
+	if (ele.getValue() == "close")
+	    ele.doClicked();
     });
 
     $$('.call-update-add-time').each(function (ele) {

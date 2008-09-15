@@ -75,6 +75,9 @@ module Retain
         when "requeue"
           update_type = :requeue
           need_undispatch = need_dispatch = true
+        when "dup"
+          update_type = :dup
+          need_undispatch = need_dispatch = call_update[:do_ct]
         when "close"
           update_type = :close
           need_undispatch = need_dispatch = true
@@ -192,6 +195,45 @@ module Retain
             text = create_reply_span("Requeue Completed Successfully", 0)
           end
           
+        when :dup
+          dup_options = pmr_options.dup
+          dup_options[:h_or_s] = @queue.h_or_s
+          dup_options[:customer_number] = @pmr.customer.customer_number
+          dup_options[:addtxt_lines] = newtxt unless newtxt.empty?
+          dup_options[:comment] = @call.comment
+          unless (sg = call_update[:service_given]).nil? || sg == "99"
+            dup_options[:service_given] = sg
+          end
+          if new_queue = call_update[:new_queue]
+            queue, h_or_s, center = new_queue.upcase.split(',')
+            dup_options[:queue_name] = queue
+            dup_options[:center] = center
+          end
+          dup = safe_new(Retain::Pmce, dup_options, reply_span)
+          return if dup.nil?
+          safe_sendit(dup)
+
+          if dup.rc != 0
+            rc = rc2type(dup.rc)
+            text = create_error_reply(dup)
+          else
+            text = create_reply_span("Dup Completed Successfully", 0)
+          end
+          
+          if call_update[:add_time]
+            psar_options = get_psar_options(call_update)
+            psar_options.merge!(pmr_options)
+            psar = safe_new(Retain::Psrc, psar_options, reply_span)
+            return if psar.nil?
+            safe_sendit(psar)
+            if psar.rc != 0
+              rc = rc2type(psar.rc)
+              text += create_error_reply(psar)
+            else
+              text += create_reply_span("PSAR Added Successfully", 0)
+            end
+          end
+
         when :close
           close_options = call_options.dup
           close_options[:addtxt_lines] = newtxt unless @call.p_s_b == 'B' || newtxt.empty?
