@@ -56,6 +56,9 @@ ActionController::Routing::Routes.draw do |map|
   # map.resources :retusers
   map.resources :users
 
+  map.resources(:retain_formatted_panels,
+                :controller => 'retain/formatted_panels')
+
   # These Controllers are simple things just to poke retain
   # Does a PMRQQ.  Debug and test. No useful info that I can find.
   map.resources :retain_qq, :controller => 'retain/qq'

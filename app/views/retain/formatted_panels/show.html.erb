@@ -1,0 +1,21 @@
+<%  @formatted_panel.format_panel.each do |format_panel_line| %>
+<%  text = (0 ... 72).inject("<span style='font-weight: normal; color: red;'>") do |memo, i|
+      s = format_panel_line.char(i)
+      case s
+      when :normal_protected
+        r = "</span><span style='font-weight: normal; color: red;'>"
+      when :normal_unprotected
+        r = "</span><span style='font-weight: normal; color: blue;'>"
+      when :intensified_protected
+        r = "</span><span style='font-weight: bold;   color: red;'>"
+      when :intensified_unprotected
+        r = "</span><span style='font-weight: bold;   color: blue;'>"
+      else
+        r = s
+      end
+      memo << r
+      memo
+    end + "</span>"
+%>
+<%= text %><br/>
+<% end %>

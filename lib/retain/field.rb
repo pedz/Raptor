@@ -34,8 +34,10 @@ module Retain
     #
     def value
       if @value.is_a?(Array)
+        Rails.logger.debug("RTN: value is array")
         @value.map { |line| decode(line) }
       else
+        Rails.logger.debug("RTN: value is not array")
         decode(@value)
       end
     end
@@ -243,6 +245,15 @@ module Retain
         TextLine.new(value[2, 1000000000], value[0, 2].ret2ushort)
       when :text_lines
         TextLine.new(value, 37)
+      when :format_panel_lines
+        temp = value
+        results = []
+        until temp.empty?
+          results << FormatPanelLine.new(temp[0,80])
+          temp = temp[80 .. -1]
+        end
+        Rails.logger.debug("RTN: results length is #{results.length}")
+        results
       when :number
         value.retain_to_user.to_i
       when :znumber
