@@ -35,12 +35,20 @@ td.jeff {
     text-align: right;
 }
 
-.rowodd {
+.normal.rowodd {
     background-color: #e0e0e0;
 }
 
-.roweven {
+.normal.roweven {
     background-color: #e0e0f8;
+}
+
+.updated.rowodd {
+    background-color: #c0c0c0;
+}
+
+.updated.roweven {
+    background-color: #c0c0f8;
 }
 
 .not-editable {
