@@ -33,7 +33,20 @@ module Cached
              :foreign_key => "pmr_id")
 
     def all_text_lines
-      # to_combined.text_lines
+      # Note for future: when a method in the cached model directly
+      # references an database association or field, the checks to
+      # make sure the database is up to date and valid are bypassed.
+      # Usually this is not what you want.
+      #
+      # The flip side is when a method in the cached model is called,
+      # it must return back a cached model -- not a combined model.
+      # This is because the combined missing_method will wrap it and a
+      # combined model can not be wrapped again.
+      #
+      # So, for now, I fetch a simple non-constant field to make sure
+      # the cached_pmr and its lines are up to date.
+      to_combined.severity
+      # Then I return the lines
       text_lines
     end
     once :all_text_lines
@@ -67,7 +80,7 @@ module Cached
     # use its date.
     def create_time
       if (sig = signature_line_stypes('CE')).empty?
-        unless tz = customer.tz
+        unless tz = to_combined.customer.tz
           tz = 0
         end
         # should never be true but just in case.
