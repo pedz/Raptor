@@ -115,7 +115,7 @@ module Retain
                         :territory,
                         :system_down,
                         :call_back_time,
-                        :addtxt_line,
+                        :addtxt_lines,
                         :customer_account,
                         :dcsf_user_id,
                         :dcsf_node_id,
