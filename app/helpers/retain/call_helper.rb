@@ -33,6 +33,16 @@ module Retain
         text_line = sig_line.to_s(tz).gsub(/ /, '&nbsp;')
       else
         text_line = line.text.gsub(/ /, '&nbsp;')
+        # EBCDIC => UTF8      -- meaning
+        # \x32   => \x16      -- Normal Protected
+        # \x22   => \xc2 \x82 -- Normal Unprotected
+        # \x3a   => \xc2 \x9a -- High Intensity Protected
+        # \x2a   => \xc2 \x8a -- High Intensity Unprotected
+        # 
+        text_line = text_line.gsub("\x16",     '</span><span class="normal-protected">&nbsp;')
+        text_line = text_line.gsub("\xc2\x82", '</span><span class="normal-unprotected">&nbsp;')
+        text_line = text_line.gsub("\xc2\x9a", '</span><span class="intensified-protected">&nbsp;')
+        text_line = text_line.gsub("\xc2\x8a", '</span><span class="intensified-unprotected">&nbsp;')
       end
       render(:partial => "show_line",
              :locals => {
