@@ -200,7 +200,7 @@ module Retain
           dup_options[:h_or_s] = @queue.h_or_s
           dup_options[:customer_number] = @pmr.customer.customer_number
           dup_options[:addtxt_lines] = newtxt unless newtxt.empty?
-          dup_options[:comment] = @call.comment
+          dup_options[:comment] = @call.comments
           unless (sg = call_update[:service_given]).nil? || sg == "99"
             dup_options[:service_given] = sg
           end
