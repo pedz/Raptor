@@ -20,7 +20,6 @@ module Retain
           when 0x4e, 0x2a; :intensified_unprotected
           else @raw_text[index + 1,1].retain_to_user
           end
-      Rails.logger.debug("RTN: char = #{s}")
       s
     end
 
