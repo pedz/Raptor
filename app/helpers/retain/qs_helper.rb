@@ -431,7 +431,8 @@ module Retain
     def call_class(call)
       return "system-down" if call.system_down
       return "initial-response" if call.needs_initial_response?
-      last_name = call.pmr.signature_lines.last.name.gsub(/ +$/, '')
+      last_name = (name = call.pmr.signature_lines.last.name) &&
+        name.gsub(/ +$/, '')
       my_name = signon_user.name.gsub(/ +$/, '')
       return "normal" if my_name == last_name
       return "updated"
