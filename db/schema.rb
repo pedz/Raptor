@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080723002526) do
+ActiveRecord::Schema.define(:version => 20080905160751) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                         :null => false
@@ -218,10 +218,14 @@ ActiveRecord::Schema.define(:version => 20080723002526) do
   add_index "retusers", ["user_id"], :name => "uq_retusers_user_id", :unique => true
 
   create_table "users", :force => true do |t|
-    t.string   "ldap_id",                       :null => false
-    t.boolean  "admin",      :default => false
+    t.string   "ldap_id",                        :null => false
+    t.boolean  "admin",       :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "ftp_host"
+    t.string   "ftp_login"
+    t.string   "ftp_pass"
+    t.string   "ftp_basedir"
   end
 
   add_index "users", ["ldap_id"], :name => "uq_ldap_id", :unique => true

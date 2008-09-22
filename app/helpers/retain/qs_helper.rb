@@ -600,7 +600,7 @@ module Retain
         #       within 2 business hours, but try for one hour
         if pmr.severity == 1
           logger.debug("sev 1")
-          return customer.business_hours(entry_time, 2)
+          return customer.jims_business_hours(entry_time, 2)
         end
         
         # Sev 2,3,4 during Primeshift: Initial customer callback is
@@ -609,24 +609,24 @@ module Retain
         logger.debug("entry time is #{entry_time}")
         if pmr.center.prime_shift(entry_time)
           logger.debug("prime_shift")
-          return customer.business_hours(entry_time, 2)
+          return customer.jims_business_hours(entry_time, 2)
         end
         
         # SEV 2,3,4 during Offshift: Initial customer callback is the
         #           next business day
         logger.debug("off shift")
-        return customer.business_days(entry_time, 1)
+        return customer.jims_business_days(entry_time, 1)
       else
         logger.debug("initial response WT #{pmr.severity.class}")
         case pmr.severity
         when 1
-          return customer.business_hours(entry_time, 2)
+          return customer.jims_business_hours(entry_time, 2)
         when 2
-          return customer.business_hours(entry_time, 4)
+          return customer.jims_business_hours(entry_time, 4)
         when 3
-          return customer.business_hours(entry_time, 8)
+          return customer.jims_business_hours(entry_time, 8)
         when 4
-          return customer.business_hours(entry_time, 8)
+          return customer.jims_business_hours(entry_time, 8)
         end
       end
       raise "Did not figure out response time"
@@ -641,7 +641,7 @@ module Retain
       days = FOLLOW_UP_RESPONSE_TIME[pmr.severity]
       start_time = pmr.last_ct_time
       logger.debug("TIME: ---- #{start_time}")
-      customer.business_days(start_time, days)
+      customer.jims_business_days(start_time, days)
     end
 
     def next_ct(binding, header, call, index)

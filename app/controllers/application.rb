@@ -13,8 +13,11 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
 
-  before_filter :authenticate
-
+  unless defined?(HERE)
+    before_filter :authenticate 
+    HERE = 1
+  end
+  
   # For development mode, we do not do the authentication with
   # Bluepages
   unless defined? NONE_AUTHENTICATE
@@ -40,7 +43,9 @@ class ApplicationController < ActionController::Base
     return true if session[:user]
     if request.env.has_key? "REMOTE_USER" && false
       apache_authenticate
-    elsif NONE_AUTHENTICATE && false
+    elsif Rails.env == "staging"
+      staging_authenticate
+    elsif NONE_AUTHENTICATE
       none_authenticate
     else
       ldap_authenticate
@@ -95,6 +100,12 @@ class ApplicationController < ActionController::Base
   def apache_authenticate
     logger.debug("apache_authenticate")
     common_authenticate(request.env["REMOTE_USER"])
+    return true
+  end
+
+  def staging_authenticate
+    logger.debug("staging_authenticate")
+    common_authenticate('pedzan@us.ibm.com')
     return true
   end
 

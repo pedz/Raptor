@@ -26,15 +26,15 @@ module Retain
     end
 
     def to_id
-      @call.to_id
+      @_to_id ||= @call.to_id
     end
 
     def id
-      @call.id
+      @_id ||= @call.id
     end
     
     def to_param
-      @call.to_param
+      @_to_param ||= @call.to_param
     end
   end
 end

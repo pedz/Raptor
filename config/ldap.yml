@@ -7,6 +7,10 @@ development:
   #  bind_dn: cn=admin,dc=local,dc=net
   #  password: secret
 
+staging:
+  host: bluepages.ibm.com
+  port: 389
+
 test:
   host: bluepages.ibm.com
   port: 636
