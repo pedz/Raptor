@@ -1,0 +1,121 @@
+
+one:
+    updated_at: 2008-03-19 19:56:54.173837
+    time_zone_binary: "-300"
+    company_name: "HASBRO INC                          "
+    daylight_time_flag: t
+    country: "000"
+    id: "64"
+    time_zone: "-0500"
+    center_id: 
+    created_at: 2008-03-19 19:55:57.41859
+    customer_number: "4169500"
+
+two:
+    updated_at: 2008-03-19 19:57:02.283512
+    time_zone_binary: "60"
+    company_name: "EDS OPERATIONS SERVICE              "
+    daylight_time_flag: t
+    country: "724"
+    id: "65"
+    time_zone: "+0100"
+    center_id: 
+    created_at: 2008-03-19 19:55:57.604118
+    customer_number: 0804921
+
+three:
+    updated_at: 2008-03-19 19:57:09.82298
+    time_zone_binary: "-300"
+    company_name: "STATE STREET BANK AND TRUST CO      "
+    daylight_time_flag: t
+    country: "000"
+    id: "66"
+    time_zone: "-0500"
+    center_id: 
+    created_at: 2008-03-19 19:55:57.790335
+    customer_number: "7858002"
+
+four:
+    updated_at: 2008-03-20 11:16:22.930064
+    time_zone_binary: "-420"
+    company_name: INTERNATIONAL BUSINESS      MACHINES
+    daylight_time_flag: t
+    country: "000"
+    id: "58"
+    time_zone: "-0700"
+    center_id: 
+    created_at: 2008-03-19 19:22:39.470605
+    customer_number: "1996000"
+
+five:
+    updated_at: 2008-03-21 15:17:41.980146
+    time_zone_binary: "540"
+    company_name: "MSHITA DENKI SAN  D391              "
+    daylight_time_flag: f
+    country: "760"
+    id: "83"
+    time_zone: +0900
+    center_id: 
+    created_at: 2008-03-21 12:04:37.135553
+    customer_number: 0189382
+
+six:
+    updated_at: 2008-03-21 22:00:05.260526
+    time_zone_binary: "-300"
+    company_name: "ARROW ELECTRONICS INC DBA   SUPPORT "
+    daylight_time_flag: t
+    country: "000"
+    id: "88"
+    time_zone: "-0500"
+    center_id: 
+    created_at: 2008-03-21 18:19:33.22973
+    customer_number: "3085825"
+
+seven:
+    updated_at: 2008-03-24 19:42:37.555933
+    time_zone_binary: "-420"
+    company_name: "THE BOEING CO                       "
+    daylight_time_flag: t
+    country: "000"
+    id: "4"
+    time_zone: "-0700"
+    center_id: 
+    created_at: 2008-03-19 18:39:15.173464
+    customer_number: "1052490"
+
+eight:
+    updated_at: 2008-03-25 20:21:27.005652
+    time_zone_binary: "-360"
+    company_name: BEARINGPOINT TECHNOLOGY     PROCUREM
+    daylight_time_flag: t
+    country: "000"
+    id: "89"
+    time_zone: "-0600"
+    center_id: 
+    created_at: 2008-03-24 14:49:30.776366
+    customer_number: 0866430
+
+nine:
+    updated_at: 2008-03-27 18:03:36.704208
+    time_zone_binary: "300"
+    company_name: "HABIB BANK LTD                      "
+    daylight_time_flag: f
+    country: "808"
+    id: "96"
+    time_zone: "+0500"
+    center_id: 
+    created_at: 2008-03-27 18:03:36.385897
+    customer_number: "0360500"
+
+ten:
+    updated_at: 2008-03-27 18:03:47.833713
+    time_zone_binary: "-300"
+    company_name: "CERNER CORP                         "
+    daylight_time_flag: t
+    country: "000"
+    id: "97"
+    time_zone: "-0500"
+    center_id: 
+    created_at: 2008-03-27 18:03:36.410253
+    customer_number: "1600586"
+

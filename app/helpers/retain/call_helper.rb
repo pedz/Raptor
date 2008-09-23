@@ -1,5 +1,9 @@
 module Retain
   module CallHelper
+
+    Condor_URL = "http://p51.austin.ibm.com/condor/"
+    APAR_Regexp = Regexp.new('\bi[xyz][0-9][0-9][0-9][0-9][0-9]\b', Regexp::IGNORECASE)
+
     def ecpaat_lines(pmr)
       temp_hash = pmr.ecpaat
       temp_lines = []
@@ -43,6 +47,7 @@ module Retain
         text_line = text_line.gsub("\xc2\x82", '</span><span class="normal-unprotected">&nbsp;')
         text_line = text_line.gsub("\xc2\x9a", '</span><span class="intensified-protected">&nbsp;')
         text_line = text_line.gsub("\xc2\x8a", '</span><span class="intensified-unprotected">&nbsp;')
+        text_line = text_line.gsub(APAR_Regexp, "<a href=\"#{Condor_URL}swinfos/\\0\">\\0</a>")
       end
       render(:partial => "show_line",
              :locals => {
