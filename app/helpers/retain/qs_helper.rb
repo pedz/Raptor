@@ -354,7 +354,11 @@ module Retain
         end
       else
         td binding, :class => 'p-s-b' do |binding|
-          concat(call.p_s_b, binding)
+          if call.p_s_b
+            concat(call.p_s_b, binding)
+          else
+            concat('?', binding)
+          end
         end
       end
     end
