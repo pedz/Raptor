@@ -129,6 +129,9 @@ module Retain
         b = ""
       end
       @reply = f + b
+      if true
+        logger.debug("RTN: len is #{len}, reply.length is #{@reply.length}")
+      end
       @header = @reply[0...128]
       @rc = @header[8...12].ret2uint
       if true
@@ -217,10 +220,17 @@ module Retain
     
     def scan_fields(fields, s, six_byte_headers = true)
       logger.debug("RTN: start scan_fields")
+      if false
+        hex_dump("scan_fields", s)
+        orig_len = s.length
+      end
       de32 = Array.new
       until s.nil? || s.length == 0
         len = s[0...2].ret2ushort
         ele = s[2...4].ret2ushort
+        if false
+          logger.debug("scan_fields: offset = #{orig_len - s.length}, len = #{len}, ele = #{ele}")
+        end
         if len == 0
           logger.error("SDI ERROR: len = 0. s.length is #{s.length}")
           hex_dump("#{@request_type} request", @snd)
