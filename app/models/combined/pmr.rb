@@ -100,7 +100,7 @@ module Combined
       else
         logger.debug("CMB: #{temp_id} alteration date not set")
       end
-      
+
       # PMPB uses group_request.  Lets create that:
       group_request_elements = Combined::Pmr.retain_fields.map { |field| field.to_sym }
       
@@ -111,8 +111,7 @@ module Combined
                                  :nls_scratch_pad_2, 
                                  :nls_scratch_pad_3,
                                  :alterable_format_lines,
-                                 :nls_text_lines,
-                                 :information_text_lines
+                                 :nls_text_lines
                                 ]
       
       if @cached.alteration_date
@@ -125,10 +124,13 @@ module Combined
       
       # Fields we need for the add text lines.
       options_hash[:group_request] = [ group_request_elements ]
-      
       pmr = Retain::Pmr.new(options_hash)
-      # Touch something to do the fetch from retain
       pmr.severity
+
+      options_hash[:group_request] = [ [ :information_text_lines, :severity ]]
+      pmr2 = Retain::Pmr.new(options_hash)
+      pmr2.severity
+
       if @cached.alteration_date
         if pmr.nls_text_lines?
           logger.debug("CMB: #{temp_id} text_lines.length = #{pmr.nls_text_lines.length}")
@@ -161,8 +163,8 @@ module Combined
       end
       
       # Create the information text lines
-      if pmr.information_text_lines?
-        lines = pmr.information_text_lines
+      if pmr2.information_text_lines?
+        lines = pmr2.information_text_lines
         lines = [ lines ] unless lines.kind_of? Array
         update_lines(lines,
                      @cached.information_text_lines,
