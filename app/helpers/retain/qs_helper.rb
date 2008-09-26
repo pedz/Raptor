@@ -142,6 +142,7 @@ module Retain
                  "5765E6200",   # AIX 5.2
                  "5765G0300",   # AIX 5.3
                  "5765G6200",   # AIX 6.1
+                 "5765G3400",   # VIO Server
                  "5765E6199"    # AIX 5.1 Extended
                 ]
     def component_check(binding, header, call, index)
