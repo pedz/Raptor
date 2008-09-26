@@ -143,9 +143,11 @@ module Retain
                  "5765G0300",   # AIX 5.3
                  "5765G6200",   # AIX 6.1
                  "5765G3400",   # VIO Server
+                 "5765F6200",   # HACMP 541 Base
                  "5765E6199"    # AIX 5.1 Extended
                 ]
     def component_check(binding, header, call, index)
+      logger.debug("QS: bomponent_check #{call.nil? ? "header" : call.to_param}")
       if header
         th binding do |binding|
           concat("Component", binding)
@@ -153,6 +155,8 @@ module Retain
       else
         pmr = call.pmr
         pmr_comp = pmr.component_id[0,9]
+        pmr_comp = "blank" if pmr_comp.blank?
+        logger.debug("QS: comp = '#{pmr_comp}'")
         entitled_comp = pmr.information_text_lines.inject(nil) { |comp, text_line|
           unless comp
             if (md = CompRegex.match(text_line.text))
