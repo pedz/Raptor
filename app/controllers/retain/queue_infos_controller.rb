@@ -28,9 +28,15 @@ module Retain
       @queue_info = Combined::QueueInfo.new
       center = signon_user.default_center
       queues = center.queues.team_queues + center.queues.personal_queues
-      @queue_list = queues.collect { |q| [ q.to_param, q.id ] }
-      # @reg_list = Combined::Registration.find(:all).collect { |r| [ r.name, r.id ] }.sort
-      @reg_list = center.registrations.collect { |r| [ r.name, r.id ] }.sort
+      @queue_list = Combined::Queue.find(:all).collect { |q|
+        [ q.to_param, q.id ]
+      }.sort
+
+      @reg_list = Combined::Registration.find(:all).collect { |r|
+        [ r.name, r.id ] }.sort
+
+      # @queue_list = queues.collect { |q| [ q.to_param, q.id ] }
+      # @reg_list = center.registrations.collect { |r| [ r.name, r.id ] }.sort
 
       respond_to do |format|
         format.html # new.html.erb
