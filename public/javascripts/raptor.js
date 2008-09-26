@@ -132,9 +132,11 @@ var Raptor = {
 
     close_side_panels: function() {
 	if (!Raptor.left_stays_open && Raptor.left_is_open) {
+	    Raptor.left_is_open = false;
 	    $('left').hide();
 	}
 	if (!Raptor.right_stays_open && Raptor.right_is_open) {
+	    Raptor.right_is_open = false;
 	    $('right').hide();
 	}
     },

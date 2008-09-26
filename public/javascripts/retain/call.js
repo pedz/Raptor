@@ -30,6 +30,46 @@ Raptor.callToggleCallUpdateForm = function() {
     Raptor.recalcDimensions();
 };
 
+/* Bound with right as this */
+Raptor.rightDelayStart = function (event) {
+    event.stop();
+    this.popupDelayId = Raptor.openRight.delay(1.0);
+};
+
+/* Bound with right as this */
+Raptor.rightDelayStop = function (event) {
+    event.stop();
+    if (this.popupDelayId) {
+	window.clearTimeout(this.popupDelayId);
+	this.popupDelayId = null;
+    } else {
+	if (!Raptor.right_stays_open)
+	    Raptor.closeRight();
+    }
+};
+
+/* Bound with right as this */
+Raptor.rightClick = function (event) {
+    event.stop();
+    if (this.popupDelayId) {
+	window.clearTimeout(this.popupDelayId);
+	this.popupDelayId = null;
+    };
+    this.show();
+    Raptor.right_stays_open = !Raptor.right_stays_open;
+    Raptor.recalcDimensions();
+};
+
+Raptor.openRight = function () {
+    Raptor.right_is_open = true;
+    $('right').show();
+};
+
+Raptor.closeRight = function () {
+    Raptor.right_is_open = false;
+    $('right').hide();
+};
+
 document.observe('dom:loaded', function() {
     $$('.call-update-container').each(function (ele) {
 	ele.toggleCallUpdateForm = Raptor.callToggleCallUpdateForm.bind(ele);
@@ -123,19 +163,9 @@ document.observe('dom:loaded', function() {
 	Raptor.recalcDimensions();
     });
 
-    $('right-tab').observe('mouseover', function (event) {
-	// console.log("right-tab mouseover");
-	event.stop();
-	Raptor.right_is_open = true;
-	$('right').show();
-    });
-
-    $('right-tab').observe('click', function (event) {
-	// console.log("right-tab click");
-	event.stop();
-	Raptor.right_stays_open = !Raptor.right_stays_open;
-	Raptor.recalcDimensions();
-    });
+    $('right-tab').observe('mouseover', Raptor.rightDelayStart.bindAsEventListener($('right')));
+    $('right-tab').observe('mouseout', Raptor.rightDelayStop.bindAsEventListener($('right')));
+    $('right-tab').observe('click', Raptor.rightClick.bindAsEventListener($('right')));
 
     $('center').observe('mouseover', function (event) {
 	event.stop();
