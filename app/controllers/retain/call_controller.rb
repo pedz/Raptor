@@ -90,24 +90,23 @@ module Retain
       if need_dispatch
         dispatch = do_pmcu("CD  ", call_options)
         if dispatch.rc != 0
-          render_error(dispatch, reply_span)
+          render_error(dispatch, reply_span, "Dispatch")
           return
         end
       end
       
-      rendered = false
-      fad = true
-      rc = :normal
-      text = create_reply_span("Update Completed Successfully", 0)
+      do_fade = true
+      text = ""
       begin
         if call_update[:do_ct]
           ct = do_pmcu("CT  ", call_options)
           if ct.rc != 0
-            render_error(ct, reply_span)
-            rendered = true
-            return
+            do_fade &= (rc2type(ct.rc) == :error)
+            text = create_error_reply(ct, "CT")
+            raise
           end
           @pmr.mark_as_dirty
+          text = create_reply_span("CT Completed")
         end
         
         case update_type
@@ -118,11 +117,11 @@ module Retain
           return if addtxt.nil?
           safe_sendit(addtxt)
           if addtxt.rc != 0
-            render_error(addtxt, reply_span)
-            rendered = true
-            return
+            do_fade &= (rc2type(addtxt.rc) == :error)
+            text += create_error_reply(addtxt, "Addtxt")
+            raise
           end
-          text = create_reply_span("ADDTXT Completed Successfully", 0)
+          text += create_reply_span("ADDTXT Completed", 0)
           @pmr.mark_as_dirty
           
           if call_update[:add_time]
@@ -132,10 +131,10 @@ module Retain
             return if psar.nil?
             safe_sendit(psar)
             if psar.rc != 0
-              rc = rc2type(psar.rc)
-              text += create_error_reply(psar)
+              do_fade &= (rc2type(psar.rc) == :error)
+              text += create_error_reply(psar, "PSAR")
             else
-              text += create_reply_span("PSAR Added Successfully", 0)
+              text += create_reply_span("PSAR Added", 0)
             end
           end
           
@@ -151,12 +150,13 @@ module Retain
           unless (sg = call_update[:service_given]).nil? || sg == "99"
             requeue_options[:service_given] = sg
           end
-          if new_queue = call_update[:new_queue]
-            queue, h_or_s, center = new_queue.upcase.split(',')
-            if h_or_s != @queue.h_or_s
-              if @queue.h_or_s == 'S' && h_or_s == 'H' # from software to hardware
+          from_team_to_personal = false
+          if call_update.has_key? :new_queue
+            new_queue = Combined::Queue.from_param!(call_update[:new_queue])
+            if new_queue.h_or_s != @queue.h_or_s
+              if @queue.h_or_s == 'S' && new_queue.h_or_s == 'H' # from software to hardware
                 requeue_options[:operand] = 'HW  '
-              elsif @queue.h_or_s == 'H' && h_or_s == 'S' # from hardware to software
+              elsif @queue.h_or_s == 'H' && new_queue.h_or_s == 'S' # from hardware to software
                 requeue_options[:operand] = 'SW  '
               else
                 render(:update) { |page|
@@ -170,9 +170,20 @@ module Retain
               end
               # Note that the new h_or_s is not in the request.
             end
-            requeue_options[:target_queue] = queue
-            if center != @queue.center.center
-              requeue_options[:target_center] = center
+            requeue_options[:target_queue] = new_queue.queue_name
+            if new_queue.center.center != @queue.center.center
+              requeue_options[:target_center] = new_queue.center.center
+            end
+
+            # If queuing from a team queue to a personal queue
+
+            if (@queue.team_queue? && !new_queue.team_queue? && @call.p_s_b == 'P')
+              from_team_to_personal = true
+              if @pmr.country == '000'
+                logger.debug("setting next queue")
+                requeue_options[:next_queue] = new_queue.queue_name
+                requeue_options[:next_center] = new_queue.center.center
+              end
             end
           end
 
@@ -189,10 +200,31 @@ module Retain
           end
 
           if requeue.rc != 0
-            rc = rc2type(requeue.rc)
-            text = create_error_reply(requeue)
+            do_fade &= (rc2type(requeue.rc) == :error)
+            text += create_error_reply(requeue, "Requeue")
           else
-            text = create_reply_span("Requeue Completed Successfully", 0)
+            text += create_reply_span("Requeue Completed", 0)
+            if from_team_to_personal
+              logger.debug("setting owner / resolver")
+              alter_options = pmr_options.dup
+              owner = new_queue.owners[0]
+              alter_options[:pmr_resolver_id] = owner.signon
+              if @pmr.country == '000'
+                fields = "Owner & Resolver"
+                alter_options[:pmr_owner_id] = owner.sigon
+              else
+                fields = "Resolver"
+              end
+              alter = safe_new(Retain::Pmpu, alter_options, reply_span)
+              raise "Create of PMR Alter Failed" if requeue.nil?
+              safe_sendit(alter)
+              if alter.rc != 0
+                do_fade &= (rc2type(alter.rc) == :error)
+                text += create_error_reply(alter, "Alter")
+              else
+                text += create_reply_span("#{fields} Set")
+              end
+            end
           end
           
         when :dup
@@ -214,10 +246,10 @@ module Retain
           safe_sendit(dup)
 
           if dup.rc != 0
-            rc = rc2type(dup.rc)
-            text = create_error_reply(dup)
+            do_fade &= (rc2type(dup.rc) == :error)
+            text += create_error_reply(dup, "Dup")
           else
-            text = create_reply_span("Dup Completed Successfully", 0)
+            text += create_reply_span("Dup Completed", 0)
           end
           
           if call_update[:add_time]
@@ -227,10 +259,10 @@ module Retain
             return if psar.nil?
             safe_sendit(psar)
             if psar.rc != 0
-              rc = rc2type(psar.rc)
-              text += create_error_reply(psar)
+              do_fade &= (rc2type(psar.rc) == :error)
+              text += create_error_reply(psar, "PSAR")
             else
-              text += create_reply_span("PSAR Added Successfully", 0)
+              text += create_reply_span("PSAR Added", 0)
             end
           end
 
@@ -252,10 +284,10 @@ module Retain
           end
 
           if close.rc != 0
-            rc = rc2type(close.rc)
-            text = create_error_reply(close)
+            do_fade &= (rc2type(close.rc) == :error)
+            text += create_error_reply(close, "Close")
           else
-            text = create_reply_span("Close Completed Successfully", 0)
+            text += create_reply_span("Close Completed", 0)
           end
           
         when :none
@@ -267,12 +299,21 @@ module Retain
             return if psar.nil?
             safe_sendit(psar)
             if psar.rc != 0
-              rc = rc2type(psar.rc)
-              text += create_error_reply(psar)
+              do_fade &= (rc2type(psar.rc) == :error)
+              text += create_error_reply(psar, "PSAR")
             else
-              text += create_reply_span("PSAR Added Successfully", 0)
+              text += create_reply_span("PSAR Added", 0)
             end
           end
+        end
+        
+      rescue Exception => e
+        unless e.nil?
+          logger.error(e.backtrace_string)
+          unless (msg = e.message).blank?
+            text += create_reply_span(msg, :error)
+          end
+          do_fade = false
         end
         
       ensure
@@ -280,17 +321,17 @@ module Retain
         if need_undispatch
           undispatch = do_pmcu("NOCH", call_options)
           if undispatch.rc != 0
-            # I'm not sure what to do here.  We should rarely hit it
-            # anyway.
-            render_error(undispatch, reply_span) unless rendered
-            return
+            do_fade &= (rc2type(undispatch.rc) == :error)
+            text += create_error_reply(undispatch, "Undispatch")
           end
         end
       end
       render(:update) { |page|
         page.replace_html reply_span, text                          
-        page.visual_effect(:fade, reply_span, :duration => 2.0) unless rc == :error
-        page[form].reset
+        if do_fade
+          page.visual_effect(:fade, reply_span, :duration => 2.0)
+          page[form].reset
+        end
       }
     end
 
@@ -507,17 +548,17 @@ module Retain
       when :warning; span_class = 'sdi-warning'
       else span_class = 'sdi-error'
       end
-      ApplicationController.helpers.content_tag :span, msg, :class => span_class
+      ApplicationController.helpers.content_tag :span, msg + ". ", :class => span_class
     end
 
-    def create_error_reply(sdi)
-      err_text = sdi.error_message
+    def create_error_reply(sdi, request)
+      err_text = "#{request}: #{sdi.error_message}"
       err_code = err_text[-3 ... err_text.length].to_i
       create_reply_span(err_text, err_code)
     end
     
-    def render_error(sdi, area)
-      render_message(create_error_reply(sdi), area)
+    def render_error(sdi, area, request)
+      render_message(create_error_reply(sdi, request), area)
     end
 
     def render_message(msg, area)
