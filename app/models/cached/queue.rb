@@ -13,7 +13,7 @@ module Cached
       self.find(:all,
                 :include => :owners,
                 :order => "queue_name, h_or_s").select { |q|
-        q.owners.empty?
+        q.team_queue?
       }
     end
 
@@ -21,9 +21,12 @@ module Cached
       self.find(:all,
                 :include => :owners,
                 :order => "queue_name, h_or_s").select { |q|
-        not q.owners.empty?
+        not q.team_queue?
       }
     end
 
+    def team_queue?
+      self.owners.empty?
+    end
   end
 end
