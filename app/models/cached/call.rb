@@ -60,17 +60,11 @@ module Cached
     # Returns the signature for the CR that put the call into the
     # designated center
     def center_entry_sig(center = queue.center)
-      # We look at the call requeues for the primary call only (ptype
-      # is blank).  If we hit a CR with the center, we return the
-      # previous signature.  Otherwise, we return the last signature
-      # for the primary.
+      # We return the last signature for a call requeue for the
+      # primary (ptype == '-') that is not from within the center.
       sig = to_combined.pmr.signature_line_stypes('CR').inject(nil) { |prev, s|
-        if s.ptype == '-'
-          if s.center == center
-            return @entry_sig[center] = prev
-          else
-            s
-          end
+        if (s.ptype == '-') && (s.center != center.center)
+          s
         else
           prev
         end
