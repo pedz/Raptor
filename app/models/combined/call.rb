@@ -227,6 +227,11 @@ module Combined
         return [ "wag-wag", "Next queue set to personal queue", true ]
       end
 
+      # Queues outside of center can't be good -- can they?
+      if pmr.next_center.center != queue.center.center
+        return [ "warn", "Next queue outside of center is probably wrong", true ]
+      end
+      
       unless next_queue.queue_infos.empty?
         return [ "warn", "Next queue is a personal queue", true ]
       end
