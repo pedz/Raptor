@@ -87,21 +87,21 @@ module Retain
         need_undispatch = need_dispatch = call_update[:do_ct]
       end
       
-      if need_dispatch
-        dispatch = do_pmcu("CD  ", call_options)
-        if dispatch.rc != 0
-          render_error(dispatch, reply_span, "Dispatch")
-          return
-        end
-      end
-      
       do_fade = true
       text = ""
       begin
+        if need_dispatch
+          dispatch = do_pmcu("CD  ", call_options)
+          if dispatch.rc != 0
+            text = create_error_reply(dispatch, "Dispatch")
+            raise
+          end
+        end
+
         if call_update[:do_ct]
           ct = do_pmcu("CT  ", call_options)
           if ct.rc != 0
-            do_fade &= (rc2type(ct.rc) == :error)
+            do_fade &= (ct.error_class == :error)
             text = create_error_reply(ct, "CT")
             raise
           end
@@ -117,11 +117,11 @@ module Retain
           return if addtxt.nil?
           safe_sendit(addtxt)
           if addtxt.rc != 0
-            do_fade &= (rc2type(addtxt.rc) == :error)
+            do_fade &= (addtxt.error_class == :error)
             text += create_error_reply(addtxt, "Addtxt")
             raise
           end
-          text += create_reply_span("ADDTXT Completed", 0)
+          text += create_reply_span("ADDTXT Completed")
           @pmr.mark_as_dirty
           
           if call_update[:add_time]
@@ -131,10 +131,10 @@ module Retain
             return if psar.nil?
             safe_sendit(psar)
             if psar.rc != 0
-              do_fade &= (rc2type(psar.rc) == :error)
+              do_fade &= (psar.error_class == :error)
               text += create_error_reply(psar, "PSAR")
             else
-              text += create_reply_span("PSAR Added", 0)
+              text += create_reply_span("PSAR Added")
             end
           end
           
@@ -200,10 +200,10 @@ module Retain
           end
 
           if requeue.rc != 0
-            do_fade &= (rc2type(requeue.rc) == :error)
+            do_fade &= (requeue.error_class == :error)
             text += create_error_reply(requeue, "Requeue")
           else
-            text += create_reply_span("Requeue Completed", 0)
+            text += create_reply_span("Requeue Completed")
             if from_team_to_personal
               logger.debug("setting owner / resolver")
               alter_options = pmr_options.dup
@@ -219,7 +219,7 @@ module Retain
               raise "Create of PMR Alter Failed" if requeue.nil?
               safe_sendit(alter)
               if alter.rc != 0
-                do_fade &= (rc2type(alter.rc) == :error)
+                do_fade &= (alter.error_class == :error)
                 text += create_error_reply(alter, "Alter")
               else
                 text += create_reply_span("#{fields} Set")
@@ -246,10 +246,10 @@ module Retain
           safe_sendit(dup)
 
           if dup.rc != 0
-            do_fade &= (rc2type(dup.rc) == :error)
+            do_fade &= (dup.error_class == :error)
             text += create_error_reply(dup, "Dup")
           else
-            text += create_reply_span("Dup Completed", 0)
+            text += create_reply_span("Dup Completed")
           end
           
           if call_update[:add_time]
@@ -259,10 +259,10 @@ module Retain
             return if psar.nil?
             safe_sendit(psar)
             if psar.rc != 0
-              do_fade &= (rc2type(psar.rc) == :error)
+              do_fade &= (psar.error_class == :error)
               text += create_error_reply(psar, "PSAR")
             else
-              text += create_reply_span("PSAR Added", 0)
+              text += create_reply_span("PSAR Added")
             end
           end
 
@@ -284,10 +284,10 @@ module Retain
           end
 
           if close.rc != 0
-            do_fade &= (rc2type(close.rc) == :error)
+            do_fade &= (close.error_class == :error)
             text += create_error_reply(close, "Close")
           else
-            text += create_reply_span("Close Completed", 0)
+            text += create_reply_span("Close Completed")
           end
           
         when :none
@@ -299,10 +299,10 @@ module Retain
             return if psar.nil?
             safe_sendit(psar)
             if psar.rc != 0
-              do_fade &= (rc2type(psar.rc) == :error)
+              do_fade &= (psar.error_class == :error)
               text += create_error_reply(psar, "PSAR")
             else
-              text += create_reply_span("PSAR Added", 0)
+              text += create_reply_span("PSAR Added")
             end
           end
         end
@@ -321,7 +321,7 @@ module Retain
         if need_undispatch
           undispatch = do_pmcu("NOCH", call_options)
           if undispatch.rc != 0
-            do_fade &= (rc2type(undispatch.rc) == :error)
+            do_fade &= (undispatch.error_class == :error)
             text += create_error_reply(undispatch, "Undispatch")
           end
         end
@@ -329,7 +329,7 @@ module Retain
       render(:update) { |page|
         page.replace_html reply_span, text                          
         if do_fade
-          page.visual_effect(:fade, reply_span, :duration => 2.0)
+          page.visual_effect(:fade, reply_span, :duration => 5.0)
           page[form].reset
         end
       }
@@ -339,7 +339,7 @@ module Retain
       begin
         obj = klass.new(options)
       rescue ArgumentError => e
-        text = create_reply_span(e.message, 1)
+        text = create_reply_span(e.message, :error)
         render_message(text, area)
         return nil
       end
@@ -534,27 +534,14 @@ module Retain
       return pmcu
     end
 
-    def rc2type(rc)
-      case rc
-      when 0; :normal
-      when 600 .. 700; :warning
-      else :error
-      end
-    end
-
-    def create_reply_span(msg, rc = 0)
-      case rc2type(rc)
-      when :normal; span_class = 'sdi-normal'
-      when :warning; span_class = 'sdi-warning'
-      else span_class = 'sdi-error'
-      end
+    def create_reply_span(msg, error_class = :normal)
+      span_class = "sdi-#{error_class.to_s}"
       ApplicationController.helpers.content_tag :span, msg + ". ", :class => span_class
     end
 
     def create_error_reply(sdi, request)
       err_text = "#{request}: #{sdi.error_message}"
-      err_code = err_text[-3 ... err_text.length].to_i
-      create_reply_span(err_text, err_code)
+      create_reply_span(err_text, sdi.error_class)
     end
     
     def render_error(sdi, area, request)

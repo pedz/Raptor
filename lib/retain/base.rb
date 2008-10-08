@@ -11,16 +11,14 @@ module Retain
     end
 
     def sr
-      if md = /SR([0-9][0-9][0-9])EX([0-9][0-9][0-9])/.match(self.message)
-        md[1].to_i
-      end
+      @base_obj.sr
     end
+    alias :error_type :sr
 
     def ex
-      if md = /SR([0-9][0-9][0-9])EX([0-9][0-9][0-9])/.match(self.message)
-        md[2].to_i
-      end
+      @base_obj.ex
     end
+    alias :request_error :ex
 
     def rc
       @base_obj.rc
@@ -68,6 +66,16 @@ module Retain
       @options = Hash.new
       @fields.merge(field_temp) unless field_temp.nil?
     end
+
+    def sr
+      @fetch_sdi.sr
+    end
+    alias :error_type :sr
+
+    def ex
+      @fetch_sdi.ex
+    end
+    alias :request_error :ex
 
     def rc
       @fetch_sdi.rc

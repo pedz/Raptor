@@ -828,30 +828,6 @@ module Retain
       end
     end
 
-    def parse_io_err(raw_msg)
-      "%s%02x%02x%02x%02x%s%d%s%02x%02x%s%02x%02x%s%02x%02x%02x%s" %
-        [
-         raw_msg[ 0 .. 7].retain_to_user, # I/O ERR=
-         raw_msg[ 8],                     # four hex byes
-         raw_msg[ 9],                     # 
-         raw_msg[10],                     # 
-         raw_msg[11],                     # 
-         raw_msg[12 .. 42].retain_to_user,#  F/S=20bytes R/C=
-         raw_msg[43],                     # decimal return code
-         raw_msg[44 .. 49].retain_to_user,#  BDOP=
-         raw_msg[50],                     # two bytes in hex
-         raw_msg[51],                     #
-         raw_msg[52 .. 57].retain_to_user,#  DERR=
-         raw_msg[58],                     # CDBM ERR1
-         raw_msg[59],                     # CDBM ERR2
-         raw_msg[60 .. 65].retain_to_user,#  DEXC=
-         raw_msg[66],                     # CDBM EXC1
-         raw_msg[67],                     # CDBM EXC2
-         raw_msg[68],                     # CDBM EXC3
-         raw_msg[69 .. 78].retain_to_user #  SRxxxEXnnn
-        ]
-    end
-
     def move_raw_value_to_field(sym)
       # logger.debug("RTN: move_raw_value_to_field: sym=#{sym}")
       sym = sym.singularize

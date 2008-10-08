@@ -143,8 +143,26 @@ module Retain
       # has to produce some error logs.
       @request_type = options[:request]
       @rcv_fields = scan_fields(Fields.new, @reply[128...@reply.length])
+
+      # merge received fields back into base objects fields.
       req_fields.merge!(@rcv_fields)
       @fields.error_message = @rcv_fields.error_message if @rcv_fields.has_key?(:error_message)
+      if @rc == 0
+        @error_message = nil
+      else
+        if @rcv_fields.has_key?(:error_message)
+          msg = @rcv_fields.error_message
+          if msg =~ /I\/O ERR=/
+            if (raw_msg = @rcv_fields[:error_message].raw_value).is_a? Array
+              raw_msg = raw_msg[0]
+            end
+            msg = parse_io_err(raw_msg)
+          end
+        else
+          msg = Errors[base_obj.rc] || "Unknown Error"
+        end
+        @error_message = msg
+      end
     end
 
     def dump_debug
@@ -160,6 +178,36 @@ module Retain
     # end
     # alias_method_chain :sendit, :benchmark
 
+    def error_message
+      @error_message
+    end
+
+    def sr
+      if md = /SR([0-9][0-9][0-9])EX([0-9][0-9][0-9])/.match(@error_message)
+        md[1].to_i
+      end
+    end
+    alias :error_type :sr
+
+    def ex
+      @ex ||= if @error_message.nil?
+                0
+              elsif md = /SR([0-9][0-9][0-9])EX([0-9][0-9][0-9])/.match(@error_message)
+                md[2].to_i
+              else
+                self.rc
+              end
+    end
+    alias :request_error :ex
+
+    def error_class
+      @error_class ||= case self.ex
+                       when 0; :normal
+                       when 600 .. 700; :warning
+                       else :error
+                       end
+    end
+    
     def rc
       @rc
     end
@@ -179,6 +227,30 @@ module Retain
     end
 
     private
+
+    def parse_io_err(raw_msg)
+      "%s%02x%02x%02x%02x%s%d%s%02x%02x%s%02x%02x%s%02x%02x%02x%s" %
+        [
+         raw_msg[ 0 .. 7].retain_to_user, # I/O ERR=
+         raw_msg[ 8],                     # four hex byes
+         raw_msg[ 9],                     # 
+         raw_msg[10],                     # 
+         raw_msg[11],                     # 
+         raw_msg[12 .. 42].retain_to_user,#  F/S=20bytes R/C=
+         raw_msg[43],                     # decimal return code
+         raw_msg[44 .. 49].retain_to_user,#  BDOP=
+         raw_msg[50],                     # two bytes in hex
+         raw_msg[51],                     #
+         raw_msg[52 .. 57].retain_to_user,#  DERR=
+         raw_msg[58],                     # CDBM ERR1
+         raw_msg[59],                     # CDBM ERR2
+         raw_msg[60 .. 65].retain_to_user,#  DEXC=
+         raw_msg[66],                     # CDBM EXC1
+         raw_msg[67],                     # CDBM EXC2
+         raw_msg[68],                     # CDBM EXC3
+         raw_msg[69 .. 78].retain_to_user #  SRxxxEXnnn
+        ]
+    end
       
     def connect(h_or_s)
       @connection = Connection.new(h_or_s)

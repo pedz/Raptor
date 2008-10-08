@@ -105,8 +105,6 @@ module Retain
                   problem."
   Errors[ 254] = "Indicates that a CDBM control operation had a
                   problem."
-  Errors[ 254] = "Indicates that a CDBM control operation had a
-                  problem."
   Errors[ 255] = "CDBM data base is temporarily unavailable, such as a
                   record is locked."
   Errors[ 256] = "The CDBM record could not be found."
