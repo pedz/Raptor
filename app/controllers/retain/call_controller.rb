@@ -181,8 +181,8 @@ module Retain
               from_team_to_personal = true
               if @pmr.country == '000'
                 logger.debug("setting next queue")
-                requeue_options[:next_queue] = new_queue.queue_name
-                requeue_options[:next_center] = new_queue.center.center
+                requeue_options[:next_queue] = @queue.queue_name
+                requeue_options[:next_center] = @queue.center.center
               end
             end
           end
@@ -196,6 +196,7 @@ module Retain
           if requeue.rc == 0 || (600 .. 700) === requeue.rc
             logger.debug("mark queue as dirty -- 1")
             @queue.mark_as_dirty
+            @pmr.mark_as_dirty
             need_undispatch = false
           end
 
@@ -280,6 +281,7 @@ module Retain
           if close.rc == 0 || (600 .. 700) === close.rc
             logger.debug("mark queue as dirty -- 2")
             @queue.mark_as_dirty
+            @pmr.mark_as_dirty
             need_undispatch = false
           end
 

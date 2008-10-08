@@ -159,6 +159,7 @@ module Retain
           msg = Errors[base_obj.rc] || "Unknown Error"
         end
         @error_message = msg
+        logger.error("SDI: #{@request_type}: #{@error_message}")
       end
     end
 
