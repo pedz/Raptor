@@ -886,18 +886,7 @@ module Retain
       # object's field.  The base object also has @rc.
       base_obj = @fetch_fields.call
       unless base_obj.rc == 0
-        if self.error_message?
-          msg = self.error_message
-          if msg =~ /I\/O ERR=/
-            if (raw_msg = self[:error_message].raw_value).is_a? Array
-              raw_msg = raw_msg[0]
-            end
-            msg = parse_io_err(raw_msg)
-          end
-        else
-          msg = Errors[base_obj.rc] || "Unknown Error"
-        end
-        raise Retain::SdiReaderError.new(msg, base_obj)
+        raise Retain::SdiReaderError.new(base_obj)
       end
       @fetched = true
     end

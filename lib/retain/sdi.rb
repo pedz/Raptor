@@ -153,10 +153,7 @@ module Retain
         if @rcv_fields.has_key?(:error_message)
           msg = @rcv_fields.error_message
           if msg =~ /I\/O ERR=/
-            if (raw_msg = @rcv_fields[:error_message].raw_value).is_a? Array
-              raw_msg = raw_msg[0]
-            end
-            msg = parse_io_err(raw_msg)
+            msg = parse_io_err(msg)
           end
         else
           msg = Errors[base_obj.rc] || "Unknown Error"
@@ -178,6 +175,7 @@ module Retain
     # end
     # alias_method_chain :sendit, :benchmark
 
+    # Note: this overrides @fields[:error_message]
     def error_message
       @error_message
     end

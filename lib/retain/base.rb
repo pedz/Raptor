@@ -5,9 +5,9 @@ require 'retain/fields'
 
 module Retain
   class SdiReaderError < Exception
-    def initialize(msg, base_obj)
-      super(msg)
+    def initialize(base_obj)
       @base_obj = base_obj
+      super(base_obj.error_message)
     end
 
     def sr
@@ -65,6 +65,11 @@ module Retain
       @fields.merge(@options)
       @options = Hash.new
       @fields.merge(field_temp) unless field_temp.nil?
+    end
+
+    # Note: this overrides the @fields[:error_message]
+    def error_message
+      @fetch_sdi.error_message
     end
 
     def sr
