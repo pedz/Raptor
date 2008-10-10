@@ -212,7 +212,7 @@ module Retain
               alter_options[:pmr_resolver_id] = owner.signon
               if @pmr.country == '000'
                 fields = "Owner & Resolver"
-                alter_options[:pmr_owner_id] = owner.sigon
+                alter_options[:pmr_owner_id] = owner.signon
               else
                 fields = "Resolver"
               end
@@ -234,9 +234,6 @@ module Retain
           dup_options[:customer_number] = @pmr.customer.customer_number
           dup_options[:addtxt_lines] = newtxt unless newtxt.empty?
           dup_options[:comment] = @call.comments
-          unless (sg = call_update[:service_given]).nil? || sg == "99"
-            dup_options[:service_given] = sg
-          end
           if new_queue = call_update[:new_queue]
             queue, h_or_s, center = new_queue.upcase.split(',')
             dup_options[:queue_name] = queue
@@ -271,6 +268,9 @@ module Retain
           close_options = call_options.dup
           close_options[:addtxt_lines] = newtxt unless @call.p_s_b == 'B' || newtxt.empty?
           close_options[:problem_status_code] = 'CL1L1 ' if @call.p_s_b == 'P'
+          unless (sg = call_update[:service_given]).nil? || sg == "99"
+            close_options[:service_given] = sg
+          end
           close_options.merge!(get_psar_options(call_update)) if call_update[:add_time]
           close = safe_new(Retain::Pmcc,close_options, reply_span)
           return if close.nil?
@@ -330,6 +330,7 @@ module Retain
       end
       render(:update) { |page|
         page.replace_html reply_span, text                          
+        page.show reply_span
         if do_fade
           page.visual_effect(:fade, reply_span, :duration => 5.0)
           page[form].reset
