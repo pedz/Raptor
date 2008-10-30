@@ -20,13 +20,14 @@ module Combined
     
     def regroup(psars)
       psars.sort do |a, b|
-        a.psar_activity_date <=> b.psar_activity_date
+        a.stop_date <=> b.stop_date
       end.group_by(&:stop_date).group_by { |days_list|
         days_list[1][0].saturday
       }
     end
 
     def summarize(weeks)
+      logger.debug("PSAR: #{weeks.inspect}")
       weeks.map do |saturday, days|
         week_total = 0
         days.map! do |day, psars|

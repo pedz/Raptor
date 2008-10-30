@@ -33,6 +33,12 @@
 		    <span class='psar-time'>
 		      <%= chargeable_time(psar) %>
 		    </span>
+		    <%- if false -%>
+		    <%= Time.moc(psar.stop_time_moc) %>
+		    <%= psar.minutes_from_gmt %>
+		    <%= psar.pmr.customer.tz %>
+		    <%= psar.psar_system_date %>
+		    <%- end -%>
 		    <span class='psar-show'>
 		      <%= link_to 'Show', psar %>
 		    </span>
