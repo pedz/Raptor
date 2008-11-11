@@ -28,8 +28,13 @@ Raptor = Object.extend(Raptor, {
 
     // 'this' is set to the element passed to textInputWithList
     openList: function(event) {
-	Effect.BlindDown(this.absSpan, { duration: Raptor.effectTime });
-	Effect.Fade(this.showButton, {duration: Raptor.effectTime});
+	var showButton = this.showButton;
+	if (showButton.state)
+	    Effect.BlindUp(this.absSpan, { duration: Raptor.effectTime });
+	else
+	    Effect.BlindDown(this.absSpan, { duration: Raptor.effectTime });
+	showButton.state = !showButton.state;
+	// Effect.Fade(this.showButton, {duration: Raptor.effectTime});
     },
 
     getHeight: function(ele) {
@@ -197,6 +202,7 @@ Raptor = Object.extend(Raptor, {
 	absSpan.hide();
 
 	showButton.observe('click', Raptor.openList.bindAsEventListener(ele));
+	showButton.state = null;
 	pickList.childElements().each(function (listElement) {
 	    listElement.addClassName('pick-list-item');
 	    listElement.observe('click', Raptor.pickItem.bindAsEventListener(ele));

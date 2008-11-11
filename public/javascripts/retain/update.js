@@ -123,7 +123,6 @@ Raptor.sacChange = function(event) {
 
 Raptor.redrawSac = function() {
     var visible = pageSettings['sac_tuples'][this.getValue()]
-    console.log("redrawSac");
     if (visible)
 	this.aparField.show();
     else
@@ -168,8 +167,8 @@ Raptor.updateLoadHook = function() {
 	div.redraw = Raptor.redrawDiv.bind(div);
 
 	var form = div.down('.call-update-form');
-	Raptor.textInputWithList(form.down('.input-with-list'));
 	div.form = form;
+	Raptor.textInputWithList(form.down('.input-with-list'));
 
 	/* Check box to show or hide text box */
 	var update_pmr = form.down('.call-update-update-pmr')
@@ -228,5 +227,6 @@ Raptor.updateLoadHook = function() {
 
 	var email_button = form.down('.send-email-button');
 	email_button.observe('click', Raptor.sendEmail.bindAsEventListener(email_button));
+	ele.hide();
     });
 };

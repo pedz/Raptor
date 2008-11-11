@@ -257,7 +257,6 @@ module Retain
         td(binding,
            :id => "call_update_td_#{index+1}",
            :class => 'call-update-container',
-           :style => 'display: none;',
            :colspan => 4) do |binding|
           call_update = CallUpdate.new(call)
           logger.debug("call-update-psar-update-psar-service-code = #{call_update.psar_update.psar_service_code}")

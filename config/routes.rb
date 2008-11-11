@@ -1,11 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :retain_solution_codes
+  map.resources :retain_solution_codes, :controller => 'retain/solution_codes'
 
-  map.resources :retain_relief_codes
-
-  map.resources :retain_impact_codes
-
-  map.resources :retain_service_given_codes
+  map.resources :retain_service_given_codes, :controller => 'retain/service_given_codes'
 
   map.resources :retain_service_action_cause_tuples
 
