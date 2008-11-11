@@ -21,7 +21,7 @@
 # 1094  :ipar_mes
 # 1096  :ipar_course
 # 1097  :psar_fesn_release
-# 1100  :psar_solution
+# 1100  :psar_solution_code
 # 1103  :psar_optional_data
 # 1104  :psar_survey
 # 1105  :psar_special_activity
@@ -60,7 +60,7 @@ module Retain
                         :ipar_mes,
                         :ipar_course,
                         :psar_fesn_release,
-                        :psar_solution,
+                        :psar_solution_code,
                         :psar_optional_data,
                         :psar_survey,
                         :psar_special_activity,

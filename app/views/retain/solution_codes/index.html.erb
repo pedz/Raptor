@@ -1,0 +1,22 @@
+<h1>Listing retain_solution_codes</h1>
+
+<table>
+  <tr>
+    <th>Psar solution code</th>
+    <th>Description</th>
+  </tr>
+
+<% for retain_solution_code in @retain_solution_codes %>
+  <tr>
+    <td><%=h retain_solution_code.psar_solution_code %></td>
+    <td><%=h retain_solution_code.description %></td>
+    <td><%= link_to 'Show', retain_solution_code %></td>
+    <td><%= link_to 'Edit', edit_retain_solution_code_path(retain_solution_code) %></td>
+    <td><%= link_to 'Destroy', retain_solution_code, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New retain_solution_code', new_retain_solution_code_path %>

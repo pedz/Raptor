@@ -1,0 +1,20 @@
+<h1>Editing retain_solution_code</h1>
+
+<% form_for(@retain_solution_code) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :psar_solution_code %><br />
+    <%= f.text_field :psar_solution_code %>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_field :description %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @retain_solution_code %> |
+<%= link_to 'Back', retain_solution_codes_path %>

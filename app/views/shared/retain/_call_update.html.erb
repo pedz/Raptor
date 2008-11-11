@@ -1,6 +1,7 @@
 <!-- app/views/shared/retain/_call_update.html.erb -->
 <%  extend Retain::CallUpdateHelper -%>
-<%  content_tag :div, :style => 'border:solid 1px' do -%>
+<%  add_sac_tuples -%>
+<%  content_tag :div, html_tag(call_update, 'div', :style => 'border:solid 1px;') do -%>
 <%=   content_tag :span, "", html_tag(call_update, 'reply-span') %>
 <%-   submit_id = id_for(call_update, "submit") -%>
 <%-   remote_form_for(call_update,
@@ -22,6 +23,7 @@
 <%=     tag("br") %>
 <%=     send_mail_button(call_update) %>
 <%=     cu.check_box :do_ct, html_tag(call_update, "do-ct") %>CT
+<%=     tag("br") %>
 <%      content_tag :span, html_tag(call_update, 'requeue-span') do -%>
           New Queue
 <%        content_tag :span, :class => 'input-with-list' do -%>
@@ -38,24 +40,29 @@
 <%=       do_text_field cu, :new_priority, 1, call_update %>
 <%      end -%>
 <%      content_tag :span, html_tag(call_update, 'service-given-span') do -%>
-          Service Given
-<%=       do_text_field cu, :service_given, 2, call_update %>
+<%=       do_select_field(cu, :service_given,
+	    Retain::ServiceGivenCode.find(:all), :service_given,
+	    :description, call_update) %>
 <%      end -%>
 <%=     tag("br") %>
 <%=     cu.text_area :newtxt, html_tag(call_update, "newtxt", :rows => 10, :cols => 72) %>
 <%=     tag("br") %>
 <%=     cu.check_box :add_time, html_tag(call_update, "add-time") %>Add Time
+<%=     tag("br") %>
 <%      content_tag :span, html_tag(call_update, 'add-time-span') do -%>
 <%        cu.fields_for :psar_update, call_update.psar_update do |psar| -%>
-<%=         content_tag :label, "Service:", :for => id_for(call_update, "psar-service-code") %>
-            <%= do_text_field psar, :psar_service_code, 2, call_update %>
-            Action:
-	    <%= do_text_field psar, :psar_action_code, 2, call_update %>
-            Cause:
-	    <%= do_text_field psar, :psar_cause, 2, call_update %>
-            Solution:
-<%=         do_text_field psar, :psar_solution, 1, call_update %>
-            Impact:
+            <%= do_select_field(psar, :sac,
+		Retain::ServiceActionCauseTuple.find(:all), :id,
+		:description, call_update) %>
+	    <% content_tag :span, html_tag(call_update, 'apar-number-span') do -%>
+	      <%= do_label "APAR:", "psar-apar-number", call_update %>
+	      <%= do_text_field psar, :psar_apar_number, 7, call_update %>
+	    <% end -%>
+<%=         tag("br") %>
+<%=         do_select_field(psar, :psar_solution_code,
+	        Retain::SolutionCode.find(:all), :psar_solution_code,
+	        :description, call_update) %>
+<%=         do_label "Impact:", "psar_impact", call_update %>
 <%=         do_text_field psar, :psar_impact, 1, call_update %>
 <%=         tag("br") %>
             Time <span style='text-decoration: line-through'>wasted</span> spent

@@ -66,7 +66,10 @@ module Retain
     end
 
     def display_update_form(binding, call)
-      span binding, :id => 'call_update_span', :class => 'call-update-container' do |binding|
+      span(binding,
+           :id => 'call_update_span',
+           :class => 'call-update-container',
+           :style => 'display: none;') do |binding|
         call_update = CallUpdate.new(call)
         concat(render(:partial => 'shared/retain/call_update',
                       :locals => { :call_update => call_update }),

@@ -1,0 +1,28 @@
+<p>
+  <b>Psar service code:</b>
+  <%=h @retain_service_action_cause_tuple.psar_service_code %>
+</p>
+
+<p>
+  <b>Psar action code:</b>
+  <%=h @retain_service_action_cause_tuple.psar_action_code %>
+</p>
+
+<p>
+  <b>Psar cause:</b>
+  <%=h @retain_service_action_cause_tuple.psar_cause %>
+</p>
+
+<p>
+  <b>Apar required:</b>
+  <%=h @retain_service_action_cause_tuple.apar_required %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @retain_service_action_cause_tuple.description %>
+</p>
+
+
+<%= link_to 'Edit', edit_retain_service_action_cause_tuple_path(@retain_service_action_cause_tuple) %> |
+<%= link_to 'Back', retain_service_action_cause_tuples_path %>

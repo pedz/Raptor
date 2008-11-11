@@ -37,5 +37,25 @@ module Retain
     def do_text_field(base, field, size, call_update)
       base.text_field field, html_tag(call_update, field.to_s, :size => size, :maxlength => size)
     end
+
+    def do_select_field(psar, field, collection, value_method, text_method, call_update)
+      psar.collection_select(field, collection, value_method, text_method,
+                        { :prompt => false },
+                         html_tag(call_update, field.to_s))
+    end
+
+    def do_label(label, for_field, call_update)
+      content_tag :label, label, :for => id_for(call_update, for_field)
+    end
+
+    def add_sac_tuples
+      if @sac_tubples.nil?
+        @sac_tuples = []
+        Retain::ServiceActionCauseTuple.find(:all).each { |sac|
+          @sac_tuples[sac.id] = sac.apar_required
+        }
+      end
+      add_page_setting("sac_tuples", @sac_tuples)
+    end
   end
 end

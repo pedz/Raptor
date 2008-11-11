@@ -33,11 +33,17 @@ Raptor.closeClicked = function(event) {
 
 /* called when the add time check box is clicked */
 Raptor.addTimeClicked = function(event) {
+    this.redraw();
+};
+
+Raptor.redrawAddTime = function() {
     var span = this.up(1).down('.call-update-add-time-span');
     if (this.getValue())
 	span.show();
     else
 	span.hide();
+    this.update_sac.redraw();
+    this.alter_time.redraw();
 };
 
 /* called when update check box clicked */
@@ -98,6 +104,10 @@ Raptor.enableSubmit = function(ele) {
 };
 
 Raptor.alterTimeToggle = function(event) {
+    this.redraw();
+};
+
+Raptor.redrawAlterTime = function() {
     if (this.getValue()) {
 	this.next('.alter-time-off').hide();
 	this.next('.alter-time-on').show();
@@ -107,61 +117,116 @@ Raptor.alterTimeToggle = function(event) {
     }
 };
 
+Raptor.sacChange = function(event) {
+    this.redraw();
+};
+
+Raptor.redrawSac = function() {
+    var visible = pageSettings['sac_tuples'][this.getValue()]
+    console.log("redrawSac");
+    if (visible)
+	this.aparField.show();
+    else
+	this.aparField.hide();
+};
+
+/*
+ * Called from controller after the submit is complete to clear and
+ * reset the form back to its proper state.
+ */
+Raptor.redrawDiv = function() {
+    this.update_pmr.redraw();
+    this.action_span.redraw();
+    this.add_time.redraw();
+    this.form.reset();
+};
+
+Raptor.redrawAction = function() {
+    if (this.addtxt_radio.getValue() == "addtxt")
+	this.addtxt_radio.doClicked();
+    if (this.requeue_radio.getValue() == "requeue")
+	this.requeue_radio.doClicked();
+    if (this.dup_radio.getValue() == "dup")
+	this.dup_radio.doClicked();
+    if (this.close_radio.getValue() == "close")
+	this.close_radio.doClicked();
+};
+
 /* Add this to the document.observe('dom:loaded') list of functions */
 Raptor.updateLoadHook = function() {
-    /* This has to be here or firefox draws the initial page wrong */
+    /*
+     * This has to be here or firefox draws the initial page wrong.
+     * We find each call-update-container and then dive into each of
+     * them.  The form, for example, has added methods and properties
+     * so that the redraw method can properly initialize all of the
+     * input fields within it.
+     */
     $$('.call-update-container').each(function (ele) {
-	ele.select('.input-with-list').each(Raptor.textInputWithList);
-	ele.hide();
-    });
+	var div = ele.down('.call-update-div');
+	if (!div)
+	    return;
+	div.redraw = Raptor.redrawDiv.bind(div);
 
-    $$('.call-update-update-pmr').each(function (ele) {
-	ele.observe('click', Raptor.updateClicked.bindAsEventListener(ele));
-	ele.redraw = Raptor.redrawUpdateCheckBox.bind(ele);
-    });
+	var form = div.down('.call-update-form');
+	Raptor.textInputWithList(form.down('.input-with-list'));
+	div.form = form;
 
-    $$('.call-update-requeue-radio').each(function (ele) {
-	Raptor.setupRadioButtonSpans(ele);
-	ele.doClicked        = Raptor.requeueClicked.bindAsEventListener(ele);
-	ele.observe('click', ele.doClicked);
-	if (ele.getValue() == "requeue")
-	    ele.doClicked();
-    });
+	/* Check box to show or hide text box */
+	var update_pmr = form.down('.call-update-update-pmr')
+	update_pmr.observe('click', Raptor.updateClicked.bindAsEventListener(update_pmr));
+	update_pmr.redraw = Raptor.redrawUpdateCheckBox.bind(update_pmr);
+	div.update_pmr = update_pmr;
 
-    $$('.call-update-addtxt-radio').each(function (ele) {
-	Raptor.setupRadioButtonSpans(ele);
-	ele.doClicked        = Raptor.addtxtClicked.bindAsEventListener(ele);
-	ele.observe('click', ele.doClicked);
-	if (ele.getValue() == "addtxt")
-	    ele.doClicked();
-    });
+	/* Span of radio buttons */
+	var action_span = form.down('.call-update-action-span');
+	action_span.redraw = Raptor.redrawAction.bind(action_span);
+	div.action_span = action_span;
 
-    $$('.call-update-dup-radio').each(function (ele) {
-	Raptor.setupRadioButtonSpans(ele);
-	ele.doClicked        = Raptor.dupClicked.bindAsEventListener(ele);
-	ele.observe('click', ele.doClicked);
-	if (ele.getValue() == "dup")
-	    ele.doClicked();
-    });
+	var requeue_radio = form.down('.call-update-requeue-radio');
+	action_span.requeue_radio = requeue_radio;
+	Raptor.setupRadioButtonSpans(requeue_radio);
+	requeue_radio.doClicked = Raptor.requeueClicked.bindAsEventListener(requeue_radio);
+	requeue_radio.observe('click', requeue_radio.doClicked);
 
-    $$('.call-update-close-radio').each(function (ele) {
-	Raptor.setupRadioButtonSpans(ele);
-	ele.doClicked        = Raptor.closeClicked.bindAsEventListener(ele);
-	ele.observe('click', ele.doClicked);
-	if (ele.getValue() == "close")
-	    ele.doClicked();
-    });
+	var addtxt_radio = form.down('.call-update-addtxt-radio');
+	action_span.addtxt_radio = addtxt_radio;
+	Raptor.setupRadioButtonSpans(addtxt_radio);
+	addtxt_radio.doClicked = Raptor.addtxtClicked.bindAsEventListener(addtxt_radio);
+	addtxt_radio.observe('click', addtxt_radio.doClicked);
 
-    $$('.call-update-add-time').each(function (ele) {
-	ele.observe('click', Raptor.addTimeClicked.bindAsEventListener(ele));
-    });
+	var dup_radio = form.down('.call-update-dup-radio');
+	action_span.dup_radio = dup_radio;
+	Raptor.setupRadioButtonSpans(dup_radio);
+	dup_radio.doClicked = Raptor.dupClicked.bindAsEventListener(dup_radio);
+	dup_radio.observe('click', dup_radio.doClicked);
 
-    $$('.send-email-button').each(function (ele) {
-	ele.observe('click', Raptor.sendEmail.bindAsEventListener(ele));
-    });
+	var close_radio = form.down('.call-update-close-radio');
+	action_span.close_radio = close_radio;
+	Raptor.setupRadioButtonSpans(close_radio);
+	close_radio.doClicked = Raptor.closeClicked.bindAsEventListener(close_radio);
+	close_radio.observe('click', close_radio.doClicked);
 
-    $$('.call-update-alter-time').each(function (ele) {
-	ele.observe('click', Raptor.alterTimeToggle.bindAsEventListener(ele));
-	ele.next('.alter-time-on').hide();
+	action_span.redraw();
+
+	var add_time = form.down('.call-update-add-time');
+	div.add_time = add_time;
+	add_time.observe('click', Raptor.addTimeClicked.bindAsEventListener(add_time));
+	add_time.redraw = Raptor.redrawAddTime.bind(add_time);
+
+	var update_sac = form.down('.call-update-sac');
+	add_time.update_sac = update_sac;
+	update_sac.redraw = Raptor.redrawSac.bind(update_sac);
+	update_sac.observe('change', Raptor.sacChange.bindAsEventListener(update_sac));
+	update_sac.aparField = update_sac.up(1).down('.call-update-apar-number-span');
+
+	var alter_time = form.down('.call-update-alter-time');
+	add_time.alter_time = alter_time;
+	alter_time.observe('click', Raptor.alterTimeToggle.bindAsEventListener(alter_time));
+	alter_time.redraw = Raptor.redrawAlterTime.bind(alter_time);
+
+	add_time.redraw();
+
+	var email_button = form.down('.send-email-button');
+	email_button.observe('click', Raptor.sendEmail.bindAsEventListener(email_button));
     });
 };

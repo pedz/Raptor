@@ -89,7 +89,7 @@ module Retain
                         :local_stop_date,
                         :ipar_course,
                         :psar_fesn_release,
-                        :psar_solution,
+                        :psar_solution_code,
                         :psar_optional_data,
                         :psar_survey,
                         :psar_special_activity,

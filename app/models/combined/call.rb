@@ -282,6 +282,9 @@ module Combined
       }
       @cached.pmr.customer = Cached::Customer.find_or_new(cust_options)
 
+      logger.debug("CMB: TMP customer_time_zone_adj = #{call.customer_time_zone_adj}")
+      logger.debug("CMB: TMP time_zone_code = #{call.time_zone_code}")
+
       # Update call record
       options = self.class.cached_class.options_from_retain(call)
       options[:dirty] = false if @cached.respond_to?("dirty")

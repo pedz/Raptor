@@ -1,0 +1,32 @@
+<h1>Editing retain_service_action_cause_tuple</h1>
+
+<% form_for(@retain_service_action_cause_tuple) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :psar_service_code %><br />
+    <%= f.text_field :psar_service_code %>
+  </p>
+  <p>
+    <%= f.label :psar_action_code %><br />
+    <%= f.text_field :psar_action_code %>
+  </p>
+  <p>
+    <%= f.label :psar_cause %><br />
+    <%= f.text_field :psar_cause %>
+  </p>
+  <p>
+    <%= f.label :apar_required %><br />
+    <%= f.check_box :apar_required %>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_area :description %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @retain_service_action_cause_tuple %> |
+<%= link_to 'Back', retain_service_action_cause_tuples_path %>

@@ -22,7 +22,7 @@ module Retain
       @psar_update = PsarUpdate.new(75, 57, 50, call.priority, 9, 0, 30)
       @new_queue = call.queue.to_param
       @new_priority = call.priority
-      @service_given = "99"
+      @service_given = 99
     end
 
     def to_id

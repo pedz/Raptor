@@ -16,7 +16,7 @@ module Retain
                       :psar_action_code,
                       :psar_cause,
                       :psar_impact,
-                      :psar_solution,
+                      :psar_solution_code,
                       :psar_actual_time,
                       :psar_chargeable_time,
                       :hours,
@@ -57,7 +57,7 @@ module Retain
         end
       }
       
-      form = "call_update_form_#{@call.to_id}"
+      update_div = "call_update_div_#{@call.to_id}"
       reply_span = "call_update_reply_span_#{@call.to_id}"
       newtxt = format_lines(call_update[:newtxt])
       
@@ -333,7 +333,7 @@ module Retain
         page.show reply_span
         if do_fade
           page.visual_effect(:fade, reply_span, :duration => 5.0)
-          page[form].reset
+          page[update_div].redraw
         end
       }
     end
@@ -505,15 +505,23 @@ module Retain
 
     def get_psar_options(call_update)
       psar_options = call_update[:psar_update].symbolize_keys
+      # Pull out the "SAC" and convert to Service, Action, Cause
+      sac = Retain::ServiceActionCauseTuple.find(psar_options.delete(:sac).to_i)
+      psar_options[:psar_service_code] = sac.psar_service_code
+      psar_options[:psar_action_code] = sac.psar_action_code
+      psar_options[:psar_cause] = sac.psar_cause
+
       # Amount of time spent
       hours   = psar_options.delete(:hours).to_i
       minutes = psar_options.delete(:minutes).to_i
+
       # Stop time and date
       year    = psar_options.delete(:stop_year).to_i
       month   = psar_options.delete(:stop_month).to_i
       day     = psar_options.delete(:stop_day).to_i
       hour    = psar_options.delete(:stop_hour).to_i
       minute  = psar_options.delete(:stop_minute).to_i
+
       # Munge the psar_options that we need to munge
       psar_options[:psar_actual_time] = (hours * 10) + (minutes / 6).to_i
       psar_options[:psar_chargeable_time] = hours * 256 + minutes

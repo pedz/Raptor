@@ -9,27 +9,29 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080905160751) do
+ActiveRecord::Schema.define(:version => 20081104224645) do
 
   create_table "cached_calls", :force => true do |t|
-    t.integer  "queue_id",                         :null => false
-    t.string   "ppg",                :limit => 3,  :null => false
-    t.integer  "pmr_id",                           :null => false
+    t.integer  "queue_id",                             :null => false
+    t.string   "ppg",                    :limit => 3,  :null => false
+    t.integer  "pmr_id",                               :null => false
     t.integer  "priority"
-    t.string   "p_s_b",              :limit => 1
-    t.string   "comments",           :limit => 54
-    t.string   "nls_customer_name",  :limit => 28
-    t.string   "nls_contact_name",   :limit => 30
-    t.string   "contact_phone_1",    :limit => 19
-    t.string   "contact_phone_2",    :limit => 19
-    t.string   "cstatus",            :limit => 7
-    t.string   "category",           :limit => 3
+    t.string   "p_s_b",                  :limit => 1
+    t.string   "comments",               :limit => 54
+    t.string   "nls_customer_name",      :limit => 28
+    t.string   "nls_contact_name",       :limit => 30
+    t.string   "contact_phone_1",        :limit => 19
+    t.string   "contact_phone_2",        :limit => 19
+    t.string   "cstatus",                :limit => 7
+    t.string   "category",               :limit => 3
     t.boolean  "system_down"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "slot"
     t.binary   "call_search_result"
     t.boolean  "dirty"
+    t.integer  "customer_time_zone_adj"
+    t.integer  "time_zone_code"
   end
 
   add_index "cached_calls", ["ppg", "queue_id"], :name => "uq_cached_calls_pair", :unique => true
@@ -121,7 +123,7 @@ ActiveRecord::Schema.define(:version => 20080905160751) do
     t.string   "psar_mailed_flag",        :limit => 1
     t.string   "psar_sequence_number",    :limit => 5
     t.integer  "psar_service_code"
-    t.string   "psar_solution",           :limit => 1
+    t.string   "psar_solution_code",      :limit => 1
     t.string   "psar_stop_date_year",     :limit => 2
     t.string   "psar_system_date",        :limit => 6
     t.integer  "stop_time_moc"
@@ -201,6 +203,34 @@ ActiveRecord::Schema.define(:version => 20080905160751) do
     t.integer  "priority",   :default => 3
     t.integer  "ftype",      :default => 0
     t.integer  "state",      :default => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "retain_service_action_cause_tuples", :force => true do |t|
+    t.integer  "psar_service_code"
+    t.integer  "psar_action_code"
+    t.integer  "psar_cause"
+    t.boolean  "apar_required"
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "retain_service_action_cause_tuples", ["psar_action_code", "psar_cause", "psar_service_code"], :name => "uq_retain_service_action_cause_tuples", :unique => true
+
+  create_table "retain_service_given_codes", :force => true do |t|
+    t.integer  "service_given"
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "retain_service_given_codes", ["service_given"], :name => "uq_retain_service_given_codes", :unique => true
+
+  create_table "retain_solution_codes", :force => true do |t|
+    t.integer  "psar_solution_code"
+    t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

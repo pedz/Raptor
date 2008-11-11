@@ -1,0 +1,20 @@
+<h1>Editing retain_service_given_code</h1>
+
+<% form_for(@retain_service_given_code) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :service_given %><br />
+    <%= f.text_field :service_given %>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_field :description %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @retain_service_given_code %> |
+<%= link_to 'Back', retain_service_given_codes_path %>

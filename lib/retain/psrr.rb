@@ -27,7 +27,7 @@
 # 1096 -- :ipar_course
 # 1097 -- :psar_fesn_release
 # 1098 -- :psar_apar
-# 1100 -- :psar_solution
+# 1100 -- :psar_solution_code
 # 1101 -- :psar_location
 # 1102 -- :psar_territory
 # 1103 -- :psar_optional_data
@@ -99,7 +99,7 @@ module Retain
                                     :psar_action_code,
                                     :psar_cause,
                                     :psar_impact,
-                                    :psar_solution,
+                                    :psar_solution_code,
                                     :psar_cia,
                                     :psar_apar,
                                     :psar_system_date,

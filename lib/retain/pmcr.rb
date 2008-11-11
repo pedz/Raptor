@@ -100,7 +100,7 @@ module Retain
                         :psar_optional_data,
                         :psar_other_office,
                         :psar_service_code,
-                        :psar_solution,
+                        :psar_solution_code,
                         :psar_special_activity,
                         :psar_survey,
                         :psar_travel_time,

@@ -181,8 +181,8 @@ module Retain
       :profile_customer_attr_1     => [  600, :ebcdic,              8 ],
       :profile_customer_attr_2     => [  601, :ebcdic,              8 ],
       :profile_customer_attr_3     => [  602, :ebcdic,              8 ],
-      :customer_time_zone_adj      => [  603, :ebcdic,              2 ], # hex
-      :time_zone_code              => [  604, :ebcdic,              2 ],
+      :customer_time_zone_adj      => [  603, :short,               2 ], # hex
+      :time_zone_code              => [  604, :short,               2 ],
       :caller_type                 => [  605, :ebcdic,              1 ],
       :time_on_queue               => [  606, :ebcdic,              4 ], # date/time?
       :call_entry_accrued_time     => [  607, :ebcdic,              1 ],
@@ -306,7 +306,7 @@ module Retain
       :psar_record_id              => [ 1079, :ebcdic,              1 ],
       :psar_cia                    => [ 1080, :ebcdic,              1 ],
       :psar_impact                 => [ 1081, :number,              1 ],
-      :psar_solution               => [ 1082, :ebcdic,              1 ],
+      :psar_solution_blah          => [ 1082, :ebcdic,              1 ], # Don't use this by mistake!!
       :psar_action_code            => [ 1083, :number,              2 ],
       :ipar_action                 => [ 1084, :ebcdic,              1 ],
       :ipar_action_code            => [ 1085, :ebcdic,              1 ],
@@ -324,7 +324,7 @@ module Retain
       :psar_fesn_release           => [ 1097, :ebcdic,              3 ],
       :psar_apar                   => [ 1098, :ebcdic,              5 ],
       :cuprimd                     => [ 1099, :ebcdic,              1 ],
-      :psar_solution               => [ 1100, :number,              1 ],
+      :psar_solution_code          => [ 1100, :number,              1 ],
       :psar_location               => [ 1101, :ebcdic,              3 ],
       :psar_territory              => [ 1102, :ebcdic,              3 ],
       :psar_optional_data          => [ 1103, :ebcdic,              2 ],

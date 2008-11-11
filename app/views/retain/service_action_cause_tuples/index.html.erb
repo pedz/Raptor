@@ -1,0 +1,28 @@
+<h1>Listing retain_service_action_cause_tuples</h1>
+
+<table>
+  <tr>
+    <th>Psar service code</th>
+    <th>Psar action code</th>
+    <th>Psar cause</th>
+    <th>Apar required</th>
+    <th>Description</th>
+  </tr>
+
+<% for retain_service_action_cause_tuple in @retain_service_action_cause_tuples %>
+  <tr>
+    <td><%=h retain_service_action_cause_tuple.psar_service_code %></td>
+    <td><%=h retain_service_action_cause_tuple.psar_action_code %></td>
+    <td><%=h retain_service_action_cause_tuple.psar_cause %></td>
+    <td><%=h retain_service_action_cause_tuple.apar_required %></td>
+    <td><%=h retain_service_action_cause_tuple.description %></td>
+    <td><%= link_to 'Show', retain_service_action_cause_tuple %></td>
+    <td><%= link_to 'Edit', edit_retain_service_action_cause_tuple_path(retain_service_action_cause_tuple) %></td>
+    <td><%= link_to 'Destroy', retain_service_action_cause_tuple, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New retain_service_action_cause_tuple', new_retain_service_action_cause_tuple_path %>
