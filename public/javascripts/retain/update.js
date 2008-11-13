@@ -134,10 +134,13 @@ Raptor.redrawSac = function() {
  * reset the form back to its proper state.
  */
 Raptor.redrawDiv = function() {
+    /*
+     * Reset the form first or all the redraws use the old values.
+     */
+    this.form.reset();
     this.update_pmr.redraw();
     this.action_span.redraw();
     this.add_time.redraw();
-    this.form.reset();
 };
 
 Raptor.redrawAction = function() {
