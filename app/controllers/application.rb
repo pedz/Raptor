@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
   def authenticate
     set_last_uri
     return true if session[:user]
-    if request.env.has_key? "REMOTE_USER" && false
+    if request.env.has_key? "REMOTE_USER"
       apache_authenticate
     elsif Rails.env == "staging"
       staging_authenticate
