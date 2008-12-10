@@ -664,12 +664,14 @@ module Retain
         is_initial = call.needs_initial_response?
         if is_initial
           nt = ct_initial_response_requirement(call)
+          entry_time = call.center_entry_time.new_offset(signon_user.tz)
+          title = "Entry Time: #{entry_time.strftime("%a, %d %b %Y %H:%M")}"
         else
           nt = ct_normal_response_requirement(call)
+          last_ct_time = call.pmr.last_ct_time.new_offset(signon_user.tz)
+          title = "Last CT: #{last_ct_time.strftime("%a, %d %b %Y %H:%M")}"
         end
         
-        last_ct_time = call.pmr.last_ct_time.new_offset(signon_user.tz)
-        title = "Last CT: #{last_ct_time.strftime("%a, %d %b %Y %H:%M")}"
         
         now = DateTime.now
         if now > nt
