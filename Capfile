@@ -20,12 +20,12 @@ namespace :deploy do
     # run "cd #{current_path}/ && mongrel_rails cluster::start"
   end
 
-  desc "Restart the mongrel cluster"
+  desc "Restart the application"
   task :restart, :roles => :app do
     run "touch #{current_path}/tmp/restart.txt"
   end
 
-  desc "Stop the mongrel cluster"
+  desc "No way to stop the application"
   task :stop, :roles => :app do
     # run "cd #{current_path}/ && mongrel_rails cluster::stop"
   end
