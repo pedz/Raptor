@@ -4,5 +4,4 @@ module Cached
     belongs_to :user
     belongs_to :queue, :class_name => "Cached::Queue" # , :extend => WrapWithCombine
   end
-  puts "Cached::FavoriteQueue defined"
 end
