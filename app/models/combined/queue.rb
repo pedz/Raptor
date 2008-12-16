@@ -6,7 +6,7 @@ module Combined
     add_skipped_fields :queue_name, :h_or_s
     add_non_retain_associations :owners, :queue_infos, :favorite_queues
     set_db_constants :queue_name, :h_or_s, :center
-
+      
     # Words is an array of string in the order of
     # queue_name,h_or_s,center
     def self.words_to_options(words)
@@ -64,7 +64,6 @@ module Combined
     end
     
     def hits
-      logger.debug("HERE")
       Retain::Cq.new(to_options).hit_count
     end
 

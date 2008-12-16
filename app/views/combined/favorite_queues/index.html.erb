@@ -1,58 +1,60 @@
 <% @title = "Favorite Queues" -%>
-<% @refresh = 900 -%>
 <% content_for(:center) do -%>
 <!-- combined/favorite_queues/index.html.erb -->
-  <h1>Listing of Favorite Queues</h1>
-  <table>
+<h1>Listing of Favorite Queues</h1>
+<table id='favorite-queue-list'>
+  <thead>
     <tr>
       <th colspan=<%= admin? ? 8 : 7 %>>
 	Favorite Queues last updated <%= Time.now %>
       </th>
     </tr>
     <tr>
-  <% if admin?-%>
+      <% if admin?-%>
       <th>User</th>
-  <% end -%>
+      <% end -%>
       <th>Queue<br/>Status</th>
-      <th>Queue</th>
-      <th>T/P</th>
+      <th>Queue<br/>Type</th>
       <th>Calls</th>
       <th>Show</th>
       <th>Edit</th>
       <th>Destroy</th>
     </tr>
-  
-  <% index = 0 -%>
-  <% for favorite_queue in @favorite_queues -%>
-  <%   queue = favorite_queue.queue -%>
-  <%   hits = queue.hits            -%>
-  <%   team = queue.owners.empty?   -%>
-  <%   if team                      -%>
-  <%     q_class = "team"           -%>
-  <%   else                         -%>
-  <%     q_class = "personal"       -%>
-  <%   end                          -%>
-  <%   if hits == 0                 -%>
-  <%     q_class += "-empty"        -%>
-  <%   else                         -%>
-  <%     q_class += "-nonempty"     -%>
-  <%   end                          -%>
+  </thead>
+  <tbody>
+    <% index = 0 -%>
+    <% for favorite_queue in @favorite_queues -%>
+    <%   queue = favorite_queue.queue -%>
+    <%   hits = queue.hits            -%>
+    <%   team = queue.owners.empty?   -%>
+    <%   if team                      -%>
+    <%     q_class = "team"           -%>
+    <%   else                         -%>
+    <%     q_class = "personal"       -%>
+    <%   end                          -%>
+    <%   if hits == 0                 -%>
+    <%     q_class += "-empty"        -%>
+    <%   else                         -%>
+    <%     q_class += "-nonempty"     -%>
+    <%   end                          -%>
     <tr class='<%= q_class -%>'>
-      <td><%= button_url(index += 1, combined_q_url(queue.to_param)) -%></td>
-  <% if admin? -%>
+      <% if admin? -%>
       <td><%=h queue.user_id -%></td>
-  <% end -%>
-      <td><%= button_url queue.to_param, queue -%></td>
-      <td><%= team ? "T" : "P"%></td>
+      <% end -%>
+      <td><%= button_url queue.to_param, combined_q_url(queue.to_param) -%></td>
+      <td><%= team ? "Team" : "Personal"%></td>
       <td align='right'><%= h hits -%></td>
+      <%- index += 1 -%>
       <td><%= button_url "S#{index}", favorite_queue -%></td>
       <td><%= button_url "E#{index}", edit_polymorphic_path(favorite_queue) -%></td>
       <td><%= link_to 'Destroy', favorite_queue, :confirm => 'Are you sure?', :method => :delete -%></td>
     </tr>
-  <% end -%>
-  </table>
+    <% end -%>
+  </tbody>
+</table>
 
-  <br />
+<br />
 
-  <%= button_url 'New Favorite Queue', new_combined_favorite_queue_path -%>
+<%= button_url 'New Favorite Queue', new_combined_favorite_queue_path -%>
+<div id='error-message-box'></div>
 <% end -%>

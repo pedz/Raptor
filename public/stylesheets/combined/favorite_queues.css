@@ -1,3 +1,9 @@
+#error-message-box {
+    color:red;
+    position: fixed;
+    bottom: 0px;
+    text-decoration: blink;
+}
 
 .team-nonempty {
     color: orange;

@@ -15,6 +15,7 @@ module Combined
       respond_to do |format|
         format.html # index.html.erb
         format.xml  { render :xml => @favorite_queues }
+        format.json { render :json => @favorite_queues }
       end
     end
     
@@ -139,6 +140,17 @@ module Combined
       respond_to do |format|
         format.html { redirect_to(combined_favorite_queues_url) }
         format.xml  { head :ok }
+      end
+    end
+
+    module FavoriteQueue
+      # Special to_xml for favorite queues.
+      def to_xml(options={ })
+        root = options[:root] || self.class.name.underscore
+        result = "<#{root}>\n"
+        
+        result << "</#{root}>\n"
+        result
       end
     end
   end
