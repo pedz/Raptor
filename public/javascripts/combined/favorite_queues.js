@@ -1,11 +1,13 @@
-Raptor.changeHits = function(queue, hits) {
-    $('favorite-queue-list').down('tr').each(function (row) {
-	
-    });
-};
 
 Raptor.showMessage = function(message) {
-    $('error-message-box').innerHTML = "<h1>" + message + "</h1>";
+    var m = $('error-message-box')
+    m.show();
+    m.innerHTML = "<h1>" + message + "</h1>";
+    Sound.play('sounds/beep.mp3');
+};
+
+Raptor.hideMessage = function() {
+    $('error-message-box').hide();
 };
 
 Raptor.updateTable = function (q, hits) {
@@ -32,6 +34,8 @@ Raptor.refreshReply = function(transport) {
     }
     if (teamAlert)
 	Raptor.showMessage("PMR's on a team queue");
+    else
+	Raptor.hideMessage();
 };
 
 Raptor.refreshQueues = function () {
