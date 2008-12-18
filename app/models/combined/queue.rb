@@ -64,7 +64,12 @@ module Combined
     end
     
     def hits
-      Retain::Cq.new(to_options).hit_count
+      begin
+        Retain::Cq.new(to_options).hit_count
+      rescue Retain::SdiReaderError => e
+        raise e unless e.message[0,13] == "INVALID QUEUE"
+        -1
+      end
     end
 
     private
