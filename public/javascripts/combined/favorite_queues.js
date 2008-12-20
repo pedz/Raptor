@@ -10,6 +10,10 @@ Raptor.hideMessage = function() {
     $('error-message-box').hide();
 };
 
+Raptor.soundTest = function() {
+    Raptor.showMessage('This is a sound test');
+};
+
 Raptor.updateTable = function (q, hits) {
     var list = Raptor.table;
     var length = list.length;
