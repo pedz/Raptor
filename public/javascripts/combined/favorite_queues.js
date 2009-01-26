@@ -3,7 +3,7 @@ Raptor.showMessage = function(message) {
     var m = $('error-message-box')
     m.show();
     m.innerHTML = "<h1>" + message + "</h1>";
-    Sound.play('sounds/beep.mp3');
+    /* Sound.play('sounds/beep.mp3'); */
 };
 
 Raptor.hideMessage = function() {
