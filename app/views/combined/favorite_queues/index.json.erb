@@ -1,0 +1,11 @@
+<%= @favorite_queues.map do |favorite_queue|
+      queue = favorite_queue.queue
+      {
+        :combined_q_url => combined_q_path(queue.to_param),
+        :queue => queue.to_param,
+        :team => queue.owners.empty?,
+        :hits => queue.hits
+      }
+    end.to_json
+%>
+

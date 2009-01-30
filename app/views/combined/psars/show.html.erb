@@ -41,7 +41,8 @@
     </tr>
     <tr>
       <td><b>Stop Date Year</b></td><td><%= @combined_psar.psar_stop_date_year %></td>
-      <td><b>Stop Time Moc</b></td><td><%= @combined_psar.stop_time_moc %></td>
+      <td><b>Stop Time Moc</b></td>
+      <td><%= @combined_psar.stop_time_moc %>(<%= Time.moc(@combined_psar.stop_time_moc) %>)</td>
       <td><b>System Date</b></td><td><%= @combined_psar.psar_system_date %></td>
     </tr>
     <tr>
