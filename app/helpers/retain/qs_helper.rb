@@ -693,19 +693,6 @@ module Retain
       end
     end
 
-    def duo(header, call, index)
-      if header
-        return th(:class => 'duo') do 
-          "Customer".center(28).gsub(/ /, '&nbsp;') + "<br>" + "Comments"
-        end
-      end
-      td :class => "duo" do
-        customer_span(call) +
-          "<br>" +
-          comments_span(call)
-      end
-    end
-
     def customer_span(call)
       pmr = call.pmr
       if (mail = pmr.problem_e_mail.strip).blank?
@@ -723,16 +710,6 @@ module Retain
       end
     end
 
-    def comments_span(call)
-      pmr = call.pmr
-      span(:id => "comments_#{call.to_id}",
-           :class => "edit-name click-to-edit",
-           :title => "Click to Edit",
-           :url => alter_combined_call_path(call)) do
-        call.comments
-      end
-    end
-    
     def popup(binding, hash = { })
       hash = { :class => "popup"}.merge(hash)
       span binding, :class => 'popup-wrapper' do

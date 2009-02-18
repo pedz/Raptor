@@ -108,5 +108,11 @@ module Retain
         common_display_pmr_resolver(binding, call)
       end
     end
+
+    def display_pmr_comments(binding, call)
+      td binding do |binding|
+        common_display_pmr_comments(binding, call)
+      end
+    end
   end
 end

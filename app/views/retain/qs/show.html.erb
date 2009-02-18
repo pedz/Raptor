@@ -1,10 +1,12 @@
 <!-- retain/queue/show.html.erb -->
 <% @title = "Retain queue: #{@queue.to_param}" -%>
 <%- content_for(:top) do -%>
+  <!-- retain/queue/show.html.erb top content -->
   <h1>Retain Queue: <%= h @queue.to_param %></h1>
   <%= render :partial => 'layouts/shared/display_flash' %>
 <%- end -%>
 <% content_for(:center) do %>
+  <!-- retain/queue/show.html.erb center content -->
   <div class="smaller">
     <span id="message-area"></span>
     <table class='sortable' style='font-family : courier, monospace'>
@@ -14,6 +16,7 @@
   </div>
 <% end %>
 <% content_for(:bottom) do %>
+  <!-- retain/queue/show.html.erb bottom content -->
   <div style='color: green; display: none;' id='help'>
     <ol>
       <li>

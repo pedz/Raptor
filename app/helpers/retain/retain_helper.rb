@@ -8,6 +8,18 @@ module Retain
       concat(fixed_width_span(locals), binding)
     end
 
+    def common_display_pmr_comments(binding, call)
+      add_page_setting("comments_#{call.to_id}",
+                       {
+                         :url => alter_combined_call_path(call)
+                       })
+      span(binding,
+           :id => "comments_#{call.to_id}",
+           :class => "edit-name") do |binding|
+        concat(call.comments, binding)
+      end
+    end
+    
     def common_display_pmr_owner(binding, call)
       retid = Logon.instance.signon
       pmr = call.pmr
