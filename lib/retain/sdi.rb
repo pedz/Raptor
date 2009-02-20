@@ -156,7 +156,7 @@ module Retain
             msg = parse_io_err(msg)
           end
         else
-          msg = Errors[base_obj.rc] || "Unknown Error"
+          msg = Errors[@rc] || "Unknown Error"
         end
         @error_message = msg
         logger.error("SDI: #{@request_type}: #{@error_message}")
