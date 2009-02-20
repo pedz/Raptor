@@ -25,7 +25,7 @@ module Combined
     end
 
     def self.from_param(param)
-      from_options(:center => param)
+      create_from_options(:center => param)
     end
 
     def to_param
