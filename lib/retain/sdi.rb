@@ -75,7 +75,7 @@ module Retain
     def sendit(req_fields, send_options = {})
       @snd_fields = @fields.merge(req_fields)
       options = @options.merge(send_options)
-      if true
+      if false
         RAILS_DEFAULT_LOGGER.debug("class is #{self.class}")
         logger.debug("RTN: sendit for #{self.class} called")
         logger.debug("RTN: @snd_fields")
@@ -160,6 +160,9 @@ module Retain
         end
         @error_message = msg
         logger.error("SDI: #{@request_type}: #{@error_message}")
+        if @rc == 703 || @rc == 705
+          raise Retain::LogonFailed
+        end
       end
     end
 
@@ -256,6 +259,33 @@ module Retain
       @connection.connect
     end
 
+    # From SDI for Dummies appendix E.
+    #
+    # Ret. Code | Reason | Pass/Fail | Description
+    #        16 |     18 |      Fail | Retain database not available for userid
+    #           |        |           |   validation
+    #        70 |     19 |      Fail | Userid is set to inactive
+    #        70 |     20 |      Fail | Userid is being blocked due to
+    #           |        |           |   excessive errors
+    #        70 |     21 |      Fail | Client IP address being blocked
+    #           |        |           |   due to excessive errors
+    #        70 |     22 |      Fail | Client IP address blocked for
+    #           |        |           |   other error
+    #        70 |      2 |      Fail | Password does not match current
+    #           |        |           |   database password
+    #        70 |      3 | Cond Pass | Password has expired, only
+    #           |        |           |   a PMDR change password
+    #           |        |           |   permitted
+    #        69 |      8 |      Fail | Invalid/Unknown Retain userid
+    #         8 |     16 |      Fail | Invalid Eyecatch "SDIRETEX"
+    #         8 |     12 |      Fail | Userid blank
+    #         8 |      8 |      Fail | Password blank
+    #         4 |      n |      Pass | Userid/Password validated,
+    #           |        |           |   password will expire in n (1 to
+    #           |        |           |   7) days
+    #         0 |      n |      Pass | Userid/Password validated,
+    #           |        |           |   password will expire in n (8 to
+    #           |        |           |   90) days
     def login(h_or_s)
       #
       # Abort early if the failed flag is already true
@@ -271,20 +301,24 @@ module Retain
         Logon.instance.password +
         '00000000   ,IC,000000'
       
+      @logon_request = first50.user_to_retain
       # "encrypt" the password
-      send = first50.user_to_retain
-      ( 21..28 ).each { |i| send[i] -= 0x3f }
+      ( 21..28 ).each { |i| @logon_request[i] -= 0x3f }
       connect(h_or_s)
-      @connection.write(send)
-      reply = @login_reply = @connection.read(50)
-      if  reply
-        logger.debug("RTN: reply length is #{reply.length}")
+      @connection.write(@logon_request)
+      @logon_reply = @connection.read(50)
+      if  @logon_reply
+        logger.debug("RTN: reply length is #{@logon_reply.length}")
       else
         logger.debug("RTN: nil reply")
       end
-      unless reply && reply.length == 50
-        hex_dump("first 50 request", send)
-        hex_dump("first 50 reply", reply)
+      @logon_return = @logon_reply[24,4].retain_to_user.to_i
+      @logon_reason = @logon_reply[28,4].retain_to_user.to_i
+      logger.debug("Logon Return: #{@logon_return}")
+      logger.debug("Logon Reason: #{@logon_reason}")
+      unless @logon_reply && @logon_reply.length == 50
+        hex_dump("first 50 request", @logon_request)
+        hex_dump("first 50 reply", @logon_reply)
         raise Retain::LogonFailed
       end
     end

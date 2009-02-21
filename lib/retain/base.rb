@@ -67,6 +67,16 @@ module Retain
       @fields.merge(field_temp) unless field_temp.nil?
     end
 
+    #
+    # Create field getters and setters
+    #
+    Fields::FIELD_DEFINITIONS.each_pair do |k, v|
+      index, convert, width = v
+      eval "def #{k};  @fields.#{k}; end", nil, __FILE__, __LINE__
+      eval "def #{k}?; @fields.#{k}?; end", nil, __FILE__, __LINE__
+      eval "def #{k}=(data); @fields.#{k} = data; end", nil, __FILE__, __LINE__
+    end
+
     # Note: this overrides the @fields[:error_message]
     def error_message
       @fetch_sdi.error_message
@@ -95,16 +105,6 @@ module Retain
       @fetch_sdi = self.class.fetch_sdi
       @fetch_sdi.sendit(@fields, @options)
       self
-    end
-
-    #
-    # Create field getters and setters
-    #
-    Fields::FIELD_DEFINITIONS.each_pair do |k, v|
-      index, convert, width = v
-      eval "def #{k};  @fields.#{k}; end", nil, __FILE__, __LINE__
-      eval "def #{k}?; @fields.#{k}?; end", nil, __FILE__, __LINE__
-      eval "def #{k}=(data); @fields.#{k} = data; end", nil, __FILE__, __LINE__
     end
 
     def has_key?(sym)
