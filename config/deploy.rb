@@ -1,5 +1,9 @@
+
 set :application, "raptor"
-set :repository,  "svn://p51.austin.ibm.com/raptor/trunk"
+set :repository,  "apache@tcp237:repositories/raptor.git"
+set :domain, "apache@tcp237.austin.ibm.com"
+set :scm, :git
+set :deploy_via, :remote_cache
 
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
@@ -14,13 +18,8 @@ set :db_path, "#{deploy_base}/database-files/#{application}-database.yml"
 
 # The deploy_to is a variable that Capistrano needs
 set :deploy_to, "#{deploy_base}/#{application}"
-set :mongrel_conf, "#{current_path}/config/mongrel_cluster.yml" 
 set :use_sudo, false
 
-# If you aren't using Subversion to manage your source code, specify
-# your SCM below:
-# set :scm, :subversion
-
-role :app, "apache@p51.austin.ibm.com"
-role :web, "apache@p51.austin.ibm.com"
-role :db,  "apache@p51.austin.ibm.com", :primary => true
+role :app, domain
+role :web, domain
+role :db,  domain, :primary => true
