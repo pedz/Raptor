@@ -5,6 +5,7 @@
 
 /* called when addtxt radio button clicked */
 Raptor.addtxtClicked = function(event) {
+    this.caSpan.hide();
     this.requeueSpan.hide();
     this.prioritySpan.hide();
     this.serviceGivenSpan.hide();
@@ -12,6 +13,7 @@ Raptor.addtxtClicked = function(event) {
 
 /* called when requeue radio button clicked */
 Raptor.requeueClicked = function(event) {
+    this.caSpan.show();
     this.requeueSpan.show();
     this.prioritySpan.show();
     this.serviceGivenSpan.show();
@@ -19,6 +21,7 @@ Raptor.requeueClicked = function(event) {
 
 /* called when dup radio button clicked */
 Raptor.dupClicked = function(event) {
+    this.caSpan.hide();
     this.requeueSpan.show();
     this.prioritySpan.show();
     this.serviceGivenSpan.hide();
@@ -26,6 +29,7 @@ Raptor.dupClicked = function(event) {
 
 /* called when close radio button clicked */
 Raptor.closeClicked = function(event) {
+    this.caSpan.hide();
     this.requeueSpan.hide();
     this.prioritySpan.hide();
     this.serviceGivenSpan.show();
@@ -59,6 +63,7 @@ Raptor.updateClicked = function(event) {
  * Sets up the spans to control for a radio button in an update box
  */
 Raptor.setupRadioButtonSpans = function(ele) {
+    ele.caSpan           = ele.up(1).down('.call-update-ca-span');
     ele.requeueSpan      = ele.up(1).down('.call-update-requeue-span');
     ele.prioritySpan     = ele.up(1).down('.call-update-priority-span');
     ele.serviceGivenSpan = ele.up(1).down('.call-update-service-given-span');

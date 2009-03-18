@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081104224646) do
+ActiveRecord::Schema.define(:version => 20081104224647) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(:version => 20081104224646) do
     t.datetime "updated_at"
     t.binary   "last_alter_timestamp"
     t.boolean  "dirty"
+    t.string   "special_application",  :limit => 1
   end
 
   add_index "cached_pmrs", ["branch", "country", "creation_date", "problem"], :name => "uq_cached_pmrs_triple", :unique => true

@@ -51,7 +51,7 @@ module Retain
       
       # Convert the check box values to real true / false values.  I'm
       # worried I'm going to make a silly mistake if I don't.
-      [ :do_ct, :add_time, :update_pmr ].each { |sym|
+      [ :do_ct, :do_ca, :add_time, :update_pmr ].each { |sym|
         if call_update.has_key?(sym)
           call_update[sym] = call_update[sym] == "1"
         end
@@ -141,7 +141,11 @@ module Retain
         when :requeue
           requeue_options = call_options.dup
           requeue_options[:addtxt_lines] = newtxt unless newtxt.empty?
-          requeue_options[:operand] = '    '
+          if call_update[:do_ca]
+            requeue_options[:operand] = 'CA  '
+          else
+            requeue_options[:operand] = '    '
+          end
           requeue_options.merge!(get_psar_options(call_update)) if call_update[:add_time]
           if (new_priority = call_update[:new_priority]) && @call.priority != new_priority
             requeue_options[:priority] = new_priority
@@ -151,7 +155,7 @@ module Retain
             requeue_options[:service_given] = sg
           end
           from_team_to_personal = false
-          if call_update.has_key? :new_queue
+          if call_update.has_key? :new_queue && !call_update[:do_ca]
             new_queue = Combined::Queue.from_param!(call_update[:new_queue])
             if new_queue.h_or_s != @queue.h_or_s
               if @queue.h_or_s == 'S' && new_queue.h_or_s == 'H' # from software to hardware

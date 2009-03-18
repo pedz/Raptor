@@ -9,7 +9,7 @@ module Retain
     attr_reader   :call
     attr_accessor :update_pmr, :update_type, :do_ct, :newtxt, :add_time
     attr_accessor :new_queue, :new_priority, :service_given
-    attr_accessor :psar_update
+    attr_accessor :psar_update, :do_ca
     
     def initialize(call)
       RAILS_DEFAULT_LOGGER.debug("call_update initialize")
@@ -17,6 +17,7 @@ module Retain
       @update_type = "addtxt"
       @update_pmr = :true
       @do_ct = :true
+      @do_ca = false
       @newtxt = "Action Taken:\n\nAction Plan:\n"
       @add_time = :true
       @psar_update = PsarUpdate.new(75, 57, 50, call.priority, 9, 0, 30)
