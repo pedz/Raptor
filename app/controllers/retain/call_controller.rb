@@ -54,7 +54,10 @@ module Retain
       [ :do_ct, :do_ca, :add_time, :update_pmr ].each { |sym|
         if call_update.has_key?(sym)
           call_update[sym] = call_update[sym] == "1"
+       else
+         call_update[sym] = false
         end
+       logger.debug("#{sym} set to #{call_update[sym]}")
       }
       
       update_div = "call_update_div_#{@call.to_id}"
@@ -155,7 +158,8 @@ module Retain
             requeue_options[:service_given] = sg
           end
           from_team_to_personal = false
-          if call_update.has_key? :new_queue && !call_update[:do_ca]
+         logger.debug("call_update[:do_ca] = #{call_update[:do_ca].inspect}")
+          if call_update.has_key?(:new_queue) && !call_update[:do_ca]
             new_queue = Combined::Queue.from_param!(call_update[:new_queue])
             if new_queue.h_or_s != @queue.h_or_s
               if @queue.h_or_s == 'S' && new_queue.h_or_s == 'H' # from software to hardware
