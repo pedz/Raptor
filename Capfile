@@ -33,5 +33,6 @@ namespace :deploy do
   desc "Hook to set up database.yml"
   task :after_update_code, :roles => :app do
     run "cp #{db_path} #{release_path}/config/database.yml"
+    run "cp #{retain_path} #{release_path}/config/retain.yml"
   end
 end
