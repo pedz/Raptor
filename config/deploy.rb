@@ -4,6 +4,7 @@ set :repository,  "apache@tcp237:repositories/raptor.git"
 set :domain, "apache@tcp237.austin.ibm.com"
 set :scm, :git
 set :deploy_via, :remote_cache
+set :branch, "master"
 
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
