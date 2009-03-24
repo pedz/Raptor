@@ -4,7 +4,7 @@ module ActionView
   module Helpers
     module AssetTagHelper
       def icon_path(source)
-        compute_public_path(source, '.')
+        compute_public_path(source, '.', 'ico')
       end
 
       def icon_tag(source, options = {})
