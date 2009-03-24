@@ -33,16 +33,20 @@ class ApplicationController < ActionController::Base
     application_user.admin
   end
 
-  # I'm scared to use "user" so I'm going with "application_user" but
-  # I keep user_id in the session.  The find should never fail.  If it
-  # does, then we want to just give up.
+  # I'm scared to use "user" so I'm going with "application_user".
+  # I keep user_id in the session.
   def application_user
-    begin
-      @application_user ||= User.find(session[:user_id])
-    rescue => e
-      reset_session
-      throw e
+    unless @application_user.nil?
+      if session.has_key?(:user_id)
+        tmp = User.find(:first, :id => session[:user_id])
+        if tmp.nil?
+          reset_session
+        else
+          @application_user = tmp
+        end
+      end
     end
+    @application_user
   end
 
   # A before_filter for the entire application.  This authenticates
@@ -52,7 +56,7 @@ class ApplicationController < ActionController::Base
   # the session.
   def authenticate
     set_last_uri
-    return true if session.has_key?(:user_id)
+    return true unless application_user.nil?
     if request.env.has_key? "REMOTE_USER"
       apache_authenticate
     elsif Rails.env == "staging"
