@@ -37,11 +37,15 @@ class ApplicationController < ActionController::Base
   # I keep user_id in the session.
   def application_user
     unless @application_user.nil?
+      logger.debug("@application_user is nil")
       if session.has_key?(:user_id)
+        logger.debug("session[:user_id] set to #{session[:user_id]}")
         tmp = User.find(:first, :id => session[:user_id])
         if tmp.nil?
+          logger.debug("Did not find user id #{session[:user_id]}")
           reset_session
         else
+          logger.debug("User has ldap id of #{tmp.ldap_id}")
           @application_user = tmp
         end
       end
