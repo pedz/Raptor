@@ -1,7 +1,7 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   def first_name
-    session[:user].first_name
+    application_user.first_name
   end
 
   def app_doctype
@@ -63,7 +63,7 @@ module ApplicationHelper
   end
   
   def admin?
-    session[:user].admin
+    application_user.admin
   end
 
   def button(text, action)
