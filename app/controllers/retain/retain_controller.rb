@@ -48,18 +48,10 @@ module Retain
     #
     def validate_retuser
       logger.debug("RTN: in validate_retuser")
-      user = session[:user]
-      
-      # Avoid extra db hits if session[:retain] already set
-      if params = session[:retain]
-        logger.debug("RTN: setting logon params #{__LINE__}")
-        Logon.instance.set(params)
-        return true
-      end
       
       # If no retusers defined for this user, then redirect and
       # set up a retain user.
-      if user.retusers.empty?
+      if application_user.retusers.empty?
         session[:original_uri] = request.request_uri
         redirect_to new_retuser_url
         return false
@@ -73,14 +65,13 @@ module Retain
     # ConnectionParamters structure.  We hold this in the session
     # data.  We also set the Logon instance to use these settings.
     def setup_logon_instance
-      retuser = session[:user].retusers[0]
+      retuser = application_user.retusers[0]
       config = Retain::Config.symbolize_keys[RetainConfig::Node][0].symbolize_keys
       params = ConnectionParameters.new(:host     => config[:host],
                                         :port     => config[:port],
                                         :signon   => retuser.retid,
                                         :password => retuser.password,
                                         :failed   => retuser.failed)
-      session[:retain] = params
       Logon.instance.set(params)
     end
     
@@ -88,11 +79,9 @@ module Retain
       logger.debug("logon failed")
       # Find the retuser record and set the failed bit to true so we
       # do not retry until the user resets his password.
-      user = session[:user]
-      retuser = user.retusers[0]
+      retuser = application_user.retusers[0]
       retuser.failed = true
       retuser.save
-      session[:retain] = nil
 
       flash[:error] = "Login failed -- bad password?"
       # Remember what we were trying to do
@@ -109,8 +98,7 @@ module Retain
       session[:original_uri] = request.request_uri
 
       # Go edit the retuser
-      user = session[:user]
-      retuser = user.retusers[0]
+      retuser = application_user.retusers[0]
       redirect_to edit_retuser_url(retuser)
     end
   end

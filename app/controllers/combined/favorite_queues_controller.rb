@@ -7,7 +7,7 @@ module Combined
         # Untested
         @favorite_queues = Combined::FavoriteQueue.find(:all)
       else
-        @favorite_queues = session[:user].favorite_queues.map { |queue|
+        @favorite_queues = application_user.favorite_queues.map { |queue|
           queue.wrap_with_combined
         }
       end
@@ -84,7 +84,7 @@ module Combined
       end
 
       @favorite_queue = Combined::FavoriteQueue.new(:queue => queue,
-                                                    :user => session[:user])
+                                                    :user => application_user)
       respond_to do |format|
         if queue_valid && @favorite_queue.save
           flash[:notice] = 'FavoriteQueue was successfully created.'

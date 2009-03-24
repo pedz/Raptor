@@ -9,7 +9,7 @@ class RetusersController < ApplicationController
     if admin?
       @retusers = Retuser.find(:all)
     else
-      @retusers = session[:user].retusers
+      @retusers = application_user.retusers
     end
     respond_to do |format|
       format.html # index.html.erb
@@ -52,14 +52,12 @@ class RetusersController < ApplicationController
     return if duplicate?
     @retuser = Retuser.new(params[:retuser])
     respond_to do |format|
-      @retuser.user = session[:user]
+      @retuser.user = application_user
       if @retuser.save
         flash[:notice] = 'Retuser was successfully created.'
         format.html {
           uri = session[:original_uri]
           session[:original_uri] = nil
-          # Delete the retain session since it changed
-          session[:retain] = nil
           redirect_to(uri || @retuser)
         }
         format.xml  { render :xml => @retuser, :status => :created, :location => @retuser }
@@ -82,8 +80,6 @@ class RetusersController < ApplicationController
         format.html {
           uri = session[:original_uri]
           session[:original_uri] = nil
-          # Delete the retain session since it changed
-          session[:retain] = nil
           redirect_to(uri || @retuser)
         }
         format.xml  { head :ok }
@@ -111,7 +107,7 @@ class RetusersController < ApplicationController
   # new and create call this to make sure that the request is not
   # going to produce a second retain user record for this user.
   def duplicate?
-    return false if session[:user].retusers.length == 0
+    return false if application_user.retusers.length == 0
     respond_to do |format|
       flash[:error] = "User already has a retain user record.  Please delete before adding"
       format.html { redirect_to(users_url) }
@@ -123,6 +119,6 @@ class RetusersController < ApplicationController
   # A normal user can only look around at their own record.
   def this_user?
     @retuser = Retuser.find_by_retid(params[:id])
-    admin? || @retuser.user_id == session[:user].id
+    admin? || @retuser.user_id == session[:user_id]
   end
 end

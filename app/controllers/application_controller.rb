@@ -30,7 +30,19 @@ class ApplicationController < ActionController::Base
   
   # Return true if current user is an administrator of the site
   def admin?
-    session[:user].admin
+    application_user.admin
+  end
+
+  # I'm scared to use "user" so I'm going with "application_user" but
+  # I keep user_id in the session.  The find should never fail.  If it
+  # does, then we want to just give up.
+  def application_user
+    begin
+      @application_user ||= User.find(session[:user_id])
+    rescue => e
+      reset_session
+      throw e
+    end
   end
 
   # A before_filter for the entire application.  This authenticates
@@ -40,7 +52,7 @@ class ApplicationController < ActionController::Base
   # the session.
   def authenticate
     set_last_uri
-    return true if session[:user]
+    return true if session.has_key?(:user_id)
     if request.env.has_key? "REMOTE_USER"
       apache_authenticate
     elsif Rails.env == "staging"
@@ -123,7 +135,6 @@ class ApplicationController < ActionController::Base
       user.ldap_id = user_name
       user.save!
     end
-    session[:user] = user
-    session[:retain] = nil
+    session[:user_id] = user.id
   end
 end
