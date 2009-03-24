@@ -7,7 +7,7 @@ module Retain
     def owner_list
       user = Combined::Registration.find(:first,
                                          :conditions => { :signon => params[:id] } )
-      favorite_queues = session[:user].favorite_queues
+      favorite_queues = application_user.favorite_queues
       favorite_signons = []
       favorite_queues.each do |favorite_queue|
         if ((queue = favorite_queue.queue) && (infos = queue.queue_infos))

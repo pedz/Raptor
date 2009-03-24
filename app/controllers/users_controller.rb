@@ -12,7 +12,7 @@ class UsersController < ApplicationController
     if admin?
       @users = User.find(:all)
     else
-      @users = [ session[:user] ]
+      @users = [ application_user ]
     end
 
     respond_to do |format|
@@ -131,6 +131,6 @@ class UsersController < ApplicationController
   # A normal user can only look around at their own record.
   def this_user?
     @user = User.find(params[:id])
-    admin? || @user.id == session[:user].id
+    admin? || @user.id == session[:user_id]
   end
 end
