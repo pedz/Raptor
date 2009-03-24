@@ -61,10 +61,6 @@ module ApplicationHelper
   def std_styles(*extras)
     [ "scaffold", "application" ] + extras
   end
-  
-  def admin?
-    application_user.admin
-  end
 
   def button(text, action)
     "<button onclick='#{action}' class='auto-button' id='B#{text.to_s.gsub(/[-, ]/, '_')}'>#{text.to_s}</button>"
