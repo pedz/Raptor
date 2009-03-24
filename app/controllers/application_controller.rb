@@ -32,6 +32,7 @@ class ApplicationController < ActionController::Base
   def admin?
     application_user.admin
   end
+  helper_method :admin?
 
   # I'm scared to use "user" so I'm going with "application_user".
   # I keep user_id in the session.
@@ -52,6 +53,7 @@ class ApplicationController < ActionController::Base
     end
     @application_user
   end
+  helper_method :application_user
 
   # A before_filter for the entire application.  This authenticates
   # against bluepages.  If authentication succeeds, the matching user
