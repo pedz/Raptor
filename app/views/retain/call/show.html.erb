@@ -11,7 +11,7 @@
 	    Queue
 	  </span>
 	  <span id='queue-spec' class='field'>
-	    <%= link_to @call.queue.to_param, @call.queue %>
+	    <%= link_to @call.queue.to_param, combined_q_path(@call.queue) %>
 	  </span>
 	</span>
       </td>
