@@ -22,7 +22,7 @@ namespace :deploy do
 
   desc "Restart the application"
   task :restart, :roles => :app do
-    run "touch #{current_path}/tmp/restart.txt"
+    run "rm -f  #{current_path}/tmp/restart.txt; touch #{current_path}/tmp/restart.txt"
   end
 
   desc "No way to stop the application"
