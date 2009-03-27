@@ -55,7 +55,7 @@ Raptor.rowCallUpdateFormHide = function () {
 
 Raptor.myDateSort = function(a, b) {
     var toMonth = function(m) {
-	var months = [ "Jan", "Feb", "Mar", "Arp", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+	var months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
 	for (var i = 0; i < 12; ++i) {
 	    if (months[i] == m) {
 		return i;
@@ -73,28 +73,41 @@ Raptor.myDateSort = function(a, b) {
 	    d.setMinutes(m[3]);
 	    d.setDate(m[5]);
 	    d.setMonth(toMonth(m[4]));
+	    /*
+	    console.log("'" + v +
+			"' Hour:" + m[2] +
+			" Mins:" + m[3] +
+			" Mon:" + m[4] +
+			" Mon value:" + toMonth(m[4]) +
+			" Day:" + m[5] +
+			" Value:" + d.valueOf());
+            */
 	    return d.valueOf();
 	}
 	// Return 0 for "CT Overdue" which effectively maps to
 	// negative infinity
 	return 0;
     };
+
+    var aCalc = a ? calc(a) : 0;
+    var bCalc = b ? calc(b) : 0;
+
     if (a && b) {
 	/*
          * Since we do not have the year, we try and catch a wrap
          * where one date is Jan and the other date is Dec of the
          * previous year.  maxDiff is 200 days in milliseconds;
          */
-	var aTemp = calc(a);
-	var bTemp = calc(b);
-	var diff = aTemp - bTemp;
+	var aCalc = calc(a);
+	var bCalc = calc(b);
+	var diff = aCalc - bCalc;
 	if (diff == 0) {
 	    return 0;
 	}
 	var maxDiff = 200 * 24 * 60 * 60 * 1000;
 	if (diff > 0) {
 	    if (diff > maxDiff) { // We wrapped so
-		if (bTemp == 0) { // b is "Overdue"
+		if (bCalc == 0) { // b is "Overdue"
 		    return 1;	  // a is greater -- futher in future
 		} else {
 		    return -1;	  // a < b
@@ -103,7 +116,7 @@ Raptor.myDateSort = function(a, b) {
 	    return 1;		// a > b
 	} else {
 	    if (diff < -maxDiff) { // We wrapped so
-		if (aTemp == 0) {  // a is "Overdue"
+		if (aCalc == 0) {  // a is "Overdue"
 		    return -1;	   // b is greater -- futher in future
 		} else {
 		    return 1;	   // a > b
@@ -112,7 +125,7 @@ Raptor.myDateSort = function(a, b) {
 	    return -1;		// a < b
 	}
     }
-    return SortableTable.compare(a ? calc(a) : 0, b ? calc(b) : 0);
+    return SortableTable.compare(aCalc, bCalc);
 };
 
 Raptor.popupDelayStart = function (event) {
