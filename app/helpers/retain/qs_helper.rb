@@ -196,7 +196,7 @@ module Retain
     # Service Given
     def sg(binding, header, call, index)
       if header
-        th binding do |binding|
+        th binding, :class => 'text' do |binding|
           concat("SG", binding)
         end
       else
@@ -213,7 +213,7 @@ module Retain
           sg = last_sg.service_given
           link = combined_call_path(call)
         end
-        td binding, :class => 'service-given', :title => title do |binding|
+        td binding, :class => 'service-given text', :title => title do |binding|
           if sig_text
             hash = hash_for_combined_call_path(:id => call.to_param)
             hash.merge!(:anchor => "line_#{sig_text.line_number}")
@@ -230,11 +230,11 @@ module Retain
 
     def psar_time(binding, header, call, index)
       if header
-        th binding do |binding|
+        th binding, :class => 'time' do |binding|
           concat("Time", binding)
         end
       else
-        td binding, :class => 'colon-time' do |binding|
+        td binding, :class => 'colon-time time' do |binding|
           pmr_id = call.pmr.id
           logger.debug("qs_helper#psar_time: pmr_id=#{pmr_id}")
           if psars = @todays_psars.delete(pmr_id)
@@ -333,11 +333,11 @@ module Retain
     def call_button(binding, header, call, index)
       logger.debug("QS: call_button #{call.nil? ? "header" : call.to_param}")
       if header
-        th binding, :class => 'call-button' do |binding|
+        th binding, :class => 'call-button number' do |binding|
           concat("Sel#", binding)
         end
       else
-        td binding, :class => 'call-button' do |binding|
+        td binding, :class => 'call-button number' do |binding|
           concat(button_url("#{index + 1}", call), binding)
         end
       end
@@ -409,11 +409,11 @@ module Retain
     def link_etc(binding, header, call, index)
       logger.debug("QS: link_etc #{call.nil? ? "header" : call.to_param}")
       if header
-        th binding, :class => 'link-etc' do |binding|
+        th binding, :class => 'link-etc text' do |binding|
           concat("Prblm,bnc,cty", binding)
         end
       else
-        td binding, :class => 'link-etc' do |binding|
+        td binding, :class => 'link-etc text' do |binding|
           div binding, :class => 'links' do |binding|
             a binding, :class => 'pmr-link', :href => url_for(call) do |binding|
               span binding, :style => "text-decoration: underline" do |binding|
@@ -486,7 +486,7 @@ module Retain
     def pri_sev(binding, header, call, index)
       logger.debug("QS: pri_sev #{call.nil? ? "header" : call.to_param}")
       if header
-        th binding, :class => 'pri-sev' do |binding|
+        th binding, :class => 'pri-sev text' do |binding|
           concat("P/S", binding)
         end
       else
@@ -499,7 +499,7 @@ module Retain
           td_class = "wag-wag"
           td_title = "Priority and Severity should match"
         end
-        td_class << " pri-sev"
+        td_class << " pri-sev text"
         td binding, :title => td_title, :class => td_class do |binding|
           concat("#{p}/#{s}", binding)
         end
@@ -521,7 +521,7 @@ module Retain
           age_class = "normal"
           age_title = "Young pup"
         end
-        age_class << ' age'
+        age_class << ' age number'
         td(binding,
            :title => age_title,
            :class => age_class) do |binding|
@@ -561,7 +561,7 @@ module Retain
           jeff_class = "normal"
           jeff_title = "You are a happy puppy"
         end
-        jeff_class << " jeff"
+        jeff_class << " jeff number"
         td binding, :class => jeff_class, :title => jeff_title do |binding|
           concat("#{jeff_days}", binding)
         end
