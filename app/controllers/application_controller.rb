@@ -65,8 +65,8 @@ class ApplicationController < ActionController::Base
     return true unless application_user.nil?
     if request.env.has_key? "REMOTE_USER"
       apache_authenticate
-    elsif Rails.env == "staging"
-      staging_authenticate
+    elsif Rails.env == "test"
+      testing_authenticate
     elsif NONE_AUTHENTICATE
       none_authenticate
     else
@@ -125,8 +125,8 @@ class ApplicationController < ActionController::Base
     return true
   end
 
-  def staging_authenticate
-    logger.debug("staging_authenticate")
+  def testing_authenticate
+    logger.debug("testing_authenticate")
     common_authenticate('pedzan@us.ibm.com')
     return true
   end
