@@ -5,7 +5,7 @@ module Retain
     end
 
     def add_fixed_width_span(binding, locals)
-      concat(fixed_width_span(locals), binding)
+      concat(fixed_width_span(locals))
     end
 
     def common_display_pmr_comments(binding, call)
@@ -16,7 +16,7 @@ module Retain
       span(binding,
            :id => "comments_#{call.to_id}",
            :class => "edit-name") do |binding|
-        concat(call.comments, binding)
+        concat(call.comments)
       end
     end
     
