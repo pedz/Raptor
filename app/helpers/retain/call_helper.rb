@@ -1,7 +1,7 @@
 module Retain
   module CallHelper
 
-    Condor_URL = "http://p51.austin.ibm.com/condor/"
+    Condor_URL = "http://tcp237.austin.ibm.com/condor/"
     APAR_Regexp = Regexp.new('\bi[xyz][0-9][0-9][0-9][0-9][0-9]\b', Regexp::IGNORECASE)
     AMT_URL = "https://reports.austin.ibm.com/aparmgt/aparmgt.html?action=view&record_num="
     # Matches "top services" initial entry of "AMT record 1234"
