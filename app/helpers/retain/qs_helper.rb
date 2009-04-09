@@ -20,7 +20,7 @@ module Retain
     # The "1" style of header and body is the original version
     def display_qs_headers(binding)
       thead binding do |binding|
-        concat(HELP_TEXT, binding)
+        concat(HELP_TEXT)
         tr binding do |binding|
           DISP_LIST.map { |sym| self.send sym, binding, true, nil, nil }.join("\n")
         end
@@ -52,27 +52,27 @@ module Retain
         index = DISP_LIST.index(:psar_time)
         tr binding do |binding|
           td binding, :colspan => index, :class => 'other-time' do |binding|
-            concat("Other PMRs", binding)
+            concat("Other PMRs")
           end
           td binding do |binding|
-            concat(qs_show_time(other_time), binding)
+            concat(qs_show_time(other_time))
           end
           if (diff = (DISP_LIST.length - index - 1)) > 0
             td binding, :colspan => diff do |binding|
-              concat("&nbsp;", binding)
+              concat("&nbsp;")
             end
           end
         end
         tr binding do |binding|
           td binding, :colspan => DISP_LIST.index(:psar_time), :class => 'total-time' do |binding|
-            concat("Day's Total", binding)
+            concat("Day's Total")
           end
           td binding do |binding|
-            concat(qs_show_time(total_time), binding)
+            concat(qs_show_time(total_time))
           end
           if (diff = (DISP_LIST.length - index - 1)) > 0
             td binding, :colspan => diff do |binding|
-              concat("&nbsp;", binding)
+              concat("&nbsp;")
             end
           end
         end
@@ -105,7 +105,7 @@ module Retain
                   cols.each { |sym|
                     self.send sym, binding, header, call, index
                   }
-                  concat("\n", binding)
+                  concat("\n")
                 end
               end
             end
@@ -127,7 +127,7 @@ module Retain
                   cols.map { |sym|
                     self.send sym, binding, header, call, index
                   }
-                  concat("\n", binding)
+                  concat("\n")
                 end
               end
             end
@@ -150,7 +150,7 @@ module Retain
       logger.debug("QS: bomponent_check #{call.nil? ? "header" : call.to_param}")
       if header
         th binding do |binding|
-          concat("Component", binding)
+          concat("Component")
         end
       else
         pmr = call.pmr
@@ -188,7 +188,7 @@ module Retain
           td_title = "Hitachi not checked"
         end
         td binding, :class => td_class, :title => td_title do |binding|
-          concat(pmr_comp, binding)
+          concat(pmr_comp)
         end
       end
     end
@@ -197,7 +197,7 @@ module Retain
     def sg(binding, header, call, index)
       if header
         th binding, :class => 'text' do |binding|
-          concat("SG", binding)
+          concat("SG")
         end
       else
         sig_text = nil
@@ -219,10 +219,10 @@ module Retain
             hash.merge!(:anchor => "line_#{sig_text.line_number}")
             href = url_for(hash)
             a binding, :href => href do |binding|
-              concat(sg, binding)
+              concat(sg)
             end
           else
-            concat(sg, binding)
+            concat(sg)
           end
         end
       end
@@ -231,7 +231,7 @@ module Retain
     def psar_time(binding, header, call, index)
       if header
         th binding, :class => 'time' do |binding|
-          concat("Time", binding)
+          concat("Time")
         end
       else
         td binding, :class => 'colon-time time' do |binding|
@@ -242,7 +242,7 @@ module Retain
           else
             pmr_time = 0
           end
-          concat(qs_show_time(pmr_time), binding)
+          concat(qs_show_time(pmr_time))
         end
       end
     end
@@ -251,7 +251,7 @@ module Retain
       logger.debug("QS: call_update_form #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'call-update-container', :colspan => 4 do |binding|
-          concat("", binding)
+          concat("")
         end
       else
         td(binding,
@@ -261,8 +261,7 @@ module Retain
           call_update = CallUpdate.new(call)
           logger.debug("call-update-psar-update-psar-service-code = #{call_update.psar_update.psar_service_code}")
           concat(render(:partial => "shared/retain/call_update",
-                        :locals => { :call_update => call_update }),
-                 binding)
+                        :locals => { :call_update => call_update }))
         end
       end
     end
@@ -271,11 +270,11 @@ module Retain
       logger.debug("QS: call_update_field #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'update' do |binding|
-          concat("Update", binding)
+          concat("Update")
         end
       else
         td binding, :class => 'update' do |binding|
-          concat(button("U#{index + 1}", "$(\"call_update_td_#{index + 1}\").toggleCallUpdateForm();"), binding)
+          concat(button("U#{index + 1}", "$(\"call_update_td_#{index + 1}\").toggleCallUpdateForm();"))
         end
       end
     end
@@ -284,20 +283,20 @@ module Retain
       logger.debug("QS: customer #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'customer' do |binding|
-          concat("Customer".center(28).gsub(/ /, '&nbsp;'), binding)
+          concat("Customer".center(28).gsub(/ /, '&nbsp;'))
         end
       else
         pmr = call.pmr
         if (mail = pmr.problem_e_mail.strip).blank?
           td binding, :title => "No email given", :class => "customer" do |binding|
-            concat(call.nls_customer_name.ljust(28).gsub(/ /, '&nbsp;'), binding)
+            concat(call.nls_customer_name.ljust(28).gsub(/ /, '&nbsp;'))
           end
         else
           title = "Click to send email to #{mail}"
           href = "mailto:#{mail}?subject=#{pmr.pbc.upcase}"
           td binding, :title => title, :class => "customer" do |binding|
             a binding, :href => href do |binding|
-              concat(h(call.nls_customer_name).ljust(28).gsub(/ /, '&nbsp;'), binding)
+              concat(h(call.nls_customer_name).ljust(28).gsub(/ /, '&nbsp;'))
             end
           end
         end
@@ -308,7 +307,7 @@ module Retain
       logger.debug("QS: comments #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'comments', :colspan => 2 do |binding|
-          concat("Comments", binding)
+          concat("Comments")
         end
       else
         td binding, :colspan => 2, :class => 'comments' do |binding|
@@ -321,11 +320,11 @@ module Retain
       logger.debug("QS: ct #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'ct' do |binding|
-          concat("CT", binding)
+          concat("CT")
         end
       else
         td binding, :class => 'ct' do |binding|
-          concat(link_to_remote("ct", :url => ct_combined_call_path(call)), binding)
+          concat(link_to_remote("ct", :url => ct_combined_call_path(call)))
         end
       end
     end
@@ -334,11 +333,11 @@ module Retain
       logger.debug("QS: call_button #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'call-button number' do |binding|
-          concat("Sel#", binding)
+          concat("Sel#")
         end
       else
         td binding, :class => 'call-button number' do |binding|
-          concat(button_url("#{index + 1}", call), binding)
+          concat(button_url("#{index + 1}", call))
         end
       end
     end
@@ -347,14 +346,14 @@ module Retain
       logger.debug("QS: p_s_b #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'p-s-b' do |binding|
-          concat("S", binding)
+          concat("S")
         end
       else
         td binding, :class => 'p-s-b' do |binding|
           if call.p_s_b
-            concat(call.p_s_b, binding)
+            concat(call.p_s_b)
           else
-            concat('?', binding)
+            concat('?')
           end
         end
       end
@@ -410,17 +409,17 @@ module Retain
       logger.debug("QS: link_etc #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'link-etc text' do |binding|
-          concat("Prblm,bnc,cty", binding)
+          concat("Prblm,bnc,cty")
         end
       else
         td binding, :class => 'link-etc text' do |binding|
           div binding, :class => 'links' do |binding|
             a binding, :class => 'pmr-link', :href => url_for(call) do |binding|
               span binding, :style => "text-decoration: underline" do |binding|
-                concat(call.pmr.pbc, binding)
+                concat(call.pmr.pbc)
               end
               popup binding do |binding|
-                concat(qs_ecpaat_lines(call), binding)
+                concat(qs_ecpaat_lines(call))
               end
             end
           end
@@ -444,7 +443,7 @@ module Retain
       if header
         th binding, :class => 'owner not-editable' do |binding|
           width = Retain::Fields.field_width(:pmr_owner_name)
-          concat("Owner".center(width).gsub(/ /, '&nbsp;'), binding)
+          concat("Owner".center(width).gsub(/ /, '&nbsp;'))
         end
       else
         td binding, :class => "owner" do |binding|
@@ -458,7 +457,7 @@ module Retain
       if header
         th binding, :class => 'resolver not-editable' do |binding|
           width = Retain::Fields.field_width(:pmr_resolver_name)
-          concat("Resolver".center(width).gsub(/ /, '&nbsp;'), binding)
+          concat("Resolver".center(width).gsub(/ /, '&nbsp;'))
         end
       else
         td binding, :class => "resolver" do |binding|
@@ -474,7 +473,7 @@ module Retain
           width = (Retain::Fields.field_width(:next_queue) + 1 # +1 for commma
                    Retain::Fields.field_width(:h_or_s) + 1 +
                    Retain::Fields.field_width(:next_center))
-          concat("Next Queue".center(width).gsub(/ /, '&nbsp;'), binding)
+          concat("Next Queue".center(width).gsub(/ /, '&nbsp;'))
         end
       else
         td binding, :class => "next-queue" do |binding|
@@ -487,7 +486,7 @@ module Retain
       logger.debug("QS: pri_sev #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'pri-sev text' do |binding|
-          concat("P/S", binding)
+          concat("P/S")
         end
       else
         p = call.priority
@@ -501,7 +500,7 @@ module Retain
         end
         td_class << " pri-sev text"
         td binding, :title => td_title, :class => td_class do |binding|
-          concat("#{p}/#{s}", binding)
+          concat("#{p}/#{s}")
         end
       end
     end
@@ -510,7 +509,7 @@ module Retain
       logger.debug("QS: age #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'age number' do |binding|
-          concat("Age", binding)
+          concat("Age")
         end
       else
         age_value = call.pmr.age.round
@@ -525,7 +524,7 @@ module Retain
         td(binding,
            :title => age_title,
            :class => age_class) do |binding|
-          concat("#{age_value}", binding)
+          concat("#{age_value}")
         end
       end
     end
@@ -541,11 +540,11 @@ module Retain
       if header
         th binding, :class => 'jeff number' do |binding|
           span binding, :title => JEFF_TEXT do |binding|
-            concat("JS", binding)
+            concat("JS")
           end
-          concat("<br />", binding)
+          concat("<br />")
           span binding, :title => SEV_TEXT do |binding|
-            concat("SevD", binding)
+            concat("SevD")
           end
         end
       else
@@ -563,7 +562,7 @@ module Retain
         end
         jeff_class << " jeff number"
         td binding, :class => jeff_class, :title => jeff_title do |binding|
-          concat("#{jeff_days}", binding)
+          concat("#{jeff_days}")
         end
       end
     end
@@ -649,7 +648,7 @@ module Retain
       logger.debug("QS: next_ct #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'next-ct my-date' do |binding|
-          concat("Next CT", binding)
+          concat("Next CT")
         end
       else
         logger.debug("pmr's center is #{call.pmr.center.center}")
@@ -680,7 +679,7 @@ module Retain
         end
         css_class << ' next-ct'
         td binding, :class => css_class, :title => title do |binding|
-          concat(text, binding)
+          concat(text)
         end
       end
     end
@@ -716,9 +715,9 @@ module Retain
               @nesting ||= 0
               padding = \" \" * @nesting
               @nesting += 2
-              concat(\"\#{padding}<#{sym}\#{hash.keys.map { |key| \" \#{key}='\#{hash[key]}'\"}}>\n\", binding)
+              concat(\"\#{padding}<#{sym}\#{hash.keys.map { |key| \" \#{key}='\#{hash[key]}'\"}}>\n\")
               yield(binding)
-              concat(\"\#{padding}</#{sym}>\n\", binding)
+              concat(\"\#{padding}</#{sym}>\n\")
               @nesting -= 2
             end", nil, __FILE__, __LINE__ - 8)
     end

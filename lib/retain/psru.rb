@@ -40,7 +40,6 @@
 # 1396  :chargeable_time_hex
 # 1397  :after_hours_time_hex
 # 1398  :local_stop_time_hex
-Rails.logger.debug("HELLO!!!!")
 module Retain
   class Psru < Sdi
     set_fetch_request "PSRU"
