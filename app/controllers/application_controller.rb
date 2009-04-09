@@ -78,17 +78,17 @@ class ApplicationController < ActionController::Base
   # the user wants to refresh the cache if he does.
   def set_last_uri
     last_uri = session[:last_uri]
-    logger.debug("REMOTE_USER = #{request.env["REMOTE_USER"]}")
+    logger.info("REMOTE_USER = #{request.env["REMOTE_USER"]}")
     uri =  request.env["REQUEST_URI"]
-    logger.debug("last_uri = #{last_uri}, uri = #{uri}")
-    if last_uri == uri
+    logger.info("last_uri = #{last_uri}, uri = #{uri}")
+    if last_uri == uri && Rails.env != "test"
       flash[:notice] = "Fully Refreshed"
       @refresh_time = Time.now
-      logger.debug("doing a refresh")
+      logger.info("doing a refresh")
     else
       flash.delete :notice
       @refresh_time = nil
-      logger.debug("not refreshing")
+      logger.info("not refreshing")
     end
     session[:last_uri] = uri
   end
