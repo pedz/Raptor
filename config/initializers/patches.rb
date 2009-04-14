@@ -1,11 +1,12 @@
 require 'action_controller'
 
-module ActionController
-  module Rescue
+module ActiveSupport
+  module Rescuable
     protected
-      def rescue_action_with_handler(exception)
+      def rescue_with_handler(exception)
         # Special case ActionView::TemplateError exception.  Look at
         # original exception as well
+        Rails.logger.debug("hi")
         if ((handler = handler_for_rescue(exception)).nil? &&
             exception.class == ActionView::TemplateError &&
             (temp_exception = exception.original_exception) &&
