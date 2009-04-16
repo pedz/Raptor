@@ -1,6 +1,6 @@
 module Combined
   class Queue < Base
-    set_expire_time 30.minutes
+    set_expire_time 10.minutes
 
     set_db_keys :queue_name, :h_or_s
     add_skipped_fields :queue_name, :h_or_s
