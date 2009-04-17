@@ -16,7 +16,7 @@ module Retain
       span(binding,
            :id => "comments_#{call.to_id}",
            :class => "edit-name") do |binding|
-        concat(call.comments)
+        concat(call.comments.blank? ? "blank" : call.comments)
       end
     end
     
