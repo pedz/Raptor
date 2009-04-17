@@ -1,5 +1,5 @@
 <!-- app/views/shared/retain/_fixed_width_span.html.erb -->
 <%# called with locals: css_class, title, name, and width %>
-<span class='<%= css_class %>' title='<%= title + ":Click to Edit" %>'>
+<span class='<%= css_class %>' title='<%= title + ((editable == true) ? ":Click to Edit" : "") %>'>
   <%= (name.blank? ? "blank" : name).ljust(width).gsub(/ /, '&nbsp;') %>
 </span>
