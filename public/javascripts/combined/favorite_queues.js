@@ -36,6 +36,7 @@ Raptor.refreshReply = function(transport) {
 	Raptor.updateTable(q, hits);
 	teamAlert = teamAlert || (t && (hits > 0));
     }
+    $('time').innerHTML = "" + new Date() + "";
     if (teamAlert)
 	Raptor.showMessage("PMR's on a team queue");
     else
