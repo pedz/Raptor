@@ -30,5 +30,5 @@ namespace :db do
 end
 
 task :create_tags do
-  system("rm -f TAGS; find . -type f -print | egrep -v '/\.git/' | xargs ctags -ea")
+  system("rm -f TAGS; find . \\( -name '*.rb' -o -name '*.js' \\) -print | egrep -v '/\.git/' | xargs ctags -ea")
 end
