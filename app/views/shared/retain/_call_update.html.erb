@@ -32,6 +32,7 @@
                 cu.check_box :do_ca, html_tag(call_update, "do-ca") %>
 <%        end -%>
 <%      end -%>
+<%=     clear_boxes_button(call_update) %>
 <%=     tag("br") %>
 <%      content_tag :span, html_tag(call_update, 'requeue-span') do -%>
           New Queue

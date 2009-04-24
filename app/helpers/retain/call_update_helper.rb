@@ -20,7 +20,7 @@ module Retain
       }
       if (mail = pmr.problem_e_mail.strip).blank?
         mail = nil
-        hash[:disabled] = :disabled if mail.nil?
+        hash[:disabled] = :disabled
         text = "No Email Given"
       else
         add_page_setting(id,
@@ -32,6 +32,16 @@ module Retain
         text = "Send Email"
       end
       content_tag :button, text, hash
+    end
+
+    def clear_boxes_button(call_update)
+      pmr = call_update.call.pmr
+      id = id_for(call_update, "clear-boxes")
+      hash = {
+        :class => 'clear-boxes-button',
+        :id => id
+      }
+      content_tag :button, "Clear Boxes", hash
     end
 
     def do_text_field(base, field, size, call_update)

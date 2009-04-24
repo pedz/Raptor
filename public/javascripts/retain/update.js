@@ -11,6 +11,16 @@ Raptor.addtxtClicked = function(event) {
     this.serviceGivenSpan.hide();
 };
 
+Raptor.clearBoxes = function(event) {
+    event.stop();
+
+    var div = this.div;
+    div.ctCheckBox.checked = false;
+    div.textBox.clear();
+    div.addTime.checked = false;
+    div.addTime.redraw();
+};
+
 /* called when requeue radio button clicked */
 Raptor.requeueClicked = function(event) {
     this.caSpan.show();
@@ -93,7 +103,7 @@ Raptor.sendEmail = function(event) {
     var name = settings.name;
     var textField = this.next('.call-update-newtxt');
     var text = textField.getValue().escapeHTML().gsub('\n', '%0A');
-    var href = "mailto:" + mail_addr + "?subject=" + subject + "&body=Dear " + name + ':%0A%0A' + text;
+    var href = "mailto:" + mail_addr + "?subject=" + subject + "&body=Hello " + name + ':%0A%0A' + text;
     Raptor.loadPage(href);
 };
 
@@ -145,7 +155,7 @@ Raptor.redrawDiv = function() {
     this.form.reset();
     this.update_pmr.redraw();
     this.action_span.redraw();
-    this.add_time.redraw();
+    this.addTime.redraw();
 };
 
 Raptor.redrawAction = function() {
@@ -176,10 +186,13 @@ Raptor.updateLoadHook = function() {
 
 	var form = div.down('.call-update-form');
 	div.form = form;
-	Raptor.textInputWithList(form.down('.input-with-list'));
+	input_list = form.down('.input-with-list');
+	form.inputList = input_list;
+	Raptor.textInputWithList(input_list);
 
 	/* Check box to show or hide text box */
-	var update_pmr = form.down('.call-update-update-pmr')
+	var update_pmr = form.down('.call-update-update-pmr');
+	form.updatePmr = update_pmr;
 	update_pmr.observe('click', Raptor.updateClicked.bindAsEventListener(update_pmr));
 	update_pmr.redraw = Raptor.redrawUpdateCheckBox.bind(update_pmr);
 	div.update_pmr = update_pmr;
@@ -216,7 +229,7 @@ Raptor.updateLoadHook = function() {
 	action_span.redraw();
 
 	var add_time = form.down('.call-update-add-time');
-	div.add_time = add_time;
+	div.addTime = add_time;
 	add_time.observe('click', Raptor.addTimeClicked.bindAsEventListener(add_time));
 	add_time.redraw = Raptor.redrawAddTime.bind(add_time);
 
@@ -235,6 +248,18 @@ Raptor.updateLoadHook = function() {
 
 	var email_button = form.down('.send-email-button');
 	email_button.observe('click', Raptor.sendEmail.bindAsEventListener(email_button));
+
+	var ct_check_box = form.down('.call-update-do-ct');
+	div.ctCheckBox = ct_check_box;
+
+	var text_box = form.down('.call-update-newtxt');
+	div.textBox = text_box;
+
+	var clear_boxes_button = form.down('.clear-boxes-button');
+	clear_boxes_button.div = div;
+	clear_boxes_button.observe('click',
+				   Raptor.clearBoxes.bindAsEventListener(clear_boxes_button));
+
 	ele.hide();
     });
 };
