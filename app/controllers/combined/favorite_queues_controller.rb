@@ -1,14 +1,60 @@
 module Combined
+#   class FakeQueue
+#     def initialize(options = { })
+#       @options = options
+#     end
+
+#     def hits
+#       @options[:hits]
+#     end
+
+#     def owners
+#       @options[:owners]
+#     end
+#   end
+
+#   class FakeFavoriteQueue
+#     def initialize(options = { })
+#       @options = options
+#     end
+    
+#     def queue
+#       FakeQueue.new(@options)
+#     end
+#   end
+  
   class FavoriteQueuesController < Retain::RetainController
     # GET /favorite_queues
     # GET /favorite_queues.xml
     def index
+      
       if admin?
         # Untested
         @favorite_queues = Combined::FavoriteQueue.find(:all)
+#       elsif params[:test] == "true"
+#         @favorite_queues = [
+#                             FakeFavoriteQueue.new(:queue_name => "personal,S,165",
+#                                                   :hits => 18,
+#                                                   :owners => [ :one ]
+#                                                   ),
+#                             FakeFavoriteQueue.new(:queue_name => "team,S,165",
+#                                                   :hits => 0,
+#                                                   :owners => []
+#                                                   )
+#                            ]
       else
         @favorite_queues = application_user.favorite_queues.map { |queue|
           queue.wrap_with_combined
+        }
+      end
+      # In test mode, mock up the "hits" method
+      if params[:test] == "true"
+        @favorite_queues.each { |q|
+          queue = q.queue
+          
+          def queue.hits(format)
+            format == :json ? 1 : 0
+          end
         }
       end
       

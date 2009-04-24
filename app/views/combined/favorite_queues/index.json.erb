@@ -4,7 +4,7 @@
         :combined_q_url => combined_q_path(queue.to_param),
         :queue => queue.to_param,
         :team => queue.owners.empty?,
-        :hits => queue.hits
+        :hits => queue.hits(:json)
       }
     end.to_json
 %>

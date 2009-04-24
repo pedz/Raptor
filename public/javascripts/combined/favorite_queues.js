@@ -44,7 +44,9 @@ Raptor.refreshReply = function(transport) {
 };
 
 Raptor.refreshQueues = function () {
-    new Ajax.Request(window.location + ".json", {
+    var l = window.location
+    var url = l.protocol + "//" + l.host + l.pathname + ".json" + l.search
+    new Ajax.Request(url, {
 	method: 'get',
 	onSuccess: Raptor.refreshReply
     });
@@ -99,7 +101,15 @@ Raptor.setupTable = function (list) {
 document.observe('dom:loaded', function() {
     var list = $('favorite-queue-list');
     if (list) {
-	Raptor.updater = new PeriodicalExecuter(Raptor.refreshQueues, 600);
+	var search = window.location.search;
+	var time = 600;
+	if (typeof(search) == "string" && search.length > 0) {
+	    eval("var " + search.replace('?', ''));
+	    if ((undefined != test) && (test == true)) {
+		time = 10;
+	    }
+	}
+	Raptor.updater = new PeriodicalExecuter(Raptor.refreshQueues, time);
 	Raptor.setupTable(list);
     }
 });

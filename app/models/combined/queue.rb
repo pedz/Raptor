@@ -63,7 +63,8 @@ module Combined
       Retain::Cq.valid?(options)
     end
     
-    def hits
+    # format is not used here.
+    def hits(format)
       begin
         Retain::Cq.new(to_options).hit_count
       rescue Retain::SdiReaderError => e
