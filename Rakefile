@@ -28,3 +28,7 @@ namespace :db do
     end
   end
 end
+
+task :create_tags do
+  system("rm -f TAGS; find . -type f -print | egrep -v '/\.git/' | xargs ctags -ea")
+end
