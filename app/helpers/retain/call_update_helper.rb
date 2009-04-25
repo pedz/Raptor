@@ -44,8 +44,29 @@ module Retain
       content_tag :button, "Clear Boxes", hash
     end
 
+    def to_owner_button(call_update)
+      call = call_update.call
+      pmr = call.pmr
+      to_queue = nil
+      person = nil
+      if (person = pmr.resolver) && (queues = person.queues)
+        to_queue = queues[0]
+      elsif  (person = pmr.owner) && (queues = person.queues)
+        to_queue = queues[0]
+      end
+      return if to_queue.nil? || (call.queue.to_param == to_queue.to_param)
+      
+      hash = {
+        :value => to_queue.to_param,
+        :id => id_for(call_update, 'setup-to-send-back'),
+        :class => 'setup-to-send-back'
+      }
+      content_tag :button, "Queue back to #{person.name}", hash
+    end
+
     def do_text_field(base, field, size, call_update)
-      base.text_field field, html_tag(call_update, field.to_s, :size => size, :maxlength => size)
+      base.text_field field, html_tag(call_update, field.to_s,
+                                      :size => size, :maxlength => size)
     end
 
     def do_select_field(psar, field, collection, value_method, text_method, call_update)

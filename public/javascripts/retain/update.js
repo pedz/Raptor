@@ -21,6 +21,25 @@ Raptor.clearBoxes = function(event) {
     div.addTime.redraw();
 };
 
+Raptor.queueBack = function(event) {
+    event.stop();
+
+    var div = this.div;
+    var action_span = div.actionSpan;
+    this.innerHTML = "Still need to hit Submit";
+    action_span.addtxt_radio.checked = false;
+    action_span.requeue_radio.checked = false;
+    action_span.dup_radio.checked = false;
+    action_span.close_radio.checked = false;
+    action_span.requeue_radio.checked = true;
+    div.newQueue.value = this.readAttribute('value');
+    div.ctCheckBox.checked = false;
+    div.textBox.clear();
+    div.addTime.checked = false;
+    div.addTime.redraw();
+    action_span.redraw();
+};
+
 /* called when requeue radio button clicked */
 Raptor.requeueClicked = function(event) {
     this.caSpan.show();
@@ -85,13 +104,12 @@ Raptor.setupRadioButtonSpans = function(ele) {
  * that apply to updating the PMR.
  */
 Raptor.redrawUpdateCheckBox = function(ele) {
-    var call_name = this.id.replace(/^.*_(.*_.*_.*_.*)$/, "$1");
     if (this.getValue()) {
-	$( "call_update_action_span_" + call_name).show();
-	$( "call_update_newtxt_" + call_name).show();
+	this.div.actionSpan.show();
+	this.div.textBox.show();
     } else {
-	$( "call_update_action_span_" + call_name).hide();
-	$( "call_update_newtxt_" + call_name).hide();
+	this.div.actionSpan.hide();
+	this.div.textBox.hide();
     }
 };
 
@@ -153,11 +171,15 @@ Raptor.redrawDiv = function() {
      * Reset the form first or all the redraws use the old values.
      */
     this.form.reset();
-    this.update_pmr.redraw();
-    this.action_span.redraw();
+    this.updatePMR.redraw();
+    this.actionSpan.redraw();
     this.addTime.redraw();
 };
 
+/*
+ * set up as the redraw function of the action_span.  Called with this set to
+ * the action_span
+ */
 Raptor.redrawAction = function() {
     if (this.addtxt_radio.getValue() == "addtxt")
 	this.addtxt_radio.doClicked();
@@ -190,17 +212,22 @@ Raptor.updateLoadHook = function() {
 	form.inputList = input_list;
 	Raptor.textInputWithList(input_list);
 
+	/* Find the new queue box */
+	var new_queue = form.down('.call-update-new-queue');
+	div.newQueue = new_queue;
+
 	/* Check box to show or hide text box */
 	var update_pmr = form.down('.call-update-update-pmr');
 	form.updatePmr = update_pmr;
 	update_pmr.observe('click', Raptor.updateClicked.bindAsEventListener(update_pmr));
 	update_pmr.redraw = Raptor.redrawUpdateCheckBox.bind(update_pmr);
-	div.update_pmr = update_pmr;
+	div.updatePMR = update_pmr;
+	update_pmr.div = div;
 
 	/* Span of radio buttons */
 	var action_span = form.down('.call-update-action-span');
 	action_span.redraw = Raptor.redrawAction.bind(action_span);
-	div.action_span = action_span;
+	div.actionSpan = action_span;
 
 	var requeue_radio = form.down('.call-update-requeue-radio');
 	action_span.requeue_radio = requeue_radio;
@@ -259,6 +286,14 @@ Raptor.updateLoadHook = function() {
 	clear_boxes_button.div = div;
 	clear_boxes_button.observe('click',
 				   Raptor.clearBoxes.bindAsEventListener(clear_boxes_button));
+
+	/* Not all update panels will have this button */
+	var queue_back = form.down('.setup-to-send-back');
+	if (queue_back) {
+	    queue_back.div = div;
+	    queue_back.observe('click',
+			       Raptor.queueBack.bindAsEventListener(queue_back));
+	}
 
 	ele.hide();
     });
