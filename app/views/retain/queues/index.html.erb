@@ -1,0 +1,8 @@
+<h1>Known Retain Queues</h1>
+<ul>
+  <% @queues.each do |queue| -%>
+  <li>
+    <%= link_to queue.to_param, retain_queue_calls_path(queue) %>
+  </li>
+  <% end -%>
+</ul>

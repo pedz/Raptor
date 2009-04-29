@@ -63,6 +63,10 @@ module Combined
       Retain::Cq.valid?(options)
     end
     
+    def <=>(other)
+      self.to_param <=> other.to_param
+    end
+
     # format is not used here.
     def hits(format)
       begin
