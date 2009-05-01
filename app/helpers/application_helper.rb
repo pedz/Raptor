@@ -59,7 +59,7 @@ module ApplicationHelper
   end
   
   def std_styles(*extras)
-    [ "scaffold", "application" ] + extras
+    [ "application" ] + extras
   end
 
   def button(text, action)
