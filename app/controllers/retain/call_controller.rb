@@ -158,7 +158,7 @@ module Retain
             requeue_options[:service_given] = sg
           end
           from_team_to_personal = false
-         logger.debug("call_update[:do_ca] = #{call_update[:do_ca].inspect}")
+          logger.debug("call_update[:do_ca] = #{call_update[:do_ca].inspect}")
           if call_update.has_key?(:new_queue) && !call_update[:do_ca]
             new_queue = Combined::Queue.from_param!(call_update[:new_queue])
             if new_queue.h_or_s != @queue.h_or_s
@@ -342,6 +342,7 @@ module Retain
         if do_fade
           page.visual_effect(:fade, reply_span, :duration => 5.0)
           page[update_div].redraw
+          page[update_div].close
         end
       }
     end

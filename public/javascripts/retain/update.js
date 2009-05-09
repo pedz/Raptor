@@ -191,6 +191,13 @@ Raptor.redrawAction = function() {
 	this.close_radio.doClicked();
 };
 
+Raptor.closeDiv = function() {
+    var parent = this.up();
+    if (parent.visible()) {
+	parent.toggleCallUpdateForm();
+    }
+};
+
 /* Add this to the document.observe('dom:loaded') list of functions */
 Raptor.updateLoadHook = function() {
     /*
@@ -205,6 +212,7 @@ Raptor.updateLoadHook = function() {
 	if (!div)
 	    return;
 	div.redraw = Raptor.redrawDiv.bind(div);
+	div.close = Raptor.closeDiv.bind(div);
 
 	var form = div.down('.call-update-form');
 	div.form = form;

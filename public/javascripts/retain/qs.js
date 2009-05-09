@@ -6,22 +6,28 @@
 
 /* Called when the button to show the update form is poked */
 Raptor.qsToggleCallUpdateForm = function() {
-    this.toggle();
-    if (this.visible()) {
-	var update_box = this.select('.call-update-update-pmr')[0];
-	update_box.redraw();
-	this.ancestors().each(function (ancestor) {
-	    if (ancestor.hasClassName('pmr-row')) {
-		ancestor.updateFormShow();
+    new Effect.toggle(this, 'appear', {
+	duration: 0.5,
+	queue: 'end',
+	afterFinish: function(effect) {
+	    var that = effect.element;
+	    if (that.visible()) {
+		var update_box = that.select('.call-update-update-pmr')[0];
+		update_box.redraw();
+		that.ancestors().each(function (ancestor) {
+		    if (ancestor.hasClassName('pmr-row')) {
+			ancestor.updateFormShow();
+		    }
+		});
+	    } else {
+		that.ancestors().each(function (ancestor) {
+		    if (ancestor.hasClassName('pmr-row')) {
+			ancestor.updateFormHide();
+		    }
+		});
 	    }
-	});
-    } else {
-	this.ancestors().each(function (ancestor) {
-	    if (ancestor.hasClassName('pmr-row')) {
-		ancestor.updateFormHide();
-	    }
-	});
-    }
+	}
+    });
 };
 
 

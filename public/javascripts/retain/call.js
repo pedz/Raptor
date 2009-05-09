@@ -22,12 +22,21 @@ Raptor.didNewUrl = false;
 
 /* Called when the button to show the update form is poked */
 Raptor.callToggleCallUpdateForm = function() {
-    this.toggle();
-    if (this.visible()) {
-	var update_box = this.select('.call-update-update-pmr')[0];
-	update_box.redraw();
-    }
-    Raptor.recalcDimensions();
+    new Effect.toggle(this, 'appear', {
+	duration: 0.1,
+	queue: 'end',
+	afterUpdate: function(effect) {
+	    Raptor.recalcDimensions();
+	},
+	afterFinish: function(effect) {
+	    var that = effect.element;
+	    if (that.visible()) {
+		var update_box = that.select('.call-update-update-pmr')[0];
+		update_box.redraw();
+	    }
+	    Raptor.recalcDimensions();
+	}
+    });
 };
 
 /* Bound with right as this */
