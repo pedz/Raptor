@@ -1,4 +1,112 @@
 module Cached
+  # = Retain PMR Model
+  #
+  # The model that represents the Problem Record from Retain.  The
+  # table this model is stored in is <em>cached_pmrs</em>.
+  #
+  # ==Fields
+  #
+  # <em>id - integer</em>::
+  #   The key field for the table.
+  # <em>problem - character varying(5)</em>::
+  #   A PMR is designated by a 3-tuple: problem, branch, and country.
+  # <em>branch - character varying(3)</em>::
+  #   Retain branch the PMR was opened from.
+  # <em>country - character varying(3)</em>::
+  #   Retain country the PMR was opened from.
+  # <em>customer_id - integer</em>::
+  #   Foreign key into the <em>cached_customers</em> table.  The end
+  #   customer who opened the PMR.
+  # <em>owner_id - integer</em>::
+  #   Foreign key into the <em>cached_registrations</em> table.
+  #   According to the process, this is the owner of the PMR: the
+  #   person currenty most responsible to get it solved.
+  # <em>resolver_id - integer</em>::
+  #   Foreign key into the <em>cached_registrations</em> table.  This
+  #   is the person most active in resolving the issue.
+  # <em>center_id - integer</em>::
+  #   Foreign key into the <em>cached_centers</em> table.  In Retain,
+  #   a PMR holds the 4-tuple queue_name, center, h_or_s, and ppg to
+  #   its primary call.  center_id points to the record in
+  #   <em>cached_centers</em> for that center.
+  # <em>queue_id - integer</em>::
+  #   Foreign key into the <em>cached_queues</em> table.  See
+  #   <em>center_id</em> above.  In brief, this specifies the queue
+  #   that the primary call is on.
+  # <em>primary - integer</em>::
+  #   Foreign key into the <em>cached_calls</em> table.  See
+  #   <em>center_id</em> above.  The <em>primary_call</em>
+  #   attribute uses <em>primary</em> to store the foreign key.
+  # <em>next_center_id - integer</em>::
+  #   Foreign key into the <em>cached_centers</em> table.  As part of
+  #   the process, the next center and next queue should be set to
+  #   point to a particular queue and center.  Retain holds these
+  #   fields as next_center and next_queue.  When a PMR is fetched and
+  #   stored, these fields are converted to a reference to the
+  #   <em>cached_centers</em> and <em>cached_queues</em> tables if
+  #   possible.  If not, no error is raised.  Retain is not always
+  #   consistent and this forgiveness of the database constraints
+  #   allows it to work when Retain is not consistent.
+  # <em>next_queue_id - integer</em>::
+  #   Foreign key into the <em>cached_queues</em> table.  See
+  #   <em>next_center_id</em> above.
+  # <em>severity - integer</em>::
+  #   The severity of the PMR
+  # <em>component_id - character varying(12)</em>::
+  #   Foreign key to the <em>cached_components</em> table.  The
+  #   component currently assigned to the PMR.
+  # <em>problem_e_mail - character varying(64)</em>::
+  #   Customer's email... note that this is a PMR attribute and not a
+  #   call attribute.
+  # <em>creation_date - character varying(9)</em>::
+  #   Creation date of the PMR from Retain.
+  # <em>creation_time - character varying(5)</em>::
+  #   Creation time of the PMR from Retain.
+  # <em>alteration_date - character varying(9)</em>::
+  #   Last alteration date of the PMR from Retain.
+  # <em>alteration_time - character varying(5)</em>::
+  #   Last alteration time of the PMR from Retain.
+  # <em>sec_1_queue - character varying(6)</em>::
+  # <em>sec_1_center - character varying(3)</em>::
+  # <em>sec_1_h_or_s - character varying(1)</em>::
+  # <em>sec_1_ppg - character varying(3)</em>::
+  # <em>sec_2_queue - character varying(6)</em>::
+  # <em>sec_2_center - character varying(3)</em>::
+  # <em>sec_2_h_or_s - character varying(1)</em>::
+  # <em>sec_2_ppg - character varying(3)</em>::
+  # <em>sec_3_queue - character varying(6)</em>::
+  # <em>sec_3_center - character varying(3)</em>::
+  # <em>sec_3_h_or_s - character varying(1)</em>::
+  # <em>sec_3_ppg - character varying(3)</em>::
+  #   These fields are not currently used but the PMR holds the data,
+  #   just like for the primary, of the three possible secondaries
+  #   that a PMR can have.  From these fields, the list of calls could
+  #   be found.  These fields are essentially raw Retain fields at
+  #   this point.
+  # <em>created_at - timestamp without time zone</em>::
+  #   Usual timestamp of when the database record was first created.
+  # <em>updated_at - timestamp without time zone</em>::
+  #   Timestamp to record the last time the database record was
+  #   updated.  This timestamp is used to determine when Retain should
+  #   be queried Retain under normal conditions to verify that the
+  #   current local copy is up to date.  See also the last_fetched
+  #   timestamp.
+  # <em>last_alter_timestamp - bytea</em>::
+  #   This is the raw unaltered field from Retain that can be used in
+  #   subsequent calls to get only what has changed in the PMR from
+  #   Retain.
+  # <em>dirty - boolean</em>::
+  #   This bit is set when we know that the database entry is out of
+  #   date.
+  # <em>special_application - character varying(1)</em>::
+  #   An "E" in this field indicates the PMR is electronic.  This is
+  #   used, in particular, with Hitachi PMRs to enable the check box
+  #   to do the "CR CA" rather than the normal requeue.
+  # <em>last_fetched - timestamp without time zone</em>::
+  #   This is the time stamp of when the call was fetched from Retain
+  #   *and* it was different than what was in the database.  It is the
+  #   time stamp used to determine if a page, action, or fragment
+  #   cache entry is up to date.
   class Pmr < Base
     set_table_name "cached_pmrs"
     has_many   :calls,        :class_name => "Cached::Call"
@@ -51,6 +159,13 @@ module Cached
     end
     once :all_text_lines
     
+    def etag
+      ret = ""
+      last_alter_timestamp.each_byte { |b| ret << ("%02x" % b) }
+      ret
+    end
+    once :etag
+
     def system_inserted_lines
       all_text_lines.find_all { |text_line| text_line.text_type == :system_inserted }
     end

@@ -1,3 +1,13 @@
+#
+# = Combined Models
+#
+# These models represent the combined models.  See Combined::Base for
+# more information.
+#
+# Each Retain concept such as Pmr, Call, Queue has a matchiing
+# Combined model which wraps the matching Retain and Cached models to
+# provide for a consistent and convenient interface.
+#
 module Combined
   class Call < Base
     set_expire_time 30.minutes

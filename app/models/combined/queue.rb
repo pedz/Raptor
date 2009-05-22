@@ -102,6 +102,15 @@ module Combined
 
       retain_calls = retain_queue.calls
       db_calls = cached.calls
+      if retain_calls.length == 0
+        logger.debug("CMB: Queue is empty")
+        cached.calls.clear
+        cached.dirty = false
+        cached.updated_at = Time.now
+        cached.save
+        return
+      end
+
       if retain_calls.length == db_calls.length &&
           (0 ... retain_calls.length).all? { |index|
           retain_calls[index].call_search_result === db_calls[index].call_search_result
@@ -112,9 +121,46 @@ module Combined
         cached.save
         return
       end
-      
-      # We need to clean out any cached calls.
-      cached.calls.clear
+
+      # I'm going to make this a separate pass from above... it seems
+      # easier and doesn't cost too much
+      db_calls_hash = { }
+      db_calls.each_index { |index| db_calls_hash[db_calls[index].call_search_result] = index }
+      new_calls = []
+      db_call_index = 0
+      (0 ... retain_calls.length).each do |index|
+        retain_call = retain_calls[index]
+        db_call = db_calls[db_call_index]
+        logger.debug("CMB: Queue at index #{index}")
+
+        # If match at the current index, just move the db call to the
+        # list and continue
+        if retain_call.call_search_result === db_call.call_search_result
+          logger.debug("CMB: index #{index} db_call_index #{db_call_index} matches")
+          new_calls << db_call
+          db_call_index += 1
+          next
+        end
+
+        # If the call is in the list of db_calls, then we must have
+        # deleted from the queue so we need to delete from db_calls
+        # until we match
+        if db_calls_hash.has_key?(retain_call.call_search_result)
+          while retain_call.call_search_result != db_call.call_search_result
+            logger.debug("CMB: delete db_call_index #{db_call_index}")
+            db_call.delete[db_call_index]
+            db_call_index += 1
+            db_call = db_calls[db_call_index]
+          end
+          new_calls << db_call
+          db_call_index += 1
+          next
+        end
+        
+        # retain_call not in db_calls so insert it.
+        logger.debug("CMB: new retain_call #{index}")
+        new_calls << retain_call
+      end
 
       # We have to keep track of the new customers we create so we do
       # not try and create duplicates.  The same is true for PMRs
@@ -125,6 +171,15 @@ module Combined
       # Now we get our create the list of calls
       slot = 1
       retain_calls.each do |call|
+        if call.is_a? Cached::Call
+          if call.slot != slot
+            call.slot = slot
+            call.save
+          end
+          slot += 1
+          next
+        end
+
         # The call only has the bare essentials.  This will touch the
         # call and cause a fetch.  So when the db record is created,
         # it will be more complete.
@@ -178,9 +233,12 @@ module Combined
         db_call.pmr = db_pmr
         cached.calls << db_call
       end
+
       cached.dirty = false
-      cached.updated_at = Time.now
-      cached.save
+      if cached.changed?
+        cached.last_fetched = Time.now
+        cached.save
+      end
     end
   end
 end

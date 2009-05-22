@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081104224647) do
+ActiveRecord::Schema.define(:version => 20081104224648) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20081104224647) do
     t.boolean  "dirty"
     t.integer  "customer_time_zone_adj"
     t.integer  "time_zone_code"
+    t.datetime "last_fetched"
   end
 
   add_index "cached_calls", ["ppg", "queue_id"], :name => "uq_cached_calls_pair", :unique => true
@@ -98,6 +99,7 @@ ActiveRecord::Schema.define(:version => 20081104224647) do
     t.binary   "last_alter_timestamp"
     t.boolean  "dirty"
     t.string   "special_application",  :limit => 1
+    t.datetime "last_fetched"
   end
 
   add_index "cached_pmrs", ["branch", "country", "creation_date", "problem"], :name => "uq_cached_pmrs_triple", :unique => true
@@ -144,12 +146,13 @@ ActiveRecord::Schema.define(:version => 20081104224647) do
   add_index "cached_queue_infos", ["owner_id", "queue_id"], :name => "uq_cached_queue_infos_queue_owner", :unique => true
 
   create_table "cached_queues", :force => true do |t|
-    t.string   "queue_name", :limit => 6, :null => false
-    t.string   "h_or_s",     :limit => 1, :null => false
-    t.integer  "center_id",               :null => false
+    t.string   "queue_name",   :limit => 6, :null => false
+    t.string   "h_or_s",       :limit => 1, :null => false
+    t.integer  "center_id",                 :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "dirty"
+    t.datetime "last_fetched"
   end
 
   add_index "cached_queues", ["center_id", "h_or_s", "queue_name"], :name => "uq_cached_queues_triple", :unique => true

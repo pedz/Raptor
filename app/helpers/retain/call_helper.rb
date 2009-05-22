@@ -76,7 +76,7 @@ module Retain
 
     def display_update_button(binding)
       span binding, :class => 'call-update-span' do |binding|
-        concat(button("Update Call", "$(\"call_update_span\").toggleCallUpdateForm();"), binding)
+        concat(button("Update Call", "$(\"call_update_span\").toggleCallUpdateForm();"))
       end
     end
 
@@ -86,15 +86,14 @@ module Retain
            :class => 'call-update-container') do |binding|
         call_update = CallUpdate.new(call)
         concat(render(:partial => 'shared/retain/call_update',
-                      :locals => { :call_update => call_update }),
-               binding)
+                      :locals => { :call_update => call_update }))
       end
     end
 
     def display_pmr_owner(binding, call)
       td binding, :class => "owner" do |binding|
         span binding, :class => "field-header" do |binding|
-          concat("Owner:", binding)
+          concat("Owner:")
         end
         common_display_pmr_owner(binding, call)
       end
@@ -103,7 +102,7 @@ module Retain
     def display_pmr_resolver(binding, call)
       td binding, :class => "resolver" do |binding|
         span binding, :class => "field-header" do |binding|
-          concat("Resolver:", binding)
+          concat("Resolver:")
         end
         common_display_pmr_resolver(binding, call)
       end

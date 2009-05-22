@@ -26,17 +26,27 @@ module Retain
     def show
       @call = Combined::Call.from_param!(params[:id])
       @queue = @call.queue
-      @call.mark_cache_invalid
+      @call.mark_cache_invalid if @no_cache
       @pmr = @call.pmr
-      @pmr.mark_cache_invalid
-      @psar = Psar.new(75, 57, 50, @pmr.severity, 9)
+      @pmr.mark_cache_invalid if @no_cache
+      logger.debug("CNTRL: #{@pmr.updated_at} #{@pmr.etag}")
+      fresh_when(:last_modified => @pmr.updated_at, :etag => @pmr.etag)
+      logger.debug("CNTRL: fresh? #{request.fresh?(response)}")
+      logger.debug("CNTRL: modified #{request.if_modified_since.inspect}")
+      logger.debug("CNTRL: none_match #{request.if_none_match.inspect}")
+      logger.debug("CNTRL: not_modified? #{request.not_modified?(response.last_modified)}")
+      logger.debug("CNTRL: etag_matchs? #{request.etag_matches?(response.etag)}")
+      if !request.fresh?(response)
+        logger.debug("CNTRL: processing call...")
+        @psar = Psar.new(75, 57, 50, @pmr.severity, 9)
       
-      # This is just for the button.  Probably needs to be removed
-      # anyway
-      @registration = signon_user
-      respond_to do |format|
-        format.html # show.html.erb
-        format.xml { render :xml => @call.to_xml(:include => { :pmr => { :include => :text_lines }}) }
+        # This is just for the button.  Probably needs to be removed
+        # anyway
+        @registration = signon_user
+        respond_to do |format|
+          format.html # show.html.erb
+          format.xml { render :xml => @call.to_xml(:include => { :pmr => { :include => :text_lines }}) }
+        end
       end
     end
 

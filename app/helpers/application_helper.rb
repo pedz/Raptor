@@ -36,6 +36,7 @@ module ApplicationHelper
   end
 
   def add_page_setting(name, object)
+    logger.debug("HELP: add_page_settings")
     (@page_settings ||= { })[name] = object
   end
 
@@ -45,8 +46,12 @@ module ApplicationHelper
   # and produces a script take with the objects wrapped in the
   # pageSettings object.
   def push_page_settings
+    logger.debug("HELP: push_page_settings")
     unless @page_settings.nil? || @page_settings.empty?
-      render :partial => 'layouts/shared/page_settings'
+      logger.debug("HELP: push_page_settings out")
+      ret = render(:partial => 'layouts/shared/page_settings')
+      @page_settings = { }
+      ret
     end
   end
 

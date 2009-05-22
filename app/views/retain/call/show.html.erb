@@ -1,166 +1,185 @@
 <!-- app/views/retain/call/show.html.erb -->
 
 <% @title = "Retain call: #{@pmr.pbc}" %>
+<%= push_page_settings %>
 <% content_for(:top) do %>
-  <!-- app/views/retain/call/show.html.erb top content -->
-  <table id='pmr-header'>
-    <tr>
-      <td>
-	<span id='queue' class='field-left'>
-	  <span id='queue-header' class='field-header'>
-	    Queue
-	  </span>
-	  <span id='queue-spec' class='field'>
-	    <%= link_to @call.queue.to_param, combined_q_path(@call.queue) %>
-	  </span>
-	</span>
-      </td>
-      <td>
-	<span id='pbc' class='field field-center'>
-	  <%= h @pmr.pbc %>
-	</span>
-      </td>
-      <td>
-	<span id='pri-sev' class='field-right'>
-	  <span id='pri-sev-header' class='field-header'>
-	    P/S
-	  </span>
-	  <span id='pri-sev-spec' class='field'>
-	    <%= h @call.priority %> / 
-	    <%= h @pmr.severity %>
-	  </span>
-	</span>
-      </td>
-    </tr>
-    <tr>
-      <% display_pmr_owner(binding, @call) %>
-      <td>
-	<span id='customer-name' class='field field-center'>
-	  <%= h @call.nls_customer_name %>
-	</span>
-      </td>
-      <% display_pmr_resolver(binding, @call) %>
-    </tr>
-    <tr>
-      <td>
-	<span id='comp' class='field-left'>
-	  <span id='comp-header' class='field-header'>
-	    Comp
-	  </span>
-	  <span id='comp-spec' class='field'>
-	    <%= h @pmr.component_id %>
-	  </span>
-	</span>
-      </td>
-      <% display_pmr_comments(binding, @call) %>
-      <td>
-	<span class='field-right'>
-	</span>
-      </td>
-    </tr>
-    <tr>
-      <td colspan='3'>
-	<span id='click-header'>Click to view:</span>
-	<span id='ecpaat-header'  class='click-tag' for='ecpaat-lines'>ECPAAT</span>,
-	<span id='scratch-header' class='click-tag' for='scratch-lines'>Scratch Pad</span>,
-	<span id='contact-header' class='click-tag' for='contact-lines'>Contact Info</span><br/>
-	<span id='ecpaat-lines' class='click-data'>
-	  <%= ecpaat_lines(@pmr) %>
-	</span>
-	<span id='scratch-lines' class='click-data'>
-	  <% for sp_line in @pmr.scratch_pad_lines %>
-	    <%= show_line(sp_line, 1, signon_user.tz) %>
-	  <% end %>
-	</span>
-	<span id='contact-lines' class='click-data'>
-	  <%= h @call.nls_contact_name %><br/>
-	  <%= h @call.contact_phone_1 %><br/>
-	  <%= h @call.contact_phone_2 %><br/>
-	  <a id='mailto'
-	     href="#"
-	     onclick='Raptor.newUrl("<%= h @pmr.problem_e_mail.strip %>", "PMR <%= @pmr.pbc.upcase %>");'>
-	    <%= h @pmr.problem_e_mail %>
-	  </a><br/>
-	</span>
-      </td>
-    </tr>
-  </table>
-<% end %>
+  <% cache(:action_suffix => 'top') do %>
+    <!-- app/views/retain/call/show.html.erb top content -->
+    <!-- <%= @controller.fragment_cache_key(:action_suffix => 'top') %> -->
+    <table id='pmr-header'>
+      <tr>
+	  <td>
+	    <span id='queue' class='field-left'>
+	      <span id='queue-header' class='field-header'>
+		Queue
+	      </span>
+	      <span id='queue-spec' class='field'>
+		<%= link_to @call.queue.to_param, combined_q_path(@call.queue) %>
+	      </span>
+	    </span>
+	  </td>
+	  <td>
+	    <span id='pbc' class='field field-center'>
+	      <%= h @pmr.pbc %>
+	    </span>
+	  </td>
+	  <td>
+	    <span id='pri-sev' class='field-right'>
+	      <span id='pri-sev-header' class='field-header'>
+		P/S
+	      </span>
+	      <span id='pri-sev-spec' class='field'>
+		<%= h @call.priority %> / 
+		<%= h @pmr.severity %>
+	      </span>
+	    </span>
+	  </td>
+      </tr>
+      <tr>
+	  <% display_pmr_owner(binding, @call) %>
+	  <td>
+	    <span id='customer-name' class='field field-center'>
+	      <%= h @call.nls_customer_name %>
+	    </span>
+	  </td>
+	  <% display_pmr_resolver(binding, @call) %>
+      </tr>
+      <tr>
+	  <td>
+	    <span id='comp' class='field-left'>
+	      <span id='comp-header' class='field-header'>
+		Comp
+	      </span>
+	      <span id='comp-spec' class='field'>
+		<%= h @pmr.component_id %>
+	      </span>
+	    </span>
+	  </td>
+	  <% display_pmr_comments(binding, @call) %>
+	  <td>
+	    <span class='field-right'>
+	    </span>
+	  </td>
+      </tr>
+      <tr>
+	  <td colspan='3'>
+	    <span id='click-header'>Click to view:</span>
+	    <span id='ecpaat-header'  class='click-tag' for='ecpaat-lines'>ECPAAT</span>,
+	    <span id='scratch-header' class='click-tag' for='scratch-lines'>Scratch Pad</span>,
+	    <span id='contact-header' class='click-tag' for='contact-lines'>Contact Info</span><br/>
+	    <span id='ecpaat-lines' class='click-data'>
+	      <%= ecpaat_lines(@pmr) %>
+	    </span>
+	    <span id='scratch-lines' class='click-data'>
+	      <% for sp_line in @pmr.scratch_pad_lines %>
+		<%= show_line(sp_line, 1, signon_user.tz) %>
+	      <% end -%>
+	    </span>
+	    <span id='contact-lines' class='click-data'>
+	      <%= h @call.nls_contact_name %><br/>
+	      <%= h @call.contact_phone_1 %><br/>
+	      <%= h @call.contact_phone_2 %><br/>
+	      <a id='mailto'
+		 href="#"
+		 onclick='Raptor.newUrl("<%= h @pmr.problem_e_mail.strip %>", "PMR <%= @pmr.pbc.upcase %>");'>
+		<%= h @pmr.problem_e_mail %>
+	      </a><br/>
+	    </span>
+	  </td>
+      </tr>
+    </table>
+    <%= push_page_settings %>
+  <% end -%>
+<% end -%>
 
-<% all_lines = @pmr.alterable_format_lines + @pmr.text_lines %>
+<% all_lines = @pmr.alterable_format_lines + @pmr.text_lines -%>
 
 <% content_for(:center) do %>
-  <!-- app/views/retain/call/show.html.erb center content -->
-  <div class='even'>
-    <% tz = signon_user.tz %>
-    <% all_lines.each_with_index do |line, index| %>
-      <%= show_line(line, index, tz) %>
-    <% end %>
-  </div>
-<% end %>
+  <% cache(:action_suffix => 'center') do %>
+    <!-- app/views/retain/call/show.html.erb center content -->
+    <!-- cached at <%= Time.now %> -->
+    <div class='even'>
+      <% tz = signon_user.tz %>
+      <% all_lines.each_with_index do |line, index| %>
+	  <%= show_line(line, index, tz) %>
+      <% end -%>
+    </div>
+    <%= push_page_settings %>
+  <% end -%>
+<% end -%>
 
 <% content_for(:left) do %>
-  <!-- app/views/retain/call/show.html.erb left content -->
-  <table>
-  <% all_lines.each_with_index do |line, index| %>
-  <%   if line.text_type == :system_inserted %>
-  <%     md = Regexp.new(' S5> (SERVICE GIVEN= ([0-9][0-9]))  SG/[0-9]9/').match(line.text) %>
-  <%     unless md.nil? || md[2] == "99" %>
-    <tr>
-      <td>
-	&nbsp;
-      </td>
-      <td>
-	<%= "<a href='#line_#{index}'>#{md[1]}</a>" %>
-      </td>
-    </tr>
-  <%     end %>
-  <%   end %>
-  <%   if line.text_type == :signature %>
-  <%     sig_line = Retain::SignatureLine.new(line.text) %>
-  <%     unless sig_line.name.nil? || sig_line.stype.nil? %>
-    <tr>
-      <td colspan='2'>
-	<%= "<a href='#line_#{index}'>#{sig_line.name}</a>" %>
-      </td>
-      <td>
-	<%= "<a href='#line_#{index}'>#{sig_line.stype}</a>" %>
-      </td>
-    </tr>
-  <%     end %>
-  <%   end %>
-  <% end %>
-  </table>
-<% end %>
+  <% cache(:action_suffix => 'left') do %>
+    <!-- app/views/retain/call/show.html.erb left content -->
+    <table>
+    <% all_lines.each_with_index do |line, index| %>
+    <%   if line.text_type == :system_inserted %>
+    <%     md = Regexp.new(' S5> (SERVICE GIVEN= ([0-9][0-9]))  SG/[0-9]9/').match(line.text) %>
+    <%     unless md.nil? || md[2] == "99" %>
+      <tr>
+	  <td>
+	    &nbsp;
+	  </td>
+	  <td>
+	    <%= "<a href='#line_#{index}'>#{md[1]}</a>" %>
+	  </td>
+      </tr>
+    <%     end -%>
+    <%   end -%>
+    <%   if line.text_type == :signature %>
+    <%     sig_line = Retain::SignatureLine.new(line.text) %>
+    <%     unless sig_line.name.nil? || sig_line.stype.nil? %>
+      <tr>
+	  <td colspan='2'>
+	    <%= "<a href='#line_#{index}'>#{sig_line.name}</a>" %>
+	  </td>
+	  <td>
+	    <%= "<a href='#line_#{index}'>#{sig_line.stype}</a>" %>
+	  </td>
+      </tr>
+    <%     end -%>
+    <%   end -%>
+    <% end -%>
+    </table>
+    <%= push_page_settings %>
+  <% end -%>
+<% end -%>
 
 <% content_for(:left_tab) do %>
-  <!-- app/views/retain/call/show.html.erb left tab content -->
-  <div>S<br/>i<br/>g<br/>n<br/>a<br/>t<br/>u<br/>r<br/>e<br/>s</div>
-<% end %>
+  <% cache(:action_suffix => 'left_tab') do %>
+    <!-- app/views/retain/call/show.html.erb left tab content -->
+    <div>S<br/>i<br/>g<br/>n<br/>a<br/>t<br/>u<br/>r<br/>e<br/>s</div>
+  <% end -%>
+<% end -%>
 
 <% content_for(:right_tab) do %>
-  <!-- app/views/retain/call/show.html.erb right tab content -->
-  <div>P<br/>a<br/>g<br/>e<br/>s<br/></div>
-<% end %>
+  <% cache(:action_suffix => 'right_tab') do %>
+    <!-- app/views/retain/call/show.html.erb right tab content -->
+    <div>P<br/>a<br/>g<br/>e<br/>s<br/></div>
+  <% end -%>
+<% end -%>
 
 <% content_for(:right) do %>
-  <!-- app/views/retain/call/show.html.erb right content -->
-  <div>
-    <% (0 ... (all_lines.length / 16)).each do |page_number| %>
-    <%= "<a href='#line_#{page_number * 16}'>Page #{page_number + 2}</a><br/>" %>
-    <% end %>
-  </div>
-<% end %>
+  <% cache(:action_suffix => 'right') do %>
+    <!-- app/views/retain/call/show.html.erb right content -->
+    <div>
+      <% (0 ... (all_lines.length / 16)).each do |page_number| %>
+      <%= "<a href='#line_#{page_number * 16}'>Page #{page_number + 2}</a><br/>" %>
+      <% end -%>
+    </div>
+    <%= push_page_settings %>
+  <% end -%>
+<% end -%>
 
-<% content_for(:bottom) do %>
-  <!-- app/views/retain/call/show.html.erb bottom content -->
-  <div>
-    <%= home_button %>
-    <%= favorites_button %>
-    <%= button_url("QS #{@queue.to_param}", combined_q_path(@queue)) %>
-    <%= psar_button %>
-    <%= registration_button %>
-    <% display_update_button(binding) %>
-    <% display_update_form(binding, @call) %>
-  </div>
-<% end %>
+  <% content_for(:bottom) do %>
+    <!-- app/views/retain/call/show.html.erb bottom content -->
+    <div>
+      <%= home_button %>
+      <%= favorites_button %>
+      <%= button_url("QS #{@queue.to_param}", combined_q_path(@queue)) %>
+      <%= psar_button %>
+      <%= registration_button %>
+      <% display_update_button(binding) %>
+      <% display_update_form(binding, @call) %>
+    </div>
+  <% end -%>

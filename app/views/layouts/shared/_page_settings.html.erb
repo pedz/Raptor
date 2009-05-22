@@ -1,9 +1,6 @@
 <!-- app/views/layouts/shared/_page_settings.html.erb -->
-<% @page_settings['authenticityToken'] ||= form_authenticity_token; -%>
 <script type='text/javascript'>
-  var pageSettings = {
   <% @page_settings.each_pair { |key, value| -%>
-  <%= "#{key}: #{value.to_json}," %>
-  <% } %>
-  }
+  <%= "pageSettings.#{key} = #{value.to_json};" %>
+  <% } -%>
 </script>

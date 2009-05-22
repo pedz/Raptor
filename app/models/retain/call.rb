@@ -1,3 +1,11 @@
+# = Retain Models
+#
+# These models represent the "raw" Retain models.  See Retain::Base
+# for more information.
+#
+# Each Retain concept such as Pmr, Call, Queue has a matching Retain
+# model which is used to fetch the data if needed from Retain.
+#
 module Retain
   class Call < Base
     set_fetch_sdi Pmcb

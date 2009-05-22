@@ -61,6 +61,7 @@ class ApplicationController < ActionController::Base
   # initialized with the ldap_id field.  The user model is stored in
   # the session.
   def authenticate
+    logger.debug("APP: authorization: #{temp_debug(request)}")
     set_last_uri
     return true unless application_user.nil?
     if request.env.has_key? "REMOTE_USER"
@@ -81,6 +82,22 @@ class ApplicationController < ActionController::Base
     logger.info("REMOTE_USER = #{request.env["REMOTE_USER"]}")
     uri =  request.env["REQUEST_URI"]
     logger.info("last_uri = #{last_uri}, uri = #{uri}")
+    cache_control = request.cache_control
+    logger.debug("APP: cache_control: #{cache_control.inspect}")
+    # Note: We use to do a "full refresh" when we hit the same URL
+    # twice.  That has now been changed to look at the cache-control
+    # HTTP header.  If it says, 'no-cache', then we do a full
+    # refresh.  A "full-refresh" means that we do not trust the state
+    # of a queue or the state of a PMR without checking its last
+    # modification date.
+    if cache_control.is_a? String
+      @no_cache = cache_control == "no-cache"
+    elsif cache_control.is_a? Array
+      @no_cache = cache_control.include?("no-cache")
+    else
+      @no_cache = false
+    end
+    logger.debug("APP: no_cache = #{@no_cache}")
     if last_uri == uri && Rails.env != "test"
       flash[:notice] = "Fully Refreshed"
       @refresh_time = Time.now
@@ -146,5 +163,12 @@ class ApplicationController < ActionController::Base
       user.save!
     end
     session[:user_id] = user.id
+  end
+  
+  def temp_debug(request)
+    request.env['HTTP_AUTHORIZATION']   ||
+      request.env['X-HTTP_AUTHORIZATION'] ||
+      request.env['X_HTTP_AUTHORIZATION'] ||
+      request.env['REDIRECT_X_HTTP_AUTHORIZATION']
   end
 end

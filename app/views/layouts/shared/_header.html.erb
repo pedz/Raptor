@@ -8,4 +8,8 @@
     <title><%= h @title %></title>
     <%= stylesheet_link_tag(*stylesheets) unless stylesheets.nil? %>
     <%= javascript_include_tag(*javascript_files) unless javascript_files.nil? %>
+    <script type='text/javascript'>
+      pageSettings = {};
+      pageSettings.authenticityToken = "<%= form_authenticity_token %>";
+    </script>
   </head>
