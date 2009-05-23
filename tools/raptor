@@ -1,0 +1,7 @@
+#!/bin/ksh
+#
+# A script to put in to /etc/rc.d to start, stop, and restart raptor.
+#
+SERVER_HOME=/usr/local/www/raptor/current
+cd ${SERVER_HOME}
+/usr/local/bin/thin --config config/thin-production.yml $@

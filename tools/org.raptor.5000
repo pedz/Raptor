@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>org.raptor.5000</string>
+    <key>WorkingDirectory</key>
+    <string>/Users/pedzan/Source/Rails/raptor</string>
+    <key>StandardOutPath</key>
+    <string>/Users/pedzan/Source/Rails/raptor/log/thin.5000.out</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/pedzan/Source/Rails/raptor/log/thin.5000.err</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>/usr/bin/thin</string>
+      <string>--port</string>
+      <string>5000</string>
+      <string>--environment</string>
+      <string>development</string>
+      <string>--prefix</string>
+      <string>/raptor</string>
+      <string>--log</string>
+      <string>log/thin.5000.log</string>
+      <string>--pid</string>
+      <string>tmp/pids/thin.5000.pid</string>
+      <string>--chdir</string>
+      <string>/Users/pedzan/Source/Rails/raptor</string>
+      <string>start</string>
+    </array>
+    <key>OnDemand</key>
+    <false/>
+  </dict>
+</plist>
