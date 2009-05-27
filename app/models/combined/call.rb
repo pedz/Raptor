@@ -254,7 +254,6 @@ module Combined
     
     def load
       logger.debug("CMB: load for #{self.to_s}")
-      # debugger()
 
       # Pull the fields we need from the cached record into an options_hash
       queue = @cached.queue
@@ -296,19 +295,26 @@ module Combined
       logger.debug("CMB: TMP time_zone_code = #{call.time_zone_code}")
 
       # Update call record
+      #
+      # This comment applies to most of the combined models.
+      # We gather the options that go into the database record from
+      # the call and assign them to the database record.  We then ask
+      # if anything has changed.  If something has changed, when we
+      # mark last_fetched with the current time.  We then fix the
+      # dirty flag as false, force the updated_at to be now, and then
+      # do a save.
+      # The net result will be that the updated_at timestamp will be
+      # the time that we last checked retain.  The last_fetched will
+      # be the time when Retain last changed.
+      #
       options = self.class.cached_class.options_from_retain(call)
-      options[:dirty] = false if @cached.respond_to?("dirty")
-      # This comment applies generally to all the places where
-      # updated_at is changed directly: the new Rails 2.1 keeps track
-      # of what is and is not dirty.  Raptor uses the updated_at field
-      # to see if it is time for Raptor to get a fresh copy from
-      # Retain.  If nothing changes, the update_attributes by itself
-      # has no affect.  So, the updated_at field is changed to
-      # Time.now so at least that gets changed.  Otherwise, Raptor is
-      # constantly fetching things from Retain which are suppose to be
-      # cached.
+      @cached.attributes = options
+      if @cached.changed?
+        @cached.last_fetched = Time.now
+      end
+      @cached.dirty = false
       @cached.updated_at = Time.now
-      @cached.update_attributes(options)
+      @cached.save
     end
   end
 end

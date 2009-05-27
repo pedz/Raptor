@@ -78,6 +78,8 @@ module Combined
       # Pull the lookup fields into the options hash
       options_hash = Hash[ * lookup_fields.map { |field|
                              [ field.to_sym, @cached.attributes[field] ] }.flatten ]
+      time_now = Time.now
+
       # We also need the signon and password but we get that from the
       # Logon singleton automatically.
       
@@ -92,7 +94,7 @@ module Combined
         pmr = Retain::Pmr.new(options_hash)
         if @cached.last_alter_timestamp == pmr.last_alter_timestamp
           logger.debug("CMB: #{temp_id} touched")
-          @cached.updated_at = Time.now
+          @cached.updated_at = time_now
           @cached.save
           return
         end
@@ -293,8 +295,9 @@ module Combined
       }
 
       # Update other attributes
-      retain_options[:dirty] = false if @cached.respond_to?("dirty")
-      @cached.updated_at = Time.now
+      retain_options[:dirty] = false
+      retain_options[:last_fetched] = time_now
+      retain_options[:updated_at] = time_now
       @cached.update_attributes(retain_options)
     end
 

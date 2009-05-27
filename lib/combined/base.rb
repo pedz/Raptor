@@ -234,6 +234,7 @@ module Combined
         # Specify default extra fields and skipped fields
         @skipped_fields = [ :id, :created_at, :updated_at ]
         @skipped_fields += [ :dirty ] if db_fields.include?(:dirty)
+        @skipped_fields += [ :last_fetched ] if db_fields.include?(:last_fetched)
         @extra_fields = [ ]
         @non_retain_associations = [ ]
 

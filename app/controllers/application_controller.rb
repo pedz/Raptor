@@ -64,8 +64,13 @@ class ApplicationController < ActionController::Base
     logger.debug("APP: authorization: #{temp_debug(request)}")
     set_last_uri
     return true unless application_user.nil?
+    logger.info("REMOTE_USER = #{request.env["REMOTE_USER"]}")
+    logger.info("Header HTTP_X_FORWARDED_USER = #{request.headers['HTTP_X_FORWARDED_USER']}")
+    logger.info("Header NOT-SET = #{request.headers['NOT-SET'].inspect}")
     if request.env.has_key? "REMOTE_USER"
       apache_authenticate
+    elsif request.headers.has_key?('HTTP_X_FORWARDED_USER')
+      proxy_apache_authenticate
     elsif Rails.env == "test"
       testing_authenticate
     elsif NONE_AUTHENTICATE
@@ -79,7 +84,6 @@ class ApplicationController < ActionController::Base
   # the user wants to refresh the cache if he does.
   def set_last_uri
     last_uri = session[:last_uri]
-    logger.info("REMOTE_USER = #{request.env["REMOTE_USER"]}")
     uri =  request.env["REQUEST_URI"]
     logger.info("last_uri = #{last_uri}, uri = #{uri}")
     cache_control = request.cache_control
@@ -139,6 +143,14 @@ class ApplicationController < ActionController::Base
   def apache_authenticate
     logger.debug("apache_authenticate")
     common_authenticate(request.env["REMOTE_USER"])
+    return true
+  end
+
+  # Apache has already authenticated but we are behind a proxy so use
+  # HTTP_X_FORWARDED_USER instead
+  def proxy_apache_authenticate
+    logger.debug("proxy_apache_authenticate")
+    common_authenticate(request.headers["HTTP_X_FORWARDED_USER"])
     return true
   end
 

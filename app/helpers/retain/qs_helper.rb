@@ -433,8 +433,8 @@ module Retain
       return "initial-response" if call.needs_initial_response?
       last_name = (name = call.pmr.signature_lines.last.name) &&
         name.gsub(/ +$/, '')
-      my_name = signon_user.name.gsub(/ +$/, '')
-      return "normal" if my_name == last_name
+      resolver_last_name = call.pmr.resolver.name.gsub(/ +$/, '')
+      return "normal" if resolver_last_name == last_name
       return "updated"
     end
 

@@ -61,9 +61,8 @@ module Cached
         find(:first, :conditions => keys_only(options)) || new(options)
       end
       
-      # Fetch or create the DB record from a Retain record  -- probably
-      # should not be called "new"
-      def new_from_retain(retain)
+      # Fetch or create the DB record from a Retain record
+      def find_or_new_from_retain(retain)
         # Get the fields for the cached class
         # logger.debug("CHC: new #{@subclass} from retain")
         options = options_from_retain(retain)
