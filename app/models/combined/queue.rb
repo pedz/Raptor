@@ -1,6 +1,6 @@
 module Combined
   class Queue < Base
-    set_expire_time 10.minutes
+    set_expire_time 1.minute
 
     set_db_keys :queue_name, :h_or_s
     add_skipped_fields :queue_name, :h_or_s
@@ -101,6 +101,7 @@ module Combined
       retain_queue = Retain::Queue.new(options_hash)
       retain_calls = retain_queue.calls
 
+      # I'm going to try this...
       db_calls = @cached.calls
       db_calls.each_with_index do |o, i|
         hex = ""

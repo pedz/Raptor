@@ -1,0 +1,61 @@
+<!-- retain/queue/invalid.html.erb -->
+<% @title = "Retain queue: invalid" -%>
+<%- content_for(:top) do -%>
+  <!-- retain/queue/invalid.html.erb top content -->
+  <h1>Retain Queue: Invalid</h1>
+  <%= render :partial => 'layouts/shared/display_flash' %>
+<%- end -%>
+<% content_for(:center) do %>
+  <!-- retain/queue/invalid.html.erb center content -->
+  <p style='width: 40em'>
+    The queue you tried to view is invalid.
+  </p>
+<% end %>
+<% content_for(:bottom) do %>
+  <!-- retain/queue/invalid.html.erb bottom content -->
+  <div style='color: green; display: none;' id='help'>
+    <ol>
+      <li>
+	Hover over PMR number to see Customer's name, Comments,
+	Customer's time of day, and ECPAAT
+      </li>
+      <li>
+	Each section of ECPAAT is limited to first 5 lines
+      </li>
+      <li>
+	Time of last CT can be seen by hovering over Next CT
+      </li>
+      <li>
+	Hover over red or orange fields to see cause of error or
+	warning
+      </li>
+      <li>
+	Text of buttons can be typed into text box for mouseless
+        navigation e.g. "1" goes to the first PMR, "home" goes to home
+        page
+      </li>
+      <li>
+	Click on Customer's name to invoke email to customer
+      </li>
+      <li>
+	Click on Comments to alter them
+      </li>
+      <li>
+	Click on Owner, Resolver, and Next Queue to alter them.  Owner
+	and Next Queue are not alterable for WT PMRs.
+      </li>
+      <li>
+	PMR colored in orange is under "initial contact" criteria
+      </li>
+      <li>
+	PMR colored red is "system down" criteria
+      </li>
+    </ol>
+  </div>
+  <div>
+    <%= home_button %>
+    <%= button_url 'Favorite Queues', combined_favorite_queues_path %>
+    <%= psar_button %>
+    <%= button "Help", "$(\"help\").toggle()" %>
+  </div>
+<% end %>

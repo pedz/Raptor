@@ -65,6 +65,13 @@ module Cached
       }
     end
 
+    def etag
+      a = calls.map { |call| call.etag }
+      a << last_fetched
+      a.flatten
+    end
+    once :etag
+
     def team_queue?
       self.owners.empty?
     end

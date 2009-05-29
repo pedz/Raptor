@@ -203,6 +203,10 @@ module Combined
       @invalid_cache = true
     end
 
+    def is_invalid?
+      @invalid_cache
+    end
+
     def cached
       return @cached
     end
@@ -334,7 +338,7 @@ module Combined
       # else, return if cache time has expired or not
       r = updated_at > expire.ago
       logger.debug("CMB: #{self.to_s} cache_valid?: updated_at:#{updated_at}, " +
-                   "expire:#{expire}, expire.ago:#{expire.ago}" +
+                   "expire:#{expire}, expire.ago:#{expire.ago}, " +
                    "now:#{Time.now}, r:#{r}")
       r
     end

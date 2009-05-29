@@ -185,9 +185,9 @@ module Retain
     end
 
     def sr
-      if md = /SR([0-9][0-9][0-9])EX([0-9][0-9][0-9])/.match(@error_message)
-        md[1].to_i
-      end
+      @sr ||= if md = /SR([0-9][0-9][0-9])EX([0-9][0-9][0-9])/.match(@error_message)
+                md[1].to_i
+              end
     end
     alias :error_type :sr
 

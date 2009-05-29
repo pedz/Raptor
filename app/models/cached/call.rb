@@ -152,6 +152,11 @@ module Cached
     end
     once :center_entry_time
 
+    def etag
+      [ call_search_result, last_fetched, pmr.etag ].flatten
+    end
+    once :etag
+
     # Returns the signature for the CR that put the call into the
     # designated center
     def center_entry_sig(center = queue.center)

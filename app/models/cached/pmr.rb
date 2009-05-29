@@ -160,9 +160,13 @@ module Cached
     once :all_text_lines
     
     def etag
-      ret = ""
-      last_alter_timestamp.each_byte { |b| ret << ("%02x" % b) }
-      ret
+      # old method
+      # ret = "#{self.problem},#{self.branch},#{self.country}"
+      # last_alter_timestamp.each_byte { |b| ret << ("%02x" % b) }
+      # ret
+
+      # New method: an array that is the id and the last alter timestamp
+      [ problem, branch, country, last_alter_timestamp ]
     end
     once :etag
 
@@ -330,6 +334,26 @@ module Cached
     end
     once :visited_queues
 
+    def secondary_1
+      get_call(sec_1_center, sec_1_queue, sec_1_h_or_s, sec_1_ppg)
+    end
+    once :secondary_1
+
+    def secondary_2
+      get_call(sec_2_center, sec_2_queue, sec_2_h_or_s, sec_2_ppg)
+    end
+    once :secondary_2
+
+    def secondary_3
+      get_call(sec_3_center, sec_3_queue, sec_3_h_or_s, sec_3_ppg)
+    end
+    once :secondary_3
+
+    def secondaries
+      [ secondary_1, secondary_2, secondary_3 ]
+    end
+    once :secondaries
+
     private
 
     def get_current_section(md)
@@ -338,5 +362,14 @@ module Cached
       ECPAAT_HEADINGS[index]
     end
 
+    # Tries to retrieve a call from the database.  This is allowed to
+    # return null if the call is not in the database
+    def get_call(center, queue_name, h_or_s, ppg)
+      if center = Cached::Center.find_by_center(center)
+        if queue = center.queues.find_by_queue_name_and_h_or_s(queue_name, h_or_s)
+          return queue.calls.find_by_ppg(ppg)
+        end
+      end
+    end
   end
 end

@@ -10,7 +10,7 @@
 #
 module Combined
   class Call < Base
-    set_expire_time 30.minutes
+    set_expire_time 1.minute
 
     set_db_keys :ppg
     add_skipped_fields :ppg
@@ -274,7 +274,17 @@ module Combined
       call = Retain::Call.new(options_hash)
 
       # Touch to force a fetch from Retain
-      call.send(group_request[0])
+      begin
+        call.send(group_request[0])
+      rescue Retain::SdiReaderError => e
+        if e.sr == 65 && e.ex == 11
+          # This may cause another exception but I don't think it
+          # will.  If it does, the to_param can be manually coded.
+          raise CallNotFound.new(to_param)
+        else
+          raise e
+        end
+      end
 
       # Make or find PMR
       pmr_options = {

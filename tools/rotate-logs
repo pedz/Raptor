@@ -1,0 +1,9 @@
+#!/bin/sh
+
+cd log
+cp development-04.log development-05.log 2> /dev/null
+cp development-03.log development-04.log 2> /dev/null
+cp development-02.log development-03.log 2> /dev/null
+cp development-01.log development-02.log 2> /dev/null
+cp development.log development-01.log 2> /dev/null
+cp /dev/null development.log 2> /dev/null
