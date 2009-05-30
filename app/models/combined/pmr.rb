@@ -1,6 +1,6 @@
 module Combined
   class Pmr < Base
-    set_expire_time 1.minute
+    set_expire_time 5.minutes
 
     set_db_keys :problem, :branch, :country
     add_skipped_fields :problem, :branch, :country
@@ -70,7 +70,7 @@ module Combined
     private
 
     def load
-      logger.debug("CMB: load for #{self.to_s}")
+      # logger.debug("CMB: load for #{self.to_param}")
       
       # Fields used for the lookup
       lookup_fields = %w{ problem branch country }
@@ -89,18 +89,18 @@ module Combined
       # the cached entry) are nil.
       temp_id = "%s,%s,%s" % [ @cached.problem, @cached.branch, @cached.country ]
       if @cached.last_alter_timestamp
-        logger.debug("CMB: #{temp_id} last_alter_timestamp set")
+        # logger.debug("CMB: #{temp_id} last_alter_timestamp set")
         options_hash[:group_request] = [[ :last_alter_timestamp ]]
         pmr = Retain::Pmr.new(options_hash)
         if @cached.last_alter_timestamp == pmr.last_alter_timestamp
-          logger.debug("CMB: #{temp_id} touched")
+          # logger.debug("CMB: #{temp_id} touched")
           @cached.updated_at = time_now
           @cached.save
           return
         end
-        logger.debug("CMB: #{temp_id} has been altered")
+        # logger.debug("CMB: #{temp_id} has been altered")
       else
-        logger.debug("CMB: #{temp_id} alteration date not set")
+        # logger.debug("CMB: #{temp_id} alteration date not set")
       end
 
       # PMPB uses group_request.  Lets create that:
@@ -120,7 +120,7 @@ module Combined
         fa_lines = @cached.alterable_format_lines.length
         text_lines = @cached.text_lines.length
         pages = (fa_lines + text_lines + 15) / 16
-        logger.debug("CMB: #{temp_id} text_lines: #{text_lines}, fa_lines: #{fa_lines}, pages: #{pages}")
+        # logger.debug("CMB: #{temp_id} text_lines: #{text_lines}, fa_lines: #{fa_lines}, pages: #{pages}")
         options_hash[:beginning_page_number] = pages + 1
       end
       
@@ -135,10 +135,10 @@ module Combined
 
       if @cached.alteration_date
         if pmr.nls_text_lines?
-          logger.debug("CMB: #{temp_id} text_lines.length = #{pmr.nls_text_lines.length}")
+          # logger.debug("CMB: #{temp_id} text_lines.length = #{pmr.nls_text_lines.length}")
         end
         if pmr.alterable_format_lines?
-          logger.debug("CMB: #{temp_id} alterable_format_lines.length = #{pmr.alterable_format_lines.length}")
+          # logger.debug("CMB: #{temp_id} alterable_format_lines.length = #{pmr.alterable_format_lines.length}")
         end
       end
       # Create the alterable format text lines.  Need to do this
@@ -224,10 +224,10 @@ module Combined
         :h_or_s => pmr.h_or_s,
         :ppg => pmr.ppg
       }
-      logger.debug("CMB: primary_options = #{primary_options.inspect}")
+      # logger.debug("CMB: primary_options = #{primary_options.inspect}")
       center = Cached::Center.create_from_options(primary_options)
       if center
-        logger.debug("CMB: got center")
+        # logger.debug("CMB: got center")
         # We have to save the center if it is a new record.  This is
         # also true for the queue.  We are creating this complex
         # structure that is not flat.  The pmr points to the center,
@@ -238,12 +238,12 @@ module Combined
         @cached.center = center
         queue = center.queues.create_from_options(primary_options)
         if queue
-          logger.debug("CMB: got queue")
+          # logger.debug("CMB: got queue")
           queue.save if queue.new_record?
           @cached.queue = queue
           call = queue.calls.new_from_options(primary_options.merge({ :pmr_id => @cached.id }))
           if call
-            logger.debug("CMB: got call")
+            # logger.debug("CMB: got call")
             if call.new_record?
               call.pmr = @cached
               call.save
@@ -317,13 +317,13 @@ module Combined
         if cached_lines.length <= line_number
           cached_lines << Cached::TextLine.new(text_line_options)
         else
-          logger.debug("CMB: possible update here")
+          # logger.debug("CMB: possible update here")
           text_line = cached_lines[line_number]
           if text_line_options.keys.any? { |key|
               if text_line_options[key] != text_line.send(key)
-                logger.debug("CMB: mismatch on #{key}: " +
-                             "'#{text_line_options[key]}' " +
-                             "!= '#{text_line.send(key)}'")
+                # logger.debug("CMB: mismatch on #{key}: " +
+                #              "'#{text_line_options[key]}' " +
+                #              "!= '#{text_line.send(key)}'")
                 true
               end
             }

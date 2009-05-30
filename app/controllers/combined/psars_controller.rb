@@ -56,7 +56,7 @@ module Combined
                                         :conditions => db_search_fields,
                                         :include => :pmr)
       
-      logger.debug("psars_controller #{@combined_psars[0].class}")
+      # logger.debug("psars_controller #{@combined_psars[0].class}")
       respond_to do |format|
         format.html # index.html.erb
         format.xml  { render :xml => @combined_psars }
@@ -165,7 +165,7 @@ module Combined
         @combined_psar = Combined::Psar.find(params[:id])
       end
       value = @combined_psar.destroy
-      logger.debug("Value is #{value}")
+      # logger.debug("Value is #{value}")
       
       respond_to do |format|
         format.html { redirect_to(combined_psars_url) }

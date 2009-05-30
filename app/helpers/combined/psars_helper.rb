@@ -27,7 +27,7 @@ module Combined
     end
 
     def summarize(weeks)
-      logger.debug("PSAR: #{weeks.inspect}")
+      # logger.debug("PSAR: #{weeks.inspect}")
       weeks.map do |saturday, days|
         week_total = 0
         days.map! do |day, psars|

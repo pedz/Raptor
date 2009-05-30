@@ -103,7 +103,7 @@ module Retain
       minutes = options.delete(:minutes).to_i
       options[:psar_actual_time] = (hours * 10) + (minutes / 6).to_i
       options[:psar_chargeable_time] = hours * 256 + minutes
-      logger.debug("options: #{options.inspect}")
+      # logger.debug("options: #{options.inspect}")
       psar = Retain::Psrc.new(options)
       begin
         psar.sendit(Retain::Fields.new)
@@ -131,9 +131,9 @@ module Retain
 
     def addtxt
       options = Combined::Pmr.param_to_options(params[:id])
-      logger.debug("options=#{options.inspect}")
+      # logger.debug("options=#{options.inspect}")
       lines = params[:newtext].split("\n")
-      logger.debug("lines before=#{lines.inspect}")
+      # logger.debug("lines before=#{lines.inspect}")
       lines = lines.map { |line|
         l = []
         while line.length > 72
@@ -157,7 +157,7 @@ module Retain
         l << line
         l
       }.flatten
-      logger.debug("lines after=#{lines.inspect}")
+      # logger.debug("lines after=#{lines.inspect}")
       options[:addtxt_lines] = lines
       addtxt = Retain::Pmat.new(options)
       begin

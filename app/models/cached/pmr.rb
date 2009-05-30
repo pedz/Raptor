@@ -301,7 +301,7 @@ module Cached
             text = md[8]
             add_blank_line = false
             first_line = true
-            logger.debug("CHC: ECPAAT found #{current_section}")
+            # logger.debug("CHC: ECPAAT found #{current_section}")
           end
           if current_section
             if BLANK_REGEXP.match(text)
@@ -357,7 +357,7 @@ module Cached
     private
 
     def get_current_section(md)
-      logger.debug("CHC: get_current_section: md[2]=#{md[2].inspect}, md[3]=#{md[3].inspect}")
+      # logger.debug("CHC: get_current_section: md[2]=#{md[2].inspect}, md[3]=#{md[3].inspect}")
       index = (0 .. 5).select { |i| !md[i+2].nil? }.first
       ECPAAT_HEADINGS[index]
     end

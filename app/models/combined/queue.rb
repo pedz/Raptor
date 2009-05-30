@@ -1,6 +1,6 @@
 module Combined
   class Queue < Base
-    set_expire_time 1.minute
+    set_expire_time 5.minutes
 
     set_db_keys :queue_name, :h_or_s
     add_skipped_fields :queue_name, :h_or_s
@@ -10,8 +10,8 @@ module Combined
     # Words is an array of string in the order of
     # queue_name,h_or_s,center
     def self.words_to_options(words)
-      logger.debug("words is of clas #{words.class}")
-      logger.debug("words is #{words.inspect}")
+      # logger.debug("words is of clas #{words.class}")
+      # logger.debug("words is #{words.inspect}")
       options = { 
         :queue_name => words.shift,
         :h_or_s => words.shift
@@ -76,7 +76,7 @@ module Combined
     private
 
     def load
-      logger.debug("CMB: load for #{self.to_s}")
+      # logger.debug("CMB: load for #{self.to_param}")
       # This could be generallized but for now lets just do this
       return if @cached.queue_name.nil?
       
@@ -93,7 +93,7 @@ module Combined
       requested_elements = Combined::Call.retain_fields.map { |field| field.to_sym }
       requested_elements << :ppg
       requested_elements << :p_s_b
-      logger.debug("CMB: requested_elements = #{requested_elements.inspect}")
+      # logger.debug("CMB: requested_elements = #{requested_elements.inspect}")
       options_hash[:requested_elements] = requested_elements
 
       
@@ -103,21 +103,25 @@ module Combined
 
       # I'm going to try this...
       db_calls = @cached.calls
-      db_calls.each_with_index do |o, i|
-        hex = ""
-        o.call_search_result.each_byte { |b| hex << ("%02x" % b) }
-        logger.debug("db_calls[#{i}] is #{hex}")
-      end
-      retain_calls.each_with_index do |o, i|
-        hex = ""
-        o.call_search_result.each_byte { |b| hex << ("%02x" % b) }
-        logger.debug("retain_calls[#{i}] is #{hex}")
-      end
+      # db_calls.each_with_index do |o, i|
+      #   hex = ""
+      #   if o.call_search_result
+      #     o.call_search_result.each_byte { |b| hex << ("%02x" % b) }
+      #   end
+      #   logger.debug("db_calls[#{i}] is #{hex}")
+      # end
+      # retain_calls.each_with_index do |o, i|
+      #   hex = ""
+      #   if o.call_search_result
+      #     o.call_search_result.each_byte { |b| hex << ("%02x" % b) }
+      #   end
+      #   logger.debug("retain_calls[#{i}] is #{hex}")
+      # end
 
       # If retain says we have no calls, we delete the calls in the
       # database.
       if retain_calls.length == 0
-        logger.debug("CMB: Queue is empty")
+        # logger.debug("CMB: Queue is empty")
         # If DB already says there are no calls, we skip this.
         unless db_calls.length == 0
           @cached.calls.clear
@@ -137,7 +141,7 @@ module Combined
           (0 ... retain_calls.length).all? { |index|
           retain_calls[index].call_search_result === db_calls[index].call_search_result
         }
-        logger.debug("CMB: Queue appears to have not changed")
+        # logger.debug("CMB: Queue appears to have not changed")
         @cached.dirty = false
         @cached.updated_at = time_now
         @cached.save
@@ -161,12 +165,12 @@ module Combined
       (0 ... retain_calls.length).each do |index|
         retain_call = retain_calls[index]
         db_call = db_calls[db_call_index]
-        logger.debug("CMB: Queue at index #{index}")
+        # logger.debug("CMB: Queue at index #{index}")
 
         # If match at the current index, just move the db call to the
         # list and continue
         if !db_call.nil? && (retain_call.call_search_result === db_call.call_search_result)
-          logger.debug("CMB: index #{index} db_call_index #{db_call_index} matches")
+          # logger.debug("CMB: index #{index} db_call_index #{db_call_index} matches")
           db_call_index += 1
           next
         end
@@ -175,10 +179,10 @@ module Combined
         # deleted from the queue so we need to delete from db_calls
         # until we match
         if db_calls_hash.has_key?(retain_call.call_search_result)
-          while retain_call.call_search_result != db_call.call_search_result
-            logger.debug("CMB: delete db_call_index #{db_call_index}")
-            db_call.delete[db_call_index]
-            db_call_index += 1
+          while (retain_call.call_search_result != db_call.call_search_result) &&
+              (db_call_index < db_calls.length)
+            # logger.debug("CMB: delete db_call_index #{db_call_index}")
+            db_calls.delete(db_call)
             db_call = db_calls[db_call_index]
           end
           db_call_index += 1
@@ -186,9 +190,16 @@ module Combined
         end
         
         # retain_call not in db_calls so insert it.
-        logger.debug("CMB: new retain_call #{index}")
+        # logger.debug("CMB: new retain_call #{index}")
       end
-      
+
+      # Need to delete the db_calls left at the end if any
+      while db_call_index < db_calls.length
+        # logger.debug("CMB: delete db_call at index #{db_call_index}")
+        db_call = db_calls[db_call_index]
+        db_calls.delete(db_call)
+      end
+
       # Now we get our create the list of calls
       slot = 1
       retain_calls.each do |call|
@@ -247,9 +258,9 @@ module Combined
         # if they are new.
         db_call.updated_at = time_now
         db_call.save
-
-        @cached.calls << db_call
       end
+      # Force the reload of the calls.
+      @cached.calls(true)
 
       @cached.dirty = false
       # Just to repeat the comment above: if we get to this point, we

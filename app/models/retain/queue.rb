@@ -48,8 +48,8 @@ module Retain
           :system_down => fields.system_down,
           :call_search_result => temp
         }
-        logger.debug("RTN: raw iris is #{temp[0 ... 12]}")
-        logger.debug("RTN: make a call options: #{options.inspect}")
+        # logger.debug("RTN: raw iris is #{temp[0 ... 12]}")
+        # logger.debug("RTN: make a call options: #{options.inspect}")
         Call.new options
       end
     end

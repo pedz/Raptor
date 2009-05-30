@@ -34,10 +34,10 @@ module Retain
     #
     def value
       if @value.is_a?(Array)
-        Rails.logger.debug("RTN: value is array")
+        # Rails.logger.debug("RTN: value is array")
         @value.map { |line| decode(line) }
       else
-        Rails.logger.debug("RTN: value is not array")
+        # Rails.logger.debug("RTN: value is not array")
         decode(@value)
       end
     end
@@ -163,7 +163,7 @@ module Retain
         # hex.
         new_value = value[0 ... 12].user_to_retain +
           value[12 ... 20].scan(/../).map { |s| s.hex }.pack("cccc")
-        Rails.logger.debug("XXX: encode before #{value} after #{new_value}")
+        # Rails.logger.debug("XXX: encode before #{value} after #{new_value}")
         new_value
       when :ebcdic_strip
         value.trim(width).upcase.user_to_retain
@@ -186,7 +186,7 @@ module Retain
       when :number              # space filled number
         ("%#{width}d" % value).user_to_retain
       when :znumber             # zero filled number
-        Rails.logger.debug("width=#{width}, value=#{value}, value.class=#{value.class}")
+        # Rails.logger.debug("width=#{width}, value=#{value}, value.class=#{value.class}")
         ("%0#{width}d" % value).user_to_retain
       when :short
         value.short2ret
@@ -210,14 +210,14 @@ module Retain
     def decode(value)
       case @cvt
       when :int
-        Rails.logger.debug("XXX #{"%02x %02x" % [ value[0], value[1]]}")
+        # Rails.logger.debug("XXX #{"%02x %02x" % [ value[0], value[1]]}")
         v = 0; value.each_byte { |b| v = v * 256 + b }; v
       when :psarfs
         # The first 12 bytes are ebcdic characters.  The last four are
         # not so we encode each byte as hex (two bytes each)
         new_value = value[0 ... 12].retain_to_user +
           value[12 ... 16].unpack("CCCC").map { |c| "%02x" % c }.join("")
-        Rails.logger.debug("XXX: decode before #{value} after #{new_value}")
+        # Rails.logger.debug("XXX: decode before #{value} after #{new_value}")
         new_value
       when :ebcdic_strip
         value.retain_to_user.strip
@@ -252,7 +252,7 @@ module Retain
           results << FormatPanelLine.new(temp[0,80])
           temp = temp[80 .. -1]
         end
-        Rails.logger.debug("RTN: results length is #{results.length}")
+        # Rails.logger.debug("RTN: results length is #{results.length}")
         results
       when :number
         value.retain_to_user.to_i

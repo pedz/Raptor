@@ -10,7 +10,7 @@
 #
 module Combined
   class Call < Base
-    set_expire_time 1.minute
+    set_expire_time 5.minutes
 
     set_db_keys :ppg
     add_skipped_fields :ppg
@@ -253,7 +253,7 @@ module Combined
     private
     
     def load
-      logger.debug("CMB: load for #{self.to_s}")
+      # logger.debug("CMB: load for #{self.to_param}")
 
       # Pull the fields we need from the cached record into an options_hash
       queue = @cached.queue
@@ -263,11 +263,11 @@ module Combined
         :center => queue.center.center,
         :ppg => @cached.ppg
       }
-      logger.debug("CMB: options_hash = #{options_hash.inspect}")
+      # logger.debug("CMB: options_hash = #{options_hash.inspect}")
 
       # :group_request is a special case
       group_request = Combined::Call.retain_fields.map { |field| field.to_sym }
-      logger.debug("CMB: group_request = #{group_request.inspect}")
+      # logger.debug("CMB: group_request = #{group_request.inspect}")
       options_hash[:group_request] = [ group_request ]
 
       # Create retain object
@@ -301,8 +301,8 @@ module Combined
       }
       @cached.pmr.customer = Cached::Customer.find_or_new(cust_options)
 
-      logger.debug("CMB: TMP customer_time_zone_adj = #{call.customer_time_zone_adj}")
-      logger.debug("CMB: TMP time_zone_code = #{call.time_zone_code}")
+      # logger.debug("CMB: TMP customer_time_zone_adj = #{call.customer_time_zone_adj}")
+      # logger.debug("CMB: TMP time_zone_code = #{call.time_zone_code}")
 
       # Update call record
       #

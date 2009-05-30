@@ -83,7 +83,7 @@ module Retain
 
     def date
       if (rd = raw_date)
-        logger.debug("RTN signature raw date #{rd}")
+        # logger.debug("RTN signature raw date #{rd}")
         year = 2000 + rd[0..1].to_i
         # second default to 0, timezone defaults to UTC
         DateTime.civil(year,

@@ -172,6 +172,5 @@ module Cached
       sig
     end
     once :center_entry_sig
-    
   end
 end

@@ -23,7 +23,7 @@ module Combined
     
     def check_mail_flag
       ret = (@cached && (@cached.psar_mailed_flag == "M") || @cached.updated_at > 12.hours.ago)
-      logger.debug("check_mail_flag for #{@cached.psar_file_and_symbol} is #{ret}")
+      # logger.debug("check_mail_flag for #{@cached.psar_file_and_symbol} is #{ret}")
       return ret
     end
 
@@ -60,9 +60,9 @@ module Combined
     private
     
     def load
-      logger.debug("CMB: load for #{self.to_s}")
+      # logger.debug("CMB: load for #{self.to_param}")
       if @cached.psar_mailed_flag == "M"
-        logger.debug("CMB: skipping load for #{self.to_s} -- mailed flag set to M")
+        # logger.debug("CMB: skipping load for #{self.to_s} -- mailed flag set to M")
         return
       end
 
@@ -92,7 +92,7 @@ module Combined
         # should be a very rare case.
         # Otherwise, we assume that someone deleted the PSAR and so we
         # delete it from the database.
-        logger.debug("mail flag is #{@cached.psar_mailed_flag}")
+        # logger.debug("mail flag is #{@cached.psar_mailed_flag}")
         if err.rc == 254 && @cached && @cached.psar_mailed_flag != nil
           # The purge date is the previous Saturday.
           purge_date = Time.now
@@ -100,11 +100,11 @@ module Combined
           purge_date -= 1.week
           purge_string = purge_date.strftime("%y%m%d")
           if @cached.psar_system_date < purge_string
-            logger.debug("Converting PSAR to mailed")
+            # logger.debug("Converting PSAR to mailed")
             @cached.psar_mailed_flag = "M"
             @cached.save!
           else
-            logger.debug("Destroying PSAR")
+            # logger.debug("Destroying PSAR")
             @cached.destroy
           end
           return

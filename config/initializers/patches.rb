@@ -6,7 +6,6 @@ module ActiveSupport
       def rescue_with_handler(exception)
         # Special case ActionView::TemplateError exception.  Look at
         # original exception as well
-        Rails.logger.debug("hi")
         if ((handler = handler_for_rescue(exception)).nil? &&
             exception.class == ActionView::TemplateError &&
             (temp_exception = exception.original_exception) &&

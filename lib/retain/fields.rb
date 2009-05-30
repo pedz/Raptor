@@ -555,7 +555,7 @@ module Retain
     end
 
     def self.index_to_sym(index)
-      logger.debug("RNT: index_to_sym for #{index} is #{@@field_num_to_name[index]}")
+      # logger.debug("RNT: index_to_sym for #{index} is #{@@field_num_to_name[index]}")
       @@field_num_to_name[index]
     end
 
@@ -599,11 +599,11 @@ module Retain
       @fields.each_pair do |k, v|
         rv = v.raw_value
         if v.raw_value.nil?
-          logger.debug("RTN: field:#{k} is nil")
+          # logger.debug("RTN: field:#{k} is nil")
         elsif (value = v.value).is_a? Array
-          logger.debug("RTN: field:#{k} is #{value.inspect}")
+          # logger.debug("RTN: field:#{k} is #{value.inspect}")
         else
-          logger.debug("RTN: field:#{k} is #{value}")
+          # logger.debug("RTN: field:#{k} is #{value}")
         end
       end
     end
@@ -636,12 +636,12 @@ module Retain
       sym = orig_sym.singularize
       if false
         field = FIELD_DEFINITIONS[sym]
-        logger.debug("RTN: has_key? for #{orig_sym} => #{sym}: field=#{field.inspect}")
+        # logger.debug("RTN: has_key? for #{orig_sym} => #{sym}: field=#{field.inspect}")
         if field
           v = @raw_values[field[0]]
-          logger.debug("RTN: has_key? v.nil? is #{v.nil?}")
+          # logger.debug("RTN: has_key? v.nil? is #{v.nil?}")
         end
-        logger.debug("RTN: has_key? @fields[sym].inspect is #{@fields[sym].inspect}")
+        # logger.debug("RTN: has_key? @fields[sym].inspect is #{@fields[sym].inspect}")
       end
       ((field = FIELD_DEFINITIONS[sym]) && @raw_values[field[0]] && true) ||
         @fields.has_key?(sym)
@@ -664,7 +664,7 @@ module Retain
     # Later, when an access is requested, the value is interpreted.
     #
     def add_raw(index, value)
-      logger.debug("RTN: add_raw #{index} = '#{value.retain_to_user}'")
+      # logger.debug("RTN: add_raw #{index} = '#{value.retain_to_user}'")
       (@raw_values[index] ||= Array.new) << value
     end
 
@@ -765,26 +765,26 @@ module Retain
     end
 
     def merge_fields!(new_fields)
-      logger.debug("RTN: merge_fields called")
+      # logger.debug("RTN: merge_fields called")
       new_fields.fields.each_pair do |sym, v|
-        logger.debug("RTN: merge_fields: #{sym}")
+        # logger.debug("RTN: merge_fields: #{sym}")
         @fields[sym] = v
       end
       new_fields.raw_values.each_with_index do |item, index|
-        logger.debug("RTN: merge_fields: index #{index}") unless item.nil?
+        # logger.debug("RTN: merge_fields: index #{index}") unless item.nil?
         @raw_values[index] = item
       end
     end
     
     def merge_hash!(new_fields)
       RAILS_DEFAULT_LOGGER.debug("self is #{self.class}")
-      logger.debug("RTN: merge_hash called")
+      # logger.debug("RTN: merge_hash called")
       new_fields.each_pair do |sym, v|
-        if v.is_a? Array
-          logger.debug("RTN: merge_hash: #{sym} = #{v.inspect}")
-        else
-          logger.debug("RTN: merge_hash: #{sym} = #{v}")
-        end
+        # if v.is_a? Array
+        #   logger.debug("RTN: merge_hash: #{sym} = #{v.inspect}")
+        # else
+        #   logger.debug("RTN: merge_hash: #{sym} = #{v}")
+        # end
         cvt = field_name_to_cvt(sym)
         width = field_name_to_width(sym)
         writer(sym, cvt, width, v)
@@ -804,8 +804,8 @@ module Retain
     def reader(sym, cvt, width)
       # If we need to go talk to retain, figure it out here...
       flag = @fetch_fields.nil?
-      logger.debug("RTN: reader #{sym} has_key? is #{self.has_key?(sym)}, " +
-                   "@fetched=#{@fetched}, @fetch_fields.nil?=#{flag}")
+      # logger.debug("RTN: reader #{sym} has_key? is #{self.has_key?(sym)}, " +
+      #              "@fetched=#{@fetched}, @fetch_fields.nil?=#{flag}")
       unless self.has_key?(sym) || @fetched || flag
         fetch_fields
       end
@@ -842,8 +842,8 @@ module Retain
       index = field_name_to_index(sym)
       # logger.debug("RTN: move_raw_value_to_field: index is #{index}")
       unless (raw_values = @raw_values[index]).nil?
-        logger.debug("RTN: raw values length = #{raw_values.length} raw_values class #{raw_values.class}")
-        logger.debug("RTN: moving raw value at index #{index} to #{sym}")
+        # logger.debug("RTN: raw values length = #{raw_values.length} raw_values class #{raw_values.class}")
+        # logger.debug("RTN: moving raw value at index #{index} to #{sym}")
         @raw_values[index] = nil
         @fields[sym] = Field.new(field_name_to_cvt(sym),
                                  field_name_to_width(sym),
@@ -866,18 +866,18 @@ module Retain
       value = unbound_method.bind(f).call
       if plural
         if value.is_a? Array
-          logger.debug("RTN: xxx: #{osym} plural array[#{value.length}]")
+          # logger.debug("RTN: xxx: #{osym} plural array[#{value.length}]")
           value
         else
-          logger.debug("RTN: xxx: #{osym} plural value")
+          # logger.debug("RTN: xxx: #{osym} plural value")
           [ value ]
         end
       else
         if value.is_a? Array
-          logger.debug("RTN: xxx: #{osym} singular array[#{value.length}]")
+          # logger.debug("RTN: xxx: #{osym} singular array[#{value.length}]")
           value[0]
         else
-          logger.debug("RTN: xxx: #{osym} singular value")
+          # logger.debug("RTN: xxx: #{osym} singular value")
           value
         end
       end

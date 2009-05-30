@@ -29,15 +29,15 @@ module Retain
       @call.mark_cache_invalid if @no_cache
       @pmr = @call.pmr
       @pmr.mark_cache_invalid if @no_cache
-      logger.debug("CNTRL: #{@pmr.updated_at} #{@pmr.etag}")
+      # logger.debug("CNTRL: #{@pmr.updated_at} #{@pmr.etag}")
       fresh_when(:last_modified => @pmr.updated_at, :etag => @pmr.etag)
-      logger.debug("CNTRL: fresh? #{request.fresh?(response)}")
-      logger.debug("CNTRL: modified #{request.if_modified_since.inspect}")
-      logger.debug("CNTRL: none_match #{request.if_none_match.inspect}")
-      logger.debug("CNTRL: not_modified? #{request.not_modified?(response.last_modified)}")
-      logger.debug("CNTRL: etag_matchs? #{request.etag_matches?(response.etag)}")
+      # logger.debug("CNTRL: fresh? #{request.fresh?(response)}")
+      # logger.debug("CNTRL: modified #{request.if_modified_since.inspect}")
+      # logger.debug("CNTRL: none_match #{request.if_none_match.inspect}")
+      # logger.debug("CNTRL: not_modified? #{request.not_modified?(response.last_modified)}")
+      # logger.debug("CNTRL: etag_matchs? #{request.etag_matches?(response.etag)}")
       if !request.fresh?(response)
-        logger.debug("CNTRL: processing call...")
+        # logger.debug("CNTRL: processing call...")
         @psar = Psar.new(75, 57, 50, @pmr.severity, 9)
       
         # This is just for the button.  Probably needs to be removed
@@ -67,7 +67,7 @@ module Retain
        else
          call_update[sym] = false
         end
-       logger.debug("#{sym} set to #{call_update[sym]}")
+       # logger.debug("#{sym} set to #{call_update[sym]}")
       }
       
       update_div = "call_update_div_#{@call.to_id}"
@@ -168,7 +168,7 @@ module Retain
             requeue_options[:service_given] = sg
           end
           from_team_to_personal = false
-          logger.debug("call_update[:do_ca] = #{call_update[:do_ca].inspect}")
+          # logger.debug("call_update[:do_ca] = #{call_update[:do_ca].inspect}")
           if call_update.has_key?(:new_queue) && !call_update[:do_ca]
             new_queue = Combined::Queue.from_param!(call_update[:new_queue])
             if new_queue.h_or_s != @queue.h_or_s
@@ -198,7 +198,7 @@ module Retain
             if (@queue.team_queue? && !new_queue.team_queue? && @call.p_s_b == 'P')
               from_team_to_personal = true
               if @pmr.country == '000'
-                logger.debug("setting next queue")
+                # logger.debug("setting next queue")
                 requeue_options[:next_queue] = @queue.queue_name
                 requeue_options[:next_center] = @queue.center.center
               end
@@ -212,7 +212,7 @@ module Retain
           # An error (and not just a warning) will leave us
           # dispatched.
           if requeue.rc == 0 || (600 .. 700) === requeue.rc
-            logger.debug("mark queue as dirty -- 1")
+            # logger.debug("mark queue as dirty -- 1")
             @queue.mark_as_dirty
             @pmr.mark_as_dirty
             need_undispatch = false
@@ -224,7 +224,7 @@ module Retain
           else
             text += create_reply_span("Requeue Completed")
             if from_team_to_personal
-              logger.debug("setting owner / resolver")
+              # logger.debug("setting owner / resolver")
               alter_options = pmr_options.dup
               owner = new_queue.owners[0]
               alter_options[:pmr_resolver_id] = owner.signon
@@ -297,7 +297,7 @@ module Retain
           # An error (and not just a warning) will leave us
           # dispatched.
           if close.rc == 0 || (600 .. 700) === close.rc
-            logger.debug("mark queue as dirty -- 2")
+            # logger.debug("mark queue as dirty -- 2")
             @queue.mark_as_dirty
             @pmr.mark_as_dirty
             need_undispatch = false
@@ -436,7 +436,7 @@ module Retain
       else
         options[field] = new_text
       end
-      logger.debug("call alter options: #{options.inspect}")
+      # logger.debug("call alter options: #{options.inspect}")
 
       # Perform the update.
       pmpu = Retain::Pmpu.new(options)
@@ -477,16 +477,16 @@ module Retain
 
           end
           format.html {
-            logger.debug("about to render replace_text")
+            # logger.debug("about to render replace_text")
             render :text => replace_text
           }
         else
           format.html {
-            logger.debug("about to render bad status")
+            # logger.debug("about to render bad status")
             render :text => new_text, :status => :unprocessable_entity, :layout => false
           }
         end
-        logger.debug("all done with respond_to")
+        # logger.debug("all done with respond_to")
       end
     end
 
@@ -501,7 +501,7 @@ module Retain
       queue = call.queue
       center = queue.center
       personal_queues = center.queues.personal_queues.map(&:to_param)
-      logger.debug("call_controller: queue_list: personal_queues=#{personal_queues.inspect}")
+      # logger.debug("call_controller: queue_list: personal_queues=#{personal_queues.inspect}")
 
       # Walk through the signatures of the PMR adding to the pmr_queue
       # list only those not seen before and do not have owners.  Note

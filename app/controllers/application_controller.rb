@@ -38,15 +38,15 @@ class ApplicationController < ActionController::Base
   # I keep user_id in the session.
   def application_user
     if @application_user.nil?
-      logger.debug("@application_user is nil")
+      # logger.debug("@application_user is nil")
       if session.has_key?(:user_id)
-        logger.debug("session[:user_id] set to #{session[:user_id]}")
+        # logger.debug("session[:user_id] set to #{session[:user_id]}")
         tmp = User.find(:first, :conditions => { :id => session[:user_id]})
         if tmp.nil?
-          logger.debug("Did not find user id #{session[:user_id]}")
+          # logger.debug("Did not find user id #{session[:user_id]}")
           reset_session
         else
-          logger.debug("User has ldap id of #{tmp.ldap_id}")
+          # logger.debug("User has ldap id of #{tmp.ldap_id}")
           @application_user = tmp
         end
       end
@@ -61,7 +61,7 @@ class ApplicationController < ActionController::Base
   # initialized with the ldap_id field.  The user model is stored in
   # the session.
   def authenticate
-    logger.debug("APP: authorization: #{temp_debug(request)}")
+    # logger.debug("APP: authorization: #{temp_debug(request)}")
     set_last_uri
     return true unless application_user.nil?
     logger.info("REMOTE_USER = #{request.env["REMOTE_USER"]}")
@@ -87,7 +87,8 @@ class ApplicationController < ActionController::Base
     uri =  request.env["REQUEST_URI"]
     logger.info("last_uri = #{last_uri}, uri = #{uri}")
     cache_control = request.cache_control
-    logger.debug("APP: cache_control: #{cache_control.inspect}")
+    # logger.debug("APP: cache_control: #{cache_control.inspect}")
+
     # Note: We use to do a "full refresh" when we hit the same URL
     # twice.  That has now been changed to look at the cache-control
     # HTTP header.  If it says, 'no-cache', then we do a full
@@ -101,7 +102,7 @@ class ApplicationController < ActionController::Base
     else
       @no_cache = false
     end
-    logger.debug("APP: no_cache = #{@no_cache}")
+    # logger.debug("APP: no_cache = #{@no_cache}")
     if last_uri == uri && Rails.env != "test"
       flash[:notice] = "Fully Refreshed"
       @refresh_time = Time.now
@@ -116,11 +117,11 @@ class ApplicationController < ActionController::Base
 
   # This authenticates against bluepages using LDAP.
   def ldap_authenticate
-    logger.debug("ldap_authenticate")
+    # logger.debug("ldap_authenticate")
     ldap_time = Benchmark.realtime { ActiveLdap::Base.establish_connection }
-    logger.debug("LDAP: took #{ldap_time} to establish the connection")
+    # logger.debug("LDAP: took #{ldap_time} to establish the connection")
     authenticate_or_request_with_http_basic "Bluepages Authentication" do |user_name, password|
-      logger.debug("TEMP: user_name #{user_name} password #{password}")
+      # logger.debug("TEMP: user_name #{user_name} password #{password}")
       next nil unless LdapUser.authenticate_from_email(user_name, password)
       common_authenticate(user_name)
       return true
@@ -131,7 +132,7 @@ class ApplicationController < ActionController::Base
   # No authentication although an http basic authentication sequence
   # still occurs
   def none_authenticate
-    logger.debug("none_authenticate")
+    # logger.debug("none_authenticate")
     authenticate_or_request_with_http_basic "Raptor" do |user_name, password|
       common_authenticate(user_name)
       return true
@@ -141,7 +142,7 @@ class ApplicationController < ActionController::Base
 
   # Apache has already authenticated so let the user in.
   def apache_authenticate
-    logger.debug("apache_authenticate")
+    # logger.debug("apache_authenticate")
     common_authenticate(request.env["REMOTE_USER"])
     return true
   end
@@ -149,13 +150,13 @@ class ApplicationController < ActionController::Base
   # Apache has already authenticated but we are behind a proxy so use
   # HTTP_X_FORWARDED_USER instead
   def proxy_apache_authenticate
-    logger.debug("proxy_apache_authenticate")
+    # logger.debug("proxy_apache_authenticate")
     common_authenticate(request.headers["HTTP_X_FORWARDED_USER"])
     return true
   end
 
   def testing_authenticate
-    logger.debug("testing_authenticate")
+    # logger.debug("testing_authenticate")
     common_authenticate('pedzan@us.ibm.com')
     return true
   end

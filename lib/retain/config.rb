@@ -4,5 +4,5 @@ module Retain
   Config.each do |key, nodes|
     Config[key] = nodes.map { |h| h.symbolize_keys }
   end
-  Rails.logger.debug("Config: #{Config.inspect}")
+  # Rails.logger.debug("Config: #{Config.inspect}")
 end

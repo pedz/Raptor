@@ -2,12 +2,13 @@ module Retain
   class RetainController < ApplicationController
     
     before_filter :validate_retuser
+    cache_sweeper :pmr_sweeper, :call_sweeper
     
     rescue_from Retain::LogonFailed, :with => :logon_failed
     rescue_from Retain::FailedMarkedTrue, :with => :failed_marked_true 
     rescue_from Retain::SdiReaderError do |exception|
-      logger.debug("SDI Exception Stack")
-      logger.debug("#{exception.backtrace.join("\n")}")
+      # logger.debug("SDI Exception Stack")
+      # logger.debug("#{exception.backtrace.join("\n")}")
       render :text => <<-End
         <h2 style='text-align: center; color: red;'>Retain SDI Error<br/>
             #{exception.message}<br/>
@@ -32,7 +33,7 @@ module Retain
     
     def perform_action_with_retain_benchmark
       Retain::Connection.reset_time
-      logger.debug("perform_action_with_retain_benchmark: self is #{self}")
+      # logger.debug("perform_action_with_retain_benchmark: self is #{self}")
       perform_action_without_retain_benchmark
       calls = Retain::Connection.request_count
       time = Retain::Connection.total_time
@@ -47,7 +48,7 @@ module Retain
     # a RetainController.
     #
     def validate_retuser
-      logger.debug("RTN: in validate_retuser")
+      # logger.debug("RTN: in validate_retuser")
       
       # If no retusers defined for this user, then redirect and
       # set up a retain user.
@@ -76,7 +77,7 @@ module Retain
     end
     
     def logon_failed
-      logger.debug("logon failed")
+      # logger.debug("logon failed")
       # Find the retuser record and set the failed bit to true so we
       # do not retry until the user resets his password.
       retuser = application_user.retusers[0]
@@ -91,7 +92,7 @@ module Retain
     end
 
     def failed_marked_true
-      logger.debug("failed marked true")
+      # logger.debug("failed marked true")
       flash[:warning] = "'failed' flag set.  Check password, clear 'failed' flag, and try again"
 
       # Remember what we were trying to do

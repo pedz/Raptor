@@ -37,7 +37,7 @@ module Cached
         psru.sendit(Retain::Fields.new)
       rescue Retain::SdiReaderError => err
         # If the guy is already gone then thats o.k.
-        logger.debug("before_destroy: SR=#{err.sr} EX=#{err.ex}")
+        # logger.debug("before_destroy: SR=#{err.sr} EX=#{err.ex}")
         return (err.sr == 176 && err.ex == 510)
       end
       return true

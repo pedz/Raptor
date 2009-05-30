@@ -24,7 +24,7 @@ module Retain
 
     def initialize(h_or_s)
       super()
-      logger.debug("RTN: Connection initialize h_or_s is '#{h_or_s}'")
+      # logger.debug("RTN: Connection initialize h_or_s is '#{h_or_s}'")
       @@count += 1
       @socket = Socket.new( AF_INET, SOCK_STREAM, 0 )
       @h_or_s = h_or_s
@@ -39,7 +39,7 @@ module Retain
         node = RetainConfig::SOFTWARE_NODES[0]
       end
       node_hash = Retain::Config[node][0]
-      logger.debug("RTN: Connecting to #{node_hash[:host]} #{node_hash[:port]}")
+      # logger.debug("RTN: Connecting to #{node_hash[:host]} #{node_hash[:port]}")
       sockaddr = Socket.pack_sockaddr_in(node_hash[:port], node_hash[:host])
       @socket.connect(sockaddr)
     end

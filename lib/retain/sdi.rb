@@ -77,32 +77,32 @@ module Retain
       options = @options.merge(send_options)
       if false
         RAILS_DEFAULT_LOGGER.debug("class is #{self.class}")
-        logger.debug("RTN: sendit for #{self.class} called")
-        logger.debug("RTN: @snd_fields")
+        # logger.debug("RTN: sendit for #{self.class} called")
+        # logger.debug("RTN: @snd_fields")
         @snd_fields.dump_fields
-        logger.debug("RTN: options")
-        logger.debug("RTN: #{options.to_yaml}")
+        # logger.debug("RTN: options")
+        # logger.debug("RTN: #{options.to_yaml}")
       end
 
       request = Request.new(options)
       self.class.required_fields.each do |sym|
-        if true
-          logger.debug("RTN: required symbol: #{sym}")
-        end
+        # if true
+        #   logger.debug("RTN: required symbol: #{sym}")
+        # end
         raise "required field #{sym} not present" unless @snd_fields.has_key?(sym)
         @snd_fields.add_to_req(request, sym)
       end
 
       self.class.optional_fields.each do |sym|
-        if true
-          logger.debug("RTN: optional symbol: #{sym}")
-        end
+        # if true
+        #   logger.debug("RTN: optional symbol: #{sym}")
+        # end
         next unless @snd_fields.has_key?(sym)
         @snd_fields.add_to_req(request, sym)
       end
 
       if Retain::NO_SENDIT
-        logger.debug("NO_SENDIT true")
+        # logger.debug("NO_SENDIT true")
         @rc = 0
         return
       end
@@ -129,15 +129,15 @@ module Retain
         b = ""
       end
       @reply = f + b
-      if true
-        logger.debug("RTN: len is #{len}, reply.length is #{@reply.length}")
-      end
+      # if true
+      #   logger.debug("RTN: len is #{len}, reply.length is #{@reply.length}")
+      # end
       @header = @reply[0...128]
       @rc = @header[8...12].ret2uint
-      if true
-        logger.debug("RTN: self is of class #{self.class}")
-        logger.debug("RTN: rc should be #{@rc}")
-      end
+      # if true
+      #   logger.debug("RTN: self is of class #{self.class}")
+      #   logger.debug("RTN: rc should be #{@rc}")
+      # end
 
       # Set request type before calling scan_fields just in case it
       # has to produce some error logs.
@@ -307,15 +307,15 @@ module Retain
       connect(h_or_s)
       @connection.write(@logon_request)
       @logon_reply = @connection.read(50)
-      if  @logon_reply
-        logger.debug("RTN: reply length is #{@logon_reply.length}")
-      else
-        logger.debug("RTN: nil reply")
-      end
+      # if  @logon_reply
+      #   logger.debug("RTN: reply length is #{@logon_reply.length}")
+      # else
+      #   logger.debug("RTN: nil reply")
+      # end
       @logon_return = @logon_reply[24,4].retain_to_user.to_i
       @logon_reason = @logon_reply[28,4].retain_to_user.to_i
-      logger.debug("Logon Return: #{@logon_return}")
-      logger.debug("Logon Reason: #{@logon_reason}")
+      # logger.debug("Logon Return: #{@logon_return}")
+      # logger.debug("Logon Reason: #{@logon_reason}")
       unless @logon_reply && @logon_reply.length == 50
         hex_dump("first 50 request", @logon_request)
         hex_dump("first 50 reply", @logon_reply)
@@ -324,7 +324,7 @@ module Retain
     end
     
     def scan_fields(fields, s, six_byte_headers = true)
-      logger.debug("RTN: start scan_fields")
+      # logger.debug("RTN: start scan_fields")
       if false
         hex_dump("scan_fields", s)
         orig_len = s.length
@@ -333,9 +333,9 @@ module Retain
       until s.nil? || s.length == 0
         len = s[0...2].ret2ushort
         ele = s[2...4].ret2ushort
-        if false
-          logger.debug("scan_fields: offset = #{orig_len - s.length}, len = #{len}, ele = #{ele}")
-        end
+        # if false
+        #   logger.debug("scan_fields: offset = #{orig_len - s.length}, len = #{len}, ele = #{ele}")
+        # end
         if len == 0
           logger.error("SDI ERROR: len = 0. s.length is #{s.length}")
           hex_dump("#{@request_type} request", @snd)
@@ -361,7 +361,7 @@ module Retain
         fields.add_raw(ele, dat)
       end
       fields[:de32s] = de32 unless de32.empty?
-      logger.debug("RTN: end scan_fields")
+      # logger.debug("RTN: end scan_fields")
       fields
     end
     

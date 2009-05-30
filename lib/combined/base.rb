@@ -84,9 +84,9 @@ module Combined
       
       def add_non_retain_associations(*list)
         a = [ *list ]
-        logger.debug("CMB: non_retain_associations for #{self} set to #{a.inspect}")
+        # logger.debug("CMB: non_retain_associations for #{self} set to #{a.inspect}")
         a.each do |name|
-          logger.debug("CMB: defining #{name} as non_retain_association")
+          # logger.debug("CMB: defining #{name} as non_retain_association")
           class_eval("def #{name}; @cached.#{name}.wrap_with_combined; end", __FILE__, __LINE__)
         end
         @non_retain_associations += a
@@ -99,7 +99,7 @@ module Combined
       # db_fields).
       def set_db_keys(*args)
         a = [ *args ]
-        logger.debug("CMB: db_keys for #{self} set to #{a.inspect}")
+        # logger.debug("CMB: db_keys for #{self} set to #{a.inspect}")
         @db_keys = a
       end
       attr_reader :db_keys
@@ -113,12 +113,12 @@ module Combined
       # fetch it.
       def set_db_constants(*args)
         a = [ *args ]
-        logger.debug("CMB: db_constants for #{self} set to #{a.inspect}")
+        # logger.debug("CMB: db_constants for #{self} set to #{a.inspect}")
         a.each do |name|
           if db_fields.include?(name)
-            logger.debug("CMB: define #{name} as constant field")
+            # logger.debug("CMB: define #{name} as constant field")
             class_eval("def #{name}
-                    logger.debug(\"CMB: #{name} called as constant field for \#{self.to_s}\")
+                    # logger.debug(\"CMB: #{name} called as constant field for \#{self.to_s}\")
                     unless !(temp = @cached.#{name}).nil? || cache_valid?
                       call_load
                       temp = @cached.#{name}
@@ -127,9 +127,9 @@ module Combined
                   end", __FILE__, __LINE__ - 6)
           end
           if db_associations.include?(name)
-            logger.debug("CMB: define #{name} as constant association")
+            # logger.debug("CMB: define #{name} as constant association")
             class_eval("def #{name}
-                    logger.debug(\"CMB: #{name} called as constant association for \#{self.to_s}\")
+                    # logger.debug(\"CMB: #{name} called as constant association for \#{self.to_s}\")
                     unless !(temp = @cached.#{name}).nil? || cache_valid?
                       call_load
                       temp = @cached.#{name}
@@ -246,16 +246,16 @@ module Combined
         @retain_fields = db_fields - @skipped_fields + @extra_fields
 
         # Define getter methods for each field
-        logger.debug("CMB: define fields and associations for #{subclass}")
+        # logger.debug("CMB: define fields and associations for #{subclass}")
         db_fields.each do |name|
           if @skipped_fields.include?(name)
             eval("def #{name}
-                    logger.debug(\"CMB: #{name} called as skipped field for \#{self.to_s}\")
+                    # logger.debug(\"CMB: #{name} called as skipped field for \#{self.to_s}\")
                     @cached.#{name}
                   end", nil, __FILE__, __LINE__ - 3)
           else
             eval("def #{name}
-                    logger.debug(\"CMB: #{name} called as field for \#{self.to_s}\")
+                    # logger.debug(\"CMB: #{name} called as field for \#{self.to_s}\")
                     unless cache_valid? && !(temp = @cached.#{name}).nil?
                       call_load
                       temp = @cached.#{name}
@@ -270,12 +270,12 @@ module Combined
         # we only ask if the cache is valid before calling load.
         db_associations.each do |name|
           if @non_retain_associations.include?(name)
-            logger.debug("CMB: defining #{name} as non_retain_association")
+            # logger.debug("CMB: defining #{name} as non_retain_association")
             eval("def #{name}; @cached.#{name}.wrap_with_combined; end", __FILE__, __LINE__)
           else
-            logger.debug("CMB: defining #{name} as association")
+            # logger.debug("CMB: defining #{name} as association")
             eval("def #{name}
-                    logger.debug(\"CMB: #{name} called as association for \#{self.to_s}\")
+                    # logger.debug(\"CMB: #{name} called as association for \#{self.to_s}\")
                     call_load unless cache_valid?
                     @cached.#{name}.wrap_with_combined
                   end", nil, __FILE__, __LINE__ - 4)
@@ -285,7 +285,7 @@ module Combined
     end
 
     def call_load
-      logger.debug("CMB: db only = #{DB_ONLY}")
+      # logger.debug("CMB: db only = #{DB_ONLY}")
       load unless DB_ONLY
       @invalid_cache = false
       @loaded = true
@@ -293,53 +293,53 @@ module Combined
     
     def cache_valid?
       if @cached.respond_to?("dirty") && @cached.dirty
-        logger.debug("CMB: #{self.to_s} cache_valid?: return false: @cached.dirty is true")
+        # logger.debug("CMB: #{self.to_s} cache_valid?: return false: @cached.dirty is true")
         return false
       end
       
       # If we are not cached at all, then cache is invalid
       if (updated_at = @cached.updated_at).nil?
-        logger.debug("CMB: #{self.to_s} cache_valid?: return false: updated_at is nil")
+        # logger.debug("CMB: #{self.to_s} cache_valid?: return false: updated_at is nil")
         return false
       end
 
       # If data type says cache never expires then we are good to go
       if (expire = expire_time) == :never
-        logger.debug("CMB: #{self.to_s} cache_valid?: return true: expire set to :never")
+        # logger.debug("CMB: #{self.to_s} cache_valid?: return true: expire set to :never")
         return true
       end
       
       # If the udpated at is equal to the creted at, that might mean
       # that we have never really fetched the whole object.
       if updated_at == created_at
-        logger.debug("CMB: #{self.to_s} cache_valid?: return false: updated_at == created_at")
+        # logger.debug("CMB: #{self.to_s} cache_valid?: return false: updated_at == created_at")
         return false
       end
       
       # See if expire_time is a symbol pointing to a method
       if expire.is_a?(Symbol) && self.respond_to?(expire)
         value = self.send(expire)
-        logger.debug("CMB: #{self.to_s} cache_valid? return result from #{expire} of #{value}")
+        # logger.debug("CMB: #{self.to_s} cache_valid? return result from #{expire} of #{value}")
         return value
       end
 
       # If item has been explicitly marked to be re-fetched
       if @invalid_cache
-        logger.debug("CMB: #{self.to_s} cache_valid?: return false: invalid_cache set")
+        # logger.debug("CMB: #{self.to_s} cache_valid?: return false: invalid_cache set")
         return false
       end
       
       # If this has already been loaded, then cache must be valid
       if @loaded
-        logger.debug("CMB: #{self.to_s} cache_valid?: return true: @loaded is set")
+        # logger.debug("CMB: #{self.to_s} cache_valid?: return true: @loaded is set")
         return true
       end
 
       # else, return if cache time has expired or not
       r = updated_at > expire.ago
-      logger.debug("CMB: #{self.to_s} cache_valid?: updated_at:#{updated_at}, " +
-                   "expire:#{expire}, expire.ago:#{expire.ago}, " +
-                   "now:#{Time.now}, r:#{r}")
+      # logger.debug("CMB: #{self.to_s} cache_valid?: updated_at:#{updated_at}, " +
+      #              "expire:#{expire}, expire.ago:#{expire.ago}, " +
+      #              "now:#{Time.now}, r:#{r}")
       r
     end
   end

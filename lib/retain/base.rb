@@ -101,7 +101,7 @@ module Retain
     end
     
     def fetch_fields
-      logger.debug("RTN: fetch fields for #{self.class}")
+      # logger.debug("RTN: fetch fields for #{self.class}")
       @fetch_sdi = self.class.fetch_sdi
       @fetch_sdi.sendit(@fields, @options)
       self

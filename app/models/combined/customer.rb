@@ -30,7 +30,7 @@ module Combined
     private
     
     def load
-      logger.debug("CMB: load for #{self.to_s}")
+      # logger.debug("CMB: load for #{self.to_param}")
       
       # Pull the fields we need from the cached record into an options_hash
       options_hash = Hash[ *%w{  country customer_number }.map { |field|

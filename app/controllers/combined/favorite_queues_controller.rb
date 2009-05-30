@@ -86,8 +86,8 @@ module Combined
       center = signon_user.default_center
       queue = center.queues.build(:h_or_s => signon_user.default_h_or_s)
       @favorite_queue = Combined::FavoriteQueue.new(:queue => queue)
-      logger.debug("queue is of class #{@favorite_queue.queue.class}")
-      logger.debug("center is of class #{@favorite_queue.queue.center.class}")
+      # logger.debug("queue is of class #{@favorite_queue.queue.class}")
+      # logger.debug("center is of class #{@favorite_queue.queue.center.class}")
 
       respond_to do |format|
         format.html # new.html.erb
@@ -112,7 +112,7 @@ module Combined
       options = center_options.merge(queue_options)
 
       if (center = Combined::Center.from_options(options)).nil?
-        logger.debug("bad center")
+        # logger.debug("bad center")
         flash[:error] = "Center is not valid"
         center = Combined::Center.new(options)
         queue = center.queues.build(queue_options)
@@ -120,7 +120,7 @@ module Combined
       else
         center.save if center.new_record?
         if (queue = center.queues.from_options(options)).nil?
-          logger.debug("bad queue")
+          # logger.debug("bad queue")
           flash[:error] = "Queue is not valid"
           queue = center.queues.build(queue_options)
           queue_valid = false

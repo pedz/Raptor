@@ -16,16 +16,16 @@ module Combined
     end
 
     def refresh(time)
-      logger.debug("refreshing registration #{to_param}")
+      # logger.debug("refreshing registration #{to_param}")
       self.last_all_fetch = nil
       self.last_day_fetch = nil
       self.save!
     end
 
     def psars
-      logger.debug("psars for registration #{to_param}")
+      # logger.debug("psars for registration #{to_param}")
       if @cached.last_all_fetch.nil? || @cached.last_all_fetch < 1.day.ago
-        logger.debug("Fetching all PSAR")
+        # logger.debug("Fetching all PSAR")
         search_hash = {
           :signon2 => @cached.psar_number,
           :psar_start_date => 14.days.ago.strftime("%Y%m%d"),
@@ -36,7 +36,7 @@ module Combined
         @cached.last_day_fetch = Time.now
         @cached.save!
       elsif @cached.last_day_fetch.nil? || @cached.last_day_fetch < 10.minutes.ago
-        logger.debug("Fetching days PSAR")
+        # logger.debug("Fetching days PSAR")
         search_hash = {
           :signon2 => @cached.psar_number,
           :psar_start_date => Time.now.strftime("%Y%m%d")
@@ -51,7 +51,7 @@ module Combined
     private
     
     def load
-      logger.debug("CMB: load for #{self.to_s}")
+      # logger.debug("CMB: load for #{self.to_param}")
       if @cached.signon.blank?
         @cached.name = ""
         return
@@ -73,13 +73,13 @@ module Combined
         # Touch the name to force a fetch
         retain_registration.name
       rescue Retain::SdiReaderError => err
-        logger.debug("Can not get to registration")
+        # logger.debug("Can not get to registration")
         raise err unless err.rc == 251
         cache_optins = { }
       else
         cache_options = Cached::Registration.options_from_retain(retain_registration)
         cache_options.delete(:signon)
-        logger.debug("CMB: cache_option in registration = #{cache_options.inspect}")
+        # logger.debug("CMB: cache_option in registration = #{cache_options.inspect}")
         unless (c = retain_registration.software_center).blank?
           @cached.software_center = first_center = Cached::Center.find_or_new(:center => c)
         end

@@ -19,7 +19,7 @@ module Cached
       
       def keys_only(options)
         r = Hash[ *options.select { |k, v| db_keys.include?(k) }.flatten ]
-        logger.debug("CHC: keys_only for #{self} returning: #{r.inspect}")
+        # logger.debug("CHC: keys_only for #{self} returning: #{r.inspect}")
         r
       end
       
@@ -27,7 +27,7 @@ module Cached
       # db record.
       def fields_only(options)
         r = Hash[ *options.select { |k, v| db_fields.include?(k) }.flatten ]
-        logger.debug("CHC: fields_only for #{self} returning: #{r.inspect}")
+        # logger.debug("CHC: fields_only for #{self} returning: #{r.inspect}")
         r
       end
       
@@ -46,14 +46,14 @@ module Cached
 
       # Return a hash of options based upon the Retain record
       def options_from_retain(retain)
-        logger.debug("CHC: options_from_retain retain.fields=#{retain.fields.inspect}")
-        logger.debug("CHC: options_from_retain db_fields=#{db_fields.inspect}")
+        # logger.debug("CHC: options_from_retain retain.fields=#{retain.fields.inspect}")
+        # logger.debug("CHC: options_from_retain db_fields=#{db_fields.inspect}")
         a = db_fields.select { |sym|
           retain.has_key?(sym)
         }.map { |sym|
           [ sym, retain.send(sym) ]
         }.flatten
-        logger.debug("CHC: options from retain are #{a.inspect}")
+        # logger.debug("CHC: options from retain are #{a.inspect}")
         Hash[ * a ]
       end
       
@@ -72,7 +72,7 @@ module Cached
       # Very similar to find_or_new except calls valid? in the Retain
       # class
       def from_options(options)
-        logger.debug("CHC: from_options #{self} with #{options.inspect}")
+        # logger.debug("CHC: from_options #{self} with #{options.inspect}")
         temp = find(:first, :conditions => keys_only(options))
         if temp.nil? && retain_class.valid?(options)
           # I changed this July 14, 2008.  It use to be new instead of
