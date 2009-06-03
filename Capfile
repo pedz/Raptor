@@ -18,22 +18,22 @@ namespace :deploy do
   desc "The start task is used by :cold_deploy to start the application up"
   task :start, :roles => :app do
     # For thin
-    # run "/etc/rc.d/init.d/raptor start"
+    run "/etc/rc.d/init.d/raptor start"
   end
 
   desc "Restart the application"
   task :restart, :roles => :app do
     # For thin
-    # run "/etc/rc.d/init.d/raptor restart"
+    run "/etc/rc.d/init.d/raptor restart"
 
     # For Passenger
-    run "rm -f  #{current_path}/tmp/restart.txt; touch #{current_path}/tmp/restart.txt"
+    # run "rm -f  #{current_path}/tmp/restart.txt; touch #{current_path}/tmp/restart.txt"
   end
 
   desc "Stop the application"
   task :stop, :roles => :app do
     # For thin
-    # run "/etc/rc.d/init.d/raptor stop"
+    run "/etc/rc.d/init.d/raptor stop"
   end
 
   desc "Hook to set up database.yml"
