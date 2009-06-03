@@ -22,7 +22,7 @@ module Retain
       thead binding do |binding|
         concat(HELP_TEXT)
         tr binding do |binding|
-          DISP_LIST.map { |sym| self.send sym, binding, true, nil, nil }.join("\n")
+          DISP_LIST.map { |sym| self.send sym, binding, true, nil }.join("\n")
         end
       end
     end
@@ -49,28 +49,28 @@ module Retain
         sum
       }
       tfoot binding do |binding|
-        index = DISP_LIST.index(:psar_time)
+        psar_index = DISP_LIST.index(:psar_time)
         tr binding do |binding|
-          td binding, :colspan => index, :class => 'other-time' do |binding|
+          td binding, :colspan => psar_index, :class => 'other-time' do |binding|
             concat("Other PMRs")
           end
           td binding do |binding|
             concat(qs_show_time(other_time))
           end
-          if (diff = (DISP_LIST.length - index - 1)) > 0
+          if (diff = (DISP_LIST.length - psar_index - 1)) > 0
             td binding, :colspan => diff do |binding|
               concat("&nbsp;")
             end
           end
         end
         tr binding do |binding|
-          td binding, :colspan => DISP_LIST.index(:psar_time), :class => 'total-time' do |binding|
+          td binding, :colspan => psar_index, :class => 'total-time' do |binding|
             concat("Day's Total")
           end
           td binding do |binding|
             concat(qs_show_time(total_time))
           end
-          if (diff = (DISP_LIST.length - index - 1)) > 0
+          if (diff = (DISP_LIST.length - psar_index - 1)) > 0
             td binding, :colspan => diff do |binding|
               concat("&nbsp;")
             end
@@ -79,10 +79,10 @@ module Retain
       end
 
       tbody binding do |binding|
-        @queue.calls.each_with_index do |call, index|
+        @queue.calls.each do |call|
           cache(:action_suffix => call.ppg) do 
             tr binding, :class => call_class(call) + " pmr-row" do |binding|
-              DISP_LIST.map { |sym| self.send sym, binding, false, call, index }.join("\n")
+              DISP_LIST.map { |sym| self.send sym, binding, false, call }.join("\n")
             end
           end
         end
@@ -96,7 +96,7 @@ module Retain
                       [ :comments, :component_check, :call_update_field ],
                       [ :call_update_form ]
                      ]
-    def biggem(binding, header, call, index)
+    def biggem(binding, header, call)
       # logger.debug("QS: biggem #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'biggem' do |binding|
@@ -105,7 +105,7 @@ module Retain
               BIGGEM_COLUMNS.inject("") do |memo, cols|
                 tr binding do |binding|
                   cols.each { |sym|
-                    self.send sym, binding, header, call, index
+                    self.send sym, binding, header, call
                   }
                   concat("\n")
                 end
@@ -127,7 +127,7 @@ module Retain
               BIGGEM_COLUMNS.inject("") do |memo, cols|
                 tr binding do |binding|
                   cols.map { |sym|
-                    self.send sym, binding, header, call, index
+                    self.send sym, binding, header, call
                   }
                   concat("\n")
                 end
@@ -148,7 +148,7 @@ module Retain
                  "5765F6200",   # HACMP 541 Base
                  "5765E6199"    # AIX 5.1 Extended
                 ]
-    def component_check(binding, header, call, index)
+    def component_check(binding, header, call)
       # logger.debug("QS: bomponent_check #{call.nil? ? "header" : call.to_param}")
       if header
         th binding do |binding|
@@ -196,7 +196,7 @@ module Retain
     end
 
     # Service Given
-    def sg(binding, header, call, index)
+    def sg(binding, header, call)
       if header
         th binding, :class => 'text' do |binding|
           concat("SG")
@@ -230,7 +230,7 @@ module Retain
       end
     end
 
-    def psar_time(binding, header, call, index)
+    def psar_time(binding, header, call)
       if header
         th binding, :class => 'time' do |binding|
           concat("Time")
@@ -255,7 +255,7 @@ module Retain
       end
     end
 
-    def call_update_form(binding, header, call, index)
+    def call_update_form(binding, header, call)
       # logger.debug("QS: call_update_form #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'call-update-container', :colspan => 4 do |binding|
@@ -263,7 +263,7 @@ module Retain
         end
       else
         td(binding,
-           :id => "call_update_td_#{index+1}",
+           :id => "call_update_td_#{call.ppg}",
            :class => 'call-update-container',
            :colspan => 4) do |binding|
           call_update = CallUpdate.new(call)
@@ -274,7 +274,7 @@ module Retain
       end
     end
 
-    def call_update_field(binding, header, call, index)
+    def call_update_field(binding, header, call)
       # logger.debug("QS: call_update_field #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'update' do |binding|
@@ -282,12 +282,12 @@ module Retain
         end
       else
         td binding, :class => 'update' do |binding|
-          concat(button("U#{index + 1}", "$(\"call_update_td_#{index + 1}\").toggleCallUpdateForm();"))
+          concat(button("U#{call.ppg}", "$(\"call_update_td_#{call.ppg}\").toggleCallUpdateForm();"))
         end
       end
     end
     
-    def customer(binding, header, call, index)
+    def customer(binding, header, call)
       # logger.debug("QS: customer #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'customer' do |binding|
@@ -311,7 +311,7 @@ module Retain
       end
     end
 
-    def comments(binding, header, call, index)
+    def comments(binding, header, call)
       # logger.debug("QS: comments #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'comments', :colspan => 2 do |binding|
@@ -324,7 +324,7 @@ module Retain
       end
     end
 
-    def ct(binding, header, call, index)
+    def ct(binding, header, call)
       # logger.debug("QS: ct #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'ct' do |binding|
@@ -337,7 +337,7 @@ module Retain
       end
     end
     
-    def call_button(binding, header, call, index)
+    def call_button(binding, header, call)
       # logger.debug("QS: call_button #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'call-button number' do |binding|
@@ -345,12 +345,12 @@ module Retain
         end
       else
         td binding, :class => 'call-button number' do |binding|
-          concat(button_url("#{index + 1}", call))
+          concat(button_url("#{call.ppg}", call))
         end
       end
     end
 
-    def p_s_b(binding, header, call, index)
+    def p_s_b(binding, header, call)
       # logger.debug("QS: p_s_b #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'p-s-b' do |binding|
@@ -367,7 +367,7 @@ module Retain
       end
     end
     
-    def cust_email(header, call, index)
+    def cust_email(header, call)
       return "<th class='cust-email'>Email Customer</th>" if header
       pmr = call.pmr
       if (mail = pmr.problem_e_mail.strip).blank?
@@ -413,7 +413,7 @@ module Retain
       temp_lines.join("<br/>\n")
     end
 
-    def link_etc(binding, header, call, index)
+    def link_etc(binding, header, call)
       # logger.debug("QS: link_etc #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'link-etc text' do |binding|
@@ -446,7 +446,7 @@ module Retain
       return "updated"
     end
 
-    def owner(binding, header, call, index)
+    def owner(binding, header, call)
       # logger.debug("QS: owner #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'owner not-editable' do |binding|
@@ -460,7 +460,7 @@ module Retain
       end
     end
 
-    def resolver(binding, header, call, index)
+    def resolver(binding, header, call)
       # logger.debug("QS: resolver #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'resolver not-editable' do |binding|
@@ -474,7 +474,7 @@ module Retain
       end
     end
     
-    def next_queue(binding, header, call, index)
+    def next_queue(binding, header, call)
       # logger.debug("QS: next_queue #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => "next-queue not-editable" do |binding|
@@ -490,7 +490,7 @@ module Retain
       end
     end
 
-    def pri_sev(binding, header, call, index)
+    def pri_sev(binding, header, call)
       # logger.debug("QS: pri_sev #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'pri-sev text' do |binding|
@@ -513,7 +513,7 @@ module Retain
       end
     end
 
-    def age(binding, header, call, index)
+    def age(binding, header, call)
       # logger.debug("QS: age #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'age number' do |binding|
@@ -543,7 +543,7 @@ module Retain
       "original level two manager of the AIX RS/6000 version 3 change team"
     SEV_TEXT = "Severity Days is the age of the PMR in days multiplied by a " +
       "factor based upon the current severity"
-    def jeff(binding, header, call, index)
+    def jeff(binding, header, call)
       # logger.debug("QS: jeff #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'jeff number' do |binding|
@@ -652,7 +652,7 @@ module Retain
       customer.jims_business_days(start_time, days)
     end
 
-    def next_ct(binding, header, call, index)
+    def next_ct(binding, header, call)
       # logger.debug("QS: next_ct #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'next-ct my-date' do |binding|
