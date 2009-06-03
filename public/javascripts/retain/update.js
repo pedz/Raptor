@@ -201,6 +201,20 @@ Raptor.closeDiv = function() {
 /* Add this to the document.observe('dom:loaded') list of functions */
 Raptor.updateLoadHook = function() {
     /*
+     * The authentication tokens are cached up inside the call
+     * fragments.  We need to find them and set them to the proper
+     * value.
+     */
+    var authToken = pageSettings.authenticityToken;
+    var authInputs = document.getElementsByName('authenticity_token');
+    var authInputsLength = authInputs.length;
+    var i;
+
+    for (i = 0; i < authInputsLength; i += 1) {
+	authInputs[i].value = authToken;
+    }
+
+    /*
      * This has to be here or firefox draws the initial page wrong.
      * We find each call-update-container and then dive into each of
      * them.  The form, for example, has added methods and properties
