@@ -109,7 +109,7 @@ document.observe('dom:loaded', function() {
 		time = 10;
 	    }
 	}
-	Raptor.updater = new PeriodicalExecuter(Raptor.refreshQueues, time);
+	Raptor.favorite_updater = new PeriodicalExecuter(Raptor.refreshQueues, time);
 	Raptor.setupTable(list);
     }
 });

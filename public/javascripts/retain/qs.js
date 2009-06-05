@@ -4,6 +4,37 @@
  * calls the proper rowCallUpdateFormShow or rowCallUpdateFormHide.
  */
 
+Raptor.qsCheckCtTimes = function () {
+    $$('td.next-ct').each(function (ele) {
+	var due = Raptor.qsCtDateToDate(ele.innerHTML);
+	if (due == null) {	// already set as Overdue
+	    return;
+	}
+	var now = new Date();
+	if (now > due) {		  // too late; mark as past due
+	    ele.removeClassName('normal');
+	    ele.removeClassName('warn');
+	    ele.addClassName('wag-wag');
+	    ele.innerHTML = 'CT Overdue';
+	    return;
+	}
+	var oneDay = 24 * 60 * 60 * 1000; // what to add
+	var tomorrow = new Date(now.valueOf() + oneDay);
+	var day = tomorrow.getDay();
+	if (day == 6) {		// Saturday so move it up to Monday
+	    tomorrow = new Date(now.valueOf() + 3 * oneDay);
+	}
+	if (day == 0) {		// Sunday so mve it up to Monday as well
+	    tomorrow = new Date(now.valueOf() + 2 * oneDay);
+	}
+	if (tomorrow > due) {	// within the next working 24 hours
+	    ele.removeClassName('normal');
+	    ele.addClassName('warn');
+	    return;
+	}
+    });
+};
+
 /* Called when the button to show the update form is poked */
 Raptor.qsToggleCallUpdateForm = function() {
     new Effect.toggle(this, 'appear', {
@@ -59,7 +90,7 @@ Raptor.rowCallUpdateFormHide = function () {
     });
 };
 
-Raptor.myDateSort = function(a, b) {
+Raptor.qsCtDateToDate = function(v) {
     var toMonth = function(m) {
 	var months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
 	for (var i = 0; i < 12; ++i) {
@@ -68,18 +99,18 @@ Raptor.myDateSort = function(a, b) {
 	    }
 	}
     };
-    var calc = function(v) {
-	var d = new Date();
-	var reg = /[^A-Z]*([A-Z]..) *@ *([0-9][0-9]):([0-9][0-9])[^A-Z]*([A-Z]..) *([0-9][0-9]*)/;
-	var m = v.match(reg);
-	if (m) {
-	    d.setMilliseconds(0);
-	    d.setSeconds(0);
-	    d.setHours(m[2]);
-	    d.setMinutes(m[3]);
-	    d.setDate(m[5]);
-	    d.setMonth(toMonth(m[4]));
-	    /*
+
+    var d = new Date();
+    var reg = /[^A-Z]*([A-Z]..) *@ *([0-9][0-9]):([0-9][0-9])[^A-Z]*([A-Z]..) *([0-9][0-9]*)/;
+    var m = v.match(reg);
+    if (m) {
+	d.setMilliseconds(0);
+	d.setSeconds(0);
+	d.setHours(m[2]);
+	d.setMinutes(m[3]);
+	d.setDate(m[5]);
+	d.setMonth(toMonth(m[4]));
+	/*
 	    console.log("'" + v +
 			"' Hour:" + m[2] +
 			" Mins:" + m[3] +
@@ -88,11 +119,21 @@ Raptor.myDateSort = function(a, b) {
 			" Day:" + m[5] +
 			" Value:" + d.valueOf());
             */
-	    return d.valueOf();
+	return d;
+    }
+    // Return 0 for "CT Overdue" which effectively maps to
+    // negative infinity
+    return null;
+};
+
+Raptor.myDateSort = function(a, b) {
+    var calc = function(v) {
+	var v = Raptor.qsCtDateToDate(v);
+	if (v) {
+	    return v.valueOf();
+	} else {
+	    return 0;
 	}
-	// Return 0 for "CT Overdue" which effectively maps to
-	// negative infinity
-	return 0;
     };
 
     var aCalc = a ? calc(a) : 0;
@@ -181,4 +222,15 @@ document.observe('dom:loaded', function() {
 	ele.popupElement = ele.down('.popup');
 	ele.popupElement.hide();
     });
+
+    Raptor.qsCheckCtTimes();
+
+    var time = 600;
+    if (typeof(search) == "string" && search.length > 0) {
+	eval("var " + search.replace('?', ''));
+	if ((undefined != test) && (test == true)) {
+	    time = 10;
+	}
+    }
+    Raptor.qs_updater = new  PeriodicalExecuter(Raptor.qsCheckCtTimes, time);
 });
