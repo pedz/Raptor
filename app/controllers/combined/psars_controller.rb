@@ -31,8 +31,8 @@ module Combined
         return
       end
       req_user = Combined::Registration.from_options :signon => retuser
-      unless @refresh_time.nil?
-        req_user.refresh(@refresh_time)
+      if @no_cache
+        req_user.refresh
       end
       db_search_fields = Cached::Psar.fields_only(local_params)
       

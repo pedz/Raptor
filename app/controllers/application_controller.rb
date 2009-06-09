@@ -64,9 +64,9 @@ class ApplicationController < ActionController::Base
     # logger.debug("APP: authorization: #{temp_debug(request)}")
     set_last_uri
     return true unless application_user.nil?
-    logger.info("REMOTE_USER = #{request.env["REMOTE_USER"]}")
-    logger.info("Header HTTP_X_FORWARDED_USER = #{request.headers['HTTP_X_FORWARDED_USER']}")
-    logger.info("Header NOT-SET = #{request.headers['NOT-SET'].inspect}")
+    # logger.info("REMOTE_USER = #{request.env["REMOTE_USER"]}")
+    # logger.info("Header HTTP_X_FORWARDED_USER = #{request.headers['HTTP_X_FORWARDED_USER']}")
+    # logger.info("Header NOT-SET = #{request.headers['NOT-SET'].inspect}")
     if request.env.has_key? "REMOTE_USER"
       apache_authenticate
     elsif request.headers.has_key?('HTTP_X_FORWARDED_USER')
@@ -83,18 +83,34 @@ class ApplicationController < ActionController::Base
   # A hook that notices if the user goes to the same URI and assumes
   # the user wants to refresh the cache if he does.
   def set_last_uri
+    # We sometimes modify the host.  The problem is that the fragment
+    # cache key has the host in it.  If the host has aliases we have a
+    # problem.  For example, tcp237 and tcp237.austin.ibm.com.  The
+    # problem is that the host part comes from a sequence of places.
+    # We find which place it comes from and the modify it removing the
+    # domain if it is there.  i.e. we change foo.a.b.com to just foo
+    # The sequcne of where to look is: env["HTTP_X_FORWARDED_HOST"],
+    # env['HTTP_HOST'], env['SERVER_NAME']
+    env = request.env
+    if env['HTTP_X_FORWARDED_HOST']
+      env['HTTP_X_FORWARDED_HOST'] = fixit(env['HTTP_X_FORWARDED_HOST'])
+    elsif env['HTTP_HOST']
+      env['HTTP_HOST'] = fixit(env['HTTP_HOST'])
+    elsif env['HTTP_SERVER_NAME']
+      env['HTTP_SERVER_NAME'] = fixit(env['HTTP_SERVER_NAME'])
+    end
+
     last_uri = session[:last_uri]
-    uri =  request.env["REQUEST_URI"]
+    uri =  env["REQUEST_URI"]
     logger.info("last_uri = #{last_uri}, uri = #{uri}")
+
     cache_control = request.cache_control
     # logger.debug("APP: cache_control: #{cache_control.inspect}")
 
-    # Note: We use to do a "full refresh" when we hit the same URL
-    # twice.  That has now been changed to look at the cache-control
-    # HTTP header.  If it says, 'no-cache', then we do a full
-    # refresh.  A "full-refresh" means that we do not trust the state
-    # of a queue or the state of a PMR without checking its last
-    # modification date.
+    # Note: We look at the cache-control HTTP header.  If it says,
+    # 'no-cache', then we do a full refresh.  A "full-refresh" means
+    # that we do not trust the state of a queue or the state of a PMR
+    # without checking its last modification date.
     if cache_control.is_a? String
       @no_cache = cache_control == "no-cache"
     elsif cache_control.is_a? Array
@@ -102,19 +118,17 @@ class ApplicationController < ActionController::Base
     else
       @no_cache = false
     end
-    # logger.debug("APP: no_cache = #{@no_cache}")
-    if last_uri == uri && Rails.env != "test"
-      flash[:notice] = "Fully Refreshed"
-      @refresh_time = Time.now
-      logger.info("doing a refresh")
-    else
-      flash.delete :notice
-      @refresh_time = nil
-      logger.info("not refreshing")
-    end
+    logger.info("APP: no_cache = #{@no_cache}")
     session[:last_uri] = uri
   end
 
+  def fixit(hostname)
+    new = hostname.sub(/\..*$/, '')
+    logger.info("Changed hostname from #{hostname} to #{new}")
+    return new
+  end
+  private :fixit
+  
   # This authenticates against bluepages using LDAP.
   def ldap_authenticate
     # logger.debug("ldap_authenticate")
@@ -123,6 +137,7 @@ class ApplicationController < ActionController::Base
     authenticate_or_request_with_http_basic "Bluepages Authentication" do |user_name, password|
       # logger.debug("TEMP: user_name #{user_name} password #{password}")
       next nil unless LdapUser.authenticate_from_email(user_name, password)
+      logger.info("ldap_authenticate as #{user_name}")
       common_authenticate(user_name)
       return true
     end
@@ -132,8 +147,8 @@ class ApplicationController < ActionController::Base
   # No authentication although an http basic authentication sequence
   # still occurs
   def none_authenticate
-    # logger.debug("none_authenticate")
     authenticate_or_request_with_http_basic "Raptor" do |user_name, password|
+      logger.debug("none_authenticate as #{user_name}")
       common_authenticate(user_name)
       return true
     end
@@ -142,7 +157,7 @@ class ApplicationController < ActionController::Base
 
   # Apache has already authenticated so let the user in.
   def apache_authenticate
-    # logger.debug("apache_authenticate")
+    logger.info("apache_authenticate as #{request.env["REMOTE_USER"]}")
     common_authenticate(request.env["REMOTE_USER"])
     return true
   end
@@ -150,13 +165,13 @@ class ApplicationController < ActionController::Base
   # Apache has already authenticated but we are behind a proxy so use
   # HTTP_X_FORWARDED_USER instead
   def proxy_apache_authenticate
-    # logger.debug("proxy_apache_authenticate")
+    logger.info("proxy_apache_authenticate as #{request.env["HTTP_X_FORWARDED_USER"]}")
     common_authenticate(request.headers["HTTP_X_FORWARDED_USER"])
     return true
   end
 
   def testing_authenticate
-    # logger.debug("testing_authenticate")
+    logger.info("testing_authenticate")
     common_authenticate('pedzan@us.ibm.com')
     return true
   end

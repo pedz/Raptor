@@ -15,7 +15,7 @@ module Combined
       @cached.signon
     end
 
-    def refresh(time)
+    def refresh
       # logger.debug("refreshing registration #{to_param}")
       self.last_all_fetch = nil
       self.last_day_fetch = nil

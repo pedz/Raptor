@@ -40,12 +40,11 @@ module Retain
               memo[a[0]] = a[1]
               memo
             end
-            # logger.debug("CNT: qs#show #{@todays_psars.inspect}")
-            # This needs to go away...
-            # unless @refresh_time.nil?
-            #   @queue.mark_cache_invalid
-            #   @queue.calls.each { |call| call.pmr.mark_cache_invalid }
-            # end
+            if @no_cache
+              logger.debug("marking queue and calls as invalid")
+              @queue.mark_cache_invalid
+              @queue.calls.each { |call| call.pmr.mark_cache_invalid }
+            end
           end
           break
           
