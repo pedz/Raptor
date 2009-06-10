@@ -329,7 +329,7 @@ module Retain
         
       rescue Exception => e
         unless e.nil?
-          logger.error(e.backtrace_string)
+          logger.error(e.backtrace)
           unless (msg = e.message).blank?
             text += create_reply_span(msg, :error)
           end
