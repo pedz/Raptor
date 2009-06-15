@@ -80,7 +80,7 @@ module Retain
 
       tbody binding do |binding|
         @queue.calls.each do |call|
-          cache(:action_suffix => call.ppg) do 
+          cache(:host => 'raptor_host', :action_suffix => call.ppg) do
             tr binding, :class => call_class(call) + " pmr-row" do |binding|
               DISP_LIST.map { |sym| self.send sym, binding, false, call }.join("\n")
             end

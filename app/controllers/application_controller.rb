@@ -83,23 +83,7 @@ class ApplicationController < ActionController::Base
   # A hook that notices if the user goes to the same URI and assumes
   # the user wants to refresh the cache if he does.
   def set_last_uri
-    # We sometimes modify the host.  The problem is that the fragment
-    # cache key has the host in it.  If the host has aliases we have a
-    # problem.  For example, tcp237 and tcp237.austin.ibm.com.  The
-    # problem is that the host part comes from a sequence of places.
-    # We find which place it comes from and the modify it removing the
-    # domain if it is there.  i.e. we change foo.a.b.com to just foo
-    # The sequcne of where to look is: env["HTTP_X_FORWARDED_HOST"],
-    # env['HTTP_HOST'], env['SERVER_NAME']
     env = request.env
-    if env['HTTP_X_FORWARDED_HOST']
-      env['HTTP_X_FORWARDED_HOST'] = fixit(env['HTTP_X_FORWARDED_HOST'])
-    elsif env['HTTP_HOST']
-      env['HTTP_HOST'] = fixit(env['HTTP_HOST'])
-    elsif env['HTTP_SERVER_NAME']
-      env['HTTP_SERVER_NAME'] = fixit(env['HTTP_SERVER_NAME'])
-    end
-
     last_uri = session[:last_uri]
     uri =  env["REQUEST_URI"]
     logger.info("last_uri = #{last_uri}, uri = #{uri}")

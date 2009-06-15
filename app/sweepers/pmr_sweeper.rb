@@ -23,6 +23,7 @@ class PmrSweeper < ActionController::Caching::Sweeper
       call_param = "#{queue_param},#{call.ppg}"
       [ 'top', 'center', 'left', 'right' ].each do |section|
         expire_fragment(:controller => 'retain/call',
+                        :host => 'raptor_host',
                         :action => :show,
                         :id => call_param,
                         :action_suffix => section)
@@ -30,6 +31,7 @@ class PmrSweeper < ActionController::Caching::Sweeper
       
       # Now delete the qs fragment
       expire_fragment(:controller => 'retain/qs',
+                      :host => 'raptor_host',
                       :action => :show,
                       :id => queue_param,
                       :action_suffix => call.ppg)
