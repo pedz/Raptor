@@ -146,7 +146,8 @@ module Retain
                  "5765G6200",   # AIX 6.1
                  "5765G3400",   # VIO Server
                  "5765F6200",   # HACMP 541 Base
-                 "5765E6199"    # AIX 5.1 Extended
+                 "5765E6199",   # AIX 5.1 Extended
+                 "5765G2400"    # CSS For AIX
                 ]
     def component_check(binding, header, call)
       # logger.debug("QS: bomponent_check #{call.nil? ? "header" : call.to_param}")
