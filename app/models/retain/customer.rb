@@ -10,7 +10,18 @@ module Retain
     # just return true.  We might do a fetch from retain if we find we
     # need to.
     def self.valid?(options)
-      true
+      new_options = {
+        :country => options[:country],
+        :customer_number => options[:customer_number],
+        :group_request => [[ :company_name ]]
+      }
+      customer = new(new_options)
+      begin
+        company_name = customer.company_name
+        return true
+      rescue Retain::SdiReaderError => e
+        return false
+      end
     end
   end
 end

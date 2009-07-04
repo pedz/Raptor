@@ -15,7 +15,13 @@ module Retain
     # to.
     def self.valid?(options)
       logger.debug("in PMR valid?")
-      pmr = new(options.merge({ :group_request => [[ :comments ]]}))
+      new_options = {
+        :problem => options[:problem],
+        :branch => options[:branch],
+        :country => options[:country],
+        :group_request => [[ :comments ]]
+      }
+      pmr = new(new_options)
       begin
         comments = pmr.comments
       rescue Retain::SdiReaderError => e

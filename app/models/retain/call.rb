@@ -18,7 +18,14 @@ module Retain
     # return true.  We might do a fetch from retain if we find we need
     # to.
     def self.valid?(options)
-      call = new(options.merge({ :group_request => [[ :comments ]]}))
+      new_options = {
+        :group_request => [[ :comments ]],
+        :queue_name => options[:queue_name],
+        :center => options[:center],
+        :ppg => options[:ppg],
+        :h_or_s => options[:h_or_s]
+      }
+      call = new(new_options)
       begin
         comments = call.comments
         return true
