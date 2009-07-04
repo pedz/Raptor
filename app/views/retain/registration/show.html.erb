@@ -1,14 +1,15 @@
+<% @title = "Registration for #{@reg.name}" %>
 <table>
   <tr>
-      <th>Name</th>
-      <td><%= h @reg.name %></td>
+    <th>Name</th>
+    <td><%= h @reg.name %></td>
   </tr>
   <tr>
     <th>Software Center</th>
-    <td><%= link_to @reg.software_center.center, combined_center_path(@reg.software_center) %></td>
+    <td><%= center_link(@reg.software_center) %></td>
   </tr>
   <tr>
-    <td>Hardware Center</td>
-    <td><%= link_to @reg.hardware_center.center, combined_center_path(@reg.hardware_center) %></td>
+    <th>Hardware Center</th>
+    <td><%= center_link(@reg.hardware_center) %></td>
   </tr>
 </table>
