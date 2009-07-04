@@ -1,8 +1,8 @@
 <!-- retain/errors/sdi_error_page.html.erb -->
 <% content_for(:center) do %>
   <h2 style='text-align: center; color: red;'>Retain SDI Error<br/>
-    <%= @exception.message %><br/>
-    Return Code <%= @exception.rc %>
+    <%= controller.instance_variable_get(:@exception).message %><br/>
+    Return Code <%= controller.instance_variable_get(:@exception).rc %>
   </h2>
   <p>
     This may be due to a transient Retain problem or it may be a real

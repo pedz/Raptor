@@ -15,7 +15,7 @@ module Retain
     end
     
     def show
-      @center = Combined::Center.from_param(params[:id])
+      @center = Combined::Center.from_param!(params[:id])
     end
   end
 end

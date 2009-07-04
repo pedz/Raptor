@@ -1,6 +1,14 @@
-
 <table>
-  <tr><td>Name</td><td><%= h @reg.name %></td></tr>
-  <tr><td>Software Center</td><td><%= h @reg.software_center %></td></tr>
-  <tr><td>Hardware Center</td><td><%= h @reg.hardware_center %></td></tr>
+  <tr>
+      <th>Name</th>
+      <td><%= h @reg.name %></td>
+  </tr>
+  <tr>
+    <th>Software Center</th>
+    <td><%= link_to @reg.software_center.center, combined_center_path(@reg.software_center) %></td>
+  </tr>
+  <tr>
+    <td>Hardware Center</td>
+    <td><%= link_to @reg.hardware_center.center, combined_center_path(@reg.hardware_center) %></td>
+  </tr>
 </table>

@@ -40,6 +40,14 @@ module Combined
 
     def load
       # logger.debug("CMB: load for #{self.to_param}")
+      if center == "000"
+        @cached.update_attributes(:software_center_mnemonic => "XXX",
+                                  :center_daylight_time_flag => false,
+                                  :delay_to_time => 0,
+                                  :minutes_from_gmt => 0)
+        
+        return
+      end
 
       # Pull the fields we need from the cached record into an options_hash
       options_hash = Hash[ *%w{ center }.map { |field|
