@@ -64,7 +64,7 @@ module Retain
           gsub(AMT_Regexp2, "<a href=\"#{AMT_URL}\\1\">\\0</a>").
           gsub(AMT_Regexp3, "<a href=\"#{AMT_URL}\\1\">\\0</a>")
       end
-      render(:partial => "show_line",
+      render(:partial => "shared/retain/show_line",
              :locals => {
                :text_line => text_line,
                :div_string => div_string,

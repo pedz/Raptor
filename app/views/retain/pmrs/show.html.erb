@@ -1,18 +1,188 @@
-<p>
-  <b>Problem:</b>
-  <%=h @retain_pmr.problem %>
-</p>
+<!-- app/views/retain/pmrs/show.html.erb -->
 
-<p>
-  <b>Branch:</b>
-  <%=h @retain_pmr.branch %>
-</p>
+<% @title = "Retain pmr: #{@pmr.pbc}" %>
+<%= push_page_settings %>
+<% content_for(:top) do %>
+<% cache(:host => 'raptor_host', :action_suffix => 'top') do %>
+<!-- app/views/retain/pmrs/show.html.erb top content -->
+<!-- <%= @controller.fragment_cache_key(:action_suffix => 'top') %> -->
+<table id='pmr-header'>
+  <tr>
+    <td>
+      <span id='queue' class='field-left'>
+	<span id='queue-header' class='field-header'>
+	  Queue
+	</span>
+	<span id='queue-spec' class='field'>
+	  <%= link_to @pmr.queue.to_param, combined_q_path(@pmr.queue) %>
+	</span>
+      </span>
+    </td>
+    <td>
+      <span id='pbc' class='field field-center'>
+	<%= h @pmr.pbc %>
+      </span>
+    </td>
+    <td>
+      <span id='pri-sev' class='field-right'>
+	<span id='pri-sev-header' class='field-header'>
+	  P/S
+	</span>
+	<span id='pri-sev-spec' class='field'>
+	  N / 
+	  <%= h @pmr.severity %>
+	</span>
+      </span>
+    </td>
+  </tr>
+  <tr>
+    <td title='Not a call so can not alter this field'>
+      <%= h @pmr.owner.name %>
+    </td>
+    <td>
+      <span id='customer-name' class='field field-center'>
+	<%= h @pmr.customer.company_name %>
+      </span>
+    </td>
+    <td title='Not a call so can not alter this field'>
+      <%= h @pmr.resolver.name %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <span id='comp' class='field-left'>
+	<span id='comp-header' class='field-header'>
+	  Comp
+	</span>
+	<span id='comp-spec' class='field'>
+	  <%= h @pmr.component_id %>
+	</span>
+      </span>
+    </td>
+    <td>
+      <%= h @pmr.comments %>
+    </td>
+    <td>
+      <span class='field-right'>
+      </span>
+    </td>
+  </tr>
+  <tr>
+    <td colspan='3'>
+      <span id='click-header'>Click to view:</span>
+      <span id='ecpaat-header'  class='click-tag' for='ecpaat-lines'>ECPAAT</span>,
+      <span id='scratch-header' class='click-tag' for='scratch-lines'>Scratch Pad</span>,
+      <span id='contact-header' class='click-tag' for='contact-lines'>Contact Info</span><br/>
+      <span id='ecpaat-lines' class='click-data'>
+	<%= ecpaat_lines(@pmr) %>
+      </span>
+      <span id='scratch-lines' class='click-data'>
+	<% for sp_line in @pmr.scratch_pad_lines %>
+	<%= show_line(sp_line, 1, signon_user.tz) %>
+	<% end -%>
+      </span>
+      <span id='contact-lines' class='click-data'>
+	Contact in call<br/>
+	Contact phone 1 in call<br/>
+	Contact phone 2 in call<br/>
+	<a id='mailto'
+	   href="#"
+	   onclick='Raptor.newUrl("<%= h @pmr.problem_e_mail.strip %>", "PMR <%= @pmr.pbc.upcase %>");'>
+	  <%= h @pmr.problem_e_mail %>
+	</a><br/>
+      </span>
+    </td>
+  </tr>
+</table>
+<%= push_page_settings %>
+<% end -%>
+<% end -%>
 
-<p>
-  <b>Country:</b>
-  <%=h @retain_pmr.country %>
-</p>
+<% all_lines = @pmr.alterable_format_lines + @pmr.text_lines -%>
 
+<% content_for(:center) do %>
+<% cache(:host => 'raptor_host', :action_suffix => 'center') do %>
+<!-- app/views/retain/pmrs/show.html.erb center content -->
+<!-- cached at <%= Time.now %> -->
+<div class='even'>
+  <% tz = signon_user.tz %>
+  <% all_lines.each_with_index do |line, index| %>
+  <%= show_line(line, index, tz) %>
+  <% end -%>
+</div>
+<%= push_page_settings %>
+<% end -%>
+<% end -%>
 
-<%= link_to 'Edit', edit_polymorphic_path(@retain_pmr) %> |
-<%= link_to 'Back', retain_pmrs_path %>
+<% content_for(:left) do %>
+<% cache(:host => 'raptor_host', :action_suffix => 'left') do %>
+<!-- app/views/retain/pmrs/show.html.erb left content -->
+<table>
+  <% all_lines.each_with_index do |line, index| %>
+  <%   if line.text_type == :system_inserted %>
+  <%     md = Regexp.new(' S5> (SERVICE GIVEN= ([0-9][0-9]))  SG/[0-9]9/').match(line.text) %>
+  <%     unless md.nil? || md[2] == "99" %>
+  <tr>
+    <td>
+      &nbsp;
+    </td>
+    <td>
+      <%= "<a href='#line_#{index}'>#{md[1]}</a>" %>
+    </td>
+  </tr>
+  <%     end -%>
+  <%   end -%>
+  <%   if line.text_type == :signature %>
+  <%     sig_line = Retain::SignatureLine.new(line.text) %>
+  <%     unless sig_line.name.nil? || sig_line.stype.nil? %>
+  <tr>
+    <td colspan='2'>
+      <%= "<a href='#line_#{index}'>#{sig_line.name}</a>" %>
+    </td>
+    <td>
+      <%= "<a href='#line_#{index}'>#{sig_line.stype}</a>" %>
+    </td>
+  </tr>
+  <%     end -%>
+  <%   end -%>
+  <% end -%>
+</table>
+<%= push_page_settings %>
+<% end -%>
+<% end -%>
+
+<% content_for(:left_tab) do %>
+<% cache(:host => 'raptor_host', :action_suffix => 'left_tab') do %>
+<!-- app/views/retain/pmrs/show.html.erb left tab content -->
+<div>S<br/>i<br/>g<br/>n<br/>a<br/>t<br/>u<br/>r<br/>e<br/>s</div>
+<% end -%>
+<% end -%>
+
+<% content_for(:right_tab) do %>
+<% cache(:host => 'raptor_host', :action_suffix => 'right_tab') do %>
+<!-- app/views/retain/pmrs/show.html.erb right tab content -->
+<div>P<br/>a<br/>g<br/>e<br/>s<br/></div>
+<% end -%>
+<% end -%>
+
+<% content_for(:right) do %>
+<% cache(:host => 'raptor_host', :action_suffix => 'right') do %>
+<!-- app/views/retain/pmrs/show.html.erb right content -->
+<div>
+  <% (0 ... (all_lines.length / 16)).each do |page_number| %>
+  <%= "<a href='#line_#{page_number * 16}'>Page #{page_number + 2}</a><br/>" %>
+  <% end -%>
+</div>
+<%= push_page_settings %>
+<% end -%>
+<% end -%>
+
+<% content_for(:bottom) do %>
+<!-- app/views/retain/pmrs/show.html.erb bottom content -->
+<div>
+  <%= home_button %>
+  <%= favorites_button %>
+  <%= psar_button %>
+  <%= registration_button %>
+</div>
+<% end -%>

@@ -93,9 +93,10 @@ module Cached
       end
       alias :new_from_options :from_options
     
+      # Calls new_from_options which calls valid?
       def create_from_options(options)
-        r = from_options(options)
-        r.save if r.new_record?
+        r = new_from_options(options)
+        r.save if r && r.new_record?
         r
       end
 

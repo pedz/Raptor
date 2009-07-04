@@ -599,11 +599,11 @@ module Retain
       @fields.each_pair do |k, v|
         rv = v.raw_value
         if v.raw_value.nil?
-          # logger.debug("RTN: field:#{k} is nil")
+          logger.error("RTN: field:#{k} is nil")
         elsif (value = v.value).is_a? Array
-          # logger.debug("RTN: field:#{k} is #{value.inspect}")
+          logger.error("RTN: field:#{k} is #{value.inspect}")
         else
-          # logger.debug("RTN: field:#{k} is #{value}")
+          logger.error("RTN: field:#{k} is #{value}")
         end
       end
     end
@@ -777,7 +777,6 @@ module Retain
     end
     
     def merge_hash!(new_fields)
-      RAILS_DEFAULT_LOGGER.debug("self is #{self.class}")
       # logger.debug("RTN: merge_hash called")
       new_fields.each_pair do |sym, v|
         # if v.is_a? Array

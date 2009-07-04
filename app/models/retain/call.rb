@@ -18,7 +18,13 @@ module Retain
     # return true.  We might do a fetch from retain if we find we need
     # to.
     def self.valid?(options)
-      true
+      call = new(options.merge({ :group_request => [[ :comments ]]}))
+      begin
+        comments = call.comments
+        return true
+      rescue Retain::SdiReaderError => e
+        return false
+      end
     end
   end
 end

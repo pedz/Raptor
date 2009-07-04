@@ -3,21 +3,27 @@ module Retain
     # GET /retain_pmrs/1
     # GET /retain_pmrs/1.xml
     def show
-      pmr = Combined::Pmr.from_param!(params[:id])
+      @pmr = Combined::Pmr.from_param!(params[:id])
+      
       # This is a hack.  I had my belongs_to association botched and
       # the primary_call was not being created.  This checks to see if
       # the primary call is nil.  If it is, it forces the code to go
       # back to retain and, hopefully, set up the primary call.  I
       # assume, eventually, this could be removed.  Likewise,
       # eventually, the primary fields could be marked as 'not null'.
-      if pmr.primary_call.nil?
-        pmr.last_alter_timestamp = nil
-        pmr.mark_cache_invalid
+      if @pmr.primary_call.nil?
+        @pmr.last_alter_timestamp = nil
+        @pmr.mark_cache_invalid
       end
       
       respond_to do |format|
-        format.html { redirect_to(pmr.primary_call) }
-        format.xml { render :xml => pmr.to_xml( :include => :text_lines ) }
+        format.html {
+          # if primary call, use it -- otherwise, use the pmr show page (default)
+          unless @pmr.ppg == "0" || @pmr.ppg.nil?
+            redirect_to(@pmr.primary_call)
+          end
+        }
+        format.xml { render :xml => @pmr.to_xml( :include => :text_lines ) }
       end
     end
 

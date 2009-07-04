@@ -1,4 +1,18 @@
 <h1>Editing Retain User</h1>
+<p>
+  You may have been kicked over to this screen because a request to
+  Retain failed due during the login phase.  Usually this is due to an
+  invalid password but it can also happen that Retain simply gets
+  confused.  I should have better error process and be more
+  informative but there is no practical way to test the paths since
+  they rarely happen.
+</p>
+<p>
+  If the Failed Flag is set, Raptor will not even attempt to talk to
+  Retain.  This is a safety catch so that the "three strikes you're
+  out" doesn't happen.  It is set whenever a login attempt fails.  You
+  must type in your password as well as turn off the Failed Flag.
+</p>
 
 <%= error_messages_for :user %>
 

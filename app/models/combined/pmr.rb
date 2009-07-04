@@ -16,8 +16,8 @@ module Combined
     add_skipped_fields :customer_id
     add_extra_fields   :customer_number
 
-    add_skipped_fields :center_id, :queue_id, :primary
-    add_extra_fields   :queue_name, :center, :h_or_s, :ppg
+    add_skipped_fields :center_id, :queue_id, :primary, :center_name
+    add_extra_fields   :center
 
     add_skipped_fields :next_center_id, :next_queue_id
     add_extra_fields   :next_center,    :next_queue
@@ -33,8 +33,7 @@ module Combined
     end
     
     def self.from_param(param)
-      options = param_to_options(param)
-      find(:first, :conditions => options) || new(options)
+      create_from_options(param_to_options(param))
     end
     
     def self.from_param!(param)
@@ -249,6 +248,8 @@ module Combined
               call.save
             end
             @cached.primary_call = call
+          else
+            @cached.primary_call = nil
           end
         end
       end
@@ -298,6 +299,7 @@ module Combined
       retain_options[:dirty] = false
       retain_options[:last_fetched] = time_now
       retain_options[:updated_at] = time_now
+      retain_options[:center_name] = pmr.center
       @cached.update_attributes(retain_options)
     end
 

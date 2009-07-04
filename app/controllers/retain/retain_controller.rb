@@ -4,24 +4,13 @@ module Retain
     before_filter :validate_retuser
     cache_sweeper :pmr_sweeper, :call_sweeper
     
-    rescue_from Retain::LogonFailed, :with => :logon_failed
+    rescue_from Combined::CallNotFound,   :with => :not_found_page
+    rescue_from Combined::CenterNotFound, :with => :not_found_page
+    rescue_from Combined::PmrNotFound,    :with => :not_found_page
+    rescue_from Combined::QueueNotFound,  :with => :not_found_page
     rescue_from Retain::FailedMarkedTrue, :with => :failed_marked_true 
-    rescue_from Retain::SdiReaderError do |exception|
-      # logger.debug("SDI Exception Stack")
-      # logger.debug("#{exception.backtrace.join("\n")}")
-      render :text => <<-End
-        <h2 style='text-align: center; color: red;'>Retain SDI Error<br/>
-            #{exception.message}<br/>
-            Return Code #{exception.rc}
-        </h2>
-        <p>
-          This may be due to a transient Retain problem or it may be a
-  real programming error.  Try the same thing a few times and if the
-  problem persists or if you can find a reproducable error, please let
-  Perry know.
-        </p>
-      End
-    end
+    rescue_from Retain::LogonFailed,      :with => :logon_failed
+    rescue_from Retain::SdiReaderError,   :with => :sdi_error_page
 
     def signon_user
       @signon_user ||=
@@ -76,7 +65,7 @@ module Retain
       Logon.instance.set(params)
     end
     
-    def logon_failed
+    def logon_failed(exception)
       # logger.debug("logon failed")
       # Find the retuser record and set the failed bit to true so we
       # do not retry until the user resets his password.
@@ -91,7 +80,7 @@ module Retain
       redirect_to edit_retuser_url(retuser)
     end
 
-    def failed_marked_true
+    def failed_marked_true(exception)
       # logger.debug("failed marked true")
       flash[:warning] = "'failed' flag set.  Check password, clear 'failed' flag, and try again"
 
@@ -101,6 +90,16 @@ module Retain
       # Go edit the retuser
       retuser = application_user.retusers[0]
       redirect_to edit_retuser_url(retuser)
+    end
+
+    def not_found_page(exception)
+      @exception = exception
+      render "retain/errors/not_found_page", :layout => "retain/errors"
+    end
+
+    def sdi_error_page(exception)
+      @exception = exception
+      render "retain/errors/sdi_error_page", :layout => "retain/errors"
     end
   end
 end

@@ -14,7 +14,17 @@ module Retain
     # return true.  We might do a fetch from retain if we find we need
     # to.
     def self.valid?(options)
-      true
+      logger.debug("in PMR valid?")
+      pmr = new(options.merge({ :group_request => [[ :comments ]]}))
+      begin
+        comments = pmr.comments
+      rescue Retain::SdiReaderError => e
+        if e.sr == 115 && e.ex == 125
+          raise Combined::PmrNotFound.new("%s,%s,%s" % [ pmr.problem, pmr.branch, pmr.country ])
+        else
+          raise e
+        end
+      end
     end
   end
 end

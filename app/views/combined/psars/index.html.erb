@@ -28,7 +28,7 @@
 		  <%- psars.each do |psar| -%>
 		  <li>
 		    <span class='psar-pmr'>
-		      <%= h(psar.pmr ? psar.pmr.to_param : "No PMR") %>
+		      <%= psar.pmr ? link_to(psar.pmr.to_param, combined_pmr_path(psar.pmr.to_param)) : "No PMR" %>
 		    </span>
 		    <span class='psar-time'>
 		      <%= chargeable_time(psar) %>

@@ -144,6 +144,8 @@ module Retain
       @request_type = options[:request]
       @rcv_fields = scan_fields(Fields.new, @reply[128...@reply.length])
 
+      # dump_debug
+
       # merge received fields back into base objects fields.
       req_fields.merge!(@rcv_fields)
       @fields.error_message = @rcv_fields.error_message if @rcv_fields.has_key?(:error_message)
@@ -153,7 +155,11 @@ module Retain
         if @rcv_fields.has_key?(:error_message)
           msg = @rcv_fields.error_message
           if msg =~ /I\/O ERR=/
-            msg = parse_io_err(msg)
+            tmp = @rcv_fields.raw_field(:error_message).raw_value
+            if tmp.is_a? Array
+              tmp = tmp[0]
+            end
+            msg = parse_io_err(tmp)
           end
         else
           msg = Errors[@rc] || "Unknown Error"

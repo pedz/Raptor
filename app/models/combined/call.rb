@@ -45,9 +45,12 @@ module Combined
       words = param.split(',')
       ppg = words.pop
       queue = Combined::Queue.from_param!(words.join(','))
+      # We did not raise an exception so queue must be valid
       c = queue.calls.find_or_initialize_by_ppg(ppg)
-      if c.nil?
-        raise CallNotFound.new(param)
+      if c.new_record?
+        # fetch the comments.  If this is not a valid call, the load
+        # will throw an exception
+        comments = c.comments
       end
       [ c, queue ]
     end
@@ -253,8 +256,6 @@ module Combined
     private
     
     def load
-      # logger.debug("CMB: load for #{self.to_param}")
-
       # Pull the fields we need from the cached record into an options_hash
       queue = @cached.queue
       options_hash = {

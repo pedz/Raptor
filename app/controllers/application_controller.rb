@@ -24,6 +24,8 @@ class ApplicationController < ActionController::Base
     NONE_AUTHENTICATE = File.exists?(RAILS_ROOT + "/config/no_ldap")
   end
 
+  rescue_from ActiveRecord::StatementInvalid, :with => :pgerror_handler
+
   rescue_from 'ActiveLdap::LdapError' do |exception|
     render :text => "<h2 style='text-align: center; color: red;'>LDAP Error: #{exception.message}</h2>"
   end
@@ -182,5 +184,13 @@ class ApplicationController < ActionController::Base
       request.env['X-HTTP_AUTHORIZATION'] ||
       request.env['X_HTTP_AUTHORIZATION'] ||
       request.env['REDIRECT_X_HTTP_AUTHORIZATION']
+  end
+
+  def pgerror_handler(exception)
+    @exception = exception
+    msg = exception.message
+    if msg.match(/PGError: ERROR:  duplicate key violates unique constraint/)
+      render "pgerrors/duplicate_key.html", :layout => "pgerrors"
+    end
   end
 end

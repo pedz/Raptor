@@ -18,6 +18,5 @@ module Retain
         return false
       end
     end
-
   end
 end

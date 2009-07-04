@@ -1,0 +1,20 @@
+<!-- retain/errors/sdi_error_page.html.erb -->
+<% content_for(:center) do %>
+  <h2 style='text-align: center; color: red;'>Retain SDI Error<br/>
+    <%= @exception.message %><br/>
+    Return Code <%= @exception.rc %>
+  </h2>
+  <p>
+    This may be due to a transient Retain problem or it may be a real
+    programming error.  Try the same thing a few times and if the
+    problem persists or if you can find a reproducable error, please let
+    Perry know.
+  </p>
+<% end %>
+
+<% content_for(:bottom) do %>
+  <div>
+    <%= button_url("Home", "/") %>
+    <%= button_url("Favorites", combined_favorite_queues_path) %>
+  </div>
+<% end %>
