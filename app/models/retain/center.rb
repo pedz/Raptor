@@ -8,7 +8,6 @@ module Retain
 
     def self.valid?(options)
       # short circuit asking if "" is a valid center
-      logger.debug("In center#valid?")
       return false if options[:center].blank?
       return false if options[:center] == "000"
       gr = { :group_request => [[ :software_center_mnemonic ]] }
