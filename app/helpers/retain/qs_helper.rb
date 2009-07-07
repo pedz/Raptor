@@ -77,11 +77,27 @@ module Retain
           end
         end
       end
-
+      
       tbody binding do |binding|
         @queue.calls.each do |call|
           cache(:host => 'raptor_host', :action_suffix => call.ppg) do
-            tr binding, :class => call_class(call) + " pmr-row" do |binding|
+            row_class = call_class(call)
+            row_title =
+              case row_class
+              when 'system-down'
+                'System is down'
+              when 'initial-response'
+                'Under initial response time guidelines'
+              when 'normal'
+                'Under normal CT time guidelines'
+              when 'updated'
+                'Normal CT guidelines; call last updated by someone other than call owner'
+              else
+                'unknown row class'
+              end
+            tr(binding,
+               :class => row_class + " pmr-row",
+               :title => row_title) do |binding|
               DISP_LIST.map { |sym| self.send sym, binding, false, call }.join("\n")
             end
           end
@@ -402,16 +418,20 @@ module Retain
                      "#{h(call.comments)}" ]
       temp_lines << [ "<span class='ecpaat-heading'>Customer Time of Day: </span>" +
                       "#{h(tz_text)}" ]
+      ecpaat_temp_lines = []
       Cached::Pmr::ECPAAT_HEADINGS.each { |heading|
-        unless (lines = temp_hash[heading]).nil?
-          temp_lines << ("<span class='ecpaat-heading'>" +
+        if (lines = temp_hash[heading]).nil?
+          ecpaat_temp_lines << ("<span class='ecpaat-heading-missing'>" +
+                         h(heading) + ": " + "</span>")
+        else
+          ecpaat_temp_lines << ("<span class='ecpaat-heading'>" +
                          h(heading) + ": " + "</span>" +
                          h(lines.shift))
           lines = lines[0 .. 4] + [ " ..." ] if lines.length > 5
-          temp_lines += lines.map{ |l| h(l) }
+          ecpaat_temp_lines += lines.map{ |l| h(l) }
         end
       }
-      temp_lines.join("<br/>\n")
+      temp_lines.join("<br/>\n") + "<hr/>" + ecpaat_temp_lines.join("<br/>\n")
     end
 
     def link_etc(binding, header, call)
@@ -421,7 +441,14 @@ module Retain
           concat("Prblm,bnc,cty")
         end
       else
-        td binding, :class => 'link-etc text' do |binding|
+        class_list = 'link-etc text'
+        if call.pmr.ecpaat_complete?
+          title = 'ecpaat is complete'
+        else
+          class_list << ' ecpaat-incomplete'
+          title = 'ecpaat is incomplete'
+        end
+        td binding, :class => class_list, :title => title do |binding|
           div binding, :class => 'links' do |binding|
             a binding, :class => 'pmr-link', :href => url_for(call) do |binding|
               span binding, :style => "text-decoration: underline" do |binding|
@@ -440,10 +467,19 @@ module Retain
     def call_class(call)
       return "system-down" if call.system_down
       return "initial-response" if call.needs_initial_response?
-      last_name = (name = call.pmr.signature_lines.last.name) &&
+      last_signature_name = (name = call.pmr.signature_lines.last.name) &&
         name.gsub(/ +$/, '')
-      resolver_last_name = call.pmr.resolver.name.gsub(/ +$/, '')
-      return "normal" if resolver_last_name == last_name
+
+      # The "owner" of the call is the owner of the queue (I guess --
+      # sorta hard to decide what to do here).  The default is the
+      # resolver of the PMR (whic is more specific than the owner of
+      # the PMR).  We'll see how that goes for now.
+      owner = call.pmr.resolver
+      if owners = call.queue.owners
+        owner = owners[0]
+      end
+      owner_name = owner.name.gsub(/ +$/, '')
+      return "normal" if owner_name == last_signature_name
       return "updated"
     end
 

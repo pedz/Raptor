@@ -1,6 +1,6 @@
 <!-- app/views/retain/pmrs/show.html.erb -->
 
-<% @title = "Retain pmr: #{@pmr.pbc}" %>
+<% @title = "PMR #{@pmr.pbc}" %>
 <%= push_page_settings %>
 <% content_for(:top) do %>
 <% cache(:host => 'raptor_host', :action_suffix => 'top') do %>

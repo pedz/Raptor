@@ -287,6 +287,17 @@ module Cached
     end
     once :ecpaat_lines
     
+    def ecpaat_complete?
+      temp_hash = ecpaat
+      ECPAAT_HEADINGS.each do |heading|
+        unless temp_hash.has_key?(heading)
+          return false
+        end
+      end
+      return true
+    end
+    once :ecpaat_complete?
+
     def ecpaat
       h = { }
       current_section = nil

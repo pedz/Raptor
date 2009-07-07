@@ -1,6 +1,6 @@
 <!-- app/views/retain/call/show.html.erb -->
 
-<% @title = "Retain call: #{@call.to_param} of #{@pmr.pbc}" %>
+<% @title = "Call #{@pmr.pbc} at #{@call.to_param}" %>
 <%= push_page_settings %>
 <% content_for(:top) do %>
 <% cache(:host => 'raptor_host', :action_suffix => 'top') do %>

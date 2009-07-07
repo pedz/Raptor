@@ -59,6 +59,10 @@ span.ecpaat-heading {
     color: #0F0;
 }
 
+span.ecpaat-heading-missing {
+    color: red;
+}
+
 /* needed to get pop ups to position */
 .popup-wrapper {
   position: relative;
