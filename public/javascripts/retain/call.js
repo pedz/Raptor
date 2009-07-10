@@ -98,14 +98,16 @@ document.observe('dom:loaded', function() {
     Raptor.center = $('center');
     Raptor.bottom = $('bottom');
 
+    // Raptor.setupPopup($('call-list'));
+
     // We want to hide the update-form at page load.
     if ($('update-form')) {
 	$('update-form').hide();
     }
 
     // hide the left and right panels at page load.
-    $('left').hide();
-    $('right').hide();
+    Raptor.right.hide();
+    Raptor.left.hide();
 
     // Hide add time form.  I suppose we could do all this in the HTML
     // part of the page.
@@ -120,7 +122,7 @@ document.observe('dom:loaded', function() {
     $$('.click-data').each(function (ele) {
 	ele.hide();
 	ele.observe('click', function (event) {
-	    if (Raptor.didNewUrl) {
+	    if (event.element().readAttribute('href') || Raptor.didNewUrl) {
 		Raptor.didNewUrl = false
 	    } else {
 		event.stop();
@@ -135,7 +137,7 @@ document.observe('dom:loaded', function() {
     // click-tag element is clicked.  This code hooks up an observer
     // to the click-tag elements to toggle the element it is for.
     $$('.click-tag').each(function (ele) {
-	var other = $(ele.readAttribute('for'));
+	var other = $(ele.readAttribute('title'));
 	ele.observe('click', function(event) {
 	    event.stop();
 	    other.toggle();

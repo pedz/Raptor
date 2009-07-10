@@ -189,8 +189,16 @@ class ApplicationController < ActionController::Base
   def pgerror_handler(exception)
     @exception = exception
     msg = exception.message
-    if msg.match(/PGError: ERROR:  duplicate key violates unique constraint/)
+    logger.error(exception.to_s)
+    logger.error(exception.backtrace.join("\n"))
+    if msg.match(/duplicate key violates unique constraint/)
       render "pgerrors/duplicate_key.html", :layout => "pgerrors"
+      return
     end
+    if msg.match(/violates not-null constraint/)
+      render "pgerrors/not_null.html", :layout => "pgerrors"
+      return
+    end
+    render "pgerrors/unknown.html", :layout => "pgerrors"
   end
 end

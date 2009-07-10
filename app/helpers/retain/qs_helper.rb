@@ -431,7 +431,9 @@ module Retain
           ecpaat_temp_lines += lines.map{ |l| h(l) }
         end
       }
-      temp_lines.join("<br/>\n") + "<hr/>" + ecpaat_temp_lines.join("<br/>\n")
+      # This could be simpler but the middle br I want something but I
+      # can't put <hr/> due to html validation
+      temp_lines.join("<br/>\n") + "<br/>\n" + ecpaat_temp_lines.join("<br/>\n")
     end
 
     def link_etc(binding, header, call)
@@ -478,8 +480,10 @@ module Retain
       if owners = call.queue.owners
         owner = owners[0]
       end
-      if (name = owner.name)
+      if owner && (name = owner.name)
         owner_name = name.gsub(/ +$/, '')
+      else
+        owner_name = ""
       end
       return "normal" if owner_name == last_signature_name
       return "updated"
@@ -744,15 +748,6 @@ module Retain
           a :href => href do
             call.nls_customer_name
           end
-        end
-      end
-    end
-
-    def popup(binding, hash = { })
-      hash = { :class => "popup"}.merge(hash)
-      span binding, :class => 'popup-wrapper' do
-        span binding, hash do
-          yield binding
         end
       end
     end

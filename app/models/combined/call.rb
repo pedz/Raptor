@@ -85,6 +85,55 @@ module Combined
         :width => Retain::Fields.field_width(:pmr_owner_name)
       }
     end
+    
+    def validate_resolver(user)
+      css_class, title, editable = validate_resolver_private(user)
+      {
+        :css_class => css_class,
+        :title => title,
+        :editable => editable,
+        :name => self.pmr.resolver.name,
+        :width => Retain::Fields.field_width(:pmr_resolver_name)
+      }
+    end
+    
+    def validate_next_queue(user)
+      css_class, title, editable = validate_next_queue_private(user)
+      {
+        :css_class => css_class,
+        :title => title,
+        :editable => editable,
+        :name => pmr.next_queue.nil? ? "blank" : pmr.next_queue.to_param,
+        :width => (Retain::Fields.field_width(:next_queue) + 1 # +1 for commma
+                   Retain::Fields.field_width(:h_or_s) + 1 +
+                   Retain::Fields.field_width(:next_center))
+      }
+    end
+
+    def type
+      # If we know for sure its a backup
+      if self.p_s_b == "B"
+        return "Backup"
+      else
+        pmr = self.pmr
+        param = self.to_param
+        # Otherwise, try and figure out
+        case param
+        when pmr.primary_param
+          return "Primary"
+        when pmr.secondary_1_param
+          return "Sec 1"
+        when pmr.secondary_2_param
+          return "Sec 2"
+        when pmr.secondary_3_param
+          return "Sec 3"
+        else
+          return "Backup"
+        end
+      end
+    end
+
+    private
 
     def validate_owner_private(user)
       queue = self.queue
@@ -131,18 +180,6 @@ module Combined
 
       return [ "wag-wag", "PMR Owner not in same center", true ]
     end
-    private :validate_owner_private
-    
-    def validate_resolver(user)
-      css_class, title, editable = validate_resolver_private(user)
-      {
-        :css_class => css_class,
-        :title => title,
-        :editable => editable,
-        :name => self.pmr.resolver.name,
-        :width => Retain::Fields.field_width(:pmr_resolver_name)
-      }
-    end
 
     def validate_resolver_private(user)
       queue = self.queue
@@ -182,20 +219,6 @@ module Combined
       end
 
       return [ "wag-wag", "PMR Resolver not in same center", true ]
-    end
-    private :validate_resolver_private
-    
-    def validate_next_queue(user)
-      css_class, title, editable = validate_next_queue_private(user)
-      {
-        :css_class => css_class,
-        :title => title,
-        :editable => editable,
-        :name => pmr.next_queue.nil? ? "blank" : pmr.next_queue.to_param,
-        :width => (Retain::Fields.field_width(:next_queue) + 1 # +1 for commma
-                   Retain::Fields.field_width(:h_or_s) + 1 +
-                   Retain::Fields.field_width(:next_center))
-      }
     end
 
     def validate_next_queue_private(user)
@@ -251,9 +274,6 @@ module Combined
 
       return [ "good", "I can not find anything to complain about", true ]
     end
-    private :validate_next_queue_private
-
-    private
     
     def load
       # Pull the fields we need from the cached record into an options_hash

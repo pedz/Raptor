@@ -82,4 +82,13 @@ module ApplicationHelper
   def favorites_button
     button_url("Favorites", combined_favorite_queues_path)
   end
+
+  def popup(binding, hash = { })
+    hash = { :class => "popup"}.merge(hash)
+    span binding, :class => 'popup-wrapper' do
+      span binding, hash do
+        yield binding
+      end
+    end
+  end
 end

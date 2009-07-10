@@ -27,7 +27,7 @@ module Retain
     # line should be a Retain::TextLine.  index is the line number
     # within the PMR
     #
-    def show_line(line, index, tz)
+    def show_line(line, index, tz, id_prefix = 'line')
       # Retain pages start on two -- go figure.
       span_classes = line.text_type.to_s.gsub('_', '-')
       page = (index / 16)
@@ -43,7 +43,7 @@ module Retain
         sig_line = Retain::SignatureLine.new(line.text)
         text_line = sig_line.to_s(tz).gsub(/ /, '&nbsp;')
       else
-        text_line = line.text.
+        text_line = html_escape(line.text).
           # Replace spaces with non-breaking spaces.
           # If we do it last, then the links get mucked with.
           # Need to see if a <pre> tag could be used somehow.
@@ -66,6 +66,7 @@ module Retain
       end
       render(:partial => "shared/retain/show_line",
              :locals => {
+               :id_prefix => id_prefix,
                :text_line => text_line,
                :div_string => div_string,
                :span_classes => span_classes,
@@ -81,7 +82,7 @@ module Retain
     end
 
     def display_update_form(binding, call)
-      span(binding,
+      div(binding,
            :id => 'call_update_span',
            :class => 'call-update-container') do |binding|
         call_update = CallUpdate.new(call)
@@ -101,7 +102,7 @@ module Retain
 
     def display_pmr_resolver(binding, call)
       td binding, :class => "resolver" do |binding|
-        span binding, :class => "field-header" do |binding|
+        span binding, :class => "field-header field-right" do |binding|
           concat("Resolver:")
         end
         common_display_pmr_resolver(binding, call)
@@ -112,6 +113,79 @@ module Retain
       td binding do |binding|
         common_display_pmr_comments(binding, call)
       end
+    end
+
+    def make_call_link(binding, my_call, text, link_param)
+      unless link_param.nil?
+        if my_call.to_param == link_param
+          lead = "*"
+        else
+          lead = "&nbsp;"
+        end
+        concat(link_to("#{lead}#{text}: #{link_param}", combined_call_path(link_param)) + "<br/>\n")
+      end
+    end
+    
+    def call_list(binding, call)
+      pmr = call.pmr
+      param = call.to_param
+      calls = []
+      calls << "Primary: #{pmr.primary_param}" if pmr.primary_param
+      calls << "Sec 1: #{pmr.secondary_1_param}" if pmr.secondary_1_param
+      calls << "Sec 2: #{pmr.secondary_2_param}" if pmr.secondary_2_param
+      calls << "Sec 3: #{pmr.secondary_3_param}" if pmr.secondary_3_param
+      calls = calls.join("<br/>\n")
+      # If we know for sure its a backup
+      if call.p_s_b == "B"
+        text = "Backup"
+      else
+        # Otherwise, try and figure out
+        case param
+        when pmr.primary_param
+          text = "Primary"
+        when pmr.secondary_1_param
+          text = "Sec 1"
+        when pmr.secondary_2_param
+          text = "Sec 2"
+        when pmr.secondary_3_param
+          text = "Sec 3"
+        else
+          text = "Backup"
+        end
+      end
+      span binding, :id => 'call-list' do |binding|
+        span binding, :class => 'field-header' do |binding|
+          concat("Call Type:")
+        end
+        span binding, :class => 'field' do |binding|
+          concat(text)
+        end
+        popup binding do |binding|
+          concat(calls)
+        end
+      end
+#       ul binding do |binding|
+#         if pmr.primary_param
+#           li binding do |binding|
+#             concat "Primary: #{pmr.primary_param}"
+#           end
+#         end
+#         if pmr.secondary_1_param
+#           li binding do |binding|
+#             concat "Sec 1: #{pmr.secondary_1_param}"
+#           end
+#         end
+#         if pmr.secondary_2_param
+#           li binding do |binding|
+#             concat "Sec 2: #{pmr.secondary_2_param}"
+#           end
+#         end
+#         if pmr.secondary_3_param
+#           li binding do |binding|
+#             concat "Sec 3: #{pmr.secondary_3_param}"
+#           end
+#         end
+#       end
     end
   end
 end

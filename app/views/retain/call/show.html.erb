@@ -48,7 +48,7 @@
     <td>
       <span id='comp' class='field-left'>
 	<span id='comp-header' class='field-header'>
-	  Comp
+	  Comp:
 	</span>
 	<span id='comp-spec' class='field'>
 	  <%= h @pmr.component_id %>
@@ -58,21 +58,28 @@
     <% display_pmr_comments(binding, @call) %>
     <td>
       <span class='field-right'>
+	<span id='call-type-header' class='field-header'>
+	  Call Type:
+	</span>
+	<span id='call-type-spec' class='field'>
+	  <%= h @call.type %>
+	</span>
       </span>
     </td>
   </tr>
   <tr>
     <td colspan='3'>
       <span id='click-header'>Click to view:</span>
-      <span id='ecpaat-header'  class='click-tag' for='ecpaat-lines'>ECPAAT</span>,
-      <span id='scratch-header' class='click-tag' for='scratch-lines'>Scratch Pad</span>,
-      <span id='contact-header' class='click-tag' for='contact-lines'>Contact Info</span><br/>
+      <span id='ecpaat-header'  class='click-tag' title='ecpaat-lines'>ECPAAT</span>,
+      <span id='scratch-header' class='click-tag' title='scratch-lines'>Scratch Pad</span>,
+      <span id='contact-header' class='click-tag' title='contact-lines'>Contact Info</span>
+      <span id='call-header'    class='click-tag' title='call-list'>Call List</span><br/>
       <span id='ecpaat-lines' class='click-data'>
 	<%= ecpaat_lines(@pmr) %>
       </span>
       <span id='scratch-lines' class='click-data'>
-	<% for sp_line in @pmr.scratch_pad_lines %>
-	<%= show_line(sp_line, 1, signon_user.tz) %>
+	<% @pmr.scratch_pad_lines.each_with_index do |sp_line, index| %>
+	<%= show_line(sp_line, index + 1, signon_user.tz, 'scratch') %>
 	<% end -%>
       </span>
       <span id='contact-lines' class='click-data'>
@@ -84,6 +91,12 @@
 	   onclick='Raptor.newUrl("<%= h @pmr.problem_e_mail.strip %>", "PMR <%= @pmr.pbc.upcase %>");'>
 	  <%= h @pmr.problem_e_mail %>
 	</a><br/>
+      </span>
+      <span id='call-list' class='click-data'>
+	<% make_call_link(binding, @call, "Primary", @pmr.primary_param) %>
+	<% make_call_link(binding, @call, "Sec 1", @pmr.secondary_1_param) %>
+	<% make_call_link(binding, @call, "Sec 2", @pmr.secondary_2_param) %>
+	<% make_call_link(binding, @call, "Sec 3", @pmr.secondary_3_param) %>
       </span>
     </td>
   </tr>

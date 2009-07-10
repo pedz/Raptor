@@ -2,3 +2,22 @@
 .ecpaat-heading {
     color: white;
 }
+
+/* needed to get pop ups to position */
+.popup-wrapper {
+  position: relative;
+  display: block;
+}
+
+/* defined new element called popup */
+.popup {
+    display: block;
+    position: absolute;
+    top: 2px;
+    left: 25px;
+    color: #FFF;
+    padding: 0.5em;
+    z-index: 100;
+    background-color: black;
+    text-align: left;
+}

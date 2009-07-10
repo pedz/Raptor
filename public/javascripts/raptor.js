@@ -188,5 +188,40 @@ var Raptor = {
 	    this.ipe.destroy();
 	}
 	this.ipe = null;
+    },
+
+    popupDelayStart : function (event) {
+	this.popupDelayId = this.showPopup.delay(0.25);
+    },
+
+    popupDelayKill : function (event) {
+	if (this.popupDelayId) {
+	    window.clearTimeout(this.popupDelayId);
+	    this.popupDelayId = null;
+	} else {
+	    /* Might want to do this all the time just in case */
+	    this.hidePopup();
+	}
+    },
+
+    /* 'this' is set to the div.links element */
+    showPopup : function () {
+	this.popupDelayId = null;
+	Effect.Grow(this.popupElement, { duration: 0.5 });
+    },
+
+    /* 'this' is set to the div.links element */
+    hidePopup : function () {
+	Effect.Shrink(this.popupElement, { duration: 0.5 });
+    },
+
+    /* Called at page load time to set up handlers for a pop up */
+    setupPopup : function (ele) {
+	ele.observe('mouseover', Raptor.popupDelayStart.bindAsEventListener(ele));
+	ele.observe('mouseout', Raptor.popupDelayKill.bindAsEventListener(ele));
+	ele.showPopup = Raptor.showPopup.bind(ele);
+	ele.hidePopup = Raptor.hidePopup.bind(ele);
+	ele.popupElement = ele.down('.popup');
+	ele.popupElement.hide();
     }
 };

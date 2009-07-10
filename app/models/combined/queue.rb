@@ -101,7 +101,7 @@ module Combined
       retain_queue = Retain::Queue.new(options_hash)
       retain_calls = retain_queue.calls
 
-      # I'm going to try this...
+      @cached.save if @cached.new_record?
       db_calls = @cached.calls
       # db_calls.each_with_index do |o, i|
       #   hex = ""

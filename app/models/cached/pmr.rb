@@ -345,6 +345,38 @@ module Cached
     end
     once :visited_queues
 
+    def primary_param
+      if ppg.nil? || ppg == "0"
+        nil
+      else
+        "#{queue_name},#{h_or_s},#{center_name},#{ppg}"
+      end
+    end
+
+    def secondary_1_param
+      if sec_1_ppg.nil? || sec_1_ppg == "0"
+        nil
+      else
+      "#{sec_1_queue},#{sec_1_h_or_s},#{sec_1_center},#{sec_1_ppg}"
+      end
+    end
+
+    def secondary_2_param
+      if sec_2_ppg.nil? || sec_2_ppg == "0"
+        nil
+      else
+        "#{sec_2_queue},#{sec_2_h_or_s},#{sec_2_center},#{sec_2_ppg}"
+      end
+    end
+
+    def secondary_3_param
+      if sec_3_ppg.nil? || sec_3_ppg == "0"
+        nil
+      else
+        "#{sec_3_queue},#{sec_3_h_or_s},#{sec_3_center},#{sec_3_ppg}"
+      end
+    end
+
     def secondary_1
       get_call(sec_1_center, sec_1_queue, sec_1_h_or_s, sec_1_ppg)
     end

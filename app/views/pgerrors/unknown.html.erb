@@ -1,0 +1,11 @@
+<!-- app/view/pgerrors/unknown.html.erb -->
+<p style='text-align: center; color: red; width: 40em'>
+  <%= controller.instance_variable_get(:@exception).message %>
+</p>
+<p style='width: 40em;'>
+  The database threw an exception of an unusually type.  I bet this is
+  a bug that needs to be reported.  Send me an email or something...
+</p>
+<p style='margin-left: 5em;'>
+  Perry
+</p>
