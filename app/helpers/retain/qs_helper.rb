@@ -478,7 +478,9 @@ module Retain
       if owners = call.queue.owners
         owner = owners[0]
       end
-      owner_name = owner.name.gsub(/ +$/, '')
+      if (name = owner.name)
+        owner_name = name.gsub(/ +$/, '')
+      end
       return "normal" if owner_name == last_signature_name
       return "updated"
     end
@@ -755,7 +757,23 @@ module Retain
       end
     end
 
-    [ :tr, :th, :td, :span, :div, :a, :table, :thead, :tbody, :tfoot ].each do |sym|
+    [
+     :a,
+     :dd,
+     :div,
+     :dl,
+     :dt,
+     :li,
+     :span,
+     :table,
+     :tbody,
+     :td,
+     :tfoot,
+     :th,
+     :thead,
+     :tr,
+     :ul
+    ].each do |sym|
       eval("def #{sym}(binding, hash = { })
               @nesting ||= 0
               padding = \" \" * @nesting
