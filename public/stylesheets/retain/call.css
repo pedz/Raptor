@@ -21,3 +21,9 @@
     background-color: black;
     text-align: left;
 }
+
+/* Links in the top section are hard to see. */
+
+#top a { color: #000; }
+#top a:visited { color: #222; }
+#top a:hover { color: #fff; background-color:#000; }
