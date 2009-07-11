@@ -9,6 +9,13 @@ module Cached
     has_many   :queues,           :through    => :queue_infos
     has_many   :psars,            :class_name => "Cached::Psar"
     
+    def personal_queue
+      unless (local_queues = self.queues).empty?
+        local_queues[0]
+      end
+    end
+    once :personal_queue
+
     def default_center
       cmb = to_combined
       if cmb.software_center

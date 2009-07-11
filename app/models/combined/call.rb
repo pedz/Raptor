@@ -30,7 +30,7 @@ module Combined
     # queue_name,h_or_s,center,ppg
     def self.words_to_options(words)
       ppg = words.pop
-      Combined::Queue.words_to_options(words).merge :ppg => ppg
+      Combined::Queue.words_to_options(words).merge(:ppg => ppg)
     end
     
     def self.from_words(words)
@@ -40,11 +40,15 @@ module Combined
      end
     end
 
-    # Params must include 
-    def self.from_param_pair!(param)
+    # Params must include four parts: queue,S,center,ppg.  signon_user
+    # is passed in.  If param is a single word, we default queue, s,
+    # and center to the signon_user's personal queue if we can find
+    # it.  This work is done when the queue is fetched.
+    def self.from_param_pair!(param, signon_user = nil)
       words = param.split(',')
+      raise CallNotFound.new(to_param) if words.empty?
       ppg = words.pop
-      queue = Combined::Queue.from_param!(words.join(','))
+      queue = Combined::Queue.from_param!(words.join(','), signon_user)
       # We did not raise an exception so queue must be valid
       c = queue.calls.find_or_initialize_by_ppg(ppg)
       if c.new_record?
@@ -55,8 +59,8 @@ module Combined
       [ c, queue ]
     end
     
-    def self.from_param!(param)
-      call, queue = from_param_pair!(param)
+    def self.from_param!(param, signon_user = nil)
+      call, queue = from_param_pair!(param, signon_user)
       call
     end
 

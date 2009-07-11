@@ -32,12 +32,14 @@ module Combined
       }
     end
     
-    def self.from_param(param)
+    # signon user is not used
+    def self.from_param(param, signon_user = nil)
       create_from_options(param_to_options(param))
     end
     
-    def self.from_param!(param)
-      pmr = from_param(param)
+    # signon user is not used
+    def self.from_param!(param, signon_user = nil)
+      pmr = from_param(param, signon_user)
       if pmr.nil?
         raise PmrNotFound.new(param)
       end

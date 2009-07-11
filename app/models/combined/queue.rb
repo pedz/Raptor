@@ -21,8 +21,8 @@ module Combined
 
     # Param is queue_name,h_or_s,center.  Raises QueueNotFound if
     # queue is not in database or Retain.
-    def self.from_param!(param)
-      q = from_param(param)
+    def self.from_param!(param, signon_user = nil)
+      q = from_param(param, signon_user)
       if q.nil?
         raise QueueNotFound.new(param)
       end
@@ -30,19 +30,44 @@ module Combined
     end
 
     # Param is queue_name,h_or_s,center
-    def self.from_param(param)
+    def self.from_param(param, signon_user = nil)
       words = param.upcase.split(',')
-      center = Combined::Center.from_param(words[2])
+      case words.length
+        # default to user's personal queue
+      when 0
+        return signon_user.personal_queue
+        
+        # assume the single word is the queue
+        # name and get the center and h_or_s from the registration
+      when 1
+        options = {
+          :queue_name => words[0],
+          :h_or_s => signon_user.default_h_or_s,
+        }
+        center = signon_user.default_center
+
+        # assume queue_name and center (since few people know / care
+        # about h_or_s.  So, get h_or_s from registration
+      when 2
+        options = {
+          :queue_name => words[0],
+          :h_or_s => signon_user.default_h_or_s,
+        }
+        center = Combined::Center.from_param(words[1], signon_user)
+        
+      else
+        options = {
+          :queue_name => words[0],
+          :h_or_s => words[1],
+        }
+        center = Combined::Center.from_param(words[2], signon_user)
+      end
       return nil if center.nil?
-      
-      options = {
-        :queue_name => words[0].strip,
-        :h_or_s => words[1]
-      }
+
       q = find(:first, :conditions => options)
       if q.nil?
         q = center.queues.build(options)
-        return nil unless q.valid?(options.merge({ :center => words[2]}))
+        return nil unless q.valid?
       end
       q
     end

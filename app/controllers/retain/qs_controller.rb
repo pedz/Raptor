@@ -1,17 +1,18 @@
 module Retain
   class QsController < RetainController
     def show
-      begin
-        @queue = Combined::Queue.from_param!(params[:id])
-      rescue Combined::QueueNotFound => e
-        render "invalid"
+      @queue = Combined::Queue.from_param!(params[:id], signon_user)
+      # If we had to use some default somewhere, lets redirect so that
+      # the path is fully qualified and uppercase.
+      if @queue.to_param != params[:id]
+        redirect_to(:id => @queue.to_param)
         return
       end
 
       loop = 0
       while true
         begin
-          last_fetched = @queue.last_fetched
+          last_fetched = (@queue.last_fetched || Time.now)
           # This loop could be avoided by updating the last_fetched
           # timestamp of the calls and queues whenever a call or PMR
           # changed.

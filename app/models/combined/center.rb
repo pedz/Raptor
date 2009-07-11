@@ -16,15 +16,16 @@ module Combined
 
     # Param is center.  Raises CenterNotFound if center is not in
     # database or Retain.
-    def self.from_param!(param)
-      c = from_param(param)
+    def self.from_param!(param, signon_user = nil)
+      c = from_param(param, signon_user)
       if c.nil?
         raise CenterNotFound.new(param)
       end
       c
     end
 
-    def self.from_param(param)
+    def self.from_param(param, signon_user = nil)
+      param = signon_user.default_center if param.empty?
       create_from_options(:center => param)
     end
 

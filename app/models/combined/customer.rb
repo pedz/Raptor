@@ -13,7 +13,8 @@ module Combined
       @cached.country + @cached.customer_number
     end
 
-    def self.from_param(param)
+    # signon_user is not used.
+    def self.from_param(param, signon_user = nil)
       case param.length
       when 7
         country = '000'

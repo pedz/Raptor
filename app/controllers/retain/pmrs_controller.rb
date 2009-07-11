@@ -3,7 +3,7 @@ module Retain
     # GET /retain_pmrs/1
     # GET /retain_pmrs/1.xml
     def show
-      @pmr = Combined::Pmr.from_param!(params[:id])
+      @pmr = Combined::Pmr.from_param!(params[:id], signon_user)
       
       # This is a hack.  I had my belongs_to association botched and
       # the primary_call was not being created.  This checks to see if

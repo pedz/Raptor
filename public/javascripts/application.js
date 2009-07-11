@@ -20,7 +20,7 @@ document.observe('dom:loaded', function() {
 	Raptor.updateLoadHook();
     }
 
-    bottom = $('bottom');
+    var bottom = $('bottom');
     if (bottom) {
 	Raptor.addUserInput(bottom);
     }

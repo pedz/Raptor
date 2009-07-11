@@ -10,7 +10,7 @@ module Combined
 
     def show
       begin
-        @combined_queue = Combined::Queue.from_param!(params[:id])
+        @combined_queue = Combined::Queue.from_param!(params[:id], signon_user)
         @combined_queue.mark_cache_invalid
         @calls = @combined_queue.calls
       rescue QueueNotFound

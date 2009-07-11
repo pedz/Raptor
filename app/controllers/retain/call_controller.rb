@@ -24,7 +24,7 @@ module Retain
     
     # Show a Retain call
     def show
-      @call = Combined::Call.from_param!(params[:id])
+      @call = Combined::Call.from_param!(params[:id], signon_user)
       @queue = @call.queue
       @call.mark_cache_invalid if @no_cache
       @pmr = @call.pmr
@@ -52,7 +52,7 @@ module Retain
 
     # Update the call
     def update
-      @call = Combined::Call.from_param!(params[:id])
+      @call = Combined::Call.from_param!(params[:id], signon_user)
       @queue = @call.queue
       call_options = @call.to_options
       @pmr = @call.pmr
@@ -170,7 +170,7 @@ module Retain
           from_team_to_personal = false
           # logger.debug("call_update[:do_ca] = #{call_update[:do_ca].inspect}")
           if call_update.has_key?(:new_queue) && !call_update[:do_ca]
-            new_queue = Combined::Queue.from_param!(call_update[:new_queue])
+            new_queue = Combined::Queue.from_param!(call_update[:new_queue], signon_user)
             if new_queue.h_or_s != @queue.h_or_s
               if @queue.h_or_s == 'S' && new_queue.h_or_s == 'H' # from software to hardware
                 requeue_options[:operand] = 'HW  '
@@ -377,7 +377,7 @@ module Retain
     end
 
     def ct
-      @call = Combined::Call.from_param!(params[:id])
+      @call = Combined::Call.from_param!(params[:id], signon_user)
       @queue = @call.queue
       pmr = @call.pmr
       options = @call.to_options
@@ -415,7 +415,7 @@ module Retain
     # this routine.  I might want to split it apart.  Not sure what to
     # do here.
     def alter
-      @call = Combined::Call.from_param!(params[:id])
+      @call = Combined::Call.from_param!(params[:id], signon_user)
       @queue = @call.queue
       pmr = @call.pmr
       # The field we are changing is the editor id which has the field
@@ -493,7 +493,7 @@ module Retain
     def queue_list
       @exception_json = [ "Call Not Found"].to_json
       @exception_type = :json
-      call = Combined::Call.from_param!(params[:id])
+      call = Combined::Call.from_param!(params[:id], signon_user)
       if call.nil?
         render :json => nil
       end
