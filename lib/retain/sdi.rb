@@ -319,7 +319,9 @@ module Retain
       #   logger.debug("RTN: nil reply")
       # end
       @logon_return = @logon_reply[24,4].retain_to_user.to_i
+      Logon.instance.return_value = @logon_return
       @logon_reason = @logon_reply[28,4].retain_to_user.to_i
+      Logon.instance.reason = @logon_reason
       # logger.debug("Logon Return: #{@logon_return}")
       # logger.debug("Logon Reason: #{@logon_reason}")
       unless @logon_reply && @logon_reply.length == 50

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081104224649) do
+ActiveRecord::Schema.define(:version => 20081104224650) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(:version => 20081104224649) do
     t.string   "problem",              :limit => 5,  :null => false
     t.string   "branch",               :limit => 3,  :null => false
     t.string   "country",              :limit => 3,  :null => false
-    t.integer  "customer_id",                        :null => false
+    t.integer  "customer_id"
     t.integer  "owner_id"
     t.integer  "resolver_id"
     t.integer  "center_id"
@@ -246,11 +246,13 @@ ActiveRecord::Schema.define(:version => 20081104224649) do
 
   create_table "retusers", :force => true do |t|
     t.integer  "user_id"
-    t.string   "retid",                         :null => false
-    t.string   "password",                      :null => false
-    t.boolean  "failed",     :default => false
+    t.string   "retid",                           :null => false
+    t.string   "password",                        :null => false
+    t.boolean  "failed",       :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "return_value"
+    t.integer  "reason"
   end
 
   add_index "retusers", ["retid"], :name => "uq_retusers_retid", :unique => true

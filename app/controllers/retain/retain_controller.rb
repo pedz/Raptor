@@ -8,7 +8,7 @@ module Retain
     rescue_from Combined::CenterNotFound, :with => :not_found_page
     rescue_from Combined::PmrNotFound,    :with => :not_found_page
     rescue_from Combined::QueueNotFound,  :with => :not_found_page
-    rescue_from Retain::FailedMarkedTrue, :with => :failed_marked_true 
+    rescue_from Retain::FailedMarkedTrue, :with => :failed_marked_true
     rescue_from Retain::LogonFailed,      :with => :logon_failed
     rescue_from Retain::SdiReaderError,   :with => :sdi_error_page
 
@@ -71,25 +71,65 @@ module Retain
       # do not retry until the user resets his password.
       retuser = application_user.retusers[0]
       retuser.failed = true
+      retuser.return_value = Logon.instance.return_value
+      retuser.reason = Logon.instance.reason
       retuser.save
 
-      flash[:error] = "Login failed -- bad password?"
-      # Remember what we were trying to do
-      session[:original_uri] = request.request_uri
-      # Go edit the retuser
-      redirect_to edit_retuser_url(retuser)
+      flash[:error] = find_logon_error(retuser.return_value, retuser.reason)
+      common_failed_logon(retuser)
     end
 
     def failed_marked_true(exception)
-      # logger.debug("failed marked true")
-      flash[:warning] = "'failed' flag set.  Check password, clear 'failed' flag, and try again"
+      retuser = application_user.retusers[0]
+      flash[:warning] = find_logon_error(retuser.return_value, retuser.reason)
+      common_failed_logon(retuser)
+    end
 
+    def common_failed_logon(retuser)
       # Remember what we were trying to do
       session[:original_uri] = request.request_uri
-
-      # Go edit the retuser
-      retuser = application_user.retusers[0]
       redirect_to edit_retuser_url(retuser)
+    end
+
+    #        16 |     18 |      Fail | Retain database not available for userid
+    #           |        |           |   validation
+    #        70 |     19 |      Fail | Userid is set to inactive
+    #        70 |     20 |      Fail | Userid is being blocked due to
+    #           |        |           |   excessive errors
+    #        70 |     21 |      Fail | Client IP address being blocked
+    #           |        |           |   due to excessive errors
+    #        70 |     22 |      Fail | Client IP address blocked for
+    #           |        |           |   other error
+    #        70 |      2 |      Fail | Password does not match current
+    #           |        |           |   database password
+    #        70 |      3 | Cond Pass | Password has expired, only
+    #           |        |           |   a PMDR change password
+    #           |        |           |   permitted
+    #        69 |      8 |      Fail | Invalid/Unknown Retain userid
+    #         8 |     16 |      Fail | Invalid Eyecatch "SDIRETEX"
+    #         8 |     12 |      Fail | Userid blank
+    #         8 |      8 |      Fail | Password blank
+    #         4 |      n |      Pass | Userid/Password validated,
+    #           |        |           |   password will expire in n (1 to
+    #           |        |           |   7) days
+    #         0 |      n |      Pass | Userid/Password validated,
+    #           |        |           |   password will expire in n (8 to
+    #           |        |           |   90) days
+    def find_logon_error(return_value, reason)
+      return "Retain database not available for userid validation" if return_value == 16 && reason == 18
+      return "Userid is set to inactive" if return_value == 70 && reason == 19
+      return "Userid is being blocked due to excessive errors" if return_value == 70 && reason == 20
+      return "Client IP address being blocked due to excessive errors" if return_value == 70 && reason == 21
+      return "Client IP address blocked for other error" if return_value == 70 && reason == 22
+      return "Password does not match current database password" if return_value == 70 && reason == 2 
+      return "Password has expired, only a PMDR change password permitted" if return_value == 70 && reason == 3 
+      return "Invalid/Unknown Retain userid" if return_value == 69 && reason == 8 
+      return "Invalid Eyecatch \"SDIRETEX\"" if return_value == 8 && reason == 16
+      return "Userid blank" if return_value == 8 && reason == 12
+      return "Password blank" if return_value == 8 && reason == 8 
+      return "Userid/Password validated, password will expire in #{reason} days" if return_value == 4
+      return "Userid/Password validated, password will expire in #{reason} days" if return_value == 0
+      return "Unknown logon error: return value was #{return_value}, reason was #{reason}"
     end
 
     def not_found_page(exception)

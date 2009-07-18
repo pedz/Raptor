@@ -32,6 +32,11 @@ module ApplicationHelper
     res << "#{"%.3f" % time} seconds or "
     res << "#{"%.3f" % avg} seconds per call. "
     res << "</span>"
+    logon_return = Retain::Logon.instance.return_value
+    logon_reason = Retain::Logon.instance.reason
+    unless logon_return.nil? || logon_return == 0
+      res << "<span style='color: yellow;'>Password expires in #{logon_reason} days"
+    end
     res
   end
 
