@@ -156,6 +156,7 @@ module Retain
     
     CompRegex = Regexp.new("CompID:(.........)")
     GoodComps = [
+                 "9100HMC70",   # HMC code
                  "5655R1200",   # Digi Lan RAN
                  "5765E6200",   # AIX 5.2
                  "5765G0300",   # AIX 5.3
