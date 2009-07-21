@@ -4,7 +4,7 @@ class CreateCachedPmrs < ActiveRecord::Migration
       t.string  :problem,         :limit => 5,  :null => false 
       t.string  :branch,          :limit => 3,  :null => false 
       t.string  :country,         :limit => 3,  :null => false
-      t.integer :customer_id,                   :null => false
+      t.integer :customer_id    # id into Customers
       t.integer :owner_id       # id into Registrations
       t.integer :resolver_id    # id into Registrations
       t.integer :center_id      # id into Centers
