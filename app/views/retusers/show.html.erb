@@ -1,3 +1,4 @@
+<%- content_for(:center) do -%>
 <p>
   <b>Retid:</b>
   <%=h @retuser.retid %>
@@ -12,3 +13,4 @@
 
 <%= link_to 'Edit', edit_retuser_path(@retuser) %> |
 <%= link_to 'Index of Retain Users', retusers_path %>
+<%- end -%>

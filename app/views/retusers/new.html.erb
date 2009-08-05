@@ -1,3 +1,4 @@
+<%- content_for(:center) do -%>
 <h1>New Retain User</h1>
 
 <%= error_messages_for :retuser %>
@@ -24,3 +25,4 @@
 <% end %>
 
 <%= link_to 'Index of Retain Users', retusers_path %>
+<%- end -%>
