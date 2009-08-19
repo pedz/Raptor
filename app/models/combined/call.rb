@@ -10,7 +10,7 @@
 #
 module Combined
   class Call < Base
-    set_expire_time 5.minutes
+    set_expire_time 30.minutes
 
     set_db_keys :ppg
     add_skipped_fields :ppg
@@ -280,6 +280,7 @@ module Combined
     end
     
     def load
+      # logger.debug("CMB: load for #{self.to_param}")
       # Pull the fields we need from the cached record into an options_hash
       queue = @cached.queue
       options_hash = {

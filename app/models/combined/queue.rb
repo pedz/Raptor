@@ -101,9 +101,10 @@ module Combined
     private
 
     def load
-      # logger.debug("CMB: load for #{self.to_param}")
       # This could be generallized but for now lets just do this
       return if @cached.queue_name.nil?
+
+      # logger.debug("CMB: load for #{self.to_param}")
       
       time_now = Time.now
 

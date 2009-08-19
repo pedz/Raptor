@@ -286,7 +286,10 @@ module Combined
 
     def call_load
       # logger.debug("CMB: db only = #{DB_ONLY}")
-      load unless DB_ONLY
+      unless DB_ONLY
+        logger.debug("LOAD: #{self.to_param}")
+        load
+      end
       @invalid_cache = false
       @loaded = true
     end

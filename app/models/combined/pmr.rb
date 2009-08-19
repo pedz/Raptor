@@ -1,6 +1,6 @@
 module Combined
   class Pmr < Base
-    set_expire_time 5.minutes
+    set_expire_time 30.minutes
 
     set_db_keys :problem, :branch, :country
     add_skipped_fields :problem, :branch, :country

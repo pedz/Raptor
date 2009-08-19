@@ -60,11 +60,11 @@ module Combined
     private
     
     def load
-      # logger.debug("CMB: load for #{self.to_param}")
       if @cached.psar_mailed_flag == "M"
         # logger.debug("CMB: skipping load for #{self.to_s} -- mailed flag set to M")
         return
       end
+      # logger.debug("CMB: load for #{self.to_param}")
 
       # Pull the fields we need from the cached record into an options_hash
       options_hash = { :psar_file_and_symbol => @cached.psar_file_and_symbol }
