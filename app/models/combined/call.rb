@@ -10,7 +10,7 @@
 #
 module Combined
   class Call < Base
-    set_expire_time 1.minutes
+    set_expire_time 30.minutes
 
     set_db_keys :ppg
     add_skipped_fields :ppg
