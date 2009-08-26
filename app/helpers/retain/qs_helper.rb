@@ -441,7 +441,7 @@ module Retain
       # logger.debug("QS: link_etc #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'link-etc text' do |binding|
-          concat("Prblm,bnc,cty")
+          concat("Prblm,bnc,cty<br/>Dispatched By")
         end
       else
         class_list = 'link-etc text'
@@ -456,6 +456,9 @@ module Retain
             a binding, :class => 'pmr-link', :href => url_for(call) do |binding|
               span binding, :style => "text-decoration: underline" do |binding|
                 concat(call.pmr.pbc)
+                if call.is_dispatched
+                  concat("<br/>#{call.dispatched_employee_name}")
+                end
               end
               popup binding do |binding|
                 concat(qs_ecpaat_lines(call))

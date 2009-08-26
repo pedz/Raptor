@@ -10,7 +10,7 @@
 #
 module Combined
   class Call < Base
-    set_expire_time 30.minutes
+    set_expire_time 1.minutes
 
     set_db_keys :ppg
     add_skipped_fields :ppg
@@ -134,6 +134,19 @@ module Combined
         else
           return "Backup"
         end
+      end
+    end
+
+    def is_dispatched
+      (self.call_control_flag_1 & 2) == 2
+    end
+
+    def dispatched_employee_name
+      dr = Cached::Registration.find(:first, :conditions => { :signon => self.dispatched_employee })
+      unless dr.nil?
+        dr.name
+      else
+        "Unknown"
       end
     end
 

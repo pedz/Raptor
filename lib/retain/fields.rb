@@ -128,7 +128,7 @@ module Retain
       :askq_control_flag           => [  540, :ebcdic,              1 ],
       :special_application         => [  541, :ebcdic,              1 ],
       :hardware_territory          => [  542, :ebcdic,              3 ],
-      :call_control_flag_1         => [  543, :ebcdic,              1 ],
+      :call_control_flag_1         => [  543, :byte,                1 ],
       :call_queue_status_flag      => [  544, :ebcdic,              1 ],
       :original_queue              => [  545, :ebcdic_strip,        6 ],
       :original_level              => [  546, :ebcdic,              1 ],

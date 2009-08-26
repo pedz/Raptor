@@ -181,6 +181,8 @@ module Retain
         encode_center(value.trim(3))
       when :binary
         value
+      when :byte
+        value.chr
       when :group
         group_request(value)
       when :number              # space filled number
@@ -239,6 +241,8 @@ module Retain
         value.unpack("n*").map { |index| Fields.index_to_sym(index) }
       when :binary
         value
+      when :byte
+        value[0]
       when :short
         value.ret2short
       when :nls_text_lines

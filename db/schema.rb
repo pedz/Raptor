@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081104224650) do
+ActiveRecord::Schema.define(:version => 31) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -33,6 +33,8 @@ ActiveRecord::Schema.define(:version => 20081104224650) do
     t.integer  "customer_time_zone_adj"
     t.integer  "time_zone_code"
     t.datetime "last_fetched"
+    t.string   "dispatched_employee"
+    t.integer  "call_control_flag_1"
   end
 
   add_index "cached_calls", ["ppg", "queue_id"], :name => "uq_cached_calls_pair", :unique => true
