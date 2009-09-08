@@ -34,7 +34,7 @@ module Combined
     
     # signon user is not used
     def self.from_param(param, signon_user = nil)
-      create_from_options(param_to_options(param))
+      create_from_options(param_to_options(param.upcase))
     end
     
     # signon user is not used
