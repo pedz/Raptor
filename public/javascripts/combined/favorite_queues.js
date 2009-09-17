@@ -38,7 +38,7 @@ Raptor.refreshReply = function(transport) {
     }
     $('time').innerHTML = "" + new Date() + "";
     if (teamAlert)
-	Raptor.showMessage("PMR's on a team queue");
+	Raptor.showMessage("PMRs on a team queue");
     else
 	Raptor.hideMessage();
 };
