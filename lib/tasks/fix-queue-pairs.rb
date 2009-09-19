@@ -18,12 +18,10 @@ File.new("tools/queue-pairs").each do |line|
   qi = Cached::QueueInfo.find_by_queue_id_and_owner_id(q, r)
   if qi.nil?
     if hq.nil?
-      Cached::QueueInfo.create_by_queue_id_and_owner_id(q, r)
+      Cached::QueueInfo.create(:queue => q, :owner => r)
     else
       temp = hq.queue
-      puts "#{retid} already has personal queue of #{temp.queue_name},#{temp.center.center}"
+      puts "#{retid} (#{r.name}) already has personal queue of #{temp.queue_name},#{temp.center.center}"
     end
-  else
-    puts "queue pair #{line} found"
   end
 end
