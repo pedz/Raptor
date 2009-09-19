@@ -31,11 +31,12 @@ ActionController::Routing::Routes.draw do |map|
                 })
 
   # "Queue Status" -- my Techjump page
-  map.resources(:combined_qs,        :controller => 'retain/qs')
-  map.resources(:combined_customers, :controller => 'retain/customers')
-  map.resources(:combined_centers,   :controller => 'retain/centers')
-  map.resources(:combined_apars,     :controller => 'retain/apars')
-  map.resources(:combined_queues,    :controller => 'combined/queues')
+  map.resources(:combined_qs,         :controller => 'retain/qs')
+  map.resources(:combined_customers,  :controller => 'retain/customers')
+  map.resources(:combined_centers,    :controller => 'retain/centers')
+  map.resources(:combined_components, :controller => 'retain/components')
+  map.resources(:combined_apars,      :controller => 'retain/apars')
+  map.resources(:combined_queues,     :controller => 'combined/queues')
   
 
   # Call Update map.

@@ -1,0 +1,42 @@
+<% @title = "Component" %>
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tfoot>
+    <tr>
+      <td></td>
+    </tr>
+  </tfoot>
+  <tbody>
+    <tr>
+      <td>Component Id</td>
+      <td><%= "'#{@component.short_component_id}'(#{@component.short_component_id.length})" %></td>
+    </tr>
+    <tr>
+      <td>Component Name</td>
+      <td><%= @component.component_name %></td>
+    </tr>
+    <% @component.multiple_change_team_ids.each_with_index do |cid, index| %>
+    <tr>
+      <td><%= "Change team id #{index}" %></td>
+      <td><%= cid %></td>
+    </tr>
+    <% end %>
+    <% @component.multiple_fe_support_grp_ids.each_with_index do |cid, index| %>
+    <tr>
+      <td><%= "FE support group id #{index}" %></td>
+      <td><%= cid %></td>
+    </tr>
+    <% end %>
+    <% @component.multiple_rls_table_entries.each_with_index do |cid, index| %>
+    <tr>
+      <td><%= "release #{index}" %></td>
+      <td><%= cid %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

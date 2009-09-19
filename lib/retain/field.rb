@@ -165,6 +165,8 @@ module Retain
           value[12 ... 20].scan(/../).map { |s| s.hex }.pack("cccc")
         # Rails.logger.debug("XXX: encode before #{value} after #{new_value}")
         new_value
+      when :ebcdic_zero
+        value.trim(width, "\0").upcase.user_to_retain
       when :ebcdic_strip
         value.trim(width).upcase.user_to_retain
       when :upper_ebcdic
@@ -221,6 +223,12 @@ module Retain
           value[12 ... 16].unpack("CCCC").map { |c| "%02x" % c }.join("")
         # Rails.logger.debug("XXX: decode before #{value} after #{new_value}")
         new_value
+        # for ebcdic_zero we trim off any trailing '\0' bytes
+      when :ebcdic_zero
+        if (len = (0 ... value.length).detect { |i| value[i] == 0 })
+          value = value[0,len]
+        end
+        value.retain_to_user
       when :ebcdic_strip
         value.retain_to_user.strip
       when :upper_ebcdic
