@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 31) do
+ActiveRecord::Schema.define(:version => 32) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -50,6 +50,20 @@ ActiveRecord::Schema.define(:version => 31) do
   end
 
   add_index "cached_centers", ["center"], :name => "uq_cached_centers", :unique => true
+
+  create_table "cached_components", :force => true do |t|
+    t.string   "short_component_id",         :limit => 11, :null => false
+    t.string   "component_name",             :limit => 19, :null => false
+    t.string   "release_name",               :limit => 3,  :null => false
+    t.string   "multiple_change_team_id",    :limit => 6,  :null => false
+    t.string   "multiple_fe_support_grp_id", :limit => 6,  :null => false
+    t.date     "start_date"
+    t.date     "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "cached_components", ["release_name", "short_component_id"], :name => "uq_cached_components_tuple", :unique => true
 
   create_table "cached_customers", :force => true do |t|
     t.string   "country",            :limit => 3,  :null => false

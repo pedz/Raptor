@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  short_component_id: MyString
+  component_name: MyString
+  multiple_change_team_id: MyString
+  multiple_fe_support_grp_id: MyString
+  multiple_rls_table_entry: MyString
+
+two:
+  short_component_id: MyString
+  component_name: MyString
+  multiple_change_team_id: MyString
+  multiple_fe_support_grp_id: MyString
+  multiple_rls_table_entry: MyString
