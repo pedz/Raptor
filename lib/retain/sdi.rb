@@ -145,7 +145,7 @@ module Retain
       logger.debug("SDI: #{@request_type}")
       @rcv_fields = scan_fields(Fields.new, @reply[128...@reply.length])
 
-      dump_debug
+      # dump_debug
 
       # merge received fields back into base objects fields.
       req_fields.merge!(@rcv_fields)
