@@ -916,7 +916,7 @@ module Retain
       # object's field.  The base object also has @rc.
       @base_obj = @fetch_fields.call
       @fetched = true
-      unless base_obj.rc == 0
+      unless @base_obj.rc == 0
         raise Retain::SdiReaderError.new(@base_obj)
       end
     end
