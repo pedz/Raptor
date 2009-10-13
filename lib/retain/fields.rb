@@ -837,7 +837,7 @@ module Retain
       unless (v = get_value(sym)).nil?
         return v
       end
-      raise "reader did not read attribute #{sym}"
+      raise Retain::SdiDidNotReadField.new(base_obj, sym)
     end
     
     def writer(sym, cvt, width, value)

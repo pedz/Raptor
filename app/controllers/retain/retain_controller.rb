@@ -4,15 +4,16 @@ module Retain
     before_filter :validate_retuser
     cache_sweeper :pmr_sweeper, :call_sweeper
     
-    rescue_from Combined::CallNotFound,   :with => :not_found_page
-    rescue_from Combined::CenterNotFound, :with => :not_found_page
-    rescue_from Combined::PmrNotFound,    :with => :not_found_page
-    rescue_from Combined::QueueNotFound,  :with => :not_found_page
-    rescue_from Retain::FailedMarkedTrue, :with => :failed_marked_true
-    rescue_from Retain::LogonFailed,      :with => :logon_failed
-    rescue_from Retain::SdiReaderError,   :with => :sdi_error_page
-    rescue_from Retain::RetainLogonEmpty, :with => :retain_logon_empty
-    rescue_from Retain::RetainLogonShort, :with => :retain_logon_short
+    rescue_from Combined::CallNotFound,     :with => :not_found_page
+    rescue_from Combined::CenterNotFound,   :with => :not_found_page
+    rescue_from Combined::PmrNotFound,      :with => :not_found_page
+    rescue_from Combined::QueueNotFound,    :with => :not_found_page
+    rescue_from Retain::FailedMarkedTrue,   :with => :failed_marked_true
+    rescue_from Retain::LogonFailed,        :with => :logon_failed
+    rescue_from Retain::SdiReaderError,     :with => :sdi_error_page
+    rescue_from Retain::RetainLogonEmpty,   :with => :retain_logon_empty
+    rescue_from Retain::RetainLogonShort,   :with => :retain_logon_short
+    rescue_from Retain::SdiDidNotReadField, :with => :retain_did_not_read_field
     
     def signon_user
       @signon_user ||=
@@ -149,6 +150,11 @@ module Retain
     def retain_logon_short(exception)
       @exception = exception
       render "retain/errors/retain_logon_short", :layout => "retain/errors"
+    end
+
+    def retain_did_not_read_field(exception)
+      @exception = exception
+      render "retain/errors/retain_did_not_read_field", :layout => "retain/errors"
     end
   end
 end

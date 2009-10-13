@@ -29,6 +29,17 @@ module Retain
     end
   end
 
+  class SdiDidNotReadField < Exception
+    def initialize(base_obj, field_name)
+      @base_obj = base_obj
+      @field_name = field_name
+    end
+
+    def field_name
+      @field_name
+    end
+  end
+
   class Base
     cattr_accessor :logger
 
