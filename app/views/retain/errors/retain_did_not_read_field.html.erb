@@ -3,8 +3,9 @@
 <% content_for(:center) do %>
   <h2 style='text-align: center; color: red;'>
     This is never suppose to happen but obviously it just did.  We
-    asked retain for <q><%= @exception.field_name %></q> and it did not tell us.
-    This could be because Retain is really sick.
+    asked retain for a field called <q><%= @exception.field_name
+    %></q> and it did not tell us.  This could be because Retain is
+    really sick.
   </h2>
 <% end %>
 
