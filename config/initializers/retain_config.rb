@@ -3,8 +3,8 @@
 
 module RetainConfig
   # Which node should we use
-  NodeIndex = 0
-  # NodeIndex = 1
+  # NodeIndex = 0
+  NodeIndex = 1
   HARDWARE_NODES = [ :ral, :sf2 ]
   SOFTWARE_NODES = [ :bdc, :rta ]
   
