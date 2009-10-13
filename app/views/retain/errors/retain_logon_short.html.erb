@@ -1,0 +1,16 @@
+<!-- retain/errors/retain_logon_empty.html.erb -->
+<% @title = @exception.message %>
+<% content_for(:center) do %>
+  <h2 style='text-align: center; color: red;'>
+    The logon sequence to retain should return at least 35 bytes.
+    Instead, it returned something less than that.  So, Retain is
+    probably really sick right now.
+  </h2>
+<% end %>
+
+<% content_for(:bottom) do %>
+  <div>
+    <%= button_url("Home", "/") %>
+    <%= button_url("Favorites", combined_favorite_queues_path) %>
+  </div>
+<% end %>

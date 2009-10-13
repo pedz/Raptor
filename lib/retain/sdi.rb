@@ -314,6 +314,8 @@ module Retain
       connect(h_or_s)
       @connection.write(@logon_request)
       @logon_reply = @connection.read(50)
+      raise RetainLogonEmpty if @logon_reply.nil?
+      raise RetainLogonShort if @login_reply.length < 35
       # if  @logon_reply
       #   logger.debug("RTN: reply length is #{@logon_reply.length}")
       # else

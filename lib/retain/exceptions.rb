@@ -16,4 +16,12 @@ module Retain
   #
   class FailedMarkedTrue < RetainError
   end
+
+  # Sometimes the logon sequence returns nothing
+  class RetainLogonEmpty < RetainError
+  end
+
+  # From above, I assume it is possible for it to return less than the proper 35 bytes.
+  class RetainLogonShort < RetainError
+  end
 end

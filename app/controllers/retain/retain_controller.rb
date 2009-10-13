@@ -11,7 +11,9 @@ module Retain
     rescue_from Retain::FailedMarkedTrue, :with => :failed_marked_true
     rescue_from Retain::LogonFailed,      :with => :logon_failed
     rescue_from Retain::SdiReaderError,   :with => :sdi_error_page
-
+    rescue_from Retain::RetainLogonEmpty, :with => :retain_logon_empty
+    rescue_from Retain::RetainLogonShort, :with => :retain_logon_short
+    
     def signon_user
       @signon_user ||=
         Combined::Registration.find_or_initialize_by_signon(Retain::Logon.instance.signon)
@@ -137,6 +139,16 @@ module Retain
     def sdi_error_page(exception)
       @exception = exception
       render "retain/errors/sdi_error_page", :layout => "retain/errors"
+    end
+
+    def retain_logon_empty(exception)
+      @exception = exception
+      render "retain/errors/retain_logon_empty", :layout => "retain/errors"
+    end
+
+    def retain_logon_short(exception)
+      @exception = exception
+      render "retain/errors/retain_logon_short", :layout => "retain/errors"
     end
   end
 end
