@@ -186,11 +186,6 @@ module Retain
     # end
     # alias_method_chain :sendit, :benchmark
 
-    # Note: this overrides @fields[:error_message]
-    def error_message
-      @error_message
-    end
-
     def sr
       @sr ||= if md = /SR([0-9][0-9][0-9])EX([0-9][0-9][0-9])/.match(@error_message)
                 md[1].to_i
@@ -234,6 +229,11 @@ module Retain
       eval "def #{k};  @fields.#{k}; end", nil, __FILE__, __LINE__
       eval "def #{k}?; @fields.#{k}?; end", nil, __FILE__, __LINE__
       eval "def #{k}=(data); @fields.#{k} = data; end", nil, __FILE__, __LINE__
+    end
+
+    # Note: this overrides @fields[:error_message]
+    def error_message
+      @error_message
     end
 
     private
