@@ -56,10 +56,7 @@ module Retain
     # data.  We also set the Logon instance to use these settings.
     def setup_logon_instance
       retuser = application_user.retusers[0]
-      config = Retain::Config.symbolize_keys[RetainConfig::Node][0].symbolize_keys
-      params = ConnectionParameters.new(:host     => config[:host],
-                                        :port     => config[:port],
-                                        :signon   => retuser.retid,
+      params = ConnectionParameters.new(:signon   => retuser.retid,
                                         :password => retuser.password,
                                         :failed   => retuser.failed)
       Logon.instance.set(params)

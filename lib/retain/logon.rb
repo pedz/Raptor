@@ -26,14 +26,6 @@ module Retain
     def reason
       @reason
     end
-    
-    def host
-      @params.host
-    end
-
-    def port
-      @params.port
-    end
 
     def signon
       @params.signon
