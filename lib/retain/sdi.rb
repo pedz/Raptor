@@ -136,7 +136,7 @@ module Retain
       @rc = @header[8...12].ret2uint
       # if true
       #   logger.debug("RTN: self is of class #{self.class}")
-      #   logger.debug("RTN: rc should be #{@rc}")
+      #   logger.error("RTN: rc should be #{@rc}")
       # end
 
       # Set request type before calling scan_fields just in case it
@@ -218,6 +218,7 @@ module Retain
     end
     
     def rc
+      logger.error("here rc = #{@rc}")
       @rc
     end
     

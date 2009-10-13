@@ -104,7 +104,9 @@ module Retain
     alias :request_error :ex
 
     def rc
-      @fetch_sdi.rc
+      temp = @fetch_sdi.rc
+      logger.error("base error rc = #{temp}")
+      temp
     end
 
     def dump_debug
