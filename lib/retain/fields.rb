@@ -837,7 +837,7 @@ module Retain
       unless (v = get_value(sym)).nil?
         return v
       end
-      raise Retain::SdiDidNotReadField.new(base_obj, sym)
+      raise Retain::SdiDidNotReadField.new(@base_obj, sym)
     end
     
     def writer(sym, cvt, width, value)
@@ -914,10 +914,10 @@ module Retain
       # `fetch_sdi' object which might be, for example, a Pmcb or
       # Pmpb .  The fields returned are merged back into the base
       # object's field.  The base object also has @rc.
-      base_obj = @fetch_fields.call
+      @base_obj = @fetch_fields.call
       @fetched = true
       unless base_obj.rc == 0
-        raise Retain::SdiReaderError.new(base_obj)
+        raise Retain::SdiReaderError.new(@base_obj)
       end
     end
 
