@@ -213,7 +213,6 @@ module Retain
     end
     
     def rc
-      logger.error("here rc = #{@rc}")
       @rc
     end
     
