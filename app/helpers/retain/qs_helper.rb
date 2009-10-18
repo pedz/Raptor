@@ -971,7 +971,7 @@ module Retain
               @nesting ||= 0
               padding = \" \" * @nesting
               @nesting += 2
-              concat(\"\#{padding}<#{sym}\#{hash.keys.map { |key| \" \#{key}='\#{hash[key]}'\"}}>\n\")
+              concat(\"\#{padding}<#{sym}\#{hash.keys.inject(\"\") { |memo, key| memo += \" \#{key}='\#{hash[key]}'\"}}>\n\")
               yield(binding)
               concat(\"\#{padding}</#{sym}>\n\")
               @nesting -= 2

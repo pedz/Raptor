@@ -15,11 +15,11 @@ module Retain
       RAILS_DEFAULT_LOGGER.debug("call_update initialize")
       @call = call
       @update_type = "addtxt"
-      @update_pmr = :true
-      @do_ct = :true
+      @update_pmr = true
+      @do_ct = true
       @do_ca = false
       @newtxt = "Action Taken:\n\nAction Plan:\n"
-      @add_time = :true
+      @add_time = true
       @psar_update = PsarUpdate.new(75, 57, 50, call.priority, 9, 0, 30)
       @new_queue = call.queue.to_param
       @new_priority = call.priority

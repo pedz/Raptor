@@ -5,11 +5,11 @@ module Retain
     end
 
     def leading_line_attribute
-      @raw_text[0]
+      @raw_text[0].ord
     end
     
     def leading_line_attribute=(value)
-      @raw_text[0] = value
+      @raw_text[0] = value.chr
     end
     
     def char(index)

@@ -80,7 +80,7 @@ class String
   # if the bytes need to be reversed before being passed to unpack.
   # We then define the functions we want.  The same trick is done
   # below for the reverse case.
-  if [ 256 ].pack("s")[0] == 0
+  if [ 256 ].pack("s")[0].ord == 0
     def ret2short
       self.reverse.unpack("s")[0]
     end
@@ -148,7 +148,7 @@ class Integer
     [ self ].pack("n")
   end
 
-  if [ 256 ].pack("s")[0] == 0
+  if [ 256 ].pack("s")[0].ord == 0
     def short2ret
       [ self ].pack("s").reverse
     end

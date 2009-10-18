@@ -33,11 +33,12 @@ module Cached
       
       def once(*ids) # :nodoc:
         for id in ids
+          clean_id_name = "__UNIQUE__#{id.to_s.sub(/\?/, '')}"
           module_eval <<-mod_end
-	    alias_method :__#{id.to_i}__, :#{id.to_s}
-	    private :__#{id.to_i}__
+	    alias_method :#{clean_id_name}, :#{id.to_s}
+	    private :#{clean_id_name}
 	    def #{id.to_s}(*args, &block)
-	      (@__#{id.to_i}__ ||= [__#{id.to_i}__(*args, &block)])[0]
+	      (@#{clean_id_name} ||= [#{clean_id_name}(*args, &block)])[0]
 	    end
           mod_end
         end

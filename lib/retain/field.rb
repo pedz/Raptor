@@ -103,11 +103,11 @@ module Retain
     # Encode an ascii center to the "binary" representation
     def encode_center(v)
       # I think if the last character is a digit, we just encode it as a binary
-      return v.to_i.ushort2ret if (?0 .. ?9).member?(v[2])
+      return v.to_i.ushort2ret if (?0.ord .. ?9.ord).member?(v[2].ord)
 
       # Otherwise, the last character effectively becomes the 100's
       # digit with A => 10 (or 1000 after its multiplied by 100)
-      return ((v.upcase[2] - ?A + 10) * 100 + v[0..1].to_i).ushort2ret
+      return ((v.upcase[2].ord - ?A.ord + 10) * 100 + v[0..1].to_i).ushort2ret
     end
 
     def group_request(fields)
@@ -197,8 +197,8 @@ module Retain
       when :ppg
         h = value.hex
         value = "  "
-        value[0] = h / 256
-        value[1] = h % 256
+        value[0] = (h / 256).chr
+        value[1] = (h % 256).chr
         value
       when :nls
         raise "Can no encode nls yet"
@@ -214,7 +214,7 @@ module Retain
     def decode(value)
       case @cvt
       when :int
-        # Rails.logger.debug("XXX #{"%02x %02x" % [ value[0], value[1]]}")
+        # Rails.logger.debug("XXX #{"%02x %02x" % [ value[0].ord, value[1].ord ]}")
         v = 0; value.each_byte { |b| v = v * 256 + b }; v
       when :psarfs
         # The first 12 bytes are ebcdic characters.  The last four are
@@ -250,7 +250,7 @@ module Retain
       when :binary
         value
       when :byte
-        value[0]
+        value[0].ord
       when :short
         value.ret2short
       when :nls_text_lines
@@ -271,7 +271,7 @@ module Retain
       when :znumber
         value.retain_to_user.to_i
       when :ppg
-        "%x" % (value[0] * 256 + value[1])
+        "%x" % (value[0].ord * 256 + value[1].ord)
       end
     end
 

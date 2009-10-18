@@ -310,7 +310,7 @@ module Retain
       
       @logon_request = first50.user_to_retain
       # "encrypt" the password
-      ( 21..28 ).each { |i| @logon_request[i] -= 0x3f }
+      ( 21..28 ).each { |i| @logon_request[i] = (@logon_request[i].ord - 0x3f).chr }
       connect(h_or_s)
       @connection.write(@logon_request)
       @logon_reply = @connection.read(50)

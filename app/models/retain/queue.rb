@@ -43,7 +43,7 @@ module Retain
           :center => decode_center(temp[0 ... 2]),
           :queue_name => temp[2 ... 8].retain_to_user.strip,
           :h_or_s => local_h_or_s,
-          :ppg => "%x" % (temp[10] * 256 + temp[11]),
+          :ppg => "%x" % (temp[10].ord * 256 + temp[11].ord),
           :p_s_b => fields.p_s_b,
           :system_down => fields.system_down,
           :call_search_result => temp

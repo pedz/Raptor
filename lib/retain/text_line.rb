@@ -18,7 +18,7 @@ module Retain
 
     def initialize(text, ccsid)
       super()
-      @text_type = @@special_line[text[0]]
+      @text_type = @@special_line[text[0].ord]
       cs = Ccsid.to_cs(ccsid)
 
       if @text_type != :normal
