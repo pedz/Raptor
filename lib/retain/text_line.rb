@@ -17,6 +17,7 @@ module Retain
     end
 
     def initialize(text, ccsid)
+      # Rails.logger.debug("Retain::TextLine#initialize ccsid = #{ccsid}")
       super()
       @text_type = @@special_line[text[0].ord]
       cs = Ccsid.to_cs(ccsid)

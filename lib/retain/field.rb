@@ -94,7 +94,7 @@ module Retain
 
       ## if it is less than 26, than it's an alphanumeric
       ## center like 13L
-      return ("%02d%c" % [ i2, (?A + i3)]) if i3 >= 0 && i3 <= 25
+      return ("%02d%c" % [ i2, (?A.ord + i3)]) if i3 >= 0 && i3 <= 25
 
       ## Otherwise it is pure numeric
       return ("%03d" % s)
