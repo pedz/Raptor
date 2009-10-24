@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
           # logger.debug("Did not find user id #{session[:user_id]}")
           reset_session
         else
-          # logger.debug("User has ldap id of #{tmp.ldap_id}")
+          logger.info("Request for #{tmp.ldap_id}")
           @application_user = tmp
         end
       end
@@ -66,16 +66,18 @@ class ApplicationController < ActionController::Base
     # logger.debug("APP: authorization: #{temp_debug(request)}")
     set_last_uri
     return true unless application_user.nil?
-    # logger.info("REMOTE_USER = #{request.env["REMOTE_USER"]}")
-    # logger.info("Header HTTP_X_FORWARDED_USER = #{request.headers['HTTP_X_FORWARDED_USER']}")
     # logger.info("Header NOT-SET = #{request.headers['NOT-SET'].inspect}")
     if request.env.has_key? "REMOTE_USER"
+      logger.info("REMOTE_USER = #{request.env["REMOTE_USER"]}")
       apache_authenticate
     elsif request.headers.has_key?('HTTP_X_FORWARDED_USER')
+      logger.info("Header HTTP_X_FORWARDED_USER = #{request.headers['HTTP_X_FORWARDED_USER']}")
       proxy_apache_authenticate
     elsif Rails.env == "test"
+      logger.info("Authenticate via test")
       testing_authenticate
     elsif NONE_AUTHENTICATE
+      logger.info("Authenticate via none")
       none_authenticate
     else
       ldap_authenticate
@@ -118,12 +120,12 @@ class ApplicationController < ActionController::Base
   # This authenticates against bluepages using LDAP.
   def ldap_authenticate
     # logger.debug("ldap_authenticate")
-    ldap_time = Benchmark.realtime { ActiveLdap::Base.establish_connection }
+    # ldap_time = Benchmark.realtime { ActiveLdap::Base.setup_connection }
     # logger.debug("LDAP: took #{ldap_time} to establish the connection")
     authenticate_or_request_with_http_basic "Bluepages Authentication" do |user_name, password|
-      # logger.debug("TEMP: user_name #{user_name} password #{password}")
+      logger.info("attempt to ldap authenticate: user_name #{user_name}")
       next nil unless LdapUser.authenticate_from_email(user_name, password)
-      logger.info("ldap_authenticate as #{user_name}")
+      logger.info("successful ldap_authenticate as #{user_name}")
       common_authenticate(user_name)
       return true
     end
@@ -169,9 +171,6 @@ class ApplicationController < ActionController::Base
   def common_authenticate(user_name)
     user = User.find_by_ldap_id(user_name)
     if user.nil?
-      # Can not use this because ldap_id is protected
-      # User.create!(:ldap_id => user_name)
-      # Use this instead:
       user = User.new
       user.ldap_id = user_name
       user.save!

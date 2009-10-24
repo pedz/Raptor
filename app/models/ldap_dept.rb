@@ -2,7 +2,7 @@ class LdapDept < ActiveLdap::Base
   ldap_mapping(:dn_attribute => 'dept',
                :prefix => 'ou=bluepages,o=ibm.com',
                :classes => ['ibmDepartment'])
-  has_many :members, :class => 'LdapUser', :foreign_key => 'dept', :primary_key => 'dept'
+  # has_many :members, :class => 'LdapUser', :foreign_key => 'dept', :primary_key => 'dept'
 
   private
 
