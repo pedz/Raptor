@@ -12,11 +12,3 @@ if "a"[0].kind_of? Fixnum
     end
   end
 end
-
-# Add force_encoding to String.  This may be a mistake but it should
-# be fixable later on.
-unless String.methods.include? :force_encoding
-  class String
-    def force_encoding(encoding); self; end
-  end
-end
