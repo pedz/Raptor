@@ -1,4 +1,8 @@
 <!-- app/views/retain/call/_show_line.html.erb -->
 <%= div_string unless div_string.nil? %>
-<% text_line.force_encoding("utf-8") %>
+<%
+   if text_line.respond_to? :force_encoding
+     text_line.force_encoding("utf-8")
+   end
+%>
 <span id='<%= "#{id_prefix}_#{index}" %>' class='<%= span_classes %>'><%= text_line %></span><br/>
