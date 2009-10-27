@@ -96,6 +96,16 @@ module Retain
         when "close"
           update_type = :close
           need_undispatch = need_dispatch = true
+          if @pmr.country != '000'
+            render(:update) { |page|
+              page.replace_html(reply_span,
+                                "<span class='sdi-error>" +
+                                "Can not close WT PMRs" +
+                                "</span>")
+              page.show area
+            }
+            return
+          end
         end
       else
         update_type = :none
