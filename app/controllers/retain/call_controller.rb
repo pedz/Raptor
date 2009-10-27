@@ -96,13 +96,13 @@ module Retain
         when "close"
           update_type = :close
           need_undispatch = need_dispatch = true
-          if @pmr.country != '000'
+          if @pmr.country != '000' && @call.p_s_b == 'P'
             render(:update) { |page|
               page.replace_html(reply_span,
                                 "<span class='sdi-error>" +
                                 "Can not close WT PMRs" +
                                 "</span>")
-              page.show area
+              page.show reply_span
             }
             return
           end
@@ -194,7 +194,7 @@ module Retain
                                     "<span class='sdi-error>" +
                                     "Can only requeue to and from software or hardware" +
                                     "</span>")
-                  page.show area
+                  page.show reply_span
                 }
                 return
               end
