@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class CreateFeedbackNotes < ActiveRecord::Migration
   def self.up
     create_table :feedback_notes do |t|

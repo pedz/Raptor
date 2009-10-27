@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   class Pmr < Base
     set_fetch_sdi Pmpb

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Cached
   class Base < ActiveRecord::Base
     cattr_accessor :logger

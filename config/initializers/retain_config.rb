@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 
 # Add site specific configuration here
 

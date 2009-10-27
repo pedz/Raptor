@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   class Pmcc < Sdi
     set_fetch_request "PMCC"

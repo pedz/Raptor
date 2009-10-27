@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Combined
   class Pmr < Base
     set_expire_time 30.minutes

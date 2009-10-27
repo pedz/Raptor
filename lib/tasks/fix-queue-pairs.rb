@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #!/usr/bin/env ruby
 #
 # This can not be run by ruby but is run by doing:

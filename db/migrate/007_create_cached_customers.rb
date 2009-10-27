@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class CreateCachedCustomers < ActiveRecord::Migration
   def self.up
     create_table :cached_customers do |t|

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class CreateCachedReleases < ActiveRecord::Migration
   def self.up
     create_table :cached_releases do |t|

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   class QsController < RetainController
     def show
@@ -8,6 +10,10 @@ module Retain
         redirect_to(:id => @queue.to_param)
         return
       end
+
+      # We suck all the calls and pmrs in, touching each.  If anything
+      # is re-fetched it will update the queues last_fetched time.
+      @queue.calls.each { |call| call.pmr.severity }
 
       loop = 0
       while true

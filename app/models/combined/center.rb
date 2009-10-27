@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Combined
   class Center < Base
     set_expire_time 1.week

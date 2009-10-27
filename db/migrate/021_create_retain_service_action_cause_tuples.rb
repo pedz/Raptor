@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class CreateRetainServiceActionCauseTuples < ActiveRecord::Migration
   def self.up
     create_table :retain_service_action_cause_tuples do |t|

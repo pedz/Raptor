@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Combined
   class Psar < Base
     set_expire_time :check_mail_flag

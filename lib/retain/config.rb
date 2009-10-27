@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 
 module Retain
   Config = YAML.load(File.open("#{RAILS_ROOT}/config/retain.yml")).symbolize_keys

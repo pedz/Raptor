@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Fields which can be requested.
 #
 #    2 -- :branch

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # A PMR has text lines, signature lines, scratch pad lines, FA lines,
 # etc.  All of those lines are kept here.  The common characteristic
 # is that they are 72 characters long.

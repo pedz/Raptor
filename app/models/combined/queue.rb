@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Combined
   class Queue < Base
     set_expire_time 5.minutes
@@ -105,7 +107,6 @@ module Combined
       return if @cached.queue_name.nil?
 
       # logger.debug("CMB: load for #{self.to_param}")
-      
       time_now = Time.now
 
       # Pull the fields we need from the cached record into an options_hash
@@ -122,13 +123,20 @@ module Combined
       # logger.debug("CMB: requested_elements = #{requested_elements.inspect}")
       options_hash[:requested_elements] = requested_elements
 
-      
       # Create a Retain::Queue from the options cache.
       retain_queue = Retain::Queue.new(options_hash)
       retain_calls = retain_queue.calls
 
+      # We know that the queue is valid or the calls method above
+      # would have raised an expcetion.  We are going to attach calls
+      # to this queue and that does not work with a new record so we
+      # go ahead and save it to the database.
       @cached.save if @cached.new_record?
+
+      # retain_calls are the calls from retain while db_calls are the
+      # calls that the database knows about.
       db_calls = @cached.calls
+
       # db_calls.each_with_index do |o, i|
       #   hex = ""
       #   if o.call_search_result
@@ -145,14 +153,20 @@ module Combined
       # end
 
       # If retain says we have no calls, we delete the calls in the
-      # database.
+      # database and go home.
       if retain_calls.length == 0
         # logger.debug("CMB: Queue is empty")
-        # If DB already says there are no calls, we skip this.
+
+        # If DB already says there are no calls, then there are no
+        # calls to delete and, also, we do not need to touch
+        # last_fetched.
         unless db_calls.length == 0
           @cached.calls.clear
           @cached.last_fetched = time_now
         end
+
+        # We know that the queue is not dirty, set the updated_at
+        # time, and save what has changed.
         @cached.dirty = false
         @cached.updated_at = time_now
         @cached.save
@@ -185,25 +199,29 @@ module Combined
       db_calls_hash = { }
       db_calls.each_index { |index| db_calls_hash[db_calls[index].call_search_result] = index }
       db_call_index = 0
+
       # We run through the indexes for the list of calls returned by
       # Retain.  This loop will delete the calls in the database that
       # are no longer valid.
       (0 ... retain_calls.length).each do |index|
+
+        # Set retain_call to the call from retain; db_call to the call
+        # from the database each at their respective index.
         retain_call = retain_calls[index]
         db_call = db_calls[db_call_index]
-        # logger.debug("CMB: Queue at index #{index}")
 
-        # If match at the current index, just move the db call to the
-        # list and continue
+        # logger.debug("CMB: Queue at index #{index}")
+        # If match at the current index, just move to the next db_call
+        # in the list and continue.
         if !db_call.nil? && (retain_call.call_search_result === db_call.call_search_result)
           # logger.debug("CMB: index #{index} db_call_index #{db_call_index} matches")
           db_call_index += 1
           next
         end
 
-        # If the call is in the list of db_calls, then we must have
-        # deleted from the queue so we need to delete from db_calls
-        # until we match
+        # If the retain call is in the list of db_calls, then we must
+        # have deleted from the queue so we need to delete from
+        # db_calls until we match
         if db_calls_hash.has_key?(retain_call.call_search_result)
           while (retain_call.call_search_result != db_call.call_search_result) &&
               (db_call_index < db_calls.length)

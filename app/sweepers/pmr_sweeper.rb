@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class PmrSweeper < ActionController::Caching::Sweeper
   observe Cached::Pmr
 

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #
 # Valid input is a choice.  I don't have a way to represent that yet.
 # Here are the comments from the SDI document.

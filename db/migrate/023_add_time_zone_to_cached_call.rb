@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class AddTimeZoneToCachedCall < ActiveRecord::Migration
   def self.up
     add_column :cached_calls, :customer_time_zone_adj, :integer

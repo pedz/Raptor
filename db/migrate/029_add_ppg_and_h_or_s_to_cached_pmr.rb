@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class AddPpgAndHOrSToCachedPmr < ActiveRecord::Migration
   def self.up
     add_column :cached_pmrs, :queue_name,  :string, :limit => 6

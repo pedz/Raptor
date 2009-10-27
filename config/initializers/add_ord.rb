@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #
 # Bridge code between 1.8.6 and the future.  Adds ord to Fixnum if it
 # does not exist AND if String#[] returns a number (like 1.8 did but

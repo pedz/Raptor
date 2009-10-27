@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   class ServiceGivenCodesController < ApplicationController
     # GET /retain_service_given_codes

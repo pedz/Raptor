@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Combined
   # Combined Controller, for now, is just a subclass of
   # RetainController

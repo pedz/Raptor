@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   Errors = Array.new
   Errors[   1] = "Indicates that the \"SDIYSHDR\" eye catcher in the

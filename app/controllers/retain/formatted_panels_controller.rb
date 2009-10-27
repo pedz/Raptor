@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   class FormattedPanelsController < RetainController
     def show

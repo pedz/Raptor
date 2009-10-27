@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Cached
   class QueueInfo < Base
     set_table_name "cached_queue_infos"

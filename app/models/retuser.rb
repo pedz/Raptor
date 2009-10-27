@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class Retuser < ActiveRecord::Base
   belongs_to :user
 

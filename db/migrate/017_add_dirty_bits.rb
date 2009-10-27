@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class AddDirtyBits < ActiveRecord::Migration
   def self.up
     add_column :cached_pmrs, :dirty, :boolean

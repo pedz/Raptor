@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   module PsarHelper
     def time_format(s)

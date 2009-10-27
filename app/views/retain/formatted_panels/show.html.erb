@@ -1,3 +1,5 @@
+<%# -*- coding: utf-8 -*- %>
+
 <%  @formatted_panel.format_panel.each do |format_panel_line| %>
 <%    text = (0 ... 72).inject("<span style='font-weight: normal; color: red;'>") do |memo, i|
         s = format_panel_line.char(i)

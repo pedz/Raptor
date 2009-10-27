@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class AddLastFetchedTimestamp < ActiveRecord::Migration
   def self.up
     add_column :cached_pmrs, :last_fetched, :datetime

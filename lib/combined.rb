@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #
 # We have three classes, cached, combined, and retain.  The cached
 # classes are active record classes.  The retain classes are the

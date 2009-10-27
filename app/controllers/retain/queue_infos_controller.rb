@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   class QueueInfosController < RetainController
     # GET /combined_queue_infos

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Combined
   class QueueInfo < Base
     set_expire_time :never

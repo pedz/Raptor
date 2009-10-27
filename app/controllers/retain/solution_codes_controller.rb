@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   class SolutionCodesController < ApplicationController
     # GET /retain_solution_codes

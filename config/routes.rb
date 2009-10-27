@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 ActionController::Routing::Routes.draw do |map|
   map.resources :retain_solution_codes, :controller => 'retain/solution_codes'
 

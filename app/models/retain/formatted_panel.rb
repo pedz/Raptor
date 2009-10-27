@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   class FormattedPanel < Base
     set_fetch_sdi Pmfb

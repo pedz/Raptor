@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class LdapDept < ActiveLdap::Base
   ldap_mapping(:dn_attribute => 'dept',
                :prefix => 'ou=bluepages,o=ibm.com',

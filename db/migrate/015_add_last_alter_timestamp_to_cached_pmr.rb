@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class AddLastAlterTimestampToCachedPmr < ActiveRecord::Migration
   def self.up
     add_column :cached_pmrs, :last_alter_timestamp, :binary

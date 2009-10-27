@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # The retain user record.  Presently has only the id and password but
 # may grow to have other fields.
 #

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class CreateCachedPsars < ActiveRecord::Migration
   def self.up
     create_table :cached_psars do |t|

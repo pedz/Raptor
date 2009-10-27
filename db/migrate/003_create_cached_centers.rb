@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class CreateCachedCenters < ActiveRecord::Migration
   def self.up
     create_table :cached_centers do |t|

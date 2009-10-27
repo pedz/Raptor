@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # The users table is the top level table describing a user.  Different
 # user type records hang off of it such as a record for the users ldap
 # entry (bluepages), the users retain entry, etc.

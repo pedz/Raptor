@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   class Pmpu < Sdi
     set_fetch_request "PMPU"

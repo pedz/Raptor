@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   class PmrsController < RetainController
     # GET /retain_pmrs/1

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Combined
   class QueueNotFound < Exception
     def initialize(spec)

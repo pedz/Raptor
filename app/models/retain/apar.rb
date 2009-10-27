@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   class Apar < Base
     set_fetch_sdi Ssbr

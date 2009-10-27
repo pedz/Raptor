@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class ModelActiveLdapGenerator < Rails::Generator::NamedBase
   include ActiveLdap::GetTextSupport
 

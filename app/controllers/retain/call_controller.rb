@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   class CallController < RetainController
     rescue_from Retain::SdiReaderError do |exception|

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   module RetainHelper
     def fixed_width_span(locals)

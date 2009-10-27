@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class AddCallSearchResultToCachedCall < ActiveRecord::Migration
   def self.up
     add_column :cached_calls, :call_search_result, :binary

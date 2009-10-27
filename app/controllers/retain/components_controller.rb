@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   class ComponentsController < RetainController
     def show

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class CreateCachedCalls < ActiveRecord::Migration
   def self.up
     create_table :cached_calls do |t|

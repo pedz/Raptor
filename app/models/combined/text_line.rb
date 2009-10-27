@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Combined
   class TextLine < Base
 

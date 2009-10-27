@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Combined
   class Customer < Base
     set_expire_time 1.week

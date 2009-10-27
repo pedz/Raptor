@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #
 # A group of methods added to each subclass of Retain::Base,
 # Cached::Base, and Combined::Base that return each other's class

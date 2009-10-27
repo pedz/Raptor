@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Cached
   class TextLine < Base
     module LineTypes

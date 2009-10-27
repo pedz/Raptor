@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #
 # This class is a "model" in the sense that it holds the data elements
 # but it is not backed by a database table.  It is just a record

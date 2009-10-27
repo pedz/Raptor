@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class RetusersController < ApplicationController
   before_filter :this_user?, :only => [ :show, :edit, :update, :destroy ]
   

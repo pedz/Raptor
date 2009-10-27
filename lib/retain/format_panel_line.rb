@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   class FormatPanelLine
     def initialize(raw_text)

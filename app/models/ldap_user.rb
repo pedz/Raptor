@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #
 # This is a class which should fetch entries from bluepages.  Many
 # things need to be finalized because I do not know much about LDAP.

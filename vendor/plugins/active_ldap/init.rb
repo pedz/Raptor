@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # require_library_or_gem 'active_ldap'
 # ActiveLdap::Base.logger ||= RAILS_DEFAULT_LOGGER
 

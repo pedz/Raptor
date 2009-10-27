@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class UsersController < ApplicationController
   before_filter :admin?, :only => [ :edit, :update, :destroy ]
   before_filter :this_user?, :only => [ :show ]

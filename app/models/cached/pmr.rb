@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Cached
   # = Retain PMR Model
   #
@@ -159,6 +161,17 @@ module Cached
     end
     once :all_text_lines
     
+    # This marks the problem as dirty as well as all calls in the
+    # database and the queues they are on.  This only marks entities
+    # in the database.
+    def mark_all_as_dirty
+      self.mark_as_dirty
+      self.calls.each do |call|
+        call.mark_as_dirty
+        call.queue.mark_as_dirty
+      end
+    end
+
     def etag
       # old method
       # ret = "#{self.problem},#{self.branch},#{self.country}"

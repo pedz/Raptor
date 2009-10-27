@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # = Cached Retain Models
 #
 # The various retain concepts such as Pmr, Call, Queue, etc are
@@ -93,7 +95,9 @@ module Cached
   #   This is the time stamp of when the call was fetched from Retain
   #   *and* it was different than what was in the database.  It is the
   #   time stamp used to determine if a page, action, or fragment
-  #   cache entry is up to date.
+  #   cache entry is up to date.  If the pmr's last_fetched field is
+  #   changed, this field will also be changed because the fragment
+  #   must be rendered again.
   class Call < Base
     set_table_name "cached_calls"
     belongs_to :queue, :class_name => "Cached::Queue"

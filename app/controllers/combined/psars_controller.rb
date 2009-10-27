@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Combined
   class PsarsController < Retain::RetainController
     # This is not currently used but it is the list of attributes that

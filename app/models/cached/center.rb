@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Cached
   class Center < Base
     set_table_name "cached_centers"

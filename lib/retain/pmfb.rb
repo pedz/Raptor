@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #
 # Allowed in group request:
 #   41: :center

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 
 set :application, "raptor"
 set :repository,  "apache@tcp237:repositories/raptor.git"

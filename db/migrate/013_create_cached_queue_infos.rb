@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class CreateCachedQueueInfos < ActiveRecord::Migration
   def self.up
     create_table :cached_queue_infos do |t|

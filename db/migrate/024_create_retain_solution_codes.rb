@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class CreateRetainSolutionCodes < ActiveRecord::Migration
   def self.up
     create_table :retain_solution_codes do |t|

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Required:
 # 1279  :psar_file_and_symbol
 #  or

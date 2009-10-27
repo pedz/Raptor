@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # = Retain Models
 #
 # These models represent the "raw" Retain models.  See Retain::Base

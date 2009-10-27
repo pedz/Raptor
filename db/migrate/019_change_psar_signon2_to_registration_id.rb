@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class ChangePsarSignon2ToRegistrationId < ActiveRecord::Migration
   def self.up
     # First we delete all the PSARs where we do not have a registration -- this is not reversable

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class CreateRetainServiceGivenCodes < ActiveRecord::Migration
   def self.up
     create_table :retain_service_given_codes do |t|

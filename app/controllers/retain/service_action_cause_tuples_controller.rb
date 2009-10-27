@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   class ServiceActionCauseTuplesController < ApplicationController
     # GET /retain_service_action_cause_tuples

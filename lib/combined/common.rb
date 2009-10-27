@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Combined
   module Common
     alias_method :proxy_respond_to?, :respond_to?

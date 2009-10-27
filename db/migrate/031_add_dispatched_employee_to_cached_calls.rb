@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class AddDispatchedEmployeeToCachedCalls < ActiveRecord::Migration
   def self.up
     add_column :cached_calls, :dispatched_employee, :string

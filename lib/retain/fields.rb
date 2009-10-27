@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #
 # Right now, the Fields class is just a place to put constants that
 # mnemonically map to the data element fields.

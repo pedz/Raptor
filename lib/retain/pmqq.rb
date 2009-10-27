@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #
 # Valid types for list request
 #  '02C8'x '02C9'x, '02D6'x.

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   #
   # A data element will be stored in a Field.  Fields will be a

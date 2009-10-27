@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class Time
   # Minute of Century for Jan. 1st, 2000
   MOC_2000_01_01 = (60 * 24) * 36525

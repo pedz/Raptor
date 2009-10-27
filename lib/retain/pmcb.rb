@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #    1 -- :area_number
 #    2 -- :branch
 #    3 -- :country

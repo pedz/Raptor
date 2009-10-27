@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class FeedbackNotesController < ApplicationController
   # We always need the parent feedback object
   before_filter(:get_feedback)

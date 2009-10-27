@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class AddSlotToCachedCall < ActiveRecord::Migration
   def self.up
     add_column :cached_calls, :slot, :integer

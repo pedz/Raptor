@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   # Class created just so we can check if a queue is valid or not.
   # This class now has no real point since queue now uses PMCS.

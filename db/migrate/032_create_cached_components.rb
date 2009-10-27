@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class CreateCachedComponents < ActiveRecord::Migration
   def self.up
     create_table :cached_components do |t|

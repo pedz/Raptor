@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Cached
   class Psar < Base
     set_table_name "cached_psars"

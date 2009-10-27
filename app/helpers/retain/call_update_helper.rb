@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Retain
   module CallUpdateHelper
     def id_for(call_update, tag)

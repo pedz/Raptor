@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Cached
   # =Retain Queue Model
   #
@@ -37,7 +39,12 @@ module Cached
   #   other words, updated_at is used to determine when to query
   #   Retain.  If the date fetched from Retain is different from the
   #   data cached in the database, then the database is updated and
-  #   last_fetched is set to the current time of day.
+  #   last_fetched is set to the current time of day.  As with
+  #   CachedCall#last_fetch, this field is updated if the last_fetched
+  #   field for any of calls is updated.  It *should* always be the
+  #   case that the last_fetched field of the queue is the most recent
+  #   of all the calls which are more recenty than their associated
+  #   problem.
 
   class Queue < Base
     set_table_name "cached_queues"

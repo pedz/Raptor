@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class AddRetainCodes < ActiveRecord::Migration
   def self.up
     Retain::ServiceGivenCode.create(:service_given => 19,

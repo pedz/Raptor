@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class AddReturnValueAndReasonToRetUsers < ActiveRecord::Migration
   def self.up
     add_column :retusers, :return_value, :integer

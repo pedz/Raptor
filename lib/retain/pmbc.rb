@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #   3  Country number CHAR(3) (3)
 # 565  Support center number in binary HEX(2) (2)
 # 566  Site HEX(1) (1)

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # A cached version of the retain "registration" -- what you see when
 # you do a DR command.
 #

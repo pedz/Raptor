@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class CallSweeper < ActionController::Caching::Sweeper
   observe Cached::Call
 

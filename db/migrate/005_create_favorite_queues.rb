@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # A user can set up a list of queues that he will visit often.  This
 # table stores those queues.
 #
