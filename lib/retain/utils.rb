@@ -54,17 +54,26 @@ class String
   RETAIN_CS = "IBM-037"
   USER_CS = "utf8"
 
-  def retain_to_user(encoding = RETAIN_CS)
-    # Retain fields can have nulls in them.  We do a gsub while in
-    # UTF-16.  I am guessing it is safer to do the substitution while
-    # in UTF-16 than as a string since the Strings.gsub does not know
-    # about double byte codes (and may replayce the space that shows
-    # up as the second byte in a double byte sequence).
-    #
-    # The icu4r had some problems here.  /\0/.U seems to cause a core
-    # dump.  The "\0".to_u has the proper effect and avoids the core
-    # dump.  (Its probably cheaper to create too).
-    self.to_u(encoding).gsub("\0".to_u, ' '.to_u).to_s(USER_CS)
+  # Retain fields can have nulls in them.  We do a gsub while in
+  # UTF-16.  I am guessing it is safer to do the substitution while in
+  # UTF-16 than as a string since the Strings.gsub does not know about
+  # double byte codes (and may replayce the space that shows up as the
+  # second byte in a double byte sequence).
+  #
+  # The icu4r had some problems here.  /\0/.U seems to cause a core
+  # dump.  The "\0".to_u has the proper effect and avoids the core
+  # dump.  (Its probably cheaper to create too).
+  if "a".respond_to? :force_encoding
+    def retain_to_user(encoding = RETAIN_CS)
+      self.to_u(encoding).
+        gsub("\0".to_u, ' '.to_u).
+        to_s(USER_CS).
+        force_encoding('utf-8')
+    end
+  else
+    def retain_to_user(encoding = RETAIN_CS)
+      self.to_u(encoding).gsub("\0".to_u, ' '.to_u).to_s(USER_CS)
+    end
   end
 
   def user_to_retain(encoding = RETAIN_CS)
