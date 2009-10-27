@@ -33,7 +33,8 @@ Raptor.queueBack = function(event) {
     action_span.close_radio.checked = false;
     action_span.requeue_radio.checked = true;
     div.newQueue.value = this.readAttribute('value');
-    div.ctCheckBox.checked = false;
+    /* They want us to CT everything all the time... */
+    /* div.ctCheckBox.checked = false; */
     div.textBox.clear();
     div.addTime.checked = false;
     div.addTime.redraw();
