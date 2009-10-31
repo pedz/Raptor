@@ -5,7 +5,7 @@
 <% @title = "Call #{@pmr.pbc} at #{@call.to_param}" %>
 <%= push_page_settings %>
 <% content_for(:top) do %>
-<% cache(:host => 'raptor_host', :action_suffix => 'top') do %>
+<% cache(@call.cache_tag('top')) do %>
 <!-- app/views/retain/call/show.html.erb top content -->
 <!-- <%= @controller.fragment_cache_key(:action_suffix => 'top') %> -->
 <table id='pmr-header'>
@@ -110,7 +110,7 @@
 <% all_lines = @pmr.alterable_format_lines + @pmr.text_lines -%>
 
 <% content_for(:center) do %>
-<% cache(:host => 'raptor_host', :action_suffix => 'center') do %>
+<% cache(@call.cache_tag('center')) do %>
 <!-- app/views/retain/call/show.html.erb center content -->
 <!-- cached at <%= Time.now %> -->
 <div class='even'>
@@ -124,7 +124,7 @@
 <% end -%>
 
 <% content_for(:left) do %>
-<% cache(:host => 'raptor_host', :action_suffix => 'left') do %>
+<% cache(@call.cache_tag('left')) do %>
 <!-- app/views/retain/call/show.html.erb left content -->
 <table>
   <% all_lines.each_with_index do |line, index| %>
@@ -161,21 +161,21 @@
 <% end -%>
 
 <% content_for(:left_tab) do %>
-<% cache(:host => 'raptor_host', :action_suffix => 'left_tab') do %>
+<% cache(@call.cache_tag('left_tab')) do %>
 <!-- app/views/retain/call/show.html.erb left tab content -->
 <div>S<br/>i<br/>g<br/>n<br/>a<br/>t<br/>u<br/>r<br/>e<br/>s</div>
 <% end -%>
 <% end -%>
 
 <% content_for(:right_tab) do %>
-<% cache(:host => 'raptor_host', :action_suffix => 'right_tab') do %>
+<% cache(@call.cache_tag('right_tab')) do %>
 <!-- app/views/retain/call/show.html.erb right tab content -->
 <div>P<br/>a<br/>g<br/>e<br/>s<br/></div>
 <% end -%>
 <% end -%>
 
 <% content_for(:right) do %>
-<% cache(:host => 'raptor_host', :action_suffix => 'right') do %>
+<% cache(@call.cache_tag('right')) do %>
 <!-- app/views/retain/call/show.html.erb right content -->
 <div>
   <% (0 ... (all_lines.length / 16)).each do |page_number| %>

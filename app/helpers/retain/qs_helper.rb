@@ -82,7 +82,11 @@ module Retain
       
       tbody binding do |binding|
         @queue.calls.each do |call|
-          cache(:host => 'raptor_host', :action_suffix => call.ppg) do
+          hit_cache = true
+          tag = call.cache_tag("qs")
+          cache(tag) do
+            logger.debug("building fragment for #{tag}")
+            hit_cache = false
             row_class = call_class(call)
             row_title =
               case row_class
@@ -103,6 +107,7 @@ module Retain
               DISP_LIST.map { |sym| self.send sym, binding, false, call }.join("\n")
             end
           end
+          logger.debug("reused fragment for #{tag}") if hit_cache
         end
       end
     end

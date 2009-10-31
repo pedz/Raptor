@@ -97,6 +97,7 @@ module Combined
         pmr = Retain::Pmr.new(options_hash)
         if @cached.last_alter_timestamp == pmr.last_alter_timestamp
           # logger.debug("CMB: #{temp_id} touched")
+          @cached.dirty = false
           @cached.updated_at = time_now
           @cached.save
           return

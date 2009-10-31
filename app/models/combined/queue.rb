@@ -137,21 +137,6 @@ module Combined
       # calls that the database knows about.
       db_calls = @cached.calls
 
-      # db_calls.each_with_index do |o, i|
-      #   hex = ""
-      #   if o.call_search_result
-      #     o.call_search_result.each_byte { |b| hex << ("%02x" % b) }
-      #   end
-      #   logger.debug("db_calls[#{i}] is #{hex}")
-      # end
-      # retain_calls.each_with_index do |o, i|
-      #   hex = ""
-      #   if o.call_search_result
-      #     o.call_search_result.each_byte { |b| hex << ("%02x" % b) }
-      #   end
-      #   logger.debug("retain_calls[#{i}] is #{hex}")
-      # end
-
       # If retain says we have no calls, we delete the calls in the
       # database and go home.
       if retain_calls.length == 0
@@ -173,102 +158,68 @@ module Combined
         return
       end
 
-      # We run through to see if nothing has changed.  We do this by
-      # checking if the sequence of call_search_results are the same
-      # for the list of calls just returned by retain and those saved
-      # in the database.
-      if retain_calls.length == db_calls.length &&
-          (0 ... retain_calls.length).all? { |index|
-          retain_calls[index].call_search_result === db_calls[index].call_search_result
-        }
-        # logger.debug("CMB: Queue appears to have not changed")
-        @cached.dirty = false
-        @cached.updated_at = time_now
-        @cached.save
-        return
-      end
-
-      # Note, at this point, we know that the queue has changed.  So,
-      # unlike most combined models, at the end of the routine (below)
-      # we will always set last_fetched.  The @queue.changed? is not
-      # valid because no attributes have changed -- only the
-      # associations.
-
-      # I'm going to make this a separate pass from above... it seems
-      # easier and doesn't cost too much
+      # A new approach: Mark all the db calls as not used.  Then walk
+      # the retain call list.  If the ppg and call_search_result both
+      # equal, then we assume its the same call (I can't see how it
+      # could not be) and mark it as used.  Afterwards, we walk the db
+      # call list and delete the unused calls.
       db_calls_hash = { }
-      db_calls.each_index { |index| db_calls_hash[db_calls[index].call_search_result] = index }
-      db_call_index = 0
+      db_calls.each { |db_call|
+        db_calls_hash[db_call.ppg] = db_call
+        db_call.used = false
+      }
 
-      # We run through the indexes for the list of calls returned by
-      # Retain.  This loop will delete the calls in the database that
-      # are no longer valid.
-      (0 ... retain_calls.length).each do |index|
+      no_new = true
+      slot = 0
+      group_request = nil
 
-        # Set retain_call to the call from retain; db_call to the call
-        # from the database each at their respective index.
-        retain_call = retain_calls[index]
-        db_call = db_calls[db_call_index]
+      retain_calls.each do |retain_call|
+        slot += 1
+        db_call = db_calls_hash[retain_call.ppg]
 
-        # logger.debug("CMB: Queue at index #{index}")
-        # If match at the current index, just move to the next db_call
-        # in the list and continue.
-        if !db_call.nil? && (retain_call.call_search_result === db_call.call_search_result)
-          # logger.debug("CMB: index #{index} db_call_index #{db_call_index} matches")
-          db_call_index += 1
+        # Trust old call as the same
+        if db_call && db_call.call_search_result == retain_call.call_search_result
+          db_call.used = true
+          db_call.slot = slot
           next
         end
 
-        # If the retain call is in the list of db_calls, then we must
-        # have deleted from the queue so we need to delete from
-        # db_calls until we match
-        if db_calls_hash.has_key?(retain_call.call_search_result)
-          while (retain_call.call_search_result != db_call.call_search_result) &&
-              (db_call_index < db_calls.length)
-            # logger.debug("CMB: delete db_call_index #{db_call_index}")
-            db_calls.delete(db_call)
-            db_call = db_calls[db_call_index]
-          end
-          db_call_index += 1
-          next
+        # first time through set these up
+        if no_new
+          no_new = false        # at least one new call
+          group_request = Combined::Call.retain_fields.map { |field| field.to_sym }
+          group_request.freeze
         end
-        
-        # retain_call not in db_calls so insert it.
-        # logger.debug("CMB: new retain_call #{index}")
-      end
 
-      # Need to delete the db_calls left at the end if any
-      while db_call_index < db_calls.length
-        # logger.debug("CMB: delete db_call at index #{db_call_index}")
-        db_call = db_calls[db_call_index]
-        db_calls.delete(db_call)
-      end
-
-      # Now we get our create the list of calls
-      slot = 1
-      retain_calls.each do |call|
-        # The call only has the bare essentials.
-        group_request = Combined::Call.retain_fields.map { |field| field.to_sym }
-        call.group_requests = group_request
+        # Make call fetch the fields we need
+        retain_call.group_requests = group_request
 
         # This will touch an unset field and cause a fetch.
         pmr_options = {
-          :problem => call.problem,
-          :branch  => call.branch,
-          :country => call.country
+          :problem => retain_call.problem,
+          :branch  => retain_call.branch,
+          :country => retain_call.country
         }
-        call_options = Cached::Call.options_from_retain(call)
-        db_call = @cached.calls.find_or_new(call_options)
+
+        # create or find the call
+        call_options = Cached::Call.options_from_retain(retain_call)
+
+        # If we have a call with the same ppg, we reuse it else we
+        # find or create a new one.  I don't see how the find could
+        # not return a new record in the case that db_call was
+        # originally null.
+        db_call = @cached.calls.find_or_new(call_options) unless db_call
+
+        # if an old record, update it with new info
         unless db_call.new_record?
           db_call.attributes = call_options
         end
-        if db_call.changed?
-          db_call.last_fetched = time_now
-        end
+
+        db_call.used = true
+        db_call.last_fetched = time_now if db_call.changed?
         db_call.slot = slot
         db_call.dirty = false
-        slot += 1
-        
+
         # If/when we start keeping expired PMRs we need to augment
         # this call to not find expired PMRs.  We do not have the
         # create date at this point but if we exclude expired PMRs,
@@ -278,6 +229,9 @@ module Combined
         # Make or find PMR
         db_pmr = Cached::Pmr.find_or_new(pmr_options)
 
+        # I believe now that customer is not required for pmrs, we can 
+        # delete this code... To Be Done
+        #
         # This code is duplicated three times presently.  The problem
         # is that we do not want the center or other fields from the
         # call to enter in to the search or values for the customer.
@@ -290,11 +244,13 @@ module Combined
         # That is why we construct the database objects in multiple
         # places.
         cust_options = {
-          :country => call.country,
-          :customer_number => call.customer_number
+          :country => retain_call.country,
+          :customer_number => retain_call.customer_number
         }
         db_customer = Cached::Customer.find_or_new(cust_options)
+        db_customer.save
         db_pmr.customer = db_customer
+        db_pmr.save
         db_call.pmr = db_pmr
 
         # We just do the save which will cause updated_at to be
@@ -303,16 +259,27 @@ module Combined
         db_call.updated_at = time_now
         db_call.save
       end
-      # Force the reload of the calls.
-      @cached.calls(true)
 
+      # delete any unused db_calls
+      no_deletes = true
+      db_calls.each do |db_call|
+        unless db_call.used
+          db_call.destroy
+          no_deletes = false
+        end
+      end
+
+      # mark as last_fetched if anything changed including adding or
+      # deleting db calls.
+      unless no_deletes && no_new && !@cached.changed?
+        @cached.last_fetched = time_now
+      end
+
+      # Force the reload of the calls if we added or deleted db calls
+      unless no_deletes && no_new
+        @cached.calls(true)
+      end
       @cached.dirty = false
-      # Just to repeat the comment above: if we get to this point, we
-      # know that the queue has changed.  We must change last_fetched.
-      # Checking the last_fetched of the calls or the PMRs won't work
-      # because a call might be deleted which would cause us to need
-      # to update the page caches for the queue.
-      @cached.last_fetched = time_now
       @cached.updated_at = time_now
       @cached.save
     end

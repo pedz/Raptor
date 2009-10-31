@@ -23,7 +23,9 @@ module Combined
     # (because we can't)
     add_skipped_fields :call_search_result
 
-    set_db_constants :ppg, :queue, :pmr
+    # Many items in a call is a constant since they reflect back to
+    # the 'name' of the call.  e.g. the priority is part of the ppg.
+    set_db_constants :ppg, :queue, :pmr, :priority
 
     add_skipped_fields :queue_id, :pmr_id, :p_s_b
     add_extra_fields :problem, :branch, :country, :customer_number

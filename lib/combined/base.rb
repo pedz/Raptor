@@ -290,7 +290,7 @@ module Combined
     def call_load
       # logger.debug("CMB: db only = #{DB_ONLY}")
       unless DB_ONLY
-        logger.debug("LOAD: #{self.to_param}")
+        logger.debug("LOAD: #{self.class.to_s}:#{self.to_param}")
         load
       end
       @invalid_cache = false
@@ -299,7 +299,7 @@ module Combined
     
     def cache_valid?
       if @cached.respond_to?("dirty") && @cached.dirty
-        # logger.debug("CMB: #{self.to_s} cache_valid?: return false: @cached.dirty is true")
+        logger.debug("CMB: #{self.to_s} cache_valid?: return false: @cached.dirty is true")
         return false
       end
       

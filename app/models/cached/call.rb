@@ -147,6 +147,14 @@ module Cached
     end
     once :needs_initial_response?
     
+    def used=(value)
+      @used = value
+    end
+
+    def used
+      @used
+    end
+
     def center_entry_time(center = queue.center)
       if sig = center_entry_sig(center)
         sig.date
@@ -176,5 +184,12 @@ module Cached
       sig
     end
     once :center_entry_sig
+    
+    def cache_tag(tag)
+      t = [ last_fetched, pmr.last_fetched ].max
+      q = queue
+      c = queue.center
+      "#{q.queue_name},#{q.h_or_s},#{c.center},#{ppg}-#{t.tv_sec}.#{t.usec}-#{tag}"
+    end
   end
 end

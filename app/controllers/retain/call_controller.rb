@@ -463,21 +463,21 @@ module Retain
           # Figure out what to send back
           case field
           when :next_queue
-            pmr.mark_as_dirty
+            pmr.mark_all_as_dirty
             hash = @call.validate_next_queue(signon_user)
             self.extend Retain::RetainHelper
             fixed_width_span(hash)
             return
 
           when :pmr_owner_id
-            pmr.mark_as_dirty
+            pmr.mark_all_as_dirty
             hash = @call.validate_owner(signon_user)
             self.extend Retain::RetainHelper
             fixed_width_span(hash)
             return
 
           when :pmr_resolver_id
-            pmr.mark_as_dirty
+            pmr.mark_all_as_dirty
             hash = @call.validate_resolver(signon_user)
             self.extend Retain::RetainHelper
             fixed_width_span(hash)
@@ -485,6 +485,7 @@ module Retain
 
           when :comments
             @call.mark_as_dirty
+            @call.queue.mark_as_dirty
             replace_text = @call.comments
 
           end

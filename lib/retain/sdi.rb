@@ -144,7 +144,7 @@ module Retain
       # Set request type before calling scan_fields just in case it
       # has to produce some error logs.
       @request_type = options[:request]
-      logger.debug("SDI: #{@request_type}")
+      logger.debug("SDI: #{@request_type} #{caller(2)[0 .. 8].join("\n          ")}")
       @rcv_fields = scan_fields(Fields.new, @reply[128...@reply.length])
 
       if Retain::Debug::DUMP_SDI
