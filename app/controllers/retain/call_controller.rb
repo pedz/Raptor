@@ -130,7 +130,7 @@ module Retain
             text = create_error_reply(ct, "CT")
             raise
           end
-          @pmr.mark_as_dirty
+          @pmr.mark_all_as_dirty
           text = create_reply_span("CT Completed")
         end
         
@@ -147,7 +147,7 @@ module Retain
             raise
           end
           text += create_reply_span("ADDTXT Completed")
-          @pmr.mark_as_dirty
+          @pmr.mark_all_as_dirty
           
           if call_update[:add_time]
             psar_options = get_psar_options(call_update)
@@ -225,8 +225,7 @@ module Retain
           # dispatched.
           if requeue.rc == 0 || (600 .. 700) === requeue.rc
             # logger.debug("mark queue as dirty -- 1")
-            @queue.mark_as_dirty
-            @pmr.mark_as_dirty
+            @pmr.mark_all_as_dirty
             need_undispatch = false
           end
 
@@ -310,8 +309,7 @@ module Retain
           # dispatched.
           if close.rc == 0 || (600 .. 700) === close.rc
             # logger.debug("mark queue as dirty -- 2")
-            @queue.mark_as_dirty
-            @pmr.mark_as_dirty
+            @pmr.mark_all_as_dirty
             need_undispatch = false
           end
 
@@ -408,7 +406,7 @@ module Retain
       end
 
       # At this point, the PMR has changed, so mark it as dirty
-      pmr.mark_as_dirty
+      pmr.mark_all_as_dirty
       
       undispatch = do_pmcu("NOCH", options)
       if undispatch.rc != 0
