@@ -602,7 +602,7 @@ module Retain
         l = []
         while line.length > 72
           this_end = 72
-          while this_end > 0 && line[this_end] != 0x20
+          while this_end > 0 && line[this_end].ord != 0x20
             this_end -= 1
           end
           if this_end == 0      # no spaces found
@@ -612,7 +612,7 @@ module Retain
           end
           
           new_start = this_end + 1
-          while new_start < line.length && line[new_start] == 0x20
+          while new_start < line.length && line[new_start].ord == 0x20
             new_start += 1
           end
           l << line[0 ... this_end]
