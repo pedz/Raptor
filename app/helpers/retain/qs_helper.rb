@@ -875,6 +875,8 @@ module Retain
       else
         # logger.debug("initial response WT #{pmr.severity.class}")
         case pmr.severity
+        when 0                  # encounted a PMH with a severity of 0... go figure.
+          return customer.jims_business_hours(entry_time, 2)
         when 1
           return customer.jims_business_hours(entry_time, 2)
         when 2
@@ -885,7 +887,7 @@ module Retain
           return customer.jims_business_hours(entry_time, 8)
         end
       end
-      raise "Did not figure out response time"
+      raise "Did not figure out response time #{call.pmr.to_param}"
     end
 
     FOLLOW_UP_RESPONSE_TIME = [ 0, 1, 2, 5, 5 ] # business days
