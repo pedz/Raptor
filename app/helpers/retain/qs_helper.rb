@@ -746,7 +746,7 @@ module Retain
         end
       else
         p = call.priority
-        s = call.pmr.severity
+        s = call.severity
         if p == s
           td_class =  "good"
           td_title = "Nothing wrong here"
@@ -805,7 +805,7 @@ module Retain
         end
       else
         pmr = call.pmr
-        jeff_days = (MULT[pmr.severity] * pmr.age).round
+        jeff_days = (MULT[call.severity] * pmr.age).round
         if jeff_days > 300
           jeff_class = "wag-wag"
           jeff_title = "Over 300 Jeff Days"
@@ -854,7 +854,7 @@ module Retain
         
         # Sev 1 Primeshift or Offshift: Initial customer callback is
         #       within 2 business hours, but try for one hour
-        if pmr.severity == 1
+        if call.severity == 1
           # logger.debug("sev 1")
           return customer.jims_business_hours(entry_time, 2)
         end
@@ -873,8 +873,8 @@ module Retain
         # logger.debug("off shift")
         return customer.jims_business_days(entry_time, 1)
       else
-        # logger.debug("initial response WT #{pmr.severity.class}")
-        case pmr.severity
+        # logger.debug("initial response WT #{call.severity.class}")
+        case call.severity
         when 0                  # encounted a PMH with a severity of 0... go figure.
           return customer.jims_business_hours(entry_time, 2)
         when 1
@@ -896,7 +896,7 @@ module Retain
       # logger.debug("ct_normal_response_requirement for #{call.to_param}")
       pmr = call.pmr
       customer = pmr.customer
-      days = FOLLOW_UP_RESPONSE_TIME[pmr.severity]
+      days = FOLLOW_UP_RESPONSE_TIME[call.severity]
       start_time = pmr.last_ct_time
       # logger.debug("TIME: ---- #{start_time}")
       customer.jims_business_days(start_time, days)

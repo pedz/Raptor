@@ -62,7 +62,7 @@ module Retain
         # Need to fetch a non-constant piece of the call.  The PMR is
         # a constant.
         call.comments
-        call.pmr.severity
+        call.severity
       }
     end
   end

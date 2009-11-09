@@ -40,7 +40,7 @@ module Retain
       # logger.debug("CNTRL: etag_matchs? #{request.etag_matches?(response.etag)}")
       if !request.fresh?(response)
         # logger.debug("CNTRL: processing call...")
-        @psar = Psar.new(75, 57, 50, @pmr.severity, 9)
+        @psar = Psar.new(75, 57, 50, @call.severity, 9)
       
         # This is just for the button.  Probably needs to be removed
         # anyway

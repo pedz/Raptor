@@ -305,6 +305,7 @@ module Combined
       retain_options[:last_fetched] = time_now
       retain_options[:updated_at] = time_now
       retain_options[:center_name] = pmr.center
+      # logger.debug("PMR retain_options #{retain_options}")
       @cached.update_attributes(retain_options)
     end
 

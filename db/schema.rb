@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This file is auto-generated from the current state of the database. Instead of editing this file, 
 # please use the migrations feature of Active Record to incrementally modify your database, and
 # then regenerate this schema definition.
@@ -11,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 31) do
+ActiveRecord::Schema.define(:version => 34) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -37,9 +35,10 @@ ActiveRecord::Schema.define(:version => 31) do
     t.datetime "last_fetched"
     t.string   "dispatched_employee"
     t.integer  "call_control_flag_1"
+    t.integer  "severity"
   end
 
-  add_index "cached_calls", ["ppg", "queue_id"], :name => "uq_cached_calls_pair", :unique => true
+  add_index "cached_calls", ["queue_id", "ppg"], :name => "uq_cached_calls_pair", :unique => true
 
   create_table "cached_centers", :force => true do |t|
     t.string   "center",                    :limit => 3, :null => false
@@ -52,6 +51,18 @@ ActiveRecord::Schema.define(:version => 31) do
   end
 
   add_index "cached_centers", ["center"], :name => "uq_cached_centers", :unique => true
+
+  create_table "cached_components", :force => true do |t|
+    t.string   "short_component_id",         :limit => 11, :null => false
+    t.string   "component_name",             :limit => 19, :null => false
+    t.string   "multiple_change_team_id",    :limit => 6,  :null => false
+    t.string   "multiple_fe_support_grp_id", :limit => 6,  :null => false
+    t.boolean  "valid"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "cached_components", ["short_component_id"], :name => "uq_cached_components_tuple", :unique => true
 
   create_table "cached_customers", :force => true do |t|
     t.string   "country",            :limit => 3,  :null => false
@@ -111,7 +122,7 @@ ActiveRecord::Schema.define(:version => 31) do
     t.string   "comments",             :limit => 54
   end
 
-  add_index "cached_pmrs", ["branch", "country", "creation_date", "problem"], :name => "uq_cached_pmrs_triple", :unique => true
+  add_index "cached_pmrs", ["problem", "branch", "country", "creation_date"], :name => "uq_cached_pmrs_triple", :unique => true
 
   create_table "cached_psars", :force => true do |t|
     t.integer  "pmr_id"
@@ -152,7 +163,7 @@ ActiveRecord::Schema.define(:version => 31) do
     t.datetime "updated_at"
   end
 
-  add_index "cached_queue_infos", ["owner_id", "queue_id"], :name => "uq_cached_queue_infos_queue_owner", :unique => true
+  add_index "cached_queue_infos", ["queue_id", "owner_id"], :name => "uq_cached_queue_infos_queue_owner", :unique => true
 
   create_table "cached_queues", :force => true do |t|
     t.string   "queue_name",   :limit => 6, :null => false
@@ -164,7 +175,7 @@ ActiveRecord::Schema.define(:version => 31) do
     t.datetime "last_fetched"
   end
 
-  add_index "cached_queues", ["center_id", "h_or_s", "queue_name"], :name => "uq_cached_queues_triple", :unique => true
+  add_index "cached_queues", ["queue_name", "h_or_s", "center_id"], :name => "uq_cached_queues_triple", :unique => true
 
   create_table "cached_registrations", :force => true do |t|
     t.string   "signon",                :null => false
@@ -183,6 +194,18 @@ ActiveRecord::Schema.define(:version => 31) do
 
   add_index "cached_registrations", ["signon"], :name => "uq_cached_registrations_signon", :unique => true
 
+  create_table "cached_releases", :force => true do |t|
+    t.integer  "component_id",              :null => false
+    t.string   "release_name", :limit => 3, :null => false
+    t.boolean  "valid"
+    t.date     "start"
+    t.date     "end"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "cached_releases", ["component_id", "release_name"], :name => "uq_cached_releases_tuple", :unique => true
+
   create_table "cached_text_lines", :force => true do |t|
     t.integer  "pmr_id",                      :null => false
     t.integer  "line_type",                   :null => false
@@ -193,7 +216,7 @@ ActiveRecord::Schema.define(:version => 31) do
     t.datetime "updated_at"
   end
 
-  add_index "cached_text_lines", ["line_number", "line_type", "pmr_id"], :name => "uq_cached_text_lines_triple", :unique => true
+  add_index "cached_text_lines", ["pmr_id", "line_type", "line_number"], :name => "uq_cached_text_lines_triple", :unique => true
 
   create_table "favorite_queues", :force => true do |t|
     t.integer  "user_id",    :null => false
@@ -202,7 +225,7 @@ ActiveRecord::Schema.define(:version => 31) do
     t.datetime "updated_at"
   end
 
-  add_index "favorite_queues", ["queue_id", "user_id"], :name => "uq_favorite_queues", :unique => true
+  add_index "favorite_queues", ["user_id", "queue_id"], :name => "uq_favorite_queues", :unique => true
 
   create_table "feedback_notes", :force => true do |t|
     t.integer  "feedback_id"
@@ -230,7 +253,7 @@ ActiveRecord::Schema.define(:version => 31) do
     t.datetime "updated_at"
   end
 
-  add_index "retain_service_action_cause_tuples", ["psar_action_code", "psar_cause", "psar_service_code"], :name => "uq_retain_service_action_cause_tuples", :unique => true
+  add_index "retain_service_action_cause_tuples", ["psar_service_code", "psar_action_code", "psar_cause"], :name => "uq_retain_service_action_cause_tuples", :unique => true
 
   create_table "retain_service_given_codes", :force => true do |t|
     t.integer  "service_given"
