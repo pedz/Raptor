@@ -186,7 +186,11 @@ module Cached
     once :center_entry_sig
     
     def cache_tag(tag)
-      t = [ last_fetched, pmr.last_fetched ].max
+      # We are down in the cached model so the "auto-fetch magic" does
+      # not work.  We have to check for nil in all the various fields
+      t = Time.now
+      t = last_fetched unless last_fetched.nil?
+      t = pmr.last_fetched unless pmr.nil? || pmr.last_fetched.nil? || pmr.last_fetched < t
       q = queue
       c = queue.center
       "#{q.queue_name},#{q.h_or_s},#{c.center},#{ppg}-#{t.tv_sec}.#{t.usec}-#{tag}"
