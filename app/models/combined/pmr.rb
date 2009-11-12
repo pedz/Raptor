@@ -137,14 +137,15 @@ module Combined
       pmr2 = Retain::Pmr.new(options_hash)
       pmr2.severity
 
-      if @cached.alteration_date
-        if pmr.nls_text_lines?
-          # logger.debug("CMB: #{temp_id} text_lines.length = #{pmr.nls_text_lines.length}")
-        end
-        if pmr.alterable_format_lines?
-          # logger.debug("CMB: #{temp_id} alterable_format_lines.length = #{pmr.alterable_format_lines.length}")
-        end
-      end
+      # if @cached.alteration_date
+      #   if pmr.nls_text_lines?
+      #     logger.debug("CMB: #{temp_id} text_lines.length = #{pmr.nls_text_lines.length}")
+      #   end
+      #   if pmr.alterable_format_lines?
+      #     logger.debug("CMB: #{temp_id} alterable_format_lines.length = #{pmr.alterable_format_lines.length}")
+      #   end
+      # end
+
       # Create the alterable format text lines.  Need to do this
       # first so we can calculate the line offset for the text lines
       # properly

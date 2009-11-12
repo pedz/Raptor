@@ -292,6 +292,7 @@ module Retain
               text += create_reply_span("PSAR Added")
             end
           end
+          @pmr.mark_all_as_dirty
 
         when :close
           close_options = call_options.dup

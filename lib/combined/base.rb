@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+require 'singleton'
+
 module Combined
   class QueueNotFound < Exception
     def initialize(spec)
@@ -25,6 +27,22 @@ module Combined
     end
   end
   
+  class LoadStack
+    include Singleton
+    
+    def push(s)
+      @stack ||= []
+      if @stack.include?(s)
+        Rails.logger.error("Load called for #{s} again:\n#{caller.join("\n")}")
+      end
+      @stack.push(s)
+    end
+    
+    def pop
+      @stack.pop
+    end
+  end
+
   class Base
     cattr_accessor :logger
 
@@ -290,8 +308,10 @@ module Combined
     def call_load
       # logger.debug("CMB: db only = #{DB_ONLY}")
       unless DB_ONLY
-        logger.debug("LOAD: #{self.class.to_s}:#{self.to_param}")
+        s = "#{self.class.to_s}:#{self.to_param}"
+        LoadStack.instance.push(s)
         load
+        LoadStack.instance.pop
       end
       @invalid_cache = false
       @loaded = true
