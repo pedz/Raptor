@@ -151,7 +151,7 @@ module Combined
       # properly
       if pmr.alterable_format_lines?
         update_lines(pmr.alterable_format_lines,
-                     @cached.alterable_format_lines,
+                     @cached.alterable_format_lines(true),
                      0,
                      Cached::TextLine::LineTypes::ALTERABLE_FORMAT)
       end
@@ -164,7 +164,7 @@ module Combined
           offset = 0
         end
         update_lines(pmr.nls_text_lines,
-                     @cached.text_lines,
+                     @cached.text_lines(true),
                      offset,
                      Cached::TextLine::LineTypes::TEXT_LINE)
       end
@@ -174,7 +174,7 @@ module Combined
         lines = pmr2.information_text_lines
         lines = [ lines ] unless lines.kind_of? Array
         update_lines(lines,
-                     @cached.information_text_lines,
+                     @cached.information_text_lines(true),
                      0,
                      Cached::TextLine::LineTypes::INFORMATION_TEXT)
       end
@@ -185,7 +185,7 @@ module Combined
                 pmr.nls_scratch_pad_3,
                 pmr.scratch_pad_signature ]
       update_lines(lines,
-                   @cached.scratch_pad_lines,
+                   @cached.scratch_pad_lines(true),
                    0,
                    Cached::TextLine::LineTypes::SCRATCH_PAD)
 
