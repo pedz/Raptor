@@ -318,13 +318,18 @@ module Combined
       pmr_lines.each_with_index do |line, index|
         line_number = offset + index
         text_line_options = {
-          :line_number => offset + index,
+          :line_number => line_number,
           :line_type   => line_type,
           :text_type   => line.text_type,
           :text        => line.text
         }
         if cached_lines.length <= line_number
-          cached_lines << Cached::TextLine.new(text_line_options)
+          begin
+            cached_lines << Cached::TextLine.new(text_line_options)
+          rescue => e
+            Rails.logger.error("About to crap out: offset=#{offset}, length = #{cached_lines.length}, line_number = #{line_number}, last line number = #{cached_lines.last.line_number}")
+            raise e
+          end
         else
           # logger.debug("CMB: possible update here")
           text_line = cached_lines[line_number]
