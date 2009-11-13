@@ -5,7 +5,6 @@
 <% @title = "PMR #{@pmr.pbc}" %>
 <%= push_page_settings %>
 <% content_for(:top) do %>
-<% cache(@call.cache_tag('top')) do %>
 <!-- app/views/retain/pmrs/show.html.erb top content -->
 <!-- <%= @controller.fragment_cache_key(:action_suffix => 'top') %> -->
 <table id='pmr-header'>
@@ -98,12 +97,10 @@
 </table>
 <%= push_page_settings %>
 <% end -%>
-<% end -%>
 
 <% all_lines = @pmr.alterable_format_lines + @pmr.text_lines -%>
 
 <% content_for(:center) do %>
-<% cache(@call.cache_tag('center')) do %>
 <!-- app/views/retain/pmrs/show.html.erb center content -->
 <!-- cached at <%= Time.now %> -->
 <div class='even'>
@@ -114,10 +111,8 @@
 </div>
 <%= push_page_settings %>
 <% end -%>
-<% end -%>
 
 <% content_for(:left) do %>
-<% cache(@call.cache_tag('left')) do %>
 <!-- app/views/retain/pmrs/show.html.erb left content -->
 <table>
   <% all_lines.each_with_index do |line, index| %>
@@ -151,24 +146,18 @@
 </table>
 <%= push_page_settings %>
 <% end -%>
-<% end -%>
 
 <% content_for(:left_tab) do %>
-<% cache(@call.cache_tag('left_tab')) do %>
 <!-- app/views/retain/pmrs/show.html.erb left tab content -->
 <div>S<br/>i<br/>g<br/>n<br/>a<br/>t<br/>u<br/>r<br/>e<br/>s</div>
 <% end -%>
-<% end -%>
 
 <% content_for(:right_tab) do %>
-<% cache(@call.cache_tag('right_tab')) do %>
 <!-- app/views/retain/pmrs/show.html.erb right tab content -->
 <div>P<br/>a<br/>g<br/>e<br/>s<br/></div>
 <% end -%>
-<% end -%>
 
 <% content_for(:right) do %>
-<% cache(@call.cache_tag('right')) do %>
 <!-- app/views/retain/pmrs/show.html.erb right content -->
 <div>
   <% (0 ... (all_lines.length / 16)).each do |page_number| %>
@@ -176,7 +165,6 @@
   <% end -%>
 </div>
 <%= push_page_settings %>
-<% end -%>
 <% end -%>
 
 <% content_for(:bottom) do %>
