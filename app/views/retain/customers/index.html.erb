@@ -1,0 +1,24 @@
+<%# -*- coding: utf-8 -*- %>
+
+<!-- retain/customers/index.html.erb -->
+<table>
+  <thead>
+    <tr>
+      <td>Customer Number</td>
+      <td>Company Name</td>
+      <td>Pat Flag</td>
+    </tr>
+  </thead>
+  <tfoot><tr><td></td></tr></tfoot>
+  <tbody>
+    <% @customers.each do |customer| -%>
+    <tr>
+      <td><%= h customer.customer_number %></td>
+      <td><%= h customer.company_name %></td>
+      <td><%= h customer.pat %></td>
+      <td><%= link_to "Show", combined_customer_path(customer) %></td>
+      <td><%= link_to "Edit", edit_combined_customer_path(customer) %></td>
+    </tr>
+    <% end -%>
+  </tbody>
+</table>

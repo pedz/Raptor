@@ -4,7 +4,7 @@ module Combined
   class Customer < Base
     set_expire_time 1.week
     set_db_keys :country, :customer_number
-    add_skipped_fields :country, :customer_number
+    add_skipped_fields :country, :customer_number, :pat
     
     set_db_constants :country, :customer_number, :center
 

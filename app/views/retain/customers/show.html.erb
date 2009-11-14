@@ -9,4 +9,8 @@
   <tr><th>Daylight Time Flag</th><td><%= h @customer.daylight_time_flag %></td></tr>
   <tr><th>Time Zone</th><td><%= h @customer.time_zone %></td></tr>
   <tr><th>Time Zone Binary</th><td><%= h @customer.time_zone_binary %></td></tr>
+  <tr><th>PAT flag</th><td><%= h @customer.pat %></td></tr>
 </table>
+
+<%= link_to "Edit", edit_combined_customer_path(@customer) %>
+<%= link_to "Back to Index", combined_customers_path %>

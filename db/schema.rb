@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 34) do
+ActiveRecord::Schema.define(:version => 35) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -65,8 +65,8 @@ ActiveRecord::Schema.define(:version => 34) do
   add_index "cached_components", ["short_component_id"], :name => "uq_cached_components_tuple", :unique => true
 
   create_table "cached_customers", :force => true do |t|
-    t.string   "country",            :limit => 3,  :null => false
-    t.string   "customer_number",    :limit => 7,  :null => false
+    t.string   "country",            :limit => 3,                     :null => false
+    t.string   "customer_number",    :limit => 7,                     :null => false
     t.integer  "center_id"
     t.string   "company_name",       :limit => 36
     t.boolean  "daylight_time_flag"
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(:version => 34) do
     t.integer  "time_zone_binary"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "pat",                              :default => false
   end
 
   add_index "cached_customers", ["country", "customer_number"], :name => "uq_cached_customers_pair", :unique => true

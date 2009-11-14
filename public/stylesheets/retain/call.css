@@ -27,3 +27,7 @@
 #top a { color: #000; }
 #top a:visited { color: #222; }
 #top a:hover { color: #fff; background-color:#000; }
+
+/* PAT styling */
+
+.pat { background-color: lightBlue; }
