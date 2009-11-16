@@ -8,16 +8,20 @@ module Retain
     # useful here.
     #
     def show
-      queue_name, center, h_or_s = params[:id].split(',')
+      fields = params[:id].split(',')
+      queue_name = fields.shift
+      if fields.length > 1
+        h_or_s = fields[0]
+        center = fields[1]
+      else
+        center = fields[0]
+        h_or_s = 'S'
+      end
       options = {
         :queue_name => queue_name.upcase.strip,
+        :h_or_s => h_or_s,
         :center => center
       }
-      if h_or_s.nil?
-        options[:h_or_s] = h_or_s
-      else
-        options[:h_or_s] = 'S'
-      end
       @query = Retain::Qq.new(options)
     end
   end

@@ -12,7 +12,7 @@
     <td>Queue Level</td><td><%= @query.queue_level %></td>
   </tr>
   <tr>
-    <td>Support Center</td><td><%= @query.support_center_binary %></td>
+    <td>Support Center</td><td><%= @query.software_center %></td>
   </tr>
   <tr>
     <td>Site</td><td><%= @query.site %></td>
@@ -27,27 +27,27 @@
       <td>Index</td>
       <% length = 0 %>
       <% if @query.signon2? %>
-      <%   signon2s = @query.signon2 %>
+      <%   signon2s = @query.signon2s %>
       <%   length = [ length, signon2s.length].max %>
       <td>Sign On</td>
       <% end %>
       <%  if @query.name? %>
-      <%    names = @query.name %>
+      <%    names = @query.names %>
       <%    length = [ length, names.length ].max %>
       <td>Name</td>
       <% end %>
       <% if @query.telephone_number? %>
-      <%   telephone_numbers = @query.telephone_number %>
+      <%   telephone_numbers = @query.telephone_numbers %>
       <%   length = [ length, telephone_numbers.length ].max %>
       <td>Phone</td>
       <% end %>
       <% if @query.user_status_information? %>
-      <%   user_status_informations = @query.user_status_information %>
+      <%   user_status_informations = @query.user_status_informations %>
       <%   length = [ length, user_status_informations.length ].max %>
       <td>User Info</td>
       <% end %>
       <% if @query.queue_status_flag? %>
-      <%   queue_status_flags = @query.queue_status_flag %>
+      <%   queue_status_flags = @query.queue_status_flags %>
       <%   length = [ length, queue_status_flags.length ].max %>
       <td>Queue Status</td>
       <% end %>
@@ -70,10 +70,10 @@
       <td><%= telephone_numbers[i] %></td>
       <% end %>      
       <% if user_status_informations %>
-      <td><%= ("%02x" % user_status_informations[i]) %></td>
+      <td><%= ("%s" % user_status_informations[i] ) %></td>
       <% end %>
       <% if queue_status_flags %>
-      <td><%= ("%02x" % queue_status_flags[i]) %></td>
+      <td><%= ("%s" % queue_status_flags[i]) %></td>
       <% end %>
     </tr>
     <% end %>
