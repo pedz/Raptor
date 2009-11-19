@@ -5,7 +5,7 @@ task :add_pat do
   File.open(top + "/public/Customer_list.txt") do |f|
     f.each_line do |l|
       l.chomp!
-      if md = /^([^ ]+) +(.*)/.match(l)
+      if md = /^(\S+)\s+(.*)/.match(l)
         id = md[1]
         name = md[2]
         list << "'#{id}'"
@@ -14,6 +14,6 @@ task :add_pat do
   end
   Cached::Customer.transaction do
     Cached::Customer.update_all("pat = false")
-    Cached::Customer.update_all("pat = ture", "customer_number in #{list.join(', ')}")
+    Cached::Customer.update_all("pat = true", "customer_number in ( #{list.join(', ')} )")
   end
 end
