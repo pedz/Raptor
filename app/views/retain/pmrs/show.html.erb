@@ -41,9 +41,7 @@
       <%= h @pmr.owner.name %>
     </td>
     <td>
-      <span id='customer-name' class='field field-center'>
-	<%= h @pmr.customer.company_name %>
-      </span>
+      <%= render @pmr.customer %>
     </td>
     <td title='Not a call so can not alter this field'>
       <%= h @pmr.resolver.name %>

@@ -27,10 +27,14 @@ module Retain
     # Show a Retain call
     def show
       @call = Combined::Call.from_param!(params[:id], signon_user)
+      if @no_cache && !@call.new_record?
+        @call.destroy
+        @call = Combined::Call.from_param!(params[:id], signon_user)
+      end
       @queue = @call.queue
-      @call.mark_cache_invalid if @no_cache
       @pmr = @call.pmr
-      @pmr.mark_cache_invalid if @no_cache
+      @pmr.mark_as_dirty if @no_cache
+
       # logger.debug("CNTRL: #{@pmr.updated_at} #{@pmr.etag}")
       fresh_when(:last_modified => @pmr.updated_at, :etag => @pmr.etag)
       # logger.debug("CNTRL: fresh? #{request.fresh?(response)}")
