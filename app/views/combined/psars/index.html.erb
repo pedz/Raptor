@@ -1,5 +1,6 @@
 <%# -*- coding: utf-8 -*- %>
 
+<!-- app/views/combined/psars/index.html.erb -->
 <%- @title = "PSAR Listing" -%>
 <%- content_for(:top) do -%>
   <h1>PSARs Listing</h1>
@@ -29,7 +30,7 @@
 	      <div>
 		<ul class='day-list'>
 		  <%- psars.each do |psar| -%>
-		  <li class='<%= psar.pmr.hot ? "hot-psar" : "psar" %>'>
+		  <li class='<%= ( psar.pmr && psar.pmr.hot ) ? "hot-psar" : "psar" %>'>
 		    <span class='psar-pmr'>
 		      <%= psar.pmr ? link_to(psar.pmr.to_param, combined_pmr_path(psar.pmr.to_param)) : "No PMR" %>
 		    </span>

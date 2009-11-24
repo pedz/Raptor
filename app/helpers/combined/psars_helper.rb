@@ -24,6 +24,8 @@ module Combined
       psars.sort do |a, b|
         a.stop_date <=> b.stop_date
       end.group_by(&:stop_date).group_by { |days_list|
+        # days_list is of the form (for example):
+        # [ 2009-11-16 00:00:00 UTC, [ <Combined::Psar>, <Combined::Psar>, ... <Combined::Psar> ]]
         days_list[1][0].saturday
       }
     end
@@ -36,7 +38,7 @@ module Combined
         days.map! do |day, psars|
           day_totals = psars.inject([0, 0]) do |totals, psar|
             totals[0] += psar.chargeable_time_hex
-            totals[1] += psar.chargeable_time_hex if psar.pmr.hot
+            totals[1] += psar.chargeable_time_hex if psar.pmr && psar.pmr.hot
             totals
           end
           week_total += day_totals[0]

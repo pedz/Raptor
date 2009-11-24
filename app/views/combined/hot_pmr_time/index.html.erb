@@ -1,0 +1,20 @@
+<%# -*- coding: utf-8 -*- %>
+
+<!-- app/views/combined/hot_pmr_time/index.html.erb -->
+<%- @title = "HOT PMR Time" -%>
+<%- @result.each do |saturday, pmr_list| -%>
+<h3>Week Starting Saturday: <%= saturday %></h3>
+<%- pmr_list.each do |pmr_id, total_time|
+      pmr = Cached::Pmr.find(pmr_id)
+      if call = pmr.primary_call
+        severity = call.severity
+      else
+        severity = pmr.severity
+      end -%>
+    <%= "%s,%s,%s" % [ pmr.problem, pmr.branch, pmr.country ] %><br/>
+    <%= "Severity: #{severity}" %><br/>
+    <%= "Business Justification: #{pmr.business_justification}"	%><br/>
+    <%= "PSAR Hours: #{total_time / 60}.#{total_time % 60 / 6}" %><br/>
+    <br/> 
+<%- end -%>
+<%- end -%>

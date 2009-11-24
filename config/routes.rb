@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 ActionController::Routing::Routes.draw do |map|
+  map.resources :combined_hot_pmr_time, :controller => 'combined/hot_pmr_time'
+  
   map.resources :retain_solution_codes, :controller => 'retain/solution_codes'
 
   map.resources :retain_service_given_codes, :controller => 'retain/service_given_codes'
