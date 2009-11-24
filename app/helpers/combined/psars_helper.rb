@@ -32,14 +32,18 @@ module Combined
       # logger.debug("PSAR: #{weeks.inspect}")
       weeks.map do |saturday, days|
         week_total = 0
+        week_ot_total = 0
         days.map! do |day, psars|
-          day_total = psars.inject(0) do |total, psar|
-            total += psar.chargeable_time_hex
+          day_totals = psars.inject([0, 0]) do |totals, psar|
+            totals[0] += psar.chargeable_time_hex
+            totals[1] += psar.chargeable_time_hex if psar.pmr.hot
+            totals
           end
-          week_total += day_total
-          [day, psars, day_total]
+          week_total += day_totals[0]
+          week_ot_total += day_totals[1]
+          [day, psars, day_totals[0], day_totals[1]]
         end
-        [saturday, days, week_total]
+        [saturday, days, week_total, week_ot_total]
       end
     end
   end

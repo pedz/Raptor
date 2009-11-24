@@ -1,5 +1,23 @@
-a {
+.psar a:link {
     color: #3465a4;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.psar a:visited {
+    color: #9AB2D2;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.hot-psar a:link {
+    color: #ff65a4;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.hot-psar a:visited {
+    color: #ffB2D2;
     text-decoration: none;
     font-weight: bold;
 }

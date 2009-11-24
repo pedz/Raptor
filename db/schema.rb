@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 35) do
+ActiveRecord::Schema.define(:version => 36) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -80,9 +80,9 @@ ActiveRecord::Schema.define(:version => 35) do
   add_index "cached_customers", ["country", "customer_number"], :name => "uq_cached_customers_pair", :unique => true
 
   create_table "cached_pmrs", :force => true do |t|
-    t.string   "problem",              :limit => 5,  :null => false
-    t.string   "branch",               :limit => 3,  :null => false
-    t.string   "country",              :limit => 3,  :null => false
+    t.string   "problem",                :limit => 5,                     :null => false
+    t.string   "branch",                 :limit => 3,                     :null => false
+    t.string   "country",                :limit => 3,                     :null => false
     t.integer  "customer_id"
     t.integer  "owner_id"
     t.integer  "resolver_id"
@@ -92,35 +92,37 @@ ActiveRecord::Schema.define(:version => 35) do
     t.integer  "next_center_id"
     t.integer  "next_queue_id"
     t.integer  "severity"
-    t.string   "component_id",         :limit => 12
-    t.string   "problem_e_mail",       :limit => 64
-    t.string   "creation_date",        :limit => 9
-    t.string   "creation_time",        :limit => 5
-    t.string   "alteration_date",      :limit => 9
-    t.string   "alteration_time",      :limit => 5
-    t.string   "sec_1_queue",          :limit => 6
-    t.string   "sec_1_center",         :limit => 3
-    t.string   "sec_1_h_or_s",         :limit => 1
-    t.string   "sec_1_ppg",            :limit => 3
-    t.string   "sec_2_queue",          :limit => 6
-    t.string   "sec_2_center",         :limit => 3
-    t.string   "sec_2_h_or_s",         :limit => 1
-    t.string   "sec_2_ppg",            :limit => 3
-    t.string   "sec_3_queue",          :limit => 6
-    t.string   "sec_3_center",         :limit => 3
-    t.string   "sec_3_h_or_s",         :limit => 1
-    t.string   "sec_3_ppg",            :limit => 3
+    t.string   "component_id",           :limit => 12
+    t.string   "problem_e_mail",         :limit => 64
+    t.string   "creation_date",          :limit => 9
+    t.string   "creation_time",          :limit => 5
+    t.string   "alteration_date",        :limit => 9
+    t.string   "alteration_time",        :limit => 5
+    t.string   "sec_1_queue",            :limit => 6
+    t.string   "sec_1_center",           :limit => 3
+    t.string   "sec_1_h_or_s",           :limit => 1
+    t.string   "sec_1_ppg",              :limit => 3
+    t.string   "sec_2_queue",            :limit => 6
+    t.string   "sec_2_center",           :limit => 3
+    t.string   "sec_2_h_or_s",           :limit => 1
+    t.string   "sec_2_ppg",              :limit => 3
+    t.string   "sec_3_queue",            :limit => 6
+    t.string   "sec_3_center",           :limit => 3
+    t.string   "sec_3_h_or_s",           :limit => 1
+    t.string   "sec_3_ppg",              :limit => 3
     t.datetime "created_at"
     t.datetime "updated_at"
     t.binary   "last_alter_timestamp"
     t.boolean  "dirty"
-    t.string   "special_application",  :limit => 1
+    t.string   "special_application",    :limit => 1
     t.datetime "last_fetched"
-    t.string   "queue_name",           :limit => 6
-    t.string   "center_name",          :limit => 3
-    t.string   "ppg",                  :limit => 3
-    t.string   "h_or_s",               :limit => 1
-    t.string   "comments",             :limit => 54
+    t.string   "queue_name",             :limit => 6
+    t.string   "center_name",            :limit => 3
+    t.string   "ppg",                    :limit => 3
+    t.string   "h_or_s",                 :limit => 1
+    t.string   "comments",               :limit => 54
+    t.boolean  "hot",                                  :default => false
+    t.string   "business_justification"
   end
 
   add_index "cached_pmrs", ["problem", "branch", "country", "creation_date"], :name => "uq_cached_pmrs_triple", :unique => true

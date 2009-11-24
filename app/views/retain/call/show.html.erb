@@ -40,7 +40,8 @@
   <tr>
     <% display_pmr_owner(binding, @call) %>
     <td>
-      <%= render @pmr.customer %>
+      <%= render(:partial => @pmr.customer,
+                 :locals => { :name => @call.nls_customer_name }) %>
     </td>
     <% display_pmr_resolver(binding, @call) %>
   </tr>

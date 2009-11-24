@@ -97,6 +97,10 @@
 <%        end %>
 <%      end %>
 <%=     tag("br") %>
+<%=     cu.check_box :hot, html_tag(call_update, "hot") %>Hot
+<%=     cu.text_field :business_justification, html_tag(call_update, "business_justfication") %>
+	Business Justification
+<%=     tag("br") %>
 <%=     cu.submit "Submit", html_tag(call_update, "submit") %>
 <%    end -%>
 <%  end -%>

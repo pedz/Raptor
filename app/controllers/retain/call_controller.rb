@@ -67,7 +67,7 @@ module Retain
       
       # Convert the check box values to real true / false values.  I'm
       # worried I'm going to make a silly mistake if I don't.
-      [ :do_ct, :do_ca, :add_time, :update_pmr ].each { |sym|
+      [ :do_ct, :do_ca, :add_time, :update_pmr, :hot ].each { |sym|
         if call_update.has_key?(sym)
           call_update[sym] = call_update[sym] == "1"
        else
@@ -342,6 +342,10 @@ module Retain
           end
         end
         
+        # None retain parts of the processing
+        @pmr.update_attributes(:hot => call_update[:hot],
+                               :business_justification => call_update[:business_justification],
+                               :last_fetched => Time.now)
       rescue Exception => e
         unless e.nil?
           logger.error(e.backtrace)

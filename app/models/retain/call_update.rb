@@ -12,6 +12,7 @@ module Retain
     attr_accessor :update_pmr, :update_type, :do_ct, :newtxt, :add_time
     attr_accessor :new_queue, :new_priority, :service_given
     attr_accessor :psar_update, :do_ca
+    attr_accessor :hot, :business_justification
     
     def initialize(call)
       RAILS_DEFAULT_LOGGER.debug("call_update initialize")
@@ -26,6 +27,9 @@ module Retain
       @new_queue = call.queue.to_param
       @new_priority = call.priority
       @service_given = 99
+      pmr = call.pmr
+      @hot = pmr.hot
+      @business_justification = pmr.business_justification
     end
 
     def to_id

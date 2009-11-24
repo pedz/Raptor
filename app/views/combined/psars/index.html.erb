@@ -7,28 +7,29 @@
 <%- end -%>
 <%- content_for(:center) do -%>
   <ul id='psar-list'>
-    <%- summarize(regroup(@combined_psars)).each do |week_name, week, week_total| -%>
+    <%- summarize(regroup(@combined_psars)).each do |week_name, week, week_total, week_hot_total| -%>
     <div class="collapsible">
       <%- week_id = "week" + week_name.strftime("%Y%m%d") -%>
       <a href="javascript:toggleTwisty('<%= week_id %>');" class='twisty-link'>
 	Week of <%= week_name.strftime("%b %d") %> through <%= (week_name + 6.days).strftime("%b %d") %>:
-	Total Time: <%= display_time(week_total) %>
+	Total Time: <%= display_time(week_total) %> Hot: <%= display_time(week_hot_total) %>
 	<%= image_tag "twisty-down.gif", :class => "twisty" %>
       </a>
       <div id="<%= week_id %>" class='week-div'>
 	<div>
-	  <%- week.each do |day_name, psars, day_total| -%>
+	  <%- week.each do |day_name, psars, day_total, day_hot_total| -%>
 	  <div class="collapsible">
 	    <%- day_id = "day" + day_name.strftime("%Y%m%d") -%>
 	    <a href="javascript:toggleTwisty('<%= day_id %>');" class='twisty-link'>
 	      <%= day_name.strftime("%a %b %d") %> Total Time: <%= display_time(day_total) %>
+	      Hot: <%= display_time(day_hot_total) %>
 	      <%= image_tag "twisty-down.gif", :class => "twisty" %>
 	    </a>
 	    <div id="<%= day_id %>" class='day-div'>
 	      <div>
 		<ul class='day-list'>
 		  <%- psars.each do |psar| -%>
-		  <li>
+		  <li class='<%= psar.pmr.hot ? "hot-psar" : "psar" %>'>
 		    <span class='psar-pmr'>
 		      <%= psar.pmr ? link_to(psar.pmr.to_param, combined_pmr_path(psar.pmr.to_param)) : "No PMR" %>
 		    </span>

@@ -41,7 +41,8 @@
       <%= h @pmr.owner.name %>
     </td>
     <td>
-      <%= render @pmr.customer %>
+      <%= render(:partial => @pmr.customer,
+                 :locals => { :name => @pmr.customer.company_name }) %>
     </td>
     <td title='Not a call so can not alter this field'>
       <%= h @pmr.resolver.name %>
