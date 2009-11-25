@@ -1,5 +1,6 @@
 
 EMPTY_CRIT_SIT = Regexp.new(" {14}|-{14}|_{14}")
+COMMA_DOT = Regexp.new("[,.]")
 
 task :add_crits do
   Rake::Task["rake:environment"].invoke
@@ -14,7 +15,7 @@ task :add_crits do
     f.each_line do |l|
       crit, pmrs = l.split(": ")
       pmrs.split(" ").each do |pmr|
-        problem, branch, country = pmr.split(',')
+        problem, branch, country = pmr.split(COMMA_DOT)
         pmr_options = {
           :problem => problem,
           :branch => branch,
@@ -29,9 +30,8 @@ task :add_crits do
           next
         end
         
-        puts "#{pmr}: '#{problem_crit_sit}'"
         next unless EMPTY_CRIT_SIT.match(problem_crit_sit)
-
+        
         pmpu_options = { :problem_crit_sit => crit }.merge(pmr_options)
         pmpu = Retain::Pmpu.new(pmpu_options)
         begin
