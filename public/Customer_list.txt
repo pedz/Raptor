@@ -1,0 +1,147 @@
+5941693	Morgan Stanley Finance        
+6709514	Verizon Wireless              
+9162300	Sprint                        
+6556400	BCBS NC                       
+9249852	Ames Research Center (NASA)   
+8754820	Verizon Network Services      
+2838350	Entrprse R-A-Car(Crawford Grp)
+630605	ATT Kodiak                    
+3012920	US Bancorp                    
+5701513	Medco                         
+8721152	ITD Piedmont Natural Gas      
+8998800	Tyson Foods                   
+1768092	Cigna                         
+3989417	Verizon Data                  
+8731400	Target                        
+6114756	Avnet INC                     
+3562300	Pepsico                       
+797972	Baptist Health System Inc     
+5330444	Lowes                         
+236616	ITD American Express          
+8424938	Staples Inc                   
+1792500	Fidelity Information Services 
+7347245	Prudential                    
+6544602	State of New Jersey           
+233008	American Express              
+9330641	UPS                           
+6983191	Partners Healthcare Systems In
+777000	Bank Of New York              
+3585933	Wachovia CTS                  
+3469700	McKesson                      
+2532993	Mahle Inc                     
+3449401	McKesson                      
+2822809	CVS Pharmacy                  
+6545156	National City Bank            
+5752636	Merrill Lynch                 
+9334883	UPMC                          
+7006087	Arrow Electronics             
+884485	PayPal                        
+6485019	State of New York DOL         
+9254194	Foxwoods Casino               
+9238326	Lockheed Martin Corp          
+2509169	St Judes Childrens Research   
+6938557	Nike Inc.                     
+7923263	Gilbarco Veedor-Root Inc      
+6199589	Del Mar College District      
+9284352	Turning Stone / Oneida        
+6029084	Charles Schwab                
+871478	Bank Slaski                   
+4341343	Healthpartners                
+3093002	Fifth Third Bank              
+2534326	Polo Ralph Lauren             
+7623938	Ricoh                         
+765416	Seagate Technologies          
+5797004	BCBSM                         
+3908750	Graybar Electric Company Inc  
+3066725	Fidelity Management & Research
+1331767	Cable News Network - CNN      
+736256	SIAC                          
+606823	Ricoh Corp                    
+8808097	Ironport Systems Inc          
+2636311	TRACTOR SUPPLY CO             
+6290388	AIX Advanced Support          
+3333333	IEE/EP Test Customer          
+6352375	Mazda Motor N America         
+1460037	Cardinal Health               
+1723500	Cincinnati Insurance          
+6632822	ISSC                          
+9252380	Raytheon                      
+874247	Green Tree Services           
+2240197	Bank of America Home Loans    
+740920	Bank of America               
+9041355	New York University           
+714428	NETAPP                        
+9235586	US Dept of Commerce           
+2120023	Continental Casualty Co       
+1707011	Chrysler                      
+750105	Steelcase Inc                 
+6540009	Wells Fargo                   
+8600074	Perot Systems Corporation     
+6421505	Verisign                      
+9239920	Northrop Grumman              
+4820685	Inovant Inc                   
+4344571	Home Depot                    
+4871307	The Kroger Co                 
+5163000	LibertyMutual-Websphere       
+1601052	Cerner Corporation            
+4122640	Harley Davidson Motor Co Inc  
+9093001	United Airlines               
+1525333	Cedars-Sinai Medical Center   
+4080050	William Sonoma                
+58113	American Electric Power       
+491716	Apple Inc                     
+7306372	Citistreet                    
+2870167	Citizens Property Insurance   
+3001000	Farmers/ZNA                   
+2875559	Electric Reliability Council o
+6837039	PG&E                          
+8497001	State Farm                    
+516000	State of Arkansas             
+166753	Northrop Grumman Corporation  
+2647118	ESPN                          
+146440	Tracfone Wireless INC         
+9033674	Kennametal INC                
+ETSPRO1	ETS Proactive User            
+9200337	Navy - Dynamix Corp           
+9235750	Dept Homeland Security        
+8702602	Lender Processing Services    
+3015733	Fedex Ground                  
+167982	Agilent Technology            
+2501231	ACH Foods                     
+9236907	US Dept of the Navy-NAVOCEANO 
+992021	Bexar County Hospital         
+990000	Boehringer Mannheim (Roche)   
+931005	SHAW INDUSTRIES               
+2253850	CostCo Wholesale              
+7858002	State Street Bank             
+5959317	Bayer Corp                    
+1008337	Black & Decker                
+5757599	MetLife                       
+5961126	Mobis Alabama LLC             
+8752065	US Cellular                   
+1460035	Cardinal Health               
+3981512	GTE Federal Credit Union      
+1039965	Bloomberg L P                 
+1179654	INSIGHT ENTERPRISES INC       
+4280031	Liberty Mutual Insurance      
+2515141	Lifeway Resources             
+4541003	State of Indiana              
+787384	Assets Acceptance Capital     
+4783874	Kaiser Foundation             
+MSOPROP	MSO Firmware Project          
+166990	Genentech                     
+3125295	First Data Corp               
+8697679	DICKS SPORTING GOODS INC      
+5782234	MGM Mirage Operations         
+796322	Banque Paribas                
+155286	Ikon Office Solutions         
+8382648	Spirit Aerosystems            
+1610762	JPMC                          
+A123456	Royal Bank of Scotland        
+9096834	ARSC                          
+8844162	RBSG US                       
+9047398	University of Cal             
+ABBEYBK	Abbey Bank                    
+2306760	CSC (Pratt & Whitney)         
+4120427	COUNTY OF HARRIS              
+5680464	Medtronic
