@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 36) do
+ActiveRecord::Schema.define(:version => 37) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(:version => 36) do
     t.string   "comments",               :limit => 54
     t.boolean  "hot",                                  :default => false
     t.string   "business_justification"
+    t.string   "problem_crit_sit"
   end
 
   add_index "cached_pmrs", ["problem", "branch", "country", "creation_date"], :name => "uq_cached_pmrs_triple", :unique => true

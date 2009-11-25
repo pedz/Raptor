@@ -1,0 +1,51 @@
+
+EMPTY_CRIT_SIT = Regexp.new(" {14}|-{14}|_{14}")
+
+task :add_crits do
+  Rake::Task["rake:environment"].invoke
+  top = Rails.root
+  user = User.find_by_ldap_id("pedzan@us.ibm.com")
+  retuser = user.retusers[0]
+  params = Retain::ConnectionParameters.new(:signon   => retuser.retid,
+                                    :password => retuser.password,
+                                    :failed   => retuser.failed)
+  Retain::Logon.instance.set(params)
+  File.open(top + "public/crit-sit-pmrs.txt") do |f|
+    f.each_line do |l|
+      crit, pmrs = l.split(": ")
+      pmrs.split(" ").each do |pmr|
+        problem, branch, country = pmr.split(',')
+        pmr_options = {
+          :problem => problem,
+          :branch => branch,
+          :country => country
+        }
+        pmpb_options = { :group_request => [[ :problem_crit_sit ]] }.merge(pmr_options)
+        retain_pmr = Retain::Pmr.new(pmpb_options)
+        begin
+          problem_crit_sit = retain_pmr.problem_crit_sit    # cause the fetch
+        rescue Exception
+          puts "#{problem},#{branch},#{country} not fetched"
+          next
+        end
+        
+        puts "#{pmr}: '#{problem_crit_sit}'"
+        next unless EMPTY_CRIT_SIT.match(problem_crit_sit)
+
+        pmpu_options = { :problem_crit_sit => crit }.merge(pmr_options)
+        pmpu = Retain::Pmpu.new(pmpu_options)
+        begin
+          pmpu.sendit(Retain::Fields.new)
+        rescue Exception
+          puts "#{problem},#{branch},#{country} alter caught an exception"
+        end
+        rc = pmpu.rc
+        if rc == 0
+          puts "#{problem},#{branch},#{country} set to #{crit}"
+        else
+          puts "#{problem},#{branch},#{country} altered failed"
+        end
+      end
+    end
+  end
+end

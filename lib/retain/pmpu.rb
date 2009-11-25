@@ -7,7 +7,8 @@ module Retain
                         :signon, :password, :last_alter_timestamp)
     set_optional_fields(:pmr_owner_id, :pmr_resolver_id,
                         :queue_name, :center, :ppg, :h_or_s,
-                        :next_queue, :next_center, :comment)
+                        :next_queue, :next_center, :comment,
+                        :problem_crit_sit)
 
     def initialize(options = {})
       super(options)

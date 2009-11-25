@@ -548,6 +548,7 @@ module Retain
       :pid_number                  => [ 2423, :ebcdic,              7 ],
       :keyword_three               => [ 2424, :ebcdic,             15 ],
       :vrm                         => [ 2425, :ebcdic,              3 ],
+      :problem_crit_sit            => [ 2494, :ebcdic,             14 ],
       :pmr_resolver_name           => [ 2496, :ebcdic,             22 ],
       :problem_e_mail              => [ 2497, :ebcdic,             64 ],
       :pmr_resolver_id             => [ 2509, :ebcdic,              6 ],
