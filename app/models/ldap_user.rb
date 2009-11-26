@@ -7,12 +7,12 @@
 #
 class LdapUser < ActiveLdap::Base
   ldap_mapping(:dn_attribute => 'uid',
-               :prefix => 'c=us,ou=bluepages',
-               :classes => ['person'])
+               :prefix => 'ou=bluepages',
+               :classes => [ 'ibmPerson' ])
 
-  # belongs_to :mgr,     :class => 'LdapUser', :foreign_key => 'manager',    :primary_key => 'dn'
-  # belongs_to :deptmnt, :class => 'LdapDept', :foreign_key => 'department', :primary_key => 'dn'
-  # has_many   :manages, :class => 'LdapUser', :foreign_key => 'manager',    :primary_key => 'dn'
+  belongs_to :mgr,     :class => 'LdapUser', :foreign_key => 'manager', :primary_key => 'dn'
+  belongs_to :deptmnt, :class => 'LdapDept', :foreign_key => 'dept',    :primary_key => 'dept'
+  has_many   :manages, :class => 'LdapUser', :foreign_key => 'manager', :primary_key => 'dn'
 
   def self.authenticate_from_email(email, password)
     return nil unless (u = find(:first, :attribute => 'mail', :value => email, :attributes => [ 'dn']))
@@ -26,10 +26,18 @@ class LdapUser < ActiveLdap::Base
     end
   end
 
+  # def manages
+  #   find(:all, :attribute => 'manager', :value => dn)
+  # end
+
+  def self.q
+    find(:first, :attribute => 'mail', :value => 'pedzan@us.ibm.com')
+  end
+
   private
 
-  def to_real_attribute_name(name, allow_normalized_name=nil)
-    allow_normalized_name = true if allow_normalized_name.nil?
-    super(name, allow_normalized_name)
-  end
+  # def to_real_attribute_name(name, allow_normalized_name=nil)
+  #   allow_normalized_name = true if allow_normalized_name.nil?
+  #   super(name, allow_normalized_name)
+  # end
 end

@@ -2,6 +2,7 @@ development:
   host: bluepages.ibm.com
   port: 389
   base: o=ibm.com
+  # base: ou=bluepages,o=ibm.com
   # port: 636
   # method: :ssl
   # bind_dn: cn=admin,dc=local,dc=net

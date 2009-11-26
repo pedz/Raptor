@@ -2,14 +2,14 @@
 
 class LdapDept < ActiveLdap::Base
   ldap_mapping(:dn_attribute => 'dept',
-               :prefix => 'ou=bluepages,o=ibm.com',
-               :classes => ['ibmDepartment'])
-  # has_many :members, :class => 'LdapUser', :foreign_key => 'dept', :primary_key => 'dept'
+               :prefix => 'ou=bluepages',
+               :classes => ['top', 'ibmDepartment'])
+  # Contractors have 'department' which is a dn back to an
+  # ibmDepartment.  Regulars have divDept which is a dn back to a
+  # "ibmdivdept".  So, we can't use a dn for the foreign key
+  has_many :members, :class => 'LdapUser', :foreign_key => 'dept', :primary_key => 'dept'
 
-  private
-
-  def to_real_attribute_name(name, allow_normalized_name=nil)
-    allow_normalized_name = true if allow_normalized_name.nil?
-    super(name, allow_normalized_name)
-  end
+  # def members
+  #   LdapUser.find(:all, :attribute => 'dept', :value => dept)
+  # end
 end
