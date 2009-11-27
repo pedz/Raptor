@@ -38,3 +38,13 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
 end
+
+module LdapConstants
+  GOOD_EMAIL          = 'pedzan@us.ibm.com'
+  GOOD_PASSWORD       = 'at906now'
+  GOOD_CONTRACTOR_UID = 'C-5UEV897' # Mine (Perry)
+  GOOD_REGULAR_UID    = '004087897' # Ray Tousek
+  GOOD_MANAGER_UID    = '440157897' # Pat Harney
+  BAD_UID             = '000000897'
+  GOOD_DEPT           = '9SUS'      # our dept.
+end
