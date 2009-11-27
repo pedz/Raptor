@@ -43,7 +43,7 @@ module HotPmrListsHelper
     end
     if (primary = pmr.primary_call) &&
         (queue = primary.queue) &&
-        (primary_owners = queue.owners)
+        ((primary_owners = queue.owners).length > 0)
       lines << "Primary owner: #{primary_owners[0].name}"
     end
   end
