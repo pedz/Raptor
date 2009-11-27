@@ -1,7 +1,7 @@
 
 EMPTY_CRIT_SIT = Regexp.new(" {14}|-{14}|_{14}")
 COMMA_DOT = Regexp.new("[,.]")
-
+LINE_SPLIT = Regexp.new("(/ Alert)?:")
 task :add_crits do
   Rake::Task["rake:environment"].invoke
   top = Rails.root
@@ -13,7 +13,7 @@ task :add_crits do
   Retain::Logon.instance.set(params)
   File.open(top + "public/crit-sit-pmrs.txt") do |f|
     f.each_line do |l|
-      crit, pmrs = l.split(": ")
+      crit, pmrs = l.split(LINE_SPLIT)
       pmrs.split(" ").each do |pmr|
         problem, branch, country = pmr.split(COMMA_DOT)
         pmr_options = {
@@ -26,7 +26,7 @@ task :add_crits do
         begin
           problem_crit_sit = retain_pmr.problem_crit_sit    # cause the fetch
         rescue Exception
-          puts "#{problem},#{branch},#{country} not fetched"
+          # puts "#{problem},#{branch},#{country} not fetched"
           next
         end
         

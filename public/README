@@ -9,5 +9,5 @@ Customer_list.txt file is edited directly by hand when it changes.
 Currently the crit-sit-pmrs.txt is updated by a process from Newtoy
 (my laptop).  I am sent an excel file each week from the crit sit
 team.  It is parsed by a Ruby 1.8 program into the crit-sit-pmrs.txt
-and then pushed over to tcp237 where a cron job parses it and sets the
-crit sit field for the PMRs properly.
+and I run the add_crits rake task from my laptop which sets the crit
+sit name into the field in the PMRs if the field is blank.
