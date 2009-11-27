@@ -46,5 +46,6 @@ module HotPmrListsHelper
         ((primary_owners = queue.owners).length > 0)
       lines << "Primary owner: #{primary_owners[0].name}"
     end
+    lines
   end
 end
