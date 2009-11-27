@@ -1,0 +1,10 @@
+<%# -*- coding: utf-8 -*- %>
+
+<!-- hot_pmr_lists/index.html.erb -->
+<% @title = "Hot PMR List" -%>
+<h3>Area Managers</h3>
+<ul>
+<%- @area_mgrs.each do |mgr| -%>
+  <li><%= link_to "#{mgr.mail(true)[0]}", hot_pmr_list_path(mgr.uid) %></li>
+<%- end -%>
+</ul>

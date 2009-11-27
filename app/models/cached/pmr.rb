@@ -155,7 +155,12 @@ module Cached
       #
       # So, for now, I fetch a simple non-constant field to make sure
       # the cached_pmr and its lines are up to date.
-      to_combined.severity
+      #
+      # when adding the hot_pmr_list page, I wanted to be able to work
+      # with just cached objects, so the line below was removed.
+      #
+      # to_combined.severity
+      
       # Then I return the lines
       text_lines
     end
@@ -410,6 +415,22 @@ module Cached
     end
     once :secondaries
 
+    EMPTY_CRIT_SIT = Regexp.new(" {14}|-{14}|_{14}")
+
+    def crit_sit
+      if EMPTY_CRIT_SIT.match(problem_crit_sit)
+        nil
+      else
+        problem_crit_sit
+      end
+    end
+
+    # A convenience method to give back the usual form of
+    # problem,branch,country for a call.
+    def pbc
+      (problem + ',' + branch + ',' + country).upcase
+    end
+    
     private
 
     def get_current_section(md)

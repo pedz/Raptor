@@ -1,0 +1,45 @@
+<%# -*- coding: utf-8 -*- %>
+
+<!-- hot_pmr_lists/show.html.erb -->
+<% @title = "Hot PMRs under #{@dept_mgr.cn(true)[0]}" -%>
+<h3><%= @title %></h3>
+<%- @hot_pmrs.each do |pmr| -%>
+  <h4><%= pmr.pbc %> - <%= pmr.customer.company_name %></h4>
+  <ul>
+    <%- if crit = pmr.crit_sit -%>
+    <li>Crit sit: <%= crit %></li>
+    <%- end -%>
+    <li>
+      Problem Description
+      <ul>
+	<%- problem_lines(pmr).each do |line| -%>
+	<li><%= line %></li>
+	<%- end -%>
+      </ul>
+    </li>
+    <li>
+      Last Action Taken
+      <ul>
+	<%- action_taken_lines(pmr).each do |line| -%>
+	<li><%= line %></li>
+	<%- end -%>
+      </ul>
+    </li>
+    <li>
+      Current Action Plan
+      <ul>
+	<%- action_plan_lines(pmr).each do |line| -%>
+	<li><%= line %></li>
+	<%- end -%>
+      </ul>
+    </li>
+    <li>
+      Contacts for PMR
+      <ul>
+	<%- contact_lines(pmr).each do |line| -%>
+	<li><%= line %></li>
+	<%- end -%>
+      </ul>
+    </li>
+  </ul>
+<%- end -%>

@@ -66,12 +66,6 @@ module Combined
       }
     end
 
-    # A convenience method to give back the usual form of
-    # problem,branch,country for a call.
-    def pbc
-      (problem + ',' + branch + ',' + country).upcase
-    end
-
     private
 
     def load
