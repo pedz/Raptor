@@ -17,8 +17,9 @@ class LdapUser < ActiveLdap::Base
   def self.authenticate_from_email(email, password)
     return nil unless (u = find(:first, :attribute => 'mail', :value => email, :attributes => [ 'dn']))
     begin
-      dn = u.dn.to_s.gsub(/\+/, "\\\\+")
-      # logger.debug("authenticate_from_email #{email} => #{dn}")
+      # dn = u.dn.to_s.gsub(/\+/, "\\\\+")
+      dn = u.dn.to_s
+      logger.info("authenticate_from_email #{email} => #{dn}")
       u.connection.rebind(:allow_anonymous => false, :password => password, :bind_dn => dn)
     rescue => e
       # logger.debug("authenticate_from_email denied #{e.class} #{e.message}")
