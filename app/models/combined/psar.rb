@@ -59,6 +59,13 @@ module Combined
     end
     once :saturday
 
+    # True if impact is 1 or if there is a PMR attached to the PSAR
+    # and that PMR is either marked as hot or has a crit-sit
+    def hot?
+      ((psar_impact == 1) ||
+        (pmr && (pmr.hot || pmr.crit_sit)))
+    end
+
     private
     
     def load

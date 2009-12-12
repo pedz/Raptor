@@ -38,7 +38,7 @@ module Combined
         days.map! do |day, psars|
           day_totals = psars.inject([0, 0]) do |totals, psar|
             totals[0] += psar.chargeable_time_hex
-            totals[1] += psar.chargeable_time_hex if psar.pmr && psar.pmr.hot
+            totals[1] += psar.chargeable_time_hex if psar.hot?
             totals
           end
           week_total += day_totals[0]

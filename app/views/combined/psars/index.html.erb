@@ -30,7 +30,7 @@
 	      <div>
 		<ul class='day-list'>
 		  <%- psars.each do |psar| -%>
-		  <li class='<%= ( psar.pmr && psar.pmr.hot ) ? "hot-psar" : "psar" %>'>
+		  <li class='<%= psar.hot? ? "hot-psar" : "psar" %>'>
 		    <span class='psar-pmr'>
 		      <%= psar.pmr ? link_to(psar.pmr.to_param, combined_pmr_path(psar.pmr.to_param)) : "No PMR" %>
 		    </span>

@@ -22,7 +22,6 @@ module Combined
         req_user.refresh
       end
       db_search_fields = Cached::Psar.fields_only(local_params)
-      db_search_fields[:cached_pmrs] = { :hot => true }
 
       if local_params.has_key? :psar_start_date
         str = local_params[:psar_start_date]
@@ -43,7 +42,7 @@ module Combined
       result = psar_proxy.find(:all,
                                :conditions => db_search_fields,
                                :include => :pmr)
-      
+      result = result.find_all { |psar| psar.hot? }
       result = result.group_by(&:saturday)
       @result = result.map do |saturday, days|
         # Group PSARs for this week by PMR

@@ -37,7 +37,6 @@ module Combined
         req_user.refresh
       end
       db_search_fields = Cached::Psar.fields_only(local_params)
-      logger.debug("db_search_fields = #{db_search_fields}")
 
       if local_params.has_key? :psar_start_date
         str = local_params[:psar_start_date]

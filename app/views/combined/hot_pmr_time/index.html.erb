@@ -10,10 +10,18 @@
         severity = call.severity
       else
         severity = pmr.severity
-      end -%>
-    <%= "%s,%s,%s" % [ pmr.problem, pmr.branch, pmr.country ] %><br/>
+      end
+      if pmr.business_justification
+        justification = pmr.business_justification
+      elsif pmr.crit_sit
+        justification = "Crit sit: #{pmr.crit_sit}"
+      else
+        justification = "Sev 1 PMR"
+      end
+    -%>
+    <%= link_to "#{pmr.pbc}", combined_pmr_path(pmr.pbc) %><br/>
     <%= "Severity: #{severity}" %><br/>
-    <%= "Business Justification: #{pmr.business_justification}"	%><br/>
+    <%= "Business Justification: #{justification}"	%><br/>
     <%= "PSAR Hours: #{total_time / 60}.#{total_time % 60 / 6}" %><br/>
     <br/> 
 <%- end -%>

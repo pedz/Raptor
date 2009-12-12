@@ -45,26 +45,31 @@ module Retain
         sig_line = Retain::SignatureLine.new(line.text)
         text_line = sig_line.to_s(tz).gsub(/ /, '&nbsp;')
       else
-        text_line = html_escape(line.text).
-          # Replace spaces with non-breaking spaces.
-          # If we do it last, then the links get mucked with.
-          # Need to see if a <pre> tag could be used somehow.
-          gsub(/ /, '&nbsp;').
-          # EBCDIC => UTF8      -- meaning
-          # \x32   => \x16      -- Normal Protected
-          # \x22   => \xc2 \x82 -- Normal Unprotected
-          # \x3a   => \xc2 \x9a -- High Intensity Protected
-          # \x2a   => \xc2 \x8a -- High Intensity Unprotected
-          gsub("\x16",     '</span><span class="normal-protected">&nbsp;').
-          gsub("\xc2\x82", '</span><span class="normal-unprotected">&nbsp;').
-          gsub("\xc2\x9a", '</span><span class="intensified-protected">&nbsp;').
-          gsub("\xc2\x8a", '</span><span class="intensified-unprotected">&nbsp;').
-          # Find APARs and link them to Condor
-          gsub(APAR_Regexp, "<a href=\"#{Condor_URL}swinfos/\\0\">\\0</a>").
-          # Find references to APAR drafts
-          gsub(AMT_Regexp1, "<a href=\"#{AMT_URL}\\1\">\\0</a>").
-          gsub(AMT_Regexp2, "<a href=\"#{AMT_URL}\\1\">\\0</a>").
-          gsub(AMT_Regexp3, "<a href=\"#{AMT_URL}\\1\">\\0</a>")
+        temp = html_escape(line.text)
+        # Replace spaces with non-breaking spaces.
+        # If we do it last, then the links get mucked with.
+        # Need to see if a <pre> tag could be used somehow.
+        temp = temp.gsub(/ /, '&nbsp;')
+
+        # EBCDIC => UTF8      -- meaning
+        # \x32   => \x16      -- Normal Protected
+        # \x22   => \xc2 \x82 -- Normal Unprotected
+        # \x3a   => \xc2 \x9a -- High Intensity Protected
+        # \x2a   => \xc2 \x8a -- High Intensity Unprotected
+        # The following four lines no longer work with UTF-8... I need
+        # to go fix them TODO
+        # temp = temp.gsub("\x16",     '</span><span class="normal-protected">&nbsp;')
+        # temp = temp.gsub("\xc2\x82", '</span><span class="normal-unprotected">&nbsp;')
+        # temp = temp.gsub("\xc2\x9a", '</span><span class="intensified-protected">&nbsp;')
+        # temp = temp.gsub("\xc2\x8a", '</span><span class="intensified-unprotected">&nbsp;')
+
+        # Find APARs and link them to Condor
+        temp = temp.gsub(APAR_Regexp, "<a href=\"#{Condor_URL}swinfos/\\0\">\\0</a>")
+        # Find references to APAR drafts
+        temp = temp.gsub(AMT_Regexp1, "<a href=\"#{AMT_URL}\\1\">\\0</a>")
+        temp = temp.gsub(AMT_Regexp2, "<a href=\"#{AMT_URL}\\1\">\\0</a>")
+        temp = temp.gsub(AMT_Regexp3, "<a href=\"#{AMT_URL}\\1\">\\0</a>")
+        text_line = temp
       end
       render(:partial => "shared/retain/show_line",
              :locals => {
