@@ -24,7 +24,7 @@ module Combined
     add_skipped_fields :next_center_id, :next_queue_id
     add_extra_fields   :next_center,    :next_queue
 
-    add_skipped_fields :hot, :business_justification
+    add_skipped_fields :hot, :business_justification, :deleted
 
     # words is an array of string in the order:
     # problem, branch, country

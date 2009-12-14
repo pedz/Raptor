@@ -2,6 +2,8 @@
 EMPTY_CRIT_SIT = Regexp.new(" {14}|-{14}|_{14}")
 COMMA_DOT = Regexp.new("[,.]")
 LINE_SPLIT = Regexp.new("(/ Alert)?:")
+
+desc "Process crit-sit-pmrs.txt file"
 task :add_crits do
   Rake::Task["rake:environment"].invoke
   top = Rails.root
