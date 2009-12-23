@@ -136,27 +136,28 @@ module Retain
 
     def not_found_page(exception)
       @exception = exception
-      render "retain/errors/not_found_page", :layout => "retain/errors"
+      logger.debug("ETAG = '#{response.etag}'")
+      render "retain/errors/not_found_page", :layout => "retain/errors", :status => 404
     end
 
     def sdi_error_page(exception)
       @exception = exception
-      render "retain/errors/sdi_error_page", :layout => "retain/errors"
+      render "retain/errors/sdi_error_page", :layout => "retain/errors", :status => 500
     end
 
     def retain_logon_empty(exception)
       @exception = exception
-      render "retain/errors/retain_logon_empty", :layout => "retain/errors"
+      render "retain/errors/retain_logon_empty", :layout => "retain/errors", :status => 500
     end
 
     def retain_logon_short(exception)
       @exception = exception
-      render "retain/errors/retain_logon_short", :layout => "retain/errors"
+      render "retain/errors/retain_logon_short", :layout => "retain/errors", :status => 500
     end
 
     def retain_did_not_read_field(exception)
       @exception = exception
-      render "retain/errors/retain_did_not_read_field", :layout => "retain/errors"
+      render "retain/errors/retain_did_not_read_field", :layout => "retain/errors", :status => 500
     end
   end
 end
