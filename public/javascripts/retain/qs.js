@@ -7,10 +7,22 @@
 Raptor.qsCheckCtTimes = function () {
     $$('td.next-ct').each(function (ele) {
 	var due = Raptor.qsCtDateToDate(ele.innerHTML);
+	
 	if (due == null) {	// already set as Overdue
 	    return;
 	}
+
+	var pattern = /Last CT: (.*)/;
+	var title = ele.readAttribute('title');
+	var m = title.match(pattern);
+	if (m == null) {
+	    return;
+	}
+	var lastCt = new Date(m[1]);
 	var now = new Date();
+	if (due < lastCt) {		// wrap in years
+	    due.setYear(due.getFullYear() + 1);
+	}
 	if (now > due) {		  // too late; mark as past due
 	    ele.removeClassName('normal');
 	    ele.removeClassName('warn');
