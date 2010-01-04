@@ -130,7 +130,7 @@ module Retain
         if call_update[:do_ct]
           ct = do_pmcu("CT  ", call_options)
           if ct.rc != 0
-            do_fade &= (ct.error_class == :error)
+            do_fade &= (ct.error_class != :error)
             text = create_error_reply(ct, "CT")
             raise
           end
@@ -146,7 +146,7 @@ module Retain
           return if addtxt.nil?
           safe_sendit(addtxt)
           if addtxt.rc != 0
-            do_fade &= (addtxt.error_class == :error)
+            do_fade &= (addtxt.error_class != :error)
             text += create_error_reply(addtxt, "Addtxt")
             raise
           end
@@ -160,7 +160,7 @@ module Retain
             return if psar.nil?
             safe_sendit(psar)
             if psar.rc != 0
-              do_fade &= (psar.error_class == :error)
+              do_fade &= (psar.error_class != :error)
               text += create_error_reply(psar, "PSAR")
             else
               text += create_reply_span("PSAR Added")
@@ -234,7 +234,7 @@ module Retain
           end
 
           if requeue.rc != 0
-            do_fade &= (requeue.error_class == :error)
+            do_fade &= (requeue.error_class != :error)
             text += create_error_reply(requeue, "Requeue")
           else
             text += create_reply_span("Requeue Completed")
@@ -253,7 +253,7 @@ module Retain
               raise "Create of PMR Alter Failed" if requeue.nil?
               safe_sendit(alter)
               if alter.rc != 0
-                do_fade &= (alter.error_class == :error)
+                do_fade &= (alter.error_class != :error)
                 text += create_error_reply(alter, "Alter")
               else
                 text += create_reply_span("#{fields} Set")
@@ -277,7 +277,7 @@ module Retain
           safe_sendit(dup)
 
           if dup.rc != 0
-            do_fade &= (dup.error_class == :error)
+            do_fade &= (dup.error_class != :error)
             text += create_error_reply(dup, "Dup")
           else
             text += create_reply_span("Dup Completed")
@@ -290,7 +290,7 @@ module Retain
             return if psar.nil?
             safe_sendit(psar)
             if psar.rc != 0
-              do_fade &= (psar.error_class == :error)
+              do_fade &= (psar.error_class != :error)
               text += create_error_reply(psar, "PSAR")
             else
               text += create_reply_span("PSAR Added")
@@ -319,7 +319,7 @@ module Retain
           end
 
           if close.rc != 0
-            do_fade &= (close.error_class == :error)
+            do_fade &= (close.error_class != :error)
             text += create_error_reply(close, "Close")
           else
             text += create_reply_span("Close Completed")
@@ -334,7 +334,7 @@ module Retain
             return if psar.nil?
             safe_sendit(psar)
             if psar.rc != 0
-              do_fade &= (psar.error_class == :error)
+              do_fade &= (psar.error_class != :error)
               text += create_error_reply(psar, "PSAR")
             else
               text += create_reply_span("PSAR Added")
@@ -360,7 +360,7 @@ module Retain
         if need_undispatch
           undispatch = do_pmcu("NOCH", call_options)
           if undispatch.rc != 0
-            do_fade &= (undispatch.error_class == :error)
+            do_fade &= (undispatch.error_class != :error)
             text += create_error_reply(undispatch, "Undispatch")
           end
         end
