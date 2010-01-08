@@ -18,10 +18,11 @@ task :scan_pmrs do
         # constraint problem or something like that.  We'll see how it
         # goes.
         j = cached_pmr.to_combined.comments
-        # puts "#{cached_pmr.pbc} #{j}"
+        puts "#{cached_pmr.pbc} #{j}"
       else
         cached_pmr.deleted = true
         cached_pmr.save
+        puts "#{cached_pmr.pbc} gone"
       end
     end
     
