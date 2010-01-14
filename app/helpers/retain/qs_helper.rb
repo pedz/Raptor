@@ -635,7 +635,13 @@ module Retain
       }
       # This could be simpler but the middle br I want something but I
       # can't put <hr/> due to html validation
-      temp_lines.join("<br/>\n") + "<br/>\n" + ecpaat_temp_lines.join("<br/>\n")
+      a = temp_lines.join("<br/>\n")
+      b = "<br/>\n"
+      c = ecpaat_temp_lines.join("<br/>\n")
+      logger.debug("encoding for a is #{a.encoding}")
+      logger.debug("encoding for b is #{b.encoding}")
+      logger.debug("encoding for c is #{c.encoding}")
+      a + b + c
     end
 
     def link_etc(binding, header, call)
