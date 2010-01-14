@@ -71,7 +71,7 @@ module Combined
       end
       return nil if center.nil?
 
-      q = find(:first, :conditions => options)
+      q = center.queues.find(:first, :conditions => options)
       if q.nil?
         q = center.queues.build(options)
         return nil unless q.valid?
