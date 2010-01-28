@@ -12,17 +12,18 @@ task :scan_pmrs do
   Retain::Logon.instance.set(params)
   begin
     pmrs.each do |cached_pmr|
+      print "#{cached_pmr.pbc} "
       if pmr_valid?(cached_pmr)
         # cause the PMR to be fetched.
         # It might be that this causes an exception like the db unique
         # constraint problem or something like that.  We'll see how it
         # goes.
         j = cached_pmr.to_combined.comments
-        puts "#{cached_pmr.pbc} #{j}"
+        puts "#{j}"
       else
         cached_pmr.deleted = true
         cached_pmr.save
-        puts "#{cached_pmr.pbc} gone"
+        puts "gone"
       end
     end
     
@@ -35,6 +36,8 @@ task :scan_pmrs do
   rescue Exception
     # Some other problem happened so we give up.
     puts "Retain is not happy for some reason"
+    puts e.message
+    puts e.backtrace.join("\n")
     false
   end
 end
