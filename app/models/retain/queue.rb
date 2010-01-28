@@ -19,6 +19,14 @@ module Retain
       begin
         hit_count = cq.hit_count # get hit_count to see if the queue is valid
         return true
+
+        # The assumption here is that the queue was found but it is
+        # messed up in Retain.  That happens some times.
+      rescue Retain::SdiDidNotReadField
+        return true
+
+        # The assumption is that the SDI error is because the queue
+        # was not found.  We could check for that condition.
       rescue Retain::SdiReaderError => e
         return false
       end

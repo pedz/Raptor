@@ -157,6 +157,9 @@ module Retain
 
     def retain_did_not_read_field(exception)
       @exception = exception
+      logger.error(exception.message)
+      logger.error("Did not read #{exception.field_name}")
+      logger.error(exception.backtrace.join("\n"))
       render "retain/errors/retain_did_not_read_field", :layout => "retain/errors", :status => 500
     end
   end
