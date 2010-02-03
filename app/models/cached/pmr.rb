@@ -211,6 +211,33 @@ module Cached
       signature_lines.find_all { |sig| sig.stype == stype }
     end
     
+    # This may grow over time.  Currently it parses the
+    # alteration_date and alteeration_time from the PMR to provide a
+    # timestamp of the last alteration time.
+    def alter_time
+      return create_time if alteration_date.nil? || alteration_time.nil?
+      # should never be true but just in case.
+      ad = self.alteration_date
+      at = self.alteration_time
+      # Note, the creation date and time from the PMR is in the time
+      # zone of the specialist who created the PMR.  I don't know
+      # how to find out who that specialist was and, even if I
+      # could, I don't know his time zone.  So, I fudge and put the
+      # create time according to the time zone of the customer.  So
+      # this is going to be wrong sometimes.  But, it should never
+      # be used anyway.
+      unless tz = to_combined.customer.tz
+        tz = 0
+      end
+      DateTime.civil(2000 + ad[1..2].to_i, # not Y2K but who cares?
+                     ad[4..5].to_i,        # month
+                     ad[7..8].to_i,        # day
+                     at[0..1].to_i,        # hour
+                     at[3..4].to_i,        # minute
+                     0,                    # second
+                     tz)                   # time zone
+    end
+
     # The creation_date and creation_time appear to be from the
     # perspective of the person who opened the PMR.  To get that back
     # to UTC would be really hard.  So, we find the first CE entry and

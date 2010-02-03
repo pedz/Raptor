@@ -4,7 +4,7 @@
 <% @title = "Hot PMRs under #{@dept_mgr.cn(true)[0]}" -%>
 <h3><%= @title %></h3>
 <%- @hot_pmrs.each do |pmr| -%>
-  <h4><%= pmr.pbc %> - <%= pmr.customer.company_name %></h4>
+  <h4><%= link_to(pmr.pbc, combined_pmr_path(pmr.pbc)) %> - <%= pmr.customer.company_name %></h4>
   <ul>
     <%- if crit = pmr.crit_sit -%>
     <li>Crit sit: <%= crit %></li>
@@ -13,6 +13,7 @@
       Problem Description
       <ul>
 	<%- problem_lines(pmr).each do |line| -%>
+	<%- next if line.blank? -%>
 	<li><%= line %></li>
 	<%- end -%>
       </ul>
@@ -21,6 +22,7 @@
       Last Action Taken
       <ul>
 	<%- action_taken_lines(pmr).each do |line| -%>
+	<%- next if line.blank? -%>
 	<li><%= line %></li>
 	<%- end -%>
       </ul>
@@ -29,6 +31,7 @@
       Current Action Plan
       <ul>
 	<%- action_plan_lines(pmr).each do |line| -%>
+	<%- next if line.blank? -%>
 	<li><%= line %></li>
 	<%- end -%>
       </ul>
@@ -37,6 +40,7 @@
       Contacts for PMR
       <ul>
 	<%- contact_lines(pmr).each do |line| -%>
+	<%- next if line.blank? -%>
 	<li><%= line %></li>
 	<%- end -%>
       </ul>

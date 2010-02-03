@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 
+# N O T E: this controller is not in the retain or combined
+# subdirectories.  The queries should not assume that data can be
+# fetched from Retain.  Rather I just want this to be a database only
+# controller.  As such, we must check to see if the fields are set
+# before we use them because all the automagic stuff is not active.
+
 class HotPmrListsController < ApplicationController
   # Sets up a list of ldap entries which are the first line managers
   # of the area.  This will work for a normal person, a first line
@@ -45,17 +51,27 @@ class HotPmrListsController < ApplicationController
         end
       end
     end
+
+    # Remove duplicates
     pmrs.uniq!
-    pmrs = pmrs.find_all { |pmr| pmr.last_fetched && pmr.last_fetched > 2.weeks.ago }
+
+    # Weed out the ones we are not interested in.
+    pmrs = pmrs.find_all do |pmr|
+      (pmr.alter_time > 2.weeks.ago) &&
+        (pmr.problem_status_code.nil? ||
+         (pmr.problem_status_code[0,2] == "OP"))
+    end
+    
     @hot_pmrs = pmrs.find_all do |pmr|
       # We are interested in three things.
       # 1) PMRs marked as hot
       # 2) PMRs marked as part of a crit sit
       # 3) PSAR marked with impact of 1
       #
-      # For #1 and #2, we limit the PMRs to ones with updates within the
-      # past two weeks. (This could be modified to be a "significant"
-      # update where significant would be more than 2 non-empty lines...
+      # For #1 and #2, we limit the PMRs to ones altered within the
+      # past two weeks (with the code above).  This could be changed
+      # to be a significant update or an update by someone in the
+      # group.
       #
       # For #3, we limit the PSARs to within the past two weeks.
       # And we don't really want the PSARs but the PMRs that they
