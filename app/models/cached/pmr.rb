@@ -246,9 +246,12 @@ module Cached
     # use its date.
     def create_time
       if (sig = signature_line_stypes('CE')).empty?
-        unless tz = to_combined.customer.tz
+        if customer && customer.tz
+          tz = customer.tz
+        else
           tz = 0
         end
+
         # should never be true but just in case.
         cd = self.creation_date
         ct = self.creation_time
