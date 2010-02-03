@@ -255,6 +255,9 @@ module Cached
         # should never be true but just in case.
         cd = self.creation_date
         ct = self.creation_time
+        if cd.nil? || ct.nil?
+          return created_at
+        end
         # Note, the creation date and time from the PMR is in the time
         # zone of the specialist who created the PMR.  I don't know
         # how to find out who that specialist was and, even if I
