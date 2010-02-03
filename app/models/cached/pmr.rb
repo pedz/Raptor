@@ -226,7 +226,9 @@ module Cached
       # create time according to the time zone of the customer.  So
       # this is going to be wrong sometimes.  But, it should never
       # be used anyway.
-      unless tz = to_combined.customer.tz
+      if customer && customer.tz
+        tz = customer.tz
+      else
         tz = 0
       end
       DateTime.civil(2000 + ad[1..2].to_i, # not Y2K but who cares?
