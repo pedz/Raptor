@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 39) do
+ActiveRecord::Schema.define(:version => 40) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(:version => 39) do
     t.integer  "minutes_from_gmt"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "absorbed_queue_list"
   end
 
   add_index "cached_centers", ["center"], :name => "uq_cached_centers", :unique => true

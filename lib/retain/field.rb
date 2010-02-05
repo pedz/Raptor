@@ -274,6 +274,15 @@ module Retain
         value.retain_to_user.to_i
       when :ppg
         "%x" % (value[0].ord * 256 + value[1].ord)
+      when :queue_list
+        list = ""
+        (1 .. 20).each do |i|
+          center = decode_center(value[0,2])
+          queue = value[2,6].retain_to_user
+          value = value[8,(value.length - 8)]
+          list = "#{list} #{queue},#{center}"
+        end
+        list
       end
     end
 

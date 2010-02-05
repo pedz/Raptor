@@ -202,7 +202,8 @@ module Retain
   class Pmqq < Sdi
     set_fetch_request "PMQQ"
     set_required_fields(:queue_name, :center, :h_or_s, :signon,
-                        :password, :group_request, :list_request)
+                        :password)
+    set_optional_fields(:group_request, :list_request)
 
     def initialize(options = {})
       super(options)
@@ -213,19 +214,23 @@ module Retain
                                     :queue_level,
                                     :software_center,
                                     :site,
-                                    :special_conditions
+                                    :special_conditions,
+                                    :absorbed_queue_list
                                    ]]
       end
 
-      unless @fields.has_key?(:list_request)
-        @fields[:list_request] = [[
-                                   :signon2,
-                                   :name,
-                                   :telephone_number,
-                                   :user_status_information,
-                                   :queue_status_flag
-                                  ]]
-      end
+      #
+      # This worked at one point as I recall but now it does not.
+      #
+      # unless @fields.has_key?(:list_request)
+      #   @fields[:list_request] = [[
+      #                              :signon2,
+      #                              :name,
+      #                              :telephone_number,
+      #                              :user_status_information,
+      #                              :queue_status_flag
+      #                             ]]
+      # end
     end
   end
 end

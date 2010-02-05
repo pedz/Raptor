@@ -297,7 +297,7 @@ module Retain
       :center_daylight_time_flag   => [  892, :ebcdic_y_or_n,       1 ],
       :delay_to_time               => [  919, :short,               2 ],
       :minutes_from_gmt            => [  920, :short,               2 ],
-      :absorbed_queue_list         => [  924, :ebcdic,            160 ],
+      :absorbed_queue_list         => [  924, :queue_list,        160 ],
       :iris                        => [  930, :binary,             12 ],
       :cpu_origin                  => [  931, :ebcdic,              2 ],
       :processor_serial_number     => [  932, :ebcdic,              5 ],

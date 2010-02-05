@@ -20,7 +20,7 @@ module Retain
       options = {
         :queue_name => queue_name.upcase.strip,
         :h_or_s => h_or_s,
-        :center => center
+        :center => center,
       }
       @query = Retain::Qq.new(options)
     end

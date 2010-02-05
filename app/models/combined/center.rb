@@ -2,7 +2,7 @@
 
 module Combined
   class Center < Base
-    set_expire_time 1.week
+    set_expire_time 1.second
 
     set_db_keys :center
     add_skipped_fields :center
