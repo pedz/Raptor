@@ -25,10 +25,18 @@ Raptor.updateTable = function (q, hits) {
 }
 
 Raptor.twoDigits = function(num) {
+    var sign;
+    if (num < 0) {
+	sign = "-";
+	num = -num;
+    } else {
+	sign = "";
+    }
+
     if (num < 10)
-	return "0" + num;
+	return sign + "0" + num;
     else
-	return "" + num;
+	return sign + "" + num;
 };
 
 Raptor.refreshReply = function(transport) {
@@ -51,14 +59,14 @@ Raptor.refreshReply = function(transport) {
     var hr   = Raptor.twoDigits(now.getHours());
     var min  = Raptor.twoDigits(now.getMinutes());
     var sec  = Raptor.twoDigits(now.getSeconds());
-    var tz   = Raptor.twoDigits(now.getTimezoneOffset() / 60);
+    var tz   = Raptor.twoDigits(-(now.getTimezoneOffset() / 60));
     var str  = ("" + year +
 		"-" + mon +
 		"-" + day +
 		" " + hr +
 		":" + min +
 		":" + sec +
-		" -" + tz +
+		" " + tz +
 		"00");
     $('time').innerHTML = str;
     if (teamAlert)
