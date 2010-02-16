@@ -24,6 +24,13 @@ Raptor.updateTable = function (q, hits) {
     }
 }
 
+Raptor.twoDigits = function(num) {
+    if (num < 10)
+	return "0" + num;
+    else
+	return "" + num;
+};
+
 Raptor.refreshReply = function(transport) {
     Raptor.lastUpdate = transport;
     var list = transport.responseJSON;
@@ -36,7 +43,24 @@ Raptor.refreshReply = function(transport) {
 	Raptor.updateTable(q, hits);
 	teamAlert = teamAlert || (t && (hits > 0));
     }
-    $('time').innerHTML = "" + new Date() + "";
+    /* want a date like: 2010-02-16 12:18:11 -0600 */
+    var now = new Date();
+    var year = now.getFullYear();
+    var mon  = Raptor.twoDigits(now.getMonth() + 1);
+    var day  = Raptor.twoDigits(now.getDate());
+    var hr   = Raptor.twoDigits(now.getHours());
+    var min  = Raptor.twoDigits(now.getMinutes());
+    var sec  = Raptor.twoDigits(now.getSeconds());
+    var tz   = Raptor.twoDigits(now.getTimezoneOffset() / 60);
+    var str  = ("" + year +
+		"-" + mon +
+		"-" + day +
+		" " + hr +
+		":" + min +
+		":" + sec +
+		" -" + tz +
+		"00");
+    $('time').innerHTML = str;
     if (teamAlert)
 	Raptor.showMessage("PMRs on a team queue");
     else
