@@ -37,6 +37,11 @@ module Combined
         stop_moc = 999999999
       end
 
+      if local_params.has_key? :ot
+        @ot = (local_params[:ot].to_f * 60).to_i
+        logger.debug("OT #{@ot}")
+      end
+
       # Just to make it look prettier
       psar_proxy = req_user.psars.stop_time_range(start_moc .. stop_moc)
       result = psar_proxy.find(:all,
