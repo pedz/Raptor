@@ -113,7 +113,7 @@ module Combined
             @cached.psar_mailed_flag = "M"
             @cached.save!
           else
-            # logger.debug("Destroying PSAR")
+            logger.info("Destroying PSAR")
             @cached.destroy
           end
           return
