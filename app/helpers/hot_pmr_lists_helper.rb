@@ -2,15 +2,21 @@
 
 module HotPmrListsHelper
   def action_taken_date(pmr)
-    text_line = pmr.ecpaat_signature["Action Taken"]
-    signature = Retain::SignatureLine.new(text_line.text)
-    signature.date.strftime("%b %d, %Y %H:%M")
+    if text_line = pmr.ecpaat_signature["Action Taken"]
+      signature = Retain::SignatureLine.new(text_line.text)
+      signature.date.strftime("%b %d, %Y %H:%M")
+    else
+      ""
+    end
   end
 
   def action_plan_date(pmr)
-    text_line = pmr.ecpaat_signature["Action Plan"]
-    signature = Retain::SignatureLine.new(text_line.text)
-    signature.date.strftime("%b %d, %Y %H:%M")
+    if text_line = pmr.ecpaat_signature["Action Plan"]
+      signature = Retain::SignatureLine.new(text_line.text)
+      signature.date.strftime("%b %d, %Y %H:%M")
+    else
+      ""
+    end
   end
 
   def pmr_severity(pmr)
