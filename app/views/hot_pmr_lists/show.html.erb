@@ -15,7 +15,7 @@
   </ul>
 <%- end -%>
 <%- @hot_pmrs.each do |pmr| -%>
-  <h4 name="<%= pmr.pbc %>">
+  <h4 id="<%= pmr.pbc %>">
     <%= link_to(pmr.pbc, combined_pmr_path(pmr.pbc)) %> -
     <%= pmr.customer.company_name %>
   </h4>
