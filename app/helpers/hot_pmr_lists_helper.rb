@@ -1,6 +1,26 @@
 # -*- coding: utf-8 -*-
 
 module HotPmrListsHelper
+  def action_taken_date(pmr)
+    text_line = pmr.ecpaat_signature["Action Taken"]
+    signature = Retain::SignatureLine.new(text_line.text)
+    signature.date.strftime("%b %d, %Y %H:%M")
+  end
+
+  def action_plan_date(pmr)
+    text_line = pmr.ecpaat_signature["Action Plan"]
+    signature = Retain::SignatureLine.new(text_line.text)
+    signature.date.strftime("%b %d, %Y %H:%M")
+  end
+
+  def pmr_severity(pmr)
+    if (c = pmr.primary_call) && c.severity
+      c.severity
+    else
+      pmr.severity
+    end
+  end
+  
   def safe_customer_name(pmr)
     if pmr.customer
       pmr.customer.company_name

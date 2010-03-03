@@ -3,9 +3,29 @@
 <!-- hot_pmr_lists/show.html.erb -->
 <% @title = "Hot PMRs under #{@dept_mgr.cn(true)[0]}" -%>
 <h3><%= @title %></h3>
-<%- @hot_pmrs.each do |pmr| -%>
-  <h4><%= link_to(pmr.pbc, combined_pmr_path(pmr.pbc)) %> - <%= pmr.customer.company_name %></h4>
+<h4>Table of Contents</h4>
+<%- @pmr_lists.keys.sort.each do |person| -%>
+  <h5><%= person %></h5>
   <ul>
+    <%- @pmr_lists[person].sort.find_all { |pbc|
+	  @hot_pmrs_pbc.include?(pbc)
+	}.each do |pmr| -%>
+      <li><a href="#<%= pmr %>"><%= pmr %></a></li>
+    <%- end -%>
+  </ul>
+<%- end -%>
+<%- @hot_pmrs.each do |pmr| -%>
+  <h4 name="<%= pmr.pbc %>">
+    <%= link_to(pmr.pbc, combined_pmr_path(pmr.pbc)) %> -
+    <%= pmr.customer.company_name %>
+  </h4>
+  <ul>
+    <li>
+      Opened: <%= pmr.create_time.strftime("%b %d, %Y") %>
+    </li>
+    <li>
+      Last Update: <%= pmr.alter_time.strftime("%b %d, %Y") %>
+    </li>
     <%- if crit = pmr.crit_sit -%>
     <li>Crit sit: <%= crit %></li>
     <%- end -%>
@@ -19,7 +39,9 @@
       </ul>
     </li>
     <li>
-      Last Action Taken
+      Severity: <%= pmr_severity(pmr) %>
+    <li>
+      Last Action Taken - <%= action_taken_date(pmr) %>
       <ul>
 	<%- action_taken_lines(pmr).each do |line| -%>
 	<%- next if line.blank? -%>
@@ -28,7 +50,7 @@
       </ul>
     </li>
     <li>
-      Current Action Plan
+      Current Action Plan - <%= action_plan_date(pmr) %>
       <ul>
 	<%- action_plan_lines(pmr).each do |line| -%>
 	<%- next if line.blank? -%>

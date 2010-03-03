@@ -352,41 +352,15 @@ module Cached
     once :ecpaat_complete?
 
     def ecpaat
-      h = { }
-      current_section = nil
-      add_blank_line = false
-      first_line = false
-      all_text_lines.find_all { |text_line|
-        if text_line.text_type == :normal
-          text = text_line.text
-          if (md = ECPAAT_REGEXP.match(text))
-            current_section = get_current_section(md)
-            h[current_section] = []
-            text = md[8]
-            add_blank_line = false
-            first_line = true
-            # logger.debug("CHC: ECPAAT found #{current_section}")
-          end
-          if current_section
-            if BLANK_REGEXP.match(text)
-              add_blank_line = true unless first_line
-            else
-              first_line = false
-              if add_blank_line
-                h[current_section] << ""
-              end
-              h[current_section] << text
-              add_blank_line = false
-            end
-          end
-        else                    # end of section
-          current_section = nil
-        end
-      }
-      h
+      compute_ecpaat
+      @ecpaat
     end
-    once :ecpaat
 
+    def ecpaat_signature
+      compute_ecpaat
+      @ecpaat_signature
+    end
+    
     def visited_queues
       queues = []
       signature_lines.each do |sig|
@@ -467,6 +441,52 @@ module Cached
     end
     
     private
+
+    def compute_ecpaat
+      # We compute ecpaat once and ecpaat_signature is computed at the same
+      # time.
+      unless @ecpaat.nil?
+        return
+      end
+
+      @ecpaat = { }
+      @ecpaat_signature = { }
+      last_signature = nil
+      current_section = nil
+      add_blank_line = false
+      first_line = false
+      all_text_lines.find_all { |text_line|
+        if text_line.text_type == :normal
+          text = text_line.text
+          if (md = ECPAAT_REGEXP.match(text))
+            current_section = get_current_section(md)
+            @ecpaat_signature[current_section] = last_signature
+            @ecpaat[current_section] = []
+            text = md[8]
+            add_blank_line = false
+            first_line = true
+            # logger.debug("CHC: ECPAAT found #{current_section}")
+          end
+          if current_section
+            if BLANK_REGEXP.match(text)
+              add_blank_line = true unless first_line
+            else
+              first_line = false
+              if add_blank_line
+                @ecpaat[current_section] << ""
+              end
+              @ecpaat[current_section] << text
+              add_blank_line = false
+            end
+          end
+        else                    # end of section
+          current_section = nil
+          if text_line.text_type == :signature
+            last_signature = text_line
+          end
+        end
+      }
+    end
 
     def get_current_section(md)
       # logger.debug("CHC: get_current_section: md[2]=#{md[2].inspect}, md[3]=#{md[3].inspect}")

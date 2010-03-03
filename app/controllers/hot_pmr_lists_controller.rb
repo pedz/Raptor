@@ -26,11 +26,15 @@ class HotPmrListsController < ApplicationController
   end
 
   def show
-    pmrs = []
+    all_pmrs = []
+    # pmr_lists is a list of pmrs per person
+    @pmr_lists = { }
     @dept_mgr = LdapUser.find(:first, params[:id]) # find manager
-    @dept_mgr.manages.each do |person|             # for each person
+    @manages = @dept_mgr.manages
+    @manages.each do |person|                     # for each person
       if user = User.find_by_ldap_id(person.mail) # if Raptor knows him
         user.retusers.each do |retuser|           # find thier retain id(s)
+          pmrs = []
           next if (dr = Cached::Registration.find_by_signon(retuser.retid)).nil?
           logger.debug "DR found"
           # For each user, we look at PMRs are are:
@@ -48,21 +52,25 @@ class HotPmrListsController < ApplicationController
 
           # Part 3... find pmrs resolved
           pmrs += dr.pmrs_as_resolver
+
+          pmrs.uniq!
+          @pmr_lists[dr.name] = pmrs.map { |pmr| pmr.pbc }
+          all_pmrs += pmrs
         end
       end
     end
 
     # Remove duplicates
-    pmrs.uniq!
+    all_pmrs.uniq!
 
     # Weed out the ones we are not interested in.
-    pmrs = pmrs.find_all do |pmr|
+    all_pmrs = all_pmrs.find_all do |pmr|
       (pmr.alter_time > 2.weeks.ago) &&
         (pmr.problem_status_code.nil? ||
          (pmr.problem_status_code[0,2] == "OP"))
     end
     
-    @hot_pmrs = pmrs.find_all do |pmr|
+    @hot_pmrs = all_pmrs.find_all do |pmr|
       # We are interested in three things.
       # 1) PMRs marked as hot
       # 2) PMRs marked as part of a crit sit
@@ -80,6 +88,7 @@ class HotPmrListsController < ApplicationController
         psar.psar_impact == 1 && psar.stop_time_date > 2.weeks.ago
       end
     end.sort { |a, b| a.pbc <=> b.pbc }
+    @hot_pmrs_pbc = @hot_pmrs.map { |pmr| pmr.pbc }
   end
 end
 
