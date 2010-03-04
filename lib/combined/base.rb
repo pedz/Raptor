@@ -33,7 +33,7 @@ module Combined
     def push(s)
       @stack ||= []
       if @stack.include?(s)
-        Rails.logger.error("Load called for #{s} again:\n#{caller.join("\n")}")
+        Rails.logger.error("Load called for #{s} again:\n#{@stack.join("\n")}\n#{caller.join("\n")}")
       end
       @stack.push(s)
     end
