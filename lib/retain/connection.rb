@@ -32,6 +32,14 @@ module Retain
       @h_or_s = h_or_s
     end
 
+    def node
+      @node
+    end
+    
+    def port
+      @port
+    end
+
     # open the connection.  +config+ is a hash of host and port
     # Can raise various exceptions -- see Socket#connect
     def connect
@@ -41,8 +49,10 @@ module Retain
         node = RetainConfig::SOFTWARE_NODES[RetainConfig::NodeIndex]
       end
       node_hash = Retain::Config[node][0]
+      @node = node_hash[:port]
+      @port = node_hash[:host]
       # logger.debug("RTN: Connecting to #{node_hash[:host]} #{node_hash[:port]}")
-      sockaddr = Socket.pack_sockaddr_in(node_hash[:port], node_hash[:host])
+      sockaddr = Socket.pack_sockaddr_in(@node, @port)
       @socket.connect(sockaddr)
     end
 
