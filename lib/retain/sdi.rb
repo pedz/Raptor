@@ -174,6 +174,7 @@ module Retain
         if @rc == 703 || @rc == 705
           raise Retain::LogonFailed
         end
+        dump_debug
       end
     end
 
