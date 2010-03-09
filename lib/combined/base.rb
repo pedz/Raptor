@@ -310,8 +310,11 @@ module Combined
       unless DB_ONLY
         s = "#{self.class.to_s}:#{self.to_param}"
         LoadStack.instance.push(s)
-        load
-        LoadStack.instance.pop
+        begin
+          load
+        ensure
+          LoadStack.instance.pop
+        end
       end
       @invalid_cache = false
       @loaded = true
