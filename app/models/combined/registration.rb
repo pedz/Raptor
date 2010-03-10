@@ -2,7 +2,7 @@
 
 module Combined
   class Registration < Base
-    set_expire_time 1.week
+    set_expire_time 3.days
 
     set_db_keys :signon
     add_skipped_fields :signon
@@ -81,7 +81,7 @@ module Combined
       else
         cache_options = Cached::Registration.options_from_retain(retain_registration)
         cache_options.delete(:signon)
-        # logger.debug("CMB: cache_option in registration = #{cache_options.inspect}")
+        logger.debug("CMB: cache_option in registration = #{cache_options.inspect}")
         unless (c = retain_registration.software_center).blank?
           @cached.software_center = first_center = Cached::Center.find_or_new(:center => c)
         end
