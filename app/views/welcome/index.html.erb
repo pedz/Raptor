@@ -53,7 +53,7 @@
   <ul>
     <li><%= link_to('PSAR',
             combined_psars_path(:psar_start_date => Time.previous_saturday.strftime("%Y%m%d"))) %></li>
-    <li><a href='feedbacks'>Feedbacks</a></li>
-    <li><a href='retain_registration'>Registration</a></li>
+    <li><%= link_to('Feedback', feedbacks_path) %></li>
+    <li><%= link_to('Registration', retusers_path) %></li>
   </ul>
 </p>
