@@ -2,7 +2,7 @@
 
 module Combined
   class Customer < Base
-    set_expire_time 1.week
+    set_expire_time 3.days
     set_db_keys :country, :customer_number
     add_skipped_fields :country, :customer_number, :pat
     
@@ -51,6 +51,7 @@ module Combined
         retain_object.send(group_request[0])
       rescue Retain::SdiReaderError => err
         raise err unless err.rc == 251
+        logger.debug("CMB: load customer caught an exception")
         options = { }
       else
         # Hook up center
@@ -60,6 +61,7 @@ module Combined
         
         # Update call record
         options = self.class.cached_class.options_from_retain(retain_object)
+        logger.debug("CMB: load customer options = #{options.inspect}")
       end
       options[:dirty] = false if @cached.respond_to?("dirty")
       @cached.updated_at = Time.now

@@ -13,7 +13,8 @@ module Cached
     
     # Customer Time Zone as a rational fraction of a day
     def tz
-      if tzb = time_zone_binary
+      logger.debug("CHC: customer tz called from #{caller.join("\n")}")
+      if tzb = to_combined.time_zone_binary
         tzb.to_r / MINS_PER_DAY
       else
         nil
