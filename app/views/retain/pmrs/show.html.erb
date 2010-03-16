@@ -29,9 +29,14 @@
 	<span id='pri-sev-header' class='field-header'>
 	  P/S
 	</span>
-	<span id='pri-sev-spec' class='field'>
-	  N / 
-	  <%= h @pmr.severity %>
+	<% if (crit = @pmr.crit_sit)
+	     ps_class = 'field ps_hot'
+	   else
+	     ps_class = 'field'
+	   end %>
+	<span id='pri-sev-spec' class='<%= ps_class %>'>
+	  <%= h @pmr.severity %>/N
+	  <% unless crit.nil? %>Crit: <%= crit %><% end %>
 	</span>
       </span>
     </td>
