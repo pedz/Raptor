@@ -36,7 +36,8 @@
 	   else
 	     ps_class = 'field'
 	   end %>
-	<span id='pri-sev-spec' class='<%= ps_class %>'>
+	<span id='pri-sev-spec' class='<%= ps_class %>'
+	      title='PMR severity is <%= @pmr.severity %>'>
 	  <%= h @call.priority %>/<%= h @call.severity %>
 	  <% unless crit.nil? %>Crit: <%= crit %><% end %>
 	</span>
