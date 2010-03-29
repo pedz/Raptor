@@ -12,13 +12,13 @@ Raptor.qsCheckCtTimes = function () {
 	    return;
 	}
 
-	var pattern = /Last CT: (.*)/;
+	var pattern = /(Last CT:|Entry Time:) (.*)/;
 	var title = ele.readAttribute('title');
 	var m = title.match(pattern);
 	if (m == null) {
 	    return;
 	}
-	var lastCt = new Date(m[1]);
+	var lastCt = new Date(m[2]);
 	var now = new Date();
 	if (due < lastCt) {		// wrap in years
 	    due.setYear(due.getFullYear() + 1);
@@ -203,6 +203,7 @@ document.observe('dom:loaded', function() {
 
     Raptor.qsCheckCtTimes();
 
+    var search = window.location.search;
     var time = 600;
     if (typeof(search) == "string" && search.length > 0) {
 	eval("var " + search.replace('?', ''));
