@@ -1,0 +1,56 @@
+
+rta :
+#  -
+#    host: ral.boulder.ibm.com
+#    port: 3781
+  -
+    host: localhost
+    port: 5000
+#  -
+#    host: ral.boulder.ibm.com
+#    port: 3782
+  -
+    host: localhost
+    port: 5001
+
+ral :
+#  -
+#    host: ral.boulder.ibm.com
+#    port: 3181
+  -
+    host: localhost
+    port: 5002
+#  -
+#    host: ral.boulder.ibm.com
+#    port: 3182
+  -
+    host: localhost
+    port: 5003
+
+bdc :
+#  -
+#    host: sf2.pok.ibm.com
+#    port: 3381
+  -
+    host: localhost
+    port: 5004
+#  -
+#    host: sf2.pok.ibm.com
+#    port: 3382
+  -
+    host: localhost
+    port: 5005
+
+sf2 :
+#  -
+#    host: sf2.pok.ibm.com
+#    port: 3581
+  -
+    host: localhost
+    port: 5006
+#  -
+#    host: sf2.pok.ibm.com
+#    port: 3582
+  -
+    host: localhost
+    port: 5007

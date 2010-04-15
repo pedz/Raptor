@@ -1,0 +1,99 @@
+production:
+  rta :
+    -
+      host: localhost
+      port: 5000
+    -
+      host: localhost
+      port: 5001
+
+  ral :
+    -
+      host: localhost
+      port: 5002
+    -
+      host: localhost
+      port: 5003
+
+  bdc :
+    -
+      host: localhost
+      port: 5004
+    -
+      host: localhost
+      port: 5005
+
+  sf2 :
+    -
+      host: localhost
+      port: 5006
+    -
+      host: localhost
+      port: 5007
+
+development:
+  rta :
+    -
+      host: ral.boulder.ibm.com
+      port: 3781
+    -
+      host: ral.boulder.ibm.com
+      port: 3782
+
+  ral :
+    -
+      host: ral.boulder.ibm.com
+      port: 3181
+    -
+      host: ral.boulder.ibm.com
+      port: 3182
+
+  bdc :
+    -
+      host: sf2.pok.ibm.com
+      port: 3381
+    -
+      host: sf2.pok.ibm.com
+      port: 3382
+
+  sf2 :
+    -
+      host: sf2.pok.ibm.com
+      port: 3581
+    -
+      host: sf2.pok.ibm.com
+      port: 3582
+
+test:
+  rta :
+    -
+      host: ral.boulder.ibm.com
+      port: 3781
+    -
+      host: ral.boulder.ibm.com
+      port: 3782
+
+  ral :
+    -
+      host: ral.boulder.ibm.com
+      port: 3181
+    -
+      host: ral.boulder.ibm.com
+      port: 3182
+
+  bdc :
+    -
+      host: sf2.pok.ibm.com
+      port: 3381
+    -
+      host: sf2.pok.ibm.com
+      port: 3382
+
+  sf2 :
+    -
+      host: sf2.pok.ibm.com
+      port: 3581
+    -
+      host: sf2.pok.ibm.com
+      port: 3582
+
