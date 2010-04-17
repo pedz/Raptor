@@ -5,17 +5,30 @@
   <%= controller.instance_variable_get(:@exception).message %>
 </p>
 <p style='width: 40em;'>
-  The database threw a &ldquo;duplicate key&rdquo; exception.  Usually this
+  The database threw a <q>duplicate key</q> exception.  Usually this
   happens when two users are updating the same record (like a PMR) at
   the same time.  Note that most fetches from Retain cause a database
-  update so even if you are just reading a queue, it can cause the
-  database to be updated.
+  update within Raptor because Raptor tries to cache everything it
+  retrieves from Retain.  Thus even if you are just reading a queue,
+  it can cause the database to be updated.
 </p>
 <p style='width: 40em;'>
   Retry what you just did and see if it goes away.  If it persists,
   make sure its not your fault.  For example, adding the same favorite
   queue again will cause this exception.  If all else fails, let me
   know.
+</p>
+<p style='width: 40em;'>
+  Note also that I <b>believe</b> that often this happens because the
+  user submits two requests at the same time.  Perhaps it is because
+  Raptor was not responding to the first request or perhaps the user
+  double clicked the link instead of just clicked the link.
+</p>
+<p style='width: 40em;'>
+  I'm hoping to more gracefully recover from these errors.  This page
+  is the first attempt at it.  I need to uniquely catch these errors
+  before I can safely recover from them.  Please let me know that you
+  received this the first time you see it.
 </p>
 <p style='margin-left: 5em;'>
   Perry

@@ -5,9 +5,11 @@
   <%= controller.instance_variable_get(:@exception).message %>
 </p>
 <p style='width: 40em;'>
-  The database threw an exception that a &ldquo;not null&rdquo;
-  constraint was violated.  I bet this is a bug that needs to be
-  reported.  Send me an email or something...
+  The database threw an exception that a <q>not null</q>
+  constraint was violated.  This happens when a field was empty when
+  it was not suppose to be empty.  The error should have been caught
+  before it got this deep in the application.  Please report this to
+  me via email or something like that.
 </p>
 <p style='margin-left: 5em;'>
   Perry
