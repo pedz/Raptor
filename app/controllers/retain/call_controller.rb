@@ -395,6 +395,38 @@ module Retain
       end
     end
 
+    def dispatch
+      @call = Combined::Call.from_param!(params[:id], signon_user)
+      @queue = @call.queue
+      pmr = @call.pmr
+      options = @call.to_options
+
+      dispatch_sdi = do_pmcu("CD  ", options)
+      if dispatch_sdi.rc != 0
+        render_error(dispatch_sdi, 'message-area', 'PMCU')
+        return
+      end
+
+      # At this point, the PMR has changed, so mark it as dirty
+      pmr.mark_all_as_dirty
+      @call.reload              # ActiveRecord needs to be reloaded
+      logger.debug("@call.dirty = #{@call.dirty}")
+      dummy = @call.dispatched_employee
+
+      # HACK! stolen from qs_controller for now
+      @todays_psars = signon_user.psars.today.group_by(&:pmr_id).inject({ }) do |memo, a|
+        memo[a[0]] = a[1]
+        memo
+      end
+
+      full_text = "<span class='sdi-normal'>CT completed successfully</span>"
+      render(:update) { |page|
+        page.replace "tr-#{@call.to_param}", :partial => 'retain/qs/qs_row', :locals => { :call => @call }
+        page.replace_html 'message-area', full_text
+        page.visual_effect :fade, 'message-area'
+      }
+    end
+
     def ct
       @call = Combined::Call.from_param!(params[:id], signon_user)
       @queue = @call.queue
@@ -404,13 +436,13 @@ module Retain
       # Three step process.  Dispatch, CT, Undispatch
       dispatch = do_pmcu("CD  ", options)
       if dispatch.rc != 0
-        render_error(dispatch, 'message-area')
+        render_error(dispatch, 'message-area', 'PMCU')
         return
       end
 
       ct = do_pmcu("CT  ", options)
       if ct.rc != 0
-        render_error(ct, 'message-area')
+        render_error(ct, 'message-area', 'PMCU')
         return
       end
 
@@ -419,7 +451,7 @@ module Retain
       
       undispatch = do_pmcu("NOCH", options)
       if undispatch.rc != 0
-        render_error(undispatch, 'message-area')
+        render_error(undispatch, 'message-area', 'PMCU')
         return
       end
 

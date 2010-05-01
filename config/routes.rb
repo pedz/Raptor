@@ -57,7 +57,8 @@ ActionController::Routing::Routes.draw do |map|
                 :member => {
                   :alter      => :post,
                   :queue_list => :get,
-                  :ct         => :post })
+                  :ct         => :post,
+                  :dispatch   => :post })
 
   map.resources(:combined_registration,
                 :controller => 'retain/registration',

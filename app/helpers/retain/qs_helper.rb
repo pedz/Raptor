@@ -7,8 +7,8 @@ module Retain
 
     DISP_LIST = [
                  :call_button, :link_etc, :pri_sev, :p_s_b,
-                 :biggem,
-                 :age, :jeff, :next_ct, :ct, :sg, :psar_time
+                 :biggem, :age, :jeff, :next_ct, :ct,
+                 :dispatch, :sg, :psar_time
                 ]
 
     HELP_TEXT = <<-EOF
@@ -38,7 +38,7 @@ module Retain
       psars.inject(0) { |sum, psar| sum += psar.chargeable_time_hex }
     end
 
-    def display_qs_body(binding)
+    def display_qs_footer(binding)
       total_time = @todays_psars.inject(0) { |sum, psar_thing|
         sum += sum_psar_time(psar_thing[1])
       }
@@ -79,37 +79,24 @@ module Retain
           end
         end
       end
-      
-      tbody binding do |binding|
-        @queue.calls.each do |call|
-          hit_cache = true
-          tag = call.cache_tag("qs")
-          cache(tag) do
-            logger.debug("building fragment for #{tag}")
-            hit_cache = false
-            row_class = call_class(call)
-            row_title =
-              case row_class
-              when 'system-down'
-                'System is down'
-              when 'initial-response'
-                'Under initial response time guidelines'
-              when 'normal'
-                'Under normal CT time guidelines'
-              when 'updated'
-                'Normal CT guidelines; call last updated by someone other than call owner'
-              else
-                'unknown row class'
-              end
-            tr(binding,
-               :class => row_class + " pmr-row",
-               :title => row_title) do |binding|
-              DISP_LIST.map { |sym| self.send sym, binding, false, call }.join("\n")
-            end
-          end
-          logger.debug("reused fragment for #{tag}") if hit_cache
+    end
+
+    def render_row(binding, call)
+      hit_cache = true
+      tag = call.cache_tag("qs")
+      cache(tag) do
+        logger.debug("building fragment for #{tag}")
+        hit_cache = false
+        row_class = call_class(call)
+        row_title = call_title(row_class)
+        tr(binding,
+           :id => "tr-#{call.to_param}",
+           :class => row_class + " pmr-row",
+           :title => row_title) do |binding|
+          DISP_LIST.map { |sym| self.send sym, binding, false, call }.join("\n")
         end
       end
+      logger.debug("reused fragment for #{tag}") if hit_cache
     end
 
     private
@@ -414,6 +401,19 @@ module Retain
       end
     end
 
+    # Dispath / Undispatch
+    def dispatch(binding, header, call)
+      if header
+        th binding, :class => 'dispatch' do |binding|
+          concat("Dispatch<br/>Undispatch")
+        end
+      else
+        td binding, :class => 'dispatch' do |binding|
+          concat(link_to_remote("dispatch", :url => dispatch_combined_call_path(call)))
+        end
+      end
+    end
+
     # Service Given
     def sg(binding, header, call)
       if header
@@ -698,6 +698,22 @@ module Retain
       end
       return "normal" if owner_name == last_signature_name
       return "updated"
+    end
+
+    # Determines the title string for a call
+    def call_title(call_class)
+      case call_class
+      when 'system-down'
+        'System is down'
+      when 'initial-response'
+        'Under initial response time guidelines'
+      when 'normal'
+        'Under normal CT time guidelines'
+      when 'updated'
+        'Normal CT guidelines; call last updated by someone other than call owner'
+      else
+        'unknown row class'
+      end
     end
 
     def owner(binding, header, call)
