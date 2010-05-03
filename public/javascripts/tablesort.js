@@ -75,7 +75,7 @@ var SortableTable = {
 			c = $(c);
 			var cw = c.getDimensions().width;
 			c.setStyle({width: cw + 'px'});
-			$A(table.tBodies[0].rows).each(function(r){
+			$A($A(table.tBodies).last().rows).each(function(r){
 				$(r.cells[i]).setStyle({width: cw + 'px'});
 			})
 		})	
@@ -180,7 +180,7 @@ var SortableTable = {
 		});
 
 		rows.each(function(r,i) {
-			table.tBodies[0].appendChild(r);
+			$A(table.tBodies).last().appendChild(r);
 			SortableTable.addRowClass(r,i);
 		});
 	},
@@ -320,7 +320,7 @@ var SortableTable = {
 		{re: /^\d{2}-\d{2}-\d{4}/i, type : "date-eu"},
 		{re: /^\d{2}\/\d{2}\/\d{4}\s?(?:\d{1,2}\:\d{2}(?:\:\d{2})?\s?[a|p]?m?)?/i, type : "date-au"},
 		{re: /^\d{1,2}\:\d{2}(?:\:\d{2})?(?:\s[a|p]m)?$/i, type : "time"},
-		{re: /^[$£¥€¤]/, type : "currency"}, // dollar,pound,yen,euro,generic currency symbol
+		{re: /^[$à¤ƒà¤†€à¤…]/, type : "currency"}, // dollar,pound,yen,euro,generic currency symbol
 		{re: /^[-+]?[\d]*\.?[\d]+(?:[eE][-+]?[\d]+)?\s?[k|m|g|t]b$/i, type : "datasize"},
 		{re: /^[-+]?[\d]*\.?[\d]+(?:[eE][-+]?[\d]+)?/, type : "number"},
 		{re: /^[A-Z]+$/, type : "casesensitivetext"},
@@ -334,8 +334,12 @@ var SortableTable = {
 	},
 	getBodyRows : function(table) {
 		table = $(table);
-		return (table.hasClassName(SortableTable.options.tableScrollClass) || table.tHead && table.tHead.rows.length > 0) ? 
-					$A(table.tBodies[0].rows) : $A(table.rows).without(table.rows[0]);
+		if (table.hasClassName(SortableTable.options.tableScrollClass) || table.tHead && table.tHead.rows.length > 0) {
+		    var foo = $A(table.tBodies).last().rows;
+		    return $A(foo);
+		} else {
+		    return $A(table.rows).without(table.rows[0]);
+		}
 	},
 	addRowClass : function(r,i) {
 		r = $(r)
@@ -362,7 +366,7 @@ var SortableTable = {
 		if(!t) {
 			var i = index ? index : SortableTable.getCellIndex(cell);
 			var tbl = table ? table : cell.up('table')
-			cell = tbl.tBodies[0].rows[0].cells[i]; // grab same index cell from second row to try and match data type
+			    cell = $A(tbl.tBodies).last().rows[0].cells[i]; // grab same index cell from second row to try and match data type
 			t = SortableTable.detectors.detect(function(d){return d.re.test(SortableTable.getCellText(cell));})['type'];
 		}
 		return t;
