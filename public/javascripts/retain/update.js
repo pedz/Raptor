@@ -199,8 +199,7 @@ Raptor.closeDiv = function() {
     }
 };
 
-/* Add this to the document.observe('dom:loaded') list of functions */
-Raptor.updateLoadHook = function() {
+Raptor.fixAuthTokens = function() {
     /*
      * The authentication tokens are cached up inside the call
      * fragments.  We need to find them and set them to the proper
@@ -214,6 +213,110 @@ Raptor.updateLoadHook = function() {
     for (i = 0; i < authInputsLength; i += 1) {
 	authInputs[i].value = authToken;
     }
+};
+
+Raptor.fixUpdateContainer = function (ele) {
+    var div = ele.down('.call-update-div');
+    if (!div)
+	return;
+    div.redraw = Raptor.redrawDiv.bind(div);
+    div.close = Raptor.closeDiv.bind(div);
+
+    var form = div.down('.call-update-form');
+    div.form = form;
+    input_list = form.down('.input-with-list');
+    form.inputList = input_list;
+    Raptor.textInputWithList(input_list);
+
+    /* Find the new queue box */
+    var new_queue = form.down('.call-update-new-queue');
+    div.newQueue = new_queue;
+
+    /* Check box to show or hide text box */
+    var update_pmr = form.down('.call-update-update-pmr');
+    form.updatePmr = update_pmr;
+    update_pmr.observe('click', Raptor.updateClicked.bindAsEventListener(update_pmr));
+    update_pmr.redraw = Raptor.redrawUpdateCheckBox.bind(update_pmr);
+    div.updatePMR = update_pmr;
+    update_pmr.div = div;
+
+    /* Span of radio buttons */
+    var action_span = form.down('.call-update-action-span');
+    action_span.redraw = Raptor.redrawAction.bind(action_span);
+    div.actionSpan = action_span;
+
+    var requeue_radio = form.down('.call-update-requeue-radio');
+    action_span.requeue_radio = requeue_radio;
+    Raptor.setupRadioButtonSpans(requeue_radio);
+    requeue_radio.doClicked = Raptor.requeueClicked.bindAsEventListener(requeue_radio);
+    requeue_radio.observe('click', requeue_radio.doClicked);
+
+    var addtxt_radio = form.down('.call-update-addtxt-radio');
+    action_span.addtxt_radio = addtxt_radio;
+    Raptor.setupRadioButtonSpans(addtxt_radio);
+    addtxt_radio.doClicked = Raptor.addtxtClicked.bindAsEventListener(addtxt_radio);
+    addtxt_radio.observe('click', addtxt_radio.doClicked);
+
+    var dup_radio = form.down('.call-update-dup-radio');
+    action_span.dup_radio = dup_radio;
+    Raptor.setupRadioButtonSpans(dup_radio);
+    dup_radio.doClicked = Raptor.dupClicked.bindAsEventListener(dup_radio);
+    dup_radio.observe('click', dup_radio.doClicked);
+
+    var close_radio = form.down('.call-update-close-radio');
+    action_span.close_radio = close_radio;
+    Raptor.setupRadioButtonSpans(close_radio);
+    close_radio.doClicked = Raptor.closeClicked.bindAsEventListener(close_radio);
+    close_radio.observe('click', close_radio.doClicked);
+
+    action_span.redraw();
+
+    var add_time = form.down('.call-update-add-time');
+    div.addTime = add_time;
+    add_time.observe('click', Raptor.addTimeClicked.bindAsEventListener(add_time));
+    add_time.redraw = Raptor.redrawAddTime.bind(add_time);
+
+    var update_sac = form.down('.call-update-sac');
+    add_time.update_sac = update_sac;
+    update_sac.redraw = Raptor.redrawSac.bind(update_sac);
+    update_sac.observe('change', Raptor.sacChange.bindAsEventListener(update_sac));
+    update_sac.aparField = update_sac.up(1).down('.call-update-apar-number-span');
+
+    var alter_time = form.down('.call-update-alter-time');
+    add_time.alter_time = alter_time;
+    alter_time.observe('click', Raptor.alterTimeToggle.bindAsEventListener(alter_time));
+    alter_time.redraw = Raptor.redrawAlterTime.bind(alter_time);
+
+    add_time.redraw();
+
+    var email_button = form.down('.send-email-button');
+    email_button.observe('click', Raptor.sendEmail.bindAsEventListener(email_button));
+
+    var ct_check_box = form.down('.call-update-do-ct');
+    div.ctCheckBox = ct_check_box;
+
+    var text_box = form.down('.call-update-newtxt');
+    div.textBox = text_box;
+
+    var clear_boxes_button = form.down('.clear-boxes-button');
+    clear_boxes_button.div = div;
+    clear_boxes_button.observe('click',
+			       Raptor.clearBoxes.bindAsEventListener(clear_boxes_button));
+
+    /* Not all update panels will have this button */
+    var queue_back = form.down('.setup-to-send-back');
+    if (queue_back) {
+	queue_back.div = div;
+	queue_back.observe('click',
+			   Raptor.queueBack.bindAsEventListener(queue_back));
+    }
+
+    ele.hide();
+};
+
+/* Add this to the document.observe('dom:loaded') list of functions */
+Raptor.updateLoadHook = function() {
+    Raptor.fixAuthTokens();
 
     /*
      * This has to be here or firefox draws the initial page wrong.
@@ -221,103 +324,6 @@ Raptor.updateLoadHook = function() {
      * them.  The form, for example, has added methods and properties
      * so that the redraw method can properly initialize all of the
      * input fields within it.
+    $$('.call-update-container').each(Raptor.fixUpdateContainer);
      */
-    $$('.call-update-container').each(function (ele) {
-	var div = ele.down('.call-update-div');
-	if (!div)
-	    return;
-	div.redraw = Raptor.redrawDiv.bind(div);
-	div.close = Raptor.closeDiv.bind(div);
-
-	var form = div.down('.call-update-form');
-	div.form = form;
-	input_list = form.down('.input-with-list');
-	form.inputList = input_list;
-	Raptor.textInputWithList(input_list);
-
-	/* Find the new queue box */
-	var new_queue = form.down('.call-update-new-queue');
-	div.newQueue = new_queue;
-
-	/* Check box to show or hide text box */
-	var update_pmr = form.down('.call-update-update-pmr');
-	form.updatePmr = update_pmr;
-	update_pmr.observe('click', Raptor.updateClicked.bindAsEventListener(update_pmr));
-	update_pmr.redraw = Raptor.redrawUpdateCheckBox.bind(update_pmr);
-	div.updatePMR = update_pmr;
-	update_pmr.div = div;
-
-	/* Span of radio buttons */
-	var action_span = form.down('.call-update-action-span');
-	action_span.redraw = Raptor.redrawAction.bind(action_span);
-	div.actionSpan = action_span;
-
-	var requeue_radio = form.down('.call-update-requeue-radio');
-	action_span.requeue_radio = requeue_radio;
-	Raptor.setupRadioButtonSpans(requeue_radio);
-	requeue_radio.doClicked = Raptor.requeueClicked.bindAsEventListener(requeue_radio);
-	requeue_radio.observe('click', requeue_radio.doClicked);
-
-	var addtxt_radio = form.down('.call-update-addtxt-radio');
-	action_span.addtxt_radio = addtxt_radio;
-	Raptor.setupRadioButtonSpans(addtxt_radio);
-	addtxt_radio.doClicked = Raptor.addtxtClicked.bindAsEventListener(addtxt_radio);
-	addtxt_radio.observe('click', addtxt_radio.doClicked);
-
-	var dup_radio = form.down('.call-update-dup-radio');
-	action_span.dup_radio = dup_radio;
-	Raptor.setupRadioButtonSpans(dup_radio);
-	dup_radio.doClicked = Raptor.dupClicked.bindAsEventListener(dup_radio);
-	dup_radio.observe('click', dup_radio.doClicked);
-
-	var close_radio = form.down('.call-update-close-radio');
-	action_span.close_radio = close_radio;
-	Raptor.setupRadioButtonSpans(close_radio);
-	close_radio.doClicked = Raptor.closeClicked.bindAsEventListener(close_radio);
-	close_radio.observe('click', close_radio.doClicked);
-
-	action_span.redraw();
-
-	var add_time = form.down('.call-update-add-time');
-	div.addTime = add_time;
-	add_time.observe('click', Raptor.addTimeClicked.bindAsEventListener(add_time));
-	add_time.redraw = Raptor.redrawAddTime.bind(add_time);
-
-	var update_sac = form.down('.call-update-sac');
-	add_time.update_sac = update_sac;
-	update_sac.redraw = Raptor.redrawSac.bind(update_sac);
-	update_sac.observe('change', Raptor.sacChange.bindAsEventListener(update_sac));
-	update_sac.aparField = update_sac.up(1).down('.call-update-apar-number-span');
-
-	var alter_time = form.down('.call-update-alter-time');
-	add_time.alter_time = alter_time;
-	alter_time.observe('click', Raptor.alterTimeToggle.bindAsEventListener(alter_time));
-	alter_time.redraw = Raptor.redrawAlterTime.bind(alter_time);
-
-	add_time.redraw();
-
-	var email_button = form.down('.send-email-button');
-	email_button.observe('click', Raptor.sendEmail.bindAsEventListener(email_button));
-
-	var ct_check_box = form.down('.call-update-do-ct');
-	div.ctCheckBox = ct_check_box;
-
-	var text_box = form.down('.call-update-newtxt');
-	div.textBox = text_box;
-
-	var clear_boxes_button = form.down('.clear-boxes-button');
-	clear_boxes_button.div = div;
-	clear_boxes_button.observe('click',
-				   Raptor.clearBoxes.bindAsEventListener(clear_boxes_button));
-
-	/* Not all update panels will have this button */
-	var queue_back = form.down('.setup-to-send-back');
-	if (queue_back) {
-	    queue_back.div = div;
-	    queue_back.observe('click',
-			       Raptor.queueBack.bindAsEventListener(queue_back));
-	}
-
-	ele.hide();
-    });
 };

@@ -401,16 +401,25 @@ module Retain
       pmr = @call.pmr
       options = @call.to_options
 
-      dispatch_sdi = do_pmcu("CD  ", options)
-      if dispatch_sdi.rc != 0
-        render_error(dispatch_sdi, 'message-area', 'PMCU')
-        return
+      # We don't check who is dispatched.  We assume its the right person and
+      # let Retain tell us if it isn't
+      if @call.is_dispatched
+      dispatch_sdi = do_pmcu("NOCH", options)
+        if dispatch_sdi.rc != 0
+          render_error(dispatch_sdi, 'message-area', 'PMCU')
+          return
+        end
+      else
+        dispatch_sdi = do_pmcu("CD  ", options)
+        if dispatch_sdi.rc != 0
+          render_error(dispatch_sdi, 'message-area', 'PMCU')
+          return
+        end
       end
 
       # At this point, the PMR has changed, so mark it as dirty
-      pmr.mark_all_as_dirty
+      @call.mark_as_dirty
       @call.reload              # ActiveRecord needs to be reloaded
-      logger.debug("@call.dirty = #{@call.dirty}")
       dummy = @call.dispatched_employee
 
       # HACK! stolen from qs_controller for now
@@ -421,8 +430,11 @@ module Retain
 
       full_text = "<span class='sdi-normal'>CT completed successfully</span>"
       render(:update) { |page|
-        page.replace "tr-#{@call.to_param}", :partial => 'retain/qs/qs_row', :locals => { :call => @call }
         page.replace_html 'message-area', full_text
+        page.replace("tr-#{@call.to_param.gsub(",", "-")}",
+                     :partial => 'retain/qs/qs_row',
+                     :locals => { :call => @call })
+        page.call('Raptor.qsNewRow', "tr-#{@call.to_param.gsub(",", "-")}")
         page.visual_effect :fade, 'message-area'
       }
     end

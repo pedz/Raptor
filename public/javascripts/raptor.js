@@ -53,7 +53,6 @@ var Raptor = {
 		    if (match) {
 			// Exact match takes precidence
 			if (eleId.length == textLength) {
-			    // console.log(this);
 			    this.value = "";
 			    ele.click();
 			    return false;
@@ -68,7 +67,6 @@ var Raptor = {
 		    }
 		}
 		if (foundElement) {
-		    // console.log(this);
 		    this.value = "";
 		    foundElement.click();
 		    return false;
@@ -190,6 +188,20 @@ var Raptor = {
 	this.ipe = null;
     },
 
+    addHooksAndUnhooks : function(ele1) {
+	ele1.select('.collection-edit-name').each(function (ele2) {
+		ele2.hookup = Raptor.hookupInPlaceCollectionEditor.bind(ele2);
+		ele2.unhook = Raptor.unhookInPlaceCollectionEditor.bind(ele2);
+		ele2.hookup();
+	    });
+
+	ele1.select('.edit-name').each(function (ele2) {
+		ele2.hookup = Raptor.hookupInPlaceEditor.bind(ele2);
+		ele2.unhook = Raptor.unhookInPlaceEditor.bind(ele2);
+		ele2.hookup();
+	    });
+    },
+
     popupDelayStart : function (event) {
 	this.popupDelayId = this.showPopup.delay(0.25);
     },
@@ -223,5 +235,5 @@ var Raptor = {
 	ele.hidePopup = Raptor.hidePopup.bind(ele);
 	ele.popupElement = ele.down('.popup');
 	ele.popupElement.hide();
-    }
+    },
 };

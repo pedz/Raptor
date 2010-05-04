@@ -4,24 +4,14 @@
 //
 
 document.observe('dom:loaded', function() {
-    $$('.collection-edit-name').each(function (ele) {
-	ele.hookup = Raptor.hookupInPlaceCollectionEditor.bind(ele);
-	ele.unhook = Raptor.unhookInPlaceCollectionEditor.bind(ele);
-	ele.hookup();
+	Raptor.addHooksAndUnhooks($(document.body));
+
+	if (Raptor.updateLoadHook) {
+	    Raptor.updateLoadHook();
+	}
+
+	var bottom = $('bottom');
+	if (bottom) {
+	    Raptor.addUserInput(bottom);
+	}
     });
-
-    $$('.edit-name').each(function (ele) {
-	ele.hookup = Raptor.hookupInPlaceEditor.bind(ele);
-	ele.unhook = Raptor.unhookInPlaceEditor.bind(ele);
-	ele.hookup();
-    });
-
-    if (Raptor.updateLoadHook) {
-	Raptor.updateLoadHook();
-    }
-
-    var bottom = $('bottom');
-    if (bottom) {
-	Raptor.addUserInput(bottom);
-    }
-});

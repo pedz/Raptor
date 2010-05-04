@@ -80,120 +80,121 @@ Raptor.closeRight = function () {
 };
 
 document.observe('dom:loaded', function() {
-    $$('.call-update-container').each(function (ele) {
-	ele.toggleCallUpdateForm = Raptor.callToggleCallUpdateForm.bind(ele);
-    });
+	$$('.call-update-container').each(function (ele) {
+		ele.toggleCallUpdateForm = Raptor.callToggleCallUpdateForm.bind(ele);
+		Raptor.fixUpdateContainer(ele);
+	    });
 
-    Raptor.right = $('right');
-    Raptor.right_tab = $('right-tab');
-    Raptor.right_width = parseInt(window.getComputedStyle(Raptor.right, null).width);
-    Raptor.right_tab_width = parseInt(window.getComputedStyle(Raptor.right_tab, null).width);
+	Raptor.right = $('right');
+	Raptor.right_tab = $('right-tab');
+	Raptor.right_width = parseInt(window.getComputedStyle(Raptor.right, null).width);
+	Raptor.right_tab_width = parseInt(window.getComputedStyle(Raptor.right_tab, null).width);
 
-    Raptor.left = $('left');
-    Raptor.left_tab = $('left-tab');
-    Raptor.left_width = parseInt(window.getComputedStyle(Raptor.left, null).width);
-    Raptor.left_tab_width = parseInt(window.getComputedStyle(Raptor.left_tab, null).width);
+	Raptor.left = $('left');
+	Raptor.left_tab = $('left-tab');
+	Raptor.left_width = parseInt(window.getComputedStyle(Raptor.left, null).width);
+	Raptor.left_tab_width = parseInt(window.getComputedStyle(Raptor.left_tab, null).width);
 
-    Raptor.top = $('top');
-    Raptor.center = $('center');
-    Raptor.bottom = $('bottom');
+	Raptor.top = $('top');
+	Raptor.center = $('center');
+	Raptor.bottom = $('bottom');
 
-    // Raptor.setupPopup($('call-list'));
+	// Raptor.setupPopup($('call-list'));
 
-    // We want to hide the update-form at page load.
-    if ($('update-form')) {
-	$('update-form').hide();
-    }
+	// We want to hide the update-form at page load.
+	if ($('update-form')) {
+	    $('update-form').hide();
+	}
 
-    // hide the left and right panels at page load.
-    Raptor.right.hide();
-    Raptor.left.hide();
+	// hide the left and right panels at page load.
+	Raptor.right.hide();
+	Raptor.left.hide();
 
-    // Hide add time form.  I suppose we could do all this in the HTML
-    // part of the page.
-    if ($('add-time-form')) {
-	$('add-time-form').hide();
-    }
+	// Hide add time form.  I suppose we could do all this in the HTML
+	// part of the page.
+	if ($('add-time-form')) {
+	    $('add-time-form').hide();
+	}
 
-    // hide the click-data elements at page load.  These are the
-    // elements that the "for" attribute of click-tag reference.  We
-    // also set up an observe so that clicking on the click-data hides
-    // it.
-    $$('.click-data').each(function (ele) {
-	ele.hide();
-	ele.observe('click', function (event) {
-	    if (event.element().readAttribute('href') || Raptor.didNewUrl) {
-		Raptor.didNewUrl = false
-	    } else {
-		event.stop();
+	// hide the click-data elements at page load.  These are the
+	// elements that the "for" attribute of click-tag reference.  We
+	// also set up an observe so that clicking on the click-data hides
+	// it.
+	$$('.click-data').each(function (ele) {
 		ele.hide();
+		ele.observe('click', function (event) {
+			if (event.element().readAttribute('href') || Raptor.didNewUrl) {
+			    Raptor.didNewUrl = false
+				} else {
+			    event.stop();
+			    ele.hide();
+			    Raptor.recalcDimensions();
+			}
+		    });
+	    });
+
+	// elements of class click-tag have a "for" attribute which
+	// contains the id of the element that is shown or hidden when the
+	// click-tag element is clicked.  This code hooks up an observer
+	// to the click-tag elements to toggle the element it is for.
+	$$('.click-tag').each(function (ele) {
+		var other = $(ele.readAttribute('title'));
+		ele.observe('click', function(event) {
+			event.stop();
+			other.toggle();
+			Raptor.recalcDimensions();
+		    }.bindAsEventListener(ele));
+	    });
+
+	// The elements of class inplace-edit need to be set up.  This may
+	// not be complete and working yet but preserves the previous code
+	// for now.
+	// $$('.inplace-edit').each(function (ele) {
+	//     var url = ele.readAttribute('href');
+	//     var v = ele.readAttribute('value');
+	//     var ajaxOptions = { method: 'post' };
+	//     var options = {
+	//         callback: function(form, value) { return v + '=' + escape(value) },
+	//         ajaxOptions: ajaxOptions
+	//     };
+	//     new Ajax.InPlaceEditor(ele, url, options);
+	// });
+
+	$('left-tab').observe('mouseover', function (event) {
+		// console.log("left-tab mouseoever");
+		event.stop();
+		Raptor.left_is_open = true;
+		ele = $('left');
+		$('left').show();
+	    });
+
+	$('left-tab').observe('click', function (event) {
+		// console.log("left-tab click");
+		event.stop();
+		Raptor.left_stays_open = !Raptor.left_stays_open;
 		Raptor.recalcDimensions();
-	    }
-	});
-    });
+	    });
 
-    // elements of class click-tag have a "for" attribute which
-    // contains the id of the element that is shown or hidden when the
-    // click-tag element is clicked.  This code hooks up an observer
-    // to the click-tag elements to toggle the element it is for.
-    $$('.click-tag').each(function (ele) {
-	var other = $(ele.readAttribute('title'));
-	ele.observe('click', function(event) {
-	    event.stop();
-	    other.toggle();
-	    Raptor.recalcDimensions();
-	}.bindAsEventListener(ele));
-    });
+	$('right-tab').observe('mouseover', Raptor.rightDelayStart.bindAsEventListener($('right')));
+	$('right-tab').observe('mouseout', Raptor.rightDelayStop.bindAsEventListener($('right')));
+	$('right-tab').observe('click', Raptor.rightClick.bindAsEventListener($('right')));
 
-    // The elements of class inplace-edit need to be set up.  This may
-    // not be complete and working yet but preserves the previous code
-    // for now.
-    // $$('.inplace-edit').each(function (ele) {
-    //     var url = ele.readAttribute('href');
-    //     var v = ele.readAttribute('value');
-    //     var ajaxOptions = { method: 'post' };
-    //     var options = {
-    //         callback: function(form, value) { return v + '=' + escape(value) },
-    //         ajaxOptions: ajaxOptions
-    //     };
-    //     new Ajax.InPlaceEditor(ele, url, options);
-    // });
+	$('center').observe('mouseover', function (event) {
+		event.stop();
+		Raptor.close_side_panels();
+	    });
 
-    $('left-tab').observe('mouseover', function (event) {
-	// console.log("left-tab mouseoever");
-	event.stop();
-	Raptor.left_is_open = true;
-	ele = $('left');
-	$('left').show();
-    });
+	$('top').observe('mouseover', function (event) {
+		event.stop();
+		Raptor.close_side_panels();
+	    });
 
-    $('left-tab').observe('click', function (event) {
-	// console.log("left-tab click");
-	event.stop();
-	Raptor.left_stays_open = !Raptor.left_stays_open;
+	$('bottom').observe('mouseover', function (event) {
+		event.stop();
+		Raptor.close_side_panels();
+	    });
+
+	// After everything is set up, recalc the dimentions to get the
+	// proper display.
 	Raptor.recalcDimensions();
     });
-
-    $('right-tab').observe('mouseover', Raptor.rightDelayStart.bindAsEventListener($('right')));
-    $('right-tab').observe('mouseout', Raptor.rightDelayStop.bindAsEventListener($('right')));
-    $('right-tab').observe('click', Raptor.rightClick.bindAsEventListener($('right')));
-
-    $('center').observe('mouseover', function (event) {
-	event.stop();
-	Raptor.close_side_panels();
-    });
-
-    $('top').observe('mouseover', function (event) {
-	event.stop();
-	Raptor.close_side_panels();
-    });
-
-    $('bottom').observe('mouseover', function (event) {
-	event.stop();
-	Raptor.close_side_panels();
-    });
-
-    // After everything is set up, recalc the dimentions to get the
-    // proper display.
-    Raptor.recalcDimensions();
-});

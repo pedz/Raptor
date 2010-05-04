@@ -90,7 +90,7 @@ module Retain
         row_class = call_class(call)
         row_title = call_title(row_class)
         tr(binding,
-           :id => "tr-#{call.to_param}",
+           :id => "tr-#{call.to_param.gsub(",", "-")}",
            :class => row_class + " pmr-row",
            :title => row_title) do |binding|
           DISP_LIST.map { |sym| self.send sym, binding, false, call }.join("\n")
@@ -409,7 +409,15 @@ module Retain
         end
       else
         td binding, :class => 'dispatch' do |binding|
-          concat(link_to_remote("dispatch", :url => dispatch_combined_call_path(call)))
+          if call.is_dispatched
+            if call.dispatched_employee == Logon.instance.signon
+              concat(link_to_remote("Undispatch", :url => dispatch_combined_call_path(call)))
+            else
+              concat("N/A")
+            end
+          else
+            concat(link_to_remote("Dispatch", :url => dispatch_combined_call_path(call)))
+          end
         end
       end
     end

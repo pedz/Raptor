@@ -16,7 +16,11 @@ body {
 }
 
 table.sortable {
-    background-color: DarkBlue;
+    /* background-color: DarkBlue; */
+    border-color: DarkBlue;
+    border-width: 1px;
+    border-spacing: 0px;
+    border-style: solid;
 }
 
 thead {
@@ -27,6 +31,14 @@ tfoot {
     background-color: LightBlue;
 }
 
+table.sortable > tfoot > tr > td,
+table.sortable > tbody > tr > td,
+table.sortable > thead > tr > th {
+   border-color: DarkBlue;
+   border-width: 1px;
+   border-style: solid;
+}
+
 td.age {
     text-align: right;
 }
@@ -35,19 +47,19 @@ td.jeff {
     text-align: right;
 }
 
-.normal.rowodd {
+tr.normal.rowodd td {
     background-color: #e0e0e0;
 }
 
-.normal.roweven {
+tr.normal.roweven td {
     background-color: #e0e0f8;
 }
 
-.updated.rowodd {
+tr.updated.rowodd td {
     background-color: #c0c0c0;
 }
 
-.updated.roweven {
+tr.updated.roweven td {
     background-color: #c0c0f8;
 }
 

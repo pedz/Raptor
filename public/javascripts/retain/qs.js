@@ -4,47 +4,49 @@
  * calls the proper rowCallUpdateFormShow or rowCallUpdateFormHide.
  */
 
-Raptor.qsCheckCtTimes = function () {
-    $$('td.next-ct').each(function (ele) {
-	var due = Raptor.qsCtDateToDate(ele.innerHTML);
+Raptor.qsCheckCtTime = function (ele) {
+    var due = Raptor.qsCtDateToDate(ele.innerHTML);
 	
-	if (due == null) {	// already set as Overdue
-	    return;
-	}
+    if (due == null) {	// already set as Overdue
+	return;
+    }
 
-	var pattern = /(Last CT:|Entry Time:) (.*)/;
-	var title = ele.readAttribute('title');
-	var m = title.match(pattern);
-	if (m == null) {
-	    return;
-	}
-	var lastCt = new Date(m[2]);
-	var now = new Date();
-	if (due < lastCt) {		// wrap in years
-	    due.setYear(due.getFullYear() + 1);
-	}
-	if (now > due) {		  // too late; mark as past due
-	    ele.removeClassName('normal');
-	    ele.removeClassName('warn');
-	    ele.addClassName('wag-wag');
-	    ele.innerHTML = 'CT Overdue';
-	    return;
-	}
-	var oneDay = 24 * 60 * 60 * 1000; // what to add
-	var tomorrow = new Date(now.valueOf() + oneDay);
-	var day = tomorrow.getDay();
-	if (day == 6) {		// Saturday so move it up to Monday
-	    tomorrow = new Date(now.valueOf() + 3 * oneDay);
-	}
-	if (day == 0) {		// Sunday so mve it up to Monday as well
-	    tomorrow = new Date(now.valueOf() + 2 * oneDay);
-	}
-	if (tomorrow > due) {	// within the next working 24 hours
-	    ele.removeClassName('normal');
-	    ele.addClassName('warn');
-	    return;
-	}
-    });
+    var pattern = /(Last CT:|Entry Time:) (.*)/;
+    var title = ele.readAttribute('title');
+    var m = title.match(pattern);
+    if (m == null) {
+	return;
+    }
+    var lastCt = new Date(m[2]);
+    var now = new Date();
+    if (due < lastCt) {		// wrap in years
+	due.setYear(due.getFullYear() + 1);
+    }
+    if (now > due) {		  // too late; mark as past due
+	ele.removeClassName('normal');
+	ele.removeClassName('warn');
+	ele.addClassName('wag-wag');
+	ele.innerHTML = 'CT Overdue';
+	return;
+    }
+    var oneDay = 24 * 60 * 60 * 1000; // what to add
+    var tomorrow = new Date(now.valueOf() + oneDay);
+    var day = tomorrow.getDay();
+    if (day == 6) {		// Saturday so move it up to Monday
+	tomorrow = new Date(now.valueOf() + 3 * oneDay);
+    }
+    if (day == 0) {		// Sunday so mve it up to Monday as well
+	tomorrow = new Date(now.valueOf() + 2 * oneDay);
+    }
+    if (tomorrow > due) {	// within the next working 24 hours
+	ele.removeClassName('normal');
+	ele.addClassName('warn');
+	return;
+    }
+};
+
+Raptor.qsCheckCtTimes = function () {
+    $$('td.next-ct').each(Raptor.qsCheckCtTime);
 };
 
 /* Called when the button to show the update form is poked */
@@ -189,27 +191,40 @@ Raptor.myDateSort = function(a, b) {
 
 SortableTable.addSortType("my-date", Raptor.myDateSort);
 
+Raptor.qsFixRow = function (ele) {
+    ele.updateFormShow = Raptor.rowCallUpdateFormShow.bind(ele);
+    ele.updateFormHide = Raptor.rowCallUpdateFormHide.bind(ele);
+    ele.select('.call-update-container').each(function (ele) {
+	    ele.toggleCallUpdateForm = Raptor.qsToggleCallUpdateForm.bind(ele);
+	    Raptor.fixUpdateContainer(ele);
+	});
+    ele.select('.links').each(Raptor.setupPopup);
+    ele.select('td.next-ct').each(Raptor.qsCheckCtTime);
+};
+
+// Called for Ajax updates.
+Raptor.qsNewRow = function(str) {
+    var ele = $(str);
+    Raptor.qsFixRow(ele);
+    Raptor.addHooksAndUnhooks(ele);
+
+    // Have to recompute all the rows
+    $$('.pmr-row').each(SortableTable.addRowClass);
+};
+
 document.observe('dom:loaded', function() {
-    $$('.pmr-row').each(function (ele) {
-	ele.updateFormShow = Raptor.rowCallUpdateFormShow.bind(ele);
-	ele.updateFormHide = Raptor.rowCallUpdateFormHide.bind(ele);
-    });
+	$$('.pmr-row').each(Raptor.qsFixRow);
 
-    $$('.call-update-container').each(function (ele) {
-	ele.toggleCallUpdateForm = Raptor.qsToggleCallUpdateForm.bind(ele);
-    });
+	// Moved to inside qsFixRow
+	// Raptor.qsCheckCtTimes();
 
-    $$('.links').each(Raptor.setupPopup);
-
-    Raptor.qsCheckCtTimes();
-
-    var search = window.location.search;
-    var time = 600;
-    if (typeof(search) == "string" && search.length > 0) {
-	eval("var " + search.replace('?', ''));
-	if ((undefined != test) && (test == true)) {
-	    time = 10;
+	var search = window.location.search;
+	var time = 600;
+	if (typeof(search) == "string" && search.length > 0) {
+	    eval("var " + search.replace('?', ''));
+	    if ((undefined != test) && (test == true)) {
+		time = 10;
+	    }
 	}
-    }
-    Raptor.qs_updater = new  PeriodicalExecuter(Raptor.qsCheckCtTimes, time);
-});
+	Raptor.qs_updater = new  PeriodicalExecuter(Raptor.qsCheckCtTimes, time);
+    });
