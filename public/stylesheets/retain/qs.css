@@ -47,19 +47,19 @@ td.jeff {
     text-align: right;
 }
 
-tr.normal.rowodd td {
+.normal.rowodd {
     background-color: #e0e0e0;
 }
 
-tr.normal.roweven td {
+.normal.roweven {
     background-color: #e0e0f8;
 }
 
-tr.updated.rowodd td {
+.updated.rowodd {
     background-color: #c0c0c0;
 }
 
-tr.updated.roweven td {
+.updated.roweven {
     background-color: #c0c0f8;
 }
 
