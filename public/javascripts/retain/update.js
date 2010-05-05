@@ -47,6 +47,10 @@ Raptor.requeueClicked = function(event) {
     this.requeueSpan.show();
     this.prioritySpan.show();
     this.serviceGivenSpan.show();
+    if (typeof this.inputListSetup == "undefined") {
+	Raptor.textInputWithList(this.the_form.inputList);
+	this.inputListSetup = true;
+    }
 };
 
 /* called when dup radio button clicked */
@@ -55,6 +59,10 @@ Raptor.dupClicked = function(event) {
     this.requeueSpan.show();
     this.prioritySpan.show();
     this.serviceGivenSpan.hide();
+    if (typeof this.inputListSetup == "undefined") {
+	Raptor.textInputWithList(this.the_form.inputList);
+	this.inputListSetup = true;
+    }
 };
 
 /* called when close radio button clicked */
@@ -93,10 +101,12 @@ Raptor.updateClicked = function(event) {
  * Sets up the spans to control for a radio button in an update box
  */
 Raptor.setupRadioButtonSpans = function(ele) {
-    ele.caSpan           = ele.up(1).down('.call-update-ca-span');
-    ele.requeueSpan      = ele.up(1).down('.call-update-requeue-span');
-    ele.prioritySpan     = ele.up(1).down('.call-update-priority-span');
-    ele.serviceGivenSpan = ele.up(1).down('.call-update-service-given-span');
+    var form = ele.up('form');
+    ele.caSpan           = form.down('.call-update-ca-span');
+    ele.requeueSpan      = form.down('.call-update-requeue-span');
+    ele.prioritySpan     = form.down('.call-update-priority-span');
+    ele.serviceGivenSpan = form.down('.call-update-service-given-span');
+    ele.the_form = form;
 };
 
 /*
@@ -171,7 +181,7 @@ Raptor.redrawDiv = function() {
     /*
      * Reset the form first or all the redraws use the old values.
      */
-    this.form.reset();
+    this.the_form.reset();
     this.updatePMR.redraw();
     this.actionSpan.redraw();
     this.addTime.redraw();
@@ -223,10 +233,10 @@ Raptor.fixUpdateContainer = function (ele) {
     div.close = Raptor.closeDiv.bind(div);
 
     var form = div.down('.call-update-form');
-    div.form = form;
+    div.the_form = form;
     input_list = form.down('.input-with-list');
     form.inputList = input_list;
-    Raptor.textInputWithList(input_list);
+    // Raptor.textInputWithList(input_list);
 
     /* Find the new queue box */
     var new_queue = form.down('.call-update-new-queue');

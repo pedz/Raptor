@@ -91,7 +91,7 @@ module ApplicationHelper
   end
 
   def popup(binding, hash = { })
-    hash = { :class => "popup"}.merge(hash)
+    hash = { :class => "popup", :style => "display: none;"}.merge(hash)
     span binding, :class => 'popup-wrapper' do
       span binding, hash do
         yield binding

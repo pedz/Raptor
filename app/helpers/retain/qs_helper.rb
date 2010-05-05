@@ -485,13 +485,16 @@ module Retain
     def call_update_form(binding, header, call)
       # logger.debug("QS: call_update_form #{call.nil? ? "header" : call.to_param}")
       if header
-        th binding, :class => 'call-update-container', :colspan => 4 do |binding|
+        th(binding,
+           :class => 'call-update-container',
+           :colspan => 4) do |binding|
           concat("")
         end
       else
         td(binding,
            :id => "call_update_td_#{call.ppg}",
            :class => 'call-update-container',
+           :style => 'display: none;',
            :colspan => 4) do |binding|
           call_update = CallUpdate.new(call)
           # logger.debug("call-update-psar-update-psar-service-code = #{call_update.psar_update.psar_service_code}")
