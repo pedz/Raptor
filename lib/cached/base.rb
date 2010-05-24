@@ -2,6 +2,7 @@
 
 module Cached
   class Base < ActiveRecord::Base
+    # Initialized in config/initializers/loggers.rb
     cattr_accessor :logger
 
     class << self

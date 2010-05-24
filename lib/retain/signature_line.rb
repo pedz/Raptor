@@ -3,6 +3,7 @@
 
 module Retain
   class SignatureLine
+    # Initialized in config/initializers/loggers.rb
     cattr_accessor :logger, :instance_writer => false
 
   SIG_FLAG = ' (.)'     		# match  1

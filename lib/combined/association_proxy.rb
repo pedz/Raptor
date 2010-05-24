@@ -2,6 +2,7 @@
 
 module Combined
   class AssociationProxy
+    # Initialized in config/initializers/loggers.rb
     cattr_accessor :logger
     include Common
     

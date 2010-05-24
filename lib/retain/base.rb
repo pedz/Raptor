@@ -43,6 +43,7 @@ module Retain
   end
 
   class Base
+    # Initialized in config/initializers/loggers.rb
     cattr_accessor :logger
 
     ### Class instance methods

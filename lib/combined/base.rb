@@ -44,6 +44,7 @@ module Combined
   end
 
   class Base
+    # Initialized in config/initializers/loggers.rb
     cattr_accessor :logger
 
     include Common

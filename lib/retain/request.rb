@@ -5,6 +5,7 @@ require 'retain/utils'
 
 module Retain
   class Request
+    # Initialized in config/initializers/loggers.rb
     cattr_accessor :logger, :instance_writer => false
 
     PACKET_LENGTH = 20...24

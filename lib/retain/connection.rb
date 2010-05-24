@@ -6,6 +6,7 @@ include Socket::Constants
 
 module Retain
   class Connection
+    # Initialized in config/initializers/loggers.rb
     cattr_accessor :logger
     
     @@count = 0

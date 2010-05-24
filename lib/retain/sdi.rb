@@ -8,6 +8,7 @@ module Retain
   # I am making them objects so they can contain settings.  Not sure
   # how this is going to work... lets see...
   class Sdi
+    # Initialized in config/initializers/loggers.rb
     cattr_accessor :logger, :instance_writer => false
 
     ### Class methods to set the class instance variables.
