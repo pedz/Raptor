@@ -1,12 +1,25 @@
 # -*- coding: utf-8 -*-
 
+unless respond_to?(:env)
+  STDERR.puts "Please use --set-before env=<env>"
+  exit 1
+end
 
-set :application, "raptor"
-set :repository,  "apache@tcp237:repositories/raptor.git"
-set :domain, "apache@tcp237.austin.ibm.com"
-set :scm, :git
-set :deploy_via, :remote_cache
-set :branch, "master"
+if env == 'production'
+  set :domain,      "raptor@tcp237.austin.ibm.com"
+elsif env == 'staging'
+  set :domain,      "raptor@p51.austin.ibm.com"
+else
+  STDERR.puts "env must be 'production' or 'staging'"
+  exit 1
+end
+
+set :application,     "raptor"
+set :repository,      "#{domain}:repositories/raptor.git"
+set :scm,             :git
+set :deploy_via,      :copy
+set :branch,          "master"
+set :copy_remote_tar, "/usr/local/bin/tar"
 
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
