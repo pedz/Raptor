@@ -43,7 +43,7 @@ namespace :deploy do
   # end
 end
 
-after "update:code" do
+after "deploy:update_code" do
   run "cp #{db_path} #{release_path}/config/database.yml"
   run "cp #{retain_path} #{release_path}/config/retain.yml"
 end
