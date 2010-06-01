@@ -37,6 +37,10 @@ module Retain
       @node
     end
     
+    def host
+      @host
+    end
+
     def port
       @port
     end
@@ -45,15 +49,15 @@ module Retain
     # Can raise various exceptions -- see Socket#connect
     def connect
       if @h_or_s == 'H' then
-        node = RetainConfig::HARDWARE_NODES[RetainConfig::NodeIndex]
+        @node = RetainConfig::HARDWARE_NODES[RetainConfig::NodeIndex]
       else
-        node = RetainConfig::SOFTWARE_NODES[RetainConfig::NodeIndex]
+        @node = RetainConfig::SOFTWARE_NODES[RetainConfig::NodeIndex]
       end
-      node_hash = Retain::Config[node][0]
-      @node = node_hash[:port]
-      @port = node_hash[:host]
+      node_hash = Retain::Config[@node][0]
+      @host = node_hash[:host]
+      @port = node_hash[:port]
       # logger.debug("RTN: Connecting to #{node_hash[:host]} #{node_hash[:port]}")
-      sockaddr = Socket.pack_sockaddr_in(@node, @port)
+      sockaddr = Socket.pack_sockaddr_in(@port, @host)
       @socket.connect(sockaddr)
     end
 

@@ -16,7 +16,8 @@ module Retain
     rescue_from Retain::RetainLogonEmpty,   :with => :retain_logon_empty
     rescue_from Retain::RetainLogonShort,   :with => :retain_logon_short
     rescue_from Retain::SdiDidNotReadField, :with => :retain_did_not_read_field
-    
+    rescue_from Errno::ECONNREFUSED,        :with => :cannot_reach_retain
+
     def signon_user
       @signon_user ||=
         Combined::Registration.find_or_initialize_by_signon(Retain::Logon.instance.signon)
@@ -161,6 +162,14 @@ module Retain
       logger.error("Did not read #{exception.field_name}")
       logger.error(exception.backtrace.join("\n"))
       render "retain/errors/retain_did_not_read_field", :layout => "retain/errors", :status => 500
+    end
+
+    def cannot_reach_retain(exception)
+      @exception = exception
+      logger.error("Errno::ECONNREFUSED caught -- can not reach retain")
+      logger.error(exception.message)
+      logger.error(exception.backtrace.join("\n"))
+      render "retain/errors/cannot_reach_retain", :layout => "retain/errors", :status => 500
     end
   end
 end

@@ -175,7 +175,7 @@ module Retain
         if @rc == 703 || @rc == 705
           raise Retain::LogonFailed
         end
-        logger.error("Node used was #{@connection.node}:#{@connection.port}")
+        logger.error("Node used was #{@connection.node}(#{@connection.host}:#{@connection.port})")
         dump_debug
       end
     end
