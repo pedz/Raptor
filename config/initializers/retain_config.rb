@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 # Add site specific configuration here
 
 module RetainConfig
@@ -9,5 +8,4 @@ module RetainConfig
   # NodeIndex = 1
   HARDWARE_NODES = [ :ral, :sf2 ]
   SOFTWARE_NODES = [ :bdc, :rta ]
-  
 end
