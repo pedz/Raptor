@@ -1,0 +1,96 @@
+The TCP/IP I.P. address for RAL and RTA:
+Domain: ral.boulder.ibm.com I.P. Addr: 9.17.210.38
+Node__S/H__Port#__Driver____Listnr__Description
+RTA S 3781 APPLS377,8,B LS01 SDI Primary for RTA
+RTA S 3782 APPLS377,8,B LS02 SDI Alternate for RTA
+RTA S 6719 APPLS37A LSX1 IBMLink 2000 Secure access only
+
+RAL H 3181 APPLR378 LS01 SDI Primary for RAL
+RAL H 3182 APPLR378 LS02 SDI Alternate for RAL
+RAL H 6191 APPLR379,C,G LS01 Primary for only URSF SDI on RAL
+RAL H 6192 APPLR379,C,G LS02 Backup for only URSF SDI on RAL
+RAL H 6119 APPLR37A LSX1 IBMLink 2000 Secure access only
+
+The TCP/IP address for BDC and SF2:
+Domain: sf2.pok.ibm.com I.P. Addr: 9.56.214.253
+Node__S/H__Port#__Driver____Listnr__Description
+BDC S 3381 APPLS377,8,B LS01 SDI Primary for BDC
+BDC S 3382 APPLS377,8,B LS02 SDI Alternate for BDC
+BDC S 6381 APPLS378 LS05 Old obsolete SDI port for BDC
+BDC S 6319 APPLS37A LSX1 IBMLink 2000 Secure access Only
+
+SF2 H 3581 APPLR378 TCP1 Preferred Primary for SF2
+SF2 H 3582 APPLR378 TCP2 Preferred Alternate for SF2
+SF2 H 6591 APPLR379,C,G LS01 Primary only URSF for SDI on SF2
+SF2 H 6592 APPLR379,C,G LS02 Backup only URSF for SDI on SF2
+SF2 H 6519 APPLR37A LSX1 IBMLink 2000 only Secure access
+
+The TCP/IP address for RS3 and RS4 (MEUC1):
+Domain: meuc1.vipa.uk.ibm.com I.P. Addr: 9.149.87.129
+Node__S/H__Port#__Driver____Listnr__Description
+RS3 H 3281 APPLR378 UTCP SDI for RS3
+RS3 H 6219 APPLR37A LSX1 IBMLink 2000 only Secure access
+RS3 H 6291 APPLR379,C,G LS01 Primary URSF ONLY for SDI on RS3
+RS3 H 6292 APPLR379,C,G LS02 Backup URSF ONLY for SDI on RS3
+
+RS4 S 3291 APPLS378 UTCP SDI for RS4
+RS4 S 7319 APPLS37A LSX1 IBMLink 2000 only Secure access
+
+The following information is provided for those clients performing
+testing on the APPLTEST sustems only. The IP addresses are the same.
+Node__S/H__Port#__Driver____Listnr__Description
+RTA S 3701 APPLBCRD TCP1 TEST Primary for RTA SDI
+RTA S 3702 APPLBCRD TCP2 TEST Alternate for RTA SDI
+RTA S 6701 APPLBCRD LS01 TEST Backup Primary for RTA SDI
+RTA S 6702 APPLBCRD LS02 TEST Backup Alternate for RTA SDI
+RTA S 6709 APPLBCRD LSX1 TEST IBMLink 2000 secure access only
+RAL H 3101 APPLACRD TCP1 TEST for URSF only (no SDI)
+RAL H 3102 APPLACRD TCP2 TEST Primary for RAL SDI
+RAL H 6101 APPLACRD LS01 TEST Backup Primary for RAL SDI
+RAL H 6102 APPLACRD LS02 TEST Backup Alternate for RAL SDI
+RAL H 6109 APPLACRD LSX1 TEST IBMLink 2000 secure access
+BDC S 3301 APPLBCRD TCP1 TEST Primary for BDC SDI
+BDC S 3302 APPLBCRD TCP2 TEST Alternate for BDC SDI
+BDC S 6301 APPLBCRD LS01 TEST Backup Primary for BDC SDI
+BDC S 6302 APPLBCRD LS02 TEST Backup Alternate for BDC SDI
+BDC S 6309 APPLBCRD LSX1 TEST IBMLink 2000 secure access
+SF2 H 3501 APPLACRD TCP1 TEST Primary for SF2 SDI
+SF2 H 3502 APPLACRD TCP2 TEST Alternate for SF2 SDI
+SF2 H 6501 APPLACRD LS01 TEST Backup Primary for SF2 SDI
+SF2 H 6502 APPLACRD LS02 TEST Backup Alternate for SF2 SDI
+SF2 H 6509 APPLACRD LSX1 TEST IBMLink 2000 secure access only
+RS3 H 6201 APPLACRD UTCP TEST SDI Primary for RS3
+RS4 H 7301 APPLBCRD UTCP TEST SDI Primary for RS4
+
+The TCP/IP address for MVS1:
+Domain: bldmvs1.boulder.ibm.com I.P. Addr: 9.17.210.158
+Node__S/H__Port#__Driver____Listnr__Description
+BOL S 3005 APPLR375 TCP1 Primary for SDI
+BOL S 3006 APPLR375 TCP2 Backup for SDI
+BOL S 3007 APPLR375,C LS01 Portsharing testing for SDI
+BOL H 3011 APPLR37C TCP1 Primary for SDI
+BOL H 3013 APPLR37C TCP1 Backup for SDI
+
+The TCP/IP address for MVS2:
+Domain: bldmvs2.boulder.ibm.com I.P. Addr: 9.17.211.30
+Node__S/H__Port#__Driver____Listnr__Description
+BDD H 3010 APPLR374 TCP1 Primary for SDI
+BDD H 3011 APPLR374 TCP2 TEST for URSF only (no SDI)
+BDD H 19285 APPLR374 UTCP TEST for URSF only (no SDI)
+BDD H 3005 APPLR375 TCP1 TEST for URSF only (no SDI)
+BDD H 3006 APPLS375 TCP2 Primary for SDI
+BDD H 19286 APPLR375 USA1 TEST for URSF only (no SDI)
+BDD H 3000 APPLR37C TCP1 Test for URSF only (no SDI)
+BDD H 3001 APPLS37C TCP2 Test for SDI
+
+The TCP/IP address for MVS2P:
+Domain: bldmvs2p.boulder.ibm.com I.P. Addr: 9.17.210.46
+Node__S/H__Port#__Driver____Listnr__Description
+BDD2P H 3005 APPLR375 TCP1 URSF NON-SDI on MVS2P
+BDD2P H 3006 APPLR375 TCP2 Primary Hardware URSF SDI on MVS2P
+BOL2P H 3501 APPLR378 TCP1 Alt. Hardware URSF SDI on MVS2P
+BOL2P H 3502 APPLR378 TCP2 Alt. Hardware URSF SDI on MVS2P
+BOL2P H 3505 APPLR379 TCP1 Alt. Hardware URSF SDI on MVS2P
+BOL2P H 3506 APPLR379 TCP2 Alt. Hardware URSF SDI on MVS2P
+BDD2P H 19287 APPLR379 USA1 URSF NON-SDI on MVS2P
+BOL2P S 3011 APPLS378 LS01 Primary Software URSF SDI on MVS2P
