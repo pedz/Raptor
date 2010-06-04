@@ -104,7 +104,7 @@ module Retain
         @snd_fields.add_to_req(request, sym)
       end
 
-      if Retain::NO_SENDIT
+      if NO_SENDIT
         # logger.debug("NO_SENDIT true")
         @rc = 0
         return
@@ -116,21 +116,28 @@ module Retain
         h_or_s = 'S'
       end
       
-      login(h_or_s)
-
-      @snd = request.to_s
-      if  @connection.write(@snd) != @snd.length
-        raise "write to socket failed in sendit"
+      begin
+        login(h_or_s)
+        
+        @snd = request.to_s
+        if  @connection.write(@snd) != @snd.length
+          raise SDIError("write to socket failed in sendit", self)
+        end
+        f = @connection.read(24)
+        raise SDIError("read returned nil in sendit", self) if f.nil?
+        raise SDIError("short read in sendit", self) if f.length != 24
+        len = f[20...24].ret2uint
+        if len > 24
+          b = @connection.read(len - 24)
+        else
+          b = ""
+        end
+      rescue SDIError
+        raise
+      rescue => err
+        raise SDIError(err.message, self)
       end
-      f = @connection.read(24)
-      raise "read returned nil in sendit" if f.nil?
-      raise "short read in sendit" if f.length != 24
-      len = f[20...24].ret2uint
-      if len > 24
-        b = @connection.read(len - 24)
-      else
-        b = ""
-      end
+      
       @reply = f + b
       # if true
       #   logger.debug("RTN: len is #{len}, reply.length is #{@reply.length}")
@@ -148,7 +155,7 @@ module Retain
       logger.debug("SDI: #{@request_type} #{caller(2)[0 .. 12].join("\n          ")}")
       @rcv_fields = scan_fields(Fields.new, @reply[128...@reply.length])
 
-      if Retain::Debug::DUMP_SDI
+      if Debug::DUMP_SDI
         dump_debug
       end
 
@@ -173,11 +180,16 @@ module Retain
         @error_message = msg
         logger.error("SDI: #{@request_type}: #{@error_message}")
         if @rc == 703 || @rc == 705
-          raise Retain::LogonFailed
+          raise LogonFailed
         end
         logger.error("Node used was #{@connection.node}(#{@connection.host}:#{@connection.port})")
         dump_debug
       end
+    end
+
+    def logon_debug
+      hex_dump("first 50 request", @logon_request)
+      hex_dump("first 50 reply", @logon_reply)
     end
 
     def dump_debug
@@ -304,7 +316,7 @@ module Retain
       #
       # Abort early if the failed flag is already true
       #
-      raise Retain::FailedMarkedTrue if Logon.instance.failed
+      raise FailedMarkedTrue if Logon.instance.failed
 
       #
       # Could pull signon and password from options
@@ -335,9 +347,8 @@ module Retain
       # logger.debug("Logon Return: #{@logon_return}")
       # logger.debug("Logon Reason: #{@logon_reason}")
       unless @logon_reply && @logon_reply.length == 50
-        hex_dump("first 50 request", @logon_request)
-        hex_dump("first 50 reply", @logon_reply)
-        raise Retain::LogonFailed
+        logon_debug
+        raise LogonFailed
       end
     end
     

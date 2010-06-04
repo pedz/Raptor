@@ -1,0 +1,130 @@
+ral.boulder.ibm.com: 
+  :rta: 
+    :type: software
+    :ports: 
+      -
+        :desc: SDI Primary for RTA
+	:port: 3781
+	:test: false
+	:offset: 0
+      -
+        :desc: SDI Alternate for RTA
+	:port: 3782
+	:test: false
+	:offset: 1
+      -
+        :desc: TEST Primary for RTA SDI
+	:port: 3701
+	:test: true
+	:offset: 2
+      -
+        :desc: TEST Alternate for RTA SDI
+	:port: 3702
+	:test: true
+	:offset: 3
+      -
+        :desc: TEST Backup Primary for RTA SDI
+	:port: 6701
+	:test: true
+	:offset: 4
+      -
+        :desc: TEST Backup Alternate for RTA SDI
+	:port: 6702
+	:test: true
+	:offset: 5
+  :ral: 
+    :type: hardware
+    :ports: 
+      -
+        :desc: SDI Primary for RAL
+	:port: 3181
+	:test: false
+	:offset: 6
+      -
+        :desc: SDI Alternate for RAL
+	:port: 3182
+	:test: false
+	:offset: 7
+      -
+        :desc: TEST Primary for RAL SDI
+	:port: 3102
+	:test: true
+	:offset: 8
+      -
+        :desc: TEST Backup Primary for RAL SDI
+	:port: 6101
+	:test: true
+	:offset: 9
+      -
+        :desc: TEST Backup Alternate for RAL SDI
+	:port: 6102
+	:test: true
+	:offset: 10
+
+sf2.pok.ibm.com: 
+  :bdc: 
+    :type: software
+    :ports: 
+      -
+        :desc: SDI Primary for BDC
+	:port: 3381
+	:test: false
+	:offset: 11
+      -
+        :desc: SDI Alternate for BDC
+	:port: 3382
+	:test: false
+	:offset: 12
+      -
+        :desc: TEST Primary for BDC SDI
+	:port: 3301
+	:test: true
+	:offset: 13
+      -
+        :desc: TEST Alternate for BDC SDI
+	:port: 3302
+	:test: true
+	:offset: 14
+      -
+        :desc: TEST Backup Primary for BDC SDI
+	:port: 6301
+	:test: true
+	:offset: 15
+      -
+        :desc: TEST Backup Alternate for BDC SDI
+	:port: 6302
+	:test: true
+	:offset: 16
+  :sf2: 
+    :type: hardware
+    :ports: 
+      -
+        :desc: Preferred Primary for SF2
+	:port: 3581
+	:test: false
+	:offset: 17
+      -
+        :desc: Preferred Alternate for SF2
+	:port: 3582
+	:test: false
+	:offset: 18
+      -
+        :desc: TEST Primary for SF2 SDI
+	:port: 3501
+	:test: true
+	:offset: 19
+      -
+        :desc: TEST Alternate for SF2 SDI
+	:port: 3502
+	:test: true
+	:offset: 20
+      -
+        :desc: TEST Backup Primary for SF2 SDI
+	:port: 6501
+	:test: true
+	:offset: 21
+      -
+        :desc: TEST Backup Alternate for SF2 SDI
+	:port: 6502
+	:test: true
+	:offset: 22

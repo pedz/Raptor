@@ -26,4 +26,18 @@ module Retain
   # From above, I assume it is possible for it to return less than the proper 35 bytes.
   class RetainLogonShort < RetainError
   end
+
+  # We are getting weird socket errors.  This is here as a generic way
+  # to get those back to the user and also to me so I know more about
+  # what is going on.
+  class SDIError
+    attr_reader :sdi
+
+    def initialize(msg, sdi)
+      super(msg)
+      @sdi = sdi
+      logger.error(msg)
+      sdi.logon_debug
+    end
+  end
 end
