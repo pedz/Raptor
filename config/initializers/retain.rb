@@ -13,7 +13,6 @@ module Retain
   end
 end
 
-Rails.logger.debug("hi")
 begin
   # Load a host specific file.  e.g. tcp237.austin.ibm.com loads a
   # file called tcp237.rb.  That file needs to set TUNNELLED and
