@@ -33,7 +33,7 @@ task :scan_pmrs do
     puts "Logon to retain failed"
     false
 
-  rescue Exception
+  rescue Exception => e
     # Some other problem happened so we give up.
     puts "Retain is not happy for some reason"
     puts e.message
@@ -57,11 +57,10 @@ def pmr_valid?(cached_pmr)
     creation_date = retain_pmr.creation_date
     return creation_date == cached_pmr.creation_date
   rescue Retain::SdiReaderError => e
-    if e.sr == 115 && e.ex == 125
+    if (e.sr == 115) && ((124..126) === e.ex)
       return false
     else
       raise e
     end
   end
 end
-
