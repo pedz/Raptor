@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 class UsersController < ApplicationController
-  before_filter :admin?, :only => [ :edit, :update, :destroy ]
-  before_filter :this_user?, :only => [ :show ]
+  before_filter :admin_only, :only => [ :destroy ]
+  before_filter :this_user?, :except => [ :index ]
 
   # GET /users
   # GET /users.xml
@@ -117,6 +117,8 @@ class UsersController < ApplicationController
     end
   end
 
+  private
+  
   # Stolen code from retain_users_controller.  I can't think of why
   # this would ever return false (when would the create or new not be
   # a duplicate?
@@ -132,7 +134,27 @@ class UsersController < ApplicationController
   
   # A normal user can only look around at their own record.
   def this_user?
-    @user = User.find(params[:id])
-    admin? || @user.id == session[:user_id]
+    begin
+      @user = User.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      if admin?
+        render :file => "public/404.html", :status => 404, :layout => false
+        return
+      else
+        @user = nil
+      end
+    end
+    
+    if @user.nil? || !(admin? || @user.id == session[:user_id])
+      flash[:notice] = "Must use your own id"
+      redirect_to(:action => "index")
+    end
+  end
+
+  def admin_only
+    unless admin?
+      flash[:notice] = "Not Permitted"
+      redirect_to(:action => "index")
+    end
   end
 end

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 40) do
+ActiveRecord::Schema.define(:version => 41) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -280,17 +280,21 @@ ActiveRecord::Schema.define(:version => 40) do
 
   create_table "retusers", :force => true do |t|
     t.integer  "user_id"
-    t.string   "retid",                           :null => false
-    t.string   "password",                        :null => false
+    t.string   "retid",                               :null => false
+    t.string   "password",                            :null => false
     t.boolean  "failed",       :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "return_value"
     t.integer  "reason"
+    t.boolean  "test",         :default => false,     :null => false
+    t.string   "host",         :default => "default", :null => false
+    t.string   "node",         :default => "default", :null => false
+    t.integer  "port",         :default => 0,         :null => false
   end
 
-  add_index "retusers", ["retid"], :name => "uq_retusers_retid", :unique => true
-  add_index "retusers", ["user_id"], :name => "uq_retusers_user_id", :unique => true
+  add_index "retusers", ["retid", "test"], :name => "uq_retusers_retid", :unique => true
+  add_index "retusers", ["user_id", "test"], :name => "uq_retusers_user_id", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "ldap_id",                        :null => false
@@ -301,6 +305,7 @@ ActiveRecord::Schema.define(:version => 40) do
     t.string   "ftp_login"
     t.string   "ftp_pass"
     t.string   "ftp_basedir"
+    t.boolean  "test",        :default => false, :null => false
   end
 
   add_index "users", ["ldap_id"], :name => "uq_ldap_id", :unique => true

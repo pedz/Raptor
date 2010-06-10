@@ -34,6 +34,7 @@ class ApplicationController < ActionController::Base
   
   # Return true if current user is an administrator of the site
   def admin?
+    logger.debug("in admin?")
     application_user.admin
   end
   helper_method :admin?

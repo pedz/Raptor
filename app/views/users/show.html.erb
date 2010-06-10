@@ -14,18 +14,15 @@
   <% end %>
 </p>
 
-<p>
-  <%= link_to 'List of favorite queues', combined_favorite_queues_path %>
-</p>
-
 <% if admin? %>
   <p>
     <b>Admin:</b>
     <%=h @user.admin %>
   </p>
 <% end %>
-
-<% if admin? %>
+  <p>
+    <b>Test mode:</b>
+    <%=h @user.test %>
+  </p>
   <%= link_to 'Edit', edit_user_path(@user) %> |
-<% end %>
 <%= link_to 'Index of Users', users_path %>

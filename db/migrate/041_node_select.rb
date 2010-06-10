@@ -18,11 +18,11 @@
 #
 class NodeSelect < ActiveRecord::Migration
   def self.up
-    add_column :users,    :test, :boolean
-    add_column :retusers, :test, :boolean
-    add_column :retusers, :host, :string
-    add_column :retusers, :node, :string
-    add_column :retusers, :port, :integer
+    add_column :users,    :test, :boolean, :default => false,     :null => false
+    add_column :retusers, :test, :boolean, :default => false,     :null => false
+    add_column :retusers, :host, :string,  :default => "default", :null => false
+    add_column :retusers, :node, :string,  :default => "default", :null => false
+    add_column :retusers, :port, :integer, :default => 0,         :null => false
     #
     # A user can now have two retain ids: one for normal and one for test.
     #

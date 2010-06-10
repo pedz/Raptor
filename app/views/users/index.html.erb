@@ -5,6 +5,7 @@
 <table>
   <tr>
     <th>Ldap</th>
+    <th>Test Mode</th>
     <th>Retain user</th>
     <% if admin? %>
       <th>Admin</th>
@@ -14,6 +15,7 @@
 <% for user in @users %>
   <tr>
     <td><%=h user.ldap_id %></td>
+    <td><%=h user.test %></td>
     <% if user.retusers.empty? %>
       <td><%= link_to 'New Retain User Id', new_retuser_path %></td>
     <% else %>
@@ -23,8 +25,8 @@
       <td><%=h user.admin %></td>
     <% end %>
     <td><%= link_to 'Show', user %></td>
+    <td><%= link_to 'Edit', edit_user_path(user) %></td>
     <% if admin? %>
-      <td><%= link_to 'Edit', edit_user_path(user) %></td>
       <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
     <% end %>
   </tr>
