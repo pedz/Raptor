@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 40) do
+ActiveRecord::Schema.define(:version => 41) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -246,6 +246,18 @@ ActiveRecord::Schema.define(:version => 40) do
     t.integer  "priority",   :default => 3
     t.integer  "ftype",      :default => 0
     t.integer  "state",      :default => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "retain_nodes", :force => true do |t|
+    t.string   "host"
+    t.string   "node"
+    t.string   "type"
+    t.string   "description"
+    t.integer  "port"
+    t.boolean  "apptest"
+    t.integer  "tunnel_offset"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

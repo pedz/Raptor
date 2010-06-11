@@ -1,0 +1,32 @@
+<h1>Listing retain_nodes</h1>
+
+<table>
+  <tr>
+    <th>Host</th>
+    <th>Node</th>
+    <th>Type</th>
+    <th>Description</th>
+    <th>Port</th>
+    <th>Apptest</th>
+    <th>Tunnel offset</th>
+  </tr>
+
+<% @retain_nodes.each do |retain_node| %>
+  <tr>
+    <td><%=h retain_node.host %></td>
+    <td><%=h retain_node.node %></td>
+    <td><%=h retain_node.type %></td>
+    <td><%=h retain_node.description %></td>
+    <td><%=h retain_node.port %></td>
+    <td><%=h retain_node.apptest %></td>
+    <td><%=h retain_node.tunnel_offset %></td>
+    <td><%= link_to 'Show', retain_node %></td>
+    <td><%= link_to 'Edit', edit_retain_node_path(retain_node) %></td>
+    <td><%= link_to 'Destroy', retain_node, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New retain_node', new_retain_node_path %>

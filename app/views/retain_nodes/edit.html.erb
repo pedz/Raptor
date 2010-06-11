@@ -1,0 +1,40 @@
+<h1>Editing retain_node</h1>
+
+<% form_for(@retain_node) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :host %><br />
+    <%= f.text_field :host %>
+  </p>
+  <p>
+    <%= f.label :node %><br />
+    <%= f.text_field :node %>
+  </p>
+  <p>
+    <%= f.label :type %><br />
+    <%= f.text_field :type %>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_field :description %>
+  </p>
+  <p>
+    <%= f.label :port %><br />
+    <%= f.text_field :port %>
+  </p>
+  <p>
+    <%= f.label :apptest %><br />
+    <%= f.check_box :apptest %>
+  </p>
+  <p>
+    <%= f.label :tunnel_offset %><br />
+    <%= f.text_field :tunnel_offset %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @retain_node %> |
+<%= link_to 'Back', retain_nodes_path %>

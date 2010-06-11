@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 ActionController::Routing::Routes.draw do |map|
+  map.resources :retain_nodes
+
   map.resources :hot_pmr_lists, :controller => 'hot_pmr_lists', :only => [ :index, :show ]
 
   map.resources :combined_hot_pmr_time, :controller => 'combined/hot_pmr_time'

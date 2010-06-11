@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  host: MyString
+  node: MyString
+  type: MyString
+  description: MyString
+  port: 1
+  apptest: false
+  tunnel_offset: 1
+
+two:
+  host: MyString
+  node: MyString
+  type: MyString
+  description: MyString
+  port: 1
+  apptest: false
+  tunnel_offset: 1

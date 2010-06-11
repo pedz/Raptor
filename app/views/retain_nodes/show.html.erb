@@ -1,0 +1,38 @@
+<p>
+  <b>Host:</b>
+  <%=h @retain_node.host %>
+</p>
+
+<p>
+  <b>Node:</b>
+  <%=h @retain_node.node %>
+</p>
+
+<p>
+  <b>Type:</b>
+  <%=h @retain_node.type %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @retain_node.description %>
+</p>
+
+<p>
+  <b>Port:</b>
+  <%=h @retain_node.port %>
+</p>
+
+<p>
+  <b>Apptest:</b>
+  <%=h @retain_node.apptest %>
+</p>
+
+<p>
+  <b>Tunnel offset:</b>
+  <%=h @retain_node.tunnel_offset %>
+</p>
+
+
+<%= link_to 'Edit', edit_retain_node_path(@retain_node) %> |
+<%= link_to 'Back', retain_nodes_path %>
