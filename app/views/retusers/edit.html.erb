@@ -27,17 +27,32 @@
 
 <% form_for(@retuser) do |f| %>
   <p>
-    <b>Retid</b><br />
+    <b><%= f.label :retid %></b><br />
     <%= f.text_field :retid %>
   </p>
-
+  <p style='width: 40em;'>
+    You probably want to leave <b>Test Mode</b> off.<br />
+    <b><%= f.label :test_mode %><br />
+    <%= f.check_box :test_mode %>
+  </p>
   <p>
-    <b>Password</b><br />
+    <b><%= f.label :node %><br />
+    <%= f.text_field :node %>
+  </p>
+  <p>
+    <b><%= f.label :host %><br />
+    <%= f.text_field :host %>
+  </p>
+  <p>
+    <b><%= f.label :port %><br />
+    <%= f.text_field :port %>
+  </p>
+  <p>
+    <b><%= f.label :password %></b><br />
     <%= f.password_field :password %>
   </p>
-
   <p>
-    <b>Retype your password</b><br />
+    <b><%= f.label :password_confirmation %></b><br />
     <%= f.password_field :password_confirmation %>
   </p>
 

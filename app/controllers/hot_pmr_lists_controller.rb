@@ -33,7 +33,7 @@ class HotPmrListsController < ApplicationController
     @manages = @dept_mgr.manages
     @manages.each do |person|                     # for each person
       if user = User.find_by_ldap_id(person.mail) # if Raptor knows him
-        user.retusers.each do |retuser|           # find thier retain id(s)
+        user.retusers.each do |retuser|           # find their retain id(s)
           pmrs = []
           next if (dr = Cached::Registration.find_by_signon(retuser.retid)).nil?
           logger.debug "DR found"

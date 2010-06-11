@@ -47,7 +47,7 @@ module Retain
       
       # If no retusers defined for this user, then redirect and
       # set up a retain user.
-      if application_user.retusers.empty?
+      if application_user.retuser.empty?
         session[:original_uri] = request.request_uri
         redirect_to new_retuser_url
         return false
@@ -61,7 +61,7 @@ module Retain
     # ConnectionParamters structure.  We hold this in the session
     # data.  We also set the Logon instance to use these settings.
     def setup_logon_instance
-      retuser = application_user.retusers[0]
+      retuser = application_user.retuser
       params = ConnectionParameters.new(:signon   => retuser.retid,
                                         :password => retuser.password,
                                         :failed   => retuser.failed)
@@ -72,7 +72,7 @@ module Retain
       # logger.debug("logon failed")
       # Find the retuser record and set the failed bit to true so we
       # do not retry until the user resets his password.
-      retuser = application_user.retusers[0]
+      retuser = application_user.retuser
       retuser.failed = true
       retuser.return_value = Logon.instance.return_value
       retuser.reason = Logon.instance.reason
@@ -83,7 +83,7 @@ module Retain
     end
 
     def failed_marked_true(exception)
-      retuser = application_user.retusers[0]
+      retuser = application_user.retuser
       flash[:warning] = find_logon_error(retuser.return_value, retuser.reason)
       common_failed_logon(retuser)
     end

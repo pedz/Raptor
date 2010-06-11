@@ -8,7 +8,7 @@ task :add_crits do
   Rake::Task["rake:environment"].invoke
   top = Rails.root
   user = User.find_by_ldap_id("pedzan@us.ibm.com")
-  retuser = user.retusers[0]
+  retuser = user.retuser
   params = Retain::ConnectionParameters.new(:signon   => retuser.retid,
                                     :password => retuser.password,
                                     :failed   => retuser.failed)

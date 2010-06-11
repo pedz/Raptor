@@ -109,7 +109,7 @@ class RetusersController < ApplicationController
   # new and create call this to make sure that the request is not
   # going to produce a second retain user record for this user.
   def duplicate?
-    return false if application_user.retusers.length == 0
+    return false if application_user.retuser.empty?
     respond_to do |format|
       flash[:error] = "User already has a retain user record.  Please delete before adding"
       format.html { redirect_to(users_url) }

@@ -7,10 +7,10 @@
 
 <p>
   <b>Retain user:</b>
-  <% if @user.retusers.empty? %>
+  <% if @user.retuser.nil? %>
     <%= link_to 'New Retain User Id', new_retuser_path %>
   <% else %>
-    <%=link_to "#{@user.retusers[0].retid}", retuser_url(@user.retusers[0]) %>
+    <%=link_to "#{@user.retuser.retid}", retuser_url(@user.retusers[0]) %>
   <% end %>
 </p>
 
@@ -22,7 +22,7 @@
 <% end %>
   <p>
     <b>Test mode:</b>
-    <%=h @user.test %>
+    <%=h @user.test_mode %>
   </p>
   <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Index of Users', users_path %>
