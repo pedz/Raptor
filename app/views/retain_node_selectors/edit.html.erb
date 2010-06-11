@@ -1,0 +1,20 @@
+<h1>Editing retain_node_selector</h1>
+
+<% form_for(@retain_node_selector) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_field :description %>
+  </p>
+  <p>
+    <%= f.label :retain_node_id %><br />
+    <%= f.text_field :retain_node_id %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @retain_node_selector %> |
+<%= link_to 'Back', retain_node_selectors_path %>

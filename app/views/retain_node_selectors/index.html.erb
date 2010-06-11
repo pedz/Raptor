@@ -1,0 +1,22 @@
+<h1>Listing retain_node_selectors</h1>
+
+<table>
+  <tr>
+    <th>Description</th>
+    <th>Retain node</th>
+  </tr>
+
+<% @retain_node_selectors.each do |retain_node_selector| %>
+  <tr>
+    <td><%=h retain_node_selector.description %></td>
+    <td><%=h retain_node_selector.retain_node_id %></td>
+    <td><%= link_to 'Show', retain_node_selector %></td>
+    <td><%= link_to 'Edit', edit_retain_node_selector_path(retain_node_selector) %></td>
+    <td><%= link_to 'Destroy', retain_node_selector, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New retain_node_selector', new_retain_node_selector_path %>

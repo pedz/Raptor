@@ -1,0 +1,13 @@
+<p>
+  <b>Description:</b>
+  <%=h @retain_node_selector.description %>
+</p>
+
+<p>
+  <b>Retain node:</b>
+  <%=h @retain_node_selector.retain_node_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_retain_node_selector_path(@retain_node_selector) %> |
+<%= link_to 'Back', retain_node_selectors_path %>
