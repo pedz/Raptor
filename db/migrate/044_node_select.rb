@@ -11,18 +11,19 @@
 # or the real servers.  A retain id for the APPTEST can be the same id
 # but the passwords are different.
 #
-# 3. The reuser record needs a 3-tuple of node, host, and port.  This
-# is slightly redundant since node and port will tell you which host
-# and host plus port will tell you which node.  But I'm going to keep
-# all three.
+# 3. The retuser record needs two pointers to retain node selectors:
+# one for software and one for hardware.  Generally, these will point
+# to "default" selectors so that the admin can switch the node that
+# most Raptor users go to in the case that the node goes down.  But
+# they can be set by each user.  In particular, the EMEA teams will
+# probably set it to the default EMEA selector.
 #
 class NodeSelect < ActiveRecord::Migration
   def self.up
-    add_column :users,    :test_mode, :boolean, :default => false,     :null => false
-    add_column :retusers, :test_mode, :boolean, :default => false,     :null => false
-    add_column :retusers, :host,      :string,  :default => "default", :null => false
-    add_column :retusers, :node,      :string,  :default => "default", :null => false
-    add_column :retusers, :port,      :integer, :default => 0,         :null => false
+    add_column :users,    :test_mode,        :boolean, :default => false, :null => false
+    add_column :retusers, :test_mode,        :boolean, :default => false, :null => false
+    add_column :retusers, :software_node_id, :integer, :default => 1,     :null => false
+    add_column :retusers, :hardware_node_id, :integer, :default => 2,     :null => false
     #
     # A user can now have two retain ids: one for normal and one for test.
     #
@@ -34,6 +35,18 @@ class NodeSelect < ActiveRecord::Migration
     #
     execute "ALTER TABLE retusers DROP CONSTRAINT uq_retusers_retid"
     execute "ALTER TABLE retusers ADD  CONSTRAINT uq_retusers_retid UNIQUE (retid, test_mode)"
+    #
+    # Create foreign key constraints for software_node and
+    # hardware_node
+    #
+    execute "ALTER TABLE retusers
+             ADD CONSTRAINT fk_retusers_software_node_id
+             FOREIGN KEY (software_node_id) REFERENCES retain_node_selectors(id)
+             ON DELETE CASCADE"
+    execute "ALTER TABLE retusers
+             ADD CONSTRAINT fk_retusers_hardware_node_id
+             FOREIGN KEY (hardware_node_id) REFERENCES retain_node_selectors(id)
+             ON DELETE CASCADE"
   end
 
   def self.down
@@ -43,8 +56,5 @@ class NodeSelect < ActiveRecord::Migration
     execute "ALTER TABLE retusers ADD  CONSTRAINT uq_retusers_retid UNIQUE (retid)"
     remove_column :users,    :test_mode
     remove_column :retusers, :test_mode
-    remove_column :retusers, :host
-    remove_column :retusers, :node
-    remove_column :retusers, :port
   end
 end

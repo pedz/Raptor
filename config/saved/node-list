@@ -1,3 +1,9 @@
+#
+# The migration for Retain Node Selectors has a dependency on some
+# nodes in this file.  In particular, it tries to create default nodes
+# for Austin to use BDC and SF2 and EMEA teams to use RS4 and RAL
+# nodes.
+#
 -
     host: ral.boulder.ibm.com
     node: rta
