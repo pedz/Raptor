@@ -45,14 +45,14 @@
 module Retain
   class Cmpb < Sdi
     set_fetch_request "CMPB"
-    # set_required_fields(:list_request, :search_component_id, :signon, :password)
-    set_required_fields(:group_request, :short_component_id, :signon, :password)
+    set_required_fields(:list_request, :search_component_id, :signon, :password)
+    # set_required_fields(:group_request, :short_component_id, :signon, :password)
 
     # set_required_fields(:signon, :password)
 
     def initialize(options = {})
       super(options)
-      if true
+      if false
         unless @fields.has_key?(:group_request)
           @fields[:group_request] = [[
                                       # :change_team_entry_count,
@@ -91,7 +91,7 @@ module Retain
                                      # :coer_support_flag,
                                      :short_component_id,
                                      # :library,
-                                     :component_name,
+                                     # :component_name,
                                      # :search_library,
                                      # :apar_prefix,
                                      # :entitlement_flag_one,
@@ -102,8 +102,8 @@ module Retain
                                      # :call_management_q,
                                      # :bonding_request_flag,
                                      # :required_scp_number,
-                                     :multiple_change_team_id,
-                                     :multiple_fe_support_grp_id,
+                                     # :multiple_change_team_id,
+                                     # :multiple_fe_support_grp_id,
                                      # :multiple_rls_table_entry,
                                      # :last_pin_key_assigned
                                     ]]

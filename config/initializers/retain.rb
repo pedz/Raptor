@@ -7,7 +7,7 @@ Retain::NO_SENDIT = File.exists?(RAILS_ROOT + "/config/no_sendit")
 
 module Retain
   module Debug
-    # DUMP_SDI = (Rails.env == "development")
-    DUMP_SDI = false
+    DUMP_SDI = (Rails.env == "development")
+    # DUMP_SDI = false
   end
 end
