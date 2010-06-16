@@ -557,7 +557,8 @@ module Retain
       :monday_end_1                => [ 2672, :ebcdic,              5 ],
       :monday_end_2                => [ 2673, :ebcdic,              5 ],
       :monday_start_1              => [ 2678, :ebcdic,              5 ],
-      :monday_start_2              => [ 2679, :ebcdic,              5 ]
+      :monday_start_2              => [ 2679, :ebcdic,              5 ],
+      :div                         => [ 3883, :ebcdic,              2 ]
     }
     
     def self.field_width(sym)
