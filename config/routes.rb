@@ -15,10 +15,12 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :retain_service_action_cause_tuples
 
-  map.resources :combined_psars, :controller => 'combined/psars'
+  # map.resources :combined_psars, :controller => 'combined/psars'
 
-  map.resources :retusers do |retuser|
-    retuser.resources :combined_psars, :controller => 'combined/psars'
+  map.resources :users do |user|
+    user.resources :retusers do |retuser|
+      retuser.resources :combined_psars, :controller => 'combined/psars'
+    end
   end
 
   # Feedback messages, etc.
@@ -70,9 +72,6 @@ ActionController::Routing::Routes.draw do |map|
                   :owner_list => :get
                 })
 
-
-  # map.resources :retusers
-  map.resources :users
 
   map.resources(:retain_formatted_panels,
                 :controller => 'retain/formatted_panels')

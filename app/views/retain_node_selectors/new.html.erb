@@ -8,8 +8,8 @@
     <%= f.text_field :description %>
   </p>
   <p>
-    <%= f.label :retain_node_id %><br />
-    <%= f.text_field :retain_node_id %>
+    <%= f.label :retain_node %><br />
+    <%= f.select(:retain_node_id, retain_node_list) %>
   </p>
   <p>
     <%= f.submit 'Create' %>

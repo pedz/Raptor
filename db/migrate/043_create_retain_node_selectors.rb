@@ -22,6 +22,17 @@ class CreateRetainNodeSelectors < ActiveRecord::Migration
       retain_node_selectors.create({ :description => "Default software node for EMEA Teams" })
     RetainNode.find(:first, :conditions => { :node => "ral", :port => 3181 }).
       retain_node_selectors.create({ :description => "Default hardware node for EMEA Teams" })
+    #
+    # Selectors to test nodes
+    #
+    RetainNode.find(:first, :conditions => { :node => "bdc", :port => 3301 }).
+      retain_node_selectors.create({ :description => "Default TEST software node for Austin Teams" })
+    RetainNode.find(:first, :conditions => { :node => "sf2", :port => 3501 }).
+      retain_node_selectors.create({ :description => "Default TEST hardware node for Austin Teams" })
+    RetainNode.find(:first, :conditions => { :node => "rs4", :port => 7301 }).
+      retain_node_selectors.create({ :description => "Default TEST software node for EMEA Teams" })
+    RetainNode.find(:first, :conditions => { :node => "ral", :port => 3102 }).
+      retain_node_selectors.create({ :description => "Default TEST hardware node for EMEA Teams" })
   end
 
   def self.down

@@ -40,5 +40,13 @@ module Retain
     def failed
       @params.failed
     end
+
+    def software_node
+      @params.software_node
+    end
+
+    def hardware_node
+      @params.hardware_node
+    end
   end
 end

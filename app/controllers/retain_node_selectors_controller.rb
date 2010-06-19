@@ -1,4 +1,6 @@
 class RetainNodeSelectorsController < ApplicationController
+  before_filter :admin_only
+
   # GET /retain_node_selectors
   # GET /retain_node_selectors.xml
   def index
@@ -80,6 +82,15 @@ class RetainNodeSelectorsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(retain_node_selectors_url) }
       format.xml  { head :ok }
+    end
+  end
+  
+  private
+  
+  def admin_only
+    unless admin?
+      flash[:notice] = "Not Permitted"
+      redirect_to(:controller => "welcome", :action => "index", :status => 401)
     end
   end
 end

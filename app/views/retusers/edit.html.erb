@@ -25,27 +25,18 @@
 
 <%= error_messages_for :retuser %>
 
-<% form_for(@retuser) do |f| %>
+<% form_for([@user, @retuser]) do |f| %>
   <p>
     <b><%= f.label :retid %></b><br />
     <%= f.text_field :retid %>
   </p>
-  <p style='width: 40em;'>
-    You probably want to leave <b>Test Mode</b> off.<br />
-    <b><%= f.label :test_mode %><br />
-    <%= f.check_box :test_mode %>
+  <p>
+    <b><%= f.label :software_node_id %></b><br />
+    <%= f.select :software_node_id, node_selector_list(@retuser.apptest, "software") %>
   </p>
   <p>
-    <b><%= f.label :node %><br />
-    <%= f.text_field :node %>
-  </p>
-  <p>
-    <b><%= f.label :host %><br />
-    <%= f.text_field :host %>
-  </p>
-  <p>
-    <b><%= f.label :port %><br />
-    <%= f.text_field :port %>
+    <b><%= f.label :hardware_node_id %></b><br />
+    <%= f.select :hardware_node_id, node_selector_list(@retuser.apptest, "hardware") %>
   </p>
   <p>
     <b><%= f.label :password %></b><br />
@@ -55,15 +46,16 @@
     <b><%= f.label :password_confirmation %></b><br />
     <%= f.password_field :password_confirmation %>
   </p>
-
   <p>
     <b>Failed Flag (must be off to log in)</b><br />
     <%= f.check_box :failed %>
+  </p>
   <p>
     <%= f.submit "Update" %>
   </p>
 <% end %>
 
-<%= link_to 'Show', @retuser %> |
-<%= link_to 'List of Retain Users', retusers_path %>
+<%= link_to 'Show', user_retuser_path(@user, @retuser) %> |
+<%= link_to 'Back to User', user_path(@user) %> |
+<%= link_to 'List of Retain Ids', user_retusers_path(@user) %>
 <%- end -%>

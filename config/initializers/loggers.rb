@@ -9,6 +9,7 @@ Retain::Fields.logger = RAILS_DEFAULT_LOGGER
 Retain::Request.logger = RAILS_DEFAULT_LOGGER
 Retain::Sdi.logger = RAILS_DEFAULT_LOGGER
 Retain::SignatureLine.logger = RAILS_DEFAULT_LOGGER
+Retain::RetainError.logger = RAILS_DEFAULT_LOGGER
 
 require 'combined'
 Combined::Base.logger = RAILS_DEFAULT_LOGGER

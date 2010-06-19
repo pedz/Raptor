@@ -47,7 +47,7 @@ module Retain
       
       # If no retusers defined for this user, then redirect and
       # set up a retain user.
-      if application_user.retuser.empty?
+      if application_user.retuser.nil?
         session[:original_uri] = request.request_uri
         redirect_to new_retuser_url
         return false
@@ -62,9 +62,7 @@ module Retain
     # data.  We also set the Logon instance to use these settings.
     def setup_logon_instance
       retuser = application_user.retuser
-      params = ConnectionParameters.new(:signon   => retuser.retid,
-                                        :password => retuser.password,
-                                        :failed   => retuser.failed)
+      params = ConnectionParameters.new(retuser)
       Logon.instance.set(params)
     end
     

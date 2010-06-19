@@ -2,12 +2,41 @@
   <b>Description:</b>
   <%=h @retain_node_selector.description %>
 </p>
-
 <p>
   <b>Retain node:</b>
-  <%=h @retain_node_selector.retain_node_id %>
+    <%= link_to 'Show', @retain_node_selector.retain_node %>
+    <%= link_to 'Edit', edit_retain_node_path(@retain_node_selector.retain_node) %>
+  <ul>
+    <li>
+      <b>Host:</b>
+      <%=h @retain_node_selector.retain_node.host %>
+    </li>
+    <li>
+      <b>Node:</b>
+      <%=h @retain_node_selector.retain_node.node %>
+    </li>
+    <li>
+      <b>Node Type:</b>
+      <%=h @retain_node_selector.retain_node.node_type %>
+    </li>
+    <li>
+      <b>Description:</b>
+      <%=h @retain_node_selector.retain_node.description %>
+    </li>
+    <li>
+      <b>Port:</b>
+      <%=h @retain_node_selector.retain_node.port %>
+    </li>
+    <li>
+      <b>Apptest:</b>
+      <%=h @retain_node_selector.retain_node.apptest %>
+    </li>
+    <li>
+      <b>Tunnel offset:</b>
+      <%=h @retain_node_selector.retain_node.tunnel_offset %>
+    </li>
+  </ul>
 </p>
-
 
 <%= link_to 'Edit', edit_retain_node_selector_path(@retain_node_selector) %> |
 <%= link_to 'Back', retain_node_selectors_path %>

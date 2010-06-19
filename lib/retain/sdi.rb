@@ -121,11 +121,11 @@ module Retain
         
         @snd = request.to_s
         if  @connection.write(@snd) != @snd.length
-          raise SDIError("write to socket failed in sendit", self)
+          raise SDIError.new("write to socket failed in sendit", self)
         end
         f = @connection.read(24)
-        raise SDIError("read returned nil in sendit", self) if f.nil?
-        raise SDIError("short read in sendit", self) if f.length != 24
+        raise SDIError.new("read returned nil in sendit", self) if f.nil?
+        raise SDIError.new("short read in sendit", self) if f.length != 24
         len = f[20...24].ret2uint
         if len > 24
           b = @connection.read(len - 24)
@@ -135,7 +135,7 @@ module Retain
       rescue SDIError
         raise
       rescue => err
-        raise SDIError(err.message, self)
+        raise SDIError.new(err.message, self, err.backtrace)
       end
       
       @reply = f + b

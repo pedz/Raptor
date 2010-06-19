@@ -9,7 +9,7 @@
   </p>
   <p>
     <%= f.label :retain_node_id %><br />
-    <%= f.text_field :retain_node_id %>
+    <%= f.select(:retain_node_id, retain_node_list) %>
   </p>
   <p>
     <%= f.submit 'Update' %>

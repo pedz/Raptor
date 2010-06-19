@@ -5,226 +5,226 @@
 # nodes.
 #
 -
-    host: ral.boulder.ibm.com
-    node: rta
-    type: software
-    description: SDI Primary for RTA
-    port: 3781
-    apptest: false
+    host:          ral.boulder.ibm.com
+    node:          rta
+    node_type:     software
+    description:   SDI Primary for RTA
+    port:          3781
+    apptest:       false
     tunnel_offset: 0
 -
-    host: ral.boulder.ibm.com
-    node: rta
-    type: software
-    description: SDI Alternate for RTA
-    port: 3782
-    apptest: false
+    host:          ral.boulder.ibm.com
+    node:          rta
+    node_type:     software
+    description:   SDI Alternate for RTA
+    port:          3782
+    apptest:       false
     tunnel_offset: 1
 -
-    host: ral.boulder.ibm.com
-    node: rta
-    type: software
-    description: TEST Primary for RTA SDI
-    port: 3701
-    apptest: true
+    host:          ral.boulder.ibm.com
+    node:          rta
+    node_type:     software
+    description:   TEST Primary for RTA SDI
+    port:          3701
+    apptest:       true
     tunnel_offset: 2
 -
-    host: ral.boulder.ibm.com
-    node: rta
-    type: software
-    description: TEST Alternate for RTA SDI
-    port: 3702
-    apptest: true
+    host:          ral.boulder.ibm.com
+    node:          rta
+    node_type:     software
+    description:   TEST Alternate for RTA SDI
+    port:          3702
+    apptest:       true
     tunnel_offset: 3
 -
-    host: ral.boulder.ibm.com
-    node: rta
-    type: software
-    description: TEST Backup Primary for RTA SDI
-    port: 6701
-    apptest: true
+    host:          ral.boulder.ibm.com
+    node:          rta
+    node_type:     software
+    description:   TEST Backup Primary for RTA SDI
+    port:          6701
+    apptest:       true
     tunnel_offset: 4
 -
-    host: ral.boulder.ibm.com
-    node: rta
-    type: software
-    description: TEST Backup Alternate for RTA SDI
-    port: 6702
-    apptest: true
+    host:          ral.boulder.ibm.com
+    node:          rta
+    node_type:     software
+    description:   TEST Backup Alternate for RTA SDI
+    port:          6702
+    apptest:       true
     tunnel_offset: 5
 -
-    host: ral.boulder.ibm.com
-    node: ral
-    type: hardware
-    description: SDI Primary for RAL
-    port: 3181
-    apptest: false
+    host:          ral.boulder.ibm.com
+    node:          ral
+    node_type:     hardware
+    description:   SDI Primary for RAL
+    port:          3181
+    apptest:       false
     tunnel_offset: 6
 -
-    host: ral.boulder.ibm.com
-    node: ral
-    type: hardware
-    description: SDI Alternate for RAL
-    port: 3182
-    apptest: false
+    host:          ral.boulder.ibm.com
+    node:          ral
+    node_type:     hardware
+    description:   SDI Alternate for RAL
+    port:          3182
+    apptest:       false
     tunnel_offset: 7
 -
-    host: ral.boulder.ibm.com
-    node: ral
-    type: hardware
-    description: TEST Primary for RAL SDI
-    port: 3102
-    apptest: true
+    host:          ral.boulder.ibm.com
+    node:          ral
+    node_type:     hardware
+    description:   TEST Primary for RAL SDI
+    port:          3102
+    apptest:       true
     tunnel_offset: 8
 -
-    host: ral.boulder.ibm.com
-    node: ral
-    type: hardware
-    description: TEST Backup Primary for RAL SDI
-    port: 6101
-    apptest: true
+    host:          ral.boulder.ibm.com
+    node:          ral
+    node_type:     hardware
+    description:   TEST Backup Primary for RAL SDI
+    port:          6101
+    apptest:       true
     tunnel_offset: 9
 -
-    host: ral.boulder.ibm.com
-    node: ral
-    type: hardware
-    description: TEST Backup Alternate for RAL SDI
-    port: 6102
-    apptest: true
+    host:          ral.boulder.ibm.com
+    node:          ral
+    node_type:     hardware
+    description:   TEST Backup Alternate for RAL SDI
+    port:          6102
+    apptest:       true
     tunnel_offset: 10
 -
-    host: sf2.pok.ibm.com
-    node: bdc
-    type: software
-    description: SDI Primary for BDC
-    port: 3381
-    apptest: false
+    host:          sf2.pok.ibm.com
+    node:          bdc
+    node_type:     software
+    description:   SDI Primary for BDC
+    port:          3381
+    apptest:       false
     tunnel_offset: 11
 -
-    host: sf2.pok.ibm.com
-    node: bdc
-    type: software
-    description: SDI Alternate for BDC
-    port: 3382
-    apptest: false
+    host:          sf2.pok.ibm.com
+    node:          bdc
+    node_type:     software
+    description:   SDI Alternate for BDC
+    port:          3382
+    apptest:       false
     tunnel_offset: 12
 -
-    host: sf2.pok.ibm.com
-    node: bdc
-    type: software
-    description: TEST Primary for BDC SDI
-    port: 3301
-    apptest: true
+    host:          sf2.pok.ibm.com
+    node:          bdc
+    node_type:     software
+    description:   TEST Primary for BDC SDI
+    port:          3301
+    apptest:       true
     tunnel_offset: 13
 -
-    host: sf2.pok.ibm.com
-    node: bdc
-    type: software
-    description: TEST Alternate for BDC SDI
-    port: 3302
-    apptest: true
+    host:          sf2.pok.ibm.com
+    node:          bdc
+    node_type:     software
+    description:   TEST Alternate for BDC SDI
+    port:          3302
+    apptest:       true
     tunnel_offset: 14
 -
-    host: sf2.pok.ibm.com
-    node: bdc
-    type: software
-    description: TEST Backup Primary for BDC SDI
-    port: 6301
-    apptest: true
+    host:          sf2.pok.ibm.com
+    node:          bdc
+    node_type:     software
+    description:   TEST Backup Primary for BDC SDI
+    port:          6301
+    apptest:       true
     tunnel_offset: 15
 -
-    host: sf2.pok.ibm.com
-    node: bdc
-    type: software
-    description: TEST Backup Alternate for BDC SDI
-    port: 6302
-    apptest: true
+    host:          sf2.pok.ibm.com
+    node:          bdc
+    node_type:     software
+    description:   TEST Backup Alternate for BDC SDI
+    port:          6302
+    apptest:       true
     tunnel_offset: 16
 -
-    host: sf2.pok.ibm.com
-    node: sf2
-    type: hardware
-    description: Preferred Primary for SF2
-    port: 3581
-    apptest: false
+    host:          sf2.pok.ibm.com
+    node:          sf2
+    node_type:     hardware
+    description:   Preferred Primary for SF2
+    port:          3581
+    apptest:       false
     tunnel_offset: 17
 -
-    host: sf2.pok.ibm.com
-    node: sf2
-    type: hardware
-    description: Preferred Alternate for SF2
-    port: 3582
-    apptest: false
+    host:          sf2.pok.ibm.com
+    node:          sf2
+    node_type:     hardware
+    description:   Preferred Alternate for SF2
+    port:          3582
+    apptest:       false
     tunnel_offset: 18
 -
-    host: sf2.pok.ibm.com
-    node: sf2
-    type: hardware
-    description: TEST Primary for SF2 SDI
-    port: 3501
-    apptest: true
+    host:          sf2.pok.ibm.com
+    node:          sf2
+    node_type:     hardware
+    description:   TEST Primary for SF2 SDI
+    port:          3501
+    apptest:       true
     tunnel_offset: 19
 -
-    host: sf2.pok.ibm.com
-    node: sf2
-    type: hardware
-    description: TEST Alternate for SF2 SDI
-    port: 3502
-    apptest: true
+    host:          sf2.pok.ibm.com
+    node:          sf2
+    node_type:     hardware
+    description:   TEST Alternate for SF2 SDI
+    port:          3502
+    apptest:       true
     tunnel_offset: 20
 -
-    host: sf2.pok.ibm.com
-    node: sf2
-    type: hardware
-    description: TEST Backup Primary for SF2 SDI
-    port: 6501
-    apptest: true
+    host:          sf2.pok.ibm.com
+    node:          sf2
+    node_type:     hardware
+    description:   TEST Backup Primary for SF2 SDI
+    port:          6501
+    apptest:       true
     tunnel_offset: 21
 -
-    host: sf2.pok.ibm.com
-    node: sf2
-    type: hardware
-    description: TEST Backup Alternate for SF2 SDI
-    port: 6502
-    apptest: true
+    host:          sf2.pok.ibm.com
+    node:          sf2
+    node_type:     hardware
+    description:   TEST Backup Alternate for SF2 SDI
+    port:          6502
+    apptest:       true
     tunnel_offset: 22
 -
-    host: meuc1.vipa.uk.ibm.com
-    node: rs3
-    type: hardware
-    description: Primary URSF ONLY for SDI on RS3
-    port: 6291
-    apptest: false
+    host:          meuc1.vipa.uk.ibm.com
+    node:          rs3
+    node_type:     hardware
+    description:   Primary URSF ONLY for SDI on RS3
+    port:          6291
+    apptest:       false
     tunnel_offset: 23
 -
-    host: meuc1.vipa.uk.ibm.com
-    node: rs3
-    type: hardware
-    description: Backup URSF ONLY for SDI on RS3
-    port: 6292
-    apptest: false
+    host:          meuc1.vipa.uk.ibm.com
+    node:          rs3
+    node_type:     hardware
+    description:   Backup URSF ONLY for SDI on RS3
+    port:          6292
+    apptest:       false
     tunnel_offset: 24
 -
-    host: meuc1.vipa.uk.ibm.com
-    node: rs3
-    type: hardware
-    description: TEST SDI Primary for RS3
-    port: 6201
-    apptest: true
+    host:          meuc1.vipa.uk.ibm.com
+    node:          rs3
+    node_type:     hardware
+    description:   TEST SDI Primary for RS3
+    port:          6201
+    apptest:       true
     tunnel_offset: 25
 -
-    host: meuc1.vipa.uk.ibm.com
-    node: rs4
-    type: software
-    description: SDI for RS4
-    port: 3291
-    apptest: false
+    host:          meuc1.vipa.uk.ibm.com
+    node:          rs4
+    node_type:     software
+    description:   SDI for RS4
+    port:          3291
+    apptest:       false
     tunnel_offset: 26
 -
-    host: meuc1.vipa.uk.ibm.com
-    node: rs4
-    type: software
-    description: TEST SDI Primary for RS4
-    port: 7301
-    apptest: true
+    host:          meuc1.vipa.uk.ibm.com
+    node:          rs4
+    node_type:     software
+    description:   TEST SDI Primary for RS4
+    port:          7301
+    apptest:       true
     tunnel_offset: 27

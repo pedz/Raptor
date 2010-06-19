@@ -45,11 +45,13 @@
 class Retuser < ActiveRecord::Base
   belongs_to :user
   belongs_to(:software_node,
-             :class_name => :retain_node_selector,
-             :foreign_key => :software_node_id)
+             :class_name => "RetainNodeSelector",
+             :foreign_key => :software_node_id,
+             :include => :retain_node)
   belongs_to(:hardware_node,
-             :class_name => :retain_node_selector,
-             :foreign_key => :hardware_node_id)
+             :class_name => "RetainNodeSelector",
+             :foreign_key => :hardware_node_id,
+             :include => :retain_node)
 
   validates_presence_of :retid
   validates_presence_of :password

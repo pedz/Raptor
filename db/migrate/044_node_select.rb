@@ -20,21 +20,29 @@
 #
 class NodeSelect < ActiveRecord::Migration
   def self.up
-    add_column :users,    :test_mode,        :boolean, :default => false, :null => false
-    add_column :retusers, :test_mode,        :boolean, :default => false, :null => false
-    add_column :retusers, :software_node_id, :integer, :default => 1,     :null => false
-    add_column :retusers, :hardware_node_id, :integer, :default => 2,     :null => false
+    add_column :users,    :current_retuser_id, :integer # Allow nulls :-(
+    add_column :retusers, :apptest,            :boolean, :default => false, :null => false
+    add_column :retusers, :software_node_id,   :integer, :default => 1,     :null => false
+    add_column :retusers, :hardware_node_id,   :integer, :default => 2,     :null => false
+
     #
-    # A user can now have two retain ids: one for normal and one for test.
+    # The same user can have multiple retain ids.
     #
     execute "ALTER TABLE retusers DROP CONSTRAINT uq_retusers_user_id";
-    execute "ALTER TABLE retusers ADD  CONSTRAINT uq_retusers_user_id UNIQUE (user_id, test_mode)"
+
     #
-    # Also, the same retain id can be used twice: once for normal
-    # access and once for test access.
+    # Also, the same retain id can be used by multiple people -- it
+    # might get confuseing.
     #
     execute "ALTER TABLE retusers DROP CONSTRAINT uq_retusers_retid"
-    execute "ALTER TABLE retusers ADD  CONSTRAINT uq_retusers_retid UNIQUE (retid, test_mode)"
+
+    #
+    # But, a user can have only one retain id + apptest.  I.e. there
+    # is no reason for the same user to have the same retain id except
+    # if apptest differs.
+    #
+    execute "ALTER TABLE retusers ADD  CONSTRAINT uq_retusers_tuple UNIQUE (user_id, retid, apptest)"
+
     #
     # Create foreign key constraints for software_node and
     # hardware_node
@@ -47,14 +55,42 @@ class NodeSelect < ActiveRecord::Migration
              ADD CONSTRAINT fk_retusers_hardware_node_id
              FOREIGN KEY (hardware_node_id) REFERENCES retain_node_selectors(id)
              ON DELETE CASCADE"
+
+    #
+    # Also, make sure that current_retuser_id points into the retuser
+    # table.  If / when the retuser entry is deleted, we will set
+    # current_retuser_id to null.
+    #
+    execute "ALTER TABLE retusers ADD CONSTRAINT uq_id_user_id UNIQUE (id, user_id)"
+    execute "ALTER TABLE users
+             ADD CONSTRAINT fk_users_current_retuser_id
+             FOREIGN KEY (current_retuser_id, id) REFERENCES retusers(id, user_id)"
+
+    #
+    # Now, we set the current_retuser_id to the user's only retuser
+    # entry if they have one.
+    #
+    execute "UPDATE users AS u
+             SET current_retuser_id = r.id
+             FROM retusers r
+             WHERE u.id = r.user_id;"
   end
 
   def self.down
-    execute "ALTER TABLE retusers DROP CONSTRAINT uq_retusers_user_id"
+    # but constraint of one user and one retain user id back in place.
+    execute "ALTER TABLE users    DROP CONSTRAINT fk_users_current_retuser_id"
+    execute "ALTER TABLE retusers DROP CONSTRAINT uq_id_user_id"
+    
+    execute "ALTER TABLE retusers DROP CONSTRAINT fk_retusers_hardware_node_id"
+    execute "ALTER TABLE retusers DROP CONSTRAINT fk_retusers_software_node_id"
+
+    execute "ALTER TABLE retusers DROP CONSTRAINT uq_retusers_tuple"
     execute "ALTER TABLE retusers ADD  CONSTRAINT uq_retusers_user_id UNIQUE (user_id)"
-    execute "ALTER TABLE retusers DROP CONSTRAINT uq_retusers_retid"
     execute "ALTER TABLE retusers ADD  CONSTRAINT uq_retusers_retid UNIQUE (retid)"
-    remove_column :users,    :test_mode
-    remove_column :retusers, :test_mode
+
+    remove_column :retusers, :apptest
+    remove_column :retusers, :software_node_id
+    remove_column :retusers, :hardware_node_id
+    remove_column :users,    :current_retuser_id
   end
 end

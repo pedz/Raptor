@@ -8,6 +8,7 @@ class AddRetainNodes < ActiveRecord::Migration
     # June 11, 2010.
     #
     y = YAML.load(File.open(Rails.root.join("config", "saved", "node-list"))).each do |node|
+      node.symbolize_keys!
       RetainNode.create(node)
     end
   end

@@ -2,14 +2,24 @@
 
 <table>
   <tr>
-    <th>Description</th>
-    <th>Retain node</th>
+    <th>Selector Description</th>
+    <th>Retain Node</th>
+    <th>Retain Node Description</th>
+    <th>Note Type</th>
+    <th>APPTEST</th>
+    <th>Host</th>
+    <th>Port</th>
   </tr>
 
 <% @retain_node_selectors.each do |retain_node_selector| %>
   <tr>
     <td><%=h retain_node_selector.description %></td>
-    <td><%=h retain_node_selector.retain_node_id %></td>
+    <td><%=h retain_node_selector.retain_node.node %></td>
+    <td><%=h retain_node_selector.retain_node.description %></td>
+    <td><%=h retain_node_selector.retain_node.node_type %></td>
+    <td><%=h retain_node_selector.retain_node.apptest %></td>
+    <td><%=h retain_node_selector.retain_node.host %></td>
+    <td><%=h retain_node_selector.retain_node.port %></td>
     <td><%= link_to 'Show', retain_node_selector %></td>
     <td><%= link_to 'Edit', edit_retain_node_selector_path(retain_node_selector) %></td>
     <td><%= link_to 'Destroy', retain_node_selector, :confirm => 'Are you sure?', :method => :delete %></td>

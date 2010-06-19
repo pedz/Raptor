@@ -1,66 +1,74 @@
 # -*- coding: utf-8 -*-
 
 class RetusersController < ApplicationController
-  before_filter :this_user?, :only => [ :show, :edit, :update, :destroy ]
+  before_filter :this_user?
+  before_filter :this_retuser?, :except => [ :index, :new, :create ]
   
-  # GET /retain/users
-  # GET /retain/users.xml
-  # Admin user gets the entire list.  Normal user gets a list with
-  # only their record
+  # GET /users/1/retusers
+  # GET /users/1/retusers.xml
   def index
-    if admin?
-      @retusers = Retuser.find(:all)
-    else
-      @retusers = application_user.retusers
-    end
+    @retusers = @user.retusers
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @retusers }
     end
   end
   
-  # GET /retain/users/1
-  # GET /retain/users/1.xml
+  # GET /users/1/retusers/2
+  # GET /users/1/retusers/2
   def show
-    # Done in this_user?
-    # @retuser = Retuser.find(params[:id])
-    
+    # @retuser set in this_retuser?
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @retuser }
     end
   end
   
-  # GET /retain/users/new
-  # GET /retain/users/new.xml
+  # GET /users/1/retusers/new
+  # GET /users/1/retusers/new.xml
   def new
-    return if duplicate?
-    @retuser = Retuser.new
+    @retuser = @user.retusers.build
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @retuser }
     end
   end
   
-  # GET /retain/users/1/edit
+  # GET /users/1/retusers/2/edit
   def edit
-    # Done in this_user?
-    # @retuser = Retuser.find(params[:id])
+    # @retuser set in this_retuser?
   end
   
-  # POST /retain/users
-  # POST /retain/users.xml
+  # POST /users/1/retuser
+  # POST /users/1/retuser.xml
   def create
-    return if duplicate?
     @retuser = Retuser.new(params[:retuser])
+    # Change the retain node selectors to the defalt test nodes if
+    # apptest is set.
+    if @retuser.apptest
+      @retuser.software_node =
+        RetainNodeSelector.find(:first,
+                                :joins => [ :retain_node ],
+                                :conditions => {
+                                  "retain_nodes.apptest" => true,
+                                  "retain_nodes.node_type" => "software"
+                                })
+      @retuser.hardware_node =
+        RetainNodeSelector.find(:first,
+                                :joins => [ :retain_node ],
+                                :conditions => {
+                                  "retain_nodes.apptest" => true,
+                                  "retain_nodes.node_type" => "hardware"
+                                })
+    end
+
     respond_to do |format|
-      @retuser.user = application_user
-      if @retuser.save
+      if (@user.retusers << @retuser)
         flash[:notice] = 'Retuser was successfully created.'
         format.html {
           uri = session[:original_uri]
           session[:original_uri] = nil
-          redirect_to(uri || @retuser)
+          redirect_to(uri || user_retuser_url(@user, @retuser))
         }
         format.xml  { render :xml => @retuser, :status => :created, :location => @retuser }
       else
@@ -70,11 +78,10 @@ class RetusersController < ApplicationController
     end
   end
   
-  # PUT /retain/users/1
-  # PUT /retain/users/1.xml
+  # PUT /users/1/retuser
+  # PUT /users/1/retuser.xml
   def update
-    # Done in this_user?
-    # @retuser = Retuser.find(params[:id])
+    # @retuser set in this_retuser?
     
     respond_to do |format|
       if @retuser.update_attributes(params[:retuser])
@@ -82,45 +89,37 @@ class RetusersController < ApplicationController
         format.html {
           uri = session[:original_uri]
           session[:original_uri] = nil
-          redirect_to(uri || @retuser)
+          redirect_to(uri || user_retuser_url(@user))
         }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { render(:action => :edit) }
         format.xml  { render :xml => @retuser.errors, :status => :unprocessable_entity }
       end
     end
   end
   
-  # DELETE /retain/users/1
-  # DELETE /retain/users/1.xml
+  # DELETE /users/1/retuser
+  # DELETE /users/1/retuser.xml
   def destroy
-    # Done in this_user?
-    # @retuser = Retuser.find(params[:id])
+    # @retuser set in this_retuser?
     @retuser.destroy
     
     respond_to do |format|
-      format.html { redirect_to(users_url) }
+      format.html { redirect_to(user_retusers_url(@user)) }
       format.xml  { head :ok }
     end
   end
   
-  # A user is allowed to have only one retain user record at a time.
-  # new and create call this to make sure that the request is not
-  # going to produce a second retain user record for this user.
-  def duplicate?
-    return false if application_user.retuser.empty?
-    respond_to do |format|
-      flash[:error] = "User already has a retain user record.  Please delete before adding"
-      format.html { redirect_to(users_url) }
-      format.xml  { render :xml => @retuser.errors, :status => :unprocessable_entity }
-    end
-    return true
-  end
-  
-  # A normal user can only look around at their own record.
+  private
+
   def this_user?
-    @retuser = Retuser.find_by_retid(params[:id])
-    admin? || @retuser.user_id == session[:user_id]
+    check_user(params[:user_id])
+  end
+
+  def this_retuser?
+    return true if (@retuser = @user.retusers.find_by_retid(params[:id]))
+    flash[:error] = "Retuser #{params[:id]} not found for this user"
+    redirect_to(:action => "index")
   end
 end

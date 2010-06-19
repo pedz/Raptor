@@ -5,10 +5,14 @@
 
 <%= error_messages_for :retuser %>
 
-<% form_for(@retuser) do |f| %>
+<% form_for([@user, @retuser]) do |f| %>
   <p>
-    <b>Retid</b><br />
+    <b>Retain Id</b><br />
     <%= f.text_field :retid %>
+  </p>
+  <p>
+    <b>APPTEST</b> (Leave off for normal production use)<br />
+    <%= f.check_box :apptest %>
   </p>
 
   <p>
@@ -26,5 +30,6 @@
   </p>
 <% end %>
 
-<%= link_to 'Index of Retain Users', retusers_path %>
+<%= link_to 'Back to User', user_path(@user) %> |
+<%= link_to 'List of Retain Ids', user_retusers_path(@user) %>
 <%- end -%>

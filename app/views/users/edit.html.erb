@@ -12,8 +12,8 @@
     </p>
   <% end %>
   <p>
-    <%= f.label :test_mode %>
-    <%= f.check_box :test_mode %>
+    <%= f.label :current_retuser_id %>
+    <%= f.select(:current_retuser_id, retain_user_list(@user)) %>
   </p>
   <p>
     <%= f.submit "Update" %>

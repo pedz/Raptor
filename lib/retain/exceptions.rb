@@ -2,6 +2,8 @@
 
 module Retain
   class RetainError < StandardError
+    # Initialized in config/initializers/loggers.rb
+    cattr_accessor :logger
   end
 
   #
@@ -30,13 +32,15 @@ module Retain
   # We are getting weird socket errors.  This is here as a generic way
   # to get those back to the user and also to me so I know more about
   # what is going on.
-  class SDIError
+  class SDIError < RetainError
     attr_reader :sdi
 
-    def initialize(msg, sdi)
+    def initialize(msg, sdi, backtrace = caller)
       super(msg)
       @sdi = sdi
+      set_backtrace(backtrace)
       logger.error(msg)
+      logger.error(backtrace)
       sdi.logon_debug
     end
   end

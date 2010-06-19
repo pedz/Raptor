@@ -84,12 +84,9 @@ class UsersController < ApplicationController
     # currently a no-op 'cause everything is protected
     @user.attributes = params[:user]
 
+    admin_param = params[:user].delete(:admin)
     if admin?
-      if params[:admin] == true
-        @user.admin = true
-      elsif params[:admin] == false
-        @user.admin = false
-      end
+      @user.admin = admin_param unless admin_param.nil?
     end
     
     respond_to do |format|
@@ -131,30 +128,10 @@ class UsersController < ApplicationController
     end
     return true
   end
-  
-  # A normal user can only look around at their own record.
-  def this_user?
-    begin
-      @user = User.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      if admin?
-        render :file => "public/404.html", :status => 404, :layout => false
-        return
-      else
-        @user = nil
-      end
-    end
-    
-    if @user.nil? || !(admin? || @user.id == session[:user_id])
-      flash[:notice] = "Must use your own id"
-      redirect_to(:action => "index")
-    end
-  end
 
-  def admin_only
-    unless admin?
-      flash[:notice] = "Not Permitted"
-      redirect_to(:action => "index")
-    end
+  private
+
+  def this_user?
+    check_user(params[:id])
   end
 end

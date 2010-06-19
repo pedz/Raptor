@@ -2,16 +2,10 @@
 
 class User < ActiveRecord::Base
   attr_protected :ldap_id, :retain_user_id, :admin
-  has_many :retusers
+  has_many :retusers, :include => [ :software_node, :hardware_node ]
   has_many :favorite_queues, :class_name => "Cached::FavoriteQueue", :include => :queue
+  belongs_to :current_retain_id, :class_name => "Retuser", :foreign_key => "current_retuser_id"
 
-  # retuser as oppose to retusers returns the retuser from retusers
-  # whose test flag matches the current value of test in the user
-  # model.
-  def retuser
-    retusers.find(:first, :conditions => { :test_mode => test_mode })
-  end
-  
   def ldap
     LdapUser::find(:attribute => 'mail', :value => ldap_id)
   end

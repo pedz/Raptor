@@ -2,17 +2,35 @@
 
 <%- content_for(:center) do -%>
 <p>
-  <b>Retid:</b>
+  <b>User:</b>
+  <%=h @retuser.user.ldap_id %>
+</p>
+<p>
+  <b>Retain Id:</b>
   <%=h @retuser.retid %>
 </p>
+<p>
+  <b>Failed:</b>
+  <%=h @retuser.failed %>
+</p>
+<p>
+  <b>Return Value:</b>
+  <%=h @retuser.return_value %>
+</p>
+<p>
+  <b>Reason:</b>
+  <%=h @retuser.reason %>
+</p>
+<p>
+  <b>Software Node:</b>
+  <%=h @retuser.software_node.description %>
+</p>
+<p>
+  <b>Hardware Node:</b>
+  <%=h @retuser.hardware_node.description %>
+</p>
 
-<% if admin? %>
-  <p>
-    <b>Password:</b>
-    <%=h @retuser.password %>
-  </p>
-<% end %>
-
-<%= link_to 'Edit', edit_retuser_path(@retuser) %> |
-<%= link_to 'Index of Retain Users', retusers_path %>
+<%= link_to 'Edit', edit_user_retuser_path(@user, @retuser) %> |
+<%= link_to 'Back to User', user_path(@user) %> |
+<%= link_to 'List of Retain Ids', user_retusers_path(@user) %>
 <%- end -%>

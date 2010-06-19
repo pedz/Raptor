@@ -260,7 +260,7 @@ ActiveRecord::Schema.define(:version => 44) do
   create_table "retain_nodes", :force => true do |t|
     t.string   "host"
     t.string   "node"
-    t.string   "type"
+    t.string   "node_type"
     t.string   "description"
     t.integer  "port"
     t.boolean  "apptest"
@@ -306,24 +306,24 @@ ActiveRecord::Schema.define(:version => 44) do
     t.datetime "updated_at"
     t.integer  "return_value"
     t.integer  "reason"
-    t.boolean  "test_mode",        :default => false, :null => false
+    t.boolean  "apptest",          :default => false, :null => false
     t.integer  "software_node_id", :default => 1,     :null => false
     t.integer  "hardware_node_id", :default => 2,     :null => false
   end
 
-  add_index "retusers", ["retid", "test_mode"], :name => "uq_retusers_retid", :unique => true
-  add_index "retusers", ["user_id", "test_mode"], :name => "uq_retusers_user_id", :unique => true
+  add_index "retusers", ["id", "user_id"], :name => "uq_id_user_id", :unique => true
+  add_index "retusers", ["user_id", "retid", "apptest"], :name => "uq_retusers_tuple", :unique => true
 
   create_table "users", :force => true do |t|
-    t.string   "ldap_id",                        :null => false
-    t.boolean  "admin",       :default => false
+    t.string   "ldap_id",                               :null => false
+    t.boolean  "admin",              :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "ftp_host"
     t.string   "ftp_login"
     t.string   "ftp_pass"
     t.string   "ftp_basedir"
-    t.boolean  "test_mode",   :default => false, :null => false
+    t.integer  "current_retuser_id"
   end
 
   add_index "users", ["ldap_id"], :name => "uq_ldap_id", :unique => true

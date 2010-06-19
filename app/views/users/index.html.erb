@@ -5,7 +5,6 @@
 <table>
   <tr>
     <th>Ldap</th>
-    <th>Test Mode</th>
     <th>Retain user</th>
     <% if admin? %>
       <th>Admin</th>
@@ -15,11 +14,22 @@
 <% for user in @users %>
   <tr>
     <td><%=h user.ldap_id %></td>
-    <td><%=h user.test_mode %></td>
-    <% if user.retuser.nil? %>
-      <td><%= link_to 'New Retain User Id', new_retuser_path %></td>
+    <%#
+      A user's current_retain_id can be in one of three states.  It
+  can be set -- which is easy.  It can be null but the user has some
+  retain ids defined.  In that case, we present a link to edit the
+  user's record so it can be set.  Third, it can be null and the user
+  does not have any retain ids set.  In that case, we present a link
+  to define a new retain id.
+      %>
+    <% if user.current_retain_id.nil? %>
+      <% if user.retusers.empty? %>
+	<td><%= link_to 'New Retain User Id', new_user_retuser_path(user) %></td>
+      <% else %>
+	<td><%= link_to 'Pick Retain Id', edit_user_path(user) %></td>
+      <% end %>
     <% else %>
-      <td><%=link_to "#{user.retuser.retid}", user.retusers[0] %></td>
+      <td><%=link_to "#{user.current_retain_id.retid}", user_retuser_url(user, user.current_retain_id) %></td>
     <% end %>
     <% if admin? %>
       <td><%=h user.admin %></td>

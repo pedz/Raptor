@@ -7,10 +7,14 @@
 
 <p>
   <b>Retain user:</b>
-  <% if @user.retuser.nil? %>
-    <%= link_to 'New Retain User Id', new_retuser_path %>
+  <% if @user.current_retain_id.nil? %>
+    <% if @user.retusers.empty? %>
+      <td><%= link_to 'New Retain User Id', new_user_retuser_path(user) %></td>
+    <% else %>
+      <td><%= link_to 'Pick Retain Id', edit_user_path(user) %></td>
+    <% end %>
   <% else %>
-    <%=link_to "#{@user.retuser.retid}", retuser_url(@user.retusers[0]) %>
+    <td><%=link_to "#{@user.current_retain_id.retid}", user_retuser_url(@user, @user.current_retain_id) %></td>
   <% end %>
 </p>
 
@@ -20,9 +24,5 @@
     <%=h @user.admin %>
   </p>
 <% end %>
-  <p>
-    <b>Test mode:</b>
-    <%=h @user.test_mode %>
-  </p>
-  <%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Index of Users', users_path %>
