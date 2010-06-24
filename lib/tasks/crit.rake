@@ -8,10 +8,10 @@ task :add_crits do
   Rake::Task["rake:environment"].invoke
   top = Rails.root
   user = User.find_by_ldap_id("pedzan@us.ibm.com")
-  retuser = user.retuser
+  retuser = user.current_retain_id
   params = Retain::ConnectionParameters.new(:signon   => retuser.retid,
-                                    :password => retuser.password,
-                                    :failed   => retuser.failed)
+                                            :password => retuser.password,
+                                            :failed   => retuser.failed)
   Retain::Logon.instance.set(params)
   File.open(top + "public/crit-sit-pmrs.txt") do |f|
     f.each_line do |l|

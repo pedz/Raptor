@@ -15,12 +15,12 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :retain_service_action_cause_tuples
 
-  # map.resources :combined_psars, :controller => 'combined/psars'
+  # This should be nested under retusers but I don't want to tackle
+  # that right now.
+  map.resources :combined_psars, :controller => 'combined/psars'
 
   map.resources :users do |user|
-    user.resources :retusers do |retuser|
-      retuser.resources :combined_psars, :controller => 'combined/psars'
-    end
+    user.resources :retusers
   end
 
   # Feedback messages, etc.
