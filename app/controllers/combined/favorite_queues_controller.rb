@@ -30,9 +30,10 @@ module Combined
     # GET /favorite_queues.xml
     def index
       
-      if admin?
+#      if admin?
         # Untested
-        @favorite_queues = Combined::FavoriteQueue.find(:all)
+#        @favorite_queues = Combined::FavoriteQueue.find(:all)
+
 #       elsif params[:test] == "true"
 #         @favorite_queues = [
 #                             FakeFavoriteQueue.new(:queue_name => "personal,S,165",
@@ -44,11 +45,11 @@ module Combined
 #                                                   :owners => []
 #                                                   )
 #                            ]
-      else
+#      else
         @favorite_queues = application_user.favorite_queues.map { |queue|
           queue.wrap_with_combined
         }
-      end
+#      end
       # In test mode, mock up the "hits" method
       if params[:test] == "true"
         @favorite_queues.each { |q|

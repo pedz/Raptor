@@ -3,6 +3,15 @@
 module Retain
   class QsController < RetainController
     def show
+      # Hack so that combined_qs/all shows all the pmrs on all the
+      # queues listed on a person's favorite's list.
+      if params[:id] == "all"
+        logger.debug("before show_all")
+        show_all 
+        logger.debug("after show_all")
+        return
+      end
+
       # Throw an exception if the queue is not valid early on
       @queue = Combined::Queue.from_param!(params[:id], signon_user)
 
@@ -52,6 +61,39 @@ module Retain
           memo[a[0]] = a[1]
           memo
         end
+      end
+    end
+
+    def show_all
+      # We need @todays_psars as a hash but just make it empty
+      @todays_psars = { }
+      @queues = application_user.favorite_queues.map { |favorite|
+        favorite.queue.wrap_with_combined
+      }
+
+      # Stolen code from above.  If, no cache, then mark things to get
+      # fetched.
+      if @no_cache
+        @queues.each do |queue|
+          logger.debug("Queue class: #{queue.class}")
+          queue.mark_pmrs_as_dirty
+          queue.calls.clear
+          queue.mark_as_dirty
+        end
+      end
+      
+      @queues.each do |queue|
+        begin
+          fetch_all_calls(queue)
+        rescue
+          queue.mark_as_dirty
+          fetch_all_calls(queue)
+        end
+      end
+
+      last_fetched = @queues.map { |queue| queue.last_fetched || Time.now }.max
+      if stale?(:last_modified => last_fetched, :etag => @queues.map { |q| q.etag}.flatten)
+        render :action => "show_all"
       end
     end
 

@@ -1,0 +1,98 @@
+<%# -*- coding: utf-8 -*- %>
+
+<!-- retain/queue/show.html.erb -->
+<% @title = "show_all" -%>
+<%- content_for(:top) do -%>
+  <!-- retain/queue/show.html.erb top content -->
+  <%= render :partial => 'layouts/shared/display_flash' %>
+<%- end -%>
+<% content_for(:center) do %>
+  <!-- retain/queue/show.html.erb center content -->
+  <div class="smaller">
+    <span id="message-area"></span>
+    <table class='sortable' style='font-family : courier, monospace'>
+      <% display_qs_headers(binding) %>
+      <tbody>
+	<% @queues.each do |queue| %>
+          <%= render(:partial => "qs_row",
+                     :collection => queue.calls,
+                     :as => :call) %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+<% content_for(:bottom) do %>
+  <!-- retain/queue/show.html.erb bottom content -->
+  <div style='background-color: #DDD; color: green; display: none; width: 80ex;' id='help'>
+    <ol>
+      <li>
+	Hover over PMR number to see Customer's name, Comments,
+	Customer's time of day, and ECPAAT.
+      </li>
+      <li>
+	Each section of ECPAAT is limited to first 5 lines.
+      </li>
+      <li>
+	Time of last CT can be seen by hovering over Next CT.
+      </li>
+      <li>
+	Hover over red or orange fields to see cause of error or
+	warning.
+      </li>
+      <li>
+	Text of buttons can be typed into text box for mouseless
+        navigation e.g. <q>202</q> will go to a call with PPG of 202
+        if there is one.  <q>home</q> goes to home page.
+      </li>
+      <li>
+	Click on Customer's name to invoke email to customer.
+      </li>
+      <li>
+	Click on Comments (what most call the <q>title</q>) to alter
+	them.
+      </li>
+      <li>
+	Click on Owner, Resolver, and Next Queue to alter them.  Owner
+	and Next Queue are not alterable for WT PMRs.
+      </li>
+      <li>
+	PMR colored in orange is under <q>initial contact</q> criteria.
+      </li>
+      <li>
+	PMR colored red is <q>system down</q> criteria.
+      </li>
+      <li>
+	To get to a specific PMR, you can edit the URL in the
+	browser's address bar.  The address will be (e.g.)<br/>
+	<%= combined_pmrs_url("12345,ABC,XYZ").sub('.', '/') %><br/>
+	This also works for PMHs.
+      </li>
+      <li>
+	As above, you can go to a particular queue directly by editing
+	the URL.  You will note that there is an extra <q>S</q> in the
+	URL.  e.g. PEDZ,165 comes out as PEDZ,S,165.  The <q>S</q> is for
+	<q>software</q>.  Thus, you can view hardware queues by using an
+	<q>H</q>.  For example, IOPE,H,021.
+      </li>
+      <li>
+	To requeue a PMR over to hardware, simply requeue it to the
+	properly specified hardware queue e.g. IOPE,H,021.  The one
+	catch is that you can not log PSAR time when you do this.  The
+	PSAR is added after the requeue but PMHs do not have PSAR,
+	they have something else.  So, add your time before the
+	requeue (e.g. with an addtxt) and you'll be fine.
+      </li>
+      <li>
+	Button names on the left are the call's PPG.  The 4-tuple of
+	queue,s_or_h,center,ppg uniquely specifies a call in Retain.
+      </li>
+    </ol>
+  </div>
+  <div>
+    <%= home_button %>
+    <%= button_url 'Favorite Queues', combined_favorite_queues_path %>
+    <%= psar_button %>
+    <%= button "Help", "$(\"help\").toggle()" %>
+  </div>
+<% end %>
