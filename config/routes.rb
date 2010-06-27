@@ -7,12 +7,30 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :hot_pmr_lists, :controller => 'hot_pmr_lists', :only => [ :index, :show ]
 
+  map.namespace(:json) do |json|
+    json.namespace(:cached) do |json_cached|
+      json_cached.resources(:centers)
+      json_cached.resources(:favorite_queues)
+      json_cached.resources(:queues) do |jscon_cached_queue|
+        jscon_cached_queue.resources(:calls)
+      end
+      json_cached.resources(:pmrs)
+    end
+
+    json.namespace(:combined) do |json_combined|
+      json_combined.resources(:queues) do |jscon_combined_queue|
+        jscon_combined_queue.resources(:calls)
+      end
+      json_combined.resources(:pmrs)
+    end
+  end
+
+  # Everything below here is from the old system...
+
+  map.resources :hot_pmr_lists, :controller => 'hot_pmr_lists', :only => [ :index, :show ]
   map.resources :combined_hot_pmr_time, :controller => 'combined/hot_pmr_time'
-  
   map.resources :retain_solution_codes, :controller => 'retain/solution_codes'
-
   map.resources :retain_service_given_codes, :controller => 'retain/service_given_codes'
-
   map.resources :retain_service_action_cause_tuples
 
   # This should be nested under retusers but I don't want to tackle

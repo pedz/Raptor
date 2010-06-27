@@ -60,10 +60,6 @@ module Combined
         }
       end
       
-#       @favorite_queues.map { |o|
-#         o.extend FavoriteQueue
-#         o.set_controller self
-#       }
       respond_to do |format|
         format.html # index.html.erb
         format.xml  { render :xml => @favorite_queues }
@@ -192,33 +188,6 @@ module Combined
       respond_to do |format|
         format.html { redirect_to(combined_favorite_queues_url) }
         format.xml  { head :ok }
-      end
-    end
-
-    module FavoriteQueue
-      def set_controller(controller)
-        @controller = controller
-      end
-
-      def to_xml(options = {})
-        options[:indent] ||= 2
-        root = options[:root] || self.class.name.underscore
-        xml = options[:builder] ||= Builder::XmlMarkup.new(:indent => options[:indent])
-        xml.instruct! unless options[:skip_instruct]
-        xml.tag! root do
-          xml.tag!(:queue, queue.to_param)
-          xml.tag!(:team, queue.owners.empty?)
-          xml.tag!(:hits, queue.hits)
-        end
-      end
-      
-      def to_json(options = {})
-        {
-          :combined_q_url => @controller.send(:combined_q_path, queue.to_param),
-          :queue => queue.to_param,
-          :team => queue.owners.empty?,
-          :hits => queue.hits
-        }.to_json
       end
     end
   end
