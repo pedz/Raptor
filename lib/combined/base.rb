@@ -209,6 +209,12 @@ module Combined
       end
       private :once
     end                         # end of class methods
+    
+    def to_json_with_defaults(options)
+      call_load
+      @cached.to_json(options)
+    end
+    alias_method_chain :to_json, :defaults
 
     # new for the Combined subclasses takes a hash of options or an
     # instance of the equivalent Cached class
