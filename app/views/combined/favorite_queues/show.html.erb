@@ -3,13 +3,6 @@
 <% @title = "Show Favorite Queue #{@favorite_queue.queue.to_param}" %>
 <% content_for(:center) do %>
 <!-- combined/favorite_queues/new.html.erb -->
-  <% if admin? %>
-    <p>
-      <b>User:</b>
-      <%=h @favorite_queue.user_id %>
-    </p>
-  <% end %>
-  
   <p>
     <b>Queue:</b>
     <% queue = @favorite_queue.queue %>

@@ -77,6 +77,13 @@ class NodeSelect < ActiveRecord::Migration
   end
 
   def self.down
+    # Delete any duplicate retuser ids that one user might have.  We
+    # do this by assuming the user wants to keep the retuser id that
+    # is currently pointed to by his current_retuser_id.  Note that
+    # this is only going to get run probably on test and staging
+    # servers so it is a reasonable assumption.
+    execute "DELETE FROM retusers WHERE id NOT IN ( SELECT current_retuser_id FROM users )"
+    
     # but constraint of one user and one retain user id back in place.
     execute "ALTER TABLE users    DROP CONSTRAINT fk_users_current_retuser_id"
     execute "ALTER TABLE retusers DROP CONSTRAINT uq_id_user_id"
