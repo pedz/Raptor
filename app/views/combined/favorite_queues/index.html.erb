@@ -7,14 +7,11 @@
 <table id='favorite-queue-list'>
   <thead>
     <tr>
-      <th colspan=<%= admin? ? 8 : 7 %>>
+      <th colspan='7'>
 	Favorite Queues last updated <span id="time"><%= Time.now %></span>
       </th>
     </tr>
     <tr>
-      <% if admin?-%>
-      <th>User</th>
-      <% end -%>
       <th>Queue<br/>Status</th>
       <th>Queue<br/>Type</th>
       <th>Calls</th>
@@ -40,9 +37,6 @@
     <%     q_class += "-nonempty"     -%>
     <%   end                          -%>
     <tr class='<%= q_class -%>'>
-      <% if admin? -%>
-      <td><%=h queue.user_id -%></td>
-      <% end -%>
       <td><%= button_url queue.to_param, combined_q_url(queue.to_param) -%></td>
       <td><%= team ? "Team" : "Personal"%></td>
       <td align='right'><%= h hits -%></td>

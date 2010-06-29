@@ -20,7 +20,8 @@ module Retain
 
     def signon_user
       @signon_user ||=
-        Combined::Registration.find_or_initialize_by_signon(Retain::Logon.instance.signon)
+        Combined::Registration.find_or_initialize_by_signon_and_apptest(Retain::Logon.instance.signon,
+                                                                        Retain::Logon.instance.apptest)
     end
     helper_method :signon_user
 

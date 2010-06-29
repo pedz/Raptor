@@ -118,7 +118,7 @@ class RetusersController < ApplicationController
   end
 
   def this_retuser?
-    return true if (@retuser = @user.retusers.find_by_retid(params[:id]))
+    return true if (@retuser = @user.retusers.find(params[:id]))
     flash[:error] = "Retuser #{params[:id]} not found for this user"
     redirect_to(:action => "index")
   end

@@ -7,12 +7,6 @@
   <%= error_messages_for :queue %>
   
   <% form_for(@favorite_queue) do |f| %>
-  <% if admin? %>
-    <p>
-      <b>User</b><br />
-      <%= f.text_field :user_id %>
-    </p>
-  <% end %>
   <%   fields_for @favorite_queue.queue do |queue| %>
     <p>
       <b>Queue name</b><br />

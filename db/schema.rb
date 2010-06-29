@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 45) do
+ActiveRecord::Schema.define(:version => 46) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -185,7 +185,7 @@ ActiveRecord::Schema.define(:version => 45) do
   add_index "cached_queues", ["queue_name", "h_or_s", "center_id"], :name => "uq_cached_queues_triple", :unique => true
 
   create_table "cached_registrations", :force => true do |t|
-    t.string   "signon",                :null => false
+    t.string   "signon",                                   :null => false
     t.integer  "software_center_id"
     t.integer  "hardware_center_id"
     t.string   "psar_number"
@@ -197,9 +197,10 @@ ActiveRecord::Schema.define(:version => 45) do
     t.datetime "updated_at"
     t.datetime "last_day_fetch"
     t.datetime "last_all_fetch"
+    t.boolean  "apptest",               :default => false, :null => false
   end
 
-  add_index "cached_registrations", ["signon"], :name => "uq_cached_registrations_signon", :unique => true
+  add_index "cached_registrations", ["signon", "apptest"], :name => "uq_cached_registrations_signon", :unique => true
 
   create_table "cached_releases", :force => true do |t|
     t.integer  "component_id",              :null => false

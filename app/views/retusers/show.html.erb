@@ -23,11 +23,19 @@
 </p>
 <p>
   <b>Software Node:</b>
-  <%=h @retuser.software_node.description %>
+  <%- if admin? -%>
+    <%= link_to @retuser.software_node.description, retain_node_selector_path(@retuser.software_node) %>
+  <%- else -%>
+    <%=h @retuser.software_node.description %>
+  <%- end -%>
 </p>
 <p>
   <b>Hardware Node:</b>
-  <%=h @retuser.hardware_node.description %>
+  <%- if admin? -%>
+    <%= link_to @retuser.hardware_node.description, retain_node_selector_path(@retuser.hardware_node) %>
+  <%- else -%>
+    <%=h @retuser.hardware_node.description %>
+  <%- end -%>
 </p>
 
 <%= link_to 'Edit', edit_user_retuser_path(@user, @retuser) %> |

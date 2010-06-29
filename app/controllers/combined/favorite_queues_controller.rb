@@ -1,65 +1,14 @@
 # -*- coding: utf-8 -*-
 
 module Combined
-#   class FakeQueue
-#     def initialize(options = { })
-#       @options = options
-#     end
-
-#     def hits
-#       @options[:hits]
-#     end
-
-#     def owners
-#       @options[:owners]
-#     end
-#   end
-
-#   class FakeFavoriteQueue
-#     def initialize(options = { })
-#       @options = options
-#     end
-    
-#     def queue
-#       FakeQueue.new(@options)
-#     end
-#   end
-  
+  # Favorite Queues Controller
   class FavoriteQueuesController < Retain::RetainController
     # GET /favorite_queues
-    # GET /favorite_queues.xml
+    # Reponds to html, xml, and json formats
     def index
-      
-      if admin?
-        # Untested
-        @favorite_queues = Combined::FavoriteQueue.find(:all)
-#       elsif params[:test] == "true"
-#         @favorite_queues = [
-#                             FakeFavoriteQueue.new(:queue_name => "personal,S,165",
-#                                                   :hits => 18,
-#                                                   :owners => [ :one ]
-#                                                   ),
-#                             FakeFavoriteQueue.new(:queue_name => "team,S,165",
-#                                                   :hits => 0,
-#                                                   :owners => []
-#                                                   )
-#                            ]
-      else
-        @favorite_queues = application_user.favorite_queues.map { |queue|
-          queue.wrap_with_combined
-        }
-      end
-      # In test mode, mock up the "hits" method
-      if params[:test] == "true"
-        @favorite_queues.each { |q|
-          queue = q.queue
-          
-          def queue.hits(format)
-            format == :json ? 1 : 0
-          end
-        }
-      end
-      
+      @favorite_queues = application_user.favorite_queues.map { |queue|
+        queue.wrap_with_combined
+      }
       respond_to do |format|
         format.html # index.html.erb
         format.xml  { render :xml => @favorite_queues }
@@ -68,7 +17,7 @@ module Combined
     end
     
     # GET /favorite_queues/1
-    # GET /favorite_queues/1.xml
+    # Responds to html and xml formats.
     def show
       @favorite_queue = Combined::FavoriteQueue.find(params[:id])
       
@@ -79,7 +28,7 @@ module Combined
     end
     
     # GET /favorite_queues/new
-    # GET /favorite_queues/new.xml
+    # Responds to html and xml formats.
     def new
       center = signon_user.default_center
       queue = center.queues.build(:h_or_s => signon_user.default_h_or_s)
@@ -94,12 +43,13 @@ module Combined
     end
     
     # GET /favorite_queues/1/edit
+    # Responds only with html format
     def edit
       @favorite_queue = Combined::FavoriteQueue.find(params[:id])
     end
     
     # POST /favorite_queues
-    # POST /favorite_queues.xml
+    # Responds with html or xml format.
     def create
       center_options = params[:combined_center].symbolize_keys
       queue_options = params[:combined_queue].symbolize_keys
@@ -128,7 +78,7 @@ module Combined
       end
 
       @favorite_queue = Combined::FavoriteQueue.new(:queue => queue,
-                                                    :user => application_user)
+                                                    :retuser => application_user.current_retain_id)
       respond_to do |format|
         if queue_valid && @favorite_queue.save
           flash[:notice] = 'FavoriteQueue was successfully created.'
@@ -142,7 +92,7 @@ module Combined
     end
     
     # PUT /favorite_queues/1
-    # PUT /favorite_queues/1.xml
+    # Reponds with html and xml formats.
     def update
       # this is an odd case.  We do not actually want to change the
       # attributes of the queue because other people may be pointing
@@ -180,7 +130,7 @@ module Combined
     end
     
     # DELETE /favorite_queues/1
-    # DELETE /favorite_queues/1.xml
+    # Responds with html and xml formats.
     def destroy
       @favorite_queue = Combined::FavoriteQueue.find(params[:id])
       @favorite_queue.destroy
