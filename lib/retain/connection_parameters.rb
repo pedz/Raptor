@@ -4,9 +4,33 @@
 require 'retain/utils'
 
 module Retain
+
+  # ConnectionParameters is a class that holds all that is needed to
+  # connect to Retain.  A ConnectionParameters object is created by
+  # the RetainController during authorization.
   class ConnectionParameters
-    attr_reader :signon, :password, :failed, :hardware_node, :software_node
+
+    # The user's Retain id
+    attr_reader :signon
+
+    # The user's Retain password
+    attr_reader :password
+
+    # The value of the failed flag from the Retuser record.  If set,
+    # no attempt to access Retain will be made.
+    attr_reader :failed
+
+    # The node to access for a hardware request.  See
+    # Retain::Connection.new for details.  This attribute is a hash
+    # which has the host, port, and tunnel_offset.
+    attr_reader :hardware_node
+
+    # The node to access for a software request.  See
+    # Retain::Connection.new for details.  This attribute is a hash
+    # which has the host, port, and tunnel_offset.
+    attr_reader :software_node
     
+    # The Retuser object of the current User is passed in.
     def initialize(retuser)
       super()
       @signon   = retuser.retid.trim(6)

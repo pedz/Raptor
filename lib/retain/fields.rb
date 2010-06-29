@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-#
-# Right now, the Fields class is just a place to put constants that
-# mnemonically map to the data element fields.
-
 require 'retain/utils'
 
 module Retain
+  #
+  # Each Retain model has a fields instance variable.  It holds the
+  # data elements (fields) sent and received via SDI calls to Retain.
+  #
   class Fields
     # Initialized in config/initializers/loggers.rb
     cattr_accessor :logger
@@ -561,12 +561,29 @@ module Retain
       :div                         => [ 3883, :ebcdic,              2 ]
     }
     
+    # return the width of the field given its symbolic name
     def self.field_width(sym)
       FIELD_DEFINITIONS[sym][2]
     end
 
-    attr_reader :fields, :raw_values
+    # fields is a hash mapping symbolic field names to Retain:Field
+    # objects.
+    attr_reader :fields
 
+    # An array indexed by the data element number of the raw data
+    # returned by the SDI call.  The data returned can not be
+    # interpreted until a getter is called because a particular data
+    # element number can have different interpretations depending upon
+    # which SDI call was used.  Instead of understanding which calls
+    # implies which types of values, the data is held until a getter
+    # is called and then interpreted at that time.  Thus, in theory,
+    # an SDI call could return data element 11 as a hit_count but if
+    # the customer_number getter is called, it will be assumed that it
+    # should be interpreted as a customer_number.
+    attr_reader :raw_values
+
+    # Passed a method back into the parent of the model that contains
+    # the fields which is called when a fetch from Retain is needed.
     def initialize(fetch_fields = nil)
       super()
       @fetch_fields = fetch_fields
@@ -584,11 +601,13 @@ module Retain
       @@field_num_to_name[index] = k
     end
 
+    # Returns the symbolic name given an data element index.
     def self.index_to_sym(index)
       # logger.debug("RNT: index_to_sym for #{index} is #{@@field_num_to_name[index]}")
       @@field_num_to_name[index]
     end
 
+    # Returns the index given a symbolic name.
     def self.sym_to_index(sym)
       raise "#{sym} not known as a field to retain" if (a = FIELD_DEFINITIONS[sym]).nil?
       a[0]
@@ -625,6 +644,7 @@ module Retain
       const_set(ks.to_s.upcase, index)
     end
 
+    # A simple call to dump the values in the fields hash into the log file.
     def dump_fields
       @fields.each_pair do |k, v|
         rv = v.raw_value
@@ -638,15 +658,20 @@ module Retain
       end
     end
 
+    # delete sym from the list of fields.
     def delete(sym)
       move_raw_value_to_field(sym)
       @fields.delete(sym)
     end
 
+    # Returns a merge of current fields and those passed in.
     def merge(new_fields)
       self.dup.merge!(new_fields)
     end
     
+    # Returns and updates current fields with those passed in.  Calls
+    # merge_fields! if input is a Retain::Fields.  Calls merge_hash!
+    # if input is a Hash.
     def merge!(new_fields)
       if new_fields.is_a?(Retain::Fields)
         merge_fields!(new_fields)
@@ -656,8 +681,9 @@ module Retain
       self
     end
     
-    # We don't move it yet.  We could but I'm worried that it might
-    # bite me if I do.
+    # Checks to see if fields could have a data element that could be
+    # interpreted as the passed in symbol.  We do not move the data
+    # and interpret it until the getter is called.
     def has_key?(orig_sym)
       # We can't use field_name_to_index because it raises an
       # exception for anything that is unexpected.  has_key? gets
@@ -677,17 +703,21 @@ module Retain
         @fields.has_key?(sym)
     end
     
+    # Returns the raw data for the data element represented by sym
     def raw_field(sym)
       move_raw_value_to_field(sym)
       @fields[sym]
     end
 
+    # Returns the interpreted value of the field for sym
     def [](sym)
       move_raw_value_to_field(sym)
       @fields[sym]
     end
     private :[]
 
+    #
+    # Set the raw value for the given data element index.
     #
     # Used to set values received from retain into a field.  The new
     # code simply remembers these values without interpretation.
@@ -698,6 +728,8 @@ module Retain
       (@raw_values[index] ||= Array.new) << value
     end
 
+    # Set the interpreted value of the field for the sym passed in.
+    # Calls writer to "write" the value into the field.
     def []=(sym, value)
       cvt = field_name_to_cvt(sym)
       width = field_name_to_width(sym)
@@ -745,6 +777,8 @@ module Retain
     #   end
     # end
 
+    # Returns a string that can be written to the log files for each
+    # value in the raw data array.
     def to_debug
       r = ''
       @fields.each_pair do |k, v|
@@ -779,21 +813,26 @@ module Retain
 
     private
 
+    # Translates a field name into the data element index
     def field_name_to_index(sym)
       raise "#{sym} not known as a field to retain" if (a = FIELD_DEFINITIONS[sym]).nil?
       a[0]
     end
 
+    # Translates a field name to its conversion type.  See Retain::Field
     def field_name_to_cvt(sym)
       raise "#{sym} not known as a field to retain" if (a = FIELD_DEFINITIONS[sym]).nil?
       a[1]
     end
 
+    # Translates a field name into its field width.
     def field_name_to_width(sym)
       raise "#{sym} not known as a field to retain" if (a = FIELD_DEFINITIONS[sym]).nil?
       a[2]
     end
 
+    # Lower level routine for merging fields.  Merges both the
+    # symbolic hash as well as the raw value array.
     def merge_fields!(new_fields)
       # logger.debug("RTN: merge_fields called")
       new_fields.fields.each_pair do |sym, v|
@@ -806,6 +845,7 @@ module Retain
       end
     end
     
+    # Lower level routine for merge fields when a Hash is passed in.
     def merge_hash!(new_fields)
       # logger.debug("RTN: merge_hash called")
       new_fields.each_pair do |sym, v|
@@ -820,6 +860,9 @@ module Retain
       end
     end
     
+    # low level method for reading SDI values.  The getters created
+    # for each symbolic field calls this routine with the symbol,
+    # conversion type, and width of the field.
     #
     # If the attribute or field is already present, then just return
     # it.  Otherwise, if the fields have not been fetched and
@@ -846,6 +889,10 @@ module Retain
       raise Retain::SdiDidNotReadField.new(@base_obj, sym)
     end
     
+    # Called when a field is set via higher level routines.  It takes
+    # the value passed in, converts it into Retain format, and sets it
+    # into the fields hash.
+    # START HERE!!!
     def writer(sym, cvt, width, value)
       sym, plural = sym.to_singular_tuple
       if plural
@@ -912,14 +959,25 @@ module Retain
       end
     end
 
+    # Causes a fetch via SDI to occur.
+    #
+    # At the time of this call, self is the @fields in the base object
+    # (a model).  @fetch_fields.call calls the `fetch_fields' method
+    # in the base object which might be, for example, a Call or Pmr.
+    # Currently, this is always Retain::Base#fetch_fields.
+    #
+    # This causes us to call Retain::Sdi#sendit in the base object's
+    # `fetch_sdi' object which might be, for example, a Pmcb or Pmpb.
+    # The fields returned are merged back into the base object's
+    # fields.  The base object also has @rc.
+    #
+    # Note that all this convoluted processing is a case of over
+    # design.  I thought that there would be a read / fetch path and a
+    # write / store path but SDI does not lend itself to that.
+    #
+    # Exceptions Raised: Retain::SdiReaderError
+    #
     def fetch_fields
-      # At the time of this call, self is the @fields in the base
-      # object.  @fetch_fields.call calls the `fetch_fields' method
-      # in the base object which might be, for example, a Call or
-      # Pmr.  This causes us to call sendit in the base object's
-      # `fetch_sdi' object which might be, for example, a Pmcb or
-      # Pmpb .  The fields returned are merged back into the base
-      # object's field.  The base object also has @rc.
       @base_obj = @fetch_fields.call
       @fetched = true
       unless @base_obj.rc == 0

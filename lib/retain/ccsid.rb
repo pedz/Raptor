@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 module Retain
+  # class to translate Retain's CCSID to a code spec that ICU can
+  # understand.
   class Ccsid
     @@ccsidtocs = Array.new
     @@ccsidtocs[   37] = "IBM-037"
@@ -298,6 +300,10 @@ module Retain
     @@ccsidtocs[61700] = "IBM-367"
     @@ccsidtocs[61712] = "IBM-500"
 
+    # Passed in a CCSID that is received in one of Retains "NLS" type
+    # fields and returns the Code Spec (I guess that is what I mean by
+    # "cs") such as IBM-037.  If the CCSID lookup fails, IBM-037 is
+    # returned.
     def self.to_cs(index)
       @@ccsidtocs[index] || "IBM-037"
     end

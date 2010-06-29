@@ -21,32 +21,39 @@
 #
 # ==Fields
 #
-# <em>host - string</em>:: A fully qualified hostname or it could be
-#   an IPv4 address I suppose.
+# <em>host - string</em>::
+#   A fully qualified hostname or it could be an IPv4 address I
+#   suppose.
 #
-# <em>node - string</em>:: The name of the node. e.g. RTA or BDC
+# <em>node - string</em>::
+#   The name of the node. e.g. RTA or BDC
 #
-# <em>type - string</em>:: Either "software" or "hardware"
+# <em>type - string</em>::
+#   Either "software" or "hardware"
 #
-# <em>description - string</em>:: A somewhat pretty descript of this
-#   tuple.  Usually seen only by Raptor admins.
+# <em>description - string</em>::
+#   A somewhat pretty descript of this tuple.  Usually seen only by
+#   Raptor admins.
 #
-# <em>port - integer</em>:: The IP port
+# <em>port - integer</em>::
+#   The IP port
 #
-# <em>apptest - boolean</em>:: True if this is goes to an APPTEST
-#   server.  False if it goes to a production server.
+# <em>apptest - boolean</em>::
+#   True if this is goes to an APPTEST server.  False if it goes to a
+#   production server.
 #
-# <em>tunnel_offset - integer</em>:: At the current time, Raptor can
-#   tunnel back and forth via ssh tunnels.  The
-#   config/initializers/retain.rb file will look for a host specific
-#   file to load from the config directory (the host that Raptor is
-#   running on) e.g. config/tcp237.rb.  That file can set
-#   Retain::TUNNELLED to true and also specify Retain::BASE_PORT.
-#   <em>tunnel_offset</em> plus the BASE_PORT will be used when
-#   TUNNELLED is true.  (The host will be localhost in that case).
+# <em>tunnel_offset - integer</em>::
+#   At the current time, Raptor can tunnel back and forth via ssh
+#   tunnels.  The config/initializers/retain.rb file will look for a
+#   host specific file to load from the config directory (the host
+#   that Raptor is running on) e.g. config/tcp237.rb.  That file can
+#   set Retain::TUNNELLED to true and also specify
+#   Retain::BASE_PORT. <em>tunnel_offset</em> plus the BASE_PORT will
+#   be used when TUNNELLED is true.  (The host will be localhost in
+#   that case).
 #
-# <em>timestamps - date time without timezone</em>:: The usual Rails
-#   created_at and updated_at timestamps.
+# <em>timestamps - date time without timezone</em>::
+#   The usual Rails created_at and updated_at timestamps.
 #
 class RetainNode < ActiveRecord::Base
   has_many :retain_node_selectors

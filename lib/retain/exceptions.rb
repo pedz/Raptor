@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 module Retain
+  # Parent class for other errors thrown by the Retain module.
   class RetainError < StandardError
     # Initialized in config/initializers/loggers.rb
     cattr_accessor :logger

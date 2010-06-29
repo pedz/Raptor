@@ -3,10 +3,30 @@
 
 module Retain
   #
-  # This class will implement as a set of objects that will implement
-  # each of the SDI calls.  This will act somewhat like a library but
-  # I am making them objects so they can contain settings.  Not sure
-  # how this is going to work... lets see...
+  # Retain::Sdi is the base class for a set of subclasses that
+  # implement the calls to SDI.  For example, "PMCB" is an SDI call
+  # called "Problem Management Call Browse" which will retrieve the
+  # elements of what normal humans call a "call".
+  #
+  # SDI has the concept of "Data Elements" which are numbers.
+  # Retain::Fields has a mapping of these numbers to mnemonic names
+  # used in the rest of the code.  For example, data element 3 is
+  # called "country".  The funky thing is (as is usual with SDI and
+  # Retain) that some data elements have multiple meanings depending
+  # upon which SDI call they are a part of.  Raptor and this library
+  # mostly ignore that fact.  It seems to happen only a few places
+  # and, so far, the places have been avoided.
+  #
+  # The way things hook together in this library is a bit convoluted.
+  # It could be the target of some refactoring.  If you find yourself
+  # asking "why", it is because I thought SDI would be more logical
+  # and sensible when I first started out.  As a result, not only is
+  # SDI confusing, but this library adds to the confusion... Sorry.
+  #
+  # A Retain model is a subclass of Retain::Base.  Each model
+  # specifies which SDI call is used.  The SDI calls used are a
+  # subclass of Retain::Sdi.
+  #
   class Sdi
     # Initialized in config/initializers/loggers.rb
     cattr_accessor :logger, :instance_writer => false

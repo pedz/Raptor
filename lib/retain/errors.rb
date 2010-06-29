@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 module Retain
+  # Array that maps Retain error codes to the text that the
+  # documentation says the code represents.
   Errors = Array.new
   Errors[   1] = "Indicates that the \"SDIYSHDR\" eye catcher in the
                   request system header was not correct when received
