@@ -20,6 +20,9 @@ module Retain
     # no attempt to access Retain will be made.
     attr_reader :failed
 
+    # This value reflects if we are interacting with APPTEST or not.
+    attr_reader :apptest
+
     # The node to access for a hardware request.  See
     # Retain::Connection.new for details.  This attribute is a hash
     # which has the host, port, and tunnel_offset.
@@ -36,6 +39,7 @@ module Retain
       @signon   = retuser.retid.trim(6)
       @password = retuser.password.trim(8)
       @failed   = retuser.failed
+      @apptest  = retuser.apptest
       @software_node = {
         :host          => retuser.software_node.retain_node.host,
         :port          => retuser.software_node.retain_node.port,

@@ -40,6 +40,13 @@
 #   Not used.  basedir of where testcases would be placed in the ftp
 #   system not yet implemented.
 #
+# <em>current_retuser_id - integer</em>::
+#   Foreign key to the retuser table.  Nulls are allowed here -- one
+#   of the few places where that is true.  The reason is because the
+#   user model is created automatically and we will not have a way to
+#   create any retusers.  I don't really want to change how that
+#   process works.
+#
 
 class User < ActiveRecord::Base
   attr_protected :ldap_id, :retain_user_id, :admin

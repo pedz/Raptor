@@ -13,6 +13,16 @@ module Combined
     # These are DB fields used to keep track of when the PSARs were fetched.
     add_skipped_fields :last_day_fetch, :last_all_fetch
 
+    # Currently for the rest of all of the cached items from Retain,
+    # no distinction is made if the object came from production Retain
+    # or APPTEST.  This is because I don't think there will be any
+    # collisions.  But the registrations are definitely going to
+    # collide and it seems easier to keep them separate.  So, the
+    # apptest field was added to the database record.  We do not want
+    # it in the Retain request and we fill it in just before we save
+    # the record from the Retain::Logon#apptest value.
+    add_skipped_fields :apptest
+
     def to_param
       @cached.signon
     end
@@ -94,6 +104,7 @@ module Combined
         end
       end
       cache_options[:dirty] = false if @cached.respond_to?("dirty")
+      cache_options[:apptest] = ::Retain::Logon.instance.apptest
       @cached.updated_at = Time.now
       @cached.update_attributes(cache_options)
     end
