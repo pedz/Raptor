@@ -1,7 +1,9 @@
 <%# -*- coding: utf-8 -*- %>
 <% @title = "Edit Favorite Queue #{@favorite_queue.queue.to_param}" %>
+<% @stylesheets = "favorite_queues" -%>
+<% @javascripts = "favorite_queues" -%>
 <% content_for(:center) do %>
-<!-- combined/favorite_queues/edit.html.erb -->
+<!-- favorite_queues/edit.html.erb -->
   <h1>Editing a favorite queue</h1>
   
   <%= error_messages_for :queue %>
@@ -31,5 +33,5 @@
   <% end %>
   
   <%= button_url 'Show', @favorite_queue %>
-  <%= button_url 'Index of Favorite Queues', combined_favorite_queues_path %>
+  <%= button_url 'Index of Favorite Queues', favorite_queues_path %>
 <% end %>

@@ -1,15 +1,17 @@
 <%# -*- coding: utf-8 -*- %>
 
 <% @title = "Show Favorite Queue #{@favorite_queue.queue.to_param}" %>
+<% @stylesheets = "favorite_queues" -%>
+<% @javascripts = "favorite_queues" -%>
 <% content_for(:center) do %>
-<!-- combined/favorite_queues/new.html.erb -->
+<!-- favorite_queues/new.html.erb -->
   <p>
     <b>Queue:</b>
     <% queue = @favorite_queue.queue %>
     <%=h queue.to_param %><br/>
     <%= button_url('Edit Settings', edit_polymorphic_path(@favorite_queue)) %>
-    <%= button_url 'New Favorite Queue', new_combined_favorite_queue_path %>
-    <%= button_url 'Index of favorite queues', combined_favorite_queues_path %>
+    <%= button_url 'New Favorite Queue', new_favorite_queue_path %>
+    <%= button_url 'Index of favorite queues', favorite_queues_path %>
     <%= button_url 'Show Retain Queue', queue %>
   </p>
 <% end %>

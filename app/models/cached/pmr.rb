@@ -142,6 +142,8 @@ module Cached
              :order => "line_number ASC",
              :foreign_key => "pmr_id")
 
+    set_to_json_default_options(:methods => [ :last_ct_time ])
+
     def all_text_lines
       # Note for future: when a method in the cached model directly
       # references an database association or field, the checks to

@@ -1,8 +1,9 @@
-<%# -*- coding: utf-8 -*- %>
-
+<%# -*- coding: utf-8 -*- -%>
 <% @title = "Favorite Queues" -%>
+<% @stylesheets = "favorite_queues" -%>
+<% @javascripts = "favorite_queues" -%>
 <% content_for(:center) do -%>
-<!-- combined/favorite_queues/index.html.erb -->
+<!-- favorite_queues/index.html.erb -->
 <h1>Listing of Favorite Queues</h1>
 <table id='favorite-queue-list'>
   <thead>
@@ -23,7 +24,7 @@
   <tbody>
     <% index = 0 -%>
     <% for favorite_queue in @favorite_queues -%>
-    <%   queue = favorite_queue.queue -%>
+    <%   queue = favorite_queue.queue.wrap_with_combined -%>
     <%   hits = queue.hits(:html)     -%>
     <%   team = queue.owners.empty?   -%>
     <%   if team                      -%>
@@ -51,7 +52,8 @@
 
 <br />
 
-<%= button_url 'New Favorite Queue', new_combined_favorite_queue_path -%><br/>
-<%= button 'Sound Test', 'Raptor.soundTest();' -%><br/>
+<%= button_url 'New Favorite Queue', new_favorite_queue_path -%>
+<%= button_url 'Expanded View', expanded_favorite_queues_path -%>
+<br/>
 <div id='error-message-box'></div>
 <% end -%>

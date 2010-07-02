@@ -8,9 +8,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :hot_pmr_lists, :controller => 'hot_pmr_lists', :only => [ :index, :show ]
 
   map.namespace(:json) do |json|
+    json.resources(:favorite_queues)
+
     json.namespace(:cached) do |json_cached|
       json_cached.resources(:centers)
-      json_cached.resources(:favorite_queues)
       json_cached.resources(:queues) do |jscon_cached_queue|
         jscon_cached_queue.resources(:calls)
       end
@@ -47,7 +48,8 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   # Shows the user's favorite queues.
-  map.resources :combined_favorite_queues, :controller => 'combined/favorite_queues'
+  map.resources(:favorite_queues,
+                :collection => { :expanded => :get })
 
   # Mapping between Queue and Person... Needs much work.
   map.resources :combined_queue_infos, :controller => 'retain/queue_infos'

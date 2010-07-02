@@ -1,9 +1,8 @@
-<%# -*- coding: utf-8 -*- %>
-
+<%# -*- coding: utf-8 -*- -%>
 <%= app_doctype %>
 <!-- layouts/combined/favorite_queues.html.erb -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <%= app_header(std_styles("combined/favorite_queues"), std_scripts("combined/favorite_queues")) %>
+  <%= app_header(std_styles(@stylesheets), std_scripts(@javascripts)) %>
   <%= render :partial => 'layouts/shared/display_flash' %>
   <%= app_body :center, :bottom %>
 </html>

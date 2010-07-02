@@ -103,6 +103,10 @@ module Cached
     belongs_to :queue, :class_name => "Cached::Queue"
     belongs_to :pmr,   :class_name => "Cached::Pmr"
 
+    # The call_search_result causes the json utf-8 encoder to blow up
+    # -- probably because it is not valid utf-8?
+    set_to_json_default_options(:except => [ :call_search_result ])
+
     # The current definition of when initial response is needed is
     # every time the call is queued back to the center.  In theory,
     # this applies to world trade and not U.S.  For U.S., I don't have

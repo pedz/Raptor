@@ -1,7 +1,7 @@
 <%# -*- coding: utf-8 -*- %>
 
 <%= @favorite_queues.map do |favorite_queue|
-      queue = favorite_queue.queue
+      queue = favorite_queue.queue.wrap_with_combined
       {
         :combined_q_url => combined_q_path(queue.to_param),
         :queue => queue.to_param,
@@ -10,4 +10,3 @@
       }
     end.to_json
 %>
-

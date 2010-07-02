@@ -56,7 +56,7 @@ module Cached
              :order => "slot",
              :include => :pmr)
 
-    has_many :favorite_queues, :class_name => "Cached::FavoriteQueue"
+    has_many :favorite_queues
     has_many :next_queue_pmrs, :class_name => "Cached::Pmr",       :foreign_key => "next_queue_id"
     has_many :queue_infos,     :class_name => "Cached::QueueInfo", :foreign_key => "queue_id"
     has_many :owners,          :through    => :queue_infos

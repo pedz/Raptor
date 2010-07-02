@@ -87,7 +87,7 @@ module ApplicationHelper
   end
 
   def favorites_button
-    button_url("Favorites", combined_favorite_queues_path)
+    button_url("Favorites", favorite_queues_path)
   end
 
   def popup(binding, hash = { })
