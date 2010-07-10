@@ -5,6 +5,20 @@
   <body>
     <ol style='width: 40em;'>
       <li>
+	Remove testcase signature lines when trying to determine if
+	PMR is under initial contact guidelines.
+      </li>
+      <li>
+	Implement <q>supplimental</q> table for PMRs to keep track of
+	hard to compute attributes such as last ct, initial response
+	criteria, Eng=N, etc and then blow it away when the PMR is
+	updated.  The delete could be done via an internal database
+	trigger or an extermal Rails callback.  There might be a need
+	for a supplimental table for calls too....  I suppose the
+	supplimental data could be held within the PMR table but it
+	would be easier to blow it away if it was a separate table.
+      </li>
+      <li>
 	Make Favorites page drag and drop sortable.
       </li>
       <li>
