@@ -23,7 +23,10 @@ module Json
                         :methods => [ :needs_initial_response?, :center_entry_time ]
                       },
                       :center => { },
-                      :owners => { }}}})
+                      :owners => { }
+                    }
+                  }
+                })
     end
 
     def show

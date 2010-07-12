@@ -6,23 +6,37 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :retain_nodes
 
   map.resources :hot_pmr_lists, :controller => 'hot_pmr_lists', :only => [ :index, :show ]
-
   map.namespace(:json) do |json|
     json.resources(:favorite_queues)
 
     json.namespace(:cached) do |json_cached|
       json_cached.resources(:centers)
-      json_cached.resources(:queues) do |jscon_cached_queue|
-        jscon_cached_queue.resources(:calls)
+      json_cached.resources(:components)
+      json_cached.resources(:customers)
+      json_cached.resources(:pmrs) do |json_cached_pmr|
+        json_cached_pmr.resources(:psars)
+        json_cached_pmr.resources(:text_lines)
       end
-      json_cached.resources(:pmrs)
+      json_cached.resources(:queues) do |json_cached_queue|
+        json_cached_queue.resources(:calls)
+      end
+      json_cached.resources(:registrations) do |json_cached_registration|
+        json_cached_registration.resources(:psars)
+      end
     end
 
     json.namespace(:combined) do |json_combined|
+      json_combined.resources(:centers)
+      json_combined.resources(:components)
+      json_combined.resources(:customers)
+      json_combined.resources(:pmrs) do |json_combined_pmr|
+        json_combined_pmr.resources(:text_lines)
+      end
+      json_combined.resources(:psars)
       json_combined.resources(:queues) do |jscon_combined_queue|
         jscon_combined_queue.resources(:calls)
       end
-      json_combined.resources(:pmrs)
+      json_combined.resources(:registrations)
     end
   end
 

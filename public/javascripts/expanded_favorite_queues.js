@@ -321,168 +321,11 @@ Raptor.FavoriteQueue = Raptor.MakeType(Raptor.Paths.favorite_queues, null);
 	return Raptor.MakeType(Raptor.Paths.cached_base + "/" + subpath,
 			       Raptor.Paths.combined_base + "/" + subpath);
     };
-    Raptor.Center   = macro("centers");
-    Raptor.Queue    = macro("queues");
-    Raptor.Pmr      = macro("pmrs");
+    Raptor.Center        = macro("centers");
+    Raptor.Queue         = macro("queues");
+    Raptor.Pmr           = macro("pmrs");
+    Raptor.Registrations = macro("registrations");
 })();
-
-/**
- * Handles processing for a center
- * @ param {Element} center
- * @ return {Object} Not used yet.
- */
-Raptor.CenterHandler = function (center) {
-    var that = { };
-    return that;
-};
-
-/**
- * Handles processing for a call.  call might already include the pmr.
- * @param {Element} call
- * @return {Object} Not used yet.
- */
-Raptor.CallHandler = function (call) {
-    var that = { };
-
-    /* pull out the pmr if it exists */
-    var pmr = call.pmr;
-
-    /* need the queue -- should already be fetched */
-    var queue = Raptor.Queue(call.queue_id);
-
-    /* Find the tbody of the table */
-    var tbody = $('call-tbody');
-
-    /** The table row for this call */
-    var row = new Element('tr');
-
-    /** Add a td to the table row for this call */
-    var add_td = function(data) {
-	var td = new Element('td');
-	td.update(data);
-	row.insert(td);
-	return td;
-    };
-
-    /** fetches the associated pmr */
-    var fetch_pmr = function () { /* TBD */ };
-
-    tbody.insert(row);
-    add_td(queue.queue_name);
-    add_td(call.ppg);
-    add_td(call.nls_customer_name);
-    add_td(call.priority + "/" + call.severity);
-    if (typeof pmr == 'undefined')
-	fetch_pmr();
-    else {
-	delete call.pmr;
-	Raptor.Pmr(pmr.id, pmr);
-    }
-
-    return that;
-};
-
-/**
- * Handles processing for a queue.  The queue may already have the
- * calls and center associations.
- * @param {Element} queue
- * @return {Object} Not used yet.
- */
-Raptor.QueueHandler = function (queue) {
-    var that = { };
-    var center = queue.center;
-    var calls = queue.calls;
-
-    /** Call will create a call */
-    var Call = Raptor.MakeType(queue.cached_path + "/calls",
-			       queue.combined_path + "/calls");
-
-    /** list of calls */
-    var call_list = [];
-
-    /** Called when call list has been fetched. */
-    var process_call_list = function (calls) {
-	$A(calls).each(function(call, index) {
-	    var call = Call(call.id, call, Raptor.CallHandler);
-	    call.get_queue_name = function () { return "hi"; };
-	});
-    };
-
-    var process_response = function (req, header) {
-	$A(req.responseJSON).each(function(e, index) {
-	    var call = e.call;
-	    call = Call(call.id, call, Raptor.CallHandler);
-	    call.get_queue_name = function () { return "hi"; };
-	});
-    };
-
-    /** called to fetch the list of calls */
-    var fetch_cached_list = function() {
-	new Ajax.Request(queue.cached_path + "/calls", {
-	    method: 'get',
-	    onException: Raptor.catch_exception,
-	    onComplete: process_call_list
-	});
-    };
-
-    if (typeof center == 'undefind')
-	center = null;
-    else
-	delete queue.center;
-
-    if (typeof calls == 'undefined')
-	fetch_cached_list();
-    else
-	process_call_list(calls);
-
-    return that;
-};
-
-/**
- * Handles processing for a favorite queue.  Optionally, the result
- * may have the queue already included.
- * @param {Element} favorite_queue
- * @return {Object} Not used yet.
- */
-Raptor.FavoriteQueueHandler = function(favorite_queue) {
-    var that = { };
-    var json_queue = favorite_queue.queue;
-    var queue;
-    
-    if (typeof json_queue == "undefined")
-	json_queue = null;
-    else
-	delete favorite_queue.queue;
-
-    queue = Raptor.Queue(favorite_queue.queue_id, json_queue, Raptor.QueueHandler);
-
-    return that;
-};
-
-/**
- * List of Favorite Queues
- */
-Raptor.FavoriteQueues = function () {
-    var that = { };
-    var fq_list = [];
-
-    /**
-     * Start is called at dom load time to start off the whole process
-     */
-    that.start = function () {
-	var rq = new Ajax.Request(Raptor.Paths.favorite_queues, {
-	    method: 'get',
-	    onException: Raptor.catch_exception,
-	    onComplete: function (req, header) {
-		$A(req.responseJSON).each(function (e, index) {
-		    var fq = e.favorite_queue;
-		    fq_list[fq.id] = Raptor.FavoriteQueue(fq.id, fq, Raptor.FavoriteQueueHandler);
-		});
-	    }
-	});
-    };
-    return that;
-};
 
 /**
  * Represents the table of calls.
@@ -542,9 +385,237 @@ Raptor.TableRow = function(call) {
     return that;
 };
 
+/*
+ * The FooHandlers listed below form a chain.  The Handler's job is
+ * to fetch the objects that hang off of it which are needed.
+ */
+
+
+/**
+ * Handles processing for a center.  Nothing extra needs to be
+ * fetched.
+ *
+ * @ param {Element} center
+ * @ return {Object} Not used yet.
+ */
+Raptor.CenterHandler = function (center) {
+    var that = { };
+    return that;
+};
+
+/**
+ * Handles processing for a pmr.  PMRs have a lot of things that need
+ * to be fetched:
+ *  1: owner
+ *  2: resolver
+ *  3: component
+ *  4: customer
+ *  5: next queue
+ *  6: next center (part of next queue)
+ *  7: center (where the primary is at)
+ *  8: queue (where the primary is at)
+ *
+ * The queue and center may not be needed except to display the list
+ * of calls.  Note that sec_N_queue and sec_N_center are not id's.
+ * 
+ * @class Care taker for PMRs
+ * @constructor
+ * @param {Element} pmr
+ * @return {OBject} Not used yet.
+ *
+ */
+Raptor.PmrHandler = function (pmr) {
+    var that = { };
+
+    var doo = function(obj, klass, id_name, name, handler) {
+	var json = obj[name];
+	var id = obj[id_name];
+
+	if (typeof json == "undefined")
+	    json = null;
+	else
+	    delete obj[name];
+
+	return klass(id, json, handler);
+    };
+
+    var owner = doo(pmr,
+		    Raptor.Registrations,
+		    "owner_id",
+		    "owner",
+		    Raptor.RegistrationsHandler);
+};
+
+/**
+ * Handles processing for a call.  The Call Handler needs to get the
+ * PMR associated with the Call.  Note that the call also needs the
+ * queue that it is on but we should already have that by now since
+ * the calls are fetched from the Queue Handler.
+ *
+ * @param {Element} call
+ * @return {Object} Not used yet.
+ */
+Raptor.CallHandler = function (call) {
+    var that = { };
+
+    /* pull out the pmr if it exists */
+    var json_pmr = call.pmr;
+
+    /* need the queue -- should already be fetched */
+    var queue = Raptor.Queue(call.queue_id);
+
+    /* Find the tbody of the table */
+    var tbody = $('call-tbody');
+
+    /** The table row for this call */
+    var row = new Element('tr');
+
+    /** Add a td to the table row for this call */
+    var add_td = function(data) {
+	var td = new Element('td');
+	td.update(data);
+	row.insert(td);
+	return td;
+    };
+
+    if (typeof json_pmr == 'undefined')
+	json_pmr = null;
+    else {
+	delete call.pmr;
+    }
+    Raptor.Pmr(call.pmr_id, pmr_json, Raptor.PmrHandler);
+
+    tbody.insert(row);
+    add_td(queue.queue_name);
+    add_td(call.ppg);
+    add_td(call.nls_customer_name);
+    add_td(call.priority + "/" + call.severity);
+
+    return that;
+};
+
+/**
+ * Handles processing for a queue.  The Queue Handler needs to get:
+ *  1: List of calls
+ *  2: Center
+ *  3: List of Owners
+ *
+ * The list of owners is odd.
+ *
+ * @param {Element} queue
+ * @return {Object} Not used yet.
+ */
+Raptor.QueueHandler = function (queue) {
+    var that = { };
+    var center = queue.center;
+    var calls = queue.calls;
+
+    /** Call will create a call */
+    var Call = Raptor.MakeType(queue.cached_path + "/calls",
+			       queue.combined_path + "/calls");
+
+    /** list of calls -- not really used yet. */
+    var call_list = [];
+
+    /** Called when call list was already embedded */
+    var process_call_list = function (calls) {
+	call_list = [];
+	$A(calls).each(function(call, index) {
+	    var call = Call(call.id, call, Raptor.CallHandler);
+	    /* ### */
+	    call.get_queue_name = function () { return "hi"; };
+	    call_list.push(call);
+	});
+    };
+
+    /** Called when the call list is fetched */
+    var process_call_list_response = function (req, header) {
+	call_list = [];
+	$A(req.responseJSON).each(function(e, index) {
+	    var call = e.call;
+	    call = Call(call.id, call, Raptor.CallHandler);
+	    /* ### */
+	    call.get_queue_name = function () { return "hi"; };
+	    call_list.push(call);
+	});
+    };
+
+    /** called to fetch the list of calls */
+    var fetch_cached_call_list = function() {
+	new Ajax.Request(queue.cached_path + "/calls", {
+	    method: 'get',
+	    onException: Raptor.catch_exception,
+	    onComplete: process_call_list_response
+	});
+    };
+
+    if (typeof center == 'undefind')
+	center = null;
+    else
+	delete queue.center;
+
+    if (typeof calls == 'undefined')
+	fetch_cached_call_list();
+    else
+	process_call_list(calls);
+
+    return that;
+};
+
+/**
+ * Handles processing for a favorite queue.  The Favorite Queue
+ * Handler only needs to get the Queue.
+ *
+ * @param {Element} favorite_queue
+ * @return {Object} Not used yet.
+ */
+Raptor.FavoriteQueueHandler = function(favorite_queue) {
+    var that = { };
+    var json_queue = favorite_queue.queue;
+    var queue;
+    
+    if (typeof json_queue == "undefined")
+	json_queue = null;
+    else
+	delete favorite_queue.queue;
+
+    queue = Raptor.Queue(favorite_queue.queue_id, json_queue, Raptor.QueueHandler);
+
+    return that;
+};
+
+/**
+ * List of Favorite Queues
+ */
+Raptor.FavoriteQueues = function () {
+    var that = { };
+    var fq_list = [];
+
+    /**
+     * Start is called at dom load time to start off the whole process
+     */
+    that.start = function () {
+	var rq = new Ajax.Request(Raptor.Paths.favorite_queues, {
+	    method: 'get',
+	    onException: Raptor.catch_exception,
+	    onComplete: function (req, header) {
+		$A(req.responseJSON).each(function (e, index) {
+		    var fq = e.favorite_queue;
+		    fq_list[fq.id] = Raptor.FavoriteQueue(fq.id,
+							  fq,
+							  Raptor.FavoriteQueueHandler);
+		});
+	    }
+	});
+    };
+    return that;
+};
+
 document.observe('dom:loaded', function() {
     /** call_table is the instance of a CallTable */
     Raptor.call_table = Raptor.CallTable($('main'));
-    var fq = Raptor.FavoriteQueues();
-    fq.start();
+
+    /** favorite_queues is an instance of FavoriteQueues */
+    Raptor.favorite_queues = Raptor.FavoriteQueues();
+    Raptor.favorite_queues.start();
 });
