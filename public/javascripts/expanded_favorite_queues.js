@@ -73,7 +73,7 @@ Raptor.Paths.combined_call = Raptor.Paths.base + "/combined_call";
 /** Key to this mess... Raptor.row_template.evaluate is passed an
  * Object.  The Object will have a call, queue and probably other
  * properties.  The result will be a row that is added or updated in
- * call-tbody.
+ * the body of the table.
  */
 Raptor.row_template = new Template("\
 ");
@@ -465,7 +465,7 @@ Raptor.CallHandler = function (call) {
     var queue = Raptor.Queue(call.queue_id);
 
     /* Find the tbody of the table */
-    var tbody = $('call-tbody');
+    var tbody = Raptor.call_table.tbody;
 
     /** The table row for this call */
     var row = new Element('tr');
@@ -483,7 +483,7 @@ Raptor.CallHandler = function (call) {
     else {
 	delete call.pmr;
     }
-    Raptor.Pmr(call.pmr_id, pmr_json, Raptor.PmrHandler);
+    Raptor.Pmr(call.pmr_id, json_pmr, Raptor.PmrHandler);
 
     tbody.insert(row);
     add_td(queue.queue_name);
@@ -498,9 +498,10 @@ Raptor.CallHandler = function (call) {
  * Handles processing for a queue.  The Queue Handler needs to get:
  *  1: List of calls
  *  2: Center
- *  3: List of Owners
+ *  3: List of Owners of the queue.
  *
- * The list of owners is odd.
+ * The list of owners is odd.  It is a list.  An empty list means that
+ * it is a team queue.  The list usually has either 0 or 1 entries.
  *
  * @param {Element} queue
  * @return {Object} Not used yet.
