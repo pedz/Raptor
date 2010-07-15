@@ -114,19 +114,19 @@ module Cached
         }
       end
 
-      def to_json_default_options
-        @to_json_default_optins ||= { }
-      end
+      # def as_json_default_options
+      #   @as_json_default_optins ||= { }
+      # end
 
-      def set_to_json_default_options(options)
-        @to_json_default_optins = options
-      end
+      # def set_as_json_default_options(options)
+      #   @as_json_default_optins = options
+      # end
     end
     
-    def to_json_with_defaults(options)
-      self.to_json_without_defaults(self.class.to_json_default_options.merge(options))
-    end
-    alias_method_chain :to_json, :defaults
+    # def as_json_with_defaults(options)
+    #   self.as_json_without_defaults(self.class.as_json_default_options.merge(options))
+    # end
+    # alias_method_chain :as_json, :defaults
 
     def wrap_with_combined
       # logger.debug("CHC: wrap Cached <#{self.class}:#{self.object_id}>")

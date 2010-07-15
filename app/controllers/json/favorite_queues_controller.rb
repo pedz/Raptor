@@ -10,10 +10,13 @@ module Json
                       { :include =>
                         { :pmr =>
                           { :include =>
-                            { :owner => { },
-                              :resolver => { },
+                            { :center => { },
+                              :customer => { },
                               :next_center => { },
-                              :next_queue => { }
+                              :next_queue => { },
+                              :owner => { },
+                              :queue => { },
+                              :resolver => { }
                             },
                             :except => [ :last_alter_timestamp ],
                             :methods => [ :last_ct, :last_ct_time ]

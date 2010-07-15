@@ -105,7 +105,10 @@ module Cached
 
     # The call_search_result causes the json utf-8 encoder to blow up
     # -- probably because it is not valid utf-8?
-    set_to_json_default_options(:except => [ :call_search_result ])
+    # set_as_json_default_options(:except => [ :call_search_result ])
+    def as_json(options = { })
+      super({ :except => [ :call_search_result ] })
+    end
 
     # The current definition of when initial response is needed is
     # every time the call is queued back to the center.  In theory,
