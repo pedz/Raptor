@@ -423,12 +423,16 @@ Raptor.TableRow = function(call) {
  * @return {Object} Not used yet.
  */
 Raptor.CenterHandler = function (center, update_options) {
-    var that = { };
+    var that = {
+	item: center
+    };
+
+    if (Raptor.debug > 1)
+	console.log("CenterHandler complete " + center.id);
 
     if ((typeof update_options === 'object') &&
 	(typeof update_options.parent_callback === 'function')) {
-	/* probably should pass some arguments here ... */
-	update_options.parent_callback();
+	update_options.parent_callback(that);
     }
     return that;
 };
@@ -443,12 +447,16 @@ Raptor.CenterHandler = function (center, update_options) {
  * @ return {Object} Not used yet.
  */
 Raptor.RegistrationHandler = function (registration, update_options) {
-    var that = { };
+    var that = {
+	item: registration
+    };
+
+    if (Raptor.debug > 1)
+	console.log("RegistrationHandler complete " + registration.id);
 
     if ((typeof update_options === 'object') &&
 	(typeof update_options.parent_callback === 'function')) {
-	/* probably should pass some arguments here ... */
-	update_options.parent_callback();
+	update_options.parent_callback(that);
     }
     return that;
 };
@@ -463,12 +471,16 @@ Raptor.RegistrationHandler = function (registration, update_options) {
  * @ return {Object} Not used yet.
  */
 Raptor.CustomerHandler = function (customer, update_options) {
-    var that = { };
+    var that = {
+	item: customer
+    };
+
+    if (Raptor.debug > 1)
+	console.log("CustomerHandler complete " + customer.id);
 
     if ((typeof update_options === 'object') &&
 	(typeof update_options.parent_callback === 'function')) {
-	/* probably should pass some arguments here ... */
-	update_options.parent_callback();
+	update_options.parent_callback(that);
     }
     return that;
 };
@@ -483,12 +495,16 @@ Raptor.CustomerHandler = function (customer, update_options) {
  * @ return {Object} Not used yet.
  */
 Raptor.ComponentHandler = function (component, update_options) {
-    var that = { };
+    var that = {
+	item: component
+    };
+
+    if (Raptor.debug > 1)
+	console.log("ComponentHandler complete " + component.id);
 
     if ((typeof update_options === 'object') &&
 	(typeof update_options.parent_callback === 'function')) {
-	/* probably should pass some arguments here ... */
-	update_options.parent_callback();
+	update_options.parent_callback(that);
     }
     return that;
 };
@@ -515,62 +531,121 @@ Raptor.ComponentHandler = function (component, update_options) {
  *
  */
 Raptor.PmrHandler = function (pmr, update_options) {
-    var that = { };
+    var that = {
+	item: pmr
+    };
 
-    var doo = function(obj, klass, id_name, name, handler) {
+    var total_callbacks = 7;
+    var total_callbacks_received = 0;
+    var owner_handler;
+    var resolver_handler;
+    var customer_handler;
+    var next_center_handler;
+    var next_queue_handler;
+    var center_handler;
+    var queue_handler;
+
+    var complete_callback = function (s) {
+	if (Raptor.debug > 4)
+	    console.log(pmr.problem + " " + s);
+	total_callbacks_received += 1;
+	if (total_callbacks_received == total_callbacks) {
+	    if (Raptor.debug > 1)
+		console.log("PmrHandler complete " + pmr.problem);
+	    if ((typeof update_options === 'object') &&
+		(typeof update_options.parent_callback === 'function')) {
+		update_options.parent_callback(that);
+	    }
+	}
+    };
+
+    var doo = function(obj, klass, id_name, name, handler, options) {
 	var json = obj[name];
 	var id = obj[id_name];
 
-	if (id === null)
+	if (id === null) {
+	    complete_callback(name + "null");
 	    return null;
+	}
 
 	if (typeof json == "undefined")
 	    json = null;
 	else
 	    delete obj[name];
 
-	return klass(id, json, handler);
+	return klass(id, json, handler, options);
     };
 
     var owner = doo(pmr,
 		    Raptor.Registration,
 		    "owner_id",
 		    "owner",
-		    Raptor.RegistrationHandler);
+		    Raptor.RegistrationHandler,
+		    { parent_callback: function (arg) {
+			owner_handler = arg;
+			complete_callback("owner");
+		    }});
+
     var resolver = doo(pmr,
 		       Raptor.Registration,
 		       "resolver_id",
 		       "resolver",
-		       Raptor.RegistrationHandler);
+		       Raptor.RegistrationHandler,
+		       { parent_callback: function (arg) {
+			   resolver_handler = arg;
+			   complete_callback("resolver");
+		       }});
 
     var customer = doo(pmr,
 		       Raptor.Customer,
 		       "customer_id",
 		       "customer",
-		       Raptor.CustomerHandler);
+		       Raptor.CustomerHandler,
+		       { parent_callback: function (arg) {
+			   customer_handler = arg;
+			   complete_callback("customer");
+		       }});
 
     var next_center = doo(pmr,
 			  Raptor.Center,
 			  "next_center_id",
 			  "next_center",
-			  Raptor.CenterHandler);
+			  Raptor.CenterHandler,
+			  { parent_callback: function (arg) {
+			      next_center_handler = arg;
+			      complete_callback("next_center");
+			  }});
 
     var next_queue = doo(pmr,
 			 Raptor.Queue,
 			 "next_queue_id",
 			 "next_queue",
-			 Raptor.QueueHandler);
+			 Raptor.QueueHandler,
+			 { parent_callback: function (arg) {
+			     next_queue_handler = arg;
+			     complete_callback("next_queue");
+			 }});
+
     var center = doo(pmr,
 		     Raptor.Center,
 		     "center_id",
 		     "center",
-		     Raptor.CenterHandler);
+		     Raptor.CenterHandler,
+		     { parent_callback: function (arg) {
+			 center_handler = arg;
+			 complete_callback("center");
+		     }});
 
     var queue = doo(pmr,
 		    Raptor.Queue,
 		    "queue_id",
 		    "queue",
-		    Raptor.QueueHandler);
+		    Raptor.QueueHandler,
+		    { parent_callback: function (arg) {
+			queue_handler = arg;
+			complete_callback("queue");
+		    }});
+    return that;
 };
 
 /**
@@ -583,13 +658,17 @@ Raptor.PmrHandler = function (pmr, update_options) {
  * @return {Object} Not used yet.
  */
 Raptor.CallHandler = function (call, update_options) {
-    var that = { };
+    var that = {
+	item: call
+    };
 
     /* pull out the pmr if it exists */
     var json_pmr = call.pmr;
 
     /* need the queue -- should already be fetched */
     var queue = Raptor.Queue(call.queue_id);
+    var pmr;
+    var pmr_handler;
 
     /* Find the tbody of the table */
     var tbody = Raptor.call_table.tbody;
@@ -605,7 +684,14 @@ Raptor.CallHandler = function (call, update_options) {
 	return td;
     };
 
-    var pmr_update_complete = function () {
+    var update_complete = function (arg) {
+	if (Raptor.debug > 1)
+	    console.log("CallHandler complete " + call.id);
+	pmr_handler = arg;
+	if ((typeof update_options === 'object') &&
+	    (typeof update_options.parent_callback === 'function')) {
+	    update_options.parent_callback(that);
+	}
     };
 
     if (typeof json_pmr == 'undefined')
@@ -613,7 +699,11 @@ Raptor.CallHandler = function (call, update_options) {
     else {
 	delete call.pmr;
     }
-    Raptor.Pmr(call.pmr_id, json_pmr, Raptor.PmrHandler, pmr_update_complete);
+
+    pmr = Raptor.Pmr(call.pmr_id,
+		     json_pmr,
+		     Raptor.PmrHandler,
+		     { parent_callback: update_complete });
 
     tbody.insert(row);
     add_td(queue.queue_name);
@@ -621,12 +711,6 @@ Raptor.CallHandler = function (call, update_options) {
     add_td(call.nls_customer_name);
     add_td(call.priority + "/" + call.severity);
 
-
-    if ((typeof update_options === 'object') &&
-	(typeof update_options.parent_callback === 'function')) {
-	/* probably should pass some arguments here ... */
-	update_options.parent_callback();
-    }
     return that;
 };
 
@@ -642,19 +726,32 @@ Raptor.CallHandler = function (call, update_options) {
  * @return {Object} Not used yet.
  */
 Raptor.QueueHandler = function (queue, update_options) {
-    var that = { };
-    var center = queue.center;
+    var that = {
+	item: queue
+    };
+    var json_center = queue.center;
+    var center;
+    var center_handler;
 
-    if (typeof center == 'undefind')
-	center = null;
+    if (typeof json_center == 'undefind')
+	json_center = null;
     else
 	delete queue.center;
 
-    if ((typeof update_options === 'object') &&
-	(typeof update_options.parent_callback === 'function')) {
-	/* probably should pass some arguments here ... */
-	update_options.parent_callback();
-    }
+    var update_complete = function (arg) {
+	if (Raptor.debug > 1)
+	    console.log("QueueHandler complete " + queue.queue_name);
+	if ((typeof update_options === 'object') &&
+	    (typeof update_options.parent_callback === 'function')) {
+	    update_options.parent_callback(that);
+	}
+    };
+
+    center = Raptor.Center(queue.center_id,
+			   json_center,
+			   Raptor.CenterHandler,
+			   { parent_callback: update_complete });
+
     return that;
 };
 
@@ -671,37 +768,95 @@ Raptor.QueueHandler = function (queue, update_options) {
  * @return {Object} Not used yet.
  */
 Raptor.QueueHandlerWithCalls = function (queue, update_options) {
-    var that = Raptor.QueueHandler(queue, update_options);
+    /** list of calls -- not really used yet. */
+    var call_list = [];
+    var call_handler_list = [];
+    var call_count;
+    var call_handler_count = 0;
+    var queue_handler;
+
+    var common_complete = function (arg) {
+	if (Raptor.debug > 4)
+	    console.log(queue.queue_name + " " +
+			call_count + " " + call_handler_count + " " +
+			(typeof queue_handler) + " " + arg.item.ppg);
+	/*
+	 * If we have progressed and defined call_count, and all of
+	 * the calls have returned and the call to QueueHandler has
+	 * completed, then we call the parent's callback routine.
+	 */
+	if ((typeof call_count !== 'undefined') &&
+	    (call_handler_count == call_count) &&
+	    (typeof queue_handler !== 'undefined')) {
+	    if (Raptor.debug > 1)
+		console.log("QueueHandlerWithCalls complete " + queue.queue_name);
+	    if ((typeof update_options === 'object') &&
+		(typeof update_options.parent_callback === 'function')) {
+		update_options.parent_callback(that);
+	    }
+	}
+    };
+
+    var queue_update_complete = function (arg) {
+	queue_handler = arg;
+	common_complete(arg);
+    };
+
+    var call_update_complete = function (arg) {
+	call_handler_count += 1;
+	call_handler_list.push(arg);
+	common_complete(arg);
+    };
+
+    var that = Raptor.QueueHandler(queue, { parent_callback: queue_update_complete });
     var calls = queue.calls;
 
     /** Call will create a call */
     var Call = Raptor.MakeType(queue.cached_path + "/calls",
 			       queue.combined_path + "/calls");
 
-    /** list of calls -- not really used yet. */
-    var call_list = [];
-
     /** Called when call list was already embedded */
     var process_call_list = function (calls) {
 	call_list = [];
-	$A(calls).each(function(call, index) {
-	    var call = Call(call.id, call, Raptor.CallHandler);
-	    /* ### */
-	    call.get_queue_name = function () { return "hi"; };
-	    call_list.push(call);
-	});
+	var temp = $A(calls);
+	call_count = temp.length;
+	if (call_count == 0) {
+	    common_complete({ item: { ppg: 0 } });
+	} else {
+	    temp.each(function(call, index) {
+		var call = Call(call.id,
+				call,
+				Raptor.CallHandler,
+				{ parent_callback: call_update_complete });
+
+		/* ### */
+		call.get_queue_name = function () { return "hi"; };
+		call_list.push(call);
+	    });
+	}
     };
 
     /** Called when the call list is fetched */
     var process_call_list_response = function (req, header) {
 	call_list = [];
-	$A(req.responseJSON).each(function(e, index) {
-	    var call = e.call;
-	    call = Call(call.id, call, Raptor.CallHandler);
-	    /* ### */
-	    call.get_queue_name = function () { return "hi"; };
-	    call_list.push(call);
-	});
+	var temp = $A(req.responseJSON);
+	call_count = temp.length;
+	if (call_count == 0) {
+	    common_complete({ item: { ppg: 0 } });
+	} else {
+	    temp.each(function(e, index) {
+		var call = e.call;
+
+		call = Call(call.id,
+			    call,
+			    Raptor.CallHandler,
+			    { parent_callback: call_update_complete });
+
+		/* ### */
+		call.get_queue_name = function () { return "hi"; };
+		call_list.push(call);
+	    });
+	}
     };
 
     /** called to fetch the list of calls */
@@ -729,22 +884,33 @@ Raptor.QueueHandlerWithCalls = function (queue, update_options) {
  * @return {Object} Not used yet.
  */
 Raptor.FavoriteQueueHandler = function(favorite_queue, update_options) {
-    var that = { };
+    var that = {
+	item: favorite_queue
+    };
     var json_queue = favorite_queue.queue;
     var queue;
-    
+    var queue_handler;
+
+    var update_complete = function (arg) {
+	if (Raptor.debug > 1)
+	    console.log("FavoriteQueueHandler complete " + favorite_queue.id);
+	queue_handler = arg;
+	if ((typeof update_options === 'object') &&
+	    (typeof update_options.parent_callback === 'function')) {
+	    update_options.parent_callback(that);
+	}
+    }
+
     if (typeof json_queue == "undefined")
 	json_queue = null;
     else
 	delete favorite_queue.queue;
 
-    queue = Raptor.Queue(favorite_queue.queue_id, json_queue, Raptor.QueueHandlerWithCalls);
+    queue = Raptor.Queue(favorite_queue.queue_id,
+			 json_queue,
+			 Raptor.QueueHandlerWithCalls,
+			 { parent_callback: update_complete });
 
-    if ((typeof update_options === 'object') &&
-	(typeof update_options.parent_callback === 'function')) {
-	/* probably should pass some arguments here ... */
-	update_options.parent_callback();
-    }
     return that;
 };
 
@@ -754,6 +920,13 @@ Raptor.FavoriteQueueHandler = function(favorite_queue, update_options) {
 Raptor.FavoriteQueues = function () {
     var that = { };
     var fq_list = [];
+    var fq_handler_list = [];
+
+    var update_complete = function (arg) {
+	fq_handler_list[arg.item.id] = arg;
+	if (Raptor.debug > 1)
+	    console.log("FavoriteQueues complete " + arg.item.queue_id);
+    };
 
     /**
      * Start is called at dom load time to start off the whole process
@@ -767,7 +940,8 @@ Raptor.FavoriteQueues = function () {
 		    var fq = e.favorite_queue;
 		    fq_list[fq.id] = Raptor.FavoriteQueue(fq.id,
 							  fq,
-							  Raptor.FavoriteQueueHandler);
+							  Raptor.FavoriteQueueHandler,
+							  { parent_callback: update_complete });
 		});
 	    }
 	});

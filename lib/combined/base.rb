@@ -211,7 +211,7 @@ module Combined
     end                         # end of class methods
     
     def to_json_with_defaults(options)
-      call_load
+      call_load unless cache_valid?
       @cached.to_json(options)
     end
     alias_method_chain :to_json, :defaults
