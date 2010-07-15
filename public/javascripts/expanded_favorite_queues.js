@@ -267,10 +267,12 @@ Raptor.MakeType = function (cached_path, combined_path) {
      * @param {Object} data The json that has already been retrieved --
      * can be null.
      * @param {Function} update Function to call when data has been
-     * retrieved.
+     * retrieved.  Function has two params: the object and
+     * update_options.
+     * @param {Object} update_options Object passed to update function
      * @returns {FavoriteQueue} Returns 
      */
-    return function (id, data, update) {
+    return function (id, data, update, update_options) {
 	var have_element = true; // assume we have the element
 	var element;
 
@@ -281,7 +283,8 @@ Raptor.MakeType = function (cached_path, combined_path) {
 	 */
 	if (typeof data == "undefined")
 	    data = null;
-	else if ((typeof update == "undefined") && (typeof data == "function")) {
+	else if (typeof data == "function") {
+	    update_options = update;
 	    update = data;
 	    data = null;
 	}
@@ -305,10 +308,11 @@ Raptor.MakeType = function (cached_path, combined_path) {
 	if (update != null) {
 	    if (have_element) {
 		qlog("call update now: element: " + (typeof element), 4);
-		update(element);
+		update(element, update_options);
 	    } else {
 		qlog("call refresh cached", 4)
-		element.refresh_cached(update); // initial call uses cached path
+		/* initial call uses cached path */
+		element.refresh_cached(update, update_options);
 	    }
 	}
 	return elements[id];
@@ -322,9 +326,10 @@ Raptor.FavoriteQueue = Raptor.MakeType(Raptor.Paths.favorite_queues, null);
 			       Raptor.Paths.combined_base + "/" + subpath);
     };
     Raptor.Center        = macro("centers");
-    Raptor.Queue         = macro("queues");
+    Raptor.Customer      = macro("customers");
     Raptor.Pmr           = macro("pmrs");
-    Raptor.Registrations = macro("registrations");
+    Raptor.Queue         = macro("queues");
+    Raptor.Registration  = macro("registrations");
 })();
 
 /**
@@ -388,18 +393,103 @@ Raptor.TableRow = function(call) {
 /*
  * The FooHandlers listed below form a chain.  The Handler's job is
  * to fetch the objects that hang off of it which are needed.
+ *
+ * List of "entities" as I'll call them:
+ *
+ * Entity          Done
+ *
+ * favoritequeue     x
+ * centers           x
+ * components        x
+ * customers         x
+ * pmrs              x
+ *   psars           .
+ *   text_lines      .
+ * queues            x
+ *   calls           x
+ * registrations     x
+ *   psars           .
  */
-
 
 /**
  * Handles processing for a center.  Nothing extra needs to be
  * fetched.
  *
- * @ param {Element} center
+ * @param {Element} center
+ * @param {Object} update_options Hash of options.  One universal
+ * option is the parent_callback which is called when this object is
+ * fully fetched and is also called every time this object is
+ * refetched.
+ * @return {Object} Not used yet.
+ */
+Raptor.CenterHandler = function (center, update_options) {
+    var that = { };
+
+    if ((typeof update_options === 'object') &&
+	(typeof update_options.parent_callback === 'function')) {
+	/* probably should pass some arguments here ... */
+	update_options.parent_callback();
+    }
+    return that;
+};
+
+/**
+ * Handles processing for a registration.  Nothing extra needs to be
+ * fetched.
+ *
+ * @class Handler for Registrations
+ * @constructor
+ * @param {Element} registration
  * @ return {Object} Not used yet.
  */
-Raptor.CenterHandler = function (center) {
+Raptor.RegistrationHandler = function (registration, update_options) {
     var that = { };
+
+    if ((typeof update_options === 'object') &&
+	(typeof update_options.parent_callback === 'function')) {
+	/* probably should pass some arguments here ... */
+	update_options.parent_callback();
+    }
+    return that;
+};
+
+/**
+ * Handles processing for a customer.  Nothing extra needs to be
+ * fetched.
+ *
+ * @class Handler for Customers
+ * @constructor
+ * @param {Element} customer
+ * @ return {Object} Not used yet.
+ */
+Raptor.CustomerHandler = function (customer, update_options) {
+    var that = { };
+
+    if ((typeof update_options === 'object') &&
+	(typeof update_options.parent_callback === 'function')) {
+	/* probably should pass some arguments here ... */
+	update_options.parent_callback();
+    }
+    return that;
+};
+
+/**
+ * Handles processing for a component.  Nothing extra needs to be
+ * fetched.
+ *
+ * @class Handler for Components
+ * @constructor
+ * @param {Element} component
+ * @ return {Object} Not used yet.
+ */
+Raptor.ComponentHandler = function (component, update_options) {
+    var that = { };
+
+    if ((typeof update_options === 'object') &&
+	(typeof update_options.parent_callback === 'function')) {
+	/* probably should pass some arguments here ... */
+	update_options.parent_callback();
+    }
     return that;
 };
 
@@ -408,7 +498,7 @@ Raptor.CenterHandler = function (center) {
  * to be fetched:
  *  1: owner
  *  2: resolver
- *  3: component
+ *  3: component -- not done yet because components are not cached.
  *  4: customer
  *  5: next queue
  *  6: next center (part of next queue)
@@ -424,12 +514,15 @@ Raptor.CenterHandler = function (center) {
  * @return {OBject} Not used yet.
  *
  */
-Raptor.PmrHandler = function (pmr) {
+Raptor.PmrHandler = function (pmr, update_options) {
     var that = { };
 
     var doo = function(obj, klass, id_name, name, handler) {
 	var json = obj[name];
 	var id = obj[id_name];
+
+	if (id === null)
+	    return null;
 
 	if (typeof json == "undefined")
 	    json = null;
@@ -440,10 +533,44 @@ Raptor.PmrHandler = function (pmr) {
     };
 
     var owner = doo(pmr,
-		    Raptor.Registrations,
+		    Raptor.Registration,
 		    "owner_id",
 		    "owner",
-		    Raptor.RegistrationsHandler);
+		    Raptor.RegistrationHandler);
+    var resolver = doo(pmr,
+		       Raptor.Registration,
+		       "resolver_id",
+		       "resolver",
+		       Raptor.RegistrationHandler);
+
+    var customer = doo(pmr,
+		       Raptor.Customer,
+		       "customer_id",
+		       "customer",
+		       Raptor.CustomerHandler);
+
+    var next_center = doo(pmr,
+			  Raptor.Center,
+			  "next_center_id",
+			  "next_center",
+			  Raptor.CenterHandler);
+
+    var next_queue = doo(pmr,
+			 Raptor.Queue,
+			 "next_queue_id",
+			 "next_queue",
+			 Raptor.QueueHandler);
+    var center = doo(pmr,
+		     Raptor.Center,
+		     "center_id",
+		     "center",
+		     Raptor.CenterHandler);
+
+    var queue = doo(pmr,
+		    Raptor.Queue,
+		    "queue_id",
+		    "queue",
+		    Raptor.QueueHandler);
 };
 
 /**
@@ -455,7 +582,7 @@ Raptor.PmrHandler = function (pmr) {
  * @param {Element} call
  * @return {Object} Not used yet.
  */
-Raptor.CallHandler = function (call) {
+Raptor.CallHandler = function (call, update_options) {
     var that = { };
 
     /* pull out the pmr if it exists */
@@ -478,12 +605,15 @@ Raptor.CallHandler = function (call) {
 	return td;
     };
 
+    var pmr_update_complete = function () {
+    };
+
     if (typeof json_pmr == 'undefined')
 	json_pmr = null;
     else {
 	delete call.pmr;
     }
-    Raptor.Pmr(call.pmr_id, json_pmr, Raptor.PmrHandler);
+    Raptor.Pmr(call.pmr_id, json_pmr, Raptor.PmrHandler, pmr_update_complete);
 
     tbody.insert(row);
     add_td(queue.queue_name);
@@ -491,6 +621,40 @@ Raptor.CallHandler = function (call) {
     add_td(call.nls_customer_name);
     add_td(call.priority + "/" + call.severity);
 
+
+    if ((typeof update_options === 'object') &&
+	(typeof update_options.parent_callback === 'function')) {
+	/* probably should pass some arguments here ... */
+	update_options.parent_callback();
+    }
+    return that;
+};
+
+/**
+ * Handles processing for a queue.  The Queue Handler needs to get:
+ *  1: Center
+ *  2: List of Owners of the queue.
+ *
+ * The list of owners is odd.  It is a list.  An empty list means that
+ * it is a team queue.  The list usually has either 0 or 1 entries.
+ *
+ * @param {Element} queue
+ * @return {Object} Not used yet.
+ */
+Raptor.QueueHandler = function (queue, update_options) {
+    var that = { };
+    var center = queue.center;
+
+    if (typeof center == 'undefind')
+	center = null;
+    else
+	delete queue.center;
+
+    if ((typeof update_options === 'object') &&
+	(typeof update_options.parent_callback === 'function')) {
+	/* probably should pass some arguments here ... */
+	update_options.parent_callback();
+    }
     return that;
 };
 
@@ -506,9 +670,8 @@ Raptor.CallHandler = function (call) {
  * @param {Element} queue
  * @return {Object} Not used yet.
  */
-Raptor.QueueHandler = function (queue) {
-    var that = { };
-    var center = queue.center;
+Raptor.QueueHandlerWithCalls = function (queue, update_options) {
+    var that = Raptor.QueueHandler(queue, update_options);
     var calls = queue.calls;
 
     /** Call will create a call */
@@ -550,11 +713,6 @@ Raptor.QueueHandler = function (queue) {
 	});
     };
 
-    if (typeof center == 'undefind')
-	center = null;
-    else
-	delete queue.center;
-
     if (typeof calls == 'undefined')
 	fetch_cached_call_list();
     else
@@ -570,7 +728,7 @@ Raptor.QueueHandler = function (queue) {
  * @param {Element} favorite_queue
  * @return {Object} Not used yet.
  */
-Raptor.FavoriteQueueHandler = function(favorite_queue) {
+Raptor.FavoriteQueueHandler = function(favorite_queue, update_options) {
     var that = { };
     var json_queue = favorite_queue.queue;
     var queue;
@@ -580,8 +738,13 @@ Raptor.FavoriteQueueHandler = function(favorite_queue) {
     else
 	delete favorite_queue.queue;
 
-    queue = Raptor.Queue(favorite_queue.queue_id, json_queue, Raptor.QueueHandler);
+    queue = Raptor.Queue(favorite_queue.queue_id, json_queue, Raptor.QueueHandlerWithCalls);
 
+    if ((typeof update_options === 'object') &&
+	(typeof update_options.parent_callback === 'function')) {
+	/* probably should pass some arguments here ... */
+	update_options.parent_callback();
+    }
     return that;
 };
 
