@@ -573,7 +573,9 @@ Raptor.PmrHandler = function (pmr, update_options) {
 	else
 	    delete obj[name];
 
-	return klass(id, json, handler, options);
+	var tmp = klass(id, json, handler, options);
+	obj[name] = tmp;
+	return tmp;
     };
 
     var owner = doo(pmr,
@@ -666,7 +668,8 @@ Raptor.CallHandler = function (call, update_options) {
     var json_pmr = call.pmr;
 
     /* need the queue -- should already be fetched */
-    var queue = Raptor.Queue(call.queue_id);
+    var queue = call.queue = Raptor.Queue(call.queue_id);
+    var center = call.center = Raptor.Center(call.center_id);
     var pmr;
     var pmr_handler;
 
@@ -700,10 +703,12 @@ Raptor.CallHandler = function (call, update_options) {
 	delete call.pmr;
     }
 
-    pmr = Raptor.Pmr(call.pmr_id,
-		     json_pmr,
-		     Raptor.PmrHandler,
-		     { parent_callback: update_complete });
+    call.pmr =
+	pmr =
+	Raptor.Pmr(call.pmr_id,
+		   json_pmr,
+		   Raptor.PmrHandler,
+		   { parent_callback: update_complete });
 
     tbody.insert(row);
     add_td(queue.queue_name);
@@ -747,10 +752,12 @@ Raptor.QueueHandler = function (queue, update_options) {
 	}
     };
 
-    center = Raptor.Center(queue.center_id,
-			   json_center,
-			   Raptor.CenterHandler,
-			   { parent_callback: update_complete });
+    queue.center =
+	center =
+	Raptor.Center(queue.center_id,
+		      json_center,
+		      Raptor.CenterHandler,
+		      { parent_callback: update_complete });
 
     return that;
 };
@@ -817,6 +824,7 @@ Raptor.QueueHandlerWithCalls = function (queue, update_options) {
 
     /** Called when call list was already embedded */
     var process_call_list = function (calls) {
+	queue.calls = [];
 	call_list = [];
 	var temp = $A(calls);
 	call_count = temp.length;
@@ -831,6 +839,7 @@ Raptor.QueueHandlerWithCalls = function (queue, update_options) {
 
 		/* ### */
 		call.get_queue_name = function () { return "hi"; };
+		queue.calls.push(call);
 		call_list.push(call);
 	    });
 	}
@@ -838,6 +847,7 @@ Raptor.QueueHandlerWithCalls = function (queue, update_options) {
 
     /** Called when the call list is fetched */
     var process_call_list_response = function (req, header) {
+	queue.calls = [];
 	call_list = [];
 	var temp = $A(req.responseJSON);
 	call_count = temp.length;
@@ -854,6 +864,7 @@ Raptor.QueueHandlerWithCalls = function (queue, update_options) {
 
 		/* ### */
 		call.get_queue_name = function () { return "hi"; };
+		queue.calls.push(call);
 		call_list.push(call);
 	    });
 	}
@@ -906,10 +917,12 @@ Raptor.FavoriteQueueHandler = function(favorite_queue, update_options) {
     else
 	delete favorite_queue.queue;
 
-    queue = Raptor.Queue(favorite_queue.queue_id,
-			 json_queue,
-			 Raptor.QueueHandlerWithCalls,
-			 { parent_callback: update_complete });
+    favorite_queue.queue =
+	queue =
+	Raptor.Queue(favorite_queue.queue_id,
+		     json_queue,
+		     Raptor.QueueHandlerWithCalls,
+		     { parent_callback: update_complete });
 
     return that;
 };
@@ -938,10 +951,11 @@ Raptor.FavoriteQueues = function () {
 	    onComplete: function (req, header) {
 		$A(req.responseJSON).each(function (e, index) {
 		    var fq = e.favorite_queue;
-		    fq_list[fq.id] = Raptor.FavoriteQueue(fq.id,
-							  fq,
-							  Raptor.FavoriteQueueHandler,
-							  { parent_callback: update_complete });
+		    fq_list[fq.id] = 
+			Raptor.FavoriteQueue(fq.id,
+					     fq,
+					     Raptor.FavoriteQueueHandler,
+					     { parent_callback: update_complete });
 		});
 	    }
 	});
