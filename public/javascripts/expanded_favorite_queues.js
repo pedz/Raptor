@@ -70,14 +70,6 @@ Raptor.Paths.combined_qs = Raptor.Paths.base + "/combined_qs";
 /** Path to view the call as HTML (the "combined_call" page). */
 Raptor.Paths.combined_call = Raptor.Paths.base + "/combined_call";
 
-/** Key to this mess... Raptor.row_template.evaluate is passed an
- * Object.  The Object will have a call, queue and probably other
- * properties.  The result will be a row that is added or updated in
- * the body of the table.
- */
-Raptor.row_template = new Template("\
-");
-
 /**
  * Create a "type" like FavoriteQueue, Queue, etc.  These types
  * correspond to Raptor's models.  Most are Cached::Foo and
@@ -129,7 +121,9 @@ Raptor.MakeType = function (cached_path, combined_path) {
      */
     var MakeElement = function (id) {
 	/** Object that represents the new element */
-	var that = {};
+	var that = {
+	    native_element: true
+	};
 
 	/** variables used for refresh_cached */
 	var cached_control_block = {
@@ -169,7 +163,7 @@ Raptor.MakeType = function (cached_path, combined_path) {
 	     */
 	    return function(callback, permanent) {
 		/* If permanent flag is not specified, it defaults to false */
-		if (typeof permanent == "undefined" || permanent == null)
+		if (typeof permanent === 'undefined' || permanent == null)
 		    permanent = false;
 		qlog("updater " + path + " callback: " + (typeof callback) +
 		     " permanent: " + permanent, 3);
@@ -254,7 +248,7 @@ Raptor.MakeType = function (cached_path, combined_path) {
     var elements = [];
 
     qlog("Create", 4);
-    if (typeof combined_path == "undefined")
+    if (typeof combined_path === 'undefined')
 	combined_path = null;
 
     /**
@@ -281,18 +275,18 @@ Raptor.MakeType = function (cached_path, combined_path) {
 	 * then check the type of if it is a function, assign it as
 	 * update and data as null.
 	 */
-	if (typeof data == "undefined")
+	if (typeof data === 'undefined')
 	    data = null;
 	else if (typeof data == "function") {
 	    update_options = update;
 	    update = data;
 	    data = null;
 	}
-	if (typeof update == "undefined")
+	if (typeof update === 'undefined')
 	    update = null;
 	qlog("new " + id + " data: " + (typeof data) + " update: " + (typeof update), 4);
 
-	if (typeof elements[id] == "undefined") {
+	if (typeof elements[id] === 'undefined') {
 	    have_element = false;
 	    elements[id] = MakeElement(id);
 	}
@@ -362,31 +356,63 @@ Raptor.CallTable = function (ele) {
      * in the table, this template will be used and pass the TableRow
      */
     that.add_column = function (heading, data_template, sort_func) {
+	var column = {
+	    heading: heading,
+	    data_template: new Template(data_template),
+	    sort_func: sort_func
+	};
+	if (columns.length == 0) {
+	    that.thead.tr = new Element('tr');
+	    that.thead.insert(that.thead.tr);
+	}
+	that.thead.tr.insert({ bottom: heading });
+	columns.push(column);
+    };
+
+    that.get_columns = function () {
+	return $A(columns);
     };
 
     return that;
 };
 
 /**
- * TableRow is an object that is passed to row_template.
+ * TableRow is a generic class that knows how to call the interfaces
+ * provided by CallTable to construct a row.
+ *
+ * Need to figure out a way to provide a class and id for the row
+ * itself.
+ *
  * @class Represents a row in the list of displayed calls.
  * @constructor
- * @param {Call} call The call the table row will represent.
+ * @param {Object} obj The object the row will represent.
+ * @param {CallTable} table The table that the row will be in.
  */
-Raptor.TableRow = function(call) {
+Raptor.TableRow = function(obj, table) {
     var that = { };
-    var queue = Raptor.Queue(call.queue_id);
+    var row = new Element('tr');
 
-    that.call = call;
-    that.queue = queue;
-    that.center = Raptor.Center(that.queue.center_id);
-    if (that.center.center != 'undefined') {
-	that.queue_param = queue.queue_name + "," + queue.h_or_s + "," + center.center;
-	that.call_param = that.queue_param + "," + call.ppg;
-	that.combined_qs = Raptor.Paths.combined_qs + "/" + that.queue_param;
-	that.combined_call = Raptor.Paths.combined_call + "/" + that.call_param;
-    }
-    that.paths = Raptor.Paths;
+    /** Delete the row from the table */
+    that.remove = function () {
+	return row.remove();
+    };
+
+    /** Updates the row */
+    that.update = function () {
+	/*
+	 * This kinda sucks.  I have to delete the contents of the row
+	 * and then insert each column separately instead of one big
+	 * blop.
+	 */
+	row.update();
+	table.get_columns().each(function (col) {
+	    row.insert(col.data_template.evaluate(obj));
+	});
+    };
+
+    that.update();
+    table.tbody.insert(row);
+    
     return that;
 };
 
@@ -537,12 +563,19 @@ Raptor.PmrHandler = function (pmr, update_options) {
 
     var total_callbacks = 7;
     var total_callbacks_received = 0;
+    var owner;
     var owner_handler;
+    var resolver;
     var resolver_handler;
+    var customer;
     var customer_handler;
+    var next_center;
     var next_center_handler;
+    var next_queue;
     var next_queue_handler;
+    var center;
     var center_handler;
+    var queue;
     var queue_handler;
 
     var complete_callback = function (s) {
@@ -568,85 +601,104 @@ Raptor.PmrHandler = function (pmr, update_options) {
 	    return null;
 	}
 
-	if (typeof json == "undefined")
+	if (typeof json === 'undefined')
 	    json = null;
-	else
+	else if (json.native_element !== true)
 	    delete obj[name];
 
-	var tmp = klass(id, json, handler, options);
-	obj[name] = tmp;
-	return tmp;
+	return klass(id, json, handler, options);
     };
 
-    var owner = doo(pmr,
-		    Raptor.Registration,
-		    "owner_id",
-		    "owner",
-		    Raptor.RegistrationHandler,
-		    { parent_callback: function (arg) {
-			owner_handler = arg;
-			complete_callback("owner");
-		    }});
+    doo(pmr,
+	Raptor.Registration,
+	"owner_id",
+	"owner",
+	Raptor.RegistrationHandler,
+	{ parent_callback: function (arg) {
+	    owner_handler = arg;
+	    owner = arg.item;
+	    if (typeof pmr.owner === 'undefined')
+		pmr.owner = owner;
+	    complete_callback("owner");
+	}});
 
-    var resolver = doo(pmr,
-		       Raptor.Registration,
-		       "resolver_id",
-		       "resolver",
-		       Raptor.RegistrationHandler,
-		       { parent_callback: function (arg) {
-			   resolver_handler = arg;
-			   complete_callback("resolver");
-		       }});
-
-    var customer = doo(pmr,
-		       Raptor.Customer,
-		       "customer_id",
-		       "customer",
-		       Raptor.CustomerHandler,
-		       { parent_callback: function (arg) {
-			   customer_handler = arg;
-			   complete_callback("customer");
-		       }});
-
-    var next_center = doo(pmr,
-			  Raptor.Center,
-			  "next_center_id",
-			  "next_center",
-			  Raptor.CenterHandler,
-			  { parent_callback: function (arg) {
-			      next_center_handler = arg;
-			      complete_callback("next_center");
-			  }});
-
-    var next_queue = doo(pmr,
-			 Raptor.Queue,
-			 "next_queue_id",
-			 "next_queue",
-			 Raptor.QueueHandler,
-			 { parent_callback: function (arg) {
-			     next_queue_handler = arg;
-			     complete_callback("next_queue");
-			 }});
-
-    var center = doo(pmr,
-		     Raptor.Center,
-		     "center_id",
-		     "center",
-		     Raptor.CenterHandler,
-		     { parent_callback: function (arg) {
-			 center_handler = arg;
-			 complete_callback("center");
-		     }});
-
-    var queue = doo(pmr,
-		    Raptor.Queue,
-		    "queue_id",
-		    "queue",
-		    Raptor.QueueHandler,
-		    { parent_callback: function (arg) {
-			queue_handler = arg;
-			complete_callback("queue");
-		    }});
+    doo(pmr,
+	Raptor.Registration,
+	"resolver_id",
+	"resolver",
+	Raptor.RegistrationHandler,
+	{ parent_callback: function (arg) {
+	    resolver_handler = arg;
+	    resolver = arg.item;
+	    if (typeof pmr.resolver === 'undefined')
+		pmr.resolver = resolver;
+	    complete_callback("resolver");
+	}});
+    
+    doo(pmr,
+	Raptor.Customer,
+	"customer_id",
+	"customer",
+	Raptor.CustomerHandler,
+	{ parent_callback: function (arg) {
+	    customer_handler = arg;
+	    customer = arg.item;
+	    if (typeof pmr.customer === 'undefined')
+		pmr.customer = customer;
+	    complete_callback("customer");
+	}});
+    
+    doo(pmr,
+	Raptor.Center,
+	"next_center_id",
+	"next_center",
+	Raptor.CenterHandler,
+	{ parent_callback: function (arg) {
+	    next_center_handler = arg;
+	    next_center = arg.item;
+	    if (typeof pmr.next_center === 'undefined')
+		pmr.next_center = next_center;
+	    complete_callback("next_center");
+	}});
+    
+    doo(pmr,
+	Raptor.Queue,
+	"next_queue_id",
+	"next_queue",
+	Raptor.QueueHandler,
+	{ parent_callback: function (arg) {
+	    next_queue_handler = arg;
+	    next_queue = arg.item;
+	    if (typeof pmr.next_queue === 'undefined')
+		pmr.next_queue = next_queue;
+	    complete_callback("next_queue");
+	}});
+    
+    doo(pmr,
+	Raptor.Center,
+	"center_id",
+	"center",
+	Raptor.CenterHandler,
+	{ parent_callback: function (arg) {
+	    center_handler = arg;
+	    center = arg.item;
+	    if (typeof pmr.center === 'undefined')
+		pmr.center = center;
+	    complete_callback("center");
+	}});
+    
+    doo(pmr,
+	Raptor.Queue,
+	"queue_id",
+	"queue",
+	Raptor.QueueHandler,
+	{ parent_callback: function (arg) {
+	    queue_handler = arg;
+	    queue = arg.item;
+	    if (typeof pmr.queue === 'undefined')
+		pmr.queue = queue;
+	    complete_callback("queue");
+	}});
     return that;
 };
 
@@ -672,49 +724,36 @@ Raptor.CallHandler = function (call, update_options) {
     var center = call.center = Raptor.Center(call.center_id);
     var pmr;
     var pmr_handler;
+    var table_row;
 
     /* Find the tbody of the table */
     var tbody = Raptor.call_table.tbody;
-
-    /** The table row for this call */
-    var row = new Element('tr');
-
-    /** Add a td to the table row for this call */
-    var add_td = function(data) {
-	var td = new Element('td');
-	td.update(data);
-	row.insert(td);
-	return td;
-    };
 
     var update_complete = function (arg) {
 	if (Raptor.debug > 1)
 	    console.log("CallHandler complete " + call.id);
 	pmr_handler = arg;
+	call.param = call.queue.param + "," + call.ppg;
+	call.combined_call = Raptor.Paths.combined_call + "/" + call.param;
 	if ((typeof update_options === 'object') &&
 	    (typeof update_options.parent_callback === 'function')) {
 	    update_options.parent_callback(that);
+	    table_row = Raptor.TableRow(call, Raptor.call_table);
 	}
     };
 
-    if (typeof json_pmr == 'undefined')
+    if (typeof json_pmr === 'undefined')
 	json_pmr = null;
-    else {
+    else if (json_pmr.native_element !== true)
 	delete call.pmr;
-    }
 
-    call.pmr =
-	pmr =
-	Raptor.Pmr(call.pmr_id,
-		   json_pmr,
-		   Raptor.PmrHandler,
-		   { parent_callback: update_complete });
+    pmr = Raptor.Pmr(call.pmr_id,
+		     json_pmr,
+		     Raptor.PmrHandler,
+		     { parent_callback: update_complete });
 
-    tbody.insert(row);
-    add_td(queue.queue_name);
-    add_td(call.ppg);
-    add_td(call.nls_customer_name);
-    add_td(call.priority + "/" + call.severity);
+    if (json_pmr !== null && json_pmr.native_element !== true)
+	call.pmr = pmr;
 
     return that;
 };
@@ -738,26 +777,32 @@ Raptor.QueueHandler = function (queue, update_options) {
     var center;
     var center_handler;
 
-    if (typeof json_center == 'undefind')
-	json_center = null;
-    else
-	delete queue.center;
-
     var update_complete = function (arg) {
+	center_handler = arg;
+	center = arg.item;
+
+	if (json_center !== null && json_center.native_element !== true)
+	    queue.center = center;
+	
 	if (Raptor.debug > 1)
 	    console.log("QueueHandler complete " + queue.queue_name);
+	queue.param = queue.queue_name + "," + queue.h_or_s + "," + center.center;
+	queue.combined_qs = Raptor.Paths.combined_qs + "/" + queue.param;
 	if ((typeof update_options === 'object') &&
 	    (typeof update_options.parent_callback === 'function')) {
 	    update_options.parent_callback(that);
 	}
     };
 
-    queue.center =
-	center =
-	Raptor.Center(queue.center_id,
-		      json_center,
-		      Raptor.CenterHandler,
-		      { parent_callback: update_complete });
+    if (typeof json_center === 'undefined')
+	json_center = null;
+    else if (json_center.native_element !== true)
+	    delete queue.center;
+
+    Raptor.Center(queue.center_id,
+		  json_center,
+		  Raptor.CenterHandler,
+		  { parent_callback: update_complete });
 
     return that;
 };
@@ -879,7 +924,7 @@ Raptor.QueueHandlerWithCalls = function (queue, update_options) {
 	});
     };
 
-    if (typeof calls == 'undefined')
+    if (typeof calls === 'undefined')
 	fetch_cached_call_list();
     else
 	process_call_list(calls);
@@ -912,17 +957,18 @@ Raptor.FavoriteQueueHandler = function(favorite_queue, update_options) {
 	}
     }
 
-    if (typeof json_queue == "undefined")
+    if (typeof json_queue === 'undefined')
 	json_queue = null;
-    else
+    else if (json_queue.native_element !== true)
 	delete favorite_queue.queue;
 
-    favorite_queue.queue =
-	queue =
-	Raptor.Queue(favorite_queue.queue_id,
-		     json_queue,
-		     Raptor.QueueHandlerWithCalls,
-		     { parent_callback: update_complete });
+    queue = Raptor.Queue(favorite_queue.queue_id,
+			 json_queue,
+			 Raptor.QueueHandlerWithCalls,
+			 { parent_callback: update_complete });
+
+    if (json_queue !== null && json_queue.native_element !== true)
+	favorite_queue.queue = queue;
 
     return that;
 };
@@ -967,6 +1013,12 @@ document.observe('dom:loaded', function() {
     /** call_table is the instance of a CallTable */
     Raptor.call_table = Raptor.CallTable($('main'));
 
+    Raptor.call_table.add_column("<th>Queue</th>",
+				 "<td><a href='#{queue.combined_qs}'>#{queue.param}</a></td>",
+				 null);
+    Raptor.call_table.add_column("<th>PPG</th>",
+				 "<td><a href='#{combined_call}'>#{ppg}</a></td>",
+				 null);
     /** favorite_queues is an instance of FavoriteQueues */
     Raptor.favorite_queues = Raptor.FavoriteQueues();
     Raptor.favorite_queues.start();
