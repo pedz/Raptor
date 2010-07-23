@@ -733,8 +733,14 @@ Raptor.CallHandler = function (call, update_options) {
 	if (Raptor.debug > 1)
 	    console.log("CallHandler complete " + call.id);
 	pmr_handler = arg;
+	pmr = arg.item;
+
+	if (typeof call.pmr === 'undefined')
+	    call.pmr = pmr;
+
 	call.param = call.queue.param + "," + call.ppg;
 	call.combined_call = Raptor.Paths.combined_call + "/" + call.param;
+	call.owner_stuff = "style='color:red;'";
 	if ((typeof update_options === 'object') &&
 	    (typeof update_options.parent_callback === 'function')) {
 	    update_options.parent_callback(that);
@@ -747,13 +753,10 @@ Raptor.CallHandler = function (call, update_options) {
     else if (json_pmr.native_element !== true)
 	delete call.pmr;
 
-    pmr = Raptor.Pmr(call.pmr_id,
-		     json_pmr,
-		     Raptor.PmrHandler,
-		     { parent_callback: update_complete });
-
-    if (json_pmr !== null && json_pmr.native_element !== true)
-	call.pmr = pmr;
+    Raptor.Pmr(call.pmr_id,
+	       json_pmr,
+	       Raptor.PmrHandler,
+	       { parent_callback: update_complete });
 
     return that;
 };
@@ -781,7 +784,7 @@ Raptor.QueueHandler = function (queue, update_options) {
 	center_handler = arg;
 	center = arg.item;
 
-	if (json_center !== null && json_center.native_element !== true)
+	if (typeof queue.center === 'undefined')
 	    queue.center = center;
 	
 	if (Raptor.debug > 1)
@@ -951,6 +954,10 @@ Raptor.FavoriteQueueHandler = function(favorite_queue, update_options) {
 	if (Raptor.debug > 1)
 	    console.log("FavoriteQueueHandler complete " + favorite_queue.id);
 	queue_handler = arg;
+	queue = arg.item;
+	if (typeof favorite_queue.queue === 'undefined')
+	    favorite_queue.queue = queue;
+
 	if ((typeof update_options === 'object') &&
 	    (typeof update_options.parent_callback === 'function')) {
 	    update_options.parent_callback(that);
@@ -962,13 +969,10 @@ Raptor.FavoriteQueueHandler = function(favorite_queue, update_options) {
     else if (json_queue.native_element !== true)
 	delete favorite_queue.queue;
 
-    queue = Raptor.Queue(favorite_queue.queue_id,
-			 json_queue,
-			 Raptor.QueueHandlerWithCalls,
-			 { parent_callback: update_complete });
-
-    if (json_queue !== null && json_queue.native_element !== true)
-	favorite_queue.queue = queue;
+    Raptor.Queue(favorite_queue.queue_id,
+		 json_queue,
+		 Raptor.QueueHandlerWithCalls,
+		 { parent_callback: update_complete });
 
     return that;
 };
@@ -1012,13 +1016,29 @@ Raptor.FavoriteQueues = function () {
 document.observe('dom:loaded', function() {
     /** call_table is the instance of a CallTable */
     Raptor.call_table = Raptor.CallTable($('main'));
+    var ac = Raptor.call_table.add_column;
+    ac("<th>Queue</th>",
+       "<td><a href='#{queue.combined_qs}'>#{queue.queue_name}</a></td>",
+       null);
+    ac("<th>PPG</th>",
+       "<td><a href='#{combined_call}'>#{ppg}</a></td>",
+       null);
+    ac("<th>PRBLM,BNC,CTY</th>",
+       "<td>#{pmr.problem},#{pmr.branch},#{pmr.country}</td>",
+       null);
+    ac("<th>P/S</th>",
+       "<td>#{priority}/#{severity}</td>",
+       null);
+    ac("<th>Owner</th>",
+       "<td #{owner_stuff}>#{pmr.owner.name}</td>",
+       null);
+    ac("<th>Resolver</th>",
+       "<td #{resolver_stuff}>#{pmr.resolver.name}</td>",
+       null);
+    ac("<th>Customer</th>",
+       "<td>#{nls_customer_name}</td",
+       null);
 
-    Raptor.call_table.add_column("<th>Queue</th>",
-				 "<td><a href='#{queue.combined_qs}'>#{queue.param}</a></td>",
-				 null);
-    Raptor.call_table.add_column("<th>PPG</th>",
-				 "<td><a href='#{combined_call}'>#{ppg}</a></td>",
-				 null);
     /** favorite_queues is an instance of FavoriteQueues */
     Raptor.favorite_queues = Raptor.FavoriteQueues();
     Raptor.favorite_queues.start();
