@@ -150,6 +150,8 @@ module Combined
                      @cached.alterable_format_lines(true),
                      0,
                      Cached::TextLine::LineTypes::ALTERABLE_FORMAT)
+        # Need to search for and parse the FAs to see if they have english = y.
+        # EMEA and AP use FA 1654. Japan = FA 1659. Canada = FA 1514. LA = FA 1524
       end
       
       # Create the text lines
