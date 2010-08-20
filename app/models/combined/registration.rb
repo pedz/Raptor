@@ -87,7 +87,7 @@ module Combined
       rescue Retain::SdiReaderError => err
         # logger.debug("Can not get to registration")
         raise err unless err.rc == 251
-        cache_optins = { }
+        cache_options = { }
       else
         cache_options = Cached::Registration.options_from_retain(retain_registration)
         cache_options.delete(:signon)

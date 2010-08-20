@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 46) do
+ActiveRecord::Schema.define(:version => 47) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -36,6 +36,15 @@ ActiveRecord::Schema.define(:version => 46) do
     t.string   "dispatched_employee"
     t.integer  "call_control_flag_1"
     t.integer  "severity"
+    t.string   "owner_css"
+    t.string   "owner_message"
+    t.boolean  "owner_editable"
+    t.string   "resolver_css"
+    t.string   "resolver_message"
+    t.boolean  "resolver_editable"
+    t.string   "next_queue_css"
+    t.string   "next_queue_message"
+    t.boolean  "next_queue_editable"
   end
 
   add_index "cached_calls", ["queue_id", "ppg"], :name => "uq_cached_calls_pair", :unique => true

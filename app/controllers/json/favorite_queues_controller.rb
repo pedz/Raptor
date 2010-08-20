@@ -18,12 +18,12 @@ module Json
                               :queue => { },
                               :resolver => { }
                             },
-                            :except => [ :last_alter_timestamp ],
-                            :methods => [ :last_ct, :last_ct_time ]
+                            # :methods => [ :last_ct, :last_ct_time ],
+                            :except => [ :last_alter_timestamp ]
                           }
                         },
-                        :except => [ :call_search_result ],
-                        :methods => [ :needs_initial_response?, :center_entry_time ]
+                        # :methods => [ :needs_initial_response?, :center_entry_time ],
+                        :except => [ :call_search_result ]
                       },
                       :center => { },
                       :owners => { }

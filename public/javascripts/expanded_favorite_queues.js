@@ -343,6 +343,13 @@ Raptor.CallTable = function (ele) {
     that.tfoot = new Element('tfoot');
     /** The tbody element in the table */
     that.tbody = new Element('tbody');
+    /** The row in tbody during the loading process */
+    var loading = new Element('tr');
+    /** The td for the loading message */
+    var td = new Element('td');
+    td.insert('Oh dear... the dreaded <q style="color: red;">Loading</q> message ...');
+    loading.insert(td);
+    that.tbody.insert(loading);
 
     that.table.insert(that.thead).insert(that.tfoot).insert(that.tbody);
     ele.insert( { bottom: that.table } );
@@ -367,12 +374,19 @@ Raptor.CallTable = function (ele) {
 	}
 	that.thead.tr.insert({ bottom: heading });
 	columns.push(column);
+	td.writeAttribute('colspan', columns.length);
     };
 
+    /** Returns the columns for the table */
     that.get_columns = function () {
 	return $A(columns);
     };
 
+    /** Call to removing the loading message */
+    that.remove_loading = function () {
+	if (loading.parentNode)
+	    loading.remove();
+    };
     return that;
 };
 
@@ -406,6 +420,7 @@ Raptor.TableRow = function(obj, table) {
 	 */
 	row.update();
 	table.get_columns().each(function (col) {
+	    table.remove_loading();
 	    row.insert(col.data_template.evaluate(obj));
 	});
     };
@@ -725,9 +740,54 @@ Raptor.CallHandler = function (call, update_options) {
     var pmr;
     var pmr_handler;
     var table_row;
-
     /* Find the tbody of the table */
     var tbody = Raptor.call_table.tbody;
+
+    var create_owner_element = function () {
+	var ret;
+
+	if (call.owner_editable) {
+	    ret = "" +
+		"<span id='pmr_owner_id_" + call.param + "'" +
+		" class='collection-edit-name click-to-edit-button'" +
+		" title='Click to edit' style='background-color: transparent;'>" +
+		" <span class='" + call.owner_css + "'" +
+		"  title='" + call.owner_message + "'>" +
+		call.pmr.owner.name +
+		" </span>" +
+		"</span>";
+	} else {
+	    ret = "" +
+		"<span class='" + call.owner_css + " not-editable'" +
+		" title='" + call.owner_message + "'>" +
+		call.pmr.owner.name +
+		"</span>";
+	}
+	return "<td class='owner'>" + ret + "</td>";
+    };
+
+    var create_resolver_element = function () {
+	var ret;
+
+	if (call.resolver_editable) {
+	    ret = "" +
+		"<span id='pmr_resolver_id_" + call.param + "'" +
+		" class='collection-edit-name click-to-edit-button'" +
+		" title='Click to edit' style='background-color: transparent;'>" +
+		" <span class='" + call.resolver_css + "'" +
+		"  title='" + call.resolver_message + "'>" +
+		call.pmr.resolver.name +
+		" </span>" +
+		"</span>";
+	} else {
+	    ret = "" +
+		"<span class='" + call.resolver_css + " not-editable'" +
+		" title='" + call.resolver_message + "'>" +
+		call.pmr.resolver.name +
+		"</span>";
+	}
+	return "<td class='resolver'>" + ret + "</td>";
+    };
 
     var update_complete = function (arg) {
 	if (Raptor.debug > 1)
@@ -740,7 +800,9 @@ Raptor.CallHandler = function (call, update_options) {
 
 	call.param = call.queue.param + "," + call.ppg;
 	call.combined_call = Raptor.Paths.combined_call + "/" + call.param;
-	call.owner_stuff = "style='color:red;'";
+	/* Note: users call.param */
+	call.owner_element = create_owner_element();
+	call.resolver_element = create_resolver_element();
 	if ((typeof update_options === 'object') &&
 	    (typeof update_options.parent_callback === 'function')) {
 	    update_options.parent_callback(that);
@@ -1030,10 +1092,10 @@ document.observe('dom:loaded', function() {
        "<td>#{priority}/#{severity}</td>",
        null);
     ac("<th>Owner</th>",
-       "<td #{owner_stuff}>#{pmr.owner.name}</td>",
+       "#{owner_element}",
        null);
     ac("<th>Resolver</th>",
-       "<td #{resolver_stuff}>#{pmr.resolver.name}</td>",
+       "#{resolver_element}",
        null);
     ac("<th>Customer</th>",
        "<td>#{nls_customer_name}</td",
