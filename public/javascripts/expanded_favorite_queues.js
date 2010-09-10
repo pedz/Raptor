@@ -743,50 +743,55 @@ Raptor.CallHandler = function (call, update_options) {
     /* Find the tbody of the table */
     var tbody = Raptor.call_table.tbody;
 
-    var create_owner_element = function () {
+    var create_element = function(editable, id, css, message, name) {
 	var ret;
 
-	if (call.owner_editable) {
+	if (editable) {
 	    ret = "" +
-		"<span id='pmr_owner_id_" + call.param + "'" +
+		"<span id='" + id + "'" +
 		" class='collection-edit-name click-to-edit-button'" +
 		" title='Click to edit' style='background-color: transparent;'>" +
-		" <span class='" + call.owner_css + "'" +
-		"  title='" + call.owner_message + "'>" +
-		call.pmr.owner.name +
+		" <span class='" + css + "'" +
+		"  title='" + message + "'>" +
+		name +
 		" </span>" +
 		"</span>";
 	} else {
 	    ret = "" +
-		"<span class='" + call.owner_css + " not-editable'" +
-		" title='" + call.owner_message + "'>" +
-		call.pmr.owner.name +
+		"<span class='" + css + " not-editable'" +
+		" title='" + message + "'>" +
+		name +
 		"</span>";
 	}
 	return "<td class='owner'>" + ret + "</td>";
     };
 
-    var create_resolver_element = function () {
-	var ret;
+    var create_owner_element = function () {
+	return create_element(call.owner_editable,
+			      "pmr_owner_id_" + call.param,
+			      call.owner_css,
+			      call.owner_message,
+			      call.pmr.owner.name);
+    };
 
-	if (call.resolver_editable) {
-	    ret = "" +
-		"<span id='pmr_resolver_id_" + call.param + "'" +
-		" class='collection-edit-name click-to-edit-button'" +
-		" title='Click to edit' style='background-color: transparent;'>" +
-		" <span class='" + call.resolver_css + "'" +
-		"  title='" + call.resolver_message + "'>" +
-		call.pmr.resolver.name +
-		" </span>" +
-		"</span>";
-	} else {
-	    ret = "" +
-		"<span class='" + call.resolver_css + " not-editable'" +
-		" title='" + call.resolver_message + "'>" +
-		call.pmr.resolver.name +
-		"</span>";
-	}
-	return "<td class='resolver'>" + ret + "</td>";
+    var create_resolver_element = function () {
+	return create_element(call.resolver_editable,
+			      "pmr_resolver_id_" + call.param,
+			      call.resolver_css,
+			      call.resolver_message,
+			      call.pmr.resolver.name);
+    };
+
+    var create_next_queue_element = function () {
+	var queue_name = "blank";
+	if (call.pmr.next_queue && call.pmr.next_center)
+	    queue_name = call.pmr.next_queue.queue_name + "," + call.pmr.next_center.center;
+
+	return create_element(call.next_queue_editable,
+			      "pmr_next_queue_id_" + call.param,
+			      call.next_queue_css,
+			      call.next_queue_message,
+			      queue_name);
     };
 
     var update_complete = function (arg) {
@@ -803,6 +808,7 @@ Raptor.CallHandler = function (call, update_options) {
 	/* Note: users call.param */
 	call.owner_element = create_owner_element();
 	call.resolver_element = create_resolver_element();
+	call.next_queue_element = create_next_queue_element();
 	if ((typeof update_options === 'object') &&
 	    (typeof update_options.parent_callback === 'function')) {
 	    update_options.parent_callback(that);
@@ -1096,6 +1102,9 @@ document.observe('dom:loaded', function() {
        null);
     ac("<th>Resolver</th>",
        "#{resolver_element}",
+       null);
+    ac("<th>Next QUeue</th>",
+       "#{next_queue_element}",
        null);
     ac("<th>Customer</th>",
        "<td>#{nls_customer_name}</td",
