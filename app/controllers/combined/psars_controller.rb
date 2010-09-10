@@ -38,6 +38,14 @@ module Combined
       end
       db_search_fields = Cached::Psar.fields_only(local_params)
 
+      # Notes: The stop_time is in the customer's timezone.  We can
+      # find the customer's timezone by looking up the customer.  And
+      # then we can decide if the start of the day is midnight local
+      # time or midnight GMT or midnight at the center.  Probably
+      # midnight local time since that is how the user will view it.
+      # While we currently don't fetch the customer's timezone, we
+      # could and then do the select based upon a join and a computed
+      # stop time in GMT.
       if local_params.has_key? :psar_start_date
         str = local_params[:psar_start_date]
         start_moc = Time.local(str[0...4].to_i, str[4...6].to_i, str[6...8].to_i).moc
