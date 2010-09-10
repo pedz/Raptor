@@ -6,7 +6,7 @@ module ActiveSupport
   module Rescuable
     protected
       def rescue_with_handler(exception)
-        # logger.debug("rescue_with_handler #{exception.class} #{exception.original_exception.class}")
+        # logger.debug("rescue_with_handler #{exception.class} #{exception.inspect}")
         # Special case ActionView::TemplateError exception.  Look at
         # original exception as well
         if ((handler = handler_for_rescue(exception)).nil? &&
