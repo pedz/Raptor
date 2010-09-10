@@ -90,7 +90,7 @@ module Retain
     def common_failed_logon(retuser)
       # Remember what we were trying to do
       session[:original_uri] = request.request_uri
-      redirect_to edit_retuser_url(retuser)
+      redirect_to edit_user_retuser_url(application_user, retuser)
     end
 
     #        16 |     18 |      Fail | Retain database not available for userid
