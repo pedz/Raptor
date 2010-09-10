@@ -152,7 +152,7 @@ module Retain
         else
           b = ""
         end
-      rescue SDIError
+      rescue SDIError, LogonFailed, FailedMarkedTrue, RetainLogonEmpty, RetainLogonShort
         raise
       rescue => err
         raise SDIError.new(err.message, self, err.backtrace)
