@@ -50,7 +50,7 @@ module Retain
       # set up a retain user.
       if application_user.current_retain_id.nil?
         session[:original_uri] = request.request_uri
-        redirect_to new_retuser_url
+        redirect_to new_user_retuser_url(application_user)
         return false
       end
 
