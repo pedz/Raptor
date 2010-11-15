@@ -65,6 +65,8 @@ class RetusersController < ApplicationController
     respond_to do |format|
       if (@user.retusers << @retuser)
         flash[:notice] = 'Retuser was successfully created.'
+        @user.current_retain_id = @retuser
+        @user.save!
         format.html {
           uri = session[:original_uri]
           session[:original_uri] = nil

@@ -38,7 +38,10 @@ class FavoriteQueuesController < Retain::RetainController
   # Responds to html and xml formats.
   def new
     center = signon_user.default_center
+    # logger.debug("center is of class #{center.class}")
     queue = center.queues.build(:h_or_s => signon_user.default_h_or_s)
+    queue = queue.unwrap_to_cached if queue.respond_to? :unwrap_to_cached
+    # logger.debug("queue is of class #{queue.class}")
     @favorite_queue = FavoriteQueue.new(:queue => queue)
     # logger.debug("queue is of class #{@favorite_queue.queue.class}")
     # logger.debug("center is of class #{@favorite_queue.queue.center.class}")
@@ -58,14 +61,16 @@ class FavoriteQueuesController < Retain::RetainController
   # POST /favorite_queues
   # Responds with html or xml format.
   def create
-    center_options = params[:combined_center].symbolize_keys
-    queue_options = params[:combined_queue].symbolize_keys
+    center_options = params[:cached_center].symbolize_keys
+    queue_options = params[:cached_queue].symbolize_keys
     center_options[:center].upcase!
     queue_options[:queue_name].upcase!
     queue_options[:queue_name].strip!
     queue_options[:h_or_s].upcase!
     options = center_options.merge(queue_options)
     
+    # We create the new center and queue (if we need to) as Combined
+    # so that things get refreshed but then unwrap them.
     if (center = Combined::Center.from_options(options)).nil?
       # logger.debug("bad center")
       flash[:error] = "Center is not valid"
@@ -83,9 +88,12 @@ class FavoriteQueuesController < Retain::RetainController
         queue_valid = true
       end
     end
-    
-    @favorite_queue = FavoriteQueue.new(:queue => queue,
-                                                  :retuser => application_user.current_retain_id)
+    queue = queue.unwrap_to_cached
+    center = center.unwrap_to_cached
+
+    @favorite_queue =
+      FavoriteQueue.new(:queue => queue,
+                        :retuser => application_user.current_retain_id)
     respond_to do |format|
       if queue_valid && @favorite_queue.save
         flash[:notice] = 'FavoriteQueue was successfully created.'
