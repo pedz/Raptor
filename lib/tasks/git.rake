@@ -50,6 +50,11 @@ namespace :deploy do
     sh "cap --set-before env=production --set branch=#{ git_head} deploy:migrate"
   end
 
+  desc 'Deploy and run pending migrations'
+  task :migrations => [ :sync_production ] do
+    sh "cap --set-before env=production --set branch=#{ git_head} deploy:migrations"
+  end
+
   desc 'Displays the commits since your last deploy.'
   task :pending => [ :sync_production ] do
     sh "cap --set-before env=production --set branch=#{ git_head} deploy:pending"
@@ -149,6 +154,11 @@ namespace :stage do
   desc 'Run the migrate rake task.'
   task :migrate => [ :sync_staging ] do
     sh "cap --set-before env=staging --set branch=#{ git_head} deploy:migrate"
+  end
+
+  desc 'Deploy and run pending migrations'
+  task :migrations => [ :sync_staging ] do
+    sh "cap --set-before env=staging --set branch=#{ git_head} deploy:migrations"
   end
 
   desc 'Displays the commits since your last deploy.'
