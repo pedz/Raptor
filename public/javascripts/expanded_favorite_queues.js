@@ -767,19 +767,27 @@ Raptor.CallHandler = function (call, update_options) {
     };
 
     var create_owner_element = function () {
+	var owner_name = "blank";
+	if (call.pmr && call.pmr.owner)
+	    owner_name = call.pmr.owner.name;
+
 	return create_element(call.owner_editable,
 			      "pmr_owner_id_" + call.param,
 			      call.owner_css,
 			      call.owner_message,
-			      call.pmr.owner.name);
+			      owner_name);
     };
 
     var create_resolver_element = function () {
+	var resolver_name = "blank";
+	if (call.pmr && call.pmr.resolver)
+	    resolver_name = call.pmr.resolver.name;
+
 	return create_element(call.resolver_editable,
 			      "pmr_resolver_id_" + call.param,
 			      call.resolver_css,
 			      call.resolver_message,
-			      call.pmr.resolver.name);
+			      resolver_name);
     };
 
     var create_next_queue_element = function () {
