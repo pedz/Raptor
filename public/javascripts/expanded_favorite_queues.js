@@ -768,7 +768,7 @@ Raptor.CallHandler = function (call, update_options) {
 
     var create_owner_element = function () {
 	var owner_name = "blank";
-	if (call.pmr && call.pmr.owner)
+	if (call.pmr && call.pmr.owner && call.pmr.owner.name != "")
 	    owner_name = call.pmr.owner.name;
 
 	return create_element(call.owner_editable,
@@ -780,7 +780,7 @@ Raptor.CallHandler = function (call, update_options) {
 
     var create_resolver_element = function () {
 	var resolver_name = "blank";
-	if (call.pmr && call.pmr.resolver)
+	if (call.pmr && call.pmr.resolver && call.pmr.owner.name != "")
 	    resolver_name = call.pmr.resolver.name;
 
 	return create_element(call.resolver_editable,
