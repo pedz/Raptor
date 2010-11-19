@@ -93,7 +93,9 @@ class FavoriteQueuesController < Retain::RetainController
 
     @favorite_queue =
       FavoriteQueue.new(:queue => queue,
-                        :retuser => application_user.current_retain_id)
+                        :retuser => application_user.current_retain_id,
+                        :sort_column => application_user.favorite_queues.size)
+
     respond_to do |format|
       if queue_valid && @favorite_queue.save
         flash[:notice] = 'FavoriteQueue was successfully created.'
@@ -153,6 +155,23 @@ class FavoriteQueuesController < Retain::RetainController
     respond_to do |format|
       format.html { redirect_to(favorite_queues_url) }
       format.xml  { head :ok }
+    end
+  end
+
+  def sort
+    # the order the user wants the ids to be in
+    list = params[:favorite_queues].map { |s| s.to_i }
+    @favorite_queues = application_user.favorite_queues
+    len = @favorite_queues.length
+    @favorite_queues.each do |fq|
+      if (p = list.index(fq.id)).nil?
+        p = len
+        len += 1
+      end
+      fq.sort_column = p
+      fq.save
+    end
+    render :update do |page|
     end
   end
 end

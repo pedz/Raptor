@@ -47,7 +47,7 @@
 #
 class Retuser < ActiveRecord::Base
   belongs_to :user
-  has_many :favorite_queues, :include => :queue
+  has_many :favorite_queues, :include => :queue, :order => :sort_column
   belongs_to(:software_node,
              :class_name => "RetainNodeSelector",
              :foreign_key => :software_node_id,

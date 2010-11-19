@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 47) do
+ActiveRecord::Schema.define(:version => 48) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -236,10 +236,11 @@ ActiveRecord::Schema.define(:version => 47) do
   add_index "cached_text_lines", ["pmr_id", "line_type", "line_number"], :name => "uq_cached_text_lines_triple", :unique => true
 
   create_table "favorite_queues", :force => true do |t|
-    t.integer  "queue_id",   :null => false
+    t.integer  "queue_id",    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "retuser_id", :null => false
+    t.integer  "retuser_id",  :null => false
+    t.integer  "sort_column", :null => false
   end
 
   create_table "feedback_notes", :force => true do |t|

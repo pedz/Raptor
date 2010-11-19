@@ -63,7 +63,10 @@ ActionController::Routing::Routes.draw do |map|
 
   # Shows the user's favorite queues.
   map.resources(:favorite_queues,
-                :collection => { :expanded => :get })
+                :collection => {
+                  :expanded => :get,
+                  :sort => :post
+                })
 
   # Mapping between Queue and Person... Needs much work.
   map.resources :combined_queue_infos, :controller => 'retain/queue_infos'
