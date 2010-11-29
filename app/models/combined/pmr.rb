@@ -189,7 +189,8 @@ module Combined
 
       # Hook up owner and resolver.  We have to plop in the name for
       # new records because we can not retrive all registrations.
-      owner = Cached::Registration.find_or_initialize_by_signon(pmr.pmr_owner_id)
+      owner = Cached::Registration.find_or_initialize_by_signon_and_apptest(pmr.pmr_owner_id,
+                                                                            ::Retain::Logon.instance.apptest)
       owner.name = pmr.pmr_owner_name if owner.name.nil?
       @cached.owner = owner
 
@@ -204,7 +205,8 @@ module Combined
         @cached.resolver = owner
       else
         # Hook up resolver
-        resolver = Cached::Registration.find_or_initialize_by_signon(pmr.pmr_resolver_id)
+        resolver = Cached::Registration.find_or_initialize_by_signon_and_apptest(pmr.pmr_resolver_id,
+                                                                                 ::Retain::Logon.instance.apptest)
         resolver.name = pmr.pmr_resolver_name if resolver.name.nil?
         @cached.resolver = resolver
       end

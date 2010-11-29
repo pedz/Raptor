@@ -2,7 +2,8 @@ module Json
   module Cached
     class RegistrationsController < Retain::RetainController
       def index
-        render :json => ::Cached::Registration.find(:all)
+        render :json => ::Cached::Registration.find(:all,
+                                                    :conditions => { :apptest => Logon.instance.apptest})
       end
 
       def show

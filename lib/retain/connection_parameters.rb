@@ -10,6 +10,9 @@ module Retain
   # the RetainController during authorization.
   class ConnectionParameters
 
+    # The retuser db model
+    attr_reader :retuser
+
     # The user's Retain id
     attr_reader :signon
 
@@ -36,6 +39,7 @@ module Retain
     # The Retuser object of the current User is passed in.
     def initialize(retuser)
       super()
+      @retuser  = retuser
       @signon   = retuser.retid.trim(6)
       @password = retuser.password.trim(8)
       @failed   = retuser.failed

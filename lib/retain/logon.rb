@@ -40,6 +40,12 @@ module Retain
       @reason
     end
 
+    # Retrieve the original retuser db object -- this clearly needs to
+    # be refactored.
+    def retuser
+      @params.retuser
+    end
+
     # Retrieve the signon (the Retain id).
     def signon
       @params.signon

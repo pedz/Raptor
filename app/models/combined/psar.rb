@@ -153,7 +153,8 @@ module Combined
       # Update psar record
       options = self.class.cached_class.options_from_retain(psar)
       options[:dirty] = false if @cached.respond_to?("dirty")
-      @cached.registration = Cached::Registration.find_or_initialize_by_psar_number(psar.signon2)
+      @cached.registration = Cached::Registration.find_or_initialize_by_psar_number_and_apptest(psar.signon2,
+                                                                                                ::Retain::Logon.instance.apptest)
       @cached.updated_at = Time.now
       @cached.update_attributes(options)
     end

@@ -13,6 +13,8 @@ File.new("tools/queue-pairs").each do |line|
   line.chomp!
   retid, queue = line.split(' ')
   queue_name, center = queue.split(',')
+  # This is broken now.  apptest needs to be set some how... I left it
+  # alone for now because it isn't used
   next unless r = Cached::Registration.find_by_signon(retid)
   next unless c = Cached::Center.find_by_center(center)
   next unless q = c.queues.find_by_queue_name(queue_name)

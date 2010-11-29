@@ -35,7 +35,7 @@ class HotPmrListsController < ApplicationController
       if user = User.find_by_ldap_id(person.mail) # if Raptor knows him
         user.retusers.each do |retuser|           # find their retain id(s)
           pmrs = []
-          next if (dr = Cached::Registration.find_by_signon(retuser.retid)).nil?
+          next if (dr = Cached::Registration.find_by_signon_and_apptest(retuser.retid, retuser.apptest)).nil?
           logger.debug "DR found"
           # For each user, we look at PMRs are are:
           # 1) On their queue

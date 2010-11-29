@@ -161,7 +161,10 @@ module Combined
     end
 
     def dispatched_employee_name
-      dr = Cached::Registration.find(:first, :conditions => { :signon => self.dispatched_employee })
+      dr = Cached::Registration.find(:first, :conditions => {
+                                       :signon => self.dispatched_employee,
+                                       :apptest => ::Retain::Logon.instance.apptest
+                                     })
       unless dr.nil?
         dr.name
       else

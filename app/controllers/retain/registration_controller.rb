@@ -8,7 +8,10 @@ module Retain
 
     def owner_list
       user = Combined::Registration.find(:first,
-                                         :conditions => { :signon => params[:id] } )
+                                         :conditions => {
+                                           :signon => params[:id],
+                                           :apptest => Logon.instance.apptest
+                                         })
       favorite_queues = application_user.favorite_queues
       favorite_signons = []
       favorite_queues.each do |favorite_queue|
@@ -23,7 +26,11 @@ module Retain
       favorites = []
       same_center = []
       # start off ordered by name so each subsection will be ordered as well
-      all = Combined::Registration.find(:all, :order => "name")
+      all = Combined::Registration.find(:all,
+                                        :conditions => {
+                                          :apptest => Logon.instance.apptest
+                                        },
+                                        :order => "name")
       all.each do |reg|
         case
         when reg.signon == user.signon
