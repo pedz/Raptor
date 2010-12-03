@@ -121,6 +121,7 @@
 <!-- cached at <%= Time.now %> -->
 <div class='even'>
   <% tz = signon_user.tz %>
+<!-- <%= "TZ=#{tz}"%> -->
   <% all_lines.each_with_index do |line, index| %>
   <%= show_line(line, index, tz) %>
   <% end -%>
