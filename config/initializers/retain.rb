@@ -19,9 +19,9 @@ begin
   # BASE_PORT.  The default is to not have a file and default to not
   # tunnelled (see rescue below).
   file = Rails.root.join('config', 'initializers', Socket.gethostname.sub(/\..*/, '') + '.rb')
-  Rails.logger.debug("Loading #{file}")
+  Rails.logger.info("Loading #{file}")
   load(file)
-  Rails.logger.debug('load worked')
+  Rails.logger.info('load worked')
 rescue LoadError
   module Retain
     TUNNELLED = false
