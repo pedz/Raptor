@@ -18,7 +18,7 @@ begin
   # file called tcp237.rb.  That file needs to set TUNNELLED and
   # BASE_PORT.  The default is to not have a file and default to not
   # tunnelled (see rescue below).
-  file = Rails.root.join('config', 'initializers', Socket.gethostname.sub(/\..*/, '') + '.rb')
+  file = Rails.root.join('config', 'saved', Socket.gethostname.sub(/\..*/, '') + '.rb')
   Rails.logger.info("Loading #{file}")
   load(file)
   Rails.logger.info('load worked')
