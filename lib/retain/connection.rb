@@ -68,9 +68,15 @@ module Retain
       else
         @node = Logon.instance.software_node
       end
-      @host = @node[:host]
-      @port = @node[:port]
-      logger.debug("RTN: Connecting to #{@host} #{@port}")
+      if Retain::TUNNELLED
+        @host = 'localhost'
+        @port = Retain::BASE_PORT + @node[:tunnel_offset]
+        logger.debug("RTN: Connecting to #{@node[:host]} #{@node[:port]} via #{@host} #{@port}")
+      else
+        @host = @node[:host]
+        @port = @node[:port]
+        logger.debug("RTN: Connecting directly to #{@host} #{@port}")
+      end
       sockaddr = Socket.pack_sockaddr_in(@port, @host)
       @socket.connect(sockaddr)
     end
