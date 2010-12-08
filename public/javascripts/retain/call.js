@@ -69,6 +69,36 @@ Raptor.rightClick = function (event) {
     Raptor.recalcDimensions();
 };
 
+/* Bound with left as this */
+Raptor.leftDelayStart = function (event) {
+    event.stop();
+    this.popupDelayId = Raptor.openLeft.delay(1.0);
+};
+
+/* Bound with left as this */
+Raptor.leftDelayStop = function (event) {
+    event.stop();
+    if (this.popupDelayId) {
+	window.clearTimeout(this.popupDelayId);
+	this.popupDelayId = null;
+    } else {
+	if (!Raptor.left_stays_open)
+	    Raptor.closeLeft();
+    }
+};
+
+/* Bound with left as this */
+Raptor.leftClick = function (event) {
+    event.stop();
+    if (this.popupDelayId) {
+	window.clearTimeout(this.popupDelayId);
+	this.popupDelayId = null;
+    };
+    this.show();
+    Raptor.left_stays_open = !Raptor.left_stays_open;
+    Raptor.recalcDimensions();
+};
+
 Raptor.openRight = function () {
     Raptor.right_is_open = true;
     $('right').show();
@@ -77,6 +107,16 @@ Raptor.openRight = function () {
 Raptor.closeRight = function () {
     Raptor.right_is_open = false;
     $('right').hide();
+};
+
+Raptor.openLeft = function () {
+    Raptor.left_is_open = true;
+    $('left').show();
+};
+
+Raptor.closeLeft = function () {
+    Raptor.left_is_open = false;
+    $('left').hide();
 };
 
 document.observe('dom:loaded', function() {
@@ -160,20 +200,9 @@ document.observe('dom:loaded', function() {
 	//     new Ajax.InPlaceEditor(ele, url, options);
 	// });
 
-	$('left-tab').observe('mouseover', function (event) {
-		// console.log("left-tab mouseoever");
-		event.stop();
-		Raptor.left_is_open = true;
-		ele = $('left');
-		$('left').show();
-	    });
-
-	$('left-tab').observe('click', function (event) {
-		// console.log("left-tab click");
-		event.stop();
-		Raptor.left_stays_open = !Raptor.left_stays_open;
-		Raptor.recalcDimensions();
-	    });
+	$('left-tab').observe('mouseover', Raptor.leftDelayStart.bindAsEventListener($('left')));
+	$('left-tab').observe('mouseout', Raptor.leftDelayStop.bindAsEventListener($('left')));
+	$('left-tab').observe('click', Raptor.leftClick.bindAsEventListener($('left')));
 
 	$('right-tab').observe('mouseover', Raptor.rightDelayStart.bindAsEventListener($('right')));
 	$('right-tab').observe('mouseout', Raptor.rightDelayStop.bindAsEventListener($('right')));
