@@ -54,8 +54,8 @@ module Retain
     # set_required_fields(:signon, :password)
 
     # Required Fields: :list_request, :search_component_id, :signon, :password
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
       if false
         unless @fields.has_key?(:group_request)
           @fields[:group_request] = [[

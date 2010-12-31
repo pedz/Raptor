@@ -7,8 +7,8 @@ module Retain
     set_required_fields(:operand, :signon, :password)
     set_optional_fields(:queue_name, :center, :ppg, :h_or_s)
 
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
     end
   end
 end

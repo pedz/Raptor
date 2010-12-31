@@ -82,8 +82,8 @@ module Retain
                         :psar_file_and_symbol,
                         :error_message)
 
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
       unless @fields.has_key?(:group_request)
         @fields[:group_request] = [[
                                     :signon2,

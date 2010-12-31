@@ -10,7 +10,6 @@ task :add_crits do
   user = User.find_by_ldap_id("pedzan@us.ibm.com")
   retuser = user.current_retain_id
   params = Retain::ConnectionParameters.new(retuser)
-  Retain::Logon.instance.set(params)
   File.open(top + "public/crit-sit-pmrs.txt") do |f|
     f.each_line do |l|
       crit, pmrs = l.split(LINE_SPLIT)
@@ -22,7 +21,7 @@ task :add_crits do
           :country => country
         }
         pmpb_options = { :group_request => [[ :problem_crit_sit ]] }.merge(pmr_options)
-        retain_pmr = Retain::Pmr.new(pmpb_options)
+        retain_pmr = Retain::Pmr.new(params, pmpb_options)
         begin
           problem_crit_sit = retain_pmr.problem_crit_sit    # cause the fetch
         rescue Exception
@@ -33,7 +32,7 @@ task :add_crits do
         next unless EMPTY_CRIT_SIT.match(problem_crit_sit)
         
         pmpu_options = { :problem_crit_sit => crit }.merge(pmr_options)
-        pmpu = Retain::Pmpu.new(pmpu_options)
+        pmpu = Retain::Pmpu.new(params, pmpu_options)
         begin
           pmpu.sendit(Retain::Fields.new)
         rescue Exception

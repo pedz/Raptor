@@ -37,12 +37,12 @@ module Retain
     # The h_or_s argument is used to determine whether the
     # hardware_node (when set to "H") or the software_node (default or
     # when set to "S") should be used.
-    def initialize(h_or_s)
+    def initialize(node)
       super()
       # logger.debug("RTN: Connection initialize h_or_s is '#{h_or_s}'")
       @@count += 1
       @socket = Socket.new( AF_INET, SOCK_STREAM, 0 )
-      @h_or_s = h_or_s
+      @node = node
     end
 
     # Returns the Retain Node being accessed.
@@ -63,11 +63,6 @@ module Retain
     # open the connection.  +config+ is a hash of host and port
     # Can raise various exceptions -- see Socket#connect
     def connect
-      if @h_or_s == 'H' then
-        @node = Logon.instance.hardware_node
-      else
-        @node = Logon.instance.software_node
-      end
       if Retain::TUNNELLED
         @host = 'localhost'
         @port = Retain::BASE_PORT + @node[:tunnel_offset]

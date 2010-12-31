@@ -14,7 +14,7 @@ module Retain
       options = {
         :group_request => [ group_request ]
       }
-      @centers = Retain::Center.new(options).de32s
+      @centers = Retain::Center.new(@params, options).de32s
     end
     
     def show

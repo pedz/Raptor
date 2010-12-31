@@ -66,7 +66,7 @@ module Retain
           :apar_number => params[:id],
           :group_request => [ group_request ]
         }
-        @apar = Retain::Apar.new(options)
+        @apar = Retain::Apar.new(@params, options)
         @apar.fetch_fields
         sleep 1
         if @apar.rc != 0
@@ -75,7 +75,7 @@ module Retain
             :apar_number => params[:id],
             :group_request => [ group_request ]
           }
-          @apar = Retain::Apar.new(options)
+          @apar = Retain::Apar.new(@params, options)
           @apar.fetch_fields
           sleep 1
         end

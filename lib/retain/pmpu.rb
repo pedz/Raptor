@@ -10,8 +10,8 @@ module Retain
                         :next_queue, :next_center, :comment,
                         :problem_crit_sit)
 
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
       unless @fields.has_key?(:last_alter_timestamp)
         @fields[:last_alter_timestamp] = 'NOTMCK'.user_to_retain
       end

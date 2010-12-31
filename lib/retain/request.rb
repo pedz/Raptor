@@ -11,7 +11,7 @@ module Retain
     PACKET_LENGTH = 20...24
     ELEMENT_COUNT = 24...28
 
-    def initialize(options = {})
+    def initialize(signon, options = {})
       super()
       # Set up options with valid defaults
       @options = {              # Default options
@@ -31,7 +31,7 @@ module Retain
         @options[:request].user_to_retain + # request type
         
         # login and password
-        ((Logon.instance.signon + "  ") * 2).user_to_retain +
+        ((signon + "  ") * 2).user_to_retain +
         0.uint2ret + 0.uint2ret +
         
         "I".user_to_retain +             # INBOUND

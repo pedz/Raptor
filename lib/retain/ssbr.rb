@@ -6,8 +6,8 @@ module Retain
     set_required_fields(:apar_number, :signon, :password)
     set_optional_fields(:group_request)
 
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
     end
   end
 end

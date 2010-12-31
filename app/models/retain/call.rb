@@ -12,8 +12,8 @@ module Retain
   class Call < Base
     set_fetch_sdi Pmcb
 
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
     end
 
     # Returns true if the call is a valid call.  For now, we just

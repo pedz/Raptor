@@ -119,8 +119,8 @@ module Retain
                         :local_stop_time_hex
                         )
 
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
     end
   end
 end

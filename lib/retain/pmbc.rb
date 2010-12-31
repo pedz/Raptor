@@ -63,8 +63,8 @@ module Retain
     # Required Fields: :signon, :password
     #
     # Optional Fields: :group_request, :center, :owning_retain_node
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
     end
   end
 end

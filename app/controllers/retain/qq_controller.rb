@@ -22,7 +22,7 @@ module Retain
         :h_or_s => h_or_s,
         :center => center,
       }
-      @query = Retain::Qq.new(options)
+      @query = Retain::Qq.new(@params, options)
     end
   end
 end

@@ -4,8 +4,8 @@ module Retain
   class Qq < Base
     set_fetch_sdi Pmqq
 
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
     end
 
     # Returns true if the queue query is a valid queue query.  For

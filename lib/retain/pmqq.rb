@@ -205,8 +205,8 @@ module Retain
                         :password)
     set_optional_fields(:group_request, :list_request)
 
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
       unless @fields.has_key?(:group_request)
         @fields[:group_request] = [[
                                     :queue_name,

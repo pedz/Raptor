@@ -6,8 +6,8 @@ module Retain
     set_required_fields(:signon, :password, :problem, :branch, :country)
     set_optional_fields(:addtxt_lines)
 
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
     end
   end
 end

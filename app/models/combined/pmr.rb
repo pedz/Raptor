@@ -90,7 +90,7 @@ module Combined
       if @cached.last_alter_timestamp
         # logger.debug("CMB: #{temp_id} last_alter_timestamp set")
         options_hash[:group_request] = [[ :last_alter_timestamp ]]
-        pmr = Retain::Pmr.new(options_hash)
+        pmr = Retain::Pmr.new(@params, options_hash)
         if @cached.last_alter_timestamp == pmr.last_alter_timestamp
           # logger.debug("CMB: #{temp_id} touched")
           @cached.dirty = false
@@ -126,11 +126,11 @@ module Combined
       
       # Fields we need for the add text lines.
       options_hash[:group_request] = [ group_request_elements ]
-      pmr = Retain::Pmr.new(options_hash)
+      pmr = Retain::Pmr.new(@params, options_hash)
       pmr.severity
 
       options_hash[:group_request] = [ [ :information_text_lines, :severity ]]
-      pmr2 = Retain::Pmr.new(options_hash)
+      pmr2 = Retain::Pmr.new(@params, options_hash)
       pmr2.severity
 
       # if @cached.alteration_date
@@ -190,7 +190,7 @@ module Combined
       # Hook up owner and resolver.  We have to plop in the name for
       # new records because we can not retrive all registrations.
       owner = Cached::Registration.find_or_initialize_by_signon_and_apptest(pmr.pmr_owner_id,
-                                                                            ::Retain::Logon.instance.apptest)
+                                                                            @params.apptest)
       owner.name = pmr.pmr_owner_name if owner.name.nil?
       @cached.owner = owner
 
@@ -206,7 +206,7 @@ module Combined
       else
         # Hook up resolver
         resolver = Cached::Registration.find_or_initialize_by_signon_and_apptest(pmr.pmr_resolver_id,
-                                                                                 ::Retain::Logon.instance.apptest)
+                                                                                 @params.apptest)
         resolver.name = pmr.pmr_resolver_name if resolver.name.nil?
         @cached.resolver = resolver
       end

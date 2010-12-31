@@ -4,8 +4,8 @@ module Retain
   class Registration < Base
     set_fetch_sdi Pmdr
 
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
     end
 
     # Returns true if the registration is a valid registration.  For

@@ -108,44 +108,49 @@ class FavoriteQueuesController < Retain::RetainController
     end
   end
   
-  # PUT /favorite_queues/1
-  # Reponds with html and xml formats.
-  def update
-    # this is an odd case.  We do not actually want to change the
-    # attributes of the queue because other people may be pointing
-    # to the queue as their favorite queue.  It would also confused
-    # a lot of other things like the calls assoicated with the
-    # queue.
-    #
-    # So, we find or create a new queue with the new parameters and
-    # then associate the favorite queue with this queue.
-    #
-    queue_options = params[:combined_queue]
-    queue_options[:queue_name].upcase!
-    queue_options[:queue_name].strip!
-    queue_options[:center].upcase!
-    queue_options[:h_or_s].upcase!
-    queue = Combined::Queue.find(:first, :conditions => queue_options) ||
-      Combined::Queue.new(queue_options)
-    @favorite_queue = FavoriteQueue.find(params[:id])
-    @favorite_queue.queue = queue
-    
-    if ! (queue_valid = Retain::Cq.check_queue(queue_options.symbolize_keys))
-      flash[:error] = "Queue is not valid"
-    end
-    
-    respond_to do |format|
-      if queue_valid && @favorite_queue.save
-        flash[:notice] = 'FavoriteQueue was successfully updated.'
-        format.html { redirect_to(@favorite_queue) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @favorite_queue.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-  
+## The code below is broken since the change to favorite queues is a
+## cached thing and not a combined thing.  The call to
+## Retain::Cq.check_queue doesn't even exist anymore.  We will need to
+## fix this eventually but not today.
+##
+##   # PUT /favorite_queues/1
+##   # Reponds with html and xml formats.
+##   def update
+##     # this is an odd case.  We do not actually want to change the
+##     # attributes of the queue because other people may be pointing
+##     # to the queue as their favorite queue.  It would also confused
+##     # a lot of other things like the calls assoicated with the
+##     # queue.
+##     #
+##     # So, we find or create a new queue with the new parameters and
+##     # then associate the favorite queue with this queue.
+##     #
+##     queue_options = params[:combined_queue]
+##     queue_options[:queue_name].upcase!
+##     queue_options[:queue_name].strip!
+##     queue_options[:center].upcase!
+##     queue_options[:h_or_s].upcase!
+##     queue = Combined::Queue.find(:first, :conditions => queue_options) ||
+##       Combined::Queue.new(queue_options)
+##     @favorite_queue = FavoriteQueue.find(params[:id])
+##     @favorite_queue.queue = queue
+##     
+##     if ! (queue_valid = Retain::Cq.check_queue(queue_options.symbolize_keys))
+##       flash[:error] = "Queue is not valid"
+##     end
+##     
+##     respond_to do |format|
+##       if queue_valid && @favorite_queue.save
+##         flash[:notice] = 'FavoriteQueue was successfully updated.'
+##         format.html { redirect_to(@favorite_queue) }
+##         format.xml  { head :ok }
+##       else
+##         format.html { render :action => "edit" }
+##         format.xml  { render :xml => @favorite_queue.errors, :status => :unprocessable_entity }
+##       end
+##     end
+##   end
+
   # DELETE /favorite_queues/1
   # Responds with html and xml formats.
   def destroy

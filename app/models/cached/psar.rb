@@ -33,6 +33,9 @@ module Cached
     once :stop_date
 
     def before_destroy
+      # The call to Retain::Psru below needs to have params come from
+      # somewhere.  I don't know how to do that yet.
+      return false
       options = { :operand => 'DEL ', :psar_file_and_symbol => psar_file_and_symbol }
       psru = Retain::Psru.new(options)
       begin

@@ -18,6 +18,16 @@ module Retain
       @reason = nil
     end
 
+    # Originally, the code used the various fields below.  i.e. there
+    # were calls to Logon.instance.signon.  But to make the async
+    # processing work, the connection parameters were saved inside the
+    # sdi when it was created and then those were used everywhere
+    # (within the Retain module).  There are still some calls in the
+    # controllers and models to the separate methods.
+    def get
+      @params
+    end
+
     # Set the return  value of the logon exchange with the retain
     # node.  This is set by the SDI code and is the "return value" in
     # the "first 50" bytes of the logon sequence.

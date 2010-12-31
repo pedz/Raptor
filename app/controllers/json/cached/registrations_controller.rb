@@ -3,7 +3,7 @@ module Json
     class RegistrationsController < Retain::RetainController
       def index
         render :json => ::Cached::Registration.find(:all,
-                                                    :conditions => { :apptest => Logon.instance.apptest})
+                                                    :conditions => { :apptest => @params.apptest})
       end
 
       def show

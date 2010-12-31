@@ -11,6 +11,11 @@ module Retain
   # LogonFailed is raised when a login is attempted but fails.
   #
   class LogonFailed < RetainError
+    attr_reader :params, :logon_return, :logon_reason
+
+    def intialize(params, logon_return, logon_reason)
+      @params, @logon_return, @logon_reason = params, logon_return, logon_reason
+    end
   end
 
   #

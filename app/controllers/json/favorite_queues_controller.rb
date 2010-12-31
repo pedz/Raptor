@@ -1,8 +1,13 @@
 module Json
   class FavoriteQueuesController < Retain::RetainController
     def index
-      render :json => application_user.
-        favorite_queues.
+      favorite_queues = application_user.favorite_queues
+      favorite_queues.each do |q|
+        d = AsyncRequest.new(application_user.current_retain_id.id, q.queue)
+        logger.debug("beep")
+        d.async_send_opts(:perform, { :type => :raptor })
+      end
+      render :json => favorite_queues.
         to_json(:include =>
                 { :queue =>
                   { :include =>

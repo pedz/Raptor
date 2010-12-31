@@ -410,7 +410,7 @@ module Retain
       else
         td binding, :class => 'dispatch' do |binding|
           if call.is_dispatched
-            if call.dispatched_employee == Logon.instance.signon
+            if call.dispatched_employee == @params.signon
               concat(link_to_remote("Undispatch", :url => dispatch_combined_call_path(call)))
             else
               concat("N/A")

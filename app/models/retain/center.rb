@@ -4,8 +4,8 @@ module Retain
   class Center < Base
     set_fetch_sdi Pmbc
 
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
     end
 
     def self.valid?(options)

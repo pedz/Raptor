@@ -115,7 +115,7 @@
 # 2115  Organization Level 2 (CHAR 1) (1)
 # 2116  VM Node to Receive Password (CHAR 8) (8)
 # 2118  Current Password (CHAR 8) (8)
-# 2119  Last Password (CHAR 8) <span style="mso-spacerun:yes"> </span> (8)
+# 2119  Last Password (CHAR 8) (8)
 # 2120  PEND Access restriction (CHAR 8) (8)
 # 2121  Net Name of Users System (CHAR 8) (8)
 # 2122  Users Associated Printer ID (CHAR 8) (8)
@@ -135,8 +135,8 @@ module Retain
     set_required_fields :signon, :password, :group_request
     set_optional_fields :secondary_login
 
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
       unless @fields.has_key?(:group_request)
         @fields[:group_request] = [[
                                     :name,

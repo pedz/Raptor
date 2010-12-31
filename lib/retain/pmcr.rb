@@ -139,8 +139,8 @@ module Retain
                         :vantive_email_selector,
                         :zip_code
                         )
-    def initialize(options = { })
-      super(options)
+    def initialize(params, options = { })
+      super(params, options)
     end
   end
 end

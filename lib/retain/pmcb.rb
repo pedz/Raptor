@@ -135,8 +135,8 @@ module Retain
                         :h_or_s, :signon, :password,
                         :group_request)
 
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
       unless @fields.has_key?(:group_request)
         @fields[:group_request] = [[
                                     :problem,

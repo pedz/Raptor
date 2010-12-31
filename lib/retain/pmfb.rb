@@ -26,8 +26,8 @@ module Retain
     set_required_fields(:center, :format_panel_number, :signon, :password)
     set_optional_fields(:panel_operand, :group_request, :error_message)
 
-    def initialize(options = { })
-      super(options)
+    def initialize(params, options = { })
+      super(params, options)
       unless @fields.has_key?(:group_request)
         @fields[:group_request] = [[
                                     :center,

@@ -23,7 +23,7 @@ module Retain
     end
     
     def common_display_pmr_owner(binding, call)
-      retid = Logon.instance.signon
+      retid = @params.signon
       pmr = call.pmr
       hash = call.validate_owner(signon_user)
       if hash[:editable]
@@ -46,7 +46,7 @@ module Retain
     end
 
     def common_display_pmr_resolver(binding, call)
-      retid = Logon.instance.signon
+      retid = @params.signon
       pmr = call.pmr
       hash = call.validate_resolver(signon_user)
       if hash[:editable]

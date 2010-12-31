@@ -9,11 +9,10 @@ task :scan_pmrs do
   params = Retain::ConnectionParameters.new(:signon   => retuser.retid,
                                             :password => retuser.password,
                                             :failed   => retuser.failed)
-  Retain::Logon.instance.set(params)
   begin
     pmrs.each do |cached_pmr|
       print "#{cached_pmr.pbc} "
-      if pmr_valid?(cached_pmr)
+      if pmr_valid?(params, cached_pmr)
         # cause the PMR to be fetched.
         # It might be that this causes an exception like the db unique
         # constraint problem or something like that.  We'll see how it
@@ -46,9 +45,10 @@ end
 # We try and fetch the pmr from retain.  If we can and if its creation
 # date is the same, then we assume its the same PMR.
 #
-def pmr_valid?(cached_pmr)
+def pmr_valid?(params, cached_pmr)
   begin
-    retain_pmr = Retain::Pmr.new({
+    retain_pmr = Retain::Pmr.new(params,
+                                 {
                                    :problem => cached_pmr.problem,
                                    :branch => cached_pmr.branch,
                                    :country => cached_pmr.country,

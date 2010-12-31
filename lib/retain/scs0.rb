@@ -7,8 +7,8 @@ module Retain
     set_required_fields :queue_name, :center, :requested_elements
     set_optional_fields :h_or_s
     
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
       unless @fields.has_key?(:requested_elements)
         @fields[:requested_elements] = [
                                         :queue_name,

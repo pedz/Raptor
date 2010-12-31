@@ -29,6 +29,7 @@ Rails::Initializer.run do |config|
   # config.gem "aws-s3", :lib => "aws/s3"
   config.gem "activeldap", :lib => "active_ldap"
   config.gem "icu4r"
+  config.gem "beanstalk-client"
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
@@ -61,4 +62,15 @@ Rails::Initializer.run do |config|
     :key => '_raptor_session',
     :secret      => '15bbeb7de57ae9d03ea579825288591c'
   }
+
+  config.after_initialize do
+    AsyncObserver::Queue.queue = Beanstalk::Pool.new(['127.0.0.1:11300'])
+    
+    # This value should change every time you make a release of your app.
+    AsyncObserver::Queue.app_version = "1.0.1"
+
+    AsyncObserver::Worker.handle = proc do |job|
+      return AsyncRequest.perform(job)
+    end
+  end
 end

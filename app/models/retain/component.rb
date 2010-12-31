@@ -4,9 +4,9 @@ module Retain
   class Component < Base
     set_fetch_sdi Cmpb
 
-    def initialize(options = {})
+    def initialize(params, options = {})
       logger.debug("Component #{options.inspect}")
-      super(options)
+      super(params, options)
     end
 
     def self.valid?(options)

@@ -65,10 +65,12 @@ module Retain
     ###
     ### instance methods
     ###
-    def initialize(options = {})
+    def initialize(params, options = {})
       super()
       @options = { :request => self.class.fetch_request }.merge(options)
       @fields = Fields.new
+      @params = params
+
       # self.logger.debug("RTN: initializing #{self.class}")
       
       # Look at the default_fields for a list of fields to use as
@@ -82,9 +84,9 @@ module Retain
       (self.class.required_fields + self.class.optional_fields).each do |sym|
         case sym
         when :signon
-          @fields[sym] = @options[sym] || Logon.instance.signon
+          @fields[sym] = @options[sym] || @params.signon
         when :password
-          @fields[sym] = @options[sym] || Logon.instance.password
+          @fields[sym] = @options[sym] || @params.password
         else
           @fields[sym] = @options.delete(sym) if @options.has_key?(sym)
         end
@@ -107,7 +109,7 @@ module Retain
         # logger.debug("RTN: #{options.to_yaml}")
       end
 
-      request = Request.new(options)
+      request = Request.new(@params.signon, options)
       self.class.required_fields.each do |sym|
         # if true
         #   logger.debug("RTN: required symbol: #{sym}")
@@ -200,7 +202,7 @@ module Retain
         @error_message = msg
         logger.error("SDI: #{@request_type}: #{@error_message}")
         if @rc == 703 || @rc == 705
-          raise LogonFailed
+          raise LogonFailed.new(@params, @logon_return, @logon_reason)
         end
         logger.error("Node used was #{@connection.node}(#{@connection.host}:#{@connection.port})")
         dump_debug
@@ -301,7 +303,12 @@ module Retain
         end
       
     def connect(h_or_s)
-      @connection = Connection.new(h_or_s)
+      if h_or_s == 'H'
+        node = @params.hardware_node
+      else
+        node = @params.software_node
+      end
+      @connection = Connection.new(node)
       @connection.connect
     end
 
@@ -336,15 +343,15 @@ module Retain
       #
       # Abort early if the failed flag is already true
       #
-      raise FailedMarkedTrue if Logon.instance.failed
+      raise FailedMarkedTrue if @params.failed
 
       #
       # Could pull signon and password from options
       #
       first50 = 'SDTC,SDIRETEX' + 
-        Logon.instance.signon +
+        @params.signon +
         '  ' +
-        Logon.instance.password +
+        @params.password +
         '00000000   ,IC,000000'
       
       @logon_request = first50.user_to_retain
@@ -361,14 +368,12 @@ module Retain
       #   logger.debug("RTN: nil reply")
       # end
       @logon_return = @logon_reply[24,4].retain_to_user.to_i
-      Logon.instance.return_value = @logon_return
       @logon_reason = @logon_reply[28,4].retain_to_user.to_i
-      Logon.instance.reason = @logon_reason
       # logger.debug("Logon Return: #{@logon_return}")
       # logger.debug("Logon Reason: #{@logon_reason}")
       unless @logon_reply && @logon_reply.length == 50
         logon_debug
-        raise LogonFailed
+        raise LogonFailed.new(@params, @logon_return, @logon_reason)
       end
     end
     

@@ -20,8 +20,7 @@ module Retain
 
     def signon_user
       @signon_user ||=
-        Combined::Registration.find_or_initialize_by_signon_and_apptest(Retain::Logon.instance.signon,
-                                                                        Retain::Logon.instance.apptest)
+        Combined::Registration.find_or_initialize_by_signon_and_apptest(@params.signon, @params.apptest)
     end
     helper_method :signon_user
 
@@ -63,8 +62,12 @@ module Retain
     # data.  We also set the Logon instance to use these settings.
     def setup_logon_instance
       retuser = application_user.current_retain_id
-      params = ConnectionParameters.new(retuser)
-      Logon.instance.set(params)
+      @params = ConnectionParameters.new(retuser)
+      # The Logon instance is the way we pass @params from the Retain
+      # controller to any Combined models.  The Combined models then
+      # pass it explicitly to any Retain models that they need.
+      logger.debug("Logon set")
+      Logon.instance.set(@params)
     end
     
     def logon_failed(exception)
@@ -73,8 +76,8 @@ module Retain
       # do not retry until the user resets his password.
       retuser = application_user.current_retain_id
       retuser.failed = true
-      retuser.return_value = Logon.instance.return_value
-      retuser.reason = Logon.instance.reason
+      retuser.return_value = exception.return_value
+      retuser.reason = exception.reason
       retuser.save
 
       flash[:error] = find_logon_error(retuser.return_value, retuser.reason)

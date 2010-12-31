@@ -116,8 +116,8 @@ module Retain
 
       # Creates the SDI request type specified by the set_fetch_sdi
       # method.
-      def fetch_sdi
-        @fetch_sdi.new
+      def fetch_sdi(params)
+        @fetch_sdi.new(params)
       end
     end
 
@@ -127,8 +127,9 @@ module Retain
     ###
     ### instance methods
     ###
-    def initialize(options = {})
+    def initialize(params, options = {})
       super()
+      @params = params
       @options = options
       @fields = Fields.new(self.method(:fetch_fields))
       # logger.debug("RTN: initializing #{self.class}")
@@ -202,7 +203,7 @@ module Retain
     #
     def fetch_fields
       # logger.debug("RTN: fetch fields for #{self.class}")
-      @fetch_sdi = self.class.fetch_sdi
+      @fetch_sdi = self.class.fetch_sdi(@params)
       @fetch_sdi.sendit(@fields, @options)
       self
     end

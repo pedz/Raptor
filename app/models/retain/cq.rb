@@ -6,14 +6,14 @@ module Retain
   class Cq < Base
     set_fetch_sdi Pmcs
 
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
     end
 
-    def self.valid?(options)
+    def self.valid?(params, options)
       # short circuit asking if queue_name or center is blank
       return false if options[:queue_name].blank? || options[:center].blank?
-      cq = Retain::Cq.new(options)
+      cq = Retain::Cq.new(params, options)
       begin
         hit_count = cq.hit_count # get hit_count to see if the queue is valid
         return true

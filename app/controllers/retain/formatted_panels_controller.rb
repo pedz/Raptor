@@ -6,7 +6,7 @@ module Retain
       options = { }
       options[:center] = signon_user.default_center.center
       options[:format_panel_number] = params[:id]
-      @formatted_panel = Retain::FormattedPanel.new(options)
+      @formatted_panel = Retain::FormattedPanel.new(@params, options)
     end
   end
 end

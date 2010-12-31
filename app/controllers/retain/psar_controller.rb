@@ -14,7 +14,7 @@ module Retain
 
       # temp_date = Time.mktime(2008, "jan", 1, 0, 0, 0, 0)
       if true
-        @psars = Retain::Psar.range(temp_date, Time.now)
+        @psars = Retain::Psar.range(@params, temp_date, Time.now)
         # @psars = Retain::Psar.range(temp_date, temp_date)
       else
         @psars = Retain::Psar.new.de32s.map do |fields|

@@ -4,8 +4,8 @@ module Retain
   class Apar < Base
     set_fetch_sdi Ssbr
 
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
     end
 
     # Returns true if the apar is a valid apar.  For now, we just

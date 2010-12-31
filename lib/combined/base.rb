@@ -219,7 +219,9 @@ module Combined
     # new for the Combined subclasses takes a hash of options or an
     # instance of the equivalent Cached class
     def initialize(arg = { })
+      logger.debug("Combined init")
       super()
+      @params = Retain::Logon.instance.get
       if arg.kind_of? Hash
         @cached = self.class.cached_class.new(arg.unwrap_to_cached)
       else

@@ -8,11 +8,9 @@ require "#{RAILS_ROOT}/config/environment"
 
 puts RAILS_ENV
 
-p = Retain::ConnectionParameters.new(:host => 'sf2.pok.ibm.com', :port => 3381, :signon => '305356', :password => 'COWS105C')
+params = Retain::ConnectionParameters.new(:host => 'sf2.pok.ibm.com', :port => 3381, :signon => '305356', :password => 'COWS105C')
 puts "#{__FILE__}:#{__LINE__}"
-Retain::Logon.instance.set(p)
-puts "#{__FILE__}:#{__LINE__}"
-q = Retain::Queue.new(:queue_name => 'PEDZ', :center => '165')
+q = Retain::Queue.new(params, :queue_name => 'PEDZ', :center => '165')
 puts "#{__FILE__}:#{__LINE__}"
 recs = q.calls
 puts q.queue_name

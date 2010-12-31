@@ -163,7 +163,7 @@ module Combined
     def dispatched_employee_name
       dr = Cached::Registration.find(:first, :conditions => {
                                        :signon => self.dispatched_employee,
-                                       :apptest => ::Retain::Logon.instance.apptest
+                                       :apptest => @params.apptest
                                      })
       unless dr.nil?
         dr.name
@@ -476,7 +476,7 @@ module Combined
       options_hash[:group_request] = [ group_request ]
 
       # Create retain object
-      call = Retain::Call.new(options_hash)
+      call = Retain::Call.new(@params, options_hash)
 
       # Touch to force a fetch from Retain
       begin

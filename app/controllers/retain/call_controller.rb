@@ -378,7 +378,7 @@ module Retain
 
     def safe_new(klass, options, area)
       begin
-        obj = klass.new(options)
+        obj = klass.new(@params, options)
       rescue ArgumentError => e
         text = create_reply_span(e.message, :error)
         render_message(text, area)
@@ -502,7 +502,7 @@ module Retain
       # logger.debug("call alter options: #{options.inspect}")
 
       # Perform the update.
-      pmpu = Retain::Pmpu.new(options)
+      pmpu = Retain::Pmpu.new(@params, options)
       fields = Retain::Fields.new
       pmpu.sendit(fields)
       rc = pmpu.rc
@@ -619,7 +619,7 @@ module Retain
 
     def do_pmcu(cmd, options)
       options = { :operand => cmd }.merge(options)
-      pmcu = Retain::Pmcu.new(options)
+      pmcu = Retain::Pmcu.new(@params, options)
       begin
         pmcu.sendit(Retain::Fields.new)
       rescue

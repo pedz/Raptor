@@ -75,7 +75,7 @@ class << AsyncObserver::Queue
   end
 
   def pkg(code, opts)
-    opts.merge(:type => :rails, :code => code)
+    { :type => :rails, :code => code }.merge(opts)
   end
 
   # Be careful not to pass in a selector that's not valid ruby source.

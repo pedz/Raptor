@@ -34,6 +34,7 @@ module ApplicationHelper
     res << "#{"%.3f" % time} seconds or "
     res << "#{"%.3f" % avg} seconds per call. "
     res << "</span>"
+    # This is left over usage that I'd like to clean up someday.
     logon_return = Retain::Logon.instance.return_value
     logon_reason = Retain::Logon.instance.reason
     unless logon_return.nil? || logon_return == 0

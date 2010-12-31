@@ -29,14 +29,14 @@ module Combined
       return ret
     end
 
-    def self.fetch(search_hash)
+    def self.fetch(params, search_hash)
       # Cuurently we do this in two steps.  We fetch just the "IRIS"s
       # and then we fetch the contents of each PSAR that is not in our
       # cache.
       search_hash = search_hash.dup
       search_hash[:group_request] = [ [ :psar_file_and_symbol ] ]
       begin
-        de32s = Retain::Psar.new(search_hash).de32s
+        de32s = Retain::Psar.new(params, search_hash).de32s
       rescue Retain::SdiReaderError => e
         raise e unless e.rc == 256
       else
@@ -83,7 +83,7 @@ module Combined
       options_hash[:group_request] = [ group_request ]
 
       # Setup Retain object
-      retain_object = self.class.retain_class.new(options_hash)
+      retain_object = self.class.retain_class.new(@params, options_hash)
 
       # Special case for psar.
       begin
@@ -154,7 +154,7 @@ module Combined
       options = self.class.cached_class.options_from_retain(psar)
       options[:dirty] = false if @cached.respond_to?("dirty")
       @cached.registration = Cached::Registration.find_or_initialize_by_psar_number_and_apptest(psar.signon2,
-                                                                                                ::Retain::Logon.instance.apptest)
+                                                                                                @params.apptest)
       logger.error("reg.signon = #{@cached.registration.signon}")
       @cached.updated_at = Time.now
       @cached.update_attributes(options)

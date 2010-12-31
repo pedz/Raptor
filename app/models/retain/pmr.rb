@@ -4,8 +4,8 @@ module Retain
   class Pmr < Base
     set_fetch_sdi Pmpb
 
-    def initialize(options = {})
-      super(options)
+    def initialize(params, options = {})
+      super(params, options)
     end
 
     def to_s
