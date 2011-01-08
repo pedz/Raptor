@@ -70,7 +70,7 @@ Rails::Initializer.run do |config|
     AsyncObserver::Queue.app_version = "1.0.1"
 
     AsyncObserver::Worker.handle = proc do |job|
-      return AsyncRequest.perform(job)
+      AsyncRequest.perform(job)
     end
   end
 end

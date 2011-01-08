@@ -255,6 +255,13 @@ module Combined
       @cached.to_xml(options, &block)
     end
 
+    # Routine added so that AsyncRequest has an easy place to call
+    # that will test the cache to see if a load would be a good thing
+    # to do or not.
+    def load_if_stale
+      call_load unless cache_valid?
+    end
+
     private
 
     def self.inherited(subclass)

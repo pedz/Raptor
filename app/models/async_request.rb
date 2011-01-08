@@ -1,20 +1,62 @@
+require 'async_observer/queue'
+
+class << AsyncObserver::Queue
+  def default_pri
+    DEFAULT_PRI
+  end
+
+  def default_fuzz
+    DEFAULT_FUZZ
+  end
+
+  def default_delay
+    DEFAULT_DELAY
+  end
+
+  def default_ttr
+    DEFAULT_TTR
+  end
+
+  def default_tube
+    DEFAULT_TUBE
+  end
+end
 
 class AsyncRequest
-
-  include AsyncObserver::Extensions
-
   def self.perform(job)
-    Rails.logger.debug("Bob: #{job.to_yaml}")
+    # Note: job.ybody wasn't working for me.
+    ar = YAML.load(job.body)    # The transmitted AsyncRequest
+    ar.perform
+    job.delete
+    true
   end
   
   def initialize(id, obj)
-    Rails.logger.debug("initialize: id = #{id}, obj.class=#{obj.class}, obj.id=#{obj.id}")
     @retuser_id = id
-    @obj_class = obj.class
+    # @obj = obj
+    @obj_class = obj.class.to_s
     @obj_id = obj.id
   end
 
-  def rrepr
-    "{ retuser_id => #{@retuser_id} }"
+  # Not using the one in AsyncObserver::Extensions because it is too
+  # braindead.
+  def async_send(action, opts = { })
+    @type = :raptor
+    pri = opts.fetch(:pri, AsyncObserver::Queue.default_pri)
+    fuzz = opts.fetch(:fuzz, AsyncObserver::Queue.default_fuzz)
+    delay = opts.fetch(:delay, AsyncObserver::Queue.default_delay)
+    ttr = opts.fetch(:ttr, AsyncObserver::Queue.default_ttr)
+    tube = opts.fetch(:tube, (AsyncObserver::Queue.app_version or AsyncObserver::Queue.default_tube))
+
+    AsyncObserver::Queue.put!(self, pri, delay, ttr, tube)
+  end
+
+  def perform
+    retuser = Retuser.find(@retuser_id)
+    rec = @obj_class.constantize.find(@obj_id)
+    @params = Retain::ConnectionParameters.new(retuser)
+    Retain::Logon.instance.set(@params)
+    cmb = rec.to_combined
+    cmb.load_if_stale
   end
 end

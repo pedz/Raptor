@@ -3,9 +3,7 @@ module Json
     def index
       favorite_queues = application_user.favorite_queues
       favorite_queues.each do |q|
-        d = AsyncRequest.new(application_user.current_retain_id.id, q.queue)
-        logger.debug("beep")
-        d.async_send_opts(:perform, { :type => :raptor })
+        AsyncRequest.new(application_user.current_retain_id.id, q.queue).async_send(:fetch)
       end
       render :json => favorite_queues.
         to_json(:include =>
