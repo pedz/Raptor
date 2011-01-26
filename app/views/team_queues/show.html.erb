@@ -1,0 +1,13 @@
+<p>
+  <b>Team:</b>
+  <%=h @team_queue.team_id %>
+</p>
+
+<p>
+  <b>Cached queue:</b>
+  <%=h @team_queue.cached_queue_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_team_queue_path(@team_queue) %> |
+<%= link_to 'Back', team_queues_path %>

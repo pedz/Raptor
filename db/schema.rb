@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 48) do
+ActiveRecord::Schema.define(:version => 53) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -259,6 +259,12 @@ ActiveRecord::Schema.define(:version => 48) do
     t.datetime "updated_at"
   end
 
+  create_table "membership_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "retain_node_selectors", :force => true do |t|
     t.string   "description"
     t.integer  "retain_node_id", :null => false
@@ -322,6 +328,30 @@ ActiveRecord::Schema.define(:version => 48) do
 
   add_index "retusers", ["id", "user_id"], :name => "uq_id_user_id", :unique => true
   add_index "retusers", ["user_id", "retid", "apptest"], :name => "uq_retusers_tuple", :unique => true
+
+  create_table "team_memberships", :force => true do |t|
+    t.integer  "team_id"
+    t.integer  "membership_type_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "team_queues", :force => true do |t|
+    t.integer  "team_id"
+    t.integer  "cached_queue_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "team_queues", ["cached_queue_id"], :name => "uq_team_queues_queue_owner", :unique => true
+
+  create_table "teams", :force => true do |t|
+    t.string   "name",       :null => false
+    t.string   "dept",       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "ldap_id",                               :null => false

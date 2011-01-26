@@ -4,9 +4,12 @@
 # user type records hang off of it such as a record for the users ldap
 # entry (bluepages), the users retain entry, etc.
 #
+# :attr: ldap_id
+# Bluepages mail address of use
+#
 # +ldap_id+::        +string+  -- Bluepages mail address
 # +retain_user_id+:: +integer+ -- id to the retain record
-# +admin+::          +boolean+ -- User can administor this site
+# +admin+::          +boolean+ -- True if user can administor this site
 #
 class CreateUsers < ActiveRecord::Migration
   def self.up

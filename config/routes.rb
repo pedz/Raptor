@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 
 ActionController::Routing::Routes.draw do |map|
+  map.resources :team_memberships
+
+  map.resources :membership_types
+
+  map.resources :team_queues
+
+  map.resources :teams
+
   map.resources :retain_node_selectors
 
   map.resources :retain_nodes

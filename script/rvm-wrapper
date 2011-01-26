@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+RVMRC=/usr/local/lib/rvm
+[[ -s "${RVMRC}" ]] && source "${RVMRC}"
+
+cd $PWD
+cmd=$1
+shift
+exec $cmd "$@"
