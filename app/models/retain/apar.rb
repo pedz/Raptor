@@ -11,7 +11,7 @@ module Retain
     # Returns true if the apar is a valid apar.  For now, we just
     # return true.  We might do a fetch from retain if we find we need
     # to.
-    def self.valid?(options)
+    def self.valid?(params, options)
       true
     end
   end

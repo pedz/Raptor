@@ -75,10 +75,10 @@ module Cached
       
       # Very similar to find_or_new except calls valid? in the Retain
       # class
-      def from_options(options)
+      def from_options(params, options)
         # logger.debug("CHC: from_options #{self} with #{options.inspect}")
         temp = find(:first, :conditions => keys_only(options))
-        if temp.nil? && retain_class.valid?(options)
+        if temp.nil? && retain_class.valid?(params, options)
           # I changed this July 14, 2008.  It use to be new instead of
           # create.  But, if the queue is valid, lets go ahead and save
           # it in the database.  This makes the cascade of objects more
@@ -98,8 +98,8 @@ module Cached
       alias :new_from_options :from_options
     
       # Calls new_from_options which calls valid?
-      def create_from_options(options)
-        r = new_from_options(options)
+      def create_from_options(params, options)
+        r = new_from_options(params, options)
         r.save if r && r.new_record?
         r
       end

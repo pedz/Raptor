@@ -8,7 +8,7 @@ module Retain
       super(params, options)
     end
 
-    def self.valid?(options)
+    def self.valid?(params, options)
       # short circuit asking if "" is a valid center
       return false if options[:center].blank?
       return false if options[:center] == "000"
@@ -16,7 +16,7 @@ module Retain
         :center => options[:center],
         :group_request => [[ :software_center_mnemonic ]]
       }
-      center = new(new_options)
+      center = new(params, new_options)
       begin
         mnemonic = center.software_center_mnemonic
         return true

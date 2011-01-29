@@ -15,7 +15,7 @@ module Retain
     # Returns true if the pmr is a valid pmr.  For now, we just
     # return true.  We might do a fetch from retain if we find we need
     # to.
-    def self.valid?(options)
+    def self.valid?(params, options)
       logger.debug("in PMR valid?")
       new_options = {
         :problem => options[:problem],
@@ -23,7 +23,7 @@ module Retain
         :country => options[:country],
         :group_request => [[ :comments ]]
       }
-      pmr = new(new_options)
+      pmr = new(params, new_options)
       begin
         comments = pmr.comments
       rescue Retain::SdiReaderError => e

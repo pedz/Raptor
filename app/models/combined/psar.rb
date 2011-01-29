@@ -139,7 +139,7 @@ module Combined
       
       # Hookup Queue
       # This is duplicate code ####
-      center = Cached::Center.from_options(:center => psar.chargeable_center)
+      center = Cached::Center.from_options(@params, {:center => psar.chargeable_center})
       if center
         center.save if center.new_record?
         @cached.center = center

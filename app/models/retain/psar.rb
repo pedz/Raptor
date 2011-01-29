@@ -24,7 +24,7 @@ module Retain
     # Returns true if the psar is a valid psar.  For now, we just
     # return true.  We might do a fetch from retain if we find we need
     # to.
-    def self.valid?(options)
+    def self.valid?(params, options)
       true
     end
   end

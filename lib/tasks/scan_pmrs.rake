@@ -6,13 +6,13 @@ task :scan_pmrs do
   Rake::Task["rake:environment"].invoke
   pmrs = Cached::Pmr.find(:all, :conditions => { :deleted => false })
   retuser = Retuser.find_by_retid(DAEMON_RETAIN_ID)
-  params = Retain::ConnectionParameters.new(:signon   => retuser.retid,
-                                            :password => retuser.password,
-                                            :failed   => retuser.failed)
+  @params = Retain::ConnectionParameters.new(retuser)
+  Retain::Logon.instance.set(@params)
+
   begin
     pmrs.each do |cached_pmr|
       print "#{cached_pmr.pbc} "
-      if pmr_valid?(params, cached_pmr)
+      if pmr_valid?(@params, cached_pmr)
         # cause the PMR to be fetched.
         # It might be that this causes an exception like the db unique
         # constraint problem or something like that.  We'll see how it

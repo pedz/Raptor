@@ -74,7 +74,7 @@ module Combined
       q = center.queues.find(:first, :conditions => options)
       if q.nil?
         q = center.queues.build(options)
-        return nil unless q.valid?
+        return nil unless q.queue_valid?
       end
       q
     end
@@ -91,7 +91,9 @@ module Combined
       { :queue_name => queue_name, :h_or_s => h_or_s }.merge(center.to_options)
     end
     
-    def valid?(options = to_options)
+    # This was called just valid? but it confused me with the class
+    # methods valid?
+    def queue_valid?(options = to_options)
       Retain::Cq.valid?(@params, options)
     end
     

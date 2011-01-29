@@ -262,6 +262,15 @@ module Combined
       call_load unless cache_valid?
     end
 
+    def from_options(options)
+      @cached.from_options(@params, options)
+    end
+    alias :new_from_options :from_options
+
+    def create_from_options(options)
+      @cached.create_from_options(@params, options)
+    end
+
     private
 
     def self.inherited(subclass)

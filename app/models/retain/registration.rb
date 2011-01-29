@@ -11,12 +11,12 @@ module Retain
     # Returns true if the registration is a valid registration.  For
     # now, we just return true.  We might do a fetch from retain if we
     # find we need to.
-    def self.valid?(options)
+    def self.valid?(params, options)
       new_options = {
         :secondary_login => options[:secondary_login],
         :group_request => [[ :name ]]
       }
-      registration = new(new_options)
+      registration = new(params, new_options)
       begin
         name = registration.name
         return true

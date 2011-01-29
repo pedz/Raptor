@@ -230,7 +230,7 @@ module Combined
         :ppg => pmr.ppg
       }
       # logger.debug("CMB: primary_options = #{primary_options.inspect}")
-      center = Cached::Center.create_from_options(primary_options)
+      center = Cached::Center.create_from_options(@params, primary_options)
       if center
         # logger.debug("CMB: got center")
         # We have to save the center if it is a new record.  This is
@@ -241,12 +241,12 @@ module Combined
         # are new records, things get confused.
         center.save if center.new_record?
         @cached.center = center
-        queue = center.queues.create_from_options(primary_options)
+        queue = center.queues.create_from_options(@params, primary_options)
         if queue
           # logger.debug("CMB: got queue")
           queue.save if queue.new_record?
           @cached.queue = queue
-          call = queue.calls.new_from_options(primary_options.merge({ :pmr_id => @cached.id }))
+          call = queue.calls.new_from_options(@params, primary_options.merge({ :pmr_id => @cached.id }))
           if call
             # logger.debug("CMB: got call")
             if call.new_record?
@@ -268,11 +268,11 @@ module Combined
         :queue_name => pmr.next_queue,
         :h_or_s => pmr.h_or_s
       }
-      nc = Cached::Center.from_options(nc_options)
+      nc = Cached::Center.from_options(@params, nc_options)
       if nc
         nc.save if nc.new_record?
         @cached.next_center = nc
-        nq = nc.queues.from_options(nc_options)
+        nq = nc.queues.from_options(@params, nc_options)
         if nq
           @cached.next_queue = nq
         end

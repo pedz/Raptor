@@ -9,7 +9,7 @@ module Retain
       super(params, options)
     end
 
-    def self.valid?(options)
+    def self.valid?(params, options)
       true
     end
   end
