@@ -28,7 +28,7 @@ module Combined
 
     def self.from_param(param, signon_user = nil)
       param = signon_user.default_center if param.empty?
-      create_from_options(:center => param)
+      create_from_options(@params, :center => param)
     end
 
     def to_param

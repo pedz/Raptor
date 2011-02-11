@@ -268,7 +268,7 @@ module Combined
     alias :new_from_options :from_options
 
     def create_from_options(options)
-      @cached.create_from_options(@params, options)
+      @cached.create_from_options(params, options)
     end
 
     private
