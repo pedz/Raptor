@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 53) do
+ActiveRecord::Schema.define(:version => 54) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -319,8 +319,8 @@ ActiveRecord::Schema.define(:version => 53) do
     t.boolean  "failed",           :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "return_value"
-    t.integer  "reason"
+    t.integer  "logon_return"
+    t.integer  "logon_reason"
     t.boolean  "apptest",          :default => false, :null => false
     t.integer  "software_node_id", :default => 1,     :null => false
     t.integer  "hardware_node_id", :default => 2,     :null => false

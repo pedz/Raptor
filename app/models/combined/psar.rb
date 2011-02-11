@@ -143,7 +143,7 @@ module Combined
       if center
         center.save if center.new_record?
         @cached.center = center
-        queue = center.queues.from_options(:queue_name => psar.chargeable_queue_name)
+        queue = center.queues.from_options(@params, {:queue_name => psar.chargeable_queue_name})
         if queue
           queue.save if queue.new_record?
           @cached.queue = queue
