@@ -13,7 +13,7 @@ module Retain
   class LogonFailed < RetainError
     attr_reader :params, :logon_return, :logon_reason
 
-    def intialize(params, logon_return, logon_reason)
+    def initialize(params, logon_return, logon_reason)
       @params, @logon_return, @logon_reason = params, logon_return, logon_reason
     end
   end

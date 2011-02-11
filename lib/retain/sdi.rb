@@ -373,7 +373,7 @@ module Retain
       # logger.debug("Logon Reason: #{@logon_reason}")
       unless @logon_reply && @logon_reply.length == 50
         logon_debug
-        raise Retain::LogonFailed.new(@params, @logon_return, @logon_reason)
+        raise LogonFailed.new(@params, @logon_return, @logon_reason)
       end
     end
     
