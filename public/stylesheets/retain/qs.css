@@ -137,6 +137,10 @@ span.ecpaat-heading-missing {
     margin-bottom: 3px;
 }
 
+.pat {
+    background-color: white;
+}
+
 .pmr-link {
     text-decoration: none;
 }
