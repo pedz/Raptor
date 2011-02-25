@@ -71,7 +71,7 @@ class FavoriteQueuesController < Retain::RetainController
     
     # We create the new center and queue (if we need to) as Combined
     # so that things get refreshed but then unwrap them.
-    if (center = Combined::Center.from_options(options)).nil?
+    if (center = Combined::Center.from_options(@params, options)).nil?
       # logger.debug("bad center")
       flash[:error] = "Center is not valid"
       center = Combined::Center.new(options)
@@ -79,7 +79,7 @@ class FavoriteQueuesController < Retain::RetainController
       queue_valid = false
     else
       center.save if center.new_record?
-      if (queue = center.queues.from_options(options)).nil?
+      if (queue = center.queues.from_options(@params, options)).nil?
         # logger.debug("bad queue")
         flash[:error] = "Queue is not valid"
         queue = center.queues.build(queue_options)

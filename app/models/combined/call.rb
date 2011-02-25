@@ -45,7 +45,7 @@ module Combined
     
     def self.from_words(words)
       options = words_to_optins(words)
-      if queue = Combined::Queue.from_options(options)
+      if queue = Combined::Queue.from_options(@params, options)
         call = queue.calls.find_or_initialize_by_ppg(options[:ppg])
      end
     end

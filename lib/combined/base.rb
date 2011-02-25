@@ -262,6 +262,7 @@ module Combined
       call_load unless cache_valid?
     end
 
+    # I wonder if these two are used...
     def from_options(options)
       @cached.from_options(@params, options)
     end

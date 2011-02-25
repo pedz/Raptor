@@ -525,16 +525,20 @@ module Retain
         end
       else
         pmr = call.pmr
-        classes = "customer"
         if pmr.customer && pmr.customer.pat
-          classes += " pat"
+          classes = "customer pat"
+          pretitle = "PAT customer: "
+        else
+          classes = "customer"
+          pretitle = ""
         end
         if (mail = pmr.problem_e_mail.strip).blank?
-          td binding, :title => "No email given", :class => classes do |binding|
+          title = pretitle + "No email given"
+          td binding, :title => title, :class => classes do |binding|
             concat(call.nls_customer_name.ljust(28).gsub(/ /, '&nbsp;'))
           end
         else
-          title = "Click to send email to #{mail}"
+          title = pretitle + "Click to send email to #{mail}"
           href = "mailto:#{mail}?subject=#{pmr.pbc.upcase}"
           td binding, :title => title, :class => classes do |binding|
             a binding, :href => href do |binding|
