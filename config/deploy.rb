@@ -17,7 +17,7 @@ end
 # Added for RVM
 $:.unshift(File.expand_path('./lib', ENV['rvm_path'])) # Add RVM's lib directory to the load path.
 require "rvm/capistrano"                  # Load RVM's capistrano plugin.
-set :rvm_ruby_string, '1.9.1@raptor'      # set environment
+set :rvm_ruby_string, '1.9.1-p378@raptor'      # set environment
 
 set :application,     "raptor"
 set :repository,      "#{domain}:repositories/raptor.git"
