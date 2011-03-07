@@ -201,13 +201,6 @@ module Combined
         # Make call fetch the fields we need
         retain_call.group_requests = group_request
 
-        # This will touch an unset field and cause a fetch.
-        pmr_options = {
-          :problem => retain_call.problem,
-          :branch  => retain_call.branch,
-          :country => retain_call.country
-        }
-
         # create or find the call
         call_options = Cached::Call.options_from_retain(retain_call)
 
@@ -227,14 +220,8 @@ module Combined
         db_call.slot = slot
         db_call.dirty = false
 
-        # If/when we start keeping expired PMRs we need to augment
-        # this call to not find expired PMRs.  We do not have the
-        # create date at this point but if we exclude expired PMRs,
-        # then we will create a new PMR if we hit the case of a
-        # duplicate problem,branch,country.
-
-        # Make or find PMR
-        db_pmr = Cached::Pmr.find_or_new(pmr_options)
+        # Make or find Cached PMR
+        db_pmr = Pmr.find_existing_pmr(retain_call)
 
         # I believe now that customer is not required for pmrs, we can 
         # delete this code... To Be Done

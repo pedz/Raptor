@@ -491,13 +491,8 @@ module Combined
         end
       end
 
-      # Make or find PMR
-      pmr_options = {
-        :problem => call.problem,
-        :branch  => call.branch,
-        :country => call.country
-      }
-      @cached.pmr = Cached::Pmr.find_or_new(pmr_options)
+      # Make or find Cached PMR
+      @cached.pmr = Pmr.find_existing_pmr(call)
 
       # Make or find customer
       cust_options = {

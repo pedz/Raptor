@@ -50,6 +50,21 @@ module Combined
       pmr
     end
 
+    # This finds or creates a PMR that is not deleted.  entity must
+    # respond to :problem, :branch, and :country (methods).  This can
+    # not be done in Cached::Pmr because entity may be stale and cause
+    # a retain fetch.
+    def self.find_existing_pmr(entity)
+      # This may cause a fetch from Retain if the entity is stale.
+      pmr_options = {
+          :problem => entity.problem,
+          :branch  => entity.branch,
+          :country => entity.country,
+          :deleted => false
+      }
+      Cached::Pmr.find_or_new(pmr_options)
+    end
+
     def to_id
       (problem + '_' + branch + '_' + country).upcase
     end
@@ -65,7 +80,7 @@ module Combined
         :country => country
       }
     end
-
+    
     private
 
     def load

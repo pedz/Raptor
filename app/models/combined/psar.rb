@@ -121,14 +121,8 @@ module Combined
         raise err
       end
 
-      # Make or find PMR
-      # This is duplicate code ####
-      pmr_options = {
-        :problem => psar.problem,
-        :branch  => psar.branch,
-        :country => psar.country
-      }
-      @cached.pmr = Cached::Pmr.find_or_new(pmr_options)
+      # Make or find Cached PMR
+      @cached.pmr = Pmr.find_existing_pmr(psar)
 
       # Make or find customer
       cust_options = {
