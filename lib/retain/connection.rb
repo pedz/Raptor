@@ -60,22 +60,26 @@ module Retain
       @port
     end
 
+    def debug
+      @debug
+    end
+
     # open the connection.  +config+ is a hash of host and port
     # Can raise various exceptions -- see Socket#connect
     def connect
       if Retain::TUNNELLED
         @host = 'localhost'
         @port = Retain::BASE_PORT + @node[:tunnel_offset]
-        logger.info("RTN: Connecting to #{@node[:host]} #{@node[:port]} via #{@host} #{@port}")
+        @debug = "RTN: Connecting to #{@node[:host]} #{@node[:port]} via #{@host} #{@port}"
       else
         @host = @node[:host]
         @port = @node[:port]
-        logger.info("RTN: Connecting directly to #{@host} #{@port}")
+        @debug = "RTN: Connecting directly to #{@host} #{@port}"
       end
       sockaddr = Socket.pack_sockaddr_in(@port, @host)
       @socket.connect(sockaddr)
     end
-
+    
     # write +s+ to the connection
     def write(s)
       @socket.write(s)

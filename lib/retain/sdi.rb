@@ -154,7 +154,12 @@ module Retain
         else
           b = ""
         end
-      rescue SDIError, LogonFailed, FailedMarkedTrue, RetainLogonEmpty, RetainLogonShort
+      rescue SDIError,
+        LogonFailed,
+        FailedMarkedTrue,
+        RetainLogonEmpty,
+        RetainLogonShort,
+        Errno::ECONNREFUSED
         raise
       rescue => err
         raise SDIError.new(err.message, self, err.backtrace)
@@ -200,12 +205,20 @@ module Retain
           msg = Errors[@rc] || "Unknown Error"
         end
         @error_message = msg
+        # Lets leave this coming out all the time so I don't
+        # completely forget about them.
         logger.error("SDI: #{@request_type}: #{@error_message}")
         if @rc == 703 || @rc == 705
           raise LogonFailed.new(@params, @logon_return, @logon_reason)
         end
-        logger.error("Node used was #{@connection.node}(#{@connection.host}:#{@connection.port})")
-        dump_debug
+        # The list of errors that I no longer care about.  This
+        # started with PSRR requests that fail with "No PSAR record
+        # ...".
+        if ! ((sr == 175 && ex == 101) ||		# no PSRR found
+              (sr == 115 && ex == 125))			# no PMPB found
+          logger.error("Node used was #{@connection.node}(#{@connection.host}:#{@connection.port})")
+          dump_debug
+        end
       end
     end
 
@@ -215,6 +228,7 @@ module Retain
     end
 
     def dump_debug
+      logger.error @connection.debug
       logger.error("RTN: request fields:\n#{@snd_fields.to_debug}")
       hex_dump("#{@request_type} request", @snd)
       logger.error("RTN: return fields:\n#{@rcv_fields.to_debug}")
