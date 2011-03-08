@@ -2,6 +2,95 @@
 #
 # A script to put in to /etc/rc.d to start, stop, and restart raptor.
 #
+# The normal servers are kicked off via thin and its config file.
+# That needs to change and use something like God to restart them when
+# they die.
+#
+# The "workers", the processes that service asynchronous requests, are
+# spun off "by hand".  The variable WORKERS is how many workers to
+# start up.  The script understands "start", "stop", and "restart"
+# which is a "stop" followed by a "start"
+#
 SERVER_HOME=/usr/local/www/raptor/current
-cd ${SERVER_HOME}
-/usr/local/bin/thin --config config/thin-production.yml $@
+THIN=/usr/local/bin/thin
+UID=raptor
+WORKERS=1
+
+function stop_workers
+{
+    echo Stopping Workers
+    cd ${SERVER_HOME}/tmp/pids
+    typeset pid_files=$( echo worker.*.pid )
+    if [[ "${pid_files}" = "worker.*.pid" ]] ; then
+	return 0
+    fi
+    for pid_file in ${pid_files} ; do
+	pid=$( cat $pid_file )
+	echo "Killing ${pid}"
+	typeset -i loop=3
+	while [[ "${loop}" -gt 0 ]] ; do
+	    if kill -0 "${pid}" 2> /dev/null ; then
+		kill -INT "${pid}"
+		sleep 1
+	    else
+		break
+	    fi
+	    let loop=loop-1
+	done
+	if [[ "${loop}" -eq 0 ]] ; then
+	    echo "${pid} never died"
+	else
+	    rm -f "${pid_file}"
+	fi
+    done
+}
+
+function start_workers
+{
+    typeset -i worker=0
+    cd ${SERVER_HOME}
+    while [[ "${worker}" -lt "${WORKERS}" ]] ; do
+	echo "Starting working ${worker}"
+	script/rvm-wrapper \
+	    vendor/plugins/async_observer/bin/worker \
+	    -d \
+	    --pid tmp/pids/worker.${worker}.pid \
+	    -e production
+	let worker=worker+1
+    done
+}
+
+function restart_workers
+{
+    stop_workers && start_workers
+}
+
+function do_workers
+{
+    case ${1} in
+	start)   start_workers;;
+	stop)    stop_workers;;
+	restart) restart_workers;;
+    esac
+}
+
+
+
+me=$( whoami )
+if [[ "${me}" = "${UID}" ]] ; then
+    echo not SUing
+    cd ${SERVER_HOME}
+    script/rvm-wrapper ${THIN} --config config/thin-production.yml $@
+    do_workers $1
+else
+    echo SUing to "${UID}"
+    # If we need to su, then we just call the whole script back again:
+    if [[ "$0" = "/*" ]] ; then
+	script=$0
+    else
+	script=$PWD/$0
+    fi
+    echo su - "${UID}" -c "${script} $@"
+    pwd
+    su - "${UID}" -c "${script} $@"
+fi
