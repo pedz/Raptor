@@ -5,17 +5,17 @@ module Retain
   class Queue < Base
     set_fetch_sdi Pmcs
 
-    def initialize(params, options = {})
-      super(params, options)
+    def initialize(retain_user_connection_parameters, options = {})
+      super(retain_user_connection_parameters, options)
     end
 
     # Returns true if the queue is a valid queue.  For now, we just
     # return true.  We might do a fetch from retain if we find we need
     # to.
-    def self.valid?(params, options)
+    def self.valid?(retain_user_connection_parameters, options)
       # short circuit asking if queue_name or center is blank
       return false if options[:queue_name].blank? || options[:center].blank?
-      cq = Retain::Cq.new(params, options)
+      cq = Retain::Cq.new(retain_user_connection_parameters, options)
       begin
         hit_count = cq.hit_count # get hit_count to see if the queue is valid
         return true
@@ -60,7 +60,7 @@ module Retain
         }
         # logger.debug("RTN: raw iris is #{temp[0 ... 12]}")
         # logger.debug("RTN: make a call options: #{options.inspect}")
-        Call.new(@params, options)
+        Call.new(retain_user_connection_parameters, options)
       end
     end
 

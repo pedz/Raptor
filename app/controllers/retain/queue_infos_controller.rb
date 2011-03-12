@@ -36,7 +36,7 @@ module Retain
 
       @reg_list = Combined::Registration.find(:all,
                                               :conditions =>
-                                              { :apptest => @params.apptest}).collect { |r|
+                                              { :apptest => retain_user_connection_parameters.apptest}).collect { |r|
         [ r.name, r.id ] }.sort
 
       # @queue_list = queues.collect { |q| [ q.to_param, q.id ] }

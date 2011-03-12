@@ -43,7 +43,7 @@ module Combined
           :psar_start_date => 14.days.ago.strftime("%Y%m%d"),
           :psar_end_date => Time.now.strftime("%Y%m%d")
         }
-        Combined::Psar.fetch(@params, search_hash)
+        Combined::Psar.fetch(retain_user_connection_parameters, search_hash)
         @cached.last_all_fetch = Time.now
         @cached.last_day_fetch = Time.now
         @cached.save!
@@ -53,7 +53,7 @@ module Combined
           :signon2 => @cached.psar_number,
           :psar_start_date => Time.now.strftime("%Y%m%d")
         }
-        Combined::Psar.fetch(@params, search_hash)
+        Combined::Psar.fetch(retain_user_connection_parameters, search_hash)
         @cached.last_day_fetch = Time.now
         @cached.save!
       end
@@ -77,7 +77,7 @@ module Combined
         :group_request => [ group_request ],
         :secondary_login => @cached.signon
       }
-      retain_registration = Retain::Registration.new(@params, retain_options)
+      retain_registration = Retain::Registration.new(retain_user_connection_parameters, retain_options)
 
       # We can not retrive any registration record.  So, we catch the
       # exception
@@ -104,7 +104,7 @@ module Combined
         end
       end
       cache_options[:dirty] = false if @cached.respond_to?("dirty")
-      cache_options[:apptest] = @params.apptest
+      cache_options[:apptest] = retain_user_connection_parameters.apptest
       @cached.updated_at = Time.now
       @cached.update_attributes(cache_options)
     end

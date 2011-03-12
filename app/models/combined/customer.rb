@@ -44,7 +44,7 @@ module Combined
       options_hash[:group_request] = [ group_request ]
       
       # Setup Retain object
-      retain_object = self.class.retain_class.new(@params, options_hash)
+      retain_object = self.class.retain_class.new(retain_user_connection_parameters, options_hash)
       
       # Touch to cause a fetch
       begin

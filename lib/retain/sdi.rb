@@ -65,11 +65,11 @@ module Retain
     ###
     ### instance methods
     ###
-    def initialize(params, options = {})
+    def initialize(retain_user_connection_parameters, options = {})
       super()
       @options = { :request => self.class.fetch_request }.merge(options)
       @fields = Fields.new
-      @params = params
+      @retain_user_connection_parameters = retain_user_connection_parameters
 
       # self.logger.debug("RTN: initializing #{self.class}")
       
@@ -84,9 +84,9 @@ module Retain
       (self.class.required_fields + self.class.optional_fields).each do |sym|
         case sym
         when :signon
-          @fields[sym] = @options[sym] || @params.signon
+          @fields[sym] = @options[sym] || @retain_user_connection_parameters.signon
         when :password
-          @fields[sym] = @options[sym] || @params.password
+          @fields[sym] = @options[sym] || @retain_user_connection_parameters.password
         else
           @fields[sym] = @options.delete(sym) if @options.has_key?(sym)
         end
@@ -95,6 +95,10 @@ module Retain
       # Look at the fields option for a list of fields to use as
       # initialized fields.  These take highest precedence.
       @fields.merge(@options.delete(:fields)) if @options.has_key?(:fields)
+    end
+
+    def retain_user_connection_parameters
+      @retain_user_connection_parameters
     end
 
     def sendit(req_fields, send_options = {})
@@ -109,7 +113,7 @@ module Retain
         # logger.debug("RTN: #{options.to_yaml}")
       end
 
-      request = Request.new(@params.signon, options)
+      request = Request.new(@retain_user_connection_parameters.signon, options)
       self.class.required_fields.each do |sym|
         # if true
         #   logger.debug("RTN: required symbol: #{sym}")
@@ -209,7 +213,7 @@ module Retain
         # completely forget about them.
         logger.error("SDI: #{@request_type}: #{@error_message}")
         if @rc == 703 || @rc == 705
-          raise LogonFailed.new(@params, @logon_return, @logon_reason)
+          raise LogonFailed.new(@retain_user_connection_parameters, @logon_return, @logon_reason)
         end
         # The list of errors that I no longer care about.  This
         # started with PSRR requests that fail with "No PSAR record
@@ -318,9 +322,9 @@ module Retain
       
     def connect(h_or_s)
       if h_or_s == 'H'
-        node = @params.hardware_node
+        node = @retain_user_connection_parameters.hardware_node
       else
-        node = @params.software_node
+        node = @retain_user_connection_parameters.software_node
       end
       @connection = Connection.new(node)
       @connection.connect
@@ -357,15 +361,15 @@ module Retain
       #
       # Abort early if the failed flag is already true
       #
-      raise FailedMarkedTrue if @params.failed
+      raise FailedMarkedTrue if @retain_user_connection_parameters.failed
 
       #
       # Could pull signon and password from options
       #
       first50 = 'SDTC,SDIRETEX' + 
-        @params.signon +
+        @retain_user_connection_parameters.signon +
         '  ' +
-        @params.password +
+        @retain_user_connection_parameters.password +
         '00000000   ,IC,000000'
       
       @logon_request = first50.user_to_retain
@@ -387,7 +391,7 @@ module Retain
       # logger.debug("Logon Reason: #{@logon_reason}")
       unless @logon_reply && @logon_reply.length == 50
         logon_debug
-        raise LogonFailed.new(@params, @logon_return, @logon_reason)
+        raise LogonFailed.new(@retain_user_connection_parameters, @logon_return, @logon_reason)
       end
     end
     

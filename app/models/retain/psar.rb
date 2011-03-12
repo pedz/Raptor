@@ -4,8 +4,8 @@ module Retain
   class Psar < Base
     set_fetch_sdi Psrr
 
-    def self.range(params, start_date, stop_date)
-      temp = Retain::Psar.new(params,
+    def self.range(retain_user_connection_parameters, start_date, stop_date)
+      temp = Retain::Psar.new(retain_user_connection_parameters,
                               :psar_start_date => start_date.strftime("%Y%m%d"),
                               :psar_end_date => stop_date.strftime("%Y%m%d"))
       temp.de32s.map do |fields|
@@ -13,8 +13,8 @@ module Retain
       end
     end
 
-    def initialize(params, options = {})
-      super(params, options)
+    def initialize(retain_user_connection_parameters, options = {})
+      super(retain_user_connection_parameters, options)
     end
 
     def to_s
@@ -24,7 +24,7 @@ module Retain
     # Returns true if the psar is a valid psar.  For now, we just
     # return true.  We might do a fetch from retain if we find we need
     # to.
-    def self.valid?(params, options)
+    def self.valid?(retain_user_connection_parameters, options)
       true
     end
   end

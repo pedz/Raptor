@@ -7,8 +7,8 @@ module Retain
     set_required_fields(:operand, :signon, :password)
     set_optional_fields(:queue_name, :center, :ppg, :h_or_s)
 
-    def initialize(params, options = {})
-      super(params, options)
+    def initialize(retain_user_connection_parameters, options = {})
+      super(retain_user_connection_parameters, options)
     end
   end
 end

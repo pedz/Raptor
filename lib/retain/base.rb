@@ -116,8 +116,8 @@ module Retain
 
       # Creates the SDI request type specified by the set_fetch_sdi
       # method.
-      def fetch_sdi(params)
-        @fetch_sdi.new(params)
+      def fetch_sdi(retain_user_connection_parameters)
+        @fetch_sdi.new(retain_user_connection_parameters)
       end
     end
 
@@ -127,9 +127,9 @@ module Retain
     ###
     ### instance methods
     ###
-    def initialize(params, options = {})
+    def initialize(retain_user_connection_parameters, options = {})
       super()
-      @params = params
+      @retain_user_connection_parameters = retain_user_connection_parameters
       @options = options
       @fields = Fields.new(self.method(:fetch_fields))
       # logger.debug("RTN: initializing #{self.class}")
@@ -142,6 +142,10 @@ module Retain
       @fields.merge(@options)
       @options = Hash.new
       @fields.merge(field_temp) unless field_temp.nil?
+    end
+
+    def retain_user_connection_parameters
+      @retain_user_connection_parameters
     end
 
     #
@@ -203,7 +207,7 @@ module Retain
     #
     def fetch_fields
       # logger.debug("RTN: fetch fields for #{self.class}")
-      @fetch_sdi = self.class.fetch_sdi(@params)
+      @fetch_sdi = self.class.fetch_sdi(@retain_user_connection_parameters)
       @fetch_sdi.sendit(@fields, @options)
       self
     end

@@ -28,7 +28,7 @@ module Combined
 
     def self.from_param(param, signon_user = nil)
       param = signon_user.default_center if param.empty?
-      create_from_options(@params, :center => param)
+      create_from_options(retain_user_connection_parameters, :center => param)
     end
 
     def to_param
@@ -61,7 +61,7 @@ module Combined
       options_hash[:group_request] = [ group_request ]
 
       # Setup Retain object
-      retain_object = self.class.retain_class.new(@params, options_hash)
+      retain_object = self.class.retain_class.new(retain_user_connection_parameters, options_hash)
 
       # Touch to cause a fetch
       retain_object.send(group_request[0])

@@ -38,10 +38,9 @@ module Combined
     
     # signon user is not used
     def self.from_param(param, signon_user = nil)
-      create_from_options(@params, param_to_options(param.upcase))
+      create_from_options(retain_user_connection_parameters, param_to_options(param.upcase))
     end
     
-    # signon user is not used
     def self.from_param!(param, signon_user = nil)
       pmr = from_param(param, signon_user)
       if pmr.nil?
@@ -105,7 +104,7 @@ module Combined
       if @cached.last_alter_timestamp
         # logger.debug("CMB: #{temp_id} last_alter_timestamp set")
         options_hash[:group_request] = [[ :last_alter_timestamp ]]
-        pmr = Retain::Pmr.new(@params, options_hash)
+        pmr = Retain::Pmr.new(retain_user_connection_parameters, options_hash)
         if @cached.last_alter_timestamp == pmr.last_alter_timestamp
           # logger.debug("CMB: #{temp_id} touched")
           @cached.dirty = false
@@ -141,11 +140,11 @@ module Combined
       
       # Fields we need for the add text lines.
       options_hash[:group_request] = [ group_request_elements ]
-      pmr = Retain::Pmr.new(@params, options_hash)
+      pmr = Retain::Pmr.new(retain_user_connection_parameters, options_hash)
       pmr.severity
 
       options_hash[:group_request] = [ [ :information_text_lines, :severity ]]
-      pmr2 = Retain::Pmr.new(@params, options_hash)
+      pmr2 = Retain::Pmr.new(retain_user_connection_parameters, options_hash)
       pmr2.severity
 
       # if @cached.alteration_date
@@ -205,7 +204,7 @@ module Combined
       # Hook up owner and resolver.  We have to plop in the name for
       # new records because we can not retrive all registrations.
       owner = Cached::Registration.find_or_initialize_by_signon_and_apptest(pmr.pmr_owner_id,
-                                                                            @params.apptest)
+                                                                            retain_user_connection_parameters.apptest)
       owner.name = pmr.pmr_owner_name if owner.name.nil?
       @cached.owner = owner
 
@@ -221,7 +220,7 @@ module Combined
       else
         # Hook up resolver
         resolver = Cached::Registration.find_or_initialize_by_signon_and_apptest(pmr.pmr_resolver_id,
-                                                                                 @params.apptest)
+                                                                                 retain_user_connection_parameters.apptest)
         resolver.name = pmr.pmr_resolver_name if resolver.name.nil?
         @cached.resolver = resolver
       end
@@ -245,7 +244,7 @@ module Combined
         :ppg => pmr.ppg
       }
       # logger.debug("CMB: primary_options = #{primary_options.inspect}")
-      center = Cached::Center.create_from_options(@params, primary_options)
+      center = Cached::Center.create_from_options(retain_user_connection_parameters, primary_options)
       if center
         # logger.debug("CMB: got center")
         # We have to save the center if it is a new record.  This is
@@ -256,12 +255,12 @@ module Combined
         # are new records, things get confused.
         center.save if center.new_record?
         @cached.center = center
-        queue = center.queues.create_from_options(@params, primary_options)
+        queue = center.queues.create_from_options(retain_user_connection_parameters, primary_options)
         if queue
           # logger.debug("CMB: got queue")
           queue.save if queue.new_record?
           @cached.queue = queue
-          call = queue.calls.new_from_options(@params, primary_options.merge({ :pmr_id => @cached.id }))
+          call = queue.calls.new_from_options(retain_user_connection_parameters, primary_options.merge({ :pmr_id => @cached.id }))
           if call
             # logger.debug("CMB: got call")
             if call.new_record?
@@ -283,11 +282,11 @@ module Combined
         :queue_name => pmr.next_queue,
         :h_or_s => pmr.h_or_s
       }
-      nc = Cached::Center.from_options(@params, nc_options)
+      nc = Cached::Center.from_options(retain_user_connection_parameters, nc_options)
       if nc
         nc.save if nc.new_record?
         @cached.next_center = nc
-        nq = nc.queues.from_options(@params, nc_options)
+        nq = nc.queues.from_options(retain_user_connection_parameters, nc_options)
         if nq
           @cached.next_queue = nq
         end

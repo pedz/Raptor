@@ -18,9 +18,26 @@ module Retain
     rescue_from Retain::SdiDidNotReadField, :with => :retain_did_not_read_field
     rescue_from Errno::ECONNREFUSED,        :with => :cannot_reach_retain
 
+    # The @retain_user_connection_parameters attribute, the
+    # retain_user_connection_parameters method, the @signon_user
+    # attribute, and the signon_user method seem to be a bit redundant
+    # and I suppose they are.
+    #
+    # The signon_user and @signon_user attribute were created to have
+    # a way to pass values to use as defaults for some of the retain
+    # fields.  For example, if a user does a request for queue "foo",
+    # the h_or_s field and the center are not specified.  The defaults
+    # for these would come from the signon_user's h_or_s and center
+    # fields respectively.
+    #
+    # The retain_user_connection_parameters is (I hope) what the name
+    # implies.  It is a bucket of stuff that is used to make a
+    # connection to retain and also has a few fields as to the results
+    # of the attemp of the connection.
     def signon_user
       @signon_user ||=
-        Combined::Registration.find_or_initialize_by_signon_and_apptest(@params.signon, @params.apptest)
+        Combined::Registration.find_or_initialize_by_signon_and_apptest(@retain_user_connection_parameters.signon,
+                                                                        @retain_user_connection_parameters.apptest)
     end
     helper_method :signon_user
 
@@ -43,11 +60,12 @@ module Retain
     # a RetainController.
     #
     def validate_retuser
-      # logger.debug("RTN: in validate_retuser")
+      logger.debug("RTN: in validate_retuser")
       
       # If no retusers defined for this user, then redirect and
       # set up a retain user.
       if application_user.current_retain_id.nil?
+        logger.debug("RTN: nil current_retain_id")
         session[:original_uri] = request.request_uri
         redirect_to new_user_retuser_url(application_user)
         return false
@@ -57,17 +75,22 @@ module Retain
       return true
     end
 
+    def retain_user_connection_parameters
+      @retain_user_connection_parameters
+    end
+
     # Pull together the signon/password and the host/port and create a
     # ConnectionParamters structure.  We hold this in the session
     # data.  We also set the Logon instance to use these settings.
     def setup_logon_instance
       retuser = application_user.current_retain_id
-      @params = ConnectionParameters.new(retuser)
-      # The Logon instance is the way we pass @params from the Retain
+      @retain_user_connection_parameters = ConnectionParameters.new(retuser)
+      # logger.debug("params 2 = #{@retain_user_connection_parameters.inspect}")
+      # The Logon instance is the way we pass @retain_user_connection_parameters from the Retain
       # controller to any Combined models.  The Combined models then
       # pass it explicitly to any Retain models that they need.
       logger.debug("Logon set")
-      Logon.instance.set(@params)
+      Logon.instance.set(@retain_user_connection_parameters)
     end
     
     def logon_failed(exception)

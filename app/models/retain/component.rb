@@ -4,12 +4,12 @@ module Retain
   class Component < Base
     set_fetch_sdi Cmpb
 
-    def initialize(params, options = {})
+    def initialize(retain_user_connection_parameters, options = {})
       logger.debug("Component #{options.inspect}")
-      super(params, options)
+      super(retain_user_connection_parameters, options)
     end
 
-    def self.valid?(params, options)
+    def self.valid?(retain_user_connection_parameters, options)
       true
     end
   end

@@ -22,7 +22,7 @@ module Retain
         :h_or_s => h_or_s,
         :center => center,
       }
-      @query = Retain::Qq.new(@params, options)
+      @query = Retain::Qq.new(retain_user_connection_parameters, options)
     end
   end
 end

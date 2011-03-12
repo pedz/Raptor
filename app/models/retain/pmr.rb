@@ -4,8 +4,8 @@ module Retain
   class Pmr < Base
     set_fetch_sdi Pmpb
 
-    def initialize(params, options = {})
-      super(params, options)
+    def initialize(retain_user_connection_parameters, options = {})
+      super(retain_user_connection_parameters, options)
     end
 
     def to_s
@@ -15,7 +15,7 @@ module Retain
     # Returns true if the pmr is a valid pmr.  For now, we just
     # return true.  We might do a fetch from retain if we find we need
     # to.
-    def self.valid?(params, options)
+    def self.valid?(retain_user_connection_parameters, options)
       logger.debug("in PMR valid?")
       new_options = {
         :problem => options[:problem],
@@ -23,7 +23,7 @@ module Retain
         :country => options[:country],
         :group_request => [[ :comments ]]
       }
-      pmr = new(params, new_options)
+      pmr = new(retain_user_connection_parameters, new_options)
       begin
         comments = pmr.comments
       rescue Retain::SdiReaderError => e

@@ -10,7 +10,7 @@ module Retain
       user = Combined::Registration.find(:first,
                                          :conditions => {
                                            :signon => params[:id],
-                                           :apptest => @params.apptest
+                                           :apptest => retain_user_connection_parameters.apptest
                                          })
       favorite_queues = application_user.favorite_queues
       favorite_signons = []
@@ -28,7 +28,7 @@ module Retain
       # start off ordered by name so each subsection will be ordered as well
       all = Combined::Registration.find(:all,
                                         :conditions => {
-                                          :apptest => @params.apptest
+                                          :apptest => retain_user_connection_parameters.apptest
                                         },
                                         :order => "name")
       all.each do |reg|

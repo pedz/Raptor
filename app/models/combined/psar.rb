@@ -29,14 +29,14 @@ module Combined
       return ret
     end
 
-    def self.fetch(params, search_hash)
+    def self.fetch(retain_user_connection_parameters, search_hash)
       # Cuurently we do this in two steps.  We fetch just the "IRIS"s
       # and then we fetch the contents of each PSAR that is not in our
       # cache.
       search_hash = search_hash.dup
       search_hash[:group_request] = [ [ :psar_file_and_symbol ] ]
       begin
-        de32s = Retain::Psar.new(params, search_hash).de32s
+        de32s = Retain::Psar.new(retain_user_connection_parameters, search_hash).de32s
       rescue Retain::SdiReaderError => e
         raise e unless e.rc == 256
       else
@@ -83,7 +83,7 @@ module Combined
       options_hash[:group_request] = [ group_request ]
 
       # Setup Retain object
-      retain_object = self.class.retain_class.new(@params, options_hash)
+      retain_object = self.class.retain_class.new(retain_user_connection_parameters, options_hash)
 
       # Special case for psar.
       begin
@@ -133,11 +133,11 @@ module Combined
       
       # Hookup Queue
       # This is duplicate code ####
-      center = Cached::Center.from_options(@params, {:center => psar.chargeable_center})
+      center = Cached::Center.from_options(retain_user_connection_parameters, {:center => psar.chargeable_center})
       if center
         center.save if center.new_record?
         @cached.center = center
-        queue = center.queues.from_options(@params, {:queue_name => psar.chargeable_queue_name})
+        queue = center.queues.from_options(retain_user_connection_parameters, {:queue_name => psar.chargeable_queue_name})
         if queue
           queue.save if queue.new_record?
           @cached.queue = queue
@@ -148,7 +148,7 @@ module Combined
       options = self.class.cached_class.options_from_retain(psar)
       options[:dirty] = false if @cached.respond_to?("dirty")
       @cached.registration = Cached::Registration.find_or_initialize_by_psar_number_and_apptest(psar.signon2,
-                                                                                                @params.apptest)
+                                                                                                retain_user_connection_parameters.apptest)
       logger.error("reg.signon = #{@cached.registration.signon}")
       @cached.updated_at = Time.now
       @cached.update_attributes(options)

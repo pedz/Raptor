@@ -5,6 +5,7 @@ module Retain
     # GET /retain_pmrs/1
     # GET /retain_pmrs/1.xml
     def show
+      logger.debug("params 1 = #{retain_user_connection_parameters.inspect}")
       @pmr = Combined::Pmr.from_param!(params[:id], signon_user)
       
       # This is a hack.  I had my belongs_to association botched and
@@ -112,7 +113,7 @@ module Retain
       options[:psar_actual_time] = (hours * 10) + (minutes / 6).to_i
       options[:psar_chargeable_time] = hours * 256 + minutes
       # logger.debug("options: #{options.inspect}")
-      psar = Retain::Psrc.new(@params, options)
+      psar = Retain::Psrc.new(retain_user_connection_parameters, options)
       begin
         psar.sendit(Retain::Fields.new)
       rescue
@@ -167,7 +168,7 @@ module Retain
       }.flatten
       # logger.debug("lines after=#{lines.inspect}")
       options[:addtxt_lines] = lines
-      addtxt = Retain::Pmat.new(@params, options)
+      addtxt = Retain::Pmat.new(retain_user_connection_parameters, options)
       begin
         addtxt.sendit(Retain::Fields.new)
       rescue Retain::SdiReaderError => e

@@ -11,9 +11,9 @@ module Retain
   class Logon
     include Singleton
 
-    # params is a Retain::ConnectionParamters object.
-    def set(params)
-      @params = params
+    # retain_user_connection_parameters is a Retain::ConnectionParamters object.
+    def set(retain_user_connection_parameters)
+      @retain_user_connection_parameters = retain_user_connection_parameters
       @return_value = nil
       @reason = nil
     end
@@ -25,7 +25,7 @@ module Retain
     # (within the Retain module).  There are still some calls in the
     # controllers and models to the separate methods.
     def get
-      @params
+      @retain_user_connection_parameters
     end
 
     # Set the return  value of the logon exchange with the retain
@@ -53,37 +53,37 @@ module Retain
     # Retrieve the original retuser db object -- this clearly needs to
     # be refactored.
     def retuser
-      @params.retuser
+      @retain_user_connection_parameters.retuser
     end
 
     # Retrieve the signon (the Retain id).
     def signon
-      @params.signon
+      @retain_user_connection_parameters.signon
     end
 
     # Retrieve the Retain password that should be used.
     def password
-      @params.password
+      @retain_user_connection_parameters.password
     end
 
     # Retrieve the failed flag
     def failed
-      @params.failed
+      @retain_user_connection_parameters.failed
     end
 
     # Retrieve the apptest boolean
     def apptest
-      @params.apptest
+      @retain_user_connection_parameters.apptest
     end
 
     # Retrieve the software node
     def software_node
-      @params.software_node
+      @retain_user_connection_parameters.software_node
     end
 
     # Retrieve the hardware node
     def hardware_node
-      @params.hardware_node
+      @retain_user_connection_parameters.hardware_node
     end
   end
 end

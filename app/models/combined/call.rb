@@ -45,7 +45,7 @@ module Combined
     
     def self.from_words(words)
       options = words_to_optins(words)
-      if queue = Combined::Queue.from_options(@params, options)
+      if queue = Combined::Queue.from_options(retain_user_connection_parameters, options)
         call = queue.calls.find_or_initialize_by_ppg(options[:ppg])
      end
     end
@@ -163,7 +163,7 @@ module Combined
     def dispatched_employee_name
       dr = Cached::Registration.find(:first, :conditions => {
                                        :signon => self.dispatched_employee,
-                                       :apptest => @params.apptest
+                                       :apptest => retain_user_connection_parameters.apptest
                                      })
       unless dr.nil?
         dr.name
@@ -476,7 +476,7 @@ module Combined
       options_hash[:group_request] = [ group_request ]
 
       # Create retain object
-      call = Retain::Call.new(@params, options_hash)
+      call = Retain::Call.new(retain_user_connection_parameters, options_hash)
 
       # Touch to force a fetch from Retain
       begin

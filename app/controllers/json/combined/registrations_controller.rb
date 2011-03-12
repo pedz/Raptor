@@ -3,7 +3,7 @@ module Json
     class RegistrationsController < Retain::RetainController
       def index
         render :json => ::Combined::Registration.find(:all,
-                                                      :conditions => { :apptest => @params.apptest})
+                                                      :conditions => { :apptest => retain_user_connection_parameters.apptest})
       end
 
       def show

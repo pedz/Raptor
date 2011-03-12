@@ -160,8 +160,8 @@ module Retain
                         :vantive_customer_id,
                         :vantive_email_selector
                         )
-    def initialize(params, options = { })
-      super(params, options)
+    def initialize(retain_user_connection_parameters, options = { })
+      super(retain_user_connection_parameters, options)
       unless @fields.has_key?(:problem_create_only)
         @fields[:problem_create_only] = "N"
       end

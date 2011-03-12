@@ -195,6 +195,10 @@ module Combined
         words_to_options(param.split(/,/))
       end
       
+      def retain_user_connection_parameters
+        Retain::Logon.instance.get
+      end
+
       def once(*ids) # :nodoc:
         for id in ids
           clean_id_name = "__UNIQUE__#{id.to_s.sub(/\?/, '')}"
@@ -221,12 +225,16 @@ module Combined
     def initialize(arg = { })
       logger.debug("Combined init")
       super()
-      @params = Retain::Logon.instance.get
+      @retain_user_connection_parameters = Retain::Logon.instance.get
       if arg.kind_of? Hash
         @cached = self.class.cached_class.new(arg.unwrap_to_cached)
       else
         @cached = arg
       end
+    end
+      
+    def retain_user_connection_parameters
+      @retain_user_connection_parameters
     end
 
     def mark_cache_invalid
@@ -264,12 +272,12 @@ module Combined
 
     # I wonder if these two are used...
     def from_options(options)
-      @cached.from_options(@params, options)
+      @cached.from_options(@retain_user_connection_parameters, options)
     end
     alias :new_from_options :from_options
 
     def create_from_options(options)
-      @cached.create_from_options(params, options)
+      @cached.create_from_options(@retain_user_connection_parameters, options)
     end
 
     private

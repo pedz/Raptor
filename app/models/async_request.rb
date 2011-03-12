@@ -54,8 +54,8 @@ class AsyncRequest
   def perform
     retuser = Retuser.find(@retuser_id)
     rec = @obj_class.constantize.find(@obj_id)
-    @params = Retain::ConnectionParameters.new(retuser)
-    Retain::Logon.instance.set(@params)
+    @retain_user_connection_parameters = Retain::ConnectionParameters.new(retuser)
+    Retain::Logon.instance.set(@retain_user_connection_parameters)
     cmb = rec.to_combined
     cmb.load_if_stale
   end

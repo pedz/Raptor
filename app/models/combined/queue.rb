@@ -94,13 +94,13 @@ module Combined
     # This was called just valid? but it confused me with the class
     # methods valid?
     def queue_valid?(options = to_options)
-      Retain::Cq.valid?(@params, options)
+      Retain::Cq.valid?(retain_user_connection_parameters, options)
     end
     
     # format is not used here.
     def hits(format)
       begin
-        Retain::Cq.new(@params, to_options).hit_count
+        Retain::Cq.new(retain_user_connection_parameters, to_options).hit_count
       rescue Retain::SdiReaderError => e
         raise e unless e.message[0,13] == "INVALID QUEUE"
         -1
@@ -131,7 +131,7 @@ module Combined
       options_hash[:requested_elements] = requested_elements
 
       # Create a Retain::Queue from the options cache.
-      retain_queue = Retain::Queue.new(@params, options_hash)
+      retain_queue = Retain::Queue.new(retain_user_connection_parameters, options_hash)
       retain_calls = retain_queue.calls
 
       # We know that the queue is valid or the calls method above

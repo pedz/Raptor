@@ -81,8 +81,8 @@ module Retain
                         :after_hours_time_hex,
                         :local_stop_time_hex)
 
-    def initialize(params, options = {})
-      super(params, options)
+    def initialize(retain_user_connection_parameters, options = {})
+      super(retain_user_connection_parameters, options)
     end
   end
 end

@@ -3,14 +3,14 @@
 module Retain
   class ComponentsController < RetainController
     def index
-      @component = Retain::Component.new(@params, :search_component_id => "5           ")
+      @component = Retain::Component.new(retain_user_connection_parameters, :search_component_id => "5           ")
       @component.send(:short_component_id)
       render :text => "hi"
     end
 
     def show
       # @component = Retain::Component.new(:search_component_id => params[:id])
-      @component = Retain::Component.new(@params,
+      @component = Retain::Component.new(retain_user_connection_parameters,
                                          :short_component_id => params[:id],
                                          :group_request => [[
                                                              :change_team_entry_count,

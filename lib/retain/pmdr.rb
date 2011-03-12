@@ -135,8 +135,8 @@ module Retain
     set_required_fields :signon, :password, :group_request
     set_optional_fields :secondary_login
 
-    def initialize(params, options = {})
-      super(params, options)
+    def initialize(retain_user_connection_parameters, options = {})
+      super(retain_user_connection_parameters, options)
       unless @fields.has_key?(:group_request)
         @fields[:group_request] = [[
                                     :name,
