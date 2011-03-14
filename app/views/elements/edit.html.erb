@@ -1,0 +1,40 @@
+<h1>Editing element</h1>
+
+<% form_for(@element) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :widgit_id %><br />
+    <%= f.text_field :widgit_id %>
+  </p>
+  <p>
+    <%= f.label :view_id %><br />
+    <%= f.text_field :view_id %>
+  </p>
+  <p>
+    <%= f.label :row %><br />
+    <%= f.text_field :row %>
+  </p>
+  <p>
+    <%= f.label :column %><br />
+    <%= f.text_field :column %>
+  </p>
+  <p>
+    <%= f.label :owner_id %><br />
+    <%= f.text_field :owner_id %>
+  </p>
+  <p>
+    <%= f.label :rowspan %><br />
+    <%= f.text_field :rowspan %>
+  </p>
+  <p>
+    <%= f.label :colspan %><br />
+    <%= f.text_field :colspan %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @element %> |
+<%= link_to 'Back', elements_path %>

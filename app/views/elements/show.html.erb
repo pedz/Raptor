@@ -1,0 +1,38 @@
+<p>
+  <b>Widgit:</b>
+  <%=h @element.widgit_id %>
+</p>
+
+<p>
+  <b>View:</b>
+  <%=h @element.view_id %>
+</p>
+
+<p>
+  <b>Row:</b>
+  <%=h @element.row %>
+</p>
+
+<p>
+  <b>Column:</b>
+  <%=h @element.column %>
+</p>
+
+<p>
+  <b>Owner:</b>
+  <%=h @element.owner_id %>
+</p>
+
+<p>
+  <b>Rowspan:</b>
+  <%=h @element.rowspan %>
+</p>
+
+<p>
+  <b>Colspan:</b>
+  <%=h @element.colspan %>
+</p>
+
+
+<%= link_to 'Edit', edit_element_path(@element) %> |
+<%= link_to 'Back', elements_path %>

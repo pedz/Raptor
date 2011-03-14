@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 
 ActionController::Routing::Routes.draw do |map|
+  map.resources :elements
+
+  map.resources :views
+
+  map.resources :widgets
+
   map.resources :team_memberships
 
   map.resources :membership_types

@@ -1,0 +1,13 @@
+<p>
+  <b>Name:</b>
+  <%=h @view.name %>
+</p>
+
+<p>
+  <b>Owner:</b>
+  <%=h @view.owner_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_view_path(@view) %> |
+<%= link_to 'Back', views_path %>

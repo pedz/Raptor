@@ -1,0 +1,32 @@
+<h1>Listing elements</h1>
+
+<table>
+  <tr>
+    <th>Widgit</th>
+    <th>View</th>
+    <th>Row</th>
+    <th>Column</th>
+    <th>Owner</th>
+    <th>Rowspan</th>
+    <th>Colspan</th>
+  </tr>
+
+<% @elements.each do |element| %>
+  <tr>
+    <td><%=h element.widgit_id %></td>
+    <td><%=h element.view_id %></td>
+    <td><%=h element.row %></td>
+    <td><%=h element.column %></td>
+    <td><%=h element.owner_id %></td>
+    <td><%=h element.rowspan %></td>
+    <td><%=h element.colspan %></td>
+    <td><%= link_to 'Show', element %></td>
+    <td><%= link_to 'Edit', edit_element_path(element) %></td>
+    <td><%= link_to 'Destroy', element, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New element', new_element_path %>

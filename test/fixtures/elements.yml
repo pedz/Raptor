@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  widgit_id: 1
+  view_id: 1
+  row: 1
+  column: 1
+  owner_id: 1
+  rowspan: 1
+  colspan: 1
+
+two:
+  widgit_id: 1
+  view_id: 1
+  row: 1
+  column: 1
+  owner_id: 1
+  rowspan: 1
+  colspan: 1
