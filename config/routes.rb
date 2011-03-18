@@ -1,22 +1,15 @@
 # -*- coding: utf-8 -*-
 
 ActionController::Routing::Routes.draw do |map|
-  map.resources :elements
-
-  map.resources :views
-
+  map.resources(:views) do |views|
+    views.resources :elements
+  end
   map.resources :widgets
-
   map.resources :team_memberships
-
   map.resources :membership_types
-
   map.resources :team_queues
-
   map.resources :teams
-
   map.resources :retain_node_selectors
-
   map.resources :retain_nodes
 
   map.resources :hot_pmr_lists, :controller => 'hot_pmr_lists', :only => [ :index, :show ]

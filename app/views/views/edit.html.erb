@@ -1,20 +1,36 @@
-<h1>Editing view</h1>
+<%# -*- coding: utf-8 -*- %>
 
+<!-- app/views/views/edit.html.erb -->
+<%- @title = "Edit view: #{@view.name}" -%>
+<%- content_for(:top) do -%>
+  <h1><%= @title %></h1>
+  <%= render :partial => 'layouts/shared/display_flash' %>
+<%- end -%>
+<%- content_for(:center) do -%>
 <% form_for(@view) do |f| %>
   <%= f.error_messages %>
-
+  <% not_owner = (@view.owner_id != @application_user.id) %>
+  <%- if not_owner -%>
+      <p>
+	You do not own the selected view.  You may change the name and
+	hit submit to create a copy of the view.  (View names must be
+	unique across the whole system).
+      </p>
+  <%- end -%>
   <p>
     <%= f.label :name %><br />
     <%= f.text_field :name %>
   </p>
   <p>
-    <%= f.label :owner_id %><br />
-    <%= f.text_field :owner_id %>
+    <%= label_tag("copy") %><br />
+    <%= check_box_tag("copy", "true", not_owner) %>
   </p>
   <p>
     <%= f.submit 'Update' %>
   </p>
 <% end %>
-
+<%- end -%>
+<%- content_for(:bottom) do -%>
 <%= link_to 'Show', @view %> |
 <%= link_to 'Back', views_path %>
+<%- end -%>

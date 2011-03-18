@@ -41,7 +41,7 @@ class WidgetsController < ApplicationController
   # POST /widgets.xml
   def create
     @widget = Widget.new(params[:widget])
-
+    @widget.owner_id = @application_user.id
     respond_to do |format|
       if @widget.save
         flash[:notice] = 'Widget was successfully created.'
@@ -59,12 +59,55 @@ class WidgetsController < ApplicationController
   def update
     @widget = Widget.find(params[:id])
 
+    # We want to have three possible outcomes.
+    # 1) The change is allowed and it succeeds (allowed == true and
+    #    result == true)
+    # 2) The change is allowed but it fails (allowed == true and
+    #    result != true)
+    # 3) The change is not allowed. (allowed != true)
+
+    # What is allowed?
+    # 1) A user that owns the widget can change its attributes.  This is
+    #    if @widget.owner_id == @application_user.id and copy is false.
+    # 2) A user that owns the widget can changes its name and make a
+    #    copy (which will cause copies of the elements that belong to
+    #    the widget to be created as well)  This is if @widget.owner_id ==
+    #    @application_user.id and copy is true.
+    # 3) A user that does not own the widget can create a new copy of
+    #    the widget just like in #2 except the new widget will be owned by
+    #    the current user.  This is if @widget.owner_id !=
+    #    @application_user.id and copy is true.
+    allowed = false
+    result = false
+    if params[:copy] == true || params[:copy] == "true"
+      allowed = true
+      new_copy = Widget.new(params[:widget])
+      new_copy.owner_id = @application_user.id
+      # See if we can save the new widget
+      if !(result = new_copy.save)
+        # new_copy has the error messages.  Move them to @widget because
+        # we want to call edit again with the same record but have the
+        # error messages displayed.
+        new_copy.errors.each_error do |attr, err|
+          @widget.errors.add(attr, err)
+        end
+      end
+    elsif @widget.owner_id == @application_user.id
+      allowed = true
+      result = @widget.update_attributes(params[:widget])
+    end
     respond_to do |format|
-      if @widget.update_attributes(params[:widget])
-        flash[:notice] = 'Widget was successfully updated.'
-        format.html { redirect_to(@widget) }
-        format.xml  { head :ok }
+      if allowed
+        if result
+          flash[:notice] = 'Widget was successfully updated.'
+          format.html { redirect_to(@widget) }
+          format.xml  { head :ok }
+        else
+          format.html { render :action => "edit" }
+          format.xml  { render :xml => @widget.errors, :status => :unprocessable_entity }
+        end
       else
+        @widget.errors.add_to_base "You are not the owner of the widget so you must make a copy"
         format.html { render :action => "edit" }
         format.xml  { render :xml => @widget.errors, :status => :unprocessable_entity }
       end
@@ -75,11 +118,17 @@ class WidgetsController < ApplicationController
   # DELETE /widgets/1.xml
   def destroy
     @widget = Widget.find(params[:id])
-    @widget.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(widgets_url) }
-      format.xml  { head :ok }
+    if @widget.owner_id == @application_user.id
+      @widget.destroy
+        respond_to do |format|
+        format.html { redirect_to(widgets_url) }
+        format.xml  { head :ok }
+      end
+    else
+      respond_to do |format|
+        format.html { render :file => "public/401.html", :status => :unauthorized }
+        format.xml { render :xml => @widget.errors, :status => :unauthorized }
+      end
     end
   end
 end

@@ -1,18 +1,26 @@
+<%# -*- coding: utf-8 -*- %>
+
+<!-- app/views/widgets/edit.html.erb -->
+<%- @title = "Show widget: #{@widget.name}" -%>
+<%- content_for(:top) do -%>
+  <h1><%= @title %></h1>
+  <%= render :partial => 'layouts/shared/display_flash' %>
+<%- end -%>
+<%- content_for(:center) do -%>
 <p>
   <b>Name:</b>
   <%=h @widget.name %>
 </p>
-
 <p>
   <b>Owner:</b>
-  <%=h @widget.owner_id %>
+  <%=h @widget.owner.ldap_id %>
 </p>
-
 <p>
   <b>Code:</b>
   <%=h @widget.code %>
 </p>
-
-
+<%- end -%>
+<%- content_for(:bottom) do -%>
 <%= link_to 'Edit', edit_widget_path(@widget) %> |
 <%= link_to 'Back', widgets_path %>
+<%- end -%>

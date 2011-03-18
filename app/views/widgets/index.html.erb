@@ -1,5 +1,12 @@
-<h1>Listing widgets</h1>
+<%# -*- coding: utf-8 -*- %>
 
+<!-- app/views/widgets/index.html.erb -->
+<%- @title = "Widget Listing" -%>
+<%- content_for(:top) do -%>
+  <h1><%= @title %></h1>
+  <%= render :partial => 'layouts/shared/display_flash' %>
+<%- end -%>
+<%- content_for(:center) do -%>
 <table>
   <tr>
     <th>Name</th>
@@ -10,7 +17,7 @@
 <% @widgets.each do |widget| %>
   <tr>
     <td><%=h widget.name %></td>
-    <td><%=h widget.owner_id %></td>
+    <td><%=h widget.owner.ldap_id %></td>
     <td><%=h widget.code %></td>
     <td><%= link_to 'Show', widget %></td>
     <td><%= link_to 'Edit', edit_widget_path(widget) %></td>
@@ -18,7 +25,7 @@
   </tr>
 <% end %>
 </table>
-
-<br />
-
+<%- end -%>
+<%- content_for(:bottom) do -%>
 <%= link_to 'New widget', new_widget_path %>
+<%- end -%>

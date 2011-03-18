@@ -1,5 +1,12 @@
-<h1>Listing views</h1>
+<%# -*- coding: utf-8 -*- %>
 
+<!-- app/views/views/index.html.erb -->
+<%- @title = "View Listing" -%>
+<%- content_for(:top) do -%>
+  <h1><%= @title %></h1>
+  <%= render :partial => 'layouts/shared/display_flash' %>
+<%- end -%>
+<%- content_for(:center) do -%>
 <table>
   <tr>
     <th>Name</th>
@@ -9,14 +16,14 @@
 <% @views.each do |view| %>
   <tr>
     <td><%=h view.name %></td>
-    <td><%=h view.owner_id %></td>
+    <td><%=h view.owner.ldap_id %></td>
     <td><%= link_to 'Show', view %></td>
     <td><%= link_to 'Edit', edit_view_path(view) %></td>
     <td><%= link_to 'Destroy', view, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
-
-<br />
-
+<%- end -%>
+<%- content_for(:bottom) do -%>
 <%= link_to 'New view', new_view_path %>
+<%- end -%>

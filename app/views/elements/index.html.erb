@@ -1,32 +1,38 @@
-<h1>Listing elements</h1>
+<%# -*- coding: utf-8 -*- %>
 
+<!-- app/views/elements/index.html.erb -->
+<%- @title = "Element Listing" -%>
+<%- content_for(:top) do -%>
+  <h1><%= @title %></h1>
+  <%= render :partial => 'layouts/shared/display_flash' %>
+<%- end -%>
+<%- content_for(:center) do -%>
 <table>
   <tr>
     <th>Widgit</th>
     <th>View</th>
     <th>Row</th>
     <th>Column</th>
-    <th>Owner</th>
     <th>Rowspan</th>
     <th>Colspan</th>
   </tr>
 
 <% @elements.each do |element| %>
   <tr>
-    <td><%=h element.widgit_id %></td>
-    <td><%=h element.view_id %></td>
+    <td><%=h element.widget.name %></td>
+    <td><%=h element.view.name %></td>
     <td><%=h element.row %></td>
-    <td><%=h element.column %></td>
-    <td><%=h element.owner_id %></td>
+    <td><%=h element.col %></td>
     <td><%=h element.rowspan %></td>
     <td><%=h element.colspan %></td>
-    <td><%= link_to 'Show', element %></td>
-    <td><%= link_to 'Edit', edit_element_path(element) %></td>
-    <td><%= link_to 'Destroy', element, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Show', view_element_path(@view, element) %></td>
+    <td><%= link_to 'Edit', edit_view_element_path(@view, element) %></td>
+    <td><%= link_to 'Destroy', view_element_path(@view, element), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
-
-<br />
-
-<%= link_to 'New element', new_element_path %>
+<%- end -%>
+<%- content_for(:bottom) do -%>
+<%= link_to 'New element', new_view_element_path(@view) %> |
+<%= link_to 'Back to View', @view %>
+<%- end -%>

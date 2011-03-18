@@ -50,9 +50,12 @@
 
 class User < ActiveRecord::Base
   attr_protected :ldap_id, :retain_user_id, :admin
-  has_many :retusers, :include => [ :software_node, :hardware_node ]
+  has_many   :retusers,          :include => [ :software_node, :hardware_node ]
   belongs_to :current_retain_id, :class_name => "Retuser", :foreign_key => "current_retuser_id"
-  has_many :favorite_queues, :through => :current_retain_id, :order => :sort_column
+  has_many   :favorite_queues,   :through => :current_retain_id, :order => :sort_column
+  has_many   :widgets,           :foreign_key => :owner
+  has_many   :views,             :foreign_key => :owner
+  has_many   :elements,          :foreign_key => :owner
 
   def ldap
     LdapUser::find(:attribute => 'mail', :value => ldap_id)
