@@ -28,10 +28,14 @@
  *     oldest piece of data for the whole table.
  */
 
-/** Debug level for code: 0 is off, 5 is most detailed */
+/** Debug level for code: 0 is off, 5 is most detailed
+ * Need some way to set this via userland.
+ */
 Raptor.debug = 0;
 
-/** Catch an exception when thrown by the Ajax.Request calls */
+/** Catch an exception when thrown by the Ajax.Request calls
+ * I don't like the fact that I have "main" in here.
+ */
 Raptor.catch_exception = function (req, except) {
     var div = new Element('div', { style: "color: red;" });
     var message = except.name + ": " + except.message + "<br/>";
@@ -51,10 +55,10 @@ Raptor.Paths = { };
 /** base path for Raptor... Current set to "/raptor" */
 Raptor.Paths.base = "/raptor";
 /** base path to return json objects.  I found the :format that Rails
- * normally uses a bad idea because it seem to confuse caching.  So,
- * all the json objects are turned via their own separate paths.  This
- * is a new idea so there are some old elements that use the :format
- * method.
+ * normally uses a bad idea because it seems to confuse the browser's
+ * caching.  So, all the json objects are returned via their own
+ * separate paths.  This is a new idea so there are some old elements
+ * that use the :format method.
  */
 Raptor.Paths.json_base = Raptor.Paths.base + "/json";
 /** path for the JSON version of the Favorite Queues. I might should
