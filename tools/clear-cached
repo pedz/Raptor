@@ -1,0 +1,11 @@
+DELETE FROM cached_calls;
+DELETE FROM cached_centers;
+DELETE FROM cached_components;
+DELETE FROM cached_customers;
+DELETE FROM cached_pmrs;
+DELETE FROM cached_psars;
+DELETE FROM cached_queue_infos;
+DELETE FROM cached_queues;
+DELETE FROM cached_registrations;
+DELETE FROM cached_releases;
+DELETE FROM cached_text_lines;
