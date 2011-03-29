@@ -93,12 +93,13 @@ module Combined
       if owner_editable.nil?
         load
       end
+      v = self.pmr.owner.name
       css_class, title, editable = [ owner_css, owner_message, owner_editable ]
       {
         :css_class => css_class,
         :title => title,
         :editable => editable,
-        :name => self.pmr.owner.name,
+        :name => v,
         :width => Retain::Fields.field_width(:pmr_owner_name)
       }
     end
@@ -107,12 +108,13 @@ module Combined
       if resolver_editable.nil?
         load
       end
+      v = self.pmr.resolver.name
       css_class, title, editable = [ resolver_css, resolver_message, resolver_editable ]
       {
         :css_class => css_class,
         :title => title,
         :editable => editable,
-        :name => self.pmr.resolver.name,
+        :name => v,
         :width => Retain::Fields.field_width(:pmr_resolver_name)
       }
     end
@@ -121,12 +123,13 @@ module Combined
       if next_queue_editable.nil?
         load
       end
+      v = pmr.next_queue.nil? ? "blank" : pmr.next_queue.to_param
       css_class, title, editable = [ next_queue_css, next_queue_message, next_queue_editable ]
       {
         :css_class => css_class,
         :title => title,
         :editable => editable,
-        :name => pmr.next_queue.nil? ? "blank" : pmr.next_queue.to_param,
+        :name => v,
         :width => (Retain::Fields.field_width(:next_queue) + 1 # +1 for commma
                    Retain::Fields.field_width(:h_or_s) + 1 +
                    Retain::Fields.field_width(:next_center))
@@ -350,7 +353,7 @@ module Combined
 
       pmr_owner = pmr.owner
       # A blank owner is a bad dog.
-      if pmr_owner.signon.blank?
+      if pmr_owner.nil? || pmr_owner.signon.blank?
         return [ "wag-wag", "Owner should not be blank", true ]
       end
 
@@ -385,7 +388,7 @@ module Combined
       pmr = @cached.pmr
       pmr_resolver = pmr.resolver
       # A blank resolver is a bad dog.
-      if pmr_resolver.signon.blank?
+      if pmr_resolver.nil? || pmr_resolver.signon.blank?
         return [ "wag-wag", "Resolver should not be blank", true ]
       end
 

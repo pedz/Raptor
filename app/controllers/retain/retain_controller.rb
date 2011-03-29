@@ -35,9 +35,17 @@ module Retain
     # connection to retain and also has a few fields as to the results
     # of the attemp of the connection.
     def signon_user
+      # 2011-03-25 -- This was find_or_initialize but if we start of
+      # with an empty database and do a QS, we end up creating a
+      # cached registration for this user because (usually) they will
+      # have a PMR that they own.  Then later, we try and get the
+      # PSARs.  The new record does not have the psar_number so we
+      # fetch it and try to insert it (because its new) but that
+      # fails.  So... lets try and just create it here so later will
+      # we do updates as it changes.
       @signon_user ||=
-        Combined::Registration.find_or_initialize_by_signon_and_apptest(@retain_user_connection_parameters.signon,
-                                                                        @retain_user_connection_parameters.apptest)
+        Combined::Registration.find_or_create_by_signon_and_apptest(@retain_user_connection_parameters.signon,
+                                                                    @retain_user_connection_parameters.apptest)
     end
     helper_method :signon_user
 
