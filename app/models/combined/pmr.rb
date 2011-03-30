@@ -127,25 +127,34 @@ module Combined
                                  :nls_scratch_pad_2, 
                                  :nls_scratch_pad_3,
                                  :alterable_format_lines,
-                                 :nls_text_lines
+                                 :nls_text_lines,
+                                 :information_text_lines
                                 ]
       
       if @cached.alteration_date
         fa_lines = @cached.alterable_format_lines.length
         text_lines = @cached.text_lines.length
         pages = (fa_lines + text_lines + 15) / 16
-        # logger.debug("CMB: #{temp_id} text_lines: #{text_lines}, fa_lines: #{fa_lines}, pages: #{pages}")
         options_hash[:beginning_page_number] = pages + 1
       end
       
       # Fields we need for the add text lines.
       options_hash[:group_request] = [ group_request_elements ]
       pmr = Retain::Pmr.new(retain_user_connection_parameters, options_hash)
-      pmr.severity
-
-      options_hash[:group_request] = [ [ :information_text_lines, :severity ]]
-      pmr2 = Retain::Pmr.new(retain_user_connection_parameters, options_hash)
-      pmr2.severity
+      begin
+	pmr.severity
+      rescue Exception => e
+	# See if we get a "start page requested larger than last page of record"
+	# If we do, then we purge the PMR and start back over.
+	if e.sr == 115 && e.ex == 130
+	  @cached.text_lines.clear
+	  options_hash[:beginning_page_number] = 0
+	  pmr = Retain::Pmr.new(retain_user_connection_parameters, options_hash)
+	  pmr.severity
+	else
+	  raise e
+	end
+      end
 
       # if @cached.alteration_date
       #   if pmr.nls_text_lines?
@@ -172,6 +181,7 @@ module Combined
       if pmr.nls_text_lines?
         if @cached.alteration_date
           offset = ((pmr.beginning_page_number - 2) * 16) - @cached.alterable_format_lines.length
+	  offset = 0 if offset < 0
         else
           offset = 0
         end
@@ -182,8 +192,8 @@ module Combined
       end
       
       # Create the information text lines
-      if pmr2.information_text_lines?
-        lines = pmr2.information_text_lines
+      if pmr.information_text_lines?
+        lines = pmr.information_text_lines
         lines = [ lines ] unless lines.kind_of? Array
         update_lines(lines,
                      @cached.information_text_lines(true),

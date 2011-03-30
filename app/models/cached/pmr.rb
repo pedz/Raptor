@@ -135,7 +135,8 @@ module Cached
              :conditions => "line_type = #{Cached::TextLine::LineTypes::TEXT_LINE}",
              :class_name => "Cached::TextLine",
              :order => "line_number ASC",
-             :foreign_key => "pmr_id")
+             :foreign_key => "pmr_id",
+	     :dependent => :destroy)
     has_many(:information_text_lines,
              :conditions => "line_type = #{Cached::TextLine::LineTypes::INFORMATION_TEXT}",
              :class_name => "Cached::TextLine",
