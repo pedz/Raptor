@@ -80,7 +80,11 @@ me=$( whoami )
 if [[ "${me}" = "${UID}" ]] ; then
     echo not SUing
     cd ${SERVER_HOME}
-    script/rvm-wrapper ${THIN} --config config/thin-production.yml $@
+    if [[ $( hostname ) = p51 ]] ; then
+	script/rvm-wrapper ${THIN} --config config/thin-staging.yml $@
+    else
+	script/rvm-wrapper ${THIN} --config config/thin-production.yml $@
+    fi
     do_workers $1
 else
     echo SUing to "${UID}"
