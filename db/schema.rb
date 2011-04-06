@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 57) do
+ActiveRecord::Schema.define(:version => 49) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -235,20 +235,6 @@ ActiveRecord::Schema.define(:version => 57) do
 
   add_index "cached_text_lines", ["pmr_id", "line_type", "line_number"], :name => "uq_cached_text_lines_triple", :unique => true
 
-  create_table "elements", :force => true do |t|
-    t.integer  "widget_id",                 :null => false
-    t.integer  "view_id",                   :null => false
-    t.integer  "owner_id",                  :null => false
-    t.integer  "row",                       :null => false
-    t.integer  "col",                       :null => false
-    t.integer  "rowspan",    :default => 1
-    t.integer  "colspan",    :default => 1
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "elements", ["view_id", "row", "col"], :name => "uq_elements", :unique => true
-
   create_table "favorite_queues", :force => true do |t|
     t.integer  "queue_id",    :null => false
     t.datetime "created_at"
@@ -269,12 +255,6 @@ ActiveRecord::Schema.define(:version => 57) do
     t.integer  "priority",   :default => 3
     t.integer  "ftype",      :default => 0
     t.integer  "state",      :default => 0
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "membership_types", :force => true do |t|
-    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -343,30 +323,6 @@ ActiveRecord::Schema.define(:version => 57) do
   add_index "retusers", ["id", "user_id"], :name => "uq_id_user_id", :unique => true
   add_index "retusers", ["user_id", "retid", "apptest"], :name => "uq_retusers_tuple", :unique => true
 
-  create_table "team_memberships", :force => true do |t|
-    t.integer  "team_id"
-    t.integer  "membership_type_id"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "team_queues", :force => true do |t|
-    t.integer  "team_id"
-    t.integer  "cached_queue_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "team_queues", ["cached_queue_id"], :name => "uq_team_queues_queue_owner", :unique => true
-
-  create_table "teams", :force => true do |t|
-    t.string   "name",       :null => false
-    t.string   "dept",       :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "users", :force => true do |t|
     t.string   "ldap_id",                               :null => false
     t.boolean  "admin",              :default => false
@@ -380,24 +336,5 @@ ActiveRecord::Schema.define(:version => 57) do
   end
 
   add_index "users", ["ldap_id"], :name => "uq_ldap_id", :unique => true
-
-  create_table "views", :force => true do |t|
-    t.string   "name",       :null => false
-    t.integer  "owner_id",   :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "views", ["name"], :name => "uq_views", :unique => true
-
-  create_table "widgets", :force => true do |t|
-    t.string   "name",       :null => false
-    t.integer  "owner_id",   :null => false
-    t.text     "code",       :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "widgets", ["name"], :name => "uq_widgets", :unique => true
 
 end
