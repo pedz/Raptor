@@ -1,3 +1,5 @@
+# This controller will be very seldom used but created the full
+# scaffold because disk space is cheap.
 class NameTypesController < ApplicationController
   # GET /name_types
   # GET /name_types.xml
