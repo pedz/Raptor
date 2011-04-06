@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 49) do
+ActiveRecord::Schema.define(:version => 50) do
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -258,6 +258,15 @@ ActiveRecord::Schema.define(:version => 49) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "names", :force => true do |t|
+    t.string   "type",       :null => false
+    t.string   "name",       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "names", ["name"], :name => "uq_teams_name", :unique => true
 
   create_table "retain_node_selectors", :force => true do |t|
     t.string   "description"

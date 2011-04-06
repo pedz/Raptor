@@ -1,0 +1,16 @@
+<h1>Editing name_type</h1>
+
+<% form_for(@name_type) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :type %><br />
+    <%= f.text_field :type %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @name_type %> |
+<%= link_to 'Back', name_types_path %>
