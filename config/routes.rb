@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 ActionController::Routing::Routes.draw do |map|
+  map.resources :names
+
   map.calls "calls/:group/:view/:subselect", :controller => 'calls', :action => 'index'
   map.calls "calls/:group/:view",            :controller => 'calls', :action => 'index'
   map.calls "calls/:group",                  :controller => 'calls', :action => 'index'
