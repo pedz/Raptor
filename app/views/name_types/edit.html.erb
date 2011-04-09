@@ -4,8 +4,16 @@
   <%= f.error_messages %>
 
   <p>
-    <%= f.label :type %><br />
-    <%= f.text_field :type %>
+    <%= f.label :name_type %><br />
+    <%= f.text_field :name_type %>
+  </p>
+  <p>
+    <%= f.label :container, "Is this a container?" %><br />
+    <%= f.check_box :container %>
+  </p>
+  <p>
+    <%= f.label :containable, "Can this be put into a container?" %><br />
+    <%= f.check_box :containable %>
   </p>
   <p>
     <%= f.submit 'Update' %>

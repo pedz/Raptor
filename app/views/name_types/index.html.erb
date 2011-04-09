@@ -3,11 +3,15 @@
 <table>
   <tr>
     <th>Type</th>
+    <th>Container</th>
+    <th>Containable</th>
   </tr>
 
 <% @name_types.each do |name_type| %>
   <tr>
-    <td><%=h name_type.type %></td>
+    <td><%=h name_type.name_type %></td>
+    <td><%=h name_type.container %></td>
+    <td><%=h name_type.containable %></td>
     <td><%= link_to 'Show', name_type %></td>
     <td><%= link_to 'Edit', edit_name_type_path(name_type) %></td>
     <td><%= link_to 'Destroy', name_type, :confirm => 'Are you sure?', :method => :delete %></td>

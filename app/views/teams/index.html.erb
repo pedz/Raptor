@@ -3,13 +3,13 @@
 <table>
   <tr>
     <th>Name</th>
-    <th>Dept</th>
+    <th>Owner</th>
   </tr>
 
 <% @teams.each do |team| %>
   <tr>
     <td><%=h team.name %></td>
-    <td><%=h team.dept %></td>
+    <td><%=h team.owner.ldap_id %></td>
     <td><%= link_to 'Show', team %></td>
     <td><%= link_to 'Edit', edit_team_path(team) %></td>
     <td><%= link_to 'Destroy', team, :confirm => 'Are you sure?', :method => :delete %></td>

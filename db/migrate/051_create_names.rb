@@ -1,8 +1,9 @@
 class CreateNames < ActiveRecord::Migration
   def self.up
     create_table :names do |t|
-      t.string :type, :null => false
-      t.string :name, :null => false
+      t.string  :type,     :null => false
+      t.string  :name,     :null => false
+      t.integer :owner_id, :null => false
       t.timestamps
     end
     # The purpose of this table is to have a set of unique names
@@ -15,7 +16,11 @@ class CreateNames < ActiveRecord::Migration
     # (which is the default but I wanted to make it clear that this
     # was a conscious choice.
     execute "ALTER TABLE names ADD CONSTRAINT fk_teams_type
-             FOREIGN KEY (type) REFERENCES name_types(type)
+             FOREIGN KEY (type) REFERENCES name_types(name_type)
+             ON DELETE NO ACTION"
+
+    execute "ALTER TABLE names ADD CONSTRAINT fk_names_owner_id
+             FOREIGN KEY (owner_id) REFERENCES users(id)
              ON DELETE NO ACTION"
   end
 

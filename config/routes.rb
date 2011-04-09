@@ -2,7 +2,6 @@
 
 ActionController::Routing::Routes.draw do |map|
   map.resources :name_types
-
   map.resources :names
 
   map.calls "calls/:group/:view/:subselect", :controller => 'calls', :action => 'index'

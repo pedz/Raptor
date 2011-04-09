@@ -3,15 +3,15 @@
 # This model represents a team inside a particular organization.
 #
 #
-class Team < ActiveRecord::Base
+class Team < Name
   ##
   # :attr: name
-  # name of the team
+  # name of the team (via Name parent class)
 
   ##
-  # :attr: dept
-  # The department the team is in.  Currently, there is no way to
-  # represent teams split between departments.
+  # :attr: owner
+  # A belongs_to relation.  Only the owner can modify this
+  # entity. (also via Name parent class)
 
   ##
   # :attr: team_queues

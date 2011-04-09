@@ -41,6 +41,7 @@ class TeamsController < ApplicationController
   # POST /teams.xml
   def create
     @team = Team.new(params[:team])
+    @team.owner_id = @application_user.id
 
     respond_to do |format|
       if @team.save
