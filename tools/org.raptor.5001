@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <key>Disabled</key>
+    <false/>
     <key>Label</key>
     <string>org.raptor.5001</string>
     <key>WorkingDirectory</key>
@@ -12,7 +14,8 @@
     <string>/Users/pedzan/Source/Rails/raptor/log/thin.5001.err</string>
     <key>ProgramArguments</key>
     <array>
-      <string>/usr/bin/thin</string>
+      <string>script/rvm-wrapper</string>
+      <string>thin</string>
       <string>--port</string>
       <string>5001</string>
       <string>--environment</string>
