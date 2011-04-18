@@ -17,4 +17,5 @@ class Name < ActiveRecord::Base
   # :attr: owner
   # A belongs_to relation.  Only the owner can modify this entity.
   belongs_to :owner, :class_name => "User"
+  validates_uniqueness_of :name
 end

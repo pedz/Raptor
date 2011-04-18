@@ -16,7 +16,7 @@ class NamesController < ApplicationController
   # GET /names/1
   # GET /names/1.xml
   def show
-    @name = Name.find(params[:id])
+    @name = Name.find(params[:id]).becomes(Name)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -37,14 +37,18 @@ class NamesController < ApplicationController
 
   # GET /names/1/edit
   def edit
-    @name = Name.find(params[:id])
+    @name = Name.find(params[:id]).becomes(Name)
   end
 
   # POST /names
   # POST /names.xml
   def create
-    @name = Name.new(params[:name])
-
+    p = params[:name]
+    # Is this how I want to do this?
+    type = p.delete(:type)
+    @name = Name.new(p)
+    @name.type = type
+    @name.owner = application_user
     respond_to do |format|
       if @name.save
         flash[:notice] = 'Name was successfully created.'
@@ -60,7 +64,7 @@ class NamesController < ApplicationController
   # PUT /names/1
   # PUT /names/1.xml
   def update
-    @name = Name.find(params[:id])
+    @name = Name.find(params[:id]).becomes(Name)
 
     respond_to do |format|
       if @name.update_attributes(params[:name])
@@ -77,7 +81,7 @@ class NamesController < ApplicationController
   # DELETE /names/1
   # DELETE /names/1.xml
   def destroy
-    @name = Name.find(params[:id])
+    @name = Name.find(params[:id]).becomes(Name)
     @name.destroy
 
     respond_to do |format|

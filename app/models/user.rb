@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# = User
 #
 # This model represents a user of Raptor and is looked up by the LDAP
 # id which is assumed to be the user name given via basic http
@@ -56,6 +55,7 @@ class User < ActiveRecord::Base
   has_many   :widgets,           :foreign_key => :owner
   has_many   :views,             :foreign_key => :owner
   has_many   :elements,          :foreign_key => :owner
+  has_many   :containers,        :as => :elements
 
   def ldap
     LdapUser::find(:attribute => 'mail', :value => ldap_id)

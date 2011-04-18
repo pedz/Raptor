@@ -1,0 +1,24 @@
+<h1>Editing relationship</h1>
+
+<% form_for(@relationship) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :container_type_id %><br />
+    <%= f.collection_select(:container_type_id, NameType.find(:all, :conditions => { :container => true}), :id, :name_type) %>
+  </p>
+  <p>
+    <%= f.label :association_type_id %><br />
+    <%= f.collection_select(:association_type_id, AssociationType.all, :id, :association_type) %>
+  </p>
+  <p>
+    <%= f.label :element_type_id %><br />
+    <%= f.collection_select(:element_type_id, NameType.find(:all, :conditions => { :containable => true}), :id, :name_type) %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @relationship %> |
+<%= link_to 'Back', relationships_path %>

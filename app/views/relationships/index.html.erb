@@ -1,0 +1,24 @@
+<h1>Listing relationships</h1>
+
+<table>
+  <tr>
+    <th>Container type</th>
+    <th>Association type</th>
+    <th>Element type</th>
+  </tr>
+
+<% @relationships.each do |relationship| %>
+  <tr>
+    <td><%=h relationship.container_type.name_type %></td>
+    <td><%=h relationship.association_type.association_type %></td>
+    <td><%=h relationship.element_type.name_type %></td>
+    <td><%= link_to 'Show', relationship %></td>
+    <td><%= link_to 'Edit', edit_relationship_path(relationship) %></td>
+    <td><%= link_to 'Destroy', relationship, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New relationship', new_relationship_path %>

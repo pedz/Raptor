@@ -1,0 +1,28 @@
+<p>
+  <b>Container name:</b>
+  <%=h @container.container_name_id %>
+</p>
+
+<p>
+  <b>Relationship:</b>
+  <%=h @container.relationship_id %>
+</p>
+
+<p>
+  <b>Element name id:</b>
+  <%=h @container.element_name_id %>
+</p>
+
+<p>
+  <b>Element name type:</b>
+  <%=h @container.element_name_type %>
+</p>
+
+<p>
+  <b>Owner:</b>
+  <%=h @container.owner_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_container_path(@container) %> |
+<%= link_to 'Back', containers_path %>

@@ -5,7 +5,7 @@
 
   <p>
     <%= f.label :type %><br />
-    <%= f.text_field :type %>
+    <%= f.collection_select(:type, NameType.find(:all, :conditions => { :table_name => "names"}), :name_type, :name_type) %>
   </p>
   <p>
     <%= f.label :name %><br />

@@ -1,0 +1,20 @@
+<h1>Listing association_types</h1>
+
+<table>
+  <tr>
+    <th>Association type</th>
+  </tr>
+
+<% @association_types.each do |association_type| %>
+  <tr>
+    <td><%=h association_type.association_type %></td>
+    <td><%= link_to 'Show', association_type %></td>
+    <td><%= link_to 'Edit', edit_association_type_path(association_type) %></td>
+    <td><%= link_to 'Destroy', association_type, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New association_type', new_association_type_path %>

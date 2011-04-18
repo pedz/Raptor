@@ -1,0 +1,16 @@
+<h1>Editing association_type</h1>
+
+<% form_for(@association_type) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :association_type %><br />
+    <%= f.text_field :association_type %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @association_type %> |
+<%= link_to 'Back', association_types_path %>

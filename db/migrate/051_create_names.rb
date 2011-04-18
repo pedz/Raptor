@@ -8,14 +8,14 @@ class CreateNames < ActiveRecord::Migration
     end
     # The purpose of this table is to have a set of unique names
     # amoung the different models.
-    execute "ALTER TABLE names ADD CONSTRAINT uq_teams_name UNIQUE (name)"
+    execute "ALTER TABLE names ADD CONSTRAINT uq_names_name UNIQUE (name)"
 
     # The type is restricted and we don't want to delete the type and
     # have all of the names for that type deleted.  That seems like an
     # accident waiting to happen.  Thus we set ON DELETE to NO ACTION
     # (which is the default but I wanted to make it clear that this
     # was a conscious choice.
-    execute "ALTER TABLE names ADD CONSTRAINT fk_teams_type
+    execute "ALTER TABLE names ADD CONSTRAINT fk_names_type
              FOREIGN KEY (type) REFERENCES name_types(name_type)
              ON DELETE NO ACTION"
 
