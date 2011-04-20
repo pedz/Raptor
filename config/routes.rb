@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 
 ActionController::Routing::Routes.draw do |map|
-  map.resources :containers
-
-  map.resources :relationships
-
   map.resources :association_types
 
   map.resources :name_types
