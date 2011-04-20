@@ -55,7 +55,7 @@ class User < ActiveRecord::Base
   has_many   :widgets,           :foreign_key => :owner
   has_many   :views,             :foreign_key => :owner
   has_many   :elements,          :foreign_key => :owner
-  has_many   :containers,        :as => :elements
+  has_many   :relationships,     :as => :elements
 
   def ldap
     LdapUser::find(:attribute => 'mail', :value => ldap_id)

@@ -1,0 +1,18 @@
+<p>
+  <b>Container type:</b>
+  <%=h @relationship_type.container_type.name_type %>
+</p>
+
+<p>
+  <b>Association type:</b>
+  <%=h @relationship_type.association_type.association_type %>
+</p>
+
+<p>
+  <b>Element type:</b>
+  <%=h @relationship_type.element_type.name_type %>
+</p>
+
+
+<%= link_to 'Edit', edit_relationship_type_path(@relationship_type) %> |
+<%= link_to 'Back', relationship_types_path %>

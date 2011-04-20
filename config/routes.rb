@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ActionController::Routing::Routes.draw do |map|
+  map.resources :relationships, :collection => { :container_name_set => :post }
+  map.resources :relationship_types
   map.resources :association_types
-
   map.resources :name_types
   map.resources :names
 

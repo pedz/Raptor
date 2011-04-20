@@ -9,10 +9,10 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 52) do
+ActiveRecord::Schema.define(:version => 54) do
 
   create_table "association_types", :force => true do |t|
-    t.string   "association_type"
+    t.string   "association_type", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -287,6 +287,28 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "names", ["name"], :name => "uq_names_name", :unique => true
+
+  create_table "relationship_types", :force => true do |t|
+    t.integer  "container_type_id",   :null => false
+    t.integer  "association_type_id", :null => false
+    t.integer  "element_type_id",     :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "relationship_types", ["container_type_id", "association_type_id", "element_type_id"], :name => "uq_relationship_type_tuple", :unique => true
+
+  create_table "relationships", :force => true do |t|
+    t.integer  "container_name_id",    :null => false
+    t.integer  "relationship_type_id", :null => false
+    t.integer  "element_name_id",      :null => false
+    t.integer  "element_name_type",    :null => false
+    t.integer  "owner_id",             :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "relationships", ["container_name_id", "element_name_id", "element_name_type"], :name => "uq_relationship_tuple", :unique => true
 
   create_table "retain_node_selectors", :force => true do |t|
     t.string   "description"

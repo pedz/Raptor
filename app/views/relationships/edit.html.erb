@@ -1,0 +1,28 @@
+<h1>Editing relationship</h1>
+
+<% form_for(@relationship) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :container_name_id %><br />
+    <%= f.text_field :container_name_id %>
+  </p>
+  <p>
+    <%= f.label :relationship_type_id %><br />
+    <%= f.text_field :relationship_type_id %>
+  </p>
+  <p>
+    <%= f.label :element_name_id %><br />
+    <%= f.text_field :element_name_id %>
+  </p>
+  <p>
+    <%= f.label :owner_id %><br />
+    <%= f.text_field :owner_id %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @relationship %> |
+<%= link_to 'Back', relationships_path %>
