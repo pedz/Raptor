@@ -17,5 +17,12 @@ class Name < ActiveRecord::Base
   # :attr: owner
   # A belongs_to relation.  Only the owner can modify this entity.
   belongs_to :owner, :class_name => "User"
+
+  ##
+  # :attr: name_type
+  # The type of the name must be a name_type in the name_types table.
+  # This does not work... not sure exactly why but its not critical to me right now.
+  # belongs_to :name_type, :class_name => "NameType", :primary_key => "type", :foreign_key => "name_type"
+
   validates_uniqueness_of :name
 end

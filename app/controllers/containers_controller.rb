@@ -25,7 +25,7 @@ class ContainersController < ApplicationController
   # GET /containers/new.xml
   def new
     @container = Container.new
-
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @container }

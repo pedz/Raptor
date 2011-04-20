@@ -29,4 +29,8 @@ class NameType < ActiveRecord::Base
   # A has_many list of type Relationship that the specified type is
   # used as the contained element.
   has_many :element_types,   :class_name => "Relationship", :foreign_key => :element_type_id
+
+  ##
+  # A has_many list of Name records using this NameType
+  has_many :names, :class_name => "Name", :foreign_key => :type, :primary_key => :name_type
 end

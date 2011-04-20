@@ -5,7 +5,10 @@
 
   <p>
     <%= f.label :container_name_id %><br />
-    <%= f.text_field :container_name_id %>
+    <%= f.collection_select(:container_name_id,
+            Name.find(:all,
+		:joins => "INNER JOIN name_types ON type = name_types.name_type",
+                :conditions => { "name_types.container" => true }), :id, :name) %>
   </p>
   <p>
     <%= f.label :relationship_id %><br />
