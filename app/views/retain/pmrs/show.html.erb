@@ -1,11 +1,10 @@
-<%# -*- coding: utf-8 -*- %>
-
-<!-- app/views/retain/pmrs/show.html.erb -->
+<%# -*- coding: utf-8 -*- -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 
 <% @title = "PMR #{@pmr.pbc}" %>
 <%= push_page_settings %>
 <% content_for(:top) do %>
-<!-- app/views/retain/pmrs/show.html.erb top content -->
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> top -->
 <!-- <%= @controller.fragment_cache_key(:action_suffix => 'top') %> -->
 <table id='pmr-header'>
   <tr>
@@ -105,7 +104,7 @@
 <% all_lines = @pmr.alterable_format_lines + @pmr.text_lines -%>
 
 <% content_for(:center) do %>
-<!-- app/views/retain/pmrs/show.html.erb center content -->
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> center -->
 <!-- cached at <%= Time.now %> -->
 <div class='even'>
   <% tz = signon_user.tz %>
@@ -117,7 +116,7 @@
 <% end -%>
 
 <% content_for(:left) do %>
-<!-- app/views/retain/pmrs/show.html.erb left content -->
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> left -->
 <table>
   <% all_lines.each_with_index do |line, index| %>
   <%   if line.text_type == :system_inserted %>
@@ -152,17 +151,17 @@
 <% end -%>
 
 <% content_for(:left_tab) do %>
-<!-- app/views/retain/pmrs/show.html.erb left tab content -->
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> left_tab -->
 <div>S<br/>i<br/>g<br/>n<br/>a<br/>t<br/>u<br/>r<br/>e<br/>s</div>
 <% end -%>
 
 <% content_for(:right_tab) do %>
-<!-- app/views/retain/pmrs/show.html.erb right tab content -->
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> right_tab -->
 <div>P<br/>a<br/>g<br/>e<br/>s<br/></div>
 <% end -%>
 
 <% content_for(:right) do %>
-<!-- app/views/retain/pmrs/show.html.erb right content -->
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> right -->
 <div>
   <% (0 ... (all_lines.length / 16)).each do |page_number| %>
   <%= "<a href='#line_#{page_number * 16}'>Page #{page_number + 2}</a><br/>" %>
@@ -172,7 +171,7 @@
 <% end -%>
 
 <% content_for(:bottom) do %>
-<!-- app/views/retain/pmrs/show.html.erb bottom content -->
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> bottom -->
 <div>
   <%= home_button %>
   <%= favorites_button %>

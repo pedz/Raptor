@@ -1,14 +1,13 @@
-<%# -*- coding: utf-8 -*- %>
-
+<%# -*- coding: utf-8 -*- -%>
 <!-- retain/queue/show.html.erb -->
 <% @title = "Retain queue: #{@queue.to_param}" -%>
 <%- content_for(:top) do -%>
-  <!-- retain/queue/show.html.erb top content -->
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> top -->
   <h1>Retain Queue: <%= h @queue.to_param %></h1>
   <%= render :partial => 'layouts/shared/display_flash' %>
 <%- end -%>
 <% content_for(:center) do %>
-  <!-- retain/queue/show.html.erb center content -->
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> center -->
   <div class="smaller">
     <span id="message-area"></span>
     <table class='sortable' style='font-family : courier, monospace'>
@@ -23,7 +22,7 @@
   </div>
 <% end %>
 <% content_for(:bottom) do %>
-  <!-- retain/queue/show.html.erb bottom content -->
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> bottom -->
   <div style='background-color: #DDD; color: green; display: none; width: 80ex;' id='help'>
     <ol>
       <li>

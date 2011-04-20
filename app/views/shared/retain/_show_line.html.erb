@@ -1,5 +1,4 @@
-<%# -*- coding: utf-8 -*- %>
-
-<!-- app/views/retain/call/_show_line.html.erb -->
+<%# -*- coding: utf-8 -*- -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <%= div_string unless div_string.nil? %>
 <span id='<%= "#{id_prefix}_#{index}" %>' class='<%= span_classes %>'><%= text_line %></span><br/>

@@ -1,10 +1,9 @@
-<%# -*- coding: utf-8 -*- %>
-
+<%# -*- coding: utf-8 -*- -%>
 <% @title = "Expanded Favorite Queues" -%>
 <% @stylesheets = [] -%>
 <% @javascripts = "expanded_favorite_queues.js" -%>
 <% content_for(:center) do -%>
-<!-- favorite_queues/expanded.html.erb -->
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <h1>Expanded Listing of Favorite Queues</h1>
 <div id='main'></div>
 <%= button_url 'Normal View', favorite_queues_path -%>

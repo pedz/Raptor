@@ -1,11 +1,10 @@
-<%# -*- coding: utf-8 -*- %>
-
-<!-- app/views/retain/call/show.html.erb -->
+<%# -*- coding: utf-8 -*- -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <% @title = "Call #{@pmr.pbc} at #{@call.to_param}" %>
 <%= push_page_settings %>
 <% content_for(:top) do %>
 <% cache(@call.cache_tag('top')) do %>
-<!-- app/views/retain/call/show.html.erb top content -->
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> top -->
 <!-- <%= @controller.fragment_cache_key(:action_suffix => 'top') %> -->
 <table id='pmr-header'>
   <tr>
@@ -117,7 +116,7 @@
 
 <% content_for(:center) do %>
 <% cache(@call.cache_tag('center')) do %>
-<!-- app/views/retain/call/show.html.erb center content -->
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> center -->
 <!-- cached at <%= Time.now %> -->
 <div class='even'>
   <% tz = signon_user.tz %>
@@ -132,7 +131,7 @@
 
 <% content_for(:left) do %>
 <% cache(@call.cache_tag('left')) do %>
-<!-- app/views/retain/call/show.html.erb left content -->
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> left -->
 <table>
   <% all_lines.each_with_index do |line, index| %>
   <%   if line.text_type == :system_inserted %>
@@ -169,21 +168,21 @@
 
 <% content_for(:left_tab) do %>
 <% cache(@call.cache_tag('left_tab')) do %>
-<!-- app/views/retain/call/show.html.erb left tab content -->
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> left_tab -->
 <div>S<br/>i<br/>g<br/>n<br/>a<br/>t<br/>u<br/>r<br/>e<br/>s</div>
 <% end -%>
 <% end -%>
 
 <% content_for(:right_tab) do %>
 <% cache(@call.cache_tag('right_tab')) do %>
-<!-- app/views/retain/call/show.html.erb right tab content -->
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> right_tab -->
 <div>P<br/>a<br/>g<br/>e<br/>s<br/></div>
 <% end -%>
 <% end -%>
 
 <% content_for(:right) do %>
 <% cache(@call.cache_tag('right')) do %>
-<!-- app/views/retain/call/show.html.erb right content -->
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> right -->
 <div>
   <% (0 ... (all_lines.length / 16)).each do |page_number| %>
   <%= "<a href='#line_#{page_number * 16}'>Page #{page_number + 2}</a><br/>" %>
@@ -194,7 +193,7 @@
 <% end -%>
 
 <% content_for(:bottom) do %>
-<!-- app/views/retain/call/show.html.erb bottom content -->
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> bottom -->
 <div>
   <%= home_button %>
   <%= favorites_button %>

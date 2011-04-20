@@ -1,6 +1,5 @@
-<%# -*- coding: utf-8 -*- %>
-
-<!-- app/views/elements/edit.html.erb -->
+<%# -*- coding: utf-8 -*- -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <%- @title = "Edit element: #{@element.view.name}, row #{@element.row}, col #{@element.col}" -%>
 <%- content_for(:top) do -%>
   <h1><%= @title %></h1>

@@ -1,6 +1,5 @@
-<%# -*- coding: utf-8 -*- %>
-
-<!-- app/views/layouts/shared/_display_flash.html.erb -->
+<%# -*- coding: utf-8 -*- -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <% unless flash.nil? -%>
   <% flash.keys.each do |key| -%>
     <p id="flash-<%= key.to_s %>"><%= flash[key] %></p>

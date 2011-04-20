@@ -1,10 +1,9 @@
-<%# -*- coding: utf-8 -*- %>
-
+<%# -*- coding: utf-8 -*- -%>
 <% @title = "New Favorite Queue" %>
 <% @stylesheets = "favorite_queues" -%>
 <% @javascripts = "favorite_queues" -%>
 <% content_for(:center) do %>
-<!-- favorite_queues/new.html.erb -->
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
   <h1>Create a favorite Retain queue</h1>
   
   <%= error_messages_for :queue %>
