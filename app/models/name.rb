@@ -24,5 +24,24 @@ class Name < ActiveRecord::Base
   # This does not work... not sure exactly why but its not critical to me right now.
   # belongs_to :name_type, :class_name => "NameType", :primary_key => "type", :foreign_key => "name_type"
 
+  ##
+  # :attr: container_relationship_types
+  # A has_many relationship of RelationshipTypes where the
+  # container_type uses this Name.
+  has_many(:container_relationship_types,
+           :class_name => "RelationshipType",
+           :foreign_key => :container_type_id)
+
   validates_uniqueness_of :name
+
+  # Not a true association but returns the NameType associated with this Name
+  def name_type
+    NameType.find_by_name_type(self.becomes(Name).type)
+  end
+
+  # A common method by that any class used as an element in a
+  # Relationship to return the "name" associated with the element
+  def element_name
+    name
+  end
 end

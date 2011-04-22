@@ -1,7 +1,18 @@
 # -*- coding: utf-8 -*-
 
 ActionController::Routing::Routes.draw do |map|
-  map.resources :relationships, :collection => { :container_name_set => :post }
+  map.resources(:relationships,
+                :collection => {
+                  # For the new and edit pages, when the container
+                  # name is set, an AJAX call is fired to this method
+                  # to create a list of valid relationship_types
+                  :container_name_set => :post,
+                  # For the new and edit pages, when the relationship
+                  # type is set, an AJAX call is fired to this method
+                  # to create a list of objects that are valid
+                  # elements.
+                  :relationship_type_set => :post
+                })
   map.resources :relationship_types
   map.resources :association_types
   map.resources :name_types

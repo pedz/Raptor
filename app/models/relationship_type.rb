@@ -28,4 +28,8 @@ class RelationshipType < ActiveRecord::Base
   # :attr: element_type
   # A NameType that specifies the type of elements that will be contained.
   belongs_to :element_type, :class_name => "NameType"
+
+  def to_option
+    "<#{container_type.name_type},#{association_type.association_type},#{element_type.name_type}>"
+  end
 end

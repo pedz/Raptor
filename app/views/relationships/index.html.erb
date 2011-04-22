@@ -4,18 +4,14 @@
   <tr>
     <th>Container name</th>
     <th>Relationship type</th>
-    <th>Element id</th>
-    <th>Element type</th>
-    <th>Owner</th>
+    <th>Element</th>
   </tr>
 
 <% @relationships.each do |relationship| %>
   <tr>
     <td><%=h relationship.container_name.name %></td>
-    <td><%=h relationship.relationship_type.association_type %></td>
-    <td><%=h relationship.element_name_id %></td>
-    <td><%=h relationship.element_name_type %></td>
-    <td><%=h relationship.owner_id %></td>
+    <td><%=h relationship.relationship_type.association_type.association_type %></td>
+    <td><%=h relationship.element_name.element_name %></td>
     <td><%= link_to 'Show', relationship %></td>
     <td><%= link_to 'Edit', edit_relationship_path(relationship) %></td>
     <td><%= link_to 'Destroy', relationship, :confirm => 'Are you sure?', :method => :delete %></td>

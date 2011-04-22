@@ -1,0 +1,12 @@
+<%# -*- coding: utf-8 -*- -%>
+<%=
+name = Name.find(container_name_id).name_type.id
+collection_select(:relationship, :relationship_type_id,
+		  RelationshipType.find(:all,
+:order => "name_types.name_type, association_types.association_type, element_types_relationship_types.name_type",
+					:include => [:container_type, :association_type, :element_type],
+					:conditions => ["name_types.id=?", Name.find(container_name_id).name_type.id]),
+		  :id,
+		  :to_option,
+                  { :include_blank => true })
+%>

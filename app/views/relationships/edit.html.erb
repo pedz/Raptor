@@ -5,11 +5,18 @@
 
   <p>
     <%= f.label :container_name_id %><br />
-    <%= f.text_field :container_name_id %>
+    <%= f.collection_select(:container_name_id,
+            Name.find(:all,
+		:joins => "INNER JOIN name_types ON type = name_types.name_type",
+                :conditions => { "name_types.container" => true }), :id, :name, { :include_blank => true }) %>
+    <%= observe_field(:relationship_container_name_id,
+                      :url => { :action => :container_name_set },
+                      :update => :relationship_relationship_type_id,
+                      :with => 'container_name_id') %>
   </p>
   <p>
     <%= f.label :relationship_type_id %><br />
-    <%= f.text_field :relationship_type_id %>
+    <%= f.collection_select(:relationship_type_id, RelationshipType.all, :id, :to_option, { :include_blank => true }) %>
   </p>
   <p>
     <%= f.label :element_name_id %><br />

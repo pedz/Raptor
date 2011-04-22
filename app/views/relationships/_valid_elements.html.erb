@@ -1,0 +1,9 @@
+<%# -*- coding: utf-8 -*- -%>
+<%= klass = RelationshipType.find(relationship_type_id).element_type.name_type.constantize
+collection_select(:relationship,
+                  :element_name_id,
+                  klass.all.sort{ |a, b| a.element_name <=> b.element_name },
+                  :id,
+                  :element_name,
+                  { :include_blank => true})
+  %>

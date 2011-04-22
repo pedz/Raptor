@@ -1,23 +1,17 @@
 <p>
   <b>Container name:</b>
-  <%=h @relationship.container_name_id %>
+  <%=h @relationship.container_name.name %>
 </p>
 
 <p>
   <b>Relationship type:</b>
-  <%=h @relationship.relationship_type_id %>
+  <%=h @relationship.relationship_type.association_type.association_type %>
 </p>
 
 <p>
   <b>Element name:</b>
-  <%=h @relationship.element_name_id %>
+  <%=h @relationship.element_name.element_name %>
 </p>
-
-<p>
-  <b>Owner:</b>
-  <%=h @relationship.owner_id %>
-</p>
-
 
 <%= link_to 'Edit', edit_relationship_path(@relationship) %> |
 <%= link_to 'Back', relationships_path %>

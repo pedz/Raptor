@@ -94,5 +94,9 @@ module Cached
     def mark_pmrs_as_dirty
       calls.each { |call| call.pmr.mark_as_dirty }
     end
+
+    def element_name
+      "#{queue_name},#{h_or_s},#{center.center}"
+    end
   end
 end

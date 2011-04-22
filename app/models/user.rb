@@ -69,4 +69,8 @@ class User < ActiveRecord::Base
         given
       end
   end
+
+  def element_name
+    ldap_id
+  end
 end

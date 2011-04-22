@@ -40,7 +40,11 @@ class RelationshipsController < ApplicationController
   # POST /relationships
   # POST /relationships.xml
   def create
-    @relationship = Relationship.new(params[:relationship])
+    options = params[:relationship]
+    relationship_type = RelationshipType.find(options[:relationship_type_id])
+    options[:element_name_type] = relationship_type.element_type.name_type
+    options[:owner_id] = @application_user.id
+    @relationship = Relationship.new(options)
 
     respond_to do |format|
       if @relationship.save
@@ -84,6 +88,10 @@ class RelationshipsController < ApplicationController
   end
 
   def container_name_set
-    logger.debug("HERE!")
+    render :partial => "relationship_types", :locals => { :container_name_id => params[:container_name_id] }
+  end
+
+  def relationship_type_set
+    render :partial => "valid_elements", :locals => { :relationship_type_id => params[:relationship_type_id] }
   end
 end
