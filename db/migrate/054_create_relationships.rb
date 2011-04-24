@@ -5,7 +5,6 @@ class CreateRelationships < ActiveRecord::Migration
       t.integer :relationship_type_id, :null => false
       t.integer :element_name_id, :null => false
       t.string  :element_name_type, :null => false
-      t.integer :owner_id, :null => false
       t.timestamps
     end
     execute "ALTER TABLE relationships ADD CONSTRAINT uq_relationship_tuple UNIQUE

@@ -43,7 +43,6 @@ class RelationshipsController < ApplicationController
     options = params[:relationship]
     relationship_type = RelationshipType.find(options[:relationship_type_id])
     options[:element_name_type] = relationship_type.element_type.name_type
-    options[:owner_id] = @application_user.id
     @relationship = Relationship.new(options)
 
     respond_to do |format|
