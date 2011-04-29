@@ -75,7 +75,10 @@ task :l3config do
       next if intranet_id.blank? || retain_id.blank? || q.blank? ||loc.blank?
       user = User.find_or_create_by_ldap_id(intranet_id)
       puts "User id is #{user.id}"
-      retuser = user.retusers.find_or_create_by_retid_and_apptest(retain_id, false)
+      retuser = user.retusers.find_by_retid_and_apptest(retain_id, false)
+      if retuser.nil?
+        retuser = user.retusers.create :retid => retain_id, :apptest => false, :password => 'xxxxxxxx'
+      end
       puts "Retuser id is #{retuser.id}"
 
       registration = Cached::Registration.find_or_create_by_signon(retain_id)

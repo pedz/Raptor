@@ -44,9 +44,15 @@ class RelationshipsController < ApplicationController
     relationship_type = RelationshipType.find(options[:relationship_type_id])
     options[:element_name_type] = relationship_type.element_type.name_type
     @relationship = Relationship.new(options)
-
+    begin
+      save_result = @relationship.save
+    rescue Exception => e
+      raise unless e.message.match('"no_cycles_check"')
+      @relationship.errors.add_to_base("Adding this will create a cycle in the decedents")
+      save_result = false
+    end
     respond_to do |format|
-      if @relationship.save
+      if save_result
         flash[:notice] = 'Relationship was successfully created.'
         format.html { redirect_to(@relationship) }
         format.xml  { render :xml => @relationship, :status => :created, :location => @relationship }
