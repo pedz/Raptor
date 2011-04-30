@@ -1,0 +1,28 @@
+<%# -*- coding: utf-8 -*- -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<%- @title = "Listing of Presentations" -%>
+<%- content_for(:top) do -%>
+  <h1><%= @title %></h1>
+  <%= render :partial => 'layouts/shared/display_flash' %>
+<%- end -%>
+<%- content_for(:center) do -%>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Owner</th>
+  </tr>
+
+<% @presentations.each do |presentation| %>
+  <tr>
+    <td><%=h presentation.name %></td>
+    <td><%=h presentation.owner.ldap_id %></td>
+    <td><%= link_to 'Show', presentation %></td>
+    <td><%= link_to 'Edit', edit_presentation_path(presentation) %></td>
+    <td><%= link_to 'Destroy', presentation, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+<%- end -%>
+<%- content_for(:bottom) do -%>
+<%= link_to 'New presentation', new_presentation_path %>
+<%- end -%>

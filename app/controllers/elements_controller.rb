@@ -1,11 +1,11 @@
 class ElementsController < ApplicationController
-  before_filter :get_view
-  before_filter :check_view, :except => [ :index, :show ]
+  before_filter :get_presentation
+  before_filter :check_presentation, :except => [ :index, :show ]
 
-  # GET /views/1/elements
-  # GET /views/1/elements.xml
+  # GET /presentations/1/elements
+  # GET /presentations/1/elements.xml
   def index
-    @elements = @view.elements.all
+    @elements = @presentation.elements.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -16,7 +16,7 @@ class ElementsController < ApplicationController
   # GET /elements/1
   # GET /elements/1.xml
   def show
-    @element = @view.elements.find(params[:id])
+    @element = @presentation.elements.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -27,7 +27,7 @@ class ElementsController < ApplicationController
   # GET /elements/new
   # GET /elements/new.xml
   def new
-    @element = @view.elements.build
+    @element = @presentation.elements.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -37,19 +37,19 @@ class ElementsController < ApplicationController
 
   # GET /elements/1/edit
   def edit
-    @element = @view.elements.find(params[:id])
+    @element = @presentation.elements.find(params[:id])
   end
 
   # POST /elements
   # POST /elements.xml
   def create
-    @element = @view.elements.build(params[:element])
+    @element = @presentation.elements.build(params[:element])
     @element.owner_id = @application_user.id
 
     respond_to do |format|
       if @element.save
         flash[:notice] = 'Element was successfully created.'
-        format.html { redirect_to view_element_path(@view, @element) }
+        format.html { redirect_to presentation_element_path(@presentation, @element) }
         format.xml  { render :xml => @element, :status => :created, :location => @element }
       else
         format.html { render :action => "new" }
@@ -61,12 +61,12 @@ class ElementsController < ApplicationController
   # PUT /elements/1
   # PUT /elements/1.xml
   def update
-    @element = @view.elements.find(params[:id])
+    @element = @presentation.elements.find(params[:id])
 
     respond_to do |format|
       if @element.update_attributes(params[:element])
         flash[:notice] = 'Element was successfully updated.'
-        format.html { redirect_to view_element_path(@view, @element) }
+        format.html { redirect_to presentation_element_path(@presentation, @element) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -78,25 +78,25 @@ class ElementsController < ApplicationController
   # DELETE /elements/1
   # DELETE /elements/1.xml
   def destroy
-    @element = @view.elements.find(params[:id])
+    @element = @presentation.elements.find(params[:id])
     @element.destroy
 
     respond_to do |format|
-      format.html { redirect_to(view_elements_url(@view)) }
+      format.html { redirect_to(presentation_elements_url(@presentation)) }
       format.xml  { head :ok }
     end
   end
 
   private
 
-  def get_view
-    @view = View.find(params[:view_id])
+  def get_presentation
+    @presentation = Presentation.find(params[:presentation_id])
   end
 
-  def check_view
-    if @view.owner_id != @application_user.id
-      flash[:error] = "Only owner of view can modify its elements"
-      redirect_to(view_elements_url(@view))
+  def check_presentation
+    if @presentation.owner_id != @application_user.id
+      flash[:error] = "Only owner of presentation can modify its elements"
+      redirect_to(presentation_elements_url(@presentation))
     end
   end
 end

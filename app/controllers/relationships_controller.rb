@@ -47,8 +47,7 @@ class RelationshipsController < ApplicationController
     begin
       save_result = @relationship.save
     rescue Exception => e
-      raise unless e.message.match('"no_cycles_check"')
-      @relationship.errors.add_to_base("Adding this will create a cycle in the decedents")
+      set_errors(e)
       save_result = false
     end
     respond_to do |format|
@@ -67,9 +66,14 @@ class RelationshipsController < ApplicationController
   # PUT /relationships/1.xml
   def update
     @relationship = Relationship.find(params[:id])
-
+    begin
+      save_result = @relationship.update_attributes(params[:relationship])
+    rescue Exception => e
+      set_errors(e)
+      save_result = false
+    end
     respond_to do |format|
-      if @relationship.update_attributes(params[:relationship])
+      if save_result
         flash[:notice] = 'Relationship was successfully updated.'
         format.html { redirect_to(@relationship) }
         format.xml  { head :ok }
@@ -98,5 +102,21 @@ class RelationshipsController < ApplicationController
 
   def relationship_type_set
     render :partial => "valid_elements", :locals => { :relationship_type_id => params[:relationship_type_id] }
+  end
+
+  private
+
+  def set_errors(e)
+    if e.message.match('"no_cycles_check"')
+      @relationship.errors.add_to_base("Adding this will create a cycle in the decedents")
+    elsif e.message.match('"uq_relationship_tuple"')
+      @relationship.errors.add_to_base("This relationship already exists")
+    elsif e.message.match('"fk_relationships_container_name"')
+      @relationship.errors.add(:container_type_id, "Container id is not valid")
+    elsif e.message.match('"fk_relationships_relationship_type"')
+      @relationship.errors.add(:association_type_id, "Association type id is not valid")
+    else
+      raise
+    end
   end
 end
