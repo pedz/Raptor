@@ -17,7 +17,7 @@ class CallsController < ApplicationController
   #       specified.
   #
   #   * :perspective Specifies a way to select only a subset of the
-  #     calls on the selected queues.  The default is "all".  It is
+  #     calls on the selected queues.  The default is "top".  It is
   #     TBD as to how perspectives are created and managed.
   #
   #   * :presentation Specifies a name of a presentation.  The default
