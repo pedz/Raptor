@@ -39,9 +39,9 @@ class Name < ActiveRecord::Base
     NameType.find_by_name_type(self.becomes(Name).type)
   end
 
-  # A common method by that any class used as an element in a
-  # Relationship to return the "name" associated with the element
-  def element_name
+  # A common method by that any class used as an item in a
+  # Relationship to return the "name" associated with the item
+  def item_name
     name
   end
 end

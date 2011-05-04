@@ -18,13 +18,14 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :name_types
   map.resources :names
 
-  map.calls "calls/:group/:perspective/:presentation", :controller => 'calls', :action => 'index'
-  map.calls "calls/:group/:perspective",               :controller => 'calls', :action => 'index'
-  map.calls "calls/:group",                            :controller => 'calls', :action => 'index'
-  map.calls "calls",                                   :controller => 'calls', :action => 'index'
+  map.calls "calls/:group/:levels/:filter/:view", :controller => 'calls', :action => 'index'
+  map.calls "calls/:group/:levels/:filter",       :controller => 'calls', :action => 'index'
+  map.calls "calls/:group/:levels",               :controller => 'calls', :action => 'index'
+  map.calls "calls/:group",                       :controller => 'calls', :action => 'index'
+  map.calls "calls",                              :controller => 'calls', :action => 'index'
 
-  map.resources(:presentations) do |presentations|
-    presentations.resources :elements
+  map.resources(:views) do |views|
+    views.resources :elements
   end
   map.resources :widgets
   map.resources :retain_node_selectors

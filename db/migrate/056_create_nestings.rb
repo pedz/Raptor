@@ -8,15 +8,15 @@ class CreateNestings < ActiveRecord::Migration
             SELECT
               temp.container_id,
               temp.container_type,
-              containers.element_name_id,
-              containers.element_name_type,
+              containers.item_id,
+              containers.item_type,
               temp.level + 1 as level
             FROM
               temp,
               containers
             WHERE
-              temp.element_name_id   = containers.container_id AND
-              temp.element_name_type = containers.container_type AND
+              temp.item_id   = containers.container_id AND
+              temp.item_type = containers.container_type AND
               temp.level < 20	 -- Here just to prevent an infinite loop
           )
         SELECT
@@ -26,8 +26,8 @@ class CreateNestings < ActiveRecord::Migration
         ORDER BY
           container_type,
           container_id,
-          element_name_type,
-          element_name_id
+          item_type,
+          item_id
       ;"
   end
 

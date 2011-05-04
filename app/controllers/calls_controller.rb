@@ -1,7 +1,12 @@
+#
+# Note that this is *not* a subclass of RetainController.  This will
+# work entirely from cached data and trigger updates to that cached
+# data via asynchronous updates.
+#
 class CallsController < ApplicationController
-  # Called with three optional arguments:
+  # Called with four optional arguments:
   #
-  #   * :group Specifies a group of queues.  This may be one of:
+  #   1 :group Specifies a group of queues.  This may be one of:
   #
   #     1 A group name which may be specialized such as a team or
   #       department or it may be just a group defined by a user.
@@ -16,21 +21,52 @@ class CallsController < ApplicationController
   #       This will be the default if no other name that is a group is
   #       specified.
   #
-  #   * :perspective Specifies a way to select only a subset of the
-  #     calls on the selected queues.  The default is "top".  It is
-  #     TBD as to how perspectives are created and managed.
+  #   2 :level specifies how deep in the nesting levels to present to
+  #     the user.  Please see Nesting and Container for more
+  #     information on what these nesting levels are.  The level will
+  #     be a Name that will have one Condition as a has_one
+  #     assotiation.
   #
-  #   * :presentation Specifies a name of a presentation.  The default
-  #     presentation is called "default" (hence the name).
+  #   3 :filter specifies Filter which is a way to select only a
+  #     subset of the calls on the selected queues.  The default will
+  #     be "all" which will be no filter.  Perhaps I should call this
+  #     "none".  Examples may be "hot" to select only the calls / pmrs
+  #     labeled as hot or "pat" to select calls or pmrs for PAT
+  #     customers.
   #
-  # All three parameters are optional so the names must be unique
-  # amount a union of all potential hits.  e.g. if "ptcpk" is a team,
-  # then it can not be the name of a group, presentation, perspective,
+  #   4 :view specifies a View which is intended to be thought of as a
+  #     way to "view the data".  It can be thought of as a page layout
+  #     or a collection of elements that will be displayed.  The
+  #     thought is that worker bees will want a different set of
+  #     fields and items on their page then team leads or managers.
+  #
+  # All four parameters are optional so the names must be unique
+  # amoung a union of all potential hits.  e.g. if "ptcpk" is a team,
+  # then it can not be the name of a group, level, filter, view,
   # user's ldap id, or a retain id.
   #
   # If some of the parameters are missing or if they are given out of
-  # order, a redirect will occur to the properly formatted URL.
+  # order, a redirect will occur to the properly formatted URL.  The
+  # thought here to help any and all caching that may be done in the
+  # browser or intermediate servers.  The intention is that these will
+  # never be altered by state.  So, user 1 will see exactly the same
+  # data as user 2 for a given URL.
   def index
-    
+    redirect = false
+    options = { }
+    [ [ :group,  application_user.current_retain_id ],
+      [ :level, :top ],
+      [ :filter, :none ],
+      [ :view, :default ] ].each do | param, default |
+      if (v = params[param]).nil?
+        redirect = true
+        v = default
+      end
+      # In case we need a redirect
+      options[param] = v
+
+      n = Name.find_by_name(v)
+      
+    end
   end
 end

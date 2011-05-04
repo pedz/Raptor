@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 # This is a table that represents a many to many relationship.  Each
-# row specifies how one particular element fits into a container that
-# contains it.  The relationship_type specifies how the element is
+# row specifies how one particular item fits into a container that
+# contains it.  The relationship_type specifies how the item is
 # contained.
 class Relationship < ActiveRecord::Base
   ##
@@ -13,13 +13,13 @@ class Relationship < ActiveRecord::Base
 
   ##
   # :attr: relationship_type
-  # The relationship that the container has to the element.
+  # The relationship that the container has to the item.
   belongs_to :relationship_type
 
   ##
-  # :attr: elements
+  # :attr: items
   # A polymorphic has_many relationship
-  belongs_to :element_name, :polymorphic => true
+  belongs_to :item, :polymorphic => true
 
   ##
   # :attr: owner

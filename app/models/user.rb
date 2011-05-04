@@ -54,8 +54,7 @@ class User < ActiveRecord::Base
   has_many   :favorite_queues,   :through => :current_retain_id, :order => :sort_column
   has_many   :widgets,           :foreign_key => :owner
   has_many   :views,             :foreign_key => :owner
-  has_many   :elements,          :foreign_key => :owner
-  has_many   :relationships,     :as => :elements
+  has_many   :relationships,     :as => :items
 
   def ldap
     LdapUser::find(:attribute => 'mail', :value => ldap_id)
@@ -70,7 +69,8 @@ class User < ActiveRecord::Base
       end
   end
 
-  def element_name
+  # A common method needed since User can be placed as an item within a Relationship
+  def item_name
     ldap_id
   end
 end

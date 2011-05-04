@@ -7,7 +7,7 @@
 #
 # Three examples of a Relationship would be:
 #
-# container_type | association_type | element_type
+# container_type | association_type | item_type
 # Team           | team lead        | User
 # Team           | team member      | User
 # Team           | team queue       | CachedQueue
@@ -25,11 +25,11 @@ class RelationshipType < ActiveRecord::Base
   belongs_to :association_type
 
   ##
-  # :attr: element_type
-  # A NameType that specifies the type of elements that will be contained.
-  belongs_to :element_type, :class_name => "NameType"
+  # :attr: item_type
+  # A NameType that specifies the type of items that will be contained.
+  belongs_to :item_type, :class_name => "NameType"
 
   def to_option
-    "<#{container_type.name_type},#{association_type.association_type},#{element_type.name_type}>"
+    "<#{container_type.name_type},#{association_type.association_type},#{item_type.name_type}>"
   end
 end
