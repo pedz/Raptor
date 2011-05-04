@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 ActionController::Routing::Routes.draw do |map|
+  map.resources :argument_types
+
   map.resources(:relationships,
                 :collection => {
                   # For the new and edit pages, when the container

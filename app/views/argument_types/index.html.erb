@@ -1,0 +1,22 @@
+<h1>Listing argument_types</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Default</th>
+  </tr>
+
+<% @argument_types.each do |argument_type| %>
+  <tr>
+    <td><%=h argument_type.name %></td>
+    <td><%=h argument_type.default %></td>
+    <td><%= link_to 'Show', argument_type %></td>
+    <td><%= link_to 'Edit', edit_argument_type_path(argument_type) %></td>
+    <td><%= link_to 'Destroy', argument_type, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New argument_type', new_argument_type_path %>
