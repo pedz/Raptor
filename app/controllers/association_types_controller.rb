@@ -1,4 +1,6 @@
 class AssociationTypesController < ApplicationController
+  layout "configuration"
+
   # GET /association_types
   # GET /association_types.xml
   def index

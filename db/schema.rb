@@ -14,6 +14,7 @@ ActiveRecord::Schema.define(:version => 59) do
   create_table "argument_types", :force => true do |t|
     t.string   "name",       :null => false
     t.string   "default",    :null => false
+    t.integer  "position",   :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

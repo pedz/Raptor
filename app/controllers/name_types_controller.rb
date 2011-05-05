@@ -1,10 +1,12 @@
 # This controller will be very seldom used but created the full
 # scaffold because disk space is cheap.
 class NameTypesController < ApplicationController
+  layout "configuration"
+
   # GET /name_types
   # GET /name_types.xml
   def index
-    @name_types = NameType.all
+    @name_types = NameType.all(:include => :argument_type, :order => "argument_types.position, name_types.name_type")
 
     respond_to do |format|
       format.html # index.html.erb

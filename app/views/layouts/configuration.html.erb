@@ -1,0 +1,16 @@
+<%# -*- coding: utf-8 -*- -%>
+<%= app_doctype %>
+<%# This is a common layout for the configuration models:
+    argument_types, name_types, names, association_types,
+    relationship_types, and relationships %>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <%= app_header(std_styles, std_scripts) %>
+  <%= app_body %><br />
+  <%= link_to "Argument Types", argument_types_path%> |
+  <%= link_to "Name Types", name_types_path%> |
+  <%= link_to "Names", names_path%> |
+  <%= link_to "Association Types", association_types_path%> |
+  <%= link_to "Relationship Types", relationship_types_path%> |
+  <%= link_to "Relationships", relationships_path%>
+</html>

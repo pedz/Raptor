@@ -2,10 +2,12 @@
 # are several models that inherit using "Single Table Inheritance"
 # from the names table.  Those controllers will be for general use.
 class NamesController < ApplicationController
+  layout "configuration"
+
   # GET /names
   # GET /names.xml
   def index
-    @names = Name.all
+    @names = Name.all(:order => "type, name")
 
     respond_to do |format|
       format.html # index.html.erb

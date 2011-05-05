@@ -7,11 +7,11 @@
 class Name < ActiveRecord::Base
   ##
   # :attr: type
-  # the type of node
+  # String the type of node
 
   ##
   # :attr: name
-  # the name for the node
+  # String the name for the node
 
   ##
   # :attr: owner

@@ -1,4 +1,6 @@
 class RelationshipTypesController < ApplicationController
+  layout "configuration"
+
   # GET /relationship_types
   # GET /relationship_types.xml
   def index

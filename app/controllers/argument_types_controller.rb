@@ -1,8 +1,10 @@
 class ArgumentTypesController < ApplicationController
+  layout "configuration"
+
   # GET /argument_types
   # GET /argument_types.xml
   def index
-    @argument_types = ArgumentType.all
+    @argument_types = ArgumentType.all(:order => "position")
 
     respond_to do |format|
       format.html # index.html.erb

@@ -53,20 +53,21 @@ class CallsController < ApplicationController
   # data as user 2 for a given URL.
   def index
     redirect = false
+    redirect_array = []
     options = { }
-    [ [ :group,  application_user.current_retain_id ],
-      [ :level, :top ],
-      [ :filter, :none ],
-      [ :view, :default ] ].each do | param, default |
-      if (v = params[param]).nil?
+    argument_types = ArgumentTypes.all(:order => "position").each do |argument_type|
+      # First see if we have an argument in this position.  Rails will
+      # give it the name we want based upon what is in routes.rb
+      if (v = params[argument_type.name]).nil?
         redirect = true
-        v = default
+        v = argument_type.default
+        # I hate special cases...
+        v = application_user.current_retuser_id if v == "current_retuser_id"
       end
-      # In case we need a redirect
-      options[param] = v
 
-      n = Name.find_by_name(v)
-      
+      # Now see if this argument is the type it is suppose to be
+
+
     end
   end
 end

@@ -19,7 +19,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :association_types
   map.resources :name_types
   map.resources :names
-
+  
+  # The order of these arguments need to match what is in the
+  # argument_types table.  This could change and the controller could
+  # split the fields apart and this would become more generic.
   map.calls "calls/:group/:levels/:filter/:view", :controller => 'calls', :action => 'index'
   map.calls "calls/:group/:levels/:filter",       :controller => 'calls', :action => 'index'
   map.calls "calls/:group/:levels",               :controller => 'calls', :action => 'index'
