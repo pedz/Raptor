@@ -9,7 +9,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 49) do
+ActiveRecord::Schema.define(:version => 59) do
+
+  create_table "argument_types", :force => true do |t|
+    t.string   "name",       :null => false
+    t.string   "default",    :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "association_types", :force => true do |t|
+    t.string   "association_type", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "association_types", ["association_type"], :name => "uq_association_type", :unique => true
 
   create_table "cached_calls", :force => true do |t|
     t.integer  "queue_id",                             :null => false
@@ -258,6 +273,49 @@ ActiveRecord::Schema.define(:version => 49) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "name_types", :force => true do |t|
+    t.string   "name_type",                           :null => false
+    t.string   "table_name",                          :null => false
+    t.integer  "argument_type_id",                    :null => false
+    t.boolean  "container",        :default => false, :null => false
+    t.boolean  "containable",      :default => false, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "name_types", ["name_type"], :name => "uq_name_types_name", :unique => true
+
+  create_table "names", :force => true do |t|
+    t.string   "type",       :null => false
+    t.string   "name",       :null => false
+    t.integer  "owner_id",   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "names", ["name"], :name => "uq_names_name", :unique => true
+
+  create_table "relationship_types", :force => true do |t|
+    t.integer  "container_type_id",   :null => false
+    t.integer  "association_type_id", :null => false
+    t.integer  "item_type_id",        :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "relationship_types", ["container_type_id", "association_type_id", "item_type_id"], :name => "uq_relationship_type_tuple", :unique => true
+
+  create_table "relationships", :force => true do |t|
+    t.integer  "container_name_id",    :null => false
+    t.integer  "relationship_type_id", :null => false
+    t.integer  "item_id",              :null => false
+    t.string   "item_type",            :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "relationships", ["container_name_id", "item_id", "item_type"], :name => "uq_relationship_tuple", :unique => true
 
   create_table "retain_node_selectors", :force => true do |t|
     t.string   "description"

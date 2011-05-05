@@ -4,12 +4,14 @@
   <tr>
     <th>Name</th>
     <th>Default</th>
+    <th>Position</th>
   </tr>
 
 <% @argument_types.each do |argument_type| %>
   <tr>
     <td><%=h argument_type.name %></td>
     <td><%=h argument_type.default %></td>
+    <td><%=h argument_type.position %></td>
     <td><%= link_to 'Show', argument_type %></td>
     <td><%= link_to 'Edit', edit_argument_type_path(argument_type) %></td>
     <td><%= link_to 'Destroy', argument_type, :confirm => 'Are you sure?', :method => :delete %></td>

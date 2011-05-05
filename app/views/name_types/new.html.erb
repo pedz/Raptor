@@ -12,6 +12,14 @@
     <%= f.text_field :table_name %>
   </p>
   <p>
+    <%= f.label :argument_type_id%><br />
+    <%= f.collection_select(:argument_type_id,
+                            ArgumentType.all,
+			    :id,
+			    :name,
+                            { :include_blank => true }) %>
+  </p>
+  <p>
     <%= f.label :container, "Is this a container?" %><br />
     <%= f.check_box :container %>
   </p>
