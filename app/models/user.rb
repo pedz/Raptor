@@ -56,6 +56,12 @@ class User < ActiveRecord::Base
   has_many   :views,             :foreign_key => :owner
   has_many   :relationships,     :as => :items
 
+  ##
+  # :attr: containers
+  # Container A has_many association returning the Container elements
+  # that have this item as the container.
+  has_many :containments, :as => :container
+
   def ldap
     LdapUser::find(:attribute => 'mail', :value => ldap_id)
   end
@@ -69,7 +75,8 @@ class User < ActiveRecord::Base
       end
   end
 
-  # A common method needed since User can be placed as an item within a Relationship
+  # A common method needed since User can be placed as an item within
+  # a Relationship
   def item_name
     ldap_id
   end

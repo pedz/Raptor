@@ -1,7 +1,7 @@
-class CreateContainers < ActiveRecord::Migration
+class CreateContainments < ActiveRecord::Migration
   def self.up
     execute "
-      CREATE VIEW containers AS
+      CREATE VIEW containments AS
         SELECT
           r.container_name_id AS container_id,
           n.type AS container_type,
@@ -37,6 +37,6 @@ class CreateContainers < ActiveRecord::Migration
   end
 
   def self.down
-    execute "DROP VIEW containers;"
+    execute "DROP VIEW containments;"
   end
 end

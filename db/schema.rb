@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 59) do
+ActiveRecord::Schema.define(:version => 60) do
 
   create_table "argument_types", :force => true do |t|
     t.string   "name",       :null => false

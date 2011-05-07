@@ -3,6 +3,10 @@
 # A table of legal values for the type field in the Name model.
 class NameType < ActiveRecord::Base
   ##
+  # :attr: id
+  # The Integer primary key for the table.
+
+  ##
   # :attr: name_type
   # string for the type like Team.  This string needs to be an
   # ActiveRecord::Base model.
@@ -13,6 +17,16 @@ class NameType < ActiveRecord::Base
   # name_type
 
   ##
+  # :attr: argument_type_id
+  # The Integer id of an ArgumentType
+
+  ##
+  # :attr: argument_type
+  # A belongs_to association specifying the ArgumentType that this
+  # NameType can be used for.
+  belongs_to :argument_type
+
+  ##
   # :attr: container
   # A boolean that is true if the specified type is a container
 
@@ -21,24 +35,13 @@ class NameType < ActiveRecord::Base
   # A boolean that is true if the items can be within a container.
 
   ##
-  # :attr: container_types
-  # A has_many list of type Relationship where the specified type is
-  # used as a container.
-  has_many :container_types, :class_name => "Relationship", :foreign_key => :container_type_id
-
-  ##
-  # :attr: item_types
-  # A has_many list of type Relationship that the specified type is
-  # used as the contained item.
-  has_many :item_types,   :class_name => "Relationship", :foreign_key => :item_type_id
+  # :attr: relationship_types
+  # A has_many association to RelationshipType that is the list that
+  # uses this NameType as its container_type
+  has_many :relationship_types, :foreign_key => :container_type_id
 
   ##
   # :attr: names
   # A has_many list of Name records using this NameType
   has_many :names, :class_name => "Name", :foreign_key => :type, :primary_key => :name_type
-
-  ##
-  # :attr: argument_type
-  # A belongs_to association to the ArgumentType for this NameType
-  belongs_to :argument_type
 end

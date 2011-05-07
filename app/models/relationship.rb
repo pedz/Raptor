@@ -1,28 +1,41 @@
 # -*- coding: utf-8 -*-
 
-# This is a table that represents a many to many relationship.  Each
-# row specifies how one particular item fits into a container that
-# contains it.  The relationship_type specifies how the item is
-# contained.
+# Each Relationship specifies a container name that contains an item
+# as well as the relationship type that the two share.
 class Relationship < ActiveRecord::Base
   ##
+  # :attr: id
+  # The Integer primary key for this table.
+
+  ##
+  # :attr: container_name_id
+  # The Integer id of a Name
+
+  ##
   # :attr: container_name
-  # The Name object for the container which will specify the specific
-  # class of the container.
+  # A belongs_to association to Name.
   belongs_to :container_name, :class_name => "Name"
 
   ##
+  # :attr: relationship_type_id
+  # The Integer id of a RelationshipType
+
+  ##
   # :attr: relationship_type
-  # The relationship that the container has to the item.
+  # A belongs_to association to a RelationshipType
   belongs_to :relationship_type
 
   ##
-  # :attr: items
-  # A polymorphic has_many relationship
-  belongs_to :item, :polymorphic => true
+  # :attr: item_id
+  # The Integer id of the item.  The type and therefor the table is
+  # specified by item_type
 
   ##
-  # :attr: owner
-  # A belongs_to relationship to a User model
-  belongs_to :owner, :class_name => "User"
+  # :attr: item_type
+  # A String that specifies the type for the item.
+
+  ##
+  # :attr: item
+  # A polymorphic has_many association of the item that is contained.
+  belongs_to :item, :polymorphic => true
 end

@@ -6,31 +6,62 @@
 # models.
 class Name < ActiveRecord::Base
   ##
+  # :attr: id
+  # The Integer key to the table.
+
+  ##
   # :attr: type
-  # String the type of node
+  # A String for the type of node
 
   ##
   # :attr: name
-  # String the name for the node
+  # A String the name for the node
+
+  ##
+  # :attr: owner_id
+  # The Integer id for a User
 
   ##
   # :attr: owner
-  # A belongs_to relation.  Only the owner can modify this entity.
+  # A belongs_to association to the User that owns this name.  Only
+  # the owner will be allowed to delete this name as well as modify
+  # associations using this name.
   belongs_to :owner, :class_name => "User"
 
   ##
-  # :attr: name_type
-  # The type of the name must be a name_type in the name_types table.
-  # This does not work... not sure exactly why but its not critical to me right now.
-  # belongs_to :name_type, :class_name => "NameType", :primary_key => "type", :foreign_key => "name_type"
+  # :attr: container_names
+  # A has_many association to Relationship specifying this Name as its
+  # Relationship#container_name
+  has_many :container_names, :class_name => "Relationship"
 
   ##
-  # :attr: container_relationship_types
-  # A has_many relationship of RelationshipTypes where the
-  # container_type uses this Name.
-  has_many(:container_relationship_types,
-           :class_name => "RelationshipType",
-           :foreign_key => :container_type_id)
+  # :attr: containments
+  # A has_many association to Containment that specifies this Name as
+  # the container.
+  has_many :containments, :as => :container
+
+  ##
+  # :attr: containment_items
+  # A has_many association to Containment that specifies this Name as
+  # the container.
+  has_many :containment_items, :class_name => "Containment", :as => :item
+
+  ##
+  # :attr: nestings
+  # A has_many association to Nesting that specifies this Name as the
+  # container.
+  has_many :nestings, :as => :container
+
+  ##
+  # :attr: nesting_items
+  # A has_many association to Nesting that specifies this Name as
+  # the container.
+  has_many :nesting_items, :class_name => "Nesting", :as => :item
+
+  ##
+  # :attr: entity
+  # A has_one association to an Entity.
+  has_one :entity, :class_name => "Entity", :as => :item
 
   validates_uniqueness_of :name
 

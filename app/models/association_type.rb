@@ -4,8 +4,13 @@
 # "team lead", "team queue", "contains", etc.
 class AssociationType < ActiveRecord::Base
   ##
+  # :attr: id
+  # The Integer primary key for the table.
+
+  ##
   # :attr: association_type
   # A String for the association type.
+  validates_uniqueness_of :association_type
 
   ##
   # :attr: relationship_types
