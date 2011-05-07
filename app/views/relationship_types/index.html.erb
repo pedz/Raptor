@@ -1,3 +1,4 @@
+<%# -*- coding: utf-8 -*- -%>
 <h1>Listing relationship_types</h1>
 
 <table>
@@ -11,7 +12,7 @@
   <tr>
     <td><%=h relationship_type.container_type.name_type %></td>
     <td><%=h relationship_type.association_type.association_type %></td>
-    <td><%=h relationship_type.element_type.name_type %></td>
+    <td><%=h relationship_type.item_type.name_type %></td>
     <td><%= link_to 'Show', relationship_type %></td>
     <td><%= link_to 'Edit', edit_relationship_type_path(relationship_type) %></td>
     <td><%= link_to 'Destroy', relationship_type, :confirm => 'Are you sure?', :method => :delete %></td>

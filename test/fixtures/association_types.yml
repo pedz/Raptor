@@ -1,7 +1,17 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  association_type: MyString
+team_lead_association_type:
+  id: 600
+  association_type: team lead
 
-two:
-  association_type: MyString
+team_member_association_type:
+  id: 601
+  association_type: team member
+
+team_queue_association_type:
+  id: 602
+  association_type: team queue
+
+contains_association_type:
+  id: 603
+  association_type: contains

@@ -11,7 +11,7 @@
   <tr>
     <td><%=h relationship.container_name.name %></td>
     <td><%=h relationship.relationship_type.association_type.association_type %></td>
-    <td><%=h relationship.element_name.element_name %></td>
+    <td><%=h relationship.item.item_name %></td>
     <td><%= link_to 'Show', relationship %></td>
     <td><%= link_to 'Edit', edit_relationship_path(relationship) %></td>
     <td><%= link_to 'Destroy', relationship, :confirm => 'Are you sure?', :method => :delete %></td>

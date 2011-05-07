@@ -1,5 +1,6 @@
 class CreateNoCycles < ActiveRecord::Migration
   def self.up
+    execute "CREATE LANGUAGE plpgsql;"
     execute "
       CREATE FUNCTION no_cycles(container_name_id integer,
                                 item_id integer,
@@ -30,5 +31,6 @@ class CreateNoCycles < ActiveRecord::Migration
       DROP FUNCTION no_cycles(container_name_id integer,
                               item_id integer,
                               item_type character varying)"
+    execute "DROP LANGUAGE plpgsql;"
   end
 end

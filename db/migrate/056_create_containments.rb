@@ -4,15 +4,12 @@ class CreateContainments < ActiveRecord::Migration
       CREATE VIEW containments AS
         SELECT
           r.container_name_id AS container_id,
-          n.type AS container_type,
+          'Name' AS container_type,
           r.item_id AS item_id,
           r.item_type AS item_type,
           1 as level
         FROM
-          relationships r,
-          names n
-        WHERE
-          r.container_name_id = n.id
+          relationships r
       UNION ALL
         SELECT
           u.id AS container_id,

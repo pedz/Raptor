@@ -44,7 +44,7 @@ class RelationshipsController < ApplicationController
   def create
     options = params[:relationship]
     relationship_type = RelationshipType.find(options[:relationship_type_id])
-    options[:element_name_type] = relationship_type.element_type.name_type
+    options[:item_type] = relationship_type.item_type.name_type
     @relationship = Relationship.new(options)
     begin
       save_result = @relationship.save
@@ -103,7 +103,7 @@ class RelationshipsController < ApplicationController
   end
 
   def relationship_type_set
-    render :partial => "valid_elements", :locals => { :relationship_type_id => params[:relationship_type_id] }
+    render :partial => "valid_items", :locals => { :relationship_type_id => params[:relationship_type_id] }
   end
 
   private

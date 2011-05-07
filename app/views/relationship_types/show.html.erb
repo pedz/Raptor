@@ -1,3 +1,4 @@
+<%# -*- coding: utf-8 -*- -%>
 <p>
   <b>Container type:</b>
   <%=h @relationship_type.container_type.name_type %>
@@ -10,9 +11,10 @@
 
 <p>
   <b>Element type:</b>
-  <%=h @relationship_type.element_type.name_type %>
+  <%=h @relationship_type.item_type.name_type %>
 </p>
 
 
 <%= link_to 'Edit', edit_relationship_type_path(@relationship_type) %> |
-<%= link_to 'Back', relationship_types_path %>
+<%= link_to 'Back', relationship_types_path %> |
+<%= link_to 'New relationship_type', new_relationship_type_path %>

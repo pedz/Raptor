@@ -69,21 +69,29 @@ module Cached
     end
 
     def business_days(start_time, days)
-      local_tz = tz || 0
-      cust_time = start_time.new_offset(local_tz)
-      start_i1 = cust_time.wday * 24 + cust_time.hour
-      i1 = start_i1 + A1[start_i1] + (days * 24)
-      i1 += A2[i1]
-      start_time + (i1 - start_i1).hours
+      #
+      # I never got this to work right so I'm not really using it.
+      #
+      # local_tz = tz || 0
+      # cust_time = start_time.new_offset(local_tz)
+      # start_i1 = cust_time.wday * 24 + cust_time.hour
+      # i1 = start_i1 + A1[start_i1] + (days * 24)
+      # i1 += A2[i1]
+      # start_time + (i1 - start_i1).hours
+      jims_business_days(start_time, days)
     end
 
     def business_hours(start_time, hours)
-      local_tz = tz || 0
-      cust_time = start_time.new_offset(local_tz)
-      start_i1 = cust_time.wday * 24 + cust_time.hour
-      i1 = start_i1 + A1[start_i1] + hours
-      i1 += A2[i1]
-      start_time + (i1 - start_i1).hours
+      #
+      # I never got this to work right so I'm not really using it.
+      #
+      # local_tz = tz || 0
+      # cust_time = start_time.new_offset(local_tz)
+      # start_i1 = cust_time.wday * 24 + cust_time.hour
+      # i1 = start_i1 + A1[start_i1] + hours
+      # i1 += A2[i1]
+      # start_time + (i1 - start_i1).hours
+      jims_business_hours(start_time, hours)
     end
 
     JIM = Array.new(3 * 24 * 7, 0)

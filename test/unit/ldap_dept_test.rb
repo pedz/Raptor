@@ -14,8 +14,8 @@ class LdapUserTest < ActiveSupport::TestCase
       assert_equal GOOD_DEPT, d.dept
       list = d.members
       assert_equal(true,
-                   ( 15 .. 30 ) === list.length,
-                   "'members' is expected to return a list of 15 to 30")
+                   ( 15 .. 35 ) === list.length,
+                   "'members' is expected to return a list of 15 to 30 but returned #{list.length}")
 
       assert_equal(true,
                    list.any? { |p| p.uid == GOOD_CONTRACTOR_UID },

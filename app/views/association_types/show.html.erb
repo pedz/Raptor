@@ -1,3 +1,4 @@
+<%# -*- coding: utf-8 -*- -%>
 <p>
   <b>Association type:</b>
   <%=h @association_type.association_type %>
@@ -5,4 +6,5 @@
 
 
 <%= link_to 'Edit', edit_association_type_path(@association_type) %> |
-<%= link_to 'Back', association_types_path %>
+<%= link_to 'Back', association_types_path %> |
+<%= link_to 'New association_type', new_association_type_path %>

@@ -5,6 +5,19 @@ require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
 
 class ActiveSupport::TestCase
+  set_fixture_class(
+                    :cached_calls => Cached::Call,
+                    :cached_centers => Cached::Center,
+                    :cached_components => Cached::Component,
+                    :cached_customers => Cached::Customer,
+                    :cached_pmrs => Cached::Pmr,
+                    :cached_psars => Cached::Psar,
+                    :cached_queues => Cached::Queue,
+                    :cached_queue_infos => Cached::QueueInfo,
+                    :cached_registrations => Cached::Registration,
+                    :cached_text_lines => Cached::TextLine
+                    )
+  
   # Transactional fixtures accelerate your tests by wrapping each test method
   # in a transaction that's rolled back on completion.  This ensures that the
   # test database remains unchanged so your fixtures don't have to be reloaded
@@ -28,23 +41,26 @@ class ActiveSupport::TestCase
   # test cases which use the @david style and don't mind the speed hit (each
   # instantiated fixtures translates to a database query per test method),
   # then set this back to true.
-  self.use_instantiated_fixtures  = false
+  self.use_instantiated_fixtures  = true
 
-  # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
-  #
-  # Note: You'll currently still have to declare fixtures explicitly in integration tests
-  # -- they do not yet inherit this setting
-  # fixtures :all
-
+  fixtures(:cached_centers,
+           :cached_queues,
+           :argument_types,
+           :name_types,
+           :users,
+           :association_types,
+           :relationship_types,
+           :names,
+           :relationships)
   # Add more helper methods to be used by all tests here...
 end
 
 module LdapConstants
   GOOD_EMAIL          = 'pedzan@us.ibm.com'
-  GOOD_PASSWORD       = 'at906now'
+  GOOD_PASSWORD       = 'dasb0ard'
   GOOD_CONTRACTOR_UID = 'C-5UEV897' # Mine (Perry)
-  GOOD_REGULAR_UID    = '004087897' # Ray Tousek
-  GOOD_MANAGER_UID    = '440157897' # Pat Harney
+  GOOD_REGULAR_UID    = '807520897' # Tom Phillips
+  GOOD_MANAGER_UID    = '617362897' # Bill Clark
   BAD_UID             = '000000897'
-  GOOD_DEPT           = '9SUS'      # our dept.
+  GOOD_DEPT           = '5IEA'      # our dept.
 end

@@ -38,4 +38,12 @@ class Relationship < ActiveRecord::Base
   # :attr: item
   # A polymorphic has_many association of the item that is contained.
   belongs_to :item, :polymorphic => true
+
+  ##
+  # We store the base type instead of the actual time.  This is
+  # suggested in the ActiveRecord::Associations::ClassMethods
+  # documentation
+  def item_type=(sType)
+    super(sType.to_s.classify.constantize.base_class.to_s)
+  end
 end

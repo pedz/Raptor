@@ -10,8 +10,9 @@
 
 <p>
   <b>Element name:</b>
-  <%=h @relationship.element_name.element_name %>
+  <%=h @relationship.item.item_name %>
 </p>
 
 <%= link_to 'Edit', edit_relationship_path(@relationship) %> |
-<%= link_to 'Back', relationships_path %>
+<%= link_to 'Back', relationships_path %> |
+<%= link_to 'New relationship', new_relationship_path %>

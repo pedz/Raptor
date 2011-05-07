@@ -20,12 +20,12 @@
     <%= f.collection_select(:relationship_type_id, [], :id, :to_option, { :prompt => "Please Pick Container Name" }) %>
     <%= observe_field(:relationship_relationship_type_id,
                       :url => { :action => :relationship_type_set },
-                      :update => :relationship_element_name_id,
+                      :update => :relationship_item_id,
                       :with => 'relationship_type_id') %>
   </p>
   <p>
-    <%= f.label :element_name_id %><br />
-    <%= f.collection_select(:element_name_id, [], :id, :name, { :prompt => "Please Pick Relationship Type" }) %>
+    <%= f.label :item_id %><br />
+    <%= f.collection_select(:item_id, [], :id, :name, { :prompt => "Please Pick Relationship Type" }) %>
   </p>
   <p>
     <%= f.submit 'Create' %>

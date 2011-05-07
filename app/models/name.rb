@@ -22,6 +22,11 @@ class Name < ActiveRecord::Base
   # The Integer id for a User
 
   ##
+  # :attr: name_type
+  # A belongs_to association to NameType
+  belongs_to :name_type, :primary_key => :name_type, :foreign_key => :type
+
+  ##
   # :attr: owner
   # A belongs_to association to the User that owns this name.  Only
   # the owner will be allowed to delete this name as well as modify
@@ -32,7 +37,10 @@ class Name < ActiveRecord::Base
   # :attr: container_names
   # A has_many association to Relationship specifying this Name as its
   # Relationship#container_name
-  has_many :container_names, :class_name => "Relationship"
+  has_many(:container_names,
+           :class_name => "Relationship",
+           :primary_key => :id,
+           :foreign_key => :container_name_id)
 
   ##
   # :attr: containments
@@ -65,10 +73,10 @@ class Name < ActiveRecord::Base
 
   validates_uniqueness_of :name
 
-  # Not a true association but returns the NameType associated with this Name
-  def name_type
-    NameType.find_by_name_type(self.becomes(Name).type)
-  end
+  # # Not a true association but returns the NameType associated with this Name
+  # def name_type
+  #   NameType.find_by_name_type(self.becomes(Name).type)
+  # end
 
   # A common method by that any class used as an item in a
   # Relationship to return the "name" associated with the item

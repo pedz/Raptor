@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-require File.dirname(__FILE__) + '/../../test_helper'
+require 'test_helper'
 
 class Cached::RegistrationTest < ActiveSupport::TestCase
   # Replace this with your real tests.

@@ -64,8 +64,8 @@ class LdapUserTest < ActiveSupport::TestCase
       # Try and sanity check manages function...
       list = m.manages
       assert_equal(true,
-                   ( 15 .. 30 ) === list.length,
-                   "Manages is expected to return a list of 15 to 30")
+                   ( 15 .. 35 ) === list.length,
+                   "Manages is expected to return a list of 15 to 30 but was #{list.length}")
 
       assert_equal(true,
                    list.any? { |p| p.uid == GOOD_CONTRACTOR_UID },

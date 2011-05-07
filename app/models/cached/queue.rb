@@ -6,6 +6,12 @@ module Cached
   # very few fields in the database for a queue.  The database table
   # is cached_queues.
   class Queue < Base
+    class << self
+      def base_class
+        self
+      end
+    end
+
     ##
     # :attr: id
     # The Integer key to the table.
