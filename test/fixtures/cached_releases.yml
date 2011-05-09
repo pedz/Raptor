@@ -1,13 +1,1 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-one:
-  component_id: 1
-  release_name: MyString
-  start: 2009-09-19
-  end: 2009-09-19
-
-two:
-  component_id: 1
-  release_name: MyString
-  start: 2009-09-19
-  end: 2009-09-19

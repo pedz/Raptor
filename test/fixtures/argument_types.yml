@@ -1,25 +1,21 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 group_argument:
-  id: 1
   name: group
   default: current_retuser_id
   position: 0
 
 level_argument:
-  id: 2
   name: level
   default: top
   position: 1
 
 filter_argument:
-  id: 3
   name: filter
   default: none
   position: 2
 
 view_argument:
-  id: 4
   name: view
   default: standard
   position: 3

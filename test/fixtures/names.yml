@@ -1,43 +1,36 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 none_name:
-  id: 500
   type: Filter
   name: none
-  owner_id: 800
+  owner: pedzan
 
 top_name:
-  id: 501
   type: Level
   name: top
-  owner_id: 800
+  owner: pedzan
 
 ptcpk_am_name:
-  id: 502
   type: Team
   name: ptcpk-am
-  owner_id: 800
+  owner: pedzan
 
 ptcpk_emea_name:
-  id: 503
   type: Team
   name: ptcpk-emea
-  owner_id: 800
+  owner: pedzan
 
 ptcpk_ap_name:
-  id: 504
   type: Team
   name: ptcpk-ap
-  owner_id: 800
+  owner: pedzan
 
 ptcpk_name:
-  id: 505
   type: Team
   name: ptcpk
-  owner_id: 800
+  owner: pedzan
 
 standard_name:
-  id: 506
   type: View
   name: standard
-  owner_id: 800
+  owner: pedzan

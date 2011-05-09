@@ -6,6 +6,6 @@ class ArgumentTypeTest < ActiveSupport::TestCase
   end
 
   test "should has_many name_types" do
-    assert_equal 6, @group_argument.name_types.length
+    assert_includes @retuser_name_type.id, @group_argument.name_types.map(&:id)
   end
 end

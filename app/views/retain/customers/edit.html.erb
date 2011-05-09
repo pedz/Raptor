@@ -1,5 +1,5 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- retain/customers/edit.html.erb -->
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <h1>Editing customer <%= @customer.customer_number %></h1>
 <%= error_messages_for :customer %>
 <% form_for(@customer) do |f| %>

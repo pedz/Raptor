@@ -1,4 +1,5 @@
 <%# -*- coding: utf-8 -*- -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <h1>Editing relationship_type</h1>
 
 <% form_for(@relationship_type) do |f| %>
@@ -6,7 +7,7 @@
 
   <p>
     <%= f.label :container_type_id %><br />
-    <%= f.collection_select(:container_type_id, NameType.find(:all, :conditions => { :container => true}), :id, :name_type) %>
+    <%= f.collection_select(:container_type_id, NameType.find(:all, :conditions => { :container => true}), :id, :name) %>
   </p>
   <p>
     <%= f.label :association_type_id %><br />
@@ -14,7 +15,7 @@
   </p>
   <p>
     <%= f.label :item_type_id %><br />
-    <%= f.collection_select(:item_type_id, NameType.find(:all, :conditions => { :containable => true}), :id, :name_type) %>
+    <%= f.collection_select(:item_type_id, NameType.find(:all, :conditions => { :containable => true}), :id, :name) %>
   </p>
   <p>
     <%= f.submit 'Update' %>

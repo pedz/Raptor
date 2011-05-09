@@ -1,7 +1,8 @@
 <%# -*- coding: utf-8 -*- -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <p>
   <b>Container type:</b>
-  <%=h @relationship_type.container_type.name_type %>
+  <%=h @relationship_type.container_type.name %>
 </p>
 
 <p>
@@ -11,7 +12,7 @@
 
 <p>
   <b>Element type:</b>
-  <%=h @relationship_type.item_type.name_type %>
+  <%=h @relationship_type.item_type.name %>
 </p>
 
 

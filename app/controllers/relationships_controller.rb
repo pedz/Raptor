@@ -44,7 +44,7 @@ class RelationshipsController < ApplicationController
   def create
     options = params[:relationship]
     relationship_type = RelationshipType.find(options[:relationship_type_id])
-    options[:item_type] = relationship_type.item_type.name_type
+    options[:item_type] = relationship_type.item_type.name
     @relationship = Relationship.new(options)
     begin
       save_result = @relationship.save

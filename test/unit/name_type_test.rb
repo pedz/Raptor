@@ -11,9 +11,13 @@ class NameTypeTest < ActiveSupport::TestCase
 
   test "should has_many to relationship_types" do
     assert_equal 4, @team_name_type.relationship_types.length
+    assert_includes(@team_lead_relationship_type.id,
+                    @team_name_type.relationship_types.map(&:id))
   end
 
   test "should has_many to names" do
     assert_equal 4, @team_name_type.names.length
+    assert_includes(@ptcpk_ap_name.id,
+                    @team_name_type.names.map(&:id))
   end
 end

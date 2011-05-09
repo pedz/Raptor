@@ -6,7 +6,7 @@ class NameTypesController < ApplicationController
   # GET /name_types
   # GET /name_types.xml
   def index
-    @name_types = NameType.all(:include => :argument_type, :order => "argument_types.position, name_types.name_type")
+    @name_types = NameType.all(:include => :argument_type, :order => "argument_types.position, name_types.name")
 
     respond_to do |format|
       format.html # index.html.erb

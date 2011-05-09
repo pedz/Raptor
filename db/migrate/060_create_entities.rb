@@ -4,7 +4,7 @@ class CreateEntities < ActiveRecord::Migration
                SELECT
                  name AS name,
                  id AS item_id,
-                 type AS item_type
+                 'Name' AS item_type
                FROM names
              UNION ALL
                SELECT

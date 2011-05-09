@@ -24,7 +24,7 @@ class Name < ActiveRecord::Base
   ##
   # :attr: name_type
   # A belongs_to association to NameType
-  belongs_to :name_type, :primary_key => :name_type, :foreign_key => :type
+  belongs_to :name_type, :primary_key => :name, :foreign_key => :type
 
   ##
   # :attr: owner

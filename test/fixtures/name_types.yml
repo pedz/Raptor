@@ -1,73 +1,73 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 dept_name_type:
-  id: 100
-  name_type: Dept
+  name: Dept
+  base_type: Name
   table_name: names
-  argument_type_id: 1
+  argument_type: group_argument
   container: true
   containable: true
 
 group_name_type:
-  id: 101
-  name_type: Group
+  name: Group
+  base_type: Name
   table_name: names
-  argument_type_id: 1
+  argument_type: group_argument
   container: true
   containable: true
 
 retuser_name_type:
-  id: 102
-  name_type: Retuser
+  name: Retuser
+  base_type: Retuser
   table_name: retusers
-  argument_type_id: 1
+  argument_type: group_argument
   container: false
   containable: false
 
 team_name_type:
-  id: 103
-  name_type: Team
+  name: Team
+  base_type: Name
   table_name: names
-  argument_type_id: 1
+  argument_type: group_argument
   container: true
   containable: true
 
 user_name_type:
-  id: 104
-  name_type: User
+  name: User
+  base_type: User
   table_name: users
-  argument_type_id: 1
+  argument_type: group_argument
   container: false
   containable: true
 
 level_name_type:
-  id: 105
-  name_type: Level
+  name: Level
+  base_type: Name
   table_name: names
-  argument_type_id: 2
+  argument_type: level_argument
   container: false
   containable: false
 
 filter_name_type:
-  id: 106
-  name_type: Filter
+  name: Filter
+  base_type: Name
   table_name: names
-  argument_type_id: 3
+  argument_type: filter_argument
   container: false
   containable: false
 
 view_name_type:
-  id: 107
-  name_type: View
+  name: View
+  base_type: Name
   table_name: names
-  argument_type_id: 4
+  argument_type: view_argument
   container: false
   containable: false
 
 cached_queue_name_type:
-  id: 108
-  name_type: Cached::Queue
+  name: Cached::Queue
+  base_type: Cached::Queue
   table_name: cached_queues
-  argument_type_id: 1
+  argument_type: group_argument
   container: false
   containable: true

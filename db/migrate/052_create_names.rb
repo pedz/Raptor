@@ -16,7 +16,7 @@ class CreateNames < ActiveRecord::Migration
     # (which is the default but I wanted to make it clear that this
     # was a conscious choice.
     execute "ALTER TABLE names ADD CONSTRAINT fk_names_type
-             FOREIGN KEY (type) REFERENCES name_types(name_type)
+             FOREIGN KEY (type) REFERENCES name_types(name)
              ON DELETE NO ACTION"
 
     execute "ALTER TABLE names ADD CONSTRAINT fk_names_owner_id

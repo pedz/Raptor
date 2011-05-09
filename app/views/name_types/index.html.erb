@@ -1,8 +1,11 @@
+<%# -*- coding: utf-8 -*- -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <h1>Listing name_types</h1>
 
 <table>
   <tr>
     <th>Type</th>
+    <th>Base Type</th>
     <th>Table name</th>
     <th>Argument type</th>
     <th>Container</th>
@@ -11,7 +14,8 @@
 
 <% @name_types.each do |name_type| %>
   <tr>
-    <td><%=h name_type.name_type %></td>
+    <td><%=h name_type.name %></td>
+    <td><%=h name_type.base_type %></td>
     <td><%=h name_type.table_name %></td>
     <td><%=h name_type.argument_type.name %></td>
     <td><%=h name_type.container %></td>

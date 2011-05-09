@@ -1,3 +1,5 @@
+<%# -*- coding: utf-8 -*- -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <h1>Editing relationship</h1>
 
 <% form_for(@relationship) do |f| %>
@@ -7,7 +9,7 @@
     <%= f.label :container_name_id %><br />
     <%= f.collection_select(:container_name_id,
             Name.find(:all,
-		:joins => "INNER JOIN name_types ON type = name_types.name_type",
+		:joins => "INNER JOIN name_types ON type = name_types.name",
                 :conditions => { "name_types.container" => true }), :id, :name, { :include_blank => true }) %>
     <%= observe_field(:relationship_container_name_id,
                       :url => { :action => :container_name_set },

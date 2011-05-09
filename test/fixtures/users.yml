@@ -1,16 +1,13 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 pedzan:
-  id: 800
   ldap_id: pedzan@us.ibm.com
   admin: false
 
 tomp:
-  id: 801
   ldap_id: ltp@us.ibm.com
   admin: false
 
 sangeetha:
-  id: 802
   ldap_id: ssrikant@us.ibm.com
   admin: false

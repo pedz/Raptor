@@ -1,5 +1,5 @@
 <%# -*- coding: utf-8 -*- -%>
-
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <table rules="all" border="1px" >
   <% @apar.fields.fields.each_key do |sym| -%>
   <%   value = @apar.send(sym.pluralize) -%>

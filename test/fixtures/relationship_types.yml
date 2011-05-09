@@ -1,25 +1,21 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 team_lead_relationship_type:
-  id: 400
-  container_type_id: 103
-  association_type_id: 600
-  item_type_id: 104
+  container_type: team_name_type
+  association_type: team_lead_association_type
+  item_type: user_name_type
 
 team_member_relationship_type:
-  id: 401
-  container_type_id: 103
-  association_type_id: 601
-  item_type_id: 104
+  container_type: team_name_type
+  association_type: team_member_association_type
+  item_type: user_name_type
 
 team_queue_relationship_type:
-  id: 402
-  container_type_id: 103
-  association_type_id: 602
-  item_type_id: 108
+  container_type: team_name_type
+  association_type: team_queue_association_type
+  item_type: cached_queue_name_type
 
 team_team_relationship_type:
-  id: 403
-  container_type_id: 103
-  association_type_id: 603
-  item_type_id: 103
+  container_type: team_name_type
+  association_type: contains_association_type
+  item_type: team_name_type

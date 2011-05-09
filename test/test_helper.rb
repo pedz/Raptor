@@ -1,4 +1,22 @@
 # -*- coding: utf-8 -*-
+#
+# I'm not sure where to put this.  Currently, this approach seems to
+# be working:
+#
+#  1: Create a fresh test database:
+#       rake db:drop db:create db:migrate RAILS_ENV=test
+#  2: Run the tests:
+#       rake test:units
+#         or
+#       ruby -Itest test/unit/name_test.rb 
+#         or
+#       ruby -Itest test/unit/name_test.rb -n test_entity_has_one_association
+#
+# Soemtimes the silly code tries to delete things and that fails.
+# Starting with a fresh empty database seems to solve that.  Also, I'm
+# making it so that the fixtures are all loaded in test_helper
+# (below).  That seems to help too.
+#
 
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
@@ -43,16 +61,35 @@ class ActiveSupport::TestCase
   # then set this back to true.
   self.use_instantiated_fixtures  = true
 
-  fixtures(:cached_centers,
+  fixtures(:users,
+           :retusers,
+           :cached_centers,
            :cached_queues,
+           :cached_registrations,
+           :cached_queue_infos,
+           :cached_customers,
+           :favorite_queues,
            :argument_types,
            :name_types,
-           :users,
            :association_types,
            :relationship_types,
            :names,
            :relationships)
+
   # Add more helper methods to be used by all tests here...
+  def assert_includes(elem, array, message = nil)
+    message = build_message message, '<?> is not found in <?>.', elem, array
+    assert_block message do
+      array.include? elem
+    end
+  end
+
+  def assert_does_not_include(elem, array, message = nil)
+    message = build_message message, '<?> is was found in <?>.', elem, array
+    assert_block message do
+      !array.include? elem
+    end
+  end
 end
 
 module LdapConstants

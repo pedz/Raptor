@@ -1,7 +1,21 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 amnet_queue:
-  id: 300
-  queue_name: amnet
+  queue_name: AMNET
   h_or_s: S
-  center_id: 200
+  center: center_165
+
+pedz_queue:
+  queue_name: PEDZ
+  h_or_s: S
+  center: center_165
+
+tomp_queue:
+  queue_name: TOMP
+  h_or_s: S
+  center: center_165
+
+ssrika_queue:
+  queue_name: SSRIKA
+  h_or_s: S
+  center: center_165

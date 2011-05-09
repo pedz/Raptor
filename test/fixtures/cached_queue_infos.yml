@@ -1,0 +1,12 @@
+
+pedz_queue_info:
+  queue: pedz_queue
+  owner: pedzan_registration
+
+tomp_queue_info:
+  queue: tomp_queue
+  owner: tomp_registration
+
+sangeetha_queue_info:
+  queue: ssrika_queue
+  owner: sangeetha_registration

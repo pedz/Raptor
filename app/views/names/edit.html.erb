@@ -1,3 +1,5 @@
+<%# -*- coding: utf-8 -*- -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <h1>Editing name</h1>
 
 <% form_for(@name) do |f| %>
@@ -5,7 +7,7 @@
 
   <p>
     <%= f.label :type %><br />
-    <%= f.collection_select(:type, NameType.find(:all, :conditions => { :table_name => "names"}), :name_type, :name_type) %>
+    <%= f.collection_select(:type, NameType.find(:all, :conditions => { :table_name => "names"}), :name, :name) %>
   </p>
   <p>
     <%= f.label :name %><br />

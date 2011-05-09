@@ -10,7 +10,15 @@ class CreateNoCycles < ActiveRecord::Migration
         temp_level integer;
 
       BEGIN
-        SELECT type INTO container_name_type FROM names WHERE id = container_name_id;
+        SELECT
+          nt.base_type INTO container_name_type
+        FROM
+          names n,
+          name_types nt
+        WHERE
+          n.id = container_name_id AND
+          n.type = nt.name
+        ;
         IF NOT FOUND THEN
           RETURN false;
         END IF;

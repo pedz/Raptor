@@ -1,17 +1,16 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  signon: MyString
-  psar_number: MyString
-  name: MyString
-  telephone: MyString
-  software_center: MyString
-  hardware_center: MyString
+pedzan_registration:
+  signon: 305356
+  psar_number: 305356
+  name: Perry Smith
 
-two:
-  signon: MyString
-  psar_number: MyString
-  name: MyString
-  telephone: MyString
-  software_center: MyString
-  hardware_center: MyString
+tomp_registration:
+  signon: 807520
+  psar_number: 807520
+  name: Tom Phillips
+
+sangeetha_registration:
+  signon: 304624
+  psar_number: 304624
+  name: Sangeetha Srikanth

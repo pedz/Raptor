@@ -1,29 +1,21 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 ptcpk_contains_ptcpk_am_relationship:
-  id: 700
-  container_name_id: 505
-  relationship_type_id: 403
-  item_id: 502
-  item_type: Name
+  container_name: ptcpk_name
+  relationship_type: team_team_relationship_type
+  item: ptcpk_am_name (Name)
 
 ptcpk_am_team_lead_relationship:
-  id: 701
-  container_name_id: 502
-  relationship_type_id: 400
-  item_id: 802
-  item_type: User
+  container_name: ptcpk_am_name
+  relationship_type: team_lead_relationship_type
+  item: sangeetha (User)
 
 ptcpk_am_team_member_pedzan_relationship:
-  id: 702
-  container_name_id: 502
-  relationship_type_id: 401
-  item_id: 800
-  item_type: User
+  container_name: ptcpk_am_name
+  relationship_type: team_member_relationship_type
+  item: pedzan (User)
 
 ptcpk_am_team_queue_amnet:
-  id: 703
-  container_name_id: 502
-  relationship_type_id: 402
-  item_id: 300
-  item_type: Cached::Queue
+  container_name: ptcpk_am_name
+  relationship_type: team_queue_relationship_type
+  item: amnet_queue (Cached::Queue)

@@ -55,6 +55,6 @@ class RelationshipType < ActiveRecord::Base
   has_many :relationships
 
   def to_option
-    "<#{container_type.name_type},#{association_type.association_type},#{item_type.name_type}>"
+    "<#{container_type.name},#{association_type.association_type},#{item_type.name}>"
   end
 end

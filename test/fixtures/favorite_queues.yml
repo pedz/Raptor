@@ -1,0 +1,10 @@
+
+pedzan_favorite_amnet:
+  queue: amnet_queue
+  retuser: pedzan_retuser
+  sort_column: 1
+
+pedzan_favorite_pedz:
+  queue: pedz_queue
+  retuser: pedzan_retuser
+  sort_column: 2

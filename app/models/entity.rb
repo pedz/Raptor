@@ -10,14 +10,31 @@
 class Entity < ActiveRecord::Base
   ##
   # :attr: name
-  # String The name of the Entity
+  # The name of the Entity
 
   ##
   # :attr: item
-  # Object A polymorphic belongs_to association to the actual item
+  # A polymorphic belongs_to association to the actual item
   # represented by the name.  Note that some element within the item
   # will match the name attribute
   belongs_to :item, :polymorphic => true
 
-  has_one :name_type, :foreign_key => :item_type, :primary_key => :name_type
+  ##
+  # :attr: name_type
+  # A has_one association to NameType for the item in the Entity
+  belongs_to :name_type, :primary_key => :name, :foreign_key => :item_type
+
+  ##
+  # : attr : argument_type
+  # A has_one association via the name_type association to the
+  # ArgumentType for the item.
+  # This (I believe) has a bug.  It should notice that :promary_key
+  # for :name_type is :name but it does not and tries to do the search
+  # using "name_types".id (instead of "name_types".name
+  # has_many :argument_type, :through => :name_type
+
+  # Get the ArgumentType associated with the item
+  def argument_type
+    name_type.argument_type
+  end
 end
