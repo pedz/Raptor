@@ -15,6 +15,7 @@ SERVER_HOME=/usr/local/www/raptor/current
 THIN=/usr/local/bin/thin
 UID=raptor
 WORKERS=1
+export LDR_CNTRL=MAXDATA=0x30000000
 
 function stop_workers
 {
