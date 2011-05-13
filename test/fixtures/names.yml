@@ -1,8 +1,8 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-none_name:
+all_name:
   type: Filter
-  name: none
+  name: all
   owner: pedzan
 
 top_name:

@@ -6,7 +6,7 @@ class NameTest < ActiveSupport::TestCase
   end
 
   test "name_type belongs_to association" do
-    assert_equal @filter_name_type.id, @none_name.name_type.id
+    assert_equal @filter_name_type.id, @all_name.name_type.id
   end
 
   test "owner belongs_to association" do

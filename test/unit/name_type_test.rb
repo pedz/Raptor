@@ -2,7 +2,7 @@ require 'test_helper'
 
 class NameTypeTest < ActiveSupport::TestCase
   test "database is set up" do
-    assert_equal 9, NameType.count
+    assert_not_equal 0, NameType.count
   end
 
   test "should belong_to argument_type" do

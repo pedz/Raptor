@@ -22,7 +22,15 @@ class Entity < ActiveRecord::Base
   ##
   # :attr: name_type
   # A has_one association to NameType for the item in the Entity
-  belongs_to :name_type, :primary_key => :name, :foreign_key => :item_type
+  #
+  # This doesn't work... The foreign_key needs to be the real class of
+  # the item.
+  #
+  # belongs_to :name_type, :primary_key => :name, :foreign_key => :item_type
+
+  def name_type
+    NameType.find_by_name(item.class.to_s)
+  end
 
   ##
   # : attr : argument_type

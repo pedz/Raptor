@@ -1,4 +1,7 @@
 <%# -*- coding: utf-8 -*- -%>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <h1>Calls#index</h1>
-<p>Find me in app/views/calls/index.html.erb</p>
+<p>Group: <%= h @options["group"]%></p>
+<p>Levels: <%= h @options["levels"]%></p>
+<p>Filter: <%= h @options["filter"]%></p>
+<p>View: <%= h @options["view"]%></p>

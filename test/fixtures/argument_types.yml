@@ -12,7 +12,7 @@ level_argument:
 
 filter_argument:
   name: filter
-  default: none
+  default: all
   position: 2
 
 view_argument:
