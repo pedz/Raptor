@@ -2,15 +2,80 @@
 #
 # An Entity is a very generic term which may be any thing given in the
 # "calls" or "queues" list of arguments.  Entities is a view that is
-# the UNION of Relationship, User, and Retuser tables.  Given a name
-# of an Entity, it can be looked up and the result will contain a
-# polymorphic item which will be the actual item.  This item can later
-# be used to find all of the elements it contains using the Container
-# or Nesting
+# the UNION of Relationship, User, and Retuser tables.  It is then
+# joined to the name_types table and the argument_types table.
+#
+# Given a name of an Entity, it can be looked up and the result will
+# contain a polymorphic item which will be the actual item.  This item
+# can later be used to find all of the elements it contains using the
+# Container or Nesting
 class Entity < ActiveRecord::Base
   ##
   # :attr: name
   # The name of the Entity
+
+  ##
+  # :attr: real_type
+  # The actual type of the Entity.  We can't call this "type" or
+  # ActiveRecord thinks it is to be used for an STI which we don't
+  # want in this case.
+
+  ##
+  # :attr: item_id
+  # The id of the item
+
+  ##
+  # :attr: item_type
+  # The type for the item which is really the base_class of the item
+  # since that is what the polymorphic associations want
+
+  ##
+  # :attr: name_type_id
+  # The same as NameType#id
+
+  ##
+  # :attr: name_type
+  # A belongs_to association to NameType.  This is here just for
+  # completeness since all the info is already in the Entity.
+  belongs_to :name_type
+
+  ##
+  # :attr: base_type
+  # The same as NameType#base_type
+
+  ##
+  # :attr: table_name
+  # The same as NameType#table_name
+
+  ##
+  # :attr: container
+  # The same as NameType#container
+
+  ##
+  # :attr: containable
+  # The same as NameType#containable
+
+  ##
+  # :attr: argument_type_id
+  # The same as ArgumentType#id
+
+  ##
+  # :attr: argument_type
+  # A belongs_to association to ArgumentType.  This is here for
+  # completeness since all the data is already in the Entity
+  belongs_to :argument_type
+
+  ##
+  # :attr: argument_type
+  # The same as ArgumentType#name
+
+  ##
+  # :attr: default
+  # The same as ArgumentType#defect
+
+  ##
+  # :attr: position
+  # The same as ArgumentType#position
 
   ##
   # :attr: item
@@ -18,31 +83,4 @@ class Entity < ActiveRecord::Base
   # represented by the name.  Note that some element within the item
   # will match the name attribute
   belongs_to :item, :polymorphic => true
-
-  ##
-  # :attr: name_type
-  # A has_one association to NameType for the item in the Entity
-  #
-  # This doesn't work... The foreign_key needs to be the real class of
-  # the item.
-  #
-  # belongs_to :name_type, :primary_key => :name, :foreign_key => :item_type
-
-  def name_type
-    NameType.find_by_name(item.class.to_s)
-  end
-
-  ##
-  # : attr : argument_type
-  # A has_one association via the name_type association to the
-  # ArgumentType for the item.
-  # This (I believe) has a bug.  It should notice that :promary_key
-  # for :name_type is :name but it does not and tries to do the search
-  # using "name_types".id (instead of "name_types".name
-  # has_many :argument_type, :through => :name_type
-
-  # Get the ArgumentType associated with the item
-  def argument_type
-    name_type.argument_type
-  end
 end

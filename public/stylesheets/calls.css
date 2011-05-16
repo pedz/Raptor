@@ -1,0 +1,9 @@
+/* public/stylesheets/calls */
+
+#arguments {
+    border: solid;
+    display: table;
+    font-size: medium;
+    font-weight: normal;
+    float: right;
+}

@@ -1,7 +1,35 @@
 <%# -*- coding: utf-8 -*- -%>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<h1>Calls#index</h1>
-<p>Group: <%= h @options["group"]%></p>
-<p>Levels: <%= h @options["levels"]%></p>
-<p>Filter: <%= h @options["filter"]%></p>
-<p>View: <%= h @options["view"]%></p>
+<% @title = "calls #{@options["group"]} #{@options["levels"]} #{@options["filter"]} #{@options["view"]}" %>
+<table id='arguments'>
+  <caption>Current Arguments</caption>
+  <thead>
+    <tr>
+      <% ArgumentType.find(:all, :order => :position).each do |argument_type| %>
+	<th>
+	  <%= h argument_type.name %>
+	</th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <% ArgumentType.find(:all, :order => :position).each do |argument_type| %>
+	<td>
+	  <button>
+	    <%= h @options[argument_type.name] %>
+	  </button>
+	</td>
+      <% end %>
+    </tr>
+  </tbody>
+</table>
+<h1 id='heading'>Retain Calls:</h1>
+<table id='calls'>
+  <thead>
+  </thead>
+  <tfoot>
+  </tfoot>
+  <tbody>
+  </tbody>
+</table>

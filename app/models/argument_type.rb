@@ -26,4 +26,9 @@ class ArgumentType < ActiveRecord::Base
   # :attr: name_types
   # A has_many association of NameType that use this ArgumentType
   has_many :name_types
+
+  ##
+  # :attr: entities
+  # A has_many association of Entity that use this ArgumentType
+  has_many :entities
 end

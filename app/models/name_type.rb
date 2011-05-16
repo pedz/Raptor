@@ -50,6 +50,11 @@ class NameType < ActiveRecord::Base
   # A has_many list of Name records using this NameType
   has_many :names, :class_name => "Name", :foreign_key => :type, :primary_key => :name
 
+  ##
+  # :attr: entities
+  # A has_many list of Entities using this NameType
+  has_many :entities
+
   before_save :set_base_type
 
   # Automagically set base_type and table_name.  The stored PostgreSQL

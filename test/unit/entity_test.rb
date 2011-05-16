@@ -42,6 +42,6 @@ class EntityTest < ActiveSupport::TestCase
   end
 
   test "argument_type has_one through association for views" do
-    assert_equal @view_argument.id,   Entity.find_by_name("standard").argument_type.id
+    assert_equal @view_argument.id, Entity.find_by_name("standard").argument_type.id
   end
 end

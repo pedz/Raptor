@@ -20,4 +20,9 @@ class NameTypeTest < ActiveSupport::TestCase
     assert_includes(@ptcpk_ap_name.id,
                     @team_name_type.names.map(&:id))
   end
+
+  test "name_type entities association" do
+    assert_includes(@ptcpk_ap_name.name,
+                    @team_name_type.entities.map(&:name))
+  end
 end
