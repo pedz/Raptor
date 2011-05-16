@@ -52,4 +52,8 @@ class NameTest < ActiveSupport::TestCase
   test "entity has_one association" do
     assert_equal "ptcpk", @ptcpk_name.entity.name
   end
+
+  test "level has_one condition" do
+    assert_equal @all_condition.id, @all_name.condition.id
+  end
 end

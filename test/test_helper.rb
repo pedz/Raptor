@@ -74,7 +74,8 @@ class ActiveSupport::TestCase
            :association_types,
            :relationship_types,
            :names,
-           :relationships)
+           :relationships,
+           :conditions)
 
   # Add more helper methods to be used by all tests here...
   def assert_includes(elem, array, message = nil)

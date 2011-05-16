@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+top_condition:
+  name: top_name
+  sql: "nesting = 1"
+
+all_condition:
+  name: all_name
+  sql: "true"
