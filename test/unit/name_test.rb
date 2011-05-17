@@ -56,4 +56,8 @@ class NameTest < ActiveSupport::TestCase
   test "level has_one condition" do
     assert_equal @all_condition.id, @all_name.condition.id
   end
+
+  test "filter has_one condition" do
+    assert_equal @top_condition.id, @top_name.condition.id
+  end
 end

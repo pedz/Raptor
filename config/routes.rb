@@ -2,7 +2,6 @@
 
 ActionController::Routing::Routes.draw do |map|
   map.resources :argument_types
-
   map.resources(:relationships,
                 :collection => {
                   # For the new and edit pages, when the container
@@ -19,6 +18,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :association_types
   map.resources :name_types
   map.resources :names
+  map.resources :filters
+  map.resources :levels
   
   # The order of these arguments need to match what is in the
   # argument_types table.  This could change and the controller could
@@ -38,6 +39,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :hot_pmr_lists, :controller => 'hot_pmr_lists', :only => [ :index, :show ]
   map.namespace(:json) do |json|
+    json.entities "entities/:group/:levels/:filter", :controller => 'entities'
+
     json.resources(:favorite_queues)
 
     json.namespace(:cached) do |json_cached|

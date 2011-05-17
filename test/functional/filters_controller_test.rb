@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ConditionsTest < ActiveSupport::TestCase
+class FiltersControllerTest < ActionController::TestCase
   # Replace this with your real tests.
   test "the truth" do
     assert true

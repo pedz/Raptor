@@ -1,0 +1,16 @@
+<%# -*- coding: utf-8 -*- -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<p>
+  <b>Name:</b>
+  <%=h @filter.name %>
+</p>
+
+<p>
+  <b>SQL:</b>
+  <%=h @filter.condition ? @filter.condition.sql : "None" %>
+</p>
+
+
+<%= link_to 'Edit', edit_filter_path(@filter) %> |
+<%= link_to 'Back', filters_path %> |
+<%= link_to 'New filter', new_filter_path %>

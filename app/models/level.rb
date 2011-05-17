@@ -9,5 +9,5 @@ class Level < Name
   # :attr: condition
   # A has_one relation to a Condition.  By convention, this Condition
   # will be a restriction on "level".
-  has_one :condition
+  has_one :condition, :foreign_key => :name_id
 end

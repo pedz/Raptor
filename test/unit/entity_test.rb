@@ -44,4 +44,14 @@ class EntityTest < ActiveSupport::TestCase
   test "argument_type has_one through association for views" do
     assert_equal @view_argument.id, Entity.find_by_name("standard").argument_type.id
   end
+
+  test "containments has_many association" do
+    assert_includes(@ptcpk_am_name.id,
+                    Entity.find_by_name("ptcpk-am").containments.map(&:container_id))
+  end
+
+  test "nestings has_many association" do
+    assert_includes(@ptcpk_am_name.id,
+                    Entity.find_by_name("ptcpk-am").nestings.map(&:container_id))
+  end
 end

@@ -1,0 +1,26 @@
+<%# -*- coding: utf-8 -*- -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<h1>Editing filter</h1>
+
+<% form_for(@filter) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+
+  <% f.fields_for :condition do |condition| %>
+    <p>
+      <%= condition.label :sql %><br />
+      <%= condition.text_field :sql %>
+    </p>
+  <% end %>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @filter %> |
+<%= link_to 'Back', filters_path %>

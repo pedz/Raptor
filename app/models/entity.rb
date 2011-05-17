@@ -83,4 +83,16 @@ class Entity < ActiveRecord::Base
   # represented by the name.  Note that some element within the item
   # will match the name attribute
   belongs_to :item, :polymorphic => true
+
+  ##
+  # A has_many assocation with Containment via the item
+  def containments
+    item.containments
+  end
+
+  ##
+  # A has_many assocation with Nesting via the item
+  def nestings
+    item.nestings
+  end
 end
