@@ -1,6 +1,6 @@
 <%# -*- coding: utf-8 -*- -%>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<%= klass = RelationshipType.find(relationship_type_id).item_type.name_type.constantize
+<%= klass = RelationshipType.find(relationship_type_id).item_type.name.constantize
 collection_select(:relationship,
                   :item_id,
                   klass.all.sort{ |a, b| a.item_name <=> b.item_name },
