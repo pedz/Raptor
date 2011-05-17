@@ -1,0 +1,16 @@
+<%# -*- coding: utf-8 -*- -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<p>
+  <b>Name:</b>
+  <%=h @level.name %>
+</p>
+
+<p>
+  <b>SQL:</b>
+  <%=h @level.condition ? @level.condition.sql : "None" %>
+</p>
+
+
+<%= link_to 'Edit', edit_level_path(@level) %> |
+<%= link_to 'Back', levels_path %> |
+<%= link_to 'New level', new_level_path %>

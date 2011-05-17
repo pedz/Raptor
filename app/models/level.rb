@@ -10,4 +10,5 @@ class Level < Name
   # A has_one relation to a Condition.  By convention, this Condition
   # will be a restriction on "level".
   has_one :condition, :foreign_key => :name_id
+  accepts_nested_attributes_for :condition
 end
