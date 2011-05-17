@@ -39,7 +39,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :hot_pmr_lists, :controller => 'hot_pmr_lists', :only => [ :index, :show ]
   map.namespace(:json) do |json|
-    json.entities "entities/:group/:levels/:filter", :controller => 'entities'
+    json.calls("calls/:group/:levels/:filter", :controller => 'calls', :group => /[^\/]+/ )
 
     json.resources(:favorite_queues)
 

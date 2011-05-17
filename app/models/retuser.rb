@@ -97,4 +97,9 @@ class Retuser < ActiveRecord::Base
   # Container A has_many association returning the Container elements
   # that have this item as the container.
   has_many :nestings, :as => :container
+
+  ##
+  # :attr: entity
+  # A has_one association to an Entity.
+  has_one :entity, :class_name => "Entity", :as => :item
 end
