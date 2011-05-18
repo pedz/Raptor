@@ -24,3 +24,4 @@ config.action_mailer.raise_delivery_errors = false
 config.cache_store = :mem_cache_store
 
 config.gem "rails-footnotes", :lib => "rails-footnotes", :source => "http://gems.github.com"
+config.gem "jasmine"
