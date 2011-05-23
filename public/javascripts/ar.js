@@ -138,7 +138,7 @@ Ar = (function ()
 	var getterThat = { };
 
 	/**
-	 * @methodOf Ar-ArGetter#
+	 * @name Ar-ArGetter#get
 	 * @throws {Ar-ArCookie} if the fetch for the ActiveRecord
 	 * instance has not already completed.
 	 * @returns {ActiveRecord}
@@ -168,7 +168,7 @@ Ar = (function ()
 	/**
 	 * Addes a listener to this cookie
 	 *
-	 * @methodOf Ar-ArCookie#
+	 * @name Ar-ArCookie#addListener
 	 * @param {Function} callback The function to call when the
 	 * associated ArRepo AJAX request is fulfilled.
 	 */
@@ -182,7 +182,7 @@ Ar = (function ()
 	 * from an {@link Ar-ArRepo} when the AJAX request has
 	 * completed successfully.  I don't know what I'm going to do
 	 * for errors.
-	 * @methodOf Ar-ArCookie#
+	 * @name Ar-ArCookie#runListeners
 	 */
 	var runListeners = function() {
 	    var m;
@@ -282,7 +282,7 @@ Ar = (function ()
      * Takes an object and recursively finds {@link Ar-ArObject}s and replaces
      * them with an {@link Ar-ArGetter} instance.
      *
-     * @methodOf Ar
+     * @name Ar.wrap
      * @param {Object} obj The object to search
      * @returns {Object} obj that was passed in but with any {@link Ar-ArObject}
      * replaced with an {@link Ar-ArGetter}.
