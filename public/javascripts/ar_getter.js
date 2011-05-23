@@ -61,14 +61,14 @@ Ar = (function ()
 	/**
 	 * Always set to <q>ActiveRecord</q> and is used to identify an
 	 * ArObject from other objects
-	 * @memberOf Ar-ArObject#
+	 * @name Ar-ArObject#magic
 	 * @type String
 	 */
 	var magic = "ActiveRecord";
 
 	/**
 	 * Set to the class of the referenced object.
-	 * @memberOf Ar-ArObject#
+	 * @name Ar-ArObject#class_name
 	 * @type String
 	 */
 	var class_name;
@@ -77,7 +77,7 @@ Ar = (function ()
 	 * For a belongs_to association, set to the foreign key.  For
 	 * has_many and has_one associations, I don't know what I'm going
 	 * to do yet.
-	 * @memberOf Ar-ArObject#
+	 * @name Ar-ArObject#id
 	 * @type Integer
 	 */
 	var id;
@@ -104,14 +104,14 @@ Ar = (function ()
 	 *
 	 * Note that the has many and belongs to many isn't mentioned.  I
 	 * believe that has_many can be used in that situation.
-	 * @memberOf Ar-ArObject#
+	 * @name Ar-ArObject#association_type
 	 * @type String
 	 */
 	var association_type;
 
 	/**
 	 * The URL to use for the AJAX request.
-	 * @memberOf Ar-ArObject#
+	 * @name Ar-ArObject#url
 	 * @type String
 	 */
 	var url;
