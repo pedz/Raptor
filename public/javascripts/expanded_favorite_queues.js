@@ -175,7 +175,7 @@ Raptor.MakeType = function (cached_path, combined_path) {
 		var cb = {
 		    permanent: permanent,
 		    callback: callback
-		}
+		};
 		control_block.callbacks.push(cb);
 
 		if (!control_block.fetching) {
