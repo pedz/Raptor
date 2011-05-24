@@ -102,8 +102,9 @@ Ar = (function ()
 	 *
 	 * </dl>
 	 *
-	 * Note that the has many and belongs to many isn't mentioned.  I
+	 * Note that the has and belongs to many isn't mentioned.  I
 	 * believe that has_many can be used in that situation.
+	 *
 	 * @name Ar-ArObject#association_type
 	 * @type String
 	 */
