@@ -64,7 +64,7 @@
       <li>
 	To get to a specific PMR, you can edit the URL in the
 	browser's address bar.  The address will be (e.g.)<br/>
-	<%= combined_pmrs_url("12345,ABC,XYZ").sub('.', '/') %><br/>
+	<%= combined_pmrs_url("12345,ABC,XYZ").gsub('.', '/') %><br/>
 	This also works for PMHs.
       </li>
       <li>
