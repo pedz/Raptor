@@ -7,3 +7,8 @@ SpecBelongsToArObject = function() {
     this.url = "/someplace/like/this";
 };
 
+beforeEach(function () {
+    this.addMatchers({
+	isInstanceOf: function (obj) { return this.actual instanceof obj; }
+    });
+});

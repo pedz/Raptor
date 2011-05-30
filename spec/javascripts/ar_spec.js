@@ -29,12 +29,54 @@ describe('AR', function() {
 		id: 9876,
 		rec: new SpecBelongsToArObject()
 	    };
+	    /* register the object */
 	    var r = Ar.register('other', q);
+	    /* Ar.register returns an object with a 'value' property */
 	    var s = r.value;
+	    /* We want the property descriptor for the 'rec' property */
 	    var t = Object.getOwnPropertyDescriptor(s, 'rec');
+	    /*
+	     * What we really want is to test IsAccessorProperty but
+	     * that doesn't exist so we get the property names and see
+	     * if there is a 'get' property
+	     */
 	    var u = Object.getOwnPropertyNames(t);
-	    var v = u.indexOf('get');
-	    expect(v).toBeGreaterThan(-1);
+	    expect(u).toContain('get');
+	});
+    });
+
+    describe("AJAX calls", function() {
+	var q;
+	var new_q;
+
+	beforeEach(function() {
+	    spyOn(ArRequestRepository, 'lookup').andCallThrough();
+
+	    q = {
+		id: Math.floor(Math.random() * 10000),
+		rec: new SpecBelongsToArObject()
+	    };
+
+	    new_q = Ar.register('blah', q);
+	});
+
+	it("should not fire when registering", function() {
+	    expect(ArRequestRepository.lookup).not.toHaveBeenCalled();
+	});
+
+	it("should fire when record is accessed", function() {
+	    var err;
+
+	    try {
+		new_q.value.rec;
+	    } catch (t) {
+		err = t;
+	    }
+
+	    /* Best way I can figure out to test that we threw an ArCookie */
+	    expect(err.addListener).isInstanceOf(Function);
+	    expect(ArRequestRepository.lookup).toHaveBeenCalled();
+	    console.log(ajaxRequests);
 	});
     });
 });

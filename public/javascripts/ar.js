@@ -527,16 +527,13 @@ var Ar = (function ()
     var wrap = function(obj) {
 	var t;
 	
-	console.log('in wrap');
 	for (t in obj) {
 	    if (typeof(obj[t]) === "object") {
 		var o = obj[t];
 
 		if (o["magic"] === "ActiveRecord") {
-		    console.log('replacing', t);
 		    Object.defineProperty(obj, t, {
 					      get: function () {
-						  console.log('getting', t);
 						  return ArRequestRepository.lookup(o);
 					      }
 					  });
