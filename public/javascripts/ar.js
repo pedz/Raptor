@@ -100,6 +100,7 @@ var ArObject = function (class_name, id, association_type, url) {
  */
 var ArRequest = function(obj) {
     var that = { };
+    that.unique = Math.floor(Math.random() * 999);
     
     /**
      * A holder for the Ajax.Request that was used.
@@ -114,7 +115,9 @@ var ArRequest = function(obj) {
      * @type Boolean
      */
     var started = false;
-    that.started = started;
+    Object.defineProperty(that, "started", {
+	get: function() { return started; },
+	set: function(newVal) { started = newVal; } });
 
     /**
      * Causes the AJAX call to be started.
@@ -125,6 +128,7 @@ var ArRequest = function(obj) {
     var start = function () {
 	if (started || completed)
 	    return;
+	started = true;
 	request = new Ajax.Request(obj.url, {
 				       onSuccess: onSuccess,
 				       onFailure: onFailure,
@@ -140,7 +144,9 @@ var ArRequest = function(obj) {
      * @type Boolean
      */
     var succeeded = false;
-    that.succeeded = succeeded;
+    Object.defineProperty(that, "succeeded", {
+	get: function() { return succeeded; },
+	set: function(newVal) { succeeded = newVal; } });
 
     /**
      * Unwraps an Active Record from its type container.
@@ -167,9 +173,11 @@ var ArRequest = function(obj) {
      */
     var unwrap = function (o) {
 	var p;
-	for (var q in o)
-	    if (typeof(p = o[q]) === "Object")
+	for (var q in o) {
+	    if (typeof(p = o[q]) === "object")
 		return p;
+	}
+	console.log('bad unwrap');
 	throw('object passed to unwrap did not unwrap as expected');
     };
 
@@ -226,11 +234,12 @@ var ArRequest = function(obj) {
 	     * be empty.
 	     */
 	case 'has_many':
-	    element = [];
-	    for (var i in o) {
-		var p = o[i];
-		element.push(Ar.register(obj.class_name, unwrap(p)));
-	    }
+	    var temp = [];
+
+	    var temp = o.map(function (ele, index, oo) {
+		return Ar.register(obj.class_name, unwrap(ele));
+	    });
+	    element = temp;
 	    break;
 
 	case 'has_one':
@@ -241,12 +250,18 @@ var ArRequest = function(obj) {
 	     */
 	    element = Ar.register(obj.class_name, unwrap(o));
 	    break;
+
+	default:
+	    throw('illegal association');
+	    break;
 	};
 	cookie.runListeners();
     };
 
     /**
      * Called when the AJAX request does not complete successfully.
+     * This is currently not implemented... I'm not sure what I want
+     * to do here.
      *
      * @name ArRequest-onFailure
      * @function
@@ -268,7 +283,9 @@ var ArRequest = function(obj) {
      * @type Boolean
      */
     var completed = false;
-    that.completed = completed;
+    Object.defineProperty(that, "completed", {
+	get: function() { return completed; },
+	set: function(newVal) { completed = newVal; } });
 
     /**
      * The element used by the outside world to add listeners.
@@ -277,7 +294,9 @@ var ArRequest = function(obj) {
      * @type ArCookie
      */
     var cookie = ArCookie();
-    that.cookie = cookie;
+    Object.defineProperty(that, "cookie", {
+	get: function() { return cookie; },
+	set: function(newVal) { cookie = newVal; } });
 	    
     /**
      * The element (which might be an Array) that was returned.
@@ -291,7 +310,9 @@ var ArRequest = function(obj) {
      * @type Object
      */
     var element = null;
-    that.element = element;
+    Object.defineProperty(that, "element", {
+	get: function() { return element; },
+	set: function(newVal) { element = newVal; } });
 
     if (obj.element != null)
 	processElement(obj.element);
@@ -337,8 +358,9 @@ var ArCookie = function() {
 	var m;
 	
 	while ((m = listeners.pop()))
-	    m();
+	    m.call();
     };
+    cookieThat.runListeners = runListeners;
     
     return cookieThat;
 };
@@ -378,15 +400,20 @@ var ArGetter = function(obj) {
 };
 
 /**
- * Stores an element which is initially undefined.  An assignment will
- * save the new value and a fetch will return the latest stored
- * valued.
+ * Stores an element which is initially undefined.
+ *
+ * An assignment will save the new value and a fetch will return the
+ * latest stored valued.  (I initially thought this was going to be
+ * more complex.)  {@link Ar-repository} stores {@link ArIndirect}
+ * objects whose value is the ActiveRecord instance.  This way, what
+ * is returned by {@link Ar.lookup} and {@link Ar.register} will be
+ * updated a new copies of the same ActiveRecord instance are fetched.
  *
  * @constructor
  * @param {Object} orig The starting value
  */
 var ArIndirect = function (orig) {
-    return /** @lends ArIndirect */ {
+    return /** @lends ArIndirect# */ {
 	/** @property {Object} value Current value */
 	value: orig
     };
@@ -415,6 +442,15 @@ var ArRequestRepository = (function()
     var repository = { };
     
     /**
+     * Used more for testing and debugging, this clears the repository.
+     * @name ArRequestRepository.clearRepository
+     * @function
+     */
+    var clearRepository = function () {
+	repository = { };
+    };
+
+    /**
      * Looks to see if a matching {@link ArRequest} already exists for
      * the same URL.  If it does not, then a new {@link ArRequest} is
      * created.
@@ -436,16 +472,17 @@ var ArRequestRepository = (function()
      */
     var lookup = function(obj) {
 	var repo_entry = repository[obj.url];
+
 	if (!repo_entry)
-	    repo_entry = (repository[obj.id] = ArRequest(obj));
+	    repo_entry = (repository[obj.url] = ArRequest(obj));
 	
 	/*
 	 * For a belongs_to association, we check to see if it is
 	 * in {@link Ar-repository} by calling {@link Ar.lookup}.
 	 */
-	if (obj.association_type == "belongs_to") {
+	if (!repo_entry.completed && obj.association_type == "belongs_to") {
 	    var o = Ar.lookup(obj.class_name, obj.id);
-	    
+
 	    if (o) {
 		repo_entry.element = o;
 		repo_entry.completed = true;
@@ -455,17 +492,36 @@ var ArRequestRepository = (function()
 	/*
 	 * If the request has completed, return the element.
 	 */
-	if (repo_entry.completed)
-	    return repo_entry.element;
+	if (repo_entry.completed) {
+	    switch (obj.association_type) {
+	    case 'belongs_to':
+	    case 'has_one':
+		return repo_entry.element.value;
+		break;
+
+	    case 'has_many':
+		return repo_entry.element.map(function (ele, index, o) {
+		    return ele.value;
+		});
+
+	    default:
+		throw('illegal association');
+		break;
+	    }
+	}
 	
 	/*
 	 * Start the AJAX request.
 	 */
 	repo_entry.start();
+
 	throw(repo_entry.cookie);
     };
     
-    return { lookup: lookup };
+    return {
+	lookup: lookup,
+	clearRepository: clearRepository
+    };
 })();
 
 /**
@@ -556,6 +612,16 @@ var Ar = (function ()
      * @type Hash
      */
     var repository = { };
+
+    /**
+     * Used more for testing and debugging, this clears the repository.
+     * @name Ar.clearRepository
+     * @function
+     */
+    var clearRepository = function () {
+	repository = { };
+    };
+    arThat.clearRepository = clearRepository;
 
     /**
      * Registers an ActiveRecord object.  
