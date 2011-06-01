@@ -177,7 +177,6 @@ var ArRequest = function(obj) {
 	    if (typeof(p = o[q]) === "object")
 		return p;
 	}
-	console.log('bad unwrap');
 	throw('object passed to unwrap did not unwrap as expected');
     };
 

@@ -302,4 +302,35 @@ describe('AR', function() {
 	    });
 	});
     });
+
+    describe("register with element already attached", function() {
+	var getTransportSpy;
+	var lookupSpy;
+	var new_q;
+	var saved_rec;
+
+	beforeEach(function() {
+	    Ar.clearRepository();
+	    ArRequestRepository.clearRepository();
+
+	    getTransportSpy = Ajax.getTransport;
+
+	    q = {
+		id: Math.floor(Math.random() * 10000),
+		rec: new SpecBelongsToCachedCallWithElement()
+	    };
+	    saved_rec = q.rec;
+	    new_q = Ar.register('blah', q);
+
+	    lookupSpy = spyOn(ArRequestRepository, "lookup").andCallThrough();
+	});
+
+	it("should return rec already", function() {
+	    expect(new_q.value.rec.id).toEqual(176);
+	});
+
+	it("should not have called AJAX", function() {
+	    expect(getTransportSpy).not.toHaveBeenCalled();
+	});
+    });
 });
