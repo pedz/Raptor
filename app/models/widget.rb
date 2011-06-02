@@ -15,7 +15,7 @@ class Widget < ActiveRecord::Base
 
   ##
   # :attr: code
-  # String javascript code snippet that implements the widget.
+  # String javascript code snippet that implements the Widget.
 
   ##
   # :attr: owner
