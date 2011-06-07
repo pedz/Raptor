@@ -149,38 +149,6 @@ var ArRequest = function(obj) {
 	set: function(newVal) { succeeded = newVal; } });
 
     /**
-     * Unwraps an Active Record from its type container.
-     * 
-     * The JSON for an Active Record looks like this:
-     * <pre>
-     *     { 
-     *       "call" :
-     *         {
-     *           "attr1" : value1,
-     *           "attr2" : value2,
-     *           ...
-     *         }
-     *     }
-     * </pre>
-     * {@link ArRequest-unwrap} will take the original object and
-     * return the inner object.
-     *
-     * @name ArRequest-unwrap
-     * @function
-     * @param {WrappedActiveRecord} o
-     * @returns ActiveRecord
-     * @throws {String} if unwrapping doesn't go as expected.
-     */
-    var unwrap = function (o) {
-	var p;
-	for (var q in o) {
-	    if (typeof(p = o[q]) === "object")
-		return p;
-	}
-	throw('object passed to unwrap did not unwrap as expected');
-    };
-
-    /**
      * Called when the AJAX request completes successfully.
      *
      * @name ArRequest-onSuccess 
@@ -225,7 +193,7 @@ var ArRequest = function(obj) {
 	     * and just always use obj#class_name.
 	     */
 	case 'belongs_to':
-	    element = Ar.register(obj.class_name, unwrap(o));
+	    element = Ar.register(obj.class_name, o);
 	    break;
 
 	    /*
@@ -236,7 +204,7 @@ var ArRequest = function(obj) {
 	    var temp = [];
 
 	    var temp = o.map(function (ele, index, oo) {
-		return Ar.register(obj.class_name, unwrap(ele));
+		return Ar.register(obj.class_name, ele);
 	    });
 	    element = temp;
 	    break;
@@ -247,7 +215,7 @@ var ArRequest = function(obj) {
 	     * as for belongs_to.  We'll use obj#class_name instead of
 	     * the has key.
 	     */
-	    element = Ar.register(obj.class_name, unwrap(o));
+	    element = Ar.register(obj.class_name, o);
 	    break;
 
 	default:
@@ -623,6 +591,46 @@ var Ar = (function ()
     arThat.clearRepository = clearRepository;
 
     /**
+     * Unwraps an Active Record from its type container.
+     * 
+     * The JSON for an Active Record looks like this:
+     *
+     * <pre>
+     *     { 
+     *       "call" :
+     *         {
+     *           "attr1" : value1,
+     *           "attr2" : value2,
+     *           ...
+     *         }
+     *     }
+     * </pre>
+     *
+     * {@link ArRequest-unwrap} will take the original object and
+     * return the inner object.  It does this conditionally.  If the
+     * number of own properties is exactly equal to 1, then the object
+     * returns is the value of the single property.
+     *
+     * @name ArRequest-unwrap
+     * @function
+     * @param {WrappedActiveRecord} o
+     * @returns ActiveRecord
+     * @throws {String} if unwrapping doesn't go as expected.
+     */
+    var unwrap = function (o) {
+	var names;
+
+	if (typeof(o) !== "object")
+	    throw("Object expected");
+
+	names = Object.getOwnPropertyNames(o);
+	if (names.length === 1)
+	    return o[names[0]];
+
+	return o;
+    };
+
+    /**
      * Registers an ActiveRecord object.  
      * 
      * Calls {@link Ar.wrap} to find all {@link ArObject}s within the
@@ -651,6 +659,7 @@ var Ar = (function ()
 	if (!s1)
 	    s1 = (repository[class_name] = []);
 
+	obj = unwrap(obj);
 	if (s1[obj.id] == null)
 	    s1[obj.id] = ArIndirect();
 
@@ -700,6 +709,7 @@ var Ar = (function ()
 		throw err;
 	}
     };
+    arThat.render = render;
 
     return arThat;
 })();

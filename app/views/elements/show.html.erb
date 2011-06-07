@@ -8,7 +8,7 @@
 <%- content_for(:center) do -%>
 <p>
   <b>Widget:</b>
-  <%=h @element.widget.name %>
+  <%= link_to @element.widget.name, widget_path(@element.widget) %>
 </p>
 
 <p>

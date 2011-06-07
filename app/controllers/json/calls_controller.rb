@@ -15,7 +15,10 @@ module Json
       nestings = group.item.nestings.find(:all, :conditions => "(#{levels.item.condition.sql}) AND (item_type = 'Cached::Queue')")
       queue_ids = nestings.map(&:item_id)
       calls = Cached::Call.scoped(:conditions => { :queue_id => queue_ids }).scoped(:include => :pmr).scoped(:conditions => filter.item.condition.sql)
-      render :json => calls
+      render :json => {
+        :class_name => "Cached::Call",
+        :calls => calls
+      }.to_json
     end
   end
 end

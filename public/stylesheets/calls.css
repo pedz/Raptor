@@ -7,3 +7,11 @@
     font-weight: normal;
     float: right;
 }
+
+#error {
+    color: red;
+}
+
+#error + ul > li {
+    color: red;
+}
