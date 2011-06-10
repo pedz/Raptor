@@ -46,9 +46,11 @@ ActionController::Routing::Routes.draw do |map|
 
     json.namespace(:cached) do |json_cached|
       json_cached.resources(:centers)
+      json_cached.resources(:calls, :except => [:index])
       json_cached.resources(:components)
       json_cached.resources(:customers)
       json_cached.resources(:pmrs) do |json_cached_pmr|
+        json_cached_pmr.resources(:calls)
         json_cached_pmr.resources(:psars)
         json_cached_pmr.resources(:text_lines)
       end

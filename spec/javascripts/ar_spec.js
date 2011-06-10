@@ -76,7 +76,9 @@ describe('AR', function() {
 	it("should find and wrap ArObjects", function() {
 	    q = {
 		id: 9876,
-		rec: new SpecBelongsToArObject()
+		ar_objects: {
+		    rec: new SpecBelongsToArObject()
+		}
 	    };
 	    /* register the object */
 	    var r = Ar.register('other', q);
@@ -106,14 +108,15 @@ describe('AR', function() {
 
 	    getTransportSpy = Ajax.getTransport;
 
+	    saved_rec = new SpecBelongsToCachedCall();
 	    q = {
 		id: Math.floor(Math.random() * 10000),
-		rec: new SpecBelongsToCachedCall()
+		ar_objects: {
+		    rec: saved_rec
+		}
 	    };
 
-	    saved_rec = q.rec;
 	    new_q = Ar.register('blah', q);
-
 	    lookupSpy = spyOn(ArRequestRepository, "lookup").andCallThrough();
 	});
 
@@ -226,14 +229,15 @@ describe('AR', function() {
 	    Ar.clearRepository();
 	    ArRequestRepository.clearRepository();
 
+	    saved_recs = new SpecHasManyCachedCall();
 	    q = {
 		id: Math.floor(Math.random() * 10000),
-		recs: new SpecHasManyCachedCall()
+		ar_objects: {
+		    recs: saved_recs
+		}
 	    };
 
-	    saved_recs = q.recs;
 	    new_q = Ar.register('blah', q);
-
 	    spyOn(ArRequestRepository, "lookup").andCallThrough();
 	});
 
@@ -315,13 +319,15 @@ describe('AR', function() {
 
 	    getTransportSpy = Ajax.getTransport;
 
+	    saved_rec = new SpecBelongsToCachedCallWithElement();
 	    q = {
 		id: Math.floor(Math.random() * 10000),
-		rec: new SpecBelongsToCachedCallWithElement()
+		ar_objects: {
+		    rec: saved_rec
+		}
 	    };
-	    saved_rec = q.rec;
-	    new_q = Ar.register('blah', q);
 
+	    new_q = Ar.register('blah', q);
 	    lookupSpy = spyOn(ArRequestRepository, "lookup").andCallThrough();
 	});
 

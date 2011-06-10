@@ -78,7 +78,6 @@ Raptor.renderElementContainer = function (domElementType) {
 		
 	    case 'function':
 		Ar.render(function () {
-		    console.log('call', call);
 		    var v = method.call(domElement, call.value);
 		    if (typeof v !== 'undefined')
 			domElement[updateFunction].call(domElement, v);

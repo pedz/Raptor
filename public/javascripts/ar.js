@@ -22,14 +22,6 @@
  */
 var ArObject = function (class_name, id, association_type, url) {
     /**
-     * Always set to <q>ActiveRecord</q> and is used to identify an
-     * ArObject from other objects
-     * @name ArObject#magic
-     * @type String
-     */
-    this.magic = "ActiveRecord";
-    
-    /**
      * Set to the class of the referenced object.
      * @name ArObject#class_name
      * @type String
@@ -115,7 +107,7 @@ var ArRequest = function(obj) {
      * @type Boolean
      */
     var started = false;
-    Object.defineProperty(that, "started", {
+    Object.defineProperty(that, 'started', {
 	get: function() { return started; },
 	set: function(newVal) { started = newVal; } });
 
@@ -132,7 +124,7 @@ var ArRequest = function(obj) {
 	request = new Ajax.Request(obj.url, {
 				       onSuccess: onSuccess,
 				       onFailure: onFailure,
-				       method: "get"
+				       method: 'get'
 				   });
     };
     that.start = start;
@@ -144,7 +136,7 @@ var ArRequest = function(obj) {
      * @type Boolean
      */
     var succeeded = false;
-    Object.defineProperty(that, "succeeded", {
+    Object.defineProperty(that, 'succeeded', {
 	get: function() { return succeeded; },
 	set: function(newVal) { succeeded = newVal; } });
 
@@ -250,7 +242,7 @@ var ArRequest = function(obj) {
      * @type Boolean
      */
     var completed = false;
-    Object.defineProperty(that, "completed", {
+    Object.defineProperty(that, 'completed', {
 	get: function() { return completed; },
 	set: function(newVal) { completed = newVal; } });
 
@@ -261,7 +253,7 @@ var ArRequest = function(obj) {
      * @type ArCookie
      */
     var cookie = ArCookie();
-    Object.defineProperty(that, "cookie", {
+    Object.defineProperty(that, 'cookie', {
 	get: function() { return cookie; },
 	set: function(newVal) { cookie = newVal; } });
 	    
@@ -277,7 +269,7 @@ var ArRequest = function(obj) {
      * @type Object
      */
     var element = null;
-    Object.defineProperty(that, "element", {
+    Object.defineProperty(that, 'element', {
 	get: function() { return element; },
 	set: function(newVal) { element = newVal; } });
 
@@ -447,7 +439,7 @@ var ArRequestRepository = (function()
 	 * For a belongs_to association, we check to see if it is
 	 * in {@link Ar-repository} by calling {@link Ar.lookup}.
 	 */
-	if (!repo_entry.completed && obj.association_type == "belongs_to") {
+	if (!repo_entry.completed && obj.association_type == 'belongs_to') {
 	    var o = Ar.lookup(obj.class_name, obj.id);
 
 	    if (o) {
@@ -481,7 +473,6 @@ var ArRequestRepository = (function()
 	 * Start the AJAX request.
 	 */
 	repo_entry.start();
-
 	throw(repo_entry.cookie);
     };
     
@@ -548,23 +539,40 @@ var Ar = (function ()
      * replaced with an {@link ArGetter}.
      */
     var wrap = function(obj) {
-	var t;
-	
-	for (t in obj) {
-	    if (typeof(obj[t]) === "object") {
-		var o = obj[t];
+	var ar_objects;
 
-		if (o["magic"] === "ActiveRecord") {
-		    Object.defineProperty(obj, t, {
-					      get: function () {
-						  return ArRequestRepository.lookup(o);
-					      }
-					  });
-		} else {
-		    wrap(o);
-		}
-	    }
+	if (!obj || (typeof obj !== 'object')) // should never happen but just in case
+	    return obj;
+
+	/*
+	 * we don't want to wrap ar_objects.  We also don't want to
+         * wrap the objects created from ar_objects so, we hold
+         * ar_objects in our pocket, delete it from obj, wrap the
+         * other properties, and then process the ar_objects
+	 */
+
+	if (typeof obj['ar_objects'] === 'object') {
+	    ar_objects = obj.ar_objects;
+	    delete obj.ar_objects;
 	}
+
+	Object.getOwnPropertyNames(obj).forEach(function (name, index, xObj) {
+	    var t = obj[name];
+	    if (t && (typeof obj[name] === 'object')) {
+		wrap(obj[name]);
+	    }
+	});
+
+	if (ar_objects) {
+	    Object.getOwnPropertyNames(ar_objects).forEach(function (name, index, array) {
+		Object.defineProperty(obj, name, {
+		    get: function () {
+			return ArRequestRepository.lookup(ar_objects[name]);
+		    }
+		});
+	    });
+	}
+
 	return obj;
     };
     arThat.wrap = wrap;
@@ -620,8 +628,8 @@ var Ar = (function ()
     var unwrap = function (o) {
 	var names;
 
-	if (typeof(o) !== "object")
-	    throw("Object expected");
+	if (typeof(o) !== 'object')
+	    throw('Object expected');
 
 	names = Object.getOwnPropertyNames(o);
 	if (names.length === 1)
@@ -703,10 +711,11 @@ var Ar = (function ()
 	try {
 	    f.call();
 	} catch (err) {
-	    if (err instanceof ArCookie)
+	    if (err && (typeof err === 'object') && (typeof err.addListener === 'function')) {
 		err.addListener(f);
-	    else
+	    } else {
 		throw err;
+	    }
 	}
     };
     arThat.render = render;

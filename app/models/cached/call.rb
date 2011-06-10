@@ -107,7 +107,20 @@ module Cached
     # -- probably because it is not valid utf-8?
     # set_as_json_default_options(:except => [ :call_search_result ])
     def as_json(options = { })
-      super({ :except => [ :call_search_result ] })
+      if options.has_key?(:except)
+        v = options[:except]
+        if v.is_a? Array
+          unless v.include?(:call_search_result)
+            v.push(:call_search_result)
+          end
+        else
+          v = [ v, :call_search_result ]
+        end
+      else
+        v = [ :call_search_result ]
+      end
+      options = options.merge({ :except => v})
+      super(options)
     end
 
     # The current definition of when initial response is needed is
