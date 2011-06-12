@@ -23,4 +23,10 @@ class Widget < ActiveRecord::Base
   belongs_to :owner, :class_name => "User"
 
   validates_uniqueness_of :name
+
+  def after_save
+    File.open(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR + "/widgets/" + name + ".js", "w") do |f|
+      f.write("Raptor.widgets.#{name} = #{code}")
+    end
+  end
 end

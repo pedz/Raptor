@@ -567,6 +567,9 @@ var Ar = (function ()
 	    Object.getOwnPropertyNames(ar_objects).forEach(function (name, index, array) {
 		Object.defineProperty(obj, name, {
 		    get: function () {
+			var o = ar_objects[name];
+			if (!o)
+			    return o;
 			return ArRequestRepository.lookup(ar_objects[name]);
 		    }
 		});

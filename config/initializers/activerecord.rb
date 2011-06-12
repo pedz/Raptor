@@ -32,10 +32,16 @@ class ActiveRecord::Base
       case reflection.macro
       when :belongs_to
         if options.has_key? :foreign_key
-          hash[:id] = self.attributes[options[:foreign_key]]
+          id = self.attributes[options[:foreign_key]]
         else
-          hash[:id] = self.attributes["#{name}_id"]
+          id = self.attributes["#{name}_id"]
         end
+        # I think this is what I wanna do...
+        if id.nil?
+          result[name] = nil
+          next
+        end
+        hash[:id] = id
         hash[:url] = "#{root}/#{class_name.underscore.pluralize}/#{hash[:id]}"
         if self.send("loaded_#{name}?")
           hash[:element] = self.send(name).as_json({ :methods => :ar_objects })

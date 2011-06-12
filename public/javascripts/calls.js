@@ -1,5 +1,7 @@
 // public/javascripts/calls.js
 
+Raptor.widgets = {};
+
 Raptor.renderElementContainer = function (domElementType) {
     var elements = [];
 
@@ -204,17 +206,7 @@ Raptor.viewOnSuccess = function (response, x_json) {
 	if (min_col > last_col)
 	    min_col = last_col;
 
-	if (typeof ele.widget.code === 'string') {
-	    var j;
-	    var t = 'j = ' + ele.widget.code + ';';
-	    eval(t);
-	    /* Lets support the "module" paradigm */
-	    if (typeof j === 'function') {
-		ele.widget.code = j.call(this);
-	    } else {
-		ele.widget.code = j;
-	    }
-	}
+	ele.widget.code = Raptor.widgets[ele.widget.name];
     });
 
     for (var row = 0; row <= max_row; ++row) {

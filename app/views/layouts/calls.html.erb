@@ -2,6 +2,6 @@
 <%= app_doctype %>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <%= app_header(std_styles("calls"), std_scripts("ar", "calls")) %>
+  <%= app_header(std_styles("calls"), std_scripts("ar", "calls", *@widgets)) %>
   <%= app_body %>
 </html>
