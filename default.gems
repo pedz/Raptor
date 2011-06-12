@@ -20,6 +20,7 @@ gettext -v2.1.0
 gettext_activerecord -v2.1.0
 gettext_i18n_rails -v0.2.2
 git -v1.2.5
+god -v0.11.0
 highline -v1.6.1
 icu4r -v0.1.5
 jasmine -v1.0.2.1
