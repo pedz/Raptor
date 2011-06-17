@@ -200,6 +200,7 @@ module Combined
 
         # Make call fetch the fields we need
         retain_call.group_requests = group_request
+        retain_call.send(group_request[0])
 
         # create or find the call
         call_options = Cached::Call.options_from_retain(retain_call)
@@ -210,7 +211,8 @@ module Combined
         # originally null.
         db_call = @cached.calls.find_or_new(call_options) unless db_call
 
-        # if an old record, update it with new info
+        # if an old record, update it with new info (If it is a new
+        # record, this work will already been done.)
         unless db_call.new_record?
           db_call.attributes = call_options
         end

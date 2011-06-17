@@ -14,7 +14,8 @@
 SERVER_HOME=/usr/local/www/raptor/current
 THIN=/usr/local/bin/thin
 UID=raptor
-WORKERS=1
+# Moving away from beantalkd to delayed_job (I think)
+WORKERS=0
 export LDR_CNTRL=MAXDATA=0x30000000
 
 function stop_workers

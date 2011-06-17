@@ -65,7 +65,7 @@ class AsyncObserver::Worker
   end
 
   def main_loop()
-    trap('TERM') { @stop = true }
+    trap('TERM') { puts "hello" ; @stop = true }
     loop do
       break if @stop
       safe_dispatch(get_job())

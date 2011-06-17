@@ -66,14 +66,12 @@ Rails::Initializer.run do |config|
     :secret      => '15bbeb7de57ae9d03ea579825288591c'
   }
 
-  #
-  # Moving away from beanstalkd to Delayed Job (I think :-)
-  # config.after_initialize do
-  #   AsyncObserver::Queue.queue = Beanstalk::Pool.new(['127.0.0.1:11300'])
-  #   # This value should change every time you make a release of your app.
-  #   AsyncObserver::Queue.app_version = "1.0.1"
-  #   AsyncObserver::Worker.handle = proc do |job|
-  #     AsyncRequest.perform(job)
-  #   end
-  # end
+  config.after_initialize do
+    AsyncObserver::Queue.queue = Beanstalk::Pool.new(['127.0.0.1:11300'])
+    # This value should change every time you make a release of your app.
+    AsyncObserver::Queue.app_version = "1.0.1"
+    AsyncObserver::Worker.handle = proc do |job|
+      AsyncRequest.perform(job)
+    end
+  end
 end
