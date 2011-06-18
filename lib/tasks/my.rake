@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module SM
   class ToFlow
     def handle_special_COMMENT(special)

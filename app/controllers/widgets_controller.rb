@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class WidgetsController < ApplicationController
   # GET /widgets
   # GET /widgets.xml

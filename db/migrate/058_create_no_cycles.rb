@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateNoCycles < ActiveRecord::Migration
   def self.up
     execute "CREATE LANGUAGE plpgsql;"

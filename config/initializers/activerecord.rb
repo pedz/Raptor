@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 ActiveRecord::Base.colorize_logging = false
 

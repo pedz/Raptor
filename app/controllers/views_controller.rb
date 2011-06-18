@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class ViewsController < ApplicationController
   # GET /views
   # GET /views.xml

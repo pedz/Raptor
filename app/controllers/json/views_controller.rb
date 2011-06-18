@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module Json
   class ViewsController < ApplicationController
     # This is the way that the javascript pulls over the view that the

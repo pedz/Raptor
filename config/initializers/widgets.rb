@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # At start up, we need to make sure that a copy of the code of each
 # widget is in the javascript/widgets directory.  It might be much

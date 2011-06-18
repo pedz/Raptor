@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddAbsorbedQueueListToCachedCenters < ActiveRecord::Migration
   def self.up
     add_column :cached_centers, :absorbed_queue_list, :string

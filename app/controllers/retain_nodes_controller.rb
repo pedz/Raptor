@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class RetainNodesController < ApplicationController
   before_filter :admin_only
 

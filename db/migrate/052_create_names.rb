@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateNames < ActiveRecord::Migration
   def self.up
     create_table :names do |t|

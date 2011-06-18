@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateRetainNodes < ActiveRecord::Migration
   def self.up
     create_table :retain_nodes do |t|

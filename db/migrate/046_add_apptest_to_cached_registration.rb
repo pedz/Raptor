@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Migration to add an apptest column to the Cached::Registrations
 # model.

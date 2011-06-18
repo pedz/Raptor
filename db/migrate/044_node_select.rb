@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Migration to add fields we need so that the user can pick which node
 # to use.  There are parts needed:

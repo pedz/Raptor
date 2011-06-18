@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateAssociationTypes < ActiveRecord::Migration
   def self.up
     create_table :association_types do |t|

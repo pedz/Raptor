@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 begin
   require 'jasmine'
   load 'jasmine/tasks/jasmine.rake'

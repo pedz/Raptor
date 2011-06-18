@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddSeverityToCachedCalls < ActiveRecord::Migration
   def self.up
     add_column :cached_calls, :severity, :integer

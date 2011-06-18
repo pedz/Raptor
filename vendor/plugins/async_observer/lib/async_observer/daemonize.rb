@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # async-observer - Rails plugin for asynchronous job execution
 # Copyright (C) 2009 Todd A. Fisher.
 

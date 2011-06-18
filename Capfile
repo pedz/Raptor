@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # -*- ruby -*-
 
 load 'deploy' if respond_to?(:namespace) # cap2 differentiator

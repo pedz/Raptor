@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddProblemStatusCodeToCachedPmrs < ActiveRecord::Migration
   def self.up
     add_column :cached_pmrs, :problem_status_code, :string

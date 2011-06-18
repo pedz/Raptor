@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateConditions < ActiveRecord::Migration
   def self.up
     create_table :conditions do |t|

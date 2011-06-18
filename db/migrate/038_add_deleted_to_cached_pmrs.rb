@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddDeletedToCachedPmrs < ActiveRecord::Migration
   def self.up
     add_column :cached_pmrs, :deleted, :boolean, :default => false

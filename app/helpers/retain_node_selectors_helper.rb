@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module RetainNodeSelectorsHelper
   def retain_node_list
     RetainNode.all.collect { |n|

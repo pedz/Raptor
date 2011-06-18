@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This controller will be very seldom used but created the full
 # scaffold because disk space is cheap.
 class NameTypesController < ApplicationController

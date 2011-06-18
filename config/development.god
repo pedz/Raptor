@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # run with: god -c /path/to/this/file.god -D
 # 
 # This is the actual config file used to keep the thin processes

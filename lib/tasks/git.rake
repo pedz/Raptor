@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 # Returns the current git head
 def git_head

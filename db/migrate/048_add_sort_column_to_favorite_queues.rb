@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddSortColumnToFavoriteQueues < ActiveRecord::Migration
   def self.up
     # Add a column which will be altered via drag and drop.  Once

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateRelationships < ActiveRecord::Migration
   def self.up
     create_table :relationships do |t|

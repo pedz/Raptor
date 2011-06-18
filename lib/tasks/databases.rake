@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 def db_config(env = RAILS_ENV)
   Rake::Task["rake:environment"].invoke

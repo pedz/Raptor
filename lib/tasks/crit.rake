@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 EMPTY_CRIT_SIT = Regexp.new(" {14}|-{14}|_{14}")
 COMMA_DOT = Regexp.new("[,.]")

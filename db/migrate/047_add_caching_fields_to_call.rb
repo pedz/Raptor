@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # This migration adds a batched of fields that were computed during
 # display time but are now computed during fetch time and stored in

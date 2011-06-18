@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# -*- coding: utf-8 -*-
 
 RVMRC=/usr/local/lib/rvm
 [[ -s "${RVMRC}" ]] && source "${RVMRC}"

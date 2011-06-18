@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module Json
   class CallsController < ApplicationController
     # The first request sent back by the calls request is to this

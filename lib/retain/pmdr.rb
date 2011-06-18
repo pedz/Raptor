@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # 1     Area (region) number CHAR(2) (2)
 # 2     Total number of lines of text for this document. This is a SEE
 # 3     Closing date - YY/MM/DD format in EBCDIC (8)

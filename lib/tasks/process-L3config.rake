@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # A rake task that will read in and process the L3config.chain file
 # that is stored in the tools directory.  This file comes from

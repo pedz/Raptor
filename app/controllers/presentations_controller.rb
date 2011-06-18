@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class PresentationsController < ApplicationController
   # GET /presentations
   # GET /presentations.xml

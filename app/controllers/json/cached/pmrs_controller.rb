@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module Json
   module Cached
     class PmrsController < Retain::RetainController

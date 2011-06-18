@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This controller will be used only for maintenance purposes.  There
 # are several models that inherit using "Single Table Inheritance"
 # from the names table.  Those controllers will be for general use.

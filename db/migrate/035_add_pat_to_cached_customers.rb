@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddPatToCachedCustomers < ActiveRecord::Migration
   def self.up
     add_column :cached_customers, :pat, :boolean, :default => false

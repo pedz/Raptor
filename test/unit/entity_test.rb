@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'test_helper'
 
 class EntityTest < ActiveSupport::TestCase

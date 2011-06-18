@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddNoCyclesConstraint < ActiveRecord::Migration
   def self.up
     execute "

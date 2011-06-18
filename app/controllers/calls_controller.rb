@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Note that this is *not* a subclass of RetainController.  This will
 # work entirely from cached data and trigger updates to that cached

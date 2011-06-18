@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class AddHotToCachedPmrs < ActiveRecord::Migration
   def self.up
     add_column :cached_pmrs, :hot, :boolean, :default => false

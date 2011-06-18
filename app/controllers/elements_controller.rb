@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class ElementsController < ApplicationController
   before_filter :get_view
   before_filter :check_view, :except => [ :index, :show ]

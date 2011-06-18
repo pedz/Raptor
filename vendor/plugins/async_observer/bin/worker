@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
 # async-observer - Rails plugin for asynchronous job execution
 
 # Copyright (C) 2007 Philotic Inc.

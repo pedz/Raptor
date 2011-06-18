@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 DAEMON_RETAIN_ID="305356"
 

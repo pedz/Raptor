@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class MoveFavoriteQueuesFromUserToRetuser < ActiveRecord::Migration
   def self.up
     # We first add a retuser_id column.  Note that NULL is allowed temporarily.

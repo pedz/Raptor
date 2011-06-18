@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 # Simple rake file to format the javascript documentation using JSDoc
 

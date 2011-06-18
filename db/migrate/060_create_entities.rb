@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateEntities < ActiveRecord::Migration
   def self.up
     execute "CREATE VIEW entities AS

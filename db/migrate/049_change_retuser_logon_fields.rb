@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class ChangeRetuserLogonFields < ActiveRecord::Migration
   def self.up
     rename_column :retusers, :return_value, :logon_return

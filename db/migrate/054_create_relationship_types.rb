@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class CreateRelationshipTypes < ActiveRecord::Migration
   def self.up
     create_table :relationship_types do |t|

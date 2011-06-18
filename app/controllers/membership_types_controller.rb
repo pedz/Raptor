@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class MembershipTypesController < ApplicationController
   # GET /membership_types
   # GET /membership_types.xml

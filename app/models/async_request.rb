@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'async_observer/queue'
 
 class << AsyncObserver::Queue
