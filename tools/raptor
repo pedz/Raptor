@@ -12,7 +12,7 @@
 # which is a "stop" followed by a "start"
 #
 SERVER_HOME=/usr/local/www/raptor/current
-THIN=/usr/local/bin/thin
+THIN=thin
 UID=raptor
 # Moving away from beantalkd to delayed_job (I think)
 WORKERS=0
