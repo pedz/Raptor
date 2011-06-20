@@ -121,6 +121,7 @@ var ArRequest = function(obj) {
 	if (started || completed)
 	    return;
 	started = true;
+	// debugger;
 	request = new Ajax.Request(obj.url, {
 				       onSuccess: onSuccess,
 				       onFailure: onFailure,
@@ -541,8 +542,9 @@ var Ar = (function ()
     var wrap = function(obj) {
 	var ar_objects;
 
-	if (!obj || (typeof obj !== 'object')) // should never happen but just in case
+	if (!obj || (typeof obj !== 'object') || obj.wrapped)
 	    return obj;
+	obj.wrapped = true;
 
 	/*
 	 * we don't want to wrap ar_objects.  We also don't want to
@@ -565,12 +567,26 @@ var Ar = (function ()
 
 	if (ar_objects) {
 	    Object.getOwnPropertyNames(ar_objects).forEach(function (name, index, array) {
+		/*
+		 * If the object we are replacing already exists, it
+		 * is because it was included with the :include option
+		 * in the to_json call.  We move that to 'element'
+		 * inside the ar_object.  It will be properly
+		 * registered and wrapped when
+		 * ArRequestRepository.lookup is called.
+		 */
+		var orig_object = obj[name];
+		var ar_object = ar_objects[name];
+
+		delete obj[name];
+		if (ar_object)
+		    ar_object.element = orig_object;
+
 		Object.defineProperty(obj, name, {
 		    get: function () {
-			var o = ar_objects[name];
-			if (!o)
-			    return o;
-			return ArRequestRepository.lookup(ar_objects[name]);
+			if (!ar_object)
+			    return ar_object;
+			return ArRequestRepository.lookup(ar_object);
 		    }
 		});
 	    });
@@ -715,7 +731,9 @@ var Ar = (function ()
 	    f.call();
 	} catch (err) {
 	    if (err && (typeof err === 'object') && (typeof err.addListener === 'function')) {
-		err.addListener(f);
+		err.addListener(function () {
+		    render(f);
+		});
 	    } else {
 		throw err;
 	    }

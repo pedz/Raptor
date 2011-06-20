@@ -11,9 +11,9 @@ Widget.find(:all).each do |widget|
   begin
     stat = File::Stat.new(name)
     need_file = (widget.updated_at > stat.mtime)
-    Rails.logger.debug stat.mtime
-    Rails.logger.debug widget.updated_at
-    Rails.logger.debug (widget.updated_at > stat.mtime).to_s
+    # Rails.logger.debug stat.mtime
+    # Rails.logger.debug widget.updated_at
+    # Rails.logger.debug (widget.updated_at > stat.mtime).to_s
   rescue
     need_file = true
   end

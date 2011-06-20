@@ -11,7 +11,7 @@ class Object
     if self.respond_to? :cached
       raise "Object#unwrap_to_cached called with Combined object"
     else
-      # RAILS_DEFAULT_LOGGER.debug("CMB: unwrap Object <#{self.class}:#{self.object_id}> #{self.class.object_id}")
+      # Rails.logger.debug("CMB: unwrap Object <#{self.class}:#{self.object_id}> #{self.class.object_id}")
       self
     end
   end
@@ -25,7 +25,7 @@ class Object
     if self.respond_to? :to_combined
       raise "Object#wrap_with_combined called with Combined object"
     else
-      # RAILS_DEFAULT_LOGGER.debug("CMB: wrap Object <#{self.class}:#{self.object_id}> #{self.class.object_id}")
+      # Rails.logger.debug("CMB: wrap Object <#{self.class}:#{self.object_id}> #{self.class.object_id}")
       self
     end
   end
@@ -37,7 +37,7 @@ class Array
   # will have been unwrapped.
   #
   def unwrap_to_cached
-    # RAILS_DEFAULT_LOGGER.debug("CMB: unwrap Array <#{self.class}:#{self.object_id}> #{self.class.object_id}")
+    # Rails.logger.debug("CMB: unwrap Array <#{self.class}:#{self.object_id}> #{self.class.object_id}")
     self.map{ |e| e.unwrap_to_cached }
   end
 
@@ -46,7 +46,7 @@ class Array
   # have been wrapped.
   #
   def wrap_with_combined
-    # RAILS_DEFAULT_LOGGER.debug("CMB: wrap Array <#{self.class}:#{self.object_id}> #{self.class.object_id}")
+    # Rails.logger.debug("CMB: wrap Array <#{self.class}:#{self.object_id}> #{self.class.object_id}")
     self.map{ |e| e.wrap_with_combined }
   end
 end
@@ -57,7 +57,7 @@ class Hash
   # unwrapped.
   #
   def unwrap_to_cached
-    # RAILS_DEFAULT_LOGGER.debug("CMB: unwrap Hash <#{self.class}:#{self.object_id}> #{self.class.object_id}")
+    # Rails.logger.debug("CMB: unwrap Hash <#{self.class}:#{self.object_id}> #{self.class.object_id}")
     self.inject({ }) { |o, a| o[a[0]] = a[1].unwrap_to_cached; o }
   end
 
@@ -66,7 +66,7 @@ class Hash
   # wrapped.
   #
   def wrap_with_combined
-    # RAILS_DEFAULT_LOGGER.debug("CMB: wrap Hash <#{self.class}:#{self.object_id}> #{self.class.object_id}")
+    # Rails.logger.debug("CMB: wrap Hash <#{self.class}:#{self.object_id}> #{self.class.object_id}")
     self.inject({ }) { |o, a| o[a[0]] = a[1].wrap_with_combined; o }
   end
 end
@@ -106,7 +106,7 @@ module ActiveRecord
       #
       def wrap_with_combined
         if self.kind_of? Array
-          # RAILS_DEFAULT_LOGGER.debug("CMB: wrap AssociationProxy <#{self.class}:#{self.object_id}> #{self.class.object_id}")
+          # Rails.logger.debug("CMB: wrap AssociationProxy <#{self.class}:#{self.object_id}> #{self.class.object_id}")
           Combined::AssociationProxy.new(self)
         elsif self.respond_to? :to_combined
           self.to_combined

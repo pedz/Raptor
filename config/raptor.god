@@ -16,7 +16,7 @@ god_config = god_configs['default'] unless god_config
 God.pid_file_directory = File.join(RAILS_ROOT, "tmp/pids")
 
 def common(w)
-  applog(w, :debug, "PEDZ hello #{w.pid_file}")
+  # applog(w, :debug, "PEDZ hello #{w.pid_file}")
   w.log = File.join(RAILS_ROOT, "log/#{w.name}.out")
   w.err_log = File.join(RAILS_ROOT, "log/#{w.name}.err")
   w.pid_file = w.pid_file
@@ -24,7 +24,6 @@ def common(w)
   w.start_grace = 10.seconds
   w.restart_grace = 10.seconds
   w.behavior(:clean_pid_file)
-  w.group = 'raptor'
 end
 
 $beanstalkd = nil
@@ -34,8 +33,9 @@ God.watch do |w|
   common(w)
   $beanstalkd = w
   w.interval = 5.minutes
+  w.group = 'beanstalk'
   if true                       # this is working
-    w.start = "nohup /usr/local/bin/beanstalkd & echo $! > #{w.pid_file}"
+    w.start = "/usr/local/bin/beanstalkd & echo $! > #{w.pid_file}"
   else                          # this (double fork) hangs
     w.pid_file = nil
     w.start = "/usr/local/bin/beanstalkd"
@@ -79,6 +79,7 @@ eval(god_config['ports']).each do |port|
   God.watch do |w|
     w.name = "raptor-thin-#{port}"
     common(w)
+    w.group = 'raptor'
     w.interval = 1.minute
     w.start = "script/rvm-wrapper thin --daemonize --port #{port} \
       --environment #{god_config['environment']} --prefix /raptor --log #{w.log} \
@@ -130,6 +131,7 @@ end
   God.watch do |w|
     w.name = "raptor-worker-#{worker}"
     common(w)
+    w.group = 'raptor'
     w.interval = 1.minute
     w.start = "script/rvm-wrapper vendor/plugins/async_observer/bin/worker \
       -d --pid #{w.pid_file} -e #{god_config['environment']}"

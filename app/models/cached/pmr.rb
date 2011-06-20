@@ -143,7 +143,15 @@ module Cached
              :order => "line_number ASC",
              :foreign_key => "pmr_id")
 
-    set_as_json_default_options(:methods => [ :last_ct_time ])
+    def as_json(options = { })
+      if options.has_key? :methods
+        methods = [ options[:methods] ].push(:last_ct_time).flatten.uniq
+      else
+        methods = :last_ct_time
+      end
+      super(options.merge(:methods => methods));
+    end
+    # set_as_json_default_options(:methods => [ :last_ct_time ])
 
     def all_text_lines
       # Note for future: when a method in the cached model directly

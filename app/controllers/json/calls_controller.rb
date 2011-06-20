@@ -19,7 +19,7 @@ module Json
       logger.debug("BLAH #{calls}")
       render :json => {
         :class_name => "Cached::Call",
-        :calls => calls.map { |call| call.as_json({ :methods => :ar_objects })}
+        :calls => calls.map { |call| call.as_json }
       }
     end
   end

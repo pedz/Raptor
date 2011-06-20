@@ -113,21 +113,8 @@ module Cached
           @subclass = subclass
         }
       end
-
-      # def as_json_default_options
-      #   @as_json_default_optins ||= { }
-      # end
-
-      # def set_as_json_default_options(options)
-      #   @as_json_default_optins = options
-      # end
     end
     
-    # def as_json_with_defaults(options)
-    #   self.as_json_without_defaults(self.class.as_json_default_options.merge(options))
-    # end
-    # alias_method_chain :as_json, :defaults
-
     def wrap_with_combined
       # logger.debug("CHC: wrap Cached <#{self.class}:#{self.object_id}>")
       @combined ||= self.class.combined_class.new(self)

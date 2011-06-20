@@ -105,7 +105,6 @@ module Cached
 
     # The call_search_result causes the json utf-8 encoder to blow up
     # -- probably because it is not valid utf-8?
-    # set_as_json_default_options(:except => [ :call_search_result ])
     def as_json(options = { })
       if options.has_key?(:except)
         v = options[:except]
