@@ -115,6 +115,20 @@ module Cached
       end
     end
     
+    # Determine the priority of the asynchronous request for this
+    # object.  If the object has a last_fetched field and it is null,
+    # then this object has never been fetched.  Its priority will be
+    # :high.  If the object has been fetched but is stale according to
+    # its Combined class' criteria, then the priority will be :med.
+    # Otherwise, if force is true, the priority will be :low while if
+    # force is not true, the priority will be :none.
+    def async_priority(force = false)
+      return  1024 if respond_to?(:last_fetched) && last_fetched.nil?
+      return   512 unless wrap_with_combined.cache_valid?
+      return     0 if force
+      return :none
+    end
+
     def wrap_with_combined
       # logger.debug("CHC: wrap Cached <#{self.class}:#{self.object_id}>")
       @combined ||= self.class.combined_class.new(self)

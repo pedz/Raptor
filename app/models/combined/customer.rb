@@ -51,7 +51,7 @@ module Combined
         retain_object.send(group_request[0])
       rescue Retain::SdiReaderError => err
         raise err unless err.rc == 251
-        logger.debug("CMB: load customer caught an exception")
+        # logger.debug("CMB: load customer caught an exception")
         options = { }
       else
         # Hook up center
@@ -61,7 +61,7 @@ module Combined
         
         # Update call record
         options = self.class.cached_class.options_from_retain(retain_object)
-        logger.debug("CMB: load customer options = #{options.inspect}")
+        # logger.debug("CMB: load customer options = #{options.inspect}")
       end
       options[:dirty] = false if @cached.respond_to?("dirty")
       @cached.updated_at = Time.now

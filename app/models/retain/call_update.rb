@@ -15,7 +15,7 @@ module Retain
     attr_accessor :hot, :business_justification
     
     def initialize(call)
-      RAILS_DEFAULT_LOGGER.debug("call_update initialize")
+      # Rails.logger.debug("call_update initialize")
       @call = call
       @update_type = "addtxt"
       @update_pmr = true

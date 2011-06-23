@@ -27,5 +27,5 @@ rescue LoadError
     TUNNELLED = false
     BASE_PORT = 0
   end
-  Rails.logger.debug('load did not work')
+  # Rails.logger.debug('load did not work')
 end

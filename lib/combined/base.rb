@@ -279,6 +279,58 @@ module Combined
       @cached.create_from_options(@retain_user_connection_parameters, options)
     end
 
+    def cache_valid?
+      if @cached.respond_to?("dirty") && @cached.dirty
+        # logger.debug("CMB: #{self.to_s} cache_valid?: return false: @cached.dirty is true")
+        return false
+      end
+      
+      # If we are not cached at all, then cache is invalid
+      if (updated_at = @cached.updated_at).nil?
+        # logger.debug("CMB: #{self.to_s} cache_valid?: return false: updated_at is nil")
+        return false
+      end
+
+      # If data type says cache never expires then we are good to go
+      if (expire = expire_time) == :never
+        # logger.debug("CMB: #{self.to_s} cache_valid?: return true: expire set to :never")
+        return true
+      end
+      
+      # If the udpated at is equal to the creted at, that might mean
+      # that we have never really fetched the whole object.
+      if updated_at == created_at
+        # logger.debug("CMB: #{self.to_s} cache_valid?: return false: updated_at == created_at")
+        return false
+      end
+      
+      # See if expire_time is a symbol pointing to a method
+      if expire.is_a?(Symbol) && self.respond_to?(expire)
+        value = self.send(expire)
+        # logger.debug("CMB: #{self.to_s} cache_valid? return result from #{expire} of #{value}")
+        return value
+      end
+
+      # If item has been explicitly marked to be re-fetched
+      if @invalid_cache
+        # logger.debug("CMB: #{self.to_s} cache_valid?: return false: invalid_cache set")
+        return false
+      end
+      
+      # If this has already been loaded, then cache must be valid
+      if @loaded
+        # logger.debug("CMB: #{self.to_s} cache_valid?: return true: @loaded is set")
+        return true
+      end
+
+      # else, return if cache time has expired or not
+      r = updated_at > expire.ago
+      # logger.debug("CMB: #{self.to_s} cache_valid?: updated_at:#{updated_at}, " +
+      #              "expire:#{expire}, expire.ago:#{expire.ago}, " +
+      #              "now:#{Time.now}, r:#{r}")
+      r
+    end
+
     private
 
     def self.inherited(subclass)
@@ -351,58 +403,6 @@ module Combined
       end
       @invalid_cache = false
       @loaded = true
-    end
-    
-    def cache_valid?
-      if @cached.respond_to?("dirty") && @cached.dirty
-        logger.debug("CMB: #{self.to_s} cache_valid?: return false: @cached.dirty is true")
-        return false
-      end
-      
-      # If we are not cached at all, then cache is invalid
-      if (updated_at = @cached.updated_at).nil?
-        # logger.debug("CMB: #{self.to_s} cache_valid?: return false: updated_at is nil")
-        return false
-      end
-
-      # If data type says cache never expires then we are good to go
-      if (expire = expire_time) == :never
-        # logger.debug("CMB: #{self.to_s} cache_valid?: return true: expire set to :never")
-        return true
-      end
-      
-      # If the udpated at is equal to the creted at, that might mean
-      # that we have never really fetched the whole object.
-      if updated_at == created_at
-        # logger.debug("CMB: #{self.to_s} cache_valid?: return false: updated_at == created_at")
-        return false
-      end
-      
-      # See if expire_time is a symbol pointing to a method
-      if expire.is_a?(Symbol) && self.respond_to?(expire)
-        value = self.send(expire)
-        # logger.debug("CMB: #{self.to_s} cache_valid? return result from #{expire} of #{value}")
-        return value
-      end
-
-      # If item has been explicitly marked to be re-fetched
-      if @invalid_cache
-        # logger.debug("CMB: #{self.to_s} cache_valid?: return false: invalid_cache set")
-        return false
-      end
-      
-      # If this has already been loaded, then cache must be valid
-      if @loaded
-        # logger.debug("CMB: #{self.to_s} cache_valid?: return true: @loaded is set")
-        return true
-      end
-
-      # else, return if cache time has expired or not
-      r = updated_at > expire.ago
-      # logger.debug("CMB: #{self.to_s} cache_valid?: updated_at:#{updated_at}, " +
-      #              "expire:#{expire}, expire.ago:#{expire.ago}, " +
-      #              "now:#{Time.now}, r:#{r}")
-      r
     end
   end
 end

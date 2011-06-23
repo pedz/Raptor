@@ -85,7 +85,7 @@ module Retain
       hit_cache = true
       tag = call.cache_tag("qs")
       cache(tag) do
-        logger.debug("building fragment for #{tag}")
+        # logger.debug("building fragment for #{tag}")
         hit_cache = false
         row_class = call_class(call)
         row_title = call_title(row_class)
@@ -96,7 +96,7 @@ module Retain
           DISP_LIST.map { |sym| self.send sym, binding, false, call }.join("\n")
         end
       end
-      logger.debug("reused fragment for #{tag}") if hit_cache
+      # logger.debug("reused fragment for #{tag}") if hit_cache
     end
 
     private
@@ -657,9 +657,9 @@ module Retain
       a = temp_lines.join("<br/>\n")
       b = "<br/>\n"
       c = ecpaat_temp_lines.join("<br/>\n")
-      logger.debug("encoding for a is #{a.encoding}")
-      logger.debug("encoding for b is #{b.encoding}")
-      logger.debug("encoding for c is #{c.encoding}")
+      # logger.debug("encoding for a is #{a.encoding}")
+      # logger.debug("encoding for b is #{b.encoding}")
+      # logger.debug("encoding for c is #{c.encoding}")
       a + b + c
     end
 

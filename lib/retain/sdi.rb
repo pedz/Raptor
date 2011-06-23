@@ -105,7 +105,7 @@ module Retain
       @snd_fields = @fields.merge(req_fields)
       options = @options.merge(send_options)
       if false
-        RAILS_DEFAULT_LOGGER.debug("class is #{self.class}")
+        # Rails.logger.debug("class is #{self.class}")
         # logger.debug("RTN: sendit for #{self.class} called")
         # logger.debug("RTN: @snd_fields")
         @snd_fields.dump_fields
@@ -183,7 +183,7 @@ module Retain
       # Set request type before calling scan_fields just in case it
       # has to produce some error logs.
       @request_type = options[:request]
-      logger.debug("SDI: #{@request_type} #{caller(2)[0 .. 12].join("\n          ")}")
+      # logger.debug("SDI: #{@request_type} #{caller(2)[0 .. 12].join("\n          ")}")
       @rcv_fields = scan_fields(Fields.new, @reply[128...@reply.length])
 
       if Debug::DUMP_SDI

@@ -68,12 +68,12 @@ module Retain
     # a RetainController.
     #
     def validate_retuser
-      logger.debug("RTN: in validate_retuser")
+      # logger.debug("RTN: in validate_retuser")
       
       # If no retusers defined for this user, then redirect and
       # set up a retain user.
       if application_user.current_retain_id.nil?
-        logger.debug("RTN: nil current_retain_id")
+        # logger.debug("RTN: nil current_retain_id")
         session[:original_uri] = request.request_uri
         redirect_to new_user_retuser_url(application_user)
         return false
@@ -97,7 +97,7 @@ module Retain
       # The Logon instance is the way we pass @retain_user_connection_parameters from the Retain
       # controller to any Combined models.  The Combined models then
       # pass it explicitly to any Retain models that they need.
-      logger.debug("Logon set")
+      # logger.debug("Logon set")
       Logon.instance.set(@retain_user_connection_parameters)
     end
     
@@ -170,7 +170,7 @@ module Retain
 
     def not_found_page(exception)
       @exception = exception
-      logger.debug("ETAG = '#{response.etag}'")
+      # logger.debug("ETAG = '#{response.etag}'")
       render "retain/errors/not_found_page", :layout => "retain/errors", :status => 404
     end
 

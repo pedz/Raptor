@@ -5,7 +5,7 @@ module Retain
     # GET /retain_pmrs/1
     # GET /retain_pmrs/1.xml
     def show
-      logger.debug("params 1 = #{retain_user_connection_parameters.inspect}")
+      # logger.debug("params 1 = #{retain_user_connection_parameters.inspect}")
       @pmr = Combined::Pmr.from_param!(params[:id], signon_user)
       
       # This is a hack.  I had my belongs_to association botched and

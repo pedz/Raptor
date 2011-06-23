@@ -5,7 +5,7 @@ module Retain
     set_fetch_sdi Cmpb
 
     def initialize(retain_user_connection_parameters, options = {})
-      logger.debug("Component #{options.inspect}")
+      # logger.debug("Component #{options.inspect}")
       super(retain_user_connection_parameters, options)
     end
 

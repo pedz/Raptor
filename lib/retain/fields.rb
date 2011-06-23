@@ -782,7 +782,7 @@ module Retain
     def to_debug
       r = ''
       @fields.each_pair do |k, v|
-        logger.debug "#{k}: #{v.inspect}"
+        # logger.debug "#{k}: #{v.inspect}"
         r << "RTN: #{k}: '#{v.value.inspect}'\n"
       end
       @raw_values.each_with_index do |item, index|

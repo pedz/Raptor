@@ -34,7 +34,6 @@ class ApplicationController < ActionController::Base
   
   # Return true if current user is an administrator of the site
   def admin?
-    logger.debug("in admin?")
     application_user.admin
   end
   helper_method :admin?
@@ -71,16 +70,16 @@ class ApplicationController < ActionController::Base
     return true unless application_user.nil?
     # logger.info("Header NOT-SET = #{request.headers['NOT-SET'].inspect}")
     if request.env.has_key? "REMOTE_USER"
-      logger.info("REMOTE_USER = #{request.env["REMOTE_USER"]}")
+      # logger.info("REMOTE_USER = #{request.env["REMOTE_USER"]}")
       apache_authenticate
     elsif request.headers.has_key?('HTTP_X_FORWARDED_USER')
-      logger.info("Header HTTP_X_FORWARDED_USER = #{request.headers['HTTP_X_FORWARDED_USER']}")
+      # logger.info("Header HTTP_X_FORWARDED_USER = #{request.headers['HTTP_X_FORWARDED_USER']}")
       proxy_apache_authenticate
     elsif Rails.env == "test"
-      logger.info("Authenticate via test")
+      # logger.info("Authenticate via test")
       testing_authenticate
     elsif NONE_AUTHENTICATE
-      logger.info("Authenticate via none")
+      # logger.info("Authenticate via none")
       none_authenticate
     else
       ldap_authenticate
@@ -109,13 +108,13 @@ class ApplicationController < ActionController::Base
     else
       @no_cache = false
     end
-    logger.info("APP: no_cache = #{@no_cache}")
+    # logger.info("APP: no_cache = #{@no_cache}")
     session[:last_uri] = uri
   end
 
   def fixit(hostname)
     new = hostname.sub(/\..*$/, '')
-    logger.info("Changed hostname from #{hostname} to #{new}")
+    # logger.info("Changed hostname from #{hostname} to #{new}")
     return new
   end
   private :fixit
@@ -126,9 +125,9 @@ class ApplicationController < ActionController::Base
     # ldap_time = Benchmark.realtime { ActiveLdap::Base.setup_connection }
     # logger.debug("LDAP: took #{ldap_time} to establish the connection")
     authenticate_or_request_with_http_basic "Bluepages Authentication" do |user_name, password|
-      logger.info("attempt to ldap authenticate: user_name #{user_name}")
+      # logger.info("attempt to ldap authenticate: user_name #{user_name}")
       next nil unless LdapUser.authenticate_from_email(user_name, password)
-      logger.info("successful ldap_authenticate as #{user_name}")
+      # logger.info("successful ldap_authenticate as #{user_name}")
       common_authenticate(user_name)
       return true
     end
@@ -139,7 +138,7 @@ class ApplicationController < ActionController::Base
   # still occurs
   def none_authenticate
     authenticate_or_request_with_http_basic "Raptor" do |user_name, password|
-      logger.debug("none_authenticate as #{user_name}")
+      # logger.debug("none_authenticate as #{user_name}")
       common_authenticate(user_name)
       return true
     end
@@ -148,7 +147,7 @@ class ApplicationController < ActionController::Base
 
   # Apache has already authenticated so let the user in.
   def apache_authenticate
-    logger.info("apache_authenticate as #{request.env["REMOTE_USER"]}")
+    # logger.info("apache_authenticate as #{request.env["REMOTE_USER"]}")
     common_authenticate(request.env["REMOTE_USER"])
     return true
   end
@@ -156,13 +155,13 @@ class ApplicationController < ActionController::Base
   # Apache has already authenticated but we are behind a proxy so use
   # HTTP_X_FORWARDED_USER instead
   def proxy_apache_authenticate
-    logger.info("proxy_apache_authenticate as #{request.env["HTTP_X_FORWARDED_USER"]}")
+    # logger.info("proxy_apache_authenticate as #{request.env["HTTP_X_FORWARDED_USER"]}")
     common_authenticate(request.headers["HTTP_X_FORWARDED_USER"])
     return true
   end
 
   def testing_authenticate
-    logger.info("testing_authenticate")
+    # logger.info("testing_authenticate")
     common_authenticate('pedzan@us.ibm.com')
     return true
   end

@@ -39,7 +39,7 @@ module Combined
 
       if local_params.has_key? :ot
         @ot = (local_params[:ot].to_f * 60).to_i
-        logger.debug("OT #{@ot}")
+        # logger.debug("OT #{@ot}")
       end
 
       # Just to make it look prettier
@@ -68,7 +68,7 @@ module Combined
         [ saturday, pmr_list ]
       end
 
-      logger.debug("result = #{@result}")
+      # logger.debug("result = #{@result}")
     end
   end
 end

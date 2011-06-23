@@ -16,7 +16,7 @@ module Retain
     # return true.  We might do a fetch from retain if we find we need
     # to.
     def self.valid?(retain_user_connection_parameters, options)
-      logger.debug("in PMR valid?")
+      # logger.debug("in PMR valid?")
       new_options = {
         :problem => options[:problem],
         :branch => options[:branch],

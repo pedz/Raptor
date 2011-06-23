@@ -4,9 +4,9 @@ module Json
     def index
       favorite_queues = application_user.favorite_queues
       # favorite_queues.each do |q|
-      #   AsyncRequest.new(application_user.current_retain_id.id, q.queue).async_send(:fetch)
+      #   async_fetch(q.queue)
       # end
-      logger.debug("favorite_queues[0].class = #{favorite_queues[0].class}")
+      # logger.debug("favorite_queues[0].class = #{favorite_queues[0].class}")
       render :json => favorite_queues.
         to_json(:include =>
                 { :queue =>

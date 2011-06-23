@@ -47,7 +47,8 @@ class AsyncRequest
     fuzz = opts.fetch(:fuzz, AsyncObserver::Queue.default_fuzz)
     delay = opts.fetch(:delay, AsyncObserver::Queue.default_delay)
     ttr = opts.fetch(:ttr, AsyncObserver::Queue.default_ttr)
-    tube = opts.fetch(:tube, (AsyncObserver::Queue.app_version or AsyncObserver::Queue.default_tube))
+    tube = opts.fetch(:tube, (AsyncObserver::Queue.app_version or
+                              AsyncObserver::Queue.default_tube))
 
     AsyncObserver::Queue.put!(self, pri, delay, ttr, tube)
   end

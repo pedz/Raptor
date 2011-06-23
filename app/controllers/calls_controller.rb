@@ -63,7 +63,6 @@ class CallsController < ApplicationController
         v = set_default(argument_type)
       end
 
-      logger.debug("v = #{v}")
       while (e = Entity.find_by_name(v)).nil?
         flash[:error] = "#{v} not known"
         v = set_default(argument_type)
@@ -85,7 +84,6 @@ class CallsController < ApplicationController
     if @redirect
       redirect_to(@options)
     else
-      logger.debug(@options)
       @widgets = View.find_by_name(@options["view"]).widgets.map { |widget| "widgets/#{widget.name}"}
       render
     end
