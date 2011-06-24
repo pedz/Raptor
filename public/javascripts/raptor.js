@@ -235,5 +235,5 @@ var Raptor = {
 	ele.hidePopup = Raptor.hidePopup.bind(ele);
 	ele.popupElement = ele.down('.popup');
 	ele.popupElement.hide();
-    },
+    }
 };
