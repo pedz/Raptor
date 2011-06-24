@@ -117,6 +117,20 @@ class ApplicationController < ActionController::Base
     # logger.info("Changed hostname from #{hostname} to #{new}")
     return new
   end
+
+  # Fetches the object -- which is expected to be a subclass of
+  # Cached::Base -- asynchronously using the worker tasks.  This can't
+  # be a method of the model because it needs to application_user.
+  #
+  # calls Cached::Base#async_priority to determine the priority of the
+  # request.
+  def async_fetch(obj, force = false)
+    pri = obj.async_priority
+    return if pri == :none
+    AsyncRequest.new(application_user.current_retain_id.id, obj).
+      async_send(:fetch, :pri => pri)
+  end
+
   private :fixit
   
   # This authenticates against bluepages using LDAP.

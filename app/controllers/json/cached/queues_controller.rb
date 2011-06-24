@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 module Json
   module Cached
-    class QueuesController < Retain::RetainController
+    class QueuesController < JsonCachedController
       def show
-        render :json => ::Cached::Queue.find(params[:id]).as_json(:include => [ :calls ])
+        json_send(::Cached::Queue.find(params[:id]))
       end
     end
   end

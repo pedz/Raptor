@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 module Json
   module Cached
-    class PmrsController < Retain::RetainController
+    class PmrsController < JsonCachedController
       def show
         pmr_id = params[:id]
         pmr_fields = pmr_id.split(',')
@@ -23,9 +23,9 @@ module Json
           pmr = ::Cached::Pmr.find(pmr_id)
         end
         if pmr
-          render :json => pmr.to_json(:methods => [ :last_ct_time ])
+          json_send(pmr)
         else
-          render :json => "Not found".to_json, :status => 404
+          render :json => "Not found", :status => 404
         end
       end
     end

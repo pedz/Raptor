@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 module Json
   module Cached
-    class CustomersController < Retain::RetainController
+    class CustomersController < JsonCachedController
       def index
-        render :json => ::Cached::Customer.find(:all)
+        json_send(::Cached::Customer.find(:all))
       end
 
       def show
-        render :json => ::Cached::Customer.find(params[:id])
+        json_send(::Cached::Customer.find(params[:id]))
       end
     end
   end

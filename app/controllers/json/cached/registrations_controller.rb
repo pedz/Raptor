@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 module Json
   module Cached
-    class RegistrationsController < Retain::RetainController
+    class RegistrationsController < JsonCachedController
       def index
-        render :json => ::Cached::Registration.find(:all,
-                                                    :conditions => { :apptest => retain_user_connection_parameters.apptest})
+        json_send(::Cached::Registration.find(:all,
+                                              :conditions => {
+                                                :apptest => retain_user_connection_parameters.apptest}))
       end
 
       def show
-        render :json => ::Cached::Registration.find(params[:id])
+        json_send(::Cached::Registration.find(params[:id]))
       end
     end
   end

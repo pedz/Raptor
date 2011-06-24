@@ -50,12 +50,18 @@ class AsyncRequest
     tube = opts.fetch(:tube, (AsyncObserver::Queue.app_version or
                               AsyncObserver::Queue.default_tube))
 
+    Rails.logger.debug("Sending async request: pri=#{pri}, class=#{@obj_class}, id=#{@obj_id}}")
     AsyncObserver::Queue.put!(self, pri, delay, ttr, tube)
   end
 
   def perform
     retuser = Retuser.find(@retuser_id)
-    rec = @obj_class.constantize.find(@obj_id)
+    begin
+      rec = @obj_class.constantize.find(@obj_id)
+    rescue ActiveRecord::RecordNotFound
+      Rails.logger.debug "#{@obj_class} #{@obj_id} not found"
+      return
+    end
     @retain_user_connection_parameters = Retain::ConnectionParameters.new(retuser)
     Retain::Logon.instance.set(@retain_user_connection_parameters)
     cmb = rec.to_combined

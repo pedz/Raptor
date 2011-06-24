@@ -76,11 +76,11 @@ class AsyncObserver::Worker
   def startup()
     log_bracketed('worker-startup') do
       appver = AsyncObserver::Queue.app_version
-      RAILS_DEFAULT_LOGGER.info "pid is #{$$}"
-      RAILS_DEFAULT_LOGGER.info "app version is #{appver}"
+      # Rails.logger.info "pid is #{$$}"
+      # Rails.logger.info "app version is #{appver}"
       mark_db_socket_close_on_exec()
       if AsyncObserver::Queue.queue.nil?
-        RAILS_DEFAULT_LOGGER.info 'no queue has been configured'
+        # Rails.logger.info 'no queue has been configured'
         exit(1)
       end
       AsyncObserver::Queue.queue.watch(appver) if appver
@@ -141,13 +141,12 @@ class AsyncObserver::Worker
         rescue Beanstalk::DeadlineSoonError
           # Do nothing; immediately try again, giving the user a chance to
           # clean up in the before_reserve hook.
-          RAILS_DEFAULT_LOGGER.info 'Job deadline soon; you should clean up.'
+          # Rails.logger.info 'Job deadline soon; you should clean up.'
         rescue Exception => ex
           @q_hint = nil # in case there's something wrong with this conn
-          RAILS_DEFAULT_LOGGER.info(
-            "#{ex.class}: #{ex}\n" + ex.backtrace.join("\n"))
-          RAILS_DEFAULT_LOGGER.info 'something is wrong. We failed to get a job.'
-          RAILS_DEFAULT_LOGGER.info "sleeping for #{SLEEP_TIME}s..."
+          # Rails.logger.info("#{ex.class}: #{ex}\n" + ex.backtrace.join("\n"))
+          # Rails.logger.info 'something is wrong. We failed to get a job.'
+          # Rails.logger.info "sleeping for #{SLEEP_TIME}s..."
           sleep(SLEEP_TIME)
         end
       end
@@ -162,10 +161,10 @@ class AsyncObserver::Worker
 
   def safe_dispatch(job)
     log_bracketed('worker-dispatch') do
-      RAILS_DEFAULT_LOGGER.info "got #{job.inspect}:\n" + job.body
+      # Rails.logger.info "got #{job.inspect}:\n" + job.body
       log_bracketed('job-stats') do
         job.stats.each do |k,v|
-          RAILS_DEFAULT_LOGGER.info "#{k}=#{v}"
+          # Rails.logger.info "#{k}=#{v}"
         end
       end
       begin
@@ -182,9 +181,9 @@ class AsyncObserver::Worker
   end
 
   def flush_logger
-    if defined?(RAILS_DEFAULT_LOGGER) &&
-        RAILS_DEFAULT_LOGGER.respond_to?(:flush)
-      RAILS_DEFAULT_LOGGER.flush
+    if defined?(Rails.logger) &&
+        Rails.logger.respond_to?(:flush)
+      Rails.logger.flush
     end
   end
 
@@ -197,14 +196,14 @@ class AsyncObserver::Worker
   end
 
   def self.default_handle_error(job, ex)
-    RAILS_DEFAULT_LOGGER.info "Job failed: #{job.server}/#{job.id}"
-    RAILS_DEFAULT_LOGGER.info("#{ex.class}: #{ex}\n" + ex.backtrace.join("\n"))
+    # Rails.logger.info "Job failed: #{job.server}/#{job.id}"
+    # Rails.logger.info("#{ex.class}: #{ex}\n" + ex.backtrace.join("\n"))
     job.decay()
   rescue Beanstalk::UnexpectedResponse
   end
 
   def run_ao_job(job)
-    RAILS_DEFAULT_LOGGER.info 'running as async observer job'
+    # Rails.logger.info 'running as async observer job'
     f = self.class.before_filter
     f.call(job) if f
     job.delete if job.ybody[:delete_first]
@@ -229,12 +228,12 @@ class AsyncObserver::Worker
   end
 
   def run_other(job)
-    RAILS_DEFAULT_LOGGER.info 'trying custom handler'
+    # Rails.logger.info 'trying custom handler'
     self.class.handle.call(job)
   end
 
   def do_all_work()
-    RAILS_DEFAULT_LOGGER.info 'finishing all running jobs. interrupt again to kill them.'
+    # Rails.logger.info 'finishing all running jobs. interrupt again to kill them.'
     f = self.class.finish
     f.call() if f
   end
@@ -252,7 +251,7 @@ class Mysql
       @net.set_close_on_exec()
     else
       # we are in the c mysql binding
-      RAILS_DEFAULT_LOGGER.info "Warning: we are using the C mysql binding, can't set close-on-exec"
+      # Rails.logger.info "Warning: we are using the C mysql binding, can't set close-on-exec"
     end
   end
 end

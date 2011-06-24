@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 module Json
   module Cached
-    class ComponentsController < Retain::RetainController
+    class ComponentsController < JsonCachedController
       def index
-        render :json => ::Cached::Component.find(:all)
+        json_send(::Cached::Component.find(:all))
       end
 
       def show
-        render :json => ::Cached::Component.find(params[:id])
+        json_send(::Cached::Component.find(params[:id]))
       end
     end
   end

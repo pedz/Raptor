@@ -3,17 +3,17 @@
 
 require 'retain'
 
-Retain::Base.logger = RAILS_DEFAULT_LOGGER
-Retain::Connection.logger = RAILS_DEFAULT_LOGGER
-Retain::Fields.logger = RAILS_DEFAULT_LOGGER
-Retain::Request.logger = RAILS_DEFAULT_LOGGER
-Retain::Sdi.logger = RAILS_DEFAULT_LOGGER
-Retain::SignatureLine.logger = RAILS_DEFAULT_LOGGER
-Retain::RetainError.logger = RAILS_DEFAULT_LOGGER
+Retain::Base.logger = Rails.logger
+Retain::Connection.logger = Rails.logger
+Retain::Fields.logger = Rails.logger
+Retain::Request.logger = Rails.logger
+Retain::Sdi.logger = Rails.logger
+Retain::SignatureLine.logger = Rails.logger
+Retain::RetainError.logger = Rails.logger
 
 require 'combined'
-Combined::Base.logger = RAILS_DEFAULT_LOGGER
-Combined::AssociationProxy.logger = RAILS_DEFAULT_LOGGER
+Combined::Base.logger = Rails.logger
+Combined::AssociationProxy.logger = Rails.logger
 
 require 'cached'
-Cached::Base.logger = RAILS_DEFAULT_LOGGER
+Cached::Base.logger = Rails.logger
