@@ -61,6 +61,9 @@ class AsyncRequest
     rescue ActiveRecord::RecordNotFound
       Rails.logger.debug "#{@obj_class} #{@obj_id} not found"
       return
+    rescue Exception
+      Rails.logger.error "Worked had an error -- need to fix something"
+      return
     end
     @retain_user_connection_parameters = Retain::ConnectionParameters.new(retuser)
     Retain::Logon.instance.set(@retain_user_connection_parameters)
