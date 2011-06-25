@@ -12,23 +12,23 @@ var Raptor = {
     // field to have focus when the page is first loaded.  Text typed
     // in this field will act as a command line interface.
     addUserInput : function(element) {
-	var navHelpText = document.createElement('span');
+	var navHelpText = new Element('span');
 	navHelpText.id = 'nav-help-text';
 	navHelpText.style.color = 'Black';
 	navHelpText.innerHTML = "<= Type text of a button to navigate";
 
-	var ambiguousText = document.createElement('span');
+	var ambiguousText = new Element('span');
 	ambiguousText.id = 'ambiguous-text';
 	ambiguousText.style.color = 'Red';
 	ambiguousText.innerHTML = "Ambiguous";
 	ambiguousText.hide();
 
-	var newField = document.createElement('input');
+	var newField = new Element('input');
 	newField.setAttribute('type', 'text');
 	newField.name = 'userInput';
 
 
-	var newForm = document.createElement('form');
+	var newForm = new Element('form');
 	newForm.appendChild(newField);
 	newForm.appendChild(ambiguousText);
 	newForm.appendChild(navHelpText);
@@ -140,7 +140,7 @@ var Raptor = {
     },
 
     addAuthenticityToken : function(ele, form) {
-	var hdn = document.createElement('input');
+	var hdn = new Element('input');
 	hdn.type = 'hidden';
 	hdn.name = 'authenticity_token';
 	hdn.value = pageSettings.authenticityToken;
