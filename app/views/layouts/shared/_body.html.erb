@@ -1,18 +1,17 @@
 <%# -*- coding: utf-8 -*- -%>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-  <body>
-    <% if divs.nil? || divs.empty? -%>
-      <div>
-	<%= render :partial => 'layouts/shared/display_flash' %>
-	<%= yield %>
+<body>
+  <% if divs.nil? || divs.empty? -%>
+    <div>
+      <%= render :partial => 'layouts/shared/display_flash' %>
+      <%= yield %>
+    </div>
+  <% else -%>
+    <% for div in divs -%>
+      <div id="<%= div.to_s.gsub(/_/, '-') %>">
+        <%= yield div %>
       </div>
-    <% else -%>
-      <% for div in divs -%>
-        <div id="<%= div.to_s.gsub(/_/, '-') %>">
-          <%= yield div %>
-        </div>
-      <% end -%>
     <% end -%>
-    <%= print_stats %>
-    <%= push_page_settings %>
-  </body>
+  <% end -%>
+  <%= push_page_settings %>
+</body>
