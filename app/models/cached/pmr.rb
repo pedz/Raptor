@@ -166,11 +166,6 @@ module Cached
       #
       # So, for now, I fetch a simple non-constant field to make sure
       # the cached_pmr and its lines are up to date.
-      #
-      # when adding the hot_pmr_list page, I wanted to be able to work
-      # with just cached objects, so the line below was removed.
-      #
-      # to_combined.severity
       
       # Then I return the lines
       text_lines

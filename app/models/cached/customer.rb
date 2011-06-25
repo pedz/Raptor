@@ -10,17 +10,6 @@ module Cached
     def self.f_or_i_by_cntry_and_cust(cntry, cnum)
       find_or_initialize_by_country_and_customer_number(cntry, cnum)
     end
-    
-    # Customer Time Zone as a rational fraction of a day
-    def tz
-      # logger.debug("CHC: customer tz called from #{caller.join("\n")}")
-      if tzb = to_combined.time_zone_binary
-        tzb.to_r / MINS_PER_DAY
-      else
-        nil
-      end
-    end
-    once :tz
 
     def old_business_days(start_time, days)
       old_business_minutes(start_time, days * MINS_PER_WORK_DAY)

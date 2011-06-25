@@ -29,6 +29,17 @@ module Combined
       end
       find_or_initialize_by_country_and_customer_number(country, cnum)
     end
+    
+    # Customer Time Zone as a rational fraction of a day
+    def tz
+      # logger.debug("CHC: customer tz called from #{caller.join("\n")}")
+      if tzb = to_combined.time_zone_binary
+        tzb.to_r / MINS_PER_DAY
+      else
+        nil
+      end
+    end
+    once :tz
 
     private
     
