@@ -1,25 +1,26 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<h1>New argument_type</h1>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 
-<% form_for(@argument_type) do |f| %>
-  <%= f.error_messages %>
+  <% form_for(@argument_type) do |f| %>
+    <%= f.error_messages %>
 
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :default %><br />
-    <%= f.text_field :default %>
-  </p>
-  <p>
-    <%= f.label :position %><br />
-    <%= f.text_field :position %>
-  </p>
-  <p>
-    <%= f.submit 'Create' %>
-  </p>
-<% end %>
-
-<%= link_to 'Back', argument_types_path %>
+    <p>
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+    </p>
+    <p>
+      <%= f.label :default %><br />
+      <%= f.text_field :default %>
+    </p>
+    <p>
+      <%= f.label :position %><br />
+      <%= f.text_field :position %>
+    </p>
+    <p>
+      <%= f.submit 'Create' %>
+    </p>
+  <% end %>
+<%- end -%>
+<%= render :partial => 'shared/config_new',
+      :locals => { :item => @argument_type, :parent => nil } %>

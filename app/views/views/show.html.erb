@@ -1,26 +1,18 @@
 <%# -*- coding: utf-8 -*- %>
-
-<!-- app/views/views/edit.html.erb -->
-<%- @title = "Show view: #{@view.name}" -%>
-<%- content_for(:top) do -%>
-  <h1><%= @title %></h1>
-  <%= render :partial => 'layouts/shared/display_flash' %>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <p>
+    <b>Name:</b>
+    <%=h @view.name %>
+  </p>
+  <p>
+    <b>Owner:</b>
+    <%=h @view.owner.ldap_id %>
+  </p>
+  <p>
+    <b>Elements:</b>
+    <%= link_to 'Show', view_elements_path(@view) %>
+  </p>
 <%- end -%>
-<%- content_for(:center) do -%>
-<p>
-  <b>Name:</b>
-  <%=h @view.name %>
-</p>
-<p>
-  <b>Owner:</b>
-  <%=h @view.owner.ldap_id %>
-</p>
-<p>
-  <b>Elements:</b>
-  <%= link_to 'Show', view_elements_path(@view) %>
-</p>
-<%- end -%>
-<%- content_for(:bottom) do -%>
-<%= link_to 'Edit', edit_view_path(@view) %> |
-<%= link_to 'Back', views_path %>
-<%- end -%>
+<%= render :partial => 'shared/config_show',
+      :locals => { :name => @view.name, :item => @view, :parent => nil } %>

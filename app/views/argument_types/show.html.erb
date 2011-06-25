@@ -1,21 +1,20 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<p>
-  <b>Name:</b>
-  <%=h @argument_type.name %>
-</p>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <p>
+    <b>Name:</b>
+    <%=h @argument_type.name %>
+  </p>
 
-<p>
-  <b>Default:</b>
-  <%=h @argument_type.default %>
-</p>
+  <p>
+    <b>Default:</b>
+    <%=h @argument_type.default %>
+  </p>
 
-<p>
-  <b>Position:</b>
-  <%=h @argument_type.position %>
-</p>
-
-
-<%= link_to 'Edit', edit_argument_type_path(@argument_type) %> |
-<%= link_to 'Back', argument_types_path %> |
-<%= link_to 'New argument_type', new_argument_type_path %>
+  <p>
+    <b>Position:</b>
+    <%=h @argument_type.position %>
+  </p>
+<%- end -%>
+<%= render :partial => 'shared/config_show',
+      :locals => { :name => @argument_type.name, :item => @argument_type, :parent => nil } %>

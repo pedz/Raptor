@@ -1,24 +1,21 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<h1>Listing Levels</h1>
-
-<table>
-  <tr>
-    <th>Name</th>
-    <th>SQL</th>
-  </tr>
-
-<% @levels.each do |level| %>
-  <tr>
-    <td><%=h level.name %></td>
-    <td><%=h level.condition ? level.condition.sql : "None" %></td>
-    <td><%= link_to 'Show', level %></td>
-    <td><%= link_to 'Edit', edit_level_path(level) %></td>
-    <td><%= link_to 'Destroy', level, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New level', new_level_path %>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>SQL</th>
+    </tr>
+  <% @levels.each do |level| %>
+    <tr>
+      <td><%=h level.name %></td>
+      <td><%=h level.condition ? level.condition.sql : "None" %></td>
+      <td><%= link_to 'Show', level %></td>
+      <td><%= link_to 'Edit', edit_level_path(level) %></td>
+      <td><%= link_to 'Destroy', level, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </table>
+<%- end -%>
+<%= render :partial => 'shared/config_index',
+      :locals => { :klass => Level, :parent => nil } %>

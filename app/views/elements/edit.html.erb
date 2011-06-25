@@ -1,43 +1,37 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<%- @title = "Edit element: #{@element.view.name}, row #{@element.row}, col #{@element.col}" -%>
-<%- content_for(:top) do -%>
-  <h1><%= @title %></h1>
-  <%= render :partial => 'layouts/shared/display_flash' %>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <% form_for([@view, @element]) do |f| %>
+    <%= f.error_messages %>
+    <p>
+      <%= f.label :widget_id %><br />
+      <%= f.text_field :widget_id %>
+    </p>
+    <p>
+      <%= f.label :view_id %><br />
+      <%= f.text_field :view_id %>
+    </p>
+    <p>
+      <%= f.label :row %><br />
+      <%= f.text_field :row %>
+    </p>
+    <p>
+      <%= f.label :col %><br />
+      <%= f.text_field :col %>
+    </p>
+    <p>
+      <%= f.label :rowspan %><br />
+      <%= f.text_field :rowspan %>
+    </p>
+    <p>
+      <%= f.label :colspan %><br />
+      <%= f.text_field :colspan %>
+    </p>
+    <p>
+      <%= f.submit 'Update' %>
+    </p>
+  <% end %>
 <%- end -%>
-<%- content_for(:center) do -%>
-<% form_for([@view, @element]) do |f| %>
-  <%= f.error_messages %>
-  <p>
-    <%= f.label :widget_id %><br />
-    <%= f.text_field :widget_id %>
-  </p>
-  <p>
-    <%= f.label :view_id %><br />
-    <%= f.text_field :view_id %>
-  </p>
-  <p>
-    <%= f.label :row %><br />
-    <%= f.text_field :row %>
-  </p>
-  <p>
-    <%= f.label :col %><br />
-    <%= f.text_field :col %>
-  </p>
-  <p>
-    <%= f.label :rowspan %><br />
-    <%= f.text_field :rowspan %>
-  </p>
-  <p>
-    <%= f.label :colspan %><br />
-    <%= f.text_field :colspan %>
-  </p>
-  <p>
-    <%= f.submit 'Update' %>
-  </p>
-<% end %>
-<%- end -%>
-<%- content_for(:bottom) do -%>
-<%= link_to 'Show', view_element_path(@view, @element) %> |
-<%= link_to 'Back', view_elements_path(@view) %>
-<%- end -%>
+<%= render :partial => 'shared/config_edit',
+      :locals => { :name => "#{@element.view.name}[#{@element.row},#{@element.col}]",
+                   :item => @element, :parent => @view } %>

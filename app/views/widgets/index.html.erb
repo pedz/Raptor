@@ -1,30 +1,22 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<%- @title = "Widget Listing" -%>
-<%- content_for(:top) do -%>
-  <h1><%= @title %></h1>
-  <%= render :partial => 'layouts/shared/display_flash' %>
-<%- end -%>
-<%- content_for(:center) do -%>
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Owner</th>
-    <th>Code</th>
-  </tr>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Owner</th>
+    </tr>
 
-<% @widgets.each do |widget| %>
-  <tr>
-    <td><%=h widget.name %></td>
-    <td><%=h widget.owner.ldap_id %></td>
-    <td><%=h widget.code %></td>
-    <td><%= link_to 'Show', widget %></td>
-    <td><%= link_to 'Edit', edit_widget_path(widget) %></td>
-    <td><%= link_to 'Destroy', widget, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
+  <% @widgets.each do |widget| %>
+    <tr>
+      <td><%=h widget.name %></td>
+      <td><%=h widget.owner.ldap_id %></td>
+      <td><%= link_to 'Show', widget %></td>
+      <td><%= link_to 'Edit', edit_widget_path(widget) %></td>
+      <td><%= link_to 'Destroy', widget, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </table>
 <%- end -%>
-<%- content_for(:bottom) do -%>
-<%= link_to 'New widget', new_widget_path %>
-<%- end -%>
+<%= render :partial => 'shared/config_index',
+      :locals => { :klass => Widget, :parent => nil } %>

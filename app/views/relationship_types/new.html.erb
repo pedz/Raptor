@@ -1,25 +1,25 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<h1>New relationship_type</h1>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <% form_for(@relationship_type) do |f| %>
+    <%= f.error_messages %>
 
-<% form_for(@relationship_type) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.label :container_type_id %><br />
-    <%= f.collection_select(:container_type_id, NameType.find(:all, :conditions => { :container => true}), :id, :name, { :prompt => "Pick the container type"}) %>
-  </p>
-  <p>
-    <%= f.label :association_type_id %><br />
-    <%= f.collection_select(:association_type_id, AssociationType.all, :id, :association_type, { :prompt => "Pick the type of relationship"}) %>
-  </p>
-  <p>
-    <%= f.label :item_type_id %><br />
-    <%= f.collection_select(:item_type_id, NameType.find(:all, :conditions => { :containable => true}), :id, :name, { :prompt => "Pick the type of item"}) %>
-  </p>
-  <p>
-    <%= f.submit 'Create' %>
-  </p>
-<% end %>
-
-<%= link_to 'Back', relationship_types_path %>
+    <p>
+      <%= f.label :container_type_id %><br />
+      <%= f.collection_select(:container_type_id, NameType.find(:all, :conditions => { :container => true}), :id, :name, { :prompt => "Pick the container type"}) %>
+    </p>
+    <p>
+      <%= f.label :association_type_id %><br />
+      <%= f.collection_select(:association_type_id, AssociationType.all, :id, :association_type, { :prompt => "Pick the type of relationship"}) %>
+    </p>
+    <p>
+      <%= f.label :item_type_id %><br />
+      <%= f.collection_select(:item_type_id, NameType.find(:all, :conditions => { :containable => true}), :id, :name, { :prompt => "Pick the type of item"}) %>
+    </p>
+    <p>
+      <%= f.submit 'Create' %>
+    </p>
+  <% end %>
+<%- end -%>
+<%= render :partial => 'shared/config_new',
+      :locals => { :item => @relationship_type, :parent => nil } %>

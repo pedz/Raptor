@@ -1,42 +1,36 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<%- @title = "Show element: #{@element.view.name}, row #{@element.row}, col #{@element.col}" -%>
-<%- content_for(:top) do -%>
-  <h1><%= @title %></h1>
-  <%= render :partial => 'layouts/shared/display_flash' %>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <p>
+    <b>Widget:</b>
+    <%= link_to @element.widget.name, widget_path(@element.widget) %>
+  </p>
+
+  <p>
+    <b>View:</b>
+    <%=h @element.view.name %>
+  </p>
+
+  <p>
+    <b>Row:</b>
+    <%=h @element.row %>
+  </p>
+
+  <p>
+    <b>Column:</b>
+    <%=h @element.col %>
+  </p>
+
+  <p>
+    <b>Rowspan:</b>
+    <%=h @element.rowspan %>
+  </p>
+
+  <p>
+    <b>Colspan:</b>
+    <%=h @element.colspan %>
+  </p>
 <%- end -%>
-<%- content_for(:center) do -%>
-<p>
-  <b>Widget:</b>
-  <%= link_to @element.widget.name, widget_path(@element.widget) %>
-</p>
-
-<p>
-  <b>View:</b>
-  <%=h @element.view.name %>
-</p>
-
-<p>
-  <b>Row:</b>
-  <%=h @element.row %>
-</p>
-
-<p>
-  <b>Column:</b>
-  <%=h @element.col %>
-</p>
-
-<p>
-  <b>Rowspan:</b>
-  <%=h @element.rowspan %>
-</p>
-
-<p>
-  <b>Colspan:</b>
-  <%=h @element.colspan %>
-</p>
-<%- end -%>
-<%- content_for(:bottom) do -%>
-<%= link_to 'Edit', edit_view_element_path(@view, @element) %> |
-<%= link_to 'Back', view_elements_path(@view) %>
-<%- end -%>
+<%= render :partial => 'shared/config_show',
+  :locals => { :name => "#{@element.view.name}[#{@element.row},#{@element.col}]",
+               :item => @element, :parent => @view } %>

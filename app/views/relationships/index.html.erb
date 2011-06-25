@@ -1,26 +1,23 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<h1>Listing relationships</h1>
-
-<table>
-  <tr>
-    <th>Container name</th>
-    <th>Relationship type</th>
-    <th>Element</th>
-  </tr>
-
-<% @relationships.each do |relationship| %>
-  <tr>
-    <td><%=h relationship.container_name.name %></td>
-    <td><%=h relationship.relationship_type.association_type.association_type %></td>
-    <td><%=h relationship.item.item_name %></td>
-    <td><%= link_to 'Show', relationship %></td>
-    <td><%= link_to 'Edit', edit_relationship_path(relationship) %></td>
-    <td><%= link_to 'Destroy', relationship, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New relationship', new_relationship_path %>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <table>
+    <tr>
+      <th>Container name</th>
+      <th>Relationship type</th>
+      <th>Element</th>
+    </tr>
+  <% @relationships.each do |relationship| %>
+    <tr>
+      <td><%=h relationship.container_name.name %></td>
+      <td><%=h relationship.relationship_type.association_type.association_type %></td>
+      <td><%=h relationship.item.item_name %></td>
+      <td><%= link_to 'Show', relationship %></td>
+      <td><%= link_to 'Edit', edit_relationship_path(relationship) %></td>
+      <td><%= link_to 'Destroy', relationship, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </table>
+<%- end -%>
+<%= render :partial => 'shared/config_index',
+      :locals => { :klass => Relationship, :parent => nil } %>

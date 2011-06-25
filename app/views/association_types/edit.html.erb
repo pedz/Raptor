@@ -1,18 +1,17 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<h1>Editing association_type</h1>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <% form_for(@association_type) do |f| %>
+    <%= f.error_messages %>
 
-<% form_for(@association_type) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.label :association_type %><br />
-    <%= f.text_field :association_type %>
-  </p>
-  <p>
-    <%= f.submit 'Update' %>
-  </p>
-<% end %>
-
-<%= link_to 'Show', @association_type %> |
-<%= link_to 'Back', association_types_path %>
+    <p>
+      <%= f.label :association_type %><br />
+      <%= f.text_field :association_type %>
+    </p>
+    <p>
+      <%= f.submit 'Update' %>
+    </p>
+  <% end %>
+<%- end -%>
+<%= render :partial => 'shared/config_edit',
+      :locals => { :name => @association_type.association_type, :item => @association_type, :parent => nil } %>

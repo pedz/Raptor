@@ -1,0 +1,10 @@
+<%# -*- coding: utf-8 -*- -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<%-
+  klass = item.class
+  space_name = klass.to_s.underscore.gsub(/_/, ' ')
+-%>
+<h1><%= @title = "Editing #{name} #{space_name}" %></h1>
+<%= yield :body %>
+<%= link_to 'Show', parent ? polymorphic_path([parent, item]) : polymorphic_path(item) %> |
+<%= link_to 'Back', parent ? polymorphic_path([parent, klass.to_s.underscore.pluralize]) : polymorphic_path(klass.to_s.underscore.pluralize) %>

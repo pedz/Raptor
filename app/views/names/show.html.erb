@@ -1,16 +1,15 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<p>
-  <b>Type:</b>
-  <%=h @name.type %>
-</p>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <p>
+    <b>Type:</b>
+    <%=h @name.type %>
+  </p>
 
-<p>
-  <b>Name:</b>
-  <%=h @name.name %>
-</p>
-
-
-<%= link_to 'Edit', edit_name_path(@name) %> |
-<%= link_to 'Back', names_path %> |
-<%= link_to 'New name', new_name_path %>
+  <p>
+    <b>Name:</b>
+    <%=h @name.name %>
+  </p>
+<%- end -%>
+<%= render :partial => 'shared/config_show',
+      :locals => { :name => @name.name, :item => @name, :parent => nil } %>

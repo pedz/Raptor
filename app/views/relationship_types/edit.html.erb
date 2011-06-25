@@ -1,26 +1,26 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<h1>Editing relationship_type</h1>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 
-<% form_for(@relationship_type) do |f| %>
-  <%= f.error_messages %>
+  <% form_for(@relationship_type) do |f| %>
+    <%= f.error_messages %>
 
-  <p>
-    <%= f.label :container_type_id %><br />
-    <%= f.collection_select(:container_type_id, NameType.find(:all, :conditions => { :container => true}), :id, :name) %>
-  </p>
-  <p>
-    <%= f.label :association_type_id %><br />
-    <%= f.collection_select(:association_type_id, AssociationType.all, :id, :association_type) %>
-  </p>
-  <p>
-    <%= f.label :item_type_id %><br />
-    <%= f.collection_select(:item_type_id, NameType.find(:all, :conditions => { :containable => true}), :id, :name) %>
-  </p>
-  <p>
-    <%= f.submit 'Update' %>
-  </p>
-<% end %>
-
-<%= link_to 'Show', @relationship_type %> |
-<%= link_to 'Back', relationship_types_path %>
+    <p>
+      <%= f.label :container_type_id %><br />
+      <%= f.collection_select(:container_type_id, NameType.find(:all, :conditions => { :container => true}), :id, :name) %>
+    </p>
+    <p>
+      <%= f.label :association_type_id %><br />
+      <%= f.collection_select(:association_type_id, AssociationType.all, :id, :association_type) %>
+    </p>
+    <p>
+      <%= f.label :item_type_id %><br />
+      <%= f.collection_select(:item_type_id, NameType.find(:all, :conditions => { :containable => true}), :id, :name) %>
+    </p>
+    <p>
+      <%= f.submit 'Update' %>
+    </p>
+  <% end %>
+<%- end -%>
+<%= render :partial => 'shared/config_edit',
+      :locals => { :name => "id:#{@relationship_type.id}", :item => @relationship_type, :parent => nil } %>

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 class WidgetsController < ApplicationController
+  layout "configuration"
+
   # GET /widgets
   # GET /widgets.xml
   def index

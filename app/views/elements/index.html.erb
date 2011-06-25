@@ -1,37 +1,29 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<%- @title = "Element Listing" -%>
-<%- content_for(:top) do -%>
-  <h1><%= @title %></h1>
-  <%= render :partial => 'layouts/shared/display_flash' %>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <table>
+    <tr>
+      <th>Widgit</th>
+      <th>View</th>
+      <th>Row</th>
+      <th>Column</th>
+      <th>Rowspan</th>
+      <th>Colspan</th>
+    </tr>
+    <% @elements.each do |element| %>
+      <tr>
+	<td><%=h element.widget.name %></td>
+	<td><%=h element.view.name %></td>
+	<td><%=h element.row %></td>
+	<td><%=h element.col %></td>
+	<td><%=h element.rowspan %></td>
+	<td><%=h element.colspan %></td>
+	<td><%= link_to 'Show', view_element_path(@view, element) %></td>
+	<td><%= link_to 'Edit', edit_view_element_path(@view, element) %></td>
+	<td><%= link_to 'Destroy', view_element_path(@view, element), :confirm => 'Are you sure?', :method => :delete %></td>
+      </tr>
+    <% end %>
+  </table>
 <%- end -%>
-<%- content_for(:center) do -%>
-<table>
-  <tr>
-    <th>Widgit</th>
-    <th>View</th>
-    <th>Row</th>
-    <th>Column</th>
-    <th>Rowspan</th>
-    <th>Colspan</th>
-  </tr>
-
-<% @elements.each do |element| %>
-  <tr>
-    <td><%=h element.widget.name %></td>
-    <td><%=h element.view.name %></td>
-    <td><%=h element.row %></td>
-    <td><%=h element.col %></td>
-    <td><%=h element.rowspan %></td>
-    <td><%=h element.colspan %></td>
-    <td><%= link_to 'Show', view_element_path(@view, element) %></td>
-    <td><%= link_to 'Edit', edit_view_element_path(@view, element) %></td>
-    <td><%= link_to 'Destroy', view_element_path(@view, element), :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-<%- end -%>
-<%- content_for(:bottom) do -%>
-<%= link_to 'New element', new_view_element_path(@view) %> |
-<%= link_to 'Back to View', @view %>
-<%- end -%>
+<%= render :partial => 'shared/config_index',
+      :locals => { :klass => Element, :parent => @view } %>

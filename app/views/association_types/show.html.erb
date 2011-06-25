@@ -1,11 +1,15 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<p>
-  <b>Association type:</b>
-  <%=h @association_type.association_type %>
-</p>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <p>
+    <b>Association type:</b>
+    <%=h @association_type.association_type %>
+  </p>
 
 
-<%= link_to 'Edit', edit_association_type_path(@association_type) %> |
-<%= link_to 'Back', association_types_path %> |
-<%= link_to 'New association_type', new_association_type_path %>
+  <%= link_to 'Edit', edit_association_type_path(@association_type) %> |
+  <%= link_to 'Back', association_types_path %> |
+  <%= link_to 'New association_type', new_association_type_path %>
+<%- end -%>
+<%= render :partial => 'shared/config_show',
+      :locals => { :name => @association_type.association_type, :item => @association_type, :parent => nil } %>

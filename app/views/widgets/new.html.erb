@@ -1,27 +1,21 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<%- @title = "New Widget" -%>
-<%- content_for(:top) do -%>
-  <h1><%= @title %></h1>
-  <%= render :partial => 'layouts/shared/display_flash' %>
-<%- end -%>
-<%- content_for(:center) do -%>
-<% form_for(@widget) do |f| %>
-  <%= f.error_messages %>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <% form_for(@widget) do |f| %>
+    <%= f.error_messages %>
 
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :code %><br />
-    <%= f.text_area :code %>
-  </p>
-  <p>
-    <%= f.submit 'Create' %>
-  </p>
-<% end %>
+    <p>
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+    </p>
+    <p>
+      <%= f.label :code %><br />
+      <%= f.text_area :code %>
+    </p>
+    <p>
+      <%= f.submit 'Create' %>
+    </p>
+  <% end %>
 <%- end -%>
-<%- content_for(:bottom) do -%>
-<%= link_to 'Back', widgets_path %>
-<%- end -%>
+<%= render :partial => 'shared/config_new',
+      :locals => { :item => @widget, :parent => nil } %>

@@ -2,6 +2,7 @@
 class ElementsController < ApplicationController
   before_filter :get_view
   before_filter :check_view, :except => [ :index, :show ]
+  layout "configuration"
 
   # GET /views/1/elements
   # GET /views/1/elements.xml

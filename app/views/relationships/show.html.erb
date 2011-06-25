@@ -1,20 +1,20 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<p>
-  <b>Container name:</b>
-  <%=h @relationship.container_name.name %>
-</p>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <p>
+    <b>Container name:</b>
+    <%=h @relationship.container_name.name %>
+  </p>
 
-<p>
-  <b>Relationship type:</b>
-  <%=h @relationship.relationship_type.association_type.association_type %>
-</p>
+  <p>
+    <b>Relationship type:</b>
+    <%=h @relationship.relationship_type.association_type.association_type %>
+  </p>
 
-<p>
-  <b>Element name:</b>
-  <%=h @relationship.item.item_name %>
-</p>
-
-<%= link_to 'Edit', edit_relationship_path(@relationship) %> |
-<%= link_to 'Back', relationships_path %> |
-<%= link_to 'New relationship', new_relationship_path %>
+  <p>
+    <b>Element name:</b>
+    <%=h @relationship.item.item_name %>
+  </p>
+<%- end -%>
+<%= render :partial => 'shared/config_show',
+      :locals => { :name => "id:#{@relationship.id}", :item => @relationship, :parent => nil } %>

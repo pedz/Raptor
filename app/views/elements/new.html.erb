@@ -1,39 +1,33 @@
 <%# -*- coding: utf-8 -*- -%>
+<% content_for :body do %>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<%- @title = "New Element" -%>
-<%- content_for(:top) do -%>
-  <h1><%= @title %></h1>
-  <%= render :partial => 'layouts/shared/display_flash' %>
-<%- end -%>
-<%- content_for(:center) do -%>
-<% form_for([@view, @element]) do |f| %>
-  <%= f.error_messages %>
+  <% form_for([@view, @element]) do |f| %>
+    <%= f.error_messages %>
 
-  <p>
-    <%= f.label :widget_id %><br />
-    <%= f.collection_select(:widget_id, Widget.all, :id, :name) %>
-  </p>
-  <p>
-    <%= f.label :row %><br />
-    <%= f.text_field :row %>
-  </p>
-  <p>
-    <%= f.label :col %><br />
-    <%= f.text_field :col %>
-  </p>
-  <p>
-    <%= f.label :rowspan %><br />
-    <%= f.text_field :rowspan %>
-  </p>
-  <p>
-    <%= f.label :colspan %><br />
-    <%= f.text_field :colspan %>
-  </p>
-  <p>
-    <%= f.submit 'Create' %>
-  </p>
-<% end %>
+    <p>
+      <%= f.label :widget_id %><br />
+      <%= f.collection_select(:widget_id, Widget.all, :id, :name) %>
+    </p>
+    <p>
+      <%= f.label :row %><br />
+      <%= f.text_field :row %>
+    </p>
+    <p>
+      <%= f.label :col %><br />
+      <%= f.text_field :col %>
+    </p>
+    <p>
+      <%= f.label :rowspan %><br />
+      <%= f.text_field :rowspan %>
+    </p>
+    <p>
+      <%= f.label :colspan %><br />
+      <%= f.text_field :colspan %>
+    </p>
+    <p>
+      <%= f.submit 'Create' %>
+    </p>
+  <% end %>
 <%- end -%>
-<%- content_for(:bottom) do -%>
-<%= link_to 'Back', view_elements_path(@view) %>
-<%- end -%>
+<%= render :partial => 'shared/config_new',
+      :locals => { :item => @element, :parent => @view } %>

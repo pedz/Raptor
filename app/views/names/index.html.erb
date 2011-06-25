@@ -1,24 +1,22 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<h1>Listing names</h1>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <table>
+    <tr>
+      <th>Type</th>
+      <th>Name</th>
+    </tr>
 
-<table>
-  <tr>
-    <th>Type</th>
-    <th>Name</th>
-  </tr>
-
-<% @names.each do |name| %>
-  <tr>
-    <td><%=h name.type %></td>
-    <td><%=h name.name %></td>
-    <td><%= link_to 'Show', name_path(name) %></td>
-    <td><%= link_to 'Edit', edit_name_path(name) %></td>
-    <td><%= link_to 'Destroy', name_path(name), :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New name', new_name_path %>
+    <% @names.each do |name| %>
+      <tr>
+	<td><%=h name.type %></td>
+	<td><%=h name.name %></td>
+	<td><%= link_to 'Show', name_path(name) %></td>
+	<td><%= link_to 'Edit', edit_name_path(name) %></td>
+	<td><%= link_to 'Destroy', name_path(name), :confirm => 'Are you sure?', :method => :delete %></td>
+      </tr>
+    <% end %>
+  </table>
+<%- end -%>
+<%= render :partial => 'shared/config_index',
+      :locals => { :klass => Name, :parent => nil } %>

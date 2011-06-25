@@ -1,26 +1,26 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<h1>Editing level</h1>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 
-<% form_for(@level) do |f| %>
-  <%= f.error_messages %>
+  <% form_for(@level) do |f| %>
+    <%= f.error_messages %>
 
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-
-  <% f.fields_for :condition do |condition| %>
     <p>
-      <%= condition.label :sql %><br />
-      <%= condition.text_field :sql %>
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+    </p>
+
+    <% f.fields_for :condition do |condition| %>
+      <p>
+	<%= condition.label :sql %><br />
+	<%= condition.text_field :sql %>
+      </p>
+    <% end %>
+
+    <p>
+      <%= f.submit 'Update' %>
     </p>
   <% end %>
-
-  <p>
-    <%= f.submit 'Update' %>
-  </p>
-<% end %>
-
-<%= link_to 'Show', @level %> |
-<%= link_to 'Back', levels_path %>
+<%- end -%>
+<%= render :partial => 'shared/config_edit',
+      :locals => { :name => @level.name, :item => @level, :parent => nil } %>

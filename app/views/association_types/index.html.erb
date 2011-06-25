@@ -1,22 +1,20 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<h1>Listing association_types</h1>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <table>
+    <tr>
+      <th>Association type</th>
+    </tr>
 
-<table>
-  <tr>
-    <th>Association type</th>
-  </tr>
-
-<% @association_types.each do |association_type| %>
-  <tr>
-    <td><%=h association_type.association_type %></td>
-    <td><%= link_to 'Show', association_type %></td>
-    <td><%= link_to 'Edit', edit_association_type_path(association_type) %></td>
-    <td><%= link_to 'Destroy', association_type, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New association_type', new_association_type_path %>
+  <% @association_types.each do |association_type| %>
+    <tr>
+      <td><%=h association_type.association_type %></td>
+      <td><%= link_to 'Show', association_type %></td>
+      <td><%= link_to 'Edit', edit_association_type_path(association_type) %></td>
+      <td><%= link_to 'Destroy', association_type, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </table>
+<%- end -%>
+<%= render :partial => 'shared/config_index',
+      :locals => { :klass => AssociationType, :parent => nil } %>

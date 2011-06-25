@@ -1,32 +1,30 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<h1>Listing name_types</h1>
+<% content_for :body do -%>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <table>
+    <tr>
+      <th>Type</th>
+      <th>Base Type</th>
+      <th>Table name</th>
+      <th>Argument type</th>
+      <th>Container</th>
+      <th>Containable</th>
+    </tr>
 
-<table>
-  <tr>
-    <th>Type</th>
-    <th>Base Type</th>
-    <th>Table name</th>
-    <th>Argument type</th>
-    <th>Container</th>
-    <th>Containable</th>
-  </tr>
-
-<% @name_types.each do |name_type| %>
-  <tr>
-    <td><%=h name_type.name %></td>
-    <td><%=h name_type.base_type %></td>
-    <td><%=h name_type.table_name %></td>
-    <td><%=h name_type.argument_type.name %></td>
-    <td><%=h name_type.container %></td>
-    <td><%=h name_type.containable %></td>
-    <td><%= link_to 'Show', name_type %></td>
-    <td><%= link_to 'Edit', edit_name_type_path(name_type) %></td>
-    <td><%= link_to 'Destroy', name_type, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New name_type', new_name_type_path %>
+    <% @name_types.each do |name_type| %>
+      <tr>
+	<td><%=h name_type.name %></td>
+	<td><%=h name_type.base_type %></td>
+	<td><%=h name_type.table_name %></td>
+	<td><%=h name_type.argument_type.name %></td>
+	<td><%=h name_type.container %></td>
+	<td><%=h name_type.containable %></td>
+	<td><%= link_to 'Show', name_type %></td>
+	<td><%= link_to 'Edit', edit_name_type_path(name_type) %></td>
+	<td><%= link_to 'Destroy', name_type, :confirm => 'Are you sure?', :method => :delete %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end -%>
+<%= render :partial => 'shared/config_index',
+      :locals => { :klass => NameType, :parent => nil } %>

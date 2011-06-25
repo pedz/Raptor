@@ -1,31 +1,30 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<p>
-  <b>Type:</b>
-  <%=h @name_type.name %>
-</p>
-<p>
-  <b>Base Type:</b>
-  <%=h @name_type.base_type %>
-</p>
-<p>
-  <b>Table Name:</b>
-  <%=h @name_type.table_name %>
-</p>
-<p>
-  <b>Argument Type:</b>
-  <%=h @name_type.argument_type.name %>
-</p>
-<p>
-  <b>This is a container:</b>
-  <%=h @name_type.container %>
-</p>
-<p>
-  <b>This can be in a container:</b>
-  <%=h @name_type.containable %>
-</p>
-
-
-<%= link_to 'Edit', edit_name_type_path(@name_type) %> |
-<%= link_to 'Back', name_types_path %> |
-<%= link_to 'New name_type', new_name_type_path %>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <p>
+    <b>Type:</b>
+    <%=h @name_type.name %>
+  </p>
+  <p>
+    <b>Base Type:</b>
+    <%=h @name_type.base_type %>
+  </p>
+  <p>
+    <b>Table Name:</b>
+    <%=h @name_type.table_name %>
+  </p>
+  <p>
+    <b>Argument Type:</b>
+    <%=h @name_type.argument_type.name %>
+  </p>
+  <p>
+    <b>This is a container:</b>
+    <%=h @name_type.container %>
+  </p>
+  <p>
+    <b>This can be in a container:</b>
+    <%=h @name_type.containable %>
+  </p>
+<% end %>
+<%= render :partial => 'shared/config_show',
+      :locals => { :name => @name_type.name, :item => @name_type, :parent => nil } %>

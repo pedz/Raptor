@@ -1,22 +1,21 @@
 <%# -*- coding: utf-8 -*- -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<h1>Editing name</h1>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <% form_for(@name) do |f| %>
+    <%= f.error_messages %>
 
-<% form_for(@name) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.label :type %><br />
-    <%= f.collection_select(:type, NameType.find(:all, :conditions => { :table_name => "names"}), :name, :name) %>
-  </p>
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.submit 'Update' %>
-  </p>
-<% end %>
-
-<%= link_to 'Show', @name %> |
-<%= link_to 'Back', names_path %>
+    <p>
+      <%= f.label :type %><br />
+      <%= f.collection_select(:type, NameType.find(:all, :conditions => { :table_name => "names"}), :name, :name) %>
+    </p>
+    <p>
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+    </p>
+    <p>
+      <%= f.submit 'Update' %>
+    </p>
+  <% end %>
+<%- end -%>
+<%= render :partial => 'shared/config_edit',
+      :locals => { :name => @name.name, :item => @name, :parent => nil } %>
