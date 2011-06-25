@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 class ViewsController < ApplicationController
+  layout "configuration"
+
   # GET /views
   # GET /views.xml
   def index
