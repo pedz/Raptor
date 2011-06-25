@@ -19,11 +19,11 @@ module Json
 
       # There may be a better way to do this but for now, I'm just
       # going to fetch the queues and then ask them to be fetched.
-      Cached::Queue.find(:all, :conditions => { :id => queue_ids }).each do |q|
+      ::Cached::Queue.find(:all, :conditions => { :id => queue_ids }).each do |q|
         async_fetch(q)
       end
 
-      calls = Cached::Call.scoped(:conditions => { :queue_id => queue_ids }).
+      calls = ::Cached::Call.scoped(:conditions => { :queue_id => queue_ids }).
         scoped(:include => [:pmr, :queue]).scoped(:conditions => filter.item.condition.sql)
       render :json => {
         :class_name => "Cached::Call",
