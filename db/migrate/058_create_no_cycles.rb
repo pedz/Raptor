@@ -4,8 +4,8 @@ class CreateNoCycles < ActiveRecord::Migration
     execute "CREATE LANGUAGE plpgsql;"
     execute "
       CREATE FUNCTION no_cycles(container_name_id integer,
-                                item_id integer,
-                                item_type character varying) RETURNS boolean AS $$
+                                itemId integer,
+                                itemType character varying) RETURNS boolean AS $$
       DECLARE
         container_name_type character varying;
         temp_level integer;
@@ -23,8 +23,8 @@ class CreateNoCycles < ActiveRecord::Migration
         IF NOT FOUND THEN
           RETURN false;
         END IF;
-        SELECT level INTO temp_level FROM nestings n WHERE n.container_id   = item_id AND
-                                                           n.container_type = item_type AND
+        SELECT level INTO temp_level FROM nestings n WHERE n.container_id   = itemId AND
+                                                           n.container_type = itemType AND
                                                            n.item_id        = container_name_id AND
                                                            n.item_type      = container_name_type;
         IF FOUND THEN
