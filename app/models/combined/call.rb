@@ -179,7 +179,7 @@ module Combined
       if sig = center_entry_sig(center)
         sig.date
       else
-        to_combined.pmr.create_time
+        pmr.create_time
       end
     end
     once :center_entry_time
@@ -189,7 +189,7 @@ module Combined
     def center_entry_sig(center = queue.center)
       # We return the last signature for a call requeue for the
       # primary (ptype == '-') that is not from within the center.
-      sig = to_combined.pmr.signature_line_stypes('CR').inject(nil) { |prev, s|
+      sig = pmr.signature_line_stypes('CR').inject(nil) { |prev, s|
         if (s.ptype == '-') && (s.center != center.center)
           s
         else

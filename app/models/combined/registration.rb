@@ -61,10 +61,9 @@ module Combined
     end
 
     def default_center
-      cmb = to_combined
-      if cmb.software_center
+      if software_center
         software_center
-      elsif cmb.hardware_center
+      elsif hardware_center
         hardware_center
       else
         nil
@@ -73,10 +72,9 @@ module Combined
     once :default_center
 
     def default_h_or_s
-      cmb = to_combined
-      if cmb.software_center
+      if software_center
         'S'
-      elsif cmb.hardware_center
+      elsif hardware_center
         'H'
       else
         'S'
@@ -90,12 +88,11 @@ module Combined
     # Else return hardware center if it is not null,
     # Else return null.
     def center(h_or_s)
-      cmb = to_combined
       case
         # Simple cases
-      when h_or_s == 'S' && cmb.software_center
+      when h_or_s == 'S' && software_center
         software_center
-      when h_or_s == 'H' && cmb.hardware_center
+      when h_or_s == 'H' && hardware_center
         hardware_center
       else # Odd cases... sorta just guess.
         default_center
@@ -105,7 +102,7 @@ module Combined
     
     # Registration Time Zone as a rational fraction of a day
     def tz
-      to_combined.time_zone_adjustment.to_r / (24 * 60)
+      time_zone_adjustment.to_r / (24 * 60)
     end
     once :tz
 

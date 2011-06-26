@@ -15,3 +15,27 @@
 #error + ul > li {
     color: red;
 }
+
+.tbody-reset {
+    counter-reset: flog;
+}
+
+.sorted-up:after {
+    content: url(../images/sorted-up.png);
+}
+
+.sorted-down:after {
+    content: url(../images/sorted-down.png);
+}
+
+.sortable:after {
+    content: url(../images/sortable.png);
+}
+
+#calls tbody {
+    counter-increment: flog;
+}
+
+.tbody-count:before {
+    content: counter(flog);
+}

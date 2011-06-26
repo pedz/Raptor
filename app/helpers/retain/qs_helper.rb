@@ -897,7 +897,7 @@ module Retain
         #       within 2 business hours, but try for one hour
         if call.severity == 1
           # logger.debug("sev 1")
-          return customer.jims_business_hours(entry_time, 2)
+          return customer.business_hours(entry_time, 2)
         end
         
         # Sev 2,3,4 during Primeshift: Initial customer callback is
@@ -906,26 +906,26 @@ module Retain
         # logger.debug("entry time is #{entry_time}")
         if pmr.center.prime_shift(entry_time)
           # logger.debug("prime_shift")
-          return customer.jims_business_hours(entry_time, 2)
+          return customer.business_hours(entry_time, 2)
         end
         
         # SEV 2,3,4 during Offshift: Initial customer callback is the
         #           next business day
         # logger.debug("off shift")
-        return customer.jims_business_days(entry_time, 1)
+        return customer.business_days(entry_time, 1)
       else
         # logger.debug("initial response WT #{call.severity.class}")
         case call.severity
         when 0                  # encounted a PMH with a severity of 0... go figure.
-          return customer.jims_business_hours(entry_time, 2)
+          return customer.business_hours(entry_time, 2)
         when 1
-          return customer.jims_business_hours(entry_time, 2)
+          return customer.business_hours(entry_time, 2)
         when 2
-          return customer.jims_business_hours(entry_time, 4)
+          return customer.business_hours(entry_time, 4)
         when 3
-          return customer.jims_business_hours(entry_time, 8)
+          return customer.business_hours(entry_time, 8)
         when 4
-          return customer.jims_business_hours(entry_time, 8)
+          return customer.business_hours(entry_time, 8)
         end
       end
       raise "Did not figure out response time #{call.pmr.to_param}"
@@ -940,7 +940,7 @@ module Retain
       days = FOLLOW_UP_RESPONSE_TIME[call.severity]
       start_time = pmr.last_ct_time
       # logger.debug("TIME: ---- #{start_time}")
-      customer.jims_business_days(start_time, days)
+      customer.business_days(start_time, days)
     end
 
     def next_ct(binding, header, call)

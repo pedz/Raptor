@@ -51,7 +51,7 @@ module Combined
 
     # Center Time Zone as a rational fraction of a day
     def tz
-      to_combined.minutes_from_gmt.to_r / (24 * 60)
+      minutes_from_gmt.to_r / (24 * 60)
     end
     once :tz
     
