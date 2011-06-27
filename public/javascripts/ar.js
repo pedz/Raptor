@@ -453,6 +453,14 @@ var ArRequestRepository = (function()
 	 * If the request has completed, return the element.
 	 */
 	if (repo_entry.completed) {
+	    /*
+	     * The element can be null.  So just return that.
+	     * Eventually it should get filled in with data but we'll
+	     * display that the next time around.
+	     */
+	    if (!repo_entry.element)
+		return repo_entry.element;
+
 	    switch (obj.association_type) {
 	    case 'belongs_to':
 	    case 'has_one':
