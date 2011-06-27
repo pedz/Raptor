@@ -11,32 +11,77 @@
 Raptor.widgets = {};
 
 /**
+ * A container for RenderElement s.
+ *
+ * @name RenderElementContainer
+ * @class
+ */
+
+/**
  * @constructor
  * @param {String} domElementType 'head', 'foot', or 'body' to denote
- * which part of the html table this will be part of.
+ * which part of the HTML table this will be part of.
+ * @return RenderElementContainer
  */
-Raptor.renderElementContainer = function (domElementType) {
+Raptor.createRenderElementContainer = function (domElementType) {
+    /**
+     * The elements within the container.
+     * 
+     * @name RenderElementContainer#elements
+     */
     var elements = [];
 
     /**
-     * Adds a render element.  When
-     * Raptor.renderElementContainer#renderElements is called, it will go
-     * through a list of renderElements created by this call.
+     * A RenderElement represents a single 'td' or 'th' in the table.
+     *
+     * @name RenderElement
+     * @class
+     */
+
+    /**
+     * Adds a RenderElement.
+     *
+     * When RenderElementContainer#render is called, it
+     * will go through a list of RenderElement s created by this call.
      *
      * @constructor
-     * @name Raptor.renderElementContainer#renderElements
+     * @name RenderElementContainer#addRenderElement
      * 
      * @param {String} domElement 'head', 'foot', or 'body' which is
-     * passed on toe Raptor.renderElementContainer.  This is also used
+     * passed from RenderElementContainer.  This is also used
      * to determine which entry points of the widget to call.
      * 
      * @param {Object} widgetCode The code attribute of the specified
      * widget.
      * 
      * @param {Object} call The associated call for this render element.
+     *
+     * @return RenderElement
      */
     var addRenderElement = function (domElement, widgetCode, call) {
-	var that = { };
+
+	var that = {
+	    /**
+	     * The DOM element this render element is tied to.
+	     * @name RenderElement#domElement
+	     */
+	    domElement: domElement,
+
+	    /**
+	     * The widgetCode used to render the DOM element
+	     * @name RenderElement#widgetCode
+	     */
+	    widgetCode: widgetCode,
+
+	    /**
+	     * The Cached::Call (which is underdefined for thead and
+             * tfoot DOM elements) for this RenderElement.
+	     * 
+	     * @name RenderElement@call
+	     */
+	    call: call
+	};
+
 	var methods = {
 	    text: null,
 	    style: null,
@@ -81,6 +126,9 @@ Raptor.renderElementContainer = function (domElementType) {
 	 * Returns true if the parent node is no longer in the DOM.
          * This is used to detect when render elements are attached to
          * nodes that are no longer in the tree so they can be freed.
+	 *
+	 * @name RenderElement#hasbeenDeleted
+	 * @function
 	 */
 	var hasBeenDeleted = function() {
 	    var e = domElement.parentNode;
@@ -92,6 +140,7 @@ Raptor.renderElementContainer = function (domElementType) {
 	    }
 	    return true;
 	};
+	that.hasBeenDeleted = hasBeenDeleted;
 
 	/**
 	 * Need a name for this function.  This routine puts the value
@@ -120,9 +169,11 @@ Raptor.renderElementContainer = function (domElementType) {
          * 'update'.  For 'style', it is 'setStyle' and for 'attr' it
          * is 'writeAttribute'
 	 *
-	 * @param {Object} call The call for this renderElement.  If
+	 * @param {Object} call The call for this RenderElement.  If
          * the outter domElementType is 'head' or 'foot', this will be
          * undefined.
+	 *
+	 * @function
 	 */
 	var needName = function (elementContentType, updateFunction, call) {
 	    var value;
@@ -160,14 +211,17 @@ Raptor.renderElementContainer = function (domElementType) {
 	};
 
 	/**
-	 * Called by renderElements to render each element.  Makes
+	 * Called by render to render each element.  Makes
          * three calls to needName to process the test, style, and
          * attr pieces.
 	 * 
 	 * call is undefined for domElementType of 'head' and 'foot'
          * but we pass it on anyway.
+	 *
+	 * @name RenderElement#render
+	 * @function
 	 */
-	var renderElement = function () {
+	var render = function () {
 	    if (hasBeenDeleted())
 		return false;
 	    needName('text',  'update',         call);
@@ -175,35 +229,38 @@ Raptor.renderElementContainer = function (domElementType) {
 	    needName('attr',  'writeAttribute', call);
 	    return true;
 	};
-	that.renderElement = renderElement;
+	that.render = render;
 
 	elements.push(that);
 	return that;
     };
     
     /**
-     * Calls renderElement for each element in the container.
-     * @name Raptor.renderElementContainer#renderElements
+     * Calls render for each element in the container.
+     * @name RenderElementContainer#render
+     * @function
      */
-    var renderElements = function() {
+    var render = function() {
 	/*
-	 * On each pass, if renderElement returns false, then that
+	 * On each pass, if render returns false, then that
 	 * element is not put back into the new set of elements.
 	 */
 	elements = elements.filter(function (ele, index, obj) {
-	    return ele.renderElement();
+	    return ele.render();
 	});
     };
 
     return {
-	renderElements: renderElements,
-	addRenderElement: addRenderElement
+	render: render,
+	addRenderElement: addRenderElement,
+	elements: elements
     };
 };
 
 /**
  * Look inside the arguments table and piece together an object that
  * represents the arguments that the user has choosen.
+ * @function
  */
 Raptor.getCurrentArguments = function() {
     var head = $('arguments').down('thead').down('tr');
@@ -223,6 +280,7 @@ Raptor.getCurrentArguments = function() {
 
 /**
  * Fetches the desired view and its elements from the server.
+ * @function
  */
 Raptor.fetchView = function () {
     new Ajax.Request(Raptor.viewUrl(), {
@@ -234,6 +292,7 @@ Raptor.fetchView = function () {
 
 /**
  * If we find that the view has errors, we display there here.
+ * @function
  */
 Raptor.displayErrors = function (errors) {
     var heading;
@@ -257,6 +316,7 @@ Raptor.displayErrors = function (errors) {
 /**
  * Wrapper for viewOnSuccess so that any errors that occur within it
  * can be caught and displayed.
+ * @function
  */
 Raptor.viewOnSuccessWrapper = function (response, x_json) {
     try {
@@ -272,6 +332,7 @@ Raptor.viewOnSuccessWrapper = function (response, x_json) {
  * rather long complex function that reviews all the elements in the
  * view and creates a two dimensional representation of the elements.
  * If the calls have been fetched, then Raptor.renderView is called.
+ * @function
  */
 Raptor.viewOnSuccess = function (response, x_json) {
     Raptor.view = response.responseJSON.view;
@@ -385,6 +446,7 @@ Raptor.viewOnSuccess = function (response, x_json) {
 
 /**
  * Code called when fetch of view fails.  It currently does nothing.
+ * @function
  */
 Raptor.viewOnFailure = function (response, x_json) {
     console.log('get of view failed');
@@ -394,6 +456,7 @@ Raptor.viewOnFailure = function (response, x_json) {
  * Called to fetch the initial list of calls.  This is probably going
  * to be used when the list is updated but I haven't gotten that far
  * yet.
+ * @function
  */
 Raptor.fetchCalls = function () {
     new Ajax.Request(Raptor.callsUrl(), {
@@ -406,6 +469,7 @@ Raptor.fetchCalls = function () {
 /**
  * Wrapper for callsOnSuccess that will catch and nicely display any
  * exceptions that happen.
+ * @function
  */
 Raptor.callsOnSuccessWrapper = function (response, x_json) {
     try {
@@ -420,6 +484,7 @@ Raptor.callsOnSuccessWrapper = function (response, x_json) {
  * Called when the fetch of the calls returns successfully.  This
  * registers all of the calls using Ar.register.  If the view has been
  * fetched, then Raptor.renderView is called.
+ * @function
  */
 Raptor.callsOnSuccess = function (response, x_json) {
     var res;
@@ -441,6 +506,7 @@ Raptor.callsOnSuccess = function (response, x_json) {
 /**
  * Called when the fetch of the calls fails.  It currently does
  * nothing.
+ * @function
  */
 Raptor.callsOnFailure = function (response, x_json) {
     console.log('get of calls failed');
@@ -449,6 +515,7 @@ Raptor.callsOnFailure = function (response, x_json) {
 /**
  * Function that will return the URL used to fetch the view, its
  * elements, and widgets.
+ * @function
  */
 Raptor.viewUrl = function () {
     return Raptor.viewUrlPattern.evaluate(Raptor.currentArguments);
@@ -456,6 +523,7 @@ Raptor.viewUrl = function () {
 
 /**
  * Function that will return the URL used to fetch the calls.
+ * @function
  */
 Raptor.callsUrl = function () {
     return Raptor.callsUrlPattern.evaluate(Raptor.currentArguments);
@@ -470,6 +538,13 @@ Raptor.callsUrl = function () {
  * This is called once to create a head and foot section and then once
  * for each call to create a body section.
  *
+ * @name TableSelection
+ * @class
+ */
+
+/**
+ * Creates a TableSection (hence the name).
+ *
  * @constructor
  * 
  * @param {String} position One of 'body', 'head', or 'foot'
@@ -479,6 +554,8 @@ Raptor.callsUrl = function () {
  * 
  * @param {Object} call The call (will be undefined when poistion is
  * 'foot' or 'head'.
+ *
+ * @returns TableSection
  */
 Raptor.createTableSection = function (position, domType, call) {
     var view = Raptor.view;
@@ -487,19 +564,19 @@ Raptor.createTableSection = function (position, domType, call) {
 
     /**
      * The tbody, thead, or tfoot HTML element.
-     * @name Raptor.createTableSection#element
+     * @name TableSection#domElement
      */
-    var parent = new Element('t' + position);
+    var domElement = new Element('t' + position);
 
     /**
-     * The Raptor.renderElementContainer.
-     * @name Raptor.createTableSection#container
+     * The RenderElementContainer.
+     * @name TableSection#container
      */
-    var container = Raptor.renderElementContainer(position);
+    var container = Raptor.createRenderElementContainer(position);
 
     view.rows.forEach(function (row, rowIndex, rows) {
 	var tr = new Element('tr');
-	parent.insert({bottom: tr});
+	domElement.insert({bottom: tr});
 	row.elements.forEach(function (col, colIndex, elements) {
 	    if (col.placeholder)
 		return;
@@ -511,15 +588,16 @@ Raptor.createTableSection = function (position, domType, call) {
 	});
     });
 
-    Raptor.callTable.insert({bottom: parent});
+    Raptor.callTable.insert({bottom: domElement});
     return {
-	element: parent,
+	domElement: domElement,
 	container: container
     };
 };
 
 /**
  * called to render the view (the call table).
+ * @function
  */
 Raptor.renderView = function () {
     var view = Raptor.view;
@@ -527,22 +605,28 @@ Raptor.renderView = function () {
 
     if (!view.sections) {
 	view.sections = [];
-	view.sections.push(Raptor.createTableSection('head', 'th'));
-	view.sections.push(Raptor.createTableSection('foot', 'td'));
+
+	tableSection = Raptor.createTableSection('head', 'th');
+	view.sections.push(tableSection);
+
+	tableSection = Raptor.createTableSection('foot', 'td');
+	view.sections.push(tableSection);
+
 	Raptor.calls.forEach(function (call, callIndex, calls) {
 	    tableSection = Raptor.createTableSection('body', 'td', call);
-	    tableSection.element.addClassName('call');
+	    tableSection.domElement.addClassName('call');
 	    view.sections.push(tableSection);
 	});
     }
     view.sections.forEach(function (section, index, obj) {
-	section.container.renderElements();
+	section.container.render();
     });
 };
 
 /**
  * Catches and displays any exception that might happen while this
  * code or the widget code is executing.
+ * @function
  */
 Raptor.displayException = function (err) {
     var pageTemplate = new Template('<html><head><title>Exception Caught</title></head><body><h3>#{message} At #{fileName} line #{lineNumber}</h3><p>Stack<br/>#{stack}</p></body></html>');
@@ -581,6 +665,7 @@ Raptor.displayException = function (err) {
  * table.  It then creates the data structures for the viewUrl and
  * callsUrl to function properly.  It then calls Raptor.fetchCalls and
  * Raptor.fetchView.
+ * @function
  */
 Raptor.runCalls = function() {
     var callUrlParts;
