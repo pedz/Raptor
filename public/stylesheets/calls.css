@@ -16,10 +16,6 @@
     color: red;
 }
 
-.tbody-reset {
-    counter-reset: flog;
-}
-
 .sorted-up:after {
     content: url(../images/sorted-up.png);
 }
@@ -32,10 +28,14 @@
     content: url(../images/sortable.png);
 }
 
-#calls tbody {
-    counter-increment: flog;
+.tbody-reset {
+    counter-reset: tbody;
+}
+
+tbody.call {
+    counter-increment: tbody;
 }
 
 .tbody-count:before {
-    content: counter(flog);
+    content: counter(tbody);
 }
