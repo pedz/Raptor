@@ -48,9 +48,23 @@ module Cached
         A2[week_index + 6 * 24 + hr] = 24 + 24
       }
     end
+    
+    # Customer Time Zone as a rational fraction of a day
+    def tz
+      # logger.debug("CHC: customer tz called from #{caller.join("\n")}")
+      if tzb = time_zone_binary
+        tzb.to_r / MINS_PER_DAY
+      else
+        nil
+      end
+    end
+    once :tz
 
     private
     
+    MINS_PER_HOUR = 60.to_r
+    HOURS_PER_DAY = 24.to_r
+    MINS_PER_DAY = HOURS_PER_DAY * MINS_PER_HOUR
     WORK_HOURS = 8 ... 17       # 8 a.m. to 5 p.m. (but not including 5 p.m.)
     WORK_DAYS =  1 .. 5         # Monday thru Friday
 

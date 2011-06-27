@@ -29,17 +29,6 @@ module Combined
       end
       find_or_initialize_by_country_and_customer_number(country, cnum)
     end
-    
-    # Customer Time Zone as a rational fraction of a day
-    def tz
-      # logger.debug("CHC: customer tz called from #{caller.join("\n")}")
-      if tzb = time_zone_binary
-        tzb.to_r / MINS_PER_DAY
-      else
-        nil
-      end
-    end
-    once :tz
 
     def business_days(start_time, days)
       #
@@ -116,10 +105,6 @@ module Combined
     end
 
     private
-    
-    MINS_PER_HOUR = 60.to_r
-    HOURS_PER_DAY = 24.to_r
-    MINS_PER_DAY = HOURS_PER_DAY * MINS_PER_HOUR
 
     def load
       # logger.debug("CMB: load for #{self.to_param}")
