@@ -16,12 +16,24 @@
     color: red;
 }
 
+.sorted-up {
+    cursor: pointer;
+}
+
 .sorted-up:after {
     content: url(../images/sorted-up.png);
 }
 
+.sorted-down {
+    cursor: pointer;
+}
+
 .sorted-down:after {
     content: url(../images/sorted-down.png);
+}
+
+.sortable {
+    cursor: pointer;
 }
 
 .sortable:after {

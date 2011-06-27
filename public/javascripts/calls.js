@@ -197,7 +197,7 @@ Raptor.createRenderElementContainer = function (domElementType) {
 		
 	    case 'function':
 		Ar.render(function () {
-		    var v = method.call(domElement, call.value);
+		    var v = method.call(domElement, call ? call.value : call);
 		    if (typeof v !== 'undefined')
 			domElement[updateFunction].call(domElement, v);
 		});
@@ -211,9 +211,9 @@ Raptor.createRenderElementContainer = function (domElementType) {
 	};
 
 	/**
-	 * Called by render to render each element.  Makes
-         * three calls to needName to process the test, style, and
-         * attr pieces.
+	 * Called by RenderElementContainer#render to render each
+         * element.  Makes three calls to needName to process the
+         * test, style, and attr pieces.
 	 * 
 	 * call is undefined for domElementType of 'head' and 'foot'
          * but we pass it on anyway.
@@ -250,10 +250,25 @@ Raptor.createRenderElementContainer = function (domElementType) {
 	});
     };
 
+    /**
+     * Calls f for each of the elements.  This is slightly better than
+     * doing it yourself because RenderElement#hasBeenDeleted is
+     * called and elements is cleaned up with each call.
+     */
+    var forEach = function (f) {
+	elements = elements.filter(function (ele, index, obj) {
+	    if (ele.hasBeenDeleted())
+		return false;
+	    f(ele,index,obj);
+	    return true;
+	});
+    };
+
     return {
 	render: render,
 	addRenderElement: addRenderElement,
-	elements: elements
+	elements: elements,
+	forEach: forEach
     };
 };
 
@@ -590,6 +605,23 @@ Raptor.createTableSection = function (position, domType, call) {
 
     Raptor.callTable.insert({bottom: domElement});
     return {
+	/**
+	 * position argument passed in.
+	 * @name TableSection#position
+	 */
+	position: position,
+
+	/**
+	 * domType argument passed in.
+	 * @name TableSection#domType
+	 */
+	domType: domType,
+
+	/**
+	 * call argument passed in.
+	 * @name TableSection#call
+	 */
+	call: call,
 	domElement: domElement,
 	container: container
     };
@@ -607,6 +639,33 @@ Raptor.renderView = function () {
 	view.sections = [];
 
 	tableSection = Raptor.createTableSection('head', 'th');
+	/*
+	 * Add code to run through the tableSection's container asking
+         * if the widgetCode for each of the RenderElement s in the
+         * container has a cmp method that takes two arguments.  If it
+         * does, add the 'sortable' class name.
+	 */
+	tableSection.container.forEach(function (ele, index, elements) {
+	    var widget = ele.widgetCode;
+	    var cmp;
+	    var domElement;
+	    
+	    if (!widget || (typeof widget !== 'object'))
+		return;
+
+	    cmp = widget.cmp;
+
+	    if (!cmp || (typeof cmp !== 'function') || cmp.length != 2)
+		return;
+	    
+	    domElement = ele.domElement;
+	    if (!domElement)
+		return;
+	    domElement.addClassName('sortable');
+	    domElement.on('click', function(event) {
+		Raptor.sortTable(ele);
+	    });
+	});
 	view.sections.push(tableSection);
 
 	tableSection = Raptor.createTableSection('foot', 'td');
@@ -620,6 +679,49 @@ Raptor.renderView = function () {
     }
     view.sections.forEach(function (section, index, obj) {
 	section.container.render();
+    });
+};
+
+Raptor.sortTable = function (ele) {
+    var array = [];
+    var cmp = ele.widgetCode.cmp;
+    var reverse = false;
+    var domElement = ele.domElement; //this is the 'th' element
+    
+
+    if (domElement.hasClassName('sorted-up')) {
+	reverse = true;
+	domElement.removeClassName('sorted-up');
+	domElement.addClassName('sorted-down');
+    } else {
+	domElement.removeClassName('sorted-down');
+	domElement.removeClassName('sortable');
+	domElement.addClassName('sorted-up');
+    }
+
+    /* First we make an array that we can pass to sort. */
+    Raptor.view.sections.forEach(function (tableSection, index, obj) {
+	if (tableSection.call)
+	    array.push(tableSection);
+    });
+
+    /* Now we sort the array according to the compare function of the elemetn */
+    array.sort(function(l, r) {
+	if (reverse)
+	    return cmp(r.call.value, l.call.value);
+	else
+	    return cmp(l.call.value, r.call.value);
+    });
+
+    /*
+     * Last, we run through the array.  For each table section, we
+     * remove it from the table and then append it to the end.  When
+     * we are done, we should have appended all the sections in the
+     * sorted order.
+     */
+    array.forEach(function (tableSection, index, obj) {
+	tableSection.domElement.remove();
+	Raptor.callTable.insert({bottom: tableSection.domElement});
     });
 };
 
