@@ -86,7 +86,7 @@ class RetusersController < ApplicationController
     # @retuser set in this_retuser?
     
     respond_to do |format|
-      if @retuser.update_attributes(params[:retuser])
+      if @retuser.update_attributes(params[:retuser].merge({ :logon_return => nil, :logon_reason => nil }))
         flash[:notice] = 'Retuser was successfully updated.'
         format.html {
           uri = session[:original_uri]
