@@ -431,6 +431,7 @@ Raptor.viewOnSuccess = function (response, x_json) {
 		    x.element = temp;
 		else
 		    x.placeholder = true;
+		temp = null;
 	    }
 	}
     });
@@ -593,7 +594,7 @@ Raptor.createTableSection = function (position, domType, call) {
 	var tr = new Element('tr');
 	domElement.insert({bottom: tr});
 	row.elements.forEach(function (col, colIndex, elements) {
-	    if (col.placeholder)
+	    if (col.placeholder || !col.element)
 		return;
 	    var options = { rowspan: col.element.rowspan,
 			    colspan: col.element.colspan };

@@ -31,9 +31,9 @@ class ActiveRecord::Base
   def ar_objects
     result = { }
     self.class.reflections.each do |name, reflection|
-      # logger.debug("name = #{name}, reflection = #{reflection.inspect}")
       options = reflection.options
-      # logger.debug("options = #{options}")
+      # Don't know how to do :through yet so just skip them.
+      next if options.has_key? :through
       if options.has_key? :class_name
         class_name = options[:class_name]
       else
