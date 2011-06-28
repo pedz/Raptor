@@ -50,7 +50,7 @@ class AsyncRequest
     tube = opts.fetch(:tube, (AsyncObserver::Queue.app_version or
                               AsyncObserver::Queue.default_tube))
 
-    Rails.logger.debug("Sending async request: pri=#{pri}, class=#{@obj_class}, id=#{@obj_id}}")
+    Rails.logger.debug("Worker: Sending async request: pri=#{pri}, class=#{@obj_class}, id=#{@obj_id}}")
     AsyncObserver::Queue.put!(self, pri, delay, ttr, tube)
   end
 
@@ -58,16 +58,57 @@ class AsyncRequest
     retuser = Retuser.find(@retuser_id)
     begin
       rec = @obj_class.constantize.find(@obj_id)
+      @retain_user_connection_parameters = Retain::ConnectionParameters.new(retuser)
+      Retain::Logon.instance.set(@retain_user_connection_parameters)
+      cmb = rec.to_combined
+      cmb.load_if_stale
+
     rescue ActiveRecord::RecordNotFound
-      Rails.logger.debug "#{@obj_class} #{@obj_id} not found"
+      Rails.logger.debug "Worker: #{@obj_class} #{@obj_id} not found in database"
       return
-    rescue Exception
-      Rails.logger.error "Worked had an error -- need to fix something"
+
+    rescue Combined::CallNotFound, Combined::CenterNotFound,
+      Combined::PmrNotFound, Combined::QueueNotFound => exception
+      Rails.logger.error "Worker: #{@obj_class}:#{@obj_id} not found in Retain"
+      return
+      
+    rescue Retain::FailedMarkedTrue
+      # user record already marked so just return.
+      return
+
+    rescue Retain::LogonFailed => exception
+      # Mark user record to prevent excessive errors.
+      retuser.failed = true
+      retuser.logon_return = exception.logon_return
+      retuser.logon_reason = exception.logon_reason
+      retuser.save
+      return
+
+    rescue Retain::SdiReaderError
+      Rails.logger.error "Worker: SDI Reader error while processing #{@obj_class}:#{@obj_id}"
+      return
+
+    rescue Retain::RetainLogonEmpty
+      Rails.logger.error "Worker: Retain Logon Empty error while processing #{@obj_class}:#{@obj_id}"
+      return
+
+    rescue Retain::RetainLogonShort
+      Rails.logger.error "Worker: Retain Logon Short error while processing #{@obj_class}:#{@obj_id}"
+      return
+
+    rescue Retain::SdiDidNotReadField
+      Rails.logger.error "Worker: SDI did not read field error while processing #{@obj_class}:#{@obj_id}"
+      return
+
+    rescue Errno::ECONNREFUSED
+      # Our punch throughs must be broken but we have no one to talk
+      # to.  Be a good time to email someone.
+      Rails.logger.error "Worker: ECONNREFUSED to Retain -- check the punch throughs!"
+      return
+
+    rescue Exception => exception
+      Rails.logger.error "Worker: Unexpected exception #{exception.message}:#{exception.backtrace}"
       return
     end
-    @retain_user_connection_parameters = Retain::ConnectionParameters.new(retuser)
-    Retain::Logon.instance.set(@retain_user_connection_parameters)
-    cmb = rec.to_combined
-    cmb.load_if_stale
   end
 end
