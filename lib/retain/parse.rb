@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-
 require 'retain/utils'
 
 module Retain
+  # Not sure what this does... or ever did...
   class Parse
     attr_reader :fields
     

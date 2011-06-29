@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 
-
 module Retain
+  # A model representing Retain queues.  See Cached::Queues for a list
+  # of attributes that are cached.  Uses Retain::Pmcs to fetch data
+  # from Retain so see it for what can be retrieved from Retain using
+  # this model.  Also see Combined::Queue for how the particulars on
+  # how the Retain model and the Cached model are joined in this
+  # particular instance.
   class Queue < Base
     set_fetch_sdi Pmcs
 

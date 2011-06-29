@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 
 module Retain
+  # A model representing Retain registrations.  See
+  # Cached::Registrations for a list of attributes that are cached.
+  # Uses Retain::Pmdr to fetch data from Retain so see it for what can
+  # be retrieved from Retain using this model.  Also see
+  # Combined::Registration for how the particulars on how the Retain
+  # model and the Cached model are joined in this particular instance.
   class Registration < Base
     set_fetch_sdi Pmdr
 

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 require 'retain/utils'
 require 'retain/exceptions'
 require 'retain/fields'

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 module Retain
+  # Model representing a Retain Component.  This is not yet backed by
+  # a Cached model.  Uses Retain::Cmpb to fetch the data.
   class Component < Base
     set_fetch_sdi Cmpb
 

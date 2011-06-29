@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 module Retain
+  ##
   # Array that maps Retain error codes to the text that the
   # documentation says the code represents.
   Errors = Array.new

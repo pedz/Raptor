@@ -6,6 +6,13 @@
  */
 
 /**
+ * Global container for javascript code used by Raptor
+ * @name Raptor
+ * @namespace
+ */
+
+
+/**
  * Hash table for the widgets stored by the widget's name.
  */
 Raptor.widgets = {};
@@ -160,6 +167,8 @@ Raptor.createRenderElementContainer = function (domElementType) {
 	 *
 	 * The result is then passed to the PrototypeJS function that
          * is specified by the updateFunction parameter.
+	 *
+	 * @name RenderElement#needName
 	 *
 	 * @param {String} elementContentType One of 'text', 'style', or 'attr'.
 	 *
@@ -554,7 +563,7 @@ Raptor.callsUrl = function () {
  * This is called once to create a head and foot section and then once
  * for each call to create a body section.
  *
- * @name TableSelection
+ * @name TableSection
  * @class
  */
 

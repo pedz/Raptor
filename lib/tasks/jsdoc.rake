@@ -4,7 +4,7 @@
 
 JSDocDir = "/Users/pedzan/Source/OpenSource/jsdoc_toolkit-2.4.0/jsdoc-toolkit"
 # relative to public/javascripts
-JSFiles = [ "ar.js" ]
+JSFiles = [ "ar.js", "calls.js" ]
 
 namespace :doc do
   desc "Format javascript documentation into doc/javascript"

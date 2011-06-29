@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 module Retain
+  # A retain model that is currently used just to explore retain.
+  # Uses Retain::Pmqq.  Retain::QqController uses this model.  I
+  # believe eventually the data Pmqq provides needs to be exploited.
   class Qq < Base
     set_fetch_sdi Pmqq
 

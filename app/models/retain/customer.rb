@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 
 module Retain
+  # A model representing Retain customers.  See Cached::Customers for
+  # a list of attributes that are cached.  Uses Retain::Pmcp to fetch
+  # data from Retain so see it for what can be retrieved from Retain
+  # using this model.  Also see Combined::Customer for how the
+  # particulars on how the Retain model and the Cached model are
+  # joined in this particular instance.
   class Customer < Base
     set_fetch_sdi Pmcp
 

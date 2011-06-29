@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
-
 require 'retain/utils'
 
 module Retain
-
   # ConnectionParameters is a class that holds all that is needed to
   # connect to Retain.  A ConnectionParameters object is created by
   # the RetainController during authorization.

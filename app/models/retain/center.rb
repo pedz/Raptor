@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 
 module Retain
+  # A model representing Retain center.  See Cached::Center for a list
+  # of attributes that are cached.  Uses Retain::Pmbc to fetch data
+  # from Retain so see it for what can be retrieved from Retain using
+  # this model.  Also see Combined::Center for how the particulars on
+  # how the Retain model and the Cached model are joined in this
+  # particular instance.
   class Center < Base
     set_fetch_sdi Pmbc
 

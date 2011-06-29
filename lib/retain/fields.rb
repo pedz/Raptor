@@ -11,7 +11,7 @@ module Retain
     # Initialized in config/initializers/loggers.rb
     cattr_accessor :logger
 
-    #
+    ##
     # A hash used to create the getters and setters in request and
     # reply.  Also used to create upper case constant equivalents.
     #

@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
-
-# = Retain Models
-#
-# These models represent the "raw" Retain models.  See Retain::Base
-# for more information.
-#
-# Each Retain concept such as Pmr, Call, Queue has a matching Retain
-# model which is used to fetch the data if needed from Retain.
-#
 module Retain
+  # A model representing Retain calls.  See Cached::Calls for a list
+  # of attributes that are cached.  Uses Retain::Pmcb to fetch data
+  # from Retain so see it for what can be retrieved from Retain using
+  # this model.  Also see Combined::Call for how the particulars on
+  # how the Retain model and the Cached model are joined in this
+  # particular instance.
   class Call < Base
     set_fetch_sdi Pmcb
 

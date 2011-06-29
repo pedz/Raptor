@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 module Retain
+  # A model representing Retain APARs.  Currently these are not backed
+  # by a Cached model.  Uses Retain::Ssbr to fetch the data.
   class Apar < Base
     set_fetch_sdi Ssbr
 

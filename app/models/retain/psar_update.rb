@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 module Retain
+  # Model used for making PSAR updates.  Not sure why this is a model
+  # other than it is a block of data like a struct.
   class PsarUpdate
 
     attr_accessor :psar_service_code, :psar_action_code, :psar_cause

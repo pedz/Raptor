@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
-
-#
-# This class is a "model" in the sense that it holds the data elements
-# but it is not backed by a database table.  It is just a record
-# (could be a struct) for fields used in the call update partial.
-#
 module Retain
+  # This is a model used to update a call.  It is in the models
+  # directory because it is used with views to create the update forms
+  # used in the combined qs and combined calls pages.
   class CallUpdate
 
     attr_reader   :call

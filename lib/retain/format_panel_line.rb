@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 module Retain
+  # A line in a Retain format panel. Used by Retain::Field for the
+  # format panel data element 631
   class FormatPanelLine
     def initialize(raw_text)
       @raw_text = raw_text
