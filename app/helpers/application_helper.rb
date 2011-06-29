@@ -66,7 +66,6 @@ module ApplicationHelper
   def std_scripts(*extras)
     [ "prototype",
       "scriptaculous",
-      "firebug/firebug",
       "raptor",
       "application" ] + extras
   end
