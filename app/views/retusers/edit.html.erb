@@ -1,61 +1,61 @@
 <%# -*- coding: utf-8 -*- -%>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <%- content_for(:center) do -%>
-<h1>Editing Retain User</h1>
-<%- if flash.has_key?(:error) -%>
-<p style='width: 40em;'>
-  A logon attempt failed and you were redirected to this screen.  The
-  error from Retain was:<br/>
-  <span style='color: red;'><%= flash[:error] %></span>
-</p>
-<%- end -%>
-<%- if flash.has_key?(:warning) -%>
-<p style='width: 40em;'>
-  A logon attempt was made with the Failed Flag already set.  The
-  logon error recorded that caused the flag to set was:<br/>
-  <span style='color: red;'><%= flash[:warning] %></span>
-</p>
-<%- end -%>
-<p style='width: 40em;'>
-  Note that the Failed Flag must be clicked off.  It is set at the
-  first logon failure and subsequent logons are not even attempted
-  until it is reset.  This is a safety catch so that the "three
-  strikes you're out" doesn't happen.
-</p>
-
-<%= error_messages_for :retuser %>
-
-<% form_for([@user, @retuser]) do |f| %>
-  <p>
-    <b><%= f.label :retid %></b><br />
-    <%= f.text_field :retid %>
+  <h1>Editing Retain User</h1>
+  <%- if flash.has_key?(:error) -%>
+    <p style='width: 40em;'>
+      A logon attempt failed and you were redirected to this screen.  The
+      error from Retain was:<br/>
+      <span style='color: red;'><%= flash[:error] %></span>
+    </p>
+  <%- end -%>
+  <%- if flash.has_key?(:warning) -%>
+    <p style='width: 40em;'>
+      A logon attempt was made with the Failed Flag already set.  The
+      logon error recorded that caused the flag to set was:<br/>
+      <span style='color: red;'><%= flash[:warning] %></span>
+    </p>
+  <%- end -%>
+  <p style='width: 40em;'>
+    Note that the Failed Flag must be clicked off.  It is set at the
+    first logon failure and subsequent logons are not even attempted
+    until it is reset.  This is a safety catch so that the "three
+    strikes you're out" doesn't happen.
   </p>
-  <p>
-    <b><%= f.label :software_node_id %></b><br />
-    <%= f.select :software_node_id, node_selector_list(@retuser.apptest, "software") %>
-  </p>
-  <p>
-    <b><%= f.label :hardware_node_id %></b><br />
-    <%= f.select :hardware_node_id, node_selector_list(@retuser.apptest, "hardware") %>
-  </p>
-  <p>
-    <b><%= f.label :password %></b><br />
-    <%= f.password_field :password %>
-  </p>
-  <p>
-    <b><%= f.label :password_confirmation %></b><br />
-    <%= f.password_field :password_confirmation %>
-  </p>
-  <p>
-    <b>Failed Flag (must be off to log in)</b><br />
-    <%= f.check_box :failed %>
-  </p>
-  <p>
-    <%= f.submit "Update" %>
-  </p>
-<% end %>
-
-<%= link_to 'Show', user_retuser_path(@user, @retuser) %> |
-<%= link_to 'Back to User', user_path(@user) %> |
-<%= link_to 'List of Retain Ids', user_retusers_path(@user) %>
+  
+  <%= error_messages_for :retuser %>
+  
+  <% form_for([@user, @retuser]) do |f| %>
+    <p>
+      <b><%= f.label :retid %></b><br />
+      <%= f.text_field :retid %>
+    </p>
+    <p>
+      <b><%= f.label :software_node_id %></b><br />
+      <%= f.select :software_node_id, node_selector_list(@retuser.apptest, "software") %>
+    </p>
+    <p>
+      <b><%= f.label :hardware_node_id %></b><br />
+      <%= f.select :hardware_node_id, node_selector_list(@retuser.apptest, "hardware") %>
+    </p>
+    <p>
+      <b><%= f.label :password %></b><br />
+      <%= f.password_field :password %>
+    </p>
+    <p>
+      <b><%= f.label :password_confirmation %></b><br />
+      <%= f.password_field :password_confirmation %>
+    </p>
+    <p>
+      <b>Failed Flag (must be off to log in)</b><br />
+      <%= f.check_box :failed %>
+    </p>
+    <p>
+      <%= f.submit "Update" %>
+    </p>
+  <% end %>
+  
+  <%= link_to 'Show', user_retuser_path(@user, @retuser) %> |
+  <%= link_to 'Back to User', user_path(@user) %> |
+  <%= link_to 'List of Retain Ids', user_retusers_path(@user) %>
 <%- end -%>

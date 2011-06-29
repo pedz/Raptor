@@ -1,38 +1,39 @@
 <%# -*- coding: utf-8 -*- -%>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <%- content_for(:center) do -%>
-<h1>Listing Retain Users</h1>
+  <%= render :partial => 'layouts/shared/display_flash' %>
+  <h1>Listing Retain Users</h1>
 
-<table>
-  <tr>
-    <th>User</th>
-    <th>Retain Id</th>
-    <th>Failed</th>
-    <th>Return Value</th>
-    <th>Reason</th>
-    <th>Software Node</th>
-    <th>Hardware Node</th>
-  </tr>
-
-<% for retuser in @retusers %>
-  <tr>
-    <td><%=h retuser.user.ldap_id %></td>
-    <td><%=h retuser.retid %></td>
-    <td><%=h retuser.failed %></td>
-    <td><%=h retuser.return_value %></td>
-    <td><%=h retuser.reason %></td>
-    <td><%=h retuser.software_node.description %></td>
-    <td><%=h retuser.hardware_node.description %></td>
-    <td><%= link_to 'Show', user_retuser_path(@user, retuser) %></td>
-    <td><%= link_to 'Edit', edit_user_retuser_path(@user, retuser) %></td>
-    <% if admin? %>
-      <td><%= link_to 'Destroy', user_retuser_path(@user, retuser), :confirm => 'Are you sure?', :method => :delete %></td>
+  <table>
+    <tr>
+      <th>User</th>
+      <th>Retain Id</th>
+      <th>Failed</th>
+      <th>Return Value</th>
+      <th>Reason</th>
+      <th>Software Node</th>
+      <th>Hardware Node</th>
+    </tr>
+    
+    <% for retuser in @retusers %>
+      <tr>
+	<td><%=h retuser.user.ldap_id %></td>
+	<td><%=h retuser.retid %></td>
+	<td><%=h retuser.failed %></td>
+	<td><%=h retuser.return_value %></td>
+	<td><%=h retuser.reason %></td>
+	<td><%=h retuser.software_node.description %></td>
+	<td><%=h retuser.hardware_node.description %></td>
+	<td><%= link_to 'Show', user_retuser_path(@user, retuser) %></td>
+	<td><%= link_to 'Edit', edit_user_retuser_path(@user, retuser) %></td>
+	<% if admin? %>
+	  <td><%= link_to 'Destroy', user_retuser_path(@user, retuser), :confirm => 'Are you sure?', :method => :delete %></td>
+	<% end %>
+      </tr>
     <% end %>
-  </tr>
-<% end %>
-</table>
-
-<br/>
-<%= link_to 'Create Retain User Id', new_user_retuser_path(@user) %>
-<%= link_to 'Back to User', user_path(@user) %>
+  </table>
+  
+  <br/>
+  <%= link_to 'Create Retain User Id', new_user_retuser_path(@user) %>
+  <%= link_to 'Back to User', user_path(@user) %>
 <%- end -%>

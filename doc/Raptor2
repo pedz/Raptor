@@ -1,0 +1,225 @@
+Raptor 2 is what I'm calling a rather large update to Raptor.  At this
+time (late June of 2011), what will be described below is still very
+fragile.
+
+Raptor 2 is moving into what is becoming known as a web "application"
+where a single web page is as complex as a desktop application.  I
+mention this because to use Raptor 2 effectively, a user will want to
+go to it and then just stay there and leave a tab open to that page
+all the time.  Indeed, firefox 4 (now called Firefox 5) has a way to
+specify this because it is becoming rather prevalent.
+
+We start with a URL, raptor/calls.  There will be an equivalent
+raptor/queues URL as well.  raptor/calls will display Retain calls but
+this concept is soon extended to view PMRs and probably most any
+Retain concept.  But the starting point will be a Retaion call.
+
+The URL has four arguments.  The full URL is:
+raptor/call/:group/:level/:filter/:view where the :something notiation
+denotes a variable.  Currently the argument's position is fixed but as
+we will see, the arguments are also typed so the position constraint
+could be dropped.  Currently the redundancy is used to detect errors.
+Lets look at each of these arguments and to do that, we first need to
+know about Names.
+
+A Name is simply a name like 'ptcpk', which has a type and an owner.
+The name and its properties are always readable by everyone but only
+the owner can change it.  The reason to mention Name here is because
+:group, :level:, :filter, and :view are a specific type of Name.  A
+Name must be unique system wide.  Thus if 'ptcpk' is a group, then it
+can not also be a level.
+
+:group - A group is mostly what it sounds like -- a bag or container.
+Inside the group can be different items of different types.  The best
+example is a Team such as ptcpk which can contain other teams like
+ptcpk-am, ptcpk-emea, and ptcpk-ap.  A team can also have a team lead
+and team members which are specified by their intranet id which I may
+refer to as their LDAP id or their Bluepages id because that is really
+what it is.  A team can also contain the team queues like AMNET,
+PTCPK, PTTY, etc.
+
+Normal users can create groups.  There are two special groups to start
+out.  One if a user's favorite queues is a group whose name is equal
+to the user's retain id -- e.g. 305356 in my case.  This group will be
+the user's default if the group is not specified.  The other special
+name is the user's intranet id which refers to the user's personal
+queue: PEDZ,165 in my case.  The reason for these two particular
+choices is so that groups could be eaiser to create.  If you want
+Joe's personal queue on in your new group, you probably know Joe's
+email address while you probably don't know their retain id.
+
+The user's list of favorite queues can be changed via the favorites
+page but a normal user can also create a group (or any of the concepts
+described here).  As mentioned, the group will be world readable but
+only the owner can change what the group contains.
+
+A group has a type such as Team, Dept (department), or just Group.
+Within each type, items that make sense can be put into them.  All of
+this is soft: driven by database tables which can be quickly altered.
+The reason for the restrictions is because I didn't want things like a
+Dept inside a Team for example.
+
+The group concept has a lot of power.  We can define teams within
+Raptor which can be used to find all the calls that a team owns or all
+the users within a team.  I have hopes that when requeuing from a
+team's incoming queue, the list of people to queue it to will show the
+team member's at the top so they can be picked more easily.
+
+Since users can create groups, a user can have his favorite queues be
+the set of queues he is most interested in.  But he can also define
+other groups.  For example, the queue monitor may want to have a group
+that are the queues of the frontend that feed to him.  Come twelve
+noon on Friday, he can look at that group to see if there are any
+potential five o'clock crises PMRs.  He can switch from viewing one
+group to the other group and back with two clicks.
+
+:level - Groups can contain groups and teams can contain teams and
+groups so the concept of a group is a tree structure.  When a user
+wants to view a group, what does that mean?  Does he want to view only
+the queues in the top level or all the queues throughout the tree?  Or
+perhaps some other set.  The :level argument is how this is
+specified.
+
+The default level is 'all_levels' which selects any queue within the
+group or any of its children.  (By the way, this is done with a
+recursive SQL query -- go figure THAT one out! :-) There is also a
+'top' for just the top level -- useful for look at the team's incoming
+queues if a team is specified in the group.  Other levels can be
+defined.
+
+:filter - Once you have the group of queues, a join is done for all
+the calls on those queues along with their associated PMRs.  Other
+tables might be added to this although it is a balancing act between
+power and speed.  A filter is then applied to select out which calls
+to send to the browser.  The default is 'all_calls'.  It will be
+fairly simple to create a 'severity_one' filter or a filter for
+crit-sit calls, very old PMRs, etc.  The filter selects the calls to
+send to the browser.  Only the calls are sent initially.
+
+:view - What do you want to see?  Now, you can define what that is.  A
+view specifies which fields you will see displayed.  The default view
+is 'standard' and will grow to recreate what is seen on Raptors
+"combined_qs" page -- i.e. damn near everything I can think of to
+display.
+
+I don't expect most people to define their own views but I am
+anticipating some people defining views and perhaps they will be
+shared around and grown.  In particular, the layout of the view I can
+imagine being something that a fair number of people tweak and alter
+slightly.  The current interface is crude but the initial concept is
+that a user can create a view from scratch or can duplicate a view by
+just giving it another name.  He will then own the copy and can then
+make change to it.
+
+A view has a two dimentional grid of elements much like an HTML
+table.  The user can specify which piece of data to put into each
+cell.  The way this is done, once a view is created, is to create
+elements.  Each element has a row and column as well as a row span and
+column span.  These four concepts map directly onto HTML's
+attributes.  Then each element points to a 'widget'.
+
+A widget can also be created by any user and is simply a name and a
+chunk of javascript code.  The API for this chunk of code is rather
+simple but can specify the header, body, and footer elements as well
+as the text, style, and attributes for each of those elements.  All of
+these are optional.  All of them can be either simple strings or
+complete javascript functions that do whatever is imaginable.  One
+additional interface is a compare function (also optional).  If
+specified, then the table is sortable by that column using this
+compare function.  All this is already implement and only needs to be
+documented so if you are interested in concocting views and widgets,
+come see me.
+
+Now for the mega cool stuff...  How, you ask, do these functions
+access the data if only the calls are sent over initially?  For
+example, who do I display the queue name that the call is on?  The
+answer is:
+
+The person who writes the widget needs to know the layout of the
+database but it is rather obvious.  For example, a call has a field
+called queue that points (I'll use the term) "back" to the queue and a
+field called pmr that points to the PMR.  The queue has a field
+queue_name.  Thus call.queue.queue_name is the name of the queue that
+the call is on.  If you want a widget to display the queue name, that
+would simply be:
+
+function (call) {
+  return call.queue.queue_name;
+}
+
+B b b but....!!! you ask, how does it get the queue since the queue is
+not sent to the browser -- initially.
+
+When the call comes over to the browser (and any other data objects),
+each 'association' is given a special accessor method.  An association
+is, for example, call.queue.  i.e. anytime one object points to
+another object.  But call.ppg is not since ppg is directly in the
+call's record.  The widget writer doesn't need to know this.  He just
+needs to know the fields of each record type and which records point
+to which -- all of which is documented.
+
+The widget writer can go traipsing around as if the entire database is
+within the browser.  When call.queue is touch, the equivalent of a
+page fault happens.  The browser sends a request via AJAX to fetch the
+queue.  When that fetch completes the widget's function is restarted
+(from the top) and proceeds down until it either completes and returns
+or hits another association that causes another fetch.
+
+You might ask -- what about performance?  This will be an interesting
+thing to watch.  Currently I can present all the calls for all of
+ptcpk (including AM, EMEA, and AP).  The browser begins to display
+within 5 seconds and the final display is complete within 30 seconds.
+But now I remind you of the second paragraph above.  Raptor is now a
+web application.  Once all this is fetched and in your browser, the
+only reason to fetch all of that again is if you move away from the
+page and then back to it.  If you stay on the page, all that data is
+kept in the browser.  If you switch to a different queue (within the
+same browser page) and flip back, the redraw will be instant.  As time
+goes by, there will be widgets to display the contents of the PMR or
+the details of a customer's record and of course, widgets to do
+updates and alters like Raptor does with its combined_qs and
+combined_calls pages now.
+
+"Ok", you say, "but how, when, where, why is the data going to be kept
+up to date?"
+
+Curnretly Raptor 2 is using "pull" technology so the browser will send
+rather crude "pings" asking if anything has changed to the Raptor
+server.  Already on the standard view is a column called LRQ which
+stands for "Last Retain Query" and is given as a time interval (e.g. 5
+minutes).  For a particular call, it will be how long ago the *oldest*
+of the queue, call, and PMR has been fetched from Retain.  You should
+expect to see times ranging up to a half hour except on the initial
+load.  On the initial load, you can see "unfetched" which means that
+something has never been fetched (i.e. Raptor just discovered a new
+call on your queue but the browser asked for the PMR before it had
+been fetched) or an arbitray length of time since a PMR on your queue
+might not be fetched by anyone else other than you.  And if you logged
+off twelve days ago, then the initial fetch will show LRQ times of
+twelve days.  But, at least you will know what you are looking at.
+
+Each time the browser asks for a piece of data, Raptor schedules a
+background task to update that data if it needs to be.  The "if it
+needs to be" is specified, currently, by fixed constants inside
+Raptor.  Just as there is the shift+refresh option on the combined_qs
+page for force Raptor to ignore all its caches and refetch all the
+data, there will be a refresh button on the view pages that will force
+the back end to refetch the data from Retain.
+
+The complete sequence is you go to the calls page and get the initial
+load.  As the initial load asks for the queues, calls, and PMRs (along
+with other goodies that the view needs), the backend will be fetching
+them from Retain.  The initial copy you receive will be old.  It may
+be good enough.  The browser will notice that some of the things on
+the page perhaps are either unfetched and really old.  After a short
+time (like a minute), it will issue an AJAX call to see if those items
+have been updated yet (and they will have been probably unless
+something is broken) and then refresh the view with the new data.
+
+Within probably six months, I hope to release Raptor 3 which will use
+Rails 3 along with some other attachments and Raptor 3 will use "push"
+technology where the browser will open and leave open a web socket
+back to the server.  As the server sees updates happening, it will
+push the updates out to the interested parties.  It should be that as
+soon as one Raptor user puts an update in a PMR, all the other
+interested Raptor user's will see that update, live, within seconds.

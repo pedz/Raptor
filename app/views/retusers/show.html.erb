@@ -1,44 +1,45 @@
 <%# -*- coding: utf-8 -*- -%>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <%- content_for(:center) do -%>
-<p>
-  <b>User:</b>
-  <%=h @retuser.user.ldap_id %>
-</p>
-<p>
-  <b>Retain Id:</b>
-  <%=h @retuser.retid %>
-</p>
-<p>
-  <b>Failed:</b>
-  <%=h @retuser.failed %>
-</p>
-<p>
-  <b>Return Value:</b>
-  <%=h @retuser.logon_return %>
-</p>
-<p>
-  <b>Reason:</b>
-  <%=h @retuser.logon_reason %>
-</p>
-<p>
-  <b>Software Node:</b>
-  <%- if admin? -%>
-    <%= link_to @retuser.software_node.description, retain_node_selector_path(@retuser.software_node) %>
-  <%- else -%>
-    <%=h @retuser.software_node.description %>
-  <%- end -%>
-</p>
-<p>
-  <b>Hardware Node:</b>
-  <%- if admin? -%>
-    <%= link_to @retuser.hardware_node.description, retain_node_selector_path(@retuser.hardware_node) %>
-  <%- else -%>
-    <%=h @retuser.hardware_node.description %>
-  <%- end -%>
-</p>
-
-<%= link_to 'Edit', edit_user_retuser_path(@user, @retuser) %> |
-<%= link_to 'Back to User', user_path(@user) %> |
-<%= link_to 'List of Retain Ids', user_retusers_path(@user) %>
+  <%= render :partial => 'layouts/shared/display_flash' %>
+  <p>
+    <b>User:</b>
+    <%=h @retuser.user.ldap_id %>
+  </p>
+  <p>
+    <b>Retain Id:</b>
+    <%=h @retuser.retid %>
+  </p>
+  <p>
+    <b>Failed:</b>
+    <%=h @retuser.failed %>
+  </p>
+  <p>
+    <b>Return Value:</b>
+    <%=h @retuser.logon_return %>
+  </p>
+  <p>
+    <b>Reason:</b>
+    <%=h @retuser.logon_reason %>
+  </p>
+  <p>
+    <b>Software Node:</b>
+    <%- if admin? -%>
+      <%= link_to @retuser.software_node.description, retain_node_selector_path(@retuser.software_node) %>
+    <%- else -%>
+      <%=h @retuser.software_node.description %>
+    <%- end -%>
+  </p>
+  <p>
+    <b>Hardware Node:</b>
+    <%- if admin? -%>
+      <%= link_to @retuser.hardware_node.description, retain_node_selector_path(@retuser.hardware_node) %>
+    <%- else -%>
+      <%=h @retuser.hardware_node.description %>
+    <%- end -%>
+  </p>
+  
+  <%= link_to 'Edit', edit_user_retuser_path(@user, @retuser) %> |
+  <%= link_to 'Back to User', user_path(@user) %> |
+  <%= link_to 'List of Retain Ids', user_retusers_path(@user) %>
 <%- end -%>

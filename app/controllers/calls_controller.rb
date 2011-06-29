@@ -1,10 +1,41 @@
 # -*- coding: utf-8 -*-
 #
-# Note that this is *not* a subclass of RetainController.  This will
-# work entirely from cached data and trigger updates to that cached
-# data via asynchronous updates.
+# Controller for the "calls" path.  The routes for this controller
+# are:
 #
-class CallsController < ApplicationController
+#    map.calls("calls/:group/:levels/:filter/:view",
+#              :controller => 'calls',
+#              :action => 'index',
+#              :group => /[^\/]+/)
+#  
+#    map.calls("calls/:group/:levels/:filter",
+#              :controller => 'calls',
+#              :action => 'index',
+#              :group => /[^\/]+/)
+#  
+#    map.calls("calls/:group/:levels",
+#              :controller => 'calls',
+#              :action => 'index',
+#              :group => /[^\/]+/)
+#  
+#    map.calls("calls/:group",
+#              :controller => 'calls',
+#              :action => 'index',
+#              :group => /[^\/]+/)
+#  
+#    map.calls("calls",
+#              :controller => 'calls',
+#              :action => 'index')
+#  
+#
+# This is a subclass of RetainController because we want to
+# verify that the user has a valid retain id because he is going to
+# cause background fetches to start and we want some hope that they
+# will work.  We also don't want people without Retain ids viewing the
+# data.  But, this controller does not use any of the Combined or
+# Retain models.
+#
+class CallsController < Retain::RetainController
   # Called with four optional arguments:
   #
   #   1 :group Specifies a group of queues.  This may be one of:

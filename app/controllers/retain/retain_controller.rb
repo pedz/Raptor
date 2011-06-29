@@ -72,10 +72,16 @@ module Retain
       
       # If no retusers defined for this user, then redirect and
       # set up a retain user.
-      if application_user.current_retain_id.nil?
+      if (retuser = application_user.current_retain_id).nil?
         # logger.debug("RTN: nil current_retain_id")
         session[:original_uri] = request.request_uri
         redirect_to new_user_retuser_url(application_user)
+        return false
+      end
+
+      if retuser.failed
+        flash[:warning] = find_logon_error(retuser.logon_return, retuser.logon_reason)
+        common_failed_logon(retuser)
         return false
       end
 
