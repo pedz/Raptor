@@ -24,7 +24,7 @@ module Json
                               :resolver => { }
                             },
                             # :methods => [ :last_ct, :last_ct_time ],
-                            :except => [ :last_alter_timestamp ]
+                            # :except => [ :last_alter_timestamp ]
                           }
                         },
                         # :methods => [ :needs_initial_response?, :center_entry_time ],

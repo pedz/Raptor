@@ -144,12 +144,17 @@ module Cached
              :foreign_key => "pmr_id")
 
     def as_json(options = { })
+      if options.has_key? :except
+        except = [ options[:except] ].push(:last_alter_timestamp).flatten.uniq
+      else
+        except = :last_alter_timestamp
+      end
       if options.has_key? :methods
         methods = [ options[:methods] ].push(:last_ct_time).flatten.uniq
       else
         methods = :last_ct_time
       end
-      super(options.merge(:methods => methods));
+      super(options.merge(:methods => methods, :except => except));
     end
     # set_as_json_default_options(:methods => [ :last_ct_time ])
 
