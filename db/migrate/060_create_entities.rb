@@ -35,10 +35,20 @@ class CreateEntities < ActiveRecord::Migration
                 UNION ALL
                   SELECT
                     retid AS name,
-                    'Retuser' AS item_type,
+                    'Retuser' AS real_type,
                     id AS item_id
                   FROM
                     retusers
+                UNION ALL
+                  SELECT
+                    q.queue_name || ',' || q.h_or_s || ',' || c.center AS name,
+                    'Cached::Queue' AS real_type,
+                    q.id AS item_id
+                  FROM
+                    cached_queues q,
+                    cached_centers c
+                  WHERE
+                    q.center_id = c.id
             ) AS t1
             LEFT OUTER JOIN
             (

@@ -18,7 +18,11 @@ class CreateContainments < ActiveRecord::Migration
           cqi.queue_id AS item_id,
           'Cached::Queue' AS item_type,
           1 AS level
-        FROM users u, retusers r, cached_registrations cr, cached_queue_infos cqi
+        FROM
+          users u,
+          retusers r,
+          cached_registrations cr,
+          cached_queue_infos cqi
         WHERE
           u.id = r.user_id AND
           r.retid = cr.signon AND
@@ -30,7 +34,8 @@ class CreateContainments < ActiveRecord::Migration
           f.queue_id AS item_id,
           'Cached::Queue' AS item_type,
           1 AS level
-        FROM favorite_queues f
+        FROM
+          favorite_queues f
       ;"
   end
 

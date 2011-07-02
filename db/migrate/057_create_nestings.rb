@@ -24,12 +24,21 @@ class CreateNestings < ActiveRecord::Migration
           *
         FROM
           temp
-        ORDER BY
-          container_type,
-          container_id,
-          item_type,
-          item_id
-      ;"
+      UNION ALL
+        SELECT
+          q.id AS container_id,
+          'Cached::Queue' AS container_type,
+          q.id AS item_id,
+          'Cached::Queue' AS item_type,
+          1 AS level
+        FROM
+          cached_queues q
+      ORDER BY
+        container_type,
+        container_id,
+        item_type,
+        item_id
+    ;"
   end
 
   def self.down

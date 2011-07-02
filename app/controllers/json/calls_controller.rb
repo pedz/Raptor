@@ -13,6 +13,8 @@ module Json
       levels = Entity.find_by_name(levels)
       filter = Entity.find_by_name(filter)
 
+      logger.debug("group = #{group.inspect}")
+      logger.debug("group.item = #{group.item.inspect}")
       nestings = group.item.nestings.
         find(:all, :conditions => "(#{levels.item.condition.sql}) AND (item_type = 'Cached::Queue')")
       queue_ids = nestings.map(&:item_id).uniq

@@ -117,10 +117,16 @@ module Cached
     has_many :item_containments, :class_name => "Containment", :as => :item
 
     ##
+    # :attr: nestings
+    # A has_many association to Nesting that specifies this Name as the
+    # container.
+    has_many :nestings, :as => :container
+
+    ##
     # :attr: item_nestings
     # A has_many assocation to Nesting that uses this object as
     # the item being contained.
-    has_many :item_nestings, :class_name => "Nesting", :as => :item
+    has_many :nesting_items, :class_name => "Nesting", :as => :item
 
     # A class method that returns the list of team queues.  This are
     # queues that do not have a Cached::QueueInfo entry.
