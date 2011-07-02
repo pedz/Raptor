@@ -1,0 +1,18 @@
+<%# -*- coding: utf-8 -*- -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<% @title = "Socket Error" %>
+<% content_for(:center) do %>
+  <h2 style='text-align: center; color: red; width: 60ex;'>
+    We had a socket error.  This is usually due to a DNS lookup
+    failure which is often due to the VPN being down when I'm working
+    from home.  If this is the production or staging server, then the
+    host is having severe network issues.
+  </h2>
+<% end %>
+
+<% content_for(:bottom) do %>
+  <div>
+    <%= button_url("Home", "/") %>
+    <%= button_url("Favorites", favorite_queues_path) %>
+  </div>
+<% end %>

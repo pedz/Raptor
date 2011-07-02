@@ -163,9 +163,11 @@ module Retain
         FailedMarkedTrue,
         RetainLogonEmpty,
         RetainLogonShort,
-        Errno::ECONNREFUSED
+        Errno::ECONNREFUSED,
+        SocketError
         raise
       rescue => err
+        logger.debug("#{err.class}")
         raise SDIError.new(err.message, self, err.backtrace)
       end
       

@@ -347,7 +347,11 @@ Raptor.viewOnSuccessWrapper = function (response, x_json) {
 	Raptor.viewOnSuccess(response, x_json);
 	console.log('viewOnSuccess completed');
     } catch (err) {
-	Raptor.displayException(err);
+	try {
+	    Raptor.displayException(err);
+	} catch (err2) {
+	    Raptor.flagUser(err2);
+	}
     }
 };
 
@@ -736,39 +740,59 @@ Raptor.sortTable = function (ele) {
 };
 
 /**
+ * Called if displayException has an exception.  This tries to just
+ * put a red message just below the body.
+ */
+ Raptor.flagUser = function (err) {
+ };
+
+
+/**
  * Catches and displays any exception that might happen while this
  * code or the widget code is executing.
  * @function
  */
 Raptor.displayException = function (err) {
-    var pageTemplate = new Template('<html><head><title>Exception Caught</title></head><body><h3>#{message} At #{fileName} line #{lineNumber}</h3><p>Stack<br/>#{stack}</p></body></html>');
-    var lineTemplate = new Template('[#{index}] function #{args} called at #{file} line #{line}');
+    try {
+	var pageTemplate = new Template('<html><head><title>Exception Caught</title></head><body><h3>#{message} At #{fileName} line #{lineNumber}</h3><p>Stack<br/>#{stack}</p></body></html>');
+	var lineTemplate = new Template('[#{index}] function #{args} called at #{file} line #{line}');
 
-    err.fileName = err.fileName.sub(/\?.*/, '');
-    err.stack = err.stack.split(/[\r\n]+/).map(function (line, index, stack) {
-	var o;
-	var split1;
-	var split2;
-
-	o = { index: index };
-	split1 = line.split('@');
-	if (split1.length !== 2)
-	    return '';
-	split2 = split1[1].split(':');
-	o.line = split2.pop();
-	o.args = split1[0];
-	if (split2.length > 1 || split2[0] !== '')
-	    o.file = split2.join(':').sub(/\?.*/, '');
-	else
-	    o.file = '';
-	return lineTemplate.evaluate(o);
-    }).join('<br />');
-    var win = window.open('',
-			  'Exception Caught',
-			  'location=no,top=200,left=200,width=800,height=200');
-    var doc = win.document;
-    doc.write(pageTemplate.evaluate(err));
-    doc.close();
+	err.fileName = err.fileName.sub(/\?.*/, '');
+	err.stack = err.stack.split(/[\r\n]+/).map(function (line, index, stack) {
+	    var o;
+	    var split1;
+	    var split2;
+	    
+	    o = { index: index };
+	    split1 = line.split('@');
+	    if (split1.length !== 2)
+		return '';
+	    split2 = split1[1].split(':');
+	    o.line = split2.pop();
+	    o.args = split1[0];
+	    if (split2.length > 1 || split2[0] !== '')
+		o.file = split2.join(':').sub(/\?.*/, '');
+	    else
+		o.file = '';
+	    return lineTemplate.evaluate(o);
+	}).join('<br />');
+	var win = window.open('',
+			      'Exception Caught',
+			      'location=no,top=200,left=200,width=800,height=200');
+	var doc = win.document;
+	doc.write(pageTemplate.evaluate(err));
+	doc.close();
+    } catch (err2) {
+	var e = new Element('p');
+	e.update(err2);
+	e.setStyle({ color: 'red'});
+	$$('body')[0].insert({top: e});
+	e = new Element('p');
+	e.update('displayException had an error -- please paste this along with the following line to Perry');
+	e.setStyle({ color: 'red'});
+	$$('body')[0].insert({top: e});
+	console.log('displayException had an error', err);
+    }
 };
 
 /**

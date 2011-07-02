@@ -106,8 +106,16 @@ class AsyncRequest
       Rails.logger.error "Worker: ECONNREFUSED to Retain -- check the punch throughs!"
       return
 
+    rescue SocketError
+      Rails.logger.error "Worker: SocketError to Retain -- VPN probably down"
+      return
+
+    rescue Retain::SDIError => exception
+      Rails.logger.error "Worker: Unexpected exception #{exception.class} #{exception.message}:#{exception.backtrace}"
+      return
+
     rescue Exception => exception
-      Rails.logger.error "Worker: Unexpected exception #{exception.message}:#{exception.backtrace}"
+      Rails.logger.error "Worker: Unexpected exception #{exception.class} #{exception.message}:#{exception.backtrace}"
       return
     end
   end

@@ -17,6 +17,7 @@ module Retain
     rescue_from Retain::RetainLogonShort,   :with => :retain_logon_short
     rescue_from Retain::SdiDidNotReadField, :with => :retain_did_not_read_field
     rescue_from Errno::ECONNREFUSED,        :with => :cannot_reach_retain
+    rescue_from SocketError,                :with => :socket_error
 
     # The @retain_user_connection_parameters attribute, the
     # retain_user_connection_parameters method, the @signon_user
@@ -209,6 +210,14 @@ module Retain
       logger.error(exception.message)
       logger.error(exception.backtrace.join("\n"))
       render "retain/errors/cannot_reach_retain", :layout => "retain/errors", :status => 500
+    end
+
+    def socket_error(exception)
+      @exception = exception
+      logger.error("SocketError caught -- Usually DNS for host lookup failed")
+      logger.error(exception.message)
+      logger.error(exception.backtrace.join("\n"))
+      render "retain/errors/socket_error", :layout => "retain/errors", :status => 500
     end
   end
 end
