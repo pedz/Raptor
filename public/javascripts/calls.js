@@ -701,14 +701,21 @@ Raptor.sortTable = function (ele) {
     var cmp = ele.widgetCode.cmp;
     var reverse = false;
     var domElement = ele.domElement; //this is the 'th' element
-    
+    var flag = domElement.hasClassName('sorted-up');
 
-    if (domElement.hasClassName('sorted-up')) {
+    /* Delete other sorted class names */
+    [ 'sorted-down', 'sorted-up' ].forEach(function(domClass) {
+	$$('.' + domClass).each(function(ele) {
+	    ele.removeClassName(domClass);
+	    ele.addClassName('sortable');
+	});
+    });
+
+    if (flag) {
 	reverse = true;
-	domElement.removeClassName('sorted-up');
+	domElement.removeClassName('sortable');
 	domElement.addClassName('sorted-down');
     } else {
-	domElement.removeClassName('sorted-down');
 	domElement.removeClassName('sortable');
 	domElement.addClassName('sorted-up');
     }
