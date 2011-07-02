@@ -15,7 +15,7 @@ module Json
 
       nestings = group.item.nestings.
         find(:all, :conditions => "(#{levels.item.condition.sql}) AND (item_type = 'Cached::Queue')")
-      queue_ids = nestings.map(&:item_id)
+      queue_ids = nestings.map(&:item_id).uniq
 
       # There may be a better way to do this but for now, I'm just
       # going to fetch the queues and then ask them to be fetched.
