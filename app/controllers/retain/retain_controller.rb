@@ -112,6 +112,7 @@ module Retain
       # logger.debug("logon failed")
       # Find the retuser record and set the failed bit to true so we
       # do not retry until the user resets his password.
+      set_expires_now
       retuser = application_user.current_retain_id
       retuser.failed = true
       retuser.logon_return = exception.logon_return
@@ -123,6 +124,7 @@ module Retain
     end
 
     def failed_marked_true(exception)
+      set_expires_now
       retuser = application_user.current_retain_id
       flash[:warning] = find_logon_error(retuser.logon_return, retuser.logon_reason)
       common_failed_logon(retuser)
@@ -176,27 +178,32 @@ module Retain
     end
 
     def not_found_page(exception)
+      set_expires_now
       @exception = exception
       # logger.debug("ETAG = '#{response.etag}'")
       render "retain/errors/not_found_page", :layout => "retain/errors", :status => 404
     end
 
     def sdi_error_page(exception)
+      set_expires_now
       @exception = exception
       render "retain/errors/sdi_error_page", :layout => "retain/errors", :status => 500
     end
 
     def retain_logon_empty(exception)
+      set_expires_now
       @exception = exception
       render "retain/errors/retain_logon_empty", :layout => "retain/errors", :status => 500
     end
 
     def retain_logon_short(exception)
+      set_expires_now
       @exception = exception
       render "retain/errors/retain_logon_short", :layout => "retain/errors", :status => 500
     end
 
     def retain_did_not_read_field(exception)
+      set_expires_now
       @exception = exception
       logger.error(exception.message)
       logger.error("Did not read #{exception.field_name}")
@@ -205,6 +212,7 @@ module Retain
     end
 
     def cannot_reach_retain(exception)
+      set_expires_now
       @exception = exception
       logger.error("Errno::ECONNREFUSED caught -- can not reach retain")
       logger.error(exception.message)
@@ -213,6 +221,7 @@ module Retain
     end
 
     def socket_error(exception)
+      set_expires_now
       @exception = exception
       logger.error("SocketError caught -- Usually DNS for host lookup failed")
       logger.error(exception.message)

@@ -26,8 +26,8 @@ class ApplicationController < ActionController::Base
     NONE_AUTHENTICATE = File.exists?(RAILS_ROOT + "/config/no_ldap")
   end
 
+  rescue_from Exception, :with => :uncaught_exception
   rescue_from ActiveRecord::StatementInvalid, :with => :pgerror_handler
-
   rescue_from 'ActiveLdap::LdapError' do |exception|
     render :text => "<h2 style='text-align: center; color: red;'>LDAP Error: #{exception.message}</h2>"
   end
@@ -201,21 +201,6 @@ class ApplicationController < ActionController::Base
       request.env['REDIRECT_X_HTTP_AUTHORIZATION']
   end
 
-  def pgerror_handler(exception)
-    @exception = exception
-    msg = exception.message
-    logger.error(exception.to_s)
-    logger.error(exception.backtrace.join("\n"))
-    if msg.match(/duplicate key .*violates unique constraint/)
-      render "pgerrors/duplicate_key.html", :layout => "pgerrors"
-      return
-    end
-    if msg.match(/violates not-null constraint/)
-      render "pgerrors/not_null.html", :layout => "pgerrors"
-      return
-    end
-    render "pgerrors/unknown.html", :layout => "pgerrors"
-  end
   
   # A normal user can only look around at their own record.
   def check_user(user_id)
@@ -242,4 +227,38 @@ class ApplicationController < ActionController::Base
       redirect_to(:controller => "welcome", :action => "index", :status => 403)
     end
   end
+
+  protected
+
+  def set_expires_now
+    expires_now
+    headers.delete('ETag')
+    headers.delete('Last-Modified')
+  end
+
+  private
+
+  def pgerror_handler(exception)
+    set_expires_now
+    @exception = exception
+    msg = exception.message
+    logger.error(exception.to_s)
+    logger.error(exception.backtrace.join("\n"))
+    if msg.match(/duplicate key .*violates unique constraint/)
+      render "pgerrors/duplicate_key.html", :layout => "pgerrors"
+      return
+    end
+    if msg.match(/violates not-null constraint/)
+      render "pgerrors/not_null.html", :layout => "pgerrors"
+      return
+    end
+    render "pgerrors/unknown.html", :layout => "pgerrors"
+  end
+
+  def uncaught_exception(exception)
+    set_expires_now
+    raise exception
+  end
+
+
 end

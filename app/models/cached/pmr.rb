@@ -189,12 +189,6 @@ module Cached
     end
 
     def etag
-      # old method
-      # ret = "#{self.problem},#{self.branch},#{self.country}"
-      # last_alter_timestamp.each_byte { |b| ret << ("%02x" % b) }
-      # ret
-
-      # New method: an array that is the id and the last alter timestamp
       [ problem, branch, country, last_alter_timestamp ]
     end
     once :etag

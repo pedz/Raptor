@@ -35,13 +35,10 @@ module Json
       fresh_when(:last_modified => last_fetched, :etag => calls)
 
       unless request.fresh?(response)
-        logger.error("HEY... sending JSON!")
         render :json => {
           :class_name => "Cached::Call",
           :calls => calls
         }
-      else
-        logger.error("HEY... no response!")
       end
     end
   end
