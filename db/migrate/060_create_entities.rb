@@ -15,35 +15,40 @@ class CreateEntities < ActiveRecord::Migration
           argument_type_id,
           argument_type,
           \"default\",
-          position
+          position,
+          updated_at
         FROM
         (
             (
                 SELECT
                   name AS name,
                   type AS real_type,
-                  id AS item_id
+                  id AS item_id,
+                  updated_at AS updated_at
                 FROM
                   names
                 UNION ALL
                   SELECT
                     ldap_id AS name,
                     'User' AS real_type,
-                    id AS item_id
+                    id AS item_id,
+                    updated_at AS updated_at
                   FROM
                     users
                 UNION ALL
                   SELECT
                     retid AS name,
                     'Retuser' AS real_type,
-                    id AS item_id
+                    id AS item_id,
+                    updated_at AS updated_at
                   FROM
                     retusers
                 UNION ALL
                   SELECT
                     q.queue_name || ',' || q.h_or_s || ',' || c.center AS name,
                     'Cached::Queue' AS real_type,
-                    q.id AS item_id
+                    q.id AS item_id,
+                    q.updated_at AS updated_at
                   FROM
                     cached_queues q,
                     cached_centers c

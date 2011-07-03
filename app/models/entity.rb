@@ -95,4 +95,8 @@ class Entity < ActiveRecord::Base
   def nestings
     item.nestings
   end
+
+  def to_json(options = nil)
+    attributes.to_json(options)
+  end
 end

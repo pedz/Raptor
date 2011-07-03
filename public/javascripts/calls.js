@@ -282,27 +282,6 @@ Raptor.createRenderElementContainer = function (domElementType) {
 };
 
 /**
- * Look inside the arguments table and piece together an object that
- * represents the arguments that the user has choosen.
- * @function
- */
-Raptor.getCurrentArguments = function() {
-    var head = $('arguments').down('thead').down('tr');
-    var body = $('arguments').down('tbody').down('tr');
-    var pos = 0;
-    var th;
-    var td;
-
-    Raptor.currentArguments = { };
-    while (typeof(th = head.down('th', pos)) != 'undefined') {
-	td = body.down('td', pos);
-	Raptor.currentArguments[th.collectTextNodes().gsub(/[ \n\t]+/, '')] = 
-	    td.collectTextNodes().gsub(/[ \n\t]+/, '');
-	pos = pos + 1;
-    }
-};
-
-/**
  * Fetches the desired view and its elements from the server.
  * @function
  */
@@ -347,11 +326,7 @@ Raptor.viewOnSuccessWrapper = function (response, x_json) {
 	Raptor.viewOnSuccess(response, x_json);
 	console.log('viewOnSuccess completed');
     } catch (err) {
-	try {
-	    Raptor.displayException(err);
-	} catch (err2) {
-	    Raptor.flagUser(err2);
-	}
+	Raptor.displayException(err);
     }
 };
 
@@ -559,6 +534,48 @@ Raptor.callsUrl = function () {
 };
 
 /**
+ * Function that will return the URL for the page.
+ */
+Raptor.locationUrl = function () {
+    return Raptor.locationUrlPattern.evaluate(Raptor.currentArguments);
+};
+
+/**
+ * Function to update the argument table with the arguments.
+ */
+Raptor.updateArgumentTable = function () {
+    var newBody = Raptor.argumentTablePattern.evaluate(Raptor.currentArguments);
+    $('arguments').down('tbody').update(newBody);
+    Raptor.observeArgumentButtons();
+};
+
+Raptor.observeArgumentButtons = function () {
+    var tbody = $('arguments').down('tbody').down('tr');
+    
+    Raptor.argumentSequence.forEach(function (name, pos, array) {
+	var button = tbody.down('button', pos);
+	button.on('click', function(event) {
+	    Raptor.pickNewArgument(name, pos, event);
+	});
+    });
+};
+
+Raptor.pickNewArgument = function (name, pos, event) {
+    var pickNewArgument = function(response, x_json) {
+	console.log('vigina');
+    };
+
+    var failure = function(response, x_json) {
+    };
+
+    new Ajax.Request(Raptor.jsonUrl + '/entities', {
+	onSuccess: pickNewArgument,
+	onFailure: failure,
+	method: 'get'
+    });
+};
+
+/**
  * The call table is made up of three sections: header, footer, and body
  * (after the HTML thead, tfoot, and tbody sections).  Each call is put
  * into its own tbody.  This allows the rows created by the widgets to
@@ -747,14 +764,6 @@ Raptor.sortTable = function (ele) {
 };
 
 /**
- * Called if displayException has an exception.  This tries to just
- * put a red message just below the body.
- */
- Raptor.flagUser = function (err) {
- };
-
-
-/**
  * Catches and displays any exception that might happen while this
  * code or the widget code is executing.
  * @function
@@ -795,7 +804,8 @@ Raptor.displayException = function (err) {
 	e.setStyle({ color: 'red'});
 	$$('body')[0].insert({top: e});
 	e = new Element('p');
-	e.update('displayException had an error -- please paste this along with the following line to Perry');
+	e.update('displayException had an error -- please paste this along with the ' +
+		 'following line to Perry');
 	e.setStyle({ color: 'red'});
 	$$('body')[0].insert({top: e});
 	console.log('displayException had an error', err);
@@ -803,7 +813,47 @@ Raptor.displayException = function (err) {
 };
 
 /**
+ * Look inside the arguments table and piece together an object that
+ * represents the arguments that the user has choosen.
+ * @function
+ */
+Raptor.getCurrentArguments = function() {
+    var head = $('arguments').down('thead').down('tr');
+    var body = $('arguments').down('tbody').down('tr');
+    var bodyPattern = '';
+    var pos = 0;
+    var name, value;
+    var th, td;
+
+    Raptor.currentArguments = { };
+    Raptor.argumentSequence = [ ];
+    while (typeof(th = head.down('th', pos)) != 'undefined') {
+	td = body.down('td', pos);
+	name = th.collectTextNodes().gsub(/[ \n\t]+/, '');
+	value = td.collectTextNodes().gsub(/[ \n\t]+/, '');
+	Raptor.currentArguments[name] = value;
+	Raptor.argumentSequence[pos] = name;
+	pos = pos + 1;
+	bodyPattern = bodyPattern + '<td><button>#{' + name + '}</button></td>';
+    }
+    Raptor.argumentTablePattern = new Template(bodyPattern);
+    Raptor.observeArgumentButtons();
+};
+
+/**
  * Called via the on load complete hook to process the calls page.
+ *
+ * The assumption is that the location is some path followed by some
+ * number of arguments.  In the current case, there are four
+ * arguments.  The last argument is the name of the view.  The other
+ * arguments (three in this case) are used to select the calls to
+ * display.  The other assumption is that the last segment of the path
+ * is removed and 'json' is added before it.
+ *
+ * Example: If /path/to/page/last/a/b/c/d is the URL, then
+ * /path/to/page/json/last/a/b/c is the path to the calls while
+ * /path/to/page/json/view/d is the path to the view.
+ *
  * This calls Raptor.getCurrentArguments to interpret the arguments
  * table.  It then creates the data structures for the viewUrl and
  * callsUrl to function properly.  It then calls Raptor.fetchCalls and
@@ -813,37 +863,58 @@ Raptor.displayException = function (err) {
 Raptor.runCalls = function() {
     var callUrlParts;
     var viewUrlParts;
-    var view;			// Not sure I need these.
-    var filter;
-    var levels;
-    var group;
+    var locationUrlParts;
+    var count;
     var calls;
+
     Raptor.getCurrentArguments();
     callUrlParts = window.location.href.split('/');
 
-    /*
-     * The code "knows" that the last four components are group,
-     * levels, filter, and view and it also "knows" that we want to
-     * add a "json" component to the URL before the "calls".  The only
-     * other choice would be to send this information in a script tag
-     * which will keep all that intellegence in the ruby code instead
-     * of in two places.
+    for (count = 0; count < Raptor.argumentSequence.length; count++)
+	callUrlParts.pop();
+
+    /* Make the location template */
+    locationUrlParts = callUrlParts.slice(0);
+    Raptor.argumentSequence.forEach(function (arg) {
+	locationUrlParts.push('#{' + arg + '}');
+    });
+
+    /**
+     * Pattern to reconstruct the URL of the page being viewed.
      */
-    view   = callUrlParts.pop();
-    filter = callUrlParts.pop();
-    levels = callUrlParts.pop();
-    group  = callUrlParts.pop();
-    calls  = callUrlParts.pop();
+    Raptor.locationUrlPattern = new Template(locationUrlParts.join('/'));
+
+    calls = callUrlParts.pop();
+
+    /**
+     * the base URL to get to the Raptor application.
+     */
+    Raptor.baseUrl = callUrlParts.join('/');
+
     callUrlParts.push('json');
+
+    /**
+     * the base URL for the JSON entities.
+     */
+    Raptor.jsonUrl = callUrlParts.join('/');
+
     viewUrlParts = callUrlParts.slice(0);
     callUrlParts.push(calls);
-    callUrlParts.push('#{group}');
-    callUrlParts.push('#{levels}');
-    callUrlParts.push('#{filter}');
+    Raptor.argumentSequence.slice(0, -1).forEach(function (arg) {
+	callUrlParts.push('#{' + arg + '}');
+    });
+
+    /**
+     * Pattern to fetch the calls that the user wants to view.
+     */
     Raptor.callsUrlPattern = new Template(callUrlParts.join('/'));
 
     viewUrlParts.push('views');
-    viewUrlParts.push('#{view}');
+    viewUrlParts.push('#{' + Raptor.argumentSequence.slice(-1)[0] + '}');
+
+    /**
+     * Pattern to fetch the view that the user wants to view
+     */
     Raptor.viewUrlPattern = new Template(viewUrlParts.join('/'));
 
     Raptor.callTable = $('calls');
