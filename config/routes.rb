@@ -47,6 +47,7 @@ ActionController::Routing::Routes.draw do |map|
     json.views("views/:view", :controller => 'views')
     json.entities("entities", :controller => 'entities')
     json.resources(:favorite_queues)
+    json.resources(:user_entity_counts)
 
     json.namespace(:cached) do |json_cached|
       json_cached.resources(:centers)

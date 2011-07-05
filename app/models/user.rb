@@ -125,6 +125,18 @@ class User < ActiveRecord::Base
   # A has_one association to an Entity.
   has_one :entity, :class_name => "Entity", :as => :item
 
+  ##
+  # :attr: use_counters
+  # A has_many association to UseConter that keeps track of each time
+  # a particular user picks a particular Entity
+  has_many :use_counters
+
+  ##
+  # :attr: user_entity_counts
+  # A has_many association that uses a view to pull out a full set of
+  # Entity entries per User
+  has_many :user_entity_counts
+
   def ldap
     LdapUser::find(:attribute => 'mail', :value => ldap_id)
   end

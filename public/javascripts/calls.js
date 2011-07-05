@@ -287,7 +287,7 @@ Raptor.createRenderElementContainer = function (domElementType) {
  */
 Raptor.fetchView = function () {
     new Ajax.Request(Raptor.viewUrl(), {
-	onSuccess: Raptor.viewOnSuccessWrapper,
+	onSuccess: Raptor.makeWrapper(Raptor.viewOnSuccess),
 	onFailure: Raptor.viewOnFailure,
 	method: 'get'
     });
@@ -317,17 +317,18 @@ Raptor.displayErrors = function (errors) {
 };
 
 /**
- * Wrapper for viewOnSuccess so that any errors that occur within it
- * can be caught and displayed.
- * @function
+ * Returns a function that wraps the argument function in a try /
+ * catch statement such that if f throws an exception, it is caught
+ * and displayed in a pop up window.
  */
-Raptor.viewOnSuccessWrapper = function (response, x_json) {
-    try {
-	Raptor.viewOnSuccess(response, x_json);
-	console.log('viewOnSuccess completed');
-    } catch (err) {
-	Raptor.displayException(err);
-    }
+Raptor.makeWrapper = function (f) {
+    return function () {
+	try {
+	    f.apply(this, arguments);
+	} catch (err) {
+	    Raptor.displayException(err);
+	}
+    };
 };
 
 /**
@@ -464,24 +465,10 @@ Raptor.viewOnFailure = function (response, x_json) {
  */
 Raptor.fetchCalls = function () {
     new Ajax.Request(Raptor.callsUrl(), {
-	onSuccess: Raptor.callsOnSuccessWrapper,
+	onSuccess: Raptor.makeWrapper(Raptor.callsOnSuccess),
 	onFailure: Raptor.callsOnFailure,
 	method: 'get'
     });
-};
-
-/**
- * Wrapper for callsOnSuccess that will catch and nicely display any
- * exceptions that happen.
- * @function
- */
-Raptor.callsOnSuccessWrapper = function (response, x_json) {
-    try {
-	Raptor.callsOnSuccess(response, x_json);
-	console.log('callsOnSuccess completed');
-    } catch (err) {
-	Raptor.displayException(err);
-    }
 };
 
 /**
@@ -554,25 +541,141 @@ Raptor.observeArgumentButtons = function () {
     
     Raptor.argumentSequence.forEach(function (name, pos, array) {
 	var button = tbody.down('button', pos);
-	button.on('click', function(event) {
+	button.on('click', Raptor.makeWrapper(function(event) {
 	    Raptor.pickNewArgument(name, pos, event);
-	});
+	}));
     });
 };
 
+Raptor.realNameSortOrder = {
+    'Team': 1,
+    'Dept': 2,
+    'User': 3,
+    'Cached::Queue': 4,
+    'Retuser' : 5,
+    'View': 6,
+    'Filter': 7,
+    'Level': 8
+};
+
 Raptor.pickNewArgument = function (name, pos, event) {
-    var pickNewArgument = function(response, x_json) {
-	console.log('vigina');
+    var button = event.element();
+    /* Will be the sorted list of entities used in the pop up */
+    var entities;
+    /* Will be the wrapper that we insert into the page */
+    var wrapper;
+    /* Will be the event handler that we register */
+    var pickEventHandler;
+    var cancelEventHandler;
+
+    /* Give the user some feedback */
+    button.setOpacity(0.50);
+
+    var realTypeSortOrder = function (real_type) {
+	var v = Raptor.realNameSortOrder[real_type];
+
+	if (typeof v === 'undefined')
+	    return 100;
+	else
+	    return v;
     };
 
-    var failure = function(response, x_json) {
+    var needAnotherName = function () {
+	entities = Raptor.entities[name].sort(function (l, r) {
+	    if (l.count != r.count)
+		return r.count - l.count;
+	    if (l.real_type != r.real_type)
+		return realTypeSortOrder(l.real_type) - realTypeSortOrder(r.real_type);
+	    else if (l.name < r.name)
+		return -1;
+	    return 1;
+	});
+	wrapper = new Element('div');
+	wrapper.addClassName('wrapper');
+
+	var template = new Template('<tr><td>#{name}</td><td>#{real_type}</td></tr>');
+	var rows = '<div class="magic"><div class="pick-heading">Pick a choice or click here to cancel</div><div class="pick-body"><table>';
+
+	button.insert({ before: wrapper });
+
+	entities.forEach(function (entity) {
+	    rows += template.evaluate(entity);
+	});
+	wrapper.update(rows + '</table></div></div>');
+	pickEventHandler = wrapper.down('.pick-body').on('click', Raptor.makeWrapper(pickElement));
+	cancelEventHandler = wrapper.down('.pick-heading').on('click', Raptor.makeWrapper(cancelChange));
     };
 
-    new Ajax.Request(Raptor.jsonUrl + '/entities', {
-	onSuccess: pickNewArgument,
-	onFailure: failure,
-	method: 'get'
-    });
+    var pickElement = function (event) {
+	var ele = event.element();
+	var index;
+	var entity;
+
+	if (ele.nodeName === 'TD')
+	    ele = ele.up();	/* get up to the 'tr' element */
+
+	ele.setOpacity(0.50);
+	index = ele.previousSiblings().length;
+	entity = entities[index];
+	
+	entity.count++;
+	button.update(entity.name);
+	event.stop();
+	cleanup();
+	/*
+	 * Things left to do:
+	 *
+	 * 1) Change the arguments in Raptor
+	 *
+	 * 2) Create a new URL and push it onto the history
+	 *
+	 * 3) Process the "new" page.
+	 *
+	 * 4) Send a request to server to bump the count of the thing
+         * the user just picked.
+	 */
+    };
+
+    var cancelChange = function (event) {
+	event.stop();
+	cleanup();
+    };
+
+    var cleanup = function () {
+	/* Try and clean up our mess */
+	pickEventHandler.stop();
+	cancelEventHandler.stop();
+	wrapper.remove();
+	button.setOpacity(1.0);
+    };
+
+    var onSuccess = function(response, x_json) {
+	var entities = { };
+
+	response.responseJSON.forEach(function (ele) {
+	    var v = ele.user_entity_count;
+	    var g = v.argument_type;
+	    if (typeof entities[g] === 'undefined') {
+		entities[g] = [];
+	    }
+	    entities[g].push(v);
+	});
+
+	Raptor.entities = entities;
+	needAnotherName();
+    };
+
+    var onFailure = function(response, x_json) {
+    };
+
+    if (typeof Raptor.entities === 'undefined')
+	new Ajax.Request(Raptor.jsonUrl + '/user_entity_counts', {
+	    onSuccess: Raptor.makeWrapper(onSuccess),
+	    onFailure: onFailure,
+	    method: 'get'
+	});
+    else
+	needAnotherName();
 };
 
 /**
@@ -693,9 +796,10 @@ Raptor.renderView = function () {
 	    if (!domElement)
 		return;
 	    domElement.addClassName('sortable');
-	    domElement.on('click', function(event) {
+	    domElement.on('click', Raptor.makeWrapper(function(event) {
+		event.stop();
 		Raptor.sortTable(ele);
-	    });
+	    }));
 	});
 	view.sections.push(tableSection);
 
@@ -926,7 +1030,6 @@ Raptor.runCalls = function() {
 Raptor.updateLoadHook = function() {
     try {
 	Raptor.runCalls();
-	console.log('runCalls completed');
     } catch (err) {
 	Raptor.displayException(err);
     };

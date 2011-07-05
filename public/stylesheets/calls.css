@@ -51,3 +51,41 @@ tbody.call {
 .tbody-count:before {
     content: counter(tbody);
 }
+
+.wrapper {
+    position: relative;
+}
+
+.magic {
+    right: 0px;
+    position: absolute;
+    border: 5px solid darkBlue;
+    border-radius: 10px;
+    background: darkBlue;
+    z-index: 100;
+}
+
+.pick-heading {
+    background: darkBlue;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    white-space: pre;
+    margin: 2px;
+}
+
+.pick-body {
+    background: white;
+    height: 20em;
+    overflow-y: scroll;
+    cursor: pointer;
+    margin: 2px;
+}
+
+.pick-body table {
+    width: 100%;
+}
+
+.pick-body table tr:hover {
+    background: lightBlue;
+}
