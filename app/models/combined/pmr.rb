@@ -105,6 +105,17 @@ module Combined
         # logger.debug("CMB: #{temp_id} last_alter_timestamp set")
         options_hash[:group_request] = [[ :last_alter_timestamp ]]
         pmr = Retain::Pmr.new(retain_user_connection_parameters, options_hash)
+        begin
+          not_used = pmr.last_alter_timestamp
+        rescue Exception => e
+          case
+          when e.respond_to?(:sr) && e.sr == 115 && e.respond_to?(:ex) && e.ex == 125
+            return
+          else
+            raise e
+          end
+        end
+        
         if @cached.last_alter_timestamp == pmr.last_alter_timestamp
           # logger.debug("CMB: #{temp_id} touched")
           @cached.dirty = false
@@ -144,13 +155,21 @@ module Combined
       begin
 	pmr.severity
       rescue Exception => e
-	# See if we get a "start page requested larger than last page of record"
-	# If we do, then we purge the PMR and start back over.
-	if e.sr == 115 && e.ex == 130
+        case
+          # See if we get a "start page requested larger than last page of record"
+          # If we do, then we purge the PMR and start back over.
+        when e.sr == 115 && e.ex == 130
 	  @cached.text_lines.clear
 	  options_hash[:beginning_page_number] = 0
 	  pmr = Retain::Pmr.new(retain_user_connection_parameters, options_hash)
 	  pmr.severity
+
+          # if the PMR has been deleted, we hit this.  We can have a
+          # call pointing to this PMR so we don't want to mark the PMR
+          # as deleted because that can cause us to create another PMR.
+        when e.sr == 115 && e.ex == 125
+          return
+
 	else
 	  raise e
 	end

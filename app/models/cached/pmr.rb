@@ -261,7 +261,7 @@ module Cached
         cd = self.creation_date
         ct = self.creation_time
         if cd.nil? || ct.nil?
-          return created_at
+          return created_at.to_datetime
         end
         # Note, the creation date and time from the PMR is in the time
         # zone of the specialist who created the PMR.  I don't know
@@ -301,7 +301,13 @@ module Cached
     def age
       # Note that DateTime does this subtraction correctly even if
       # they are different time zones.
-      DateTime.now - create_time
+      d = create_time
+      logger.debug("create time is #{d.inspect} #{d.class.to_s}")
+      if d.nil?
+        DateTime.now
+      else
+        DateTime.now - create_time
+      end
     end
     once :age
 

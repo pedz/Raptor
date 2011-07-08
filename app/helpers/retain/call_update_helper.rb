@@ -20,7 +20,7 @@ module Retain
         :class => 'send-email-button',
         :id => id
       }
-      if (mail = pmr.problem_e_mail.strip).blank?
+      if pmr.problem_e_mail.nil? || (mail = pmr.problem_e_mail.strip).blank?
         mail = nil
         hash[:disabled] = :disabled
         text = "No Email Given"

@@ -362,8 +362,9 @@ module Retain
         end
       else
         pmr = call.pmr
-        pmr_comp = pmr.component_id[0,9]
-        pmr_comp = "blank" if pmr_comp.blank?
+        if pmr.component_id.nil? || (pmr_comp = pmr.component_id[0,9]).blank?
+          pmr_comp = "blank"
+        end
         # logger.debug("QS: comp = '#{pmr_comp}'")
         entitled_comp = pmr.information_text_lines.inject(nil) { |comp, text_line|
           unless comp
@@ -532,7 +533,7 @@ module Retain
           classes = "customer"
           pretitle = ""
         end
-        if (mail = pmr.problem_e_mail.strip).blank?
+        if pmr.problem_e_mail.nil? || (mail = pmr.problem_e_mail.strip).blank?
           title = pretitle + "No email given"
           td binding, :title => title, :class => classes do |binding|
             concat(call.nls_customer_name.ljust(28).gsub(/ /, '&nbsp;'))
@@ -699,8 +700,12 @@ module Retain
     def call_class(call)
       return "system-down" if call.system_down
       return "initial-response" if call.needs_initial_response?
-      last_signature_name = (name = call.pmr.signature_lines.last.name) &&
-        name.gsub(/ +$/, '')
+      if call.pmr.signature_lines.empty?
+        last_signature_name = "Unknown"
+      else
+        last_signature_name = (name = call.pmr.signature_lines.last.name) &&
+          name.gsub(/ +$/, '')
+      end
 
       # The "owner" of the call is the owner of the queue (I guess --
       # sorta hard to decide what to do here).  The default is the

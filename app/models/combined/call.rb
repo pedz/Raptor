@@ -93,7 +93,11 @@ module Combined
       if owner_editable.nil?
         load
       end
-      v = self.pmr.owner.name
+      if self.pmr.owner
+        v = self.pmr.owner.name
+      else
+        v = "Unknown"
+      end
       css_class, title, editable = [ owner_css, owner_message, owner_editable ]
       {
         :css_class => css_class,
@@ -108,7 +112,11 @@ module Combined
       if resolver_editable.nil?
         load
       end
-      v = self.pmr.resolver.name
+      if self.pmr.resolver
+        v = self.pmr.resolver.name
+      else
+        v = "Unknown"
+      end
       css_class, title, editable = [ resolver_css, resolver_message, resolver_editable ]
       {
         :css_class => css_class,
