@@ -482,7 +482,11 @@ Raptor.callsOnSuccess = function (response, x_json) {
     var calls;
     var class_name;
 
-    res = response.responseJSON;
+    if (!(res = response.responseJSON)) {
+	Raptor.callsOnFailure(response, x_json);
+	return;
+    }
+
     calls = res.calls;
     class_name = res.class_name;
 

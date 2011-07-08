@@ -25,11 +25,11 @@ module Json
     private
     
     def get_time_stamp(c)
-      if c.respond_to?(:last_fetched)
-        c.last_fetched
-      else
+      # if c.respond_to?(:last_fetched)
+      #   c.last_fetched
+      # else
         c.updated_at
-      end
+      # end
     end
     
     def get_etag(item)

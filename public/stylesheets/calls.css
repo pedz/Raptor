@@ -10,6 +10,19 @@
 
 #calls {
     clear: both;
+
+    border-color: DarkBlue;
+    border-width: 4px;
+    border-spacing: 1px;
+    border-style: solid;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#calls thead,
+#calls tfoot {
+    background: lightBlue;
 }
 
 #error {
@@ -50,10 +63,27 @@
 
 tbody.call {
     counter-increment: tbody;
+
+    border-color: DarkBlue;
+    border-width: 1px;
+    border-style: solid;
+}
+
+tbody.call td,
+tbody.call th {
+    padding: 4px 8px;
 }
 
 .tbody-count:before {
     content: counter(tbody);
+}
+
+tbody.call:nth-of-type(odd) {
+    background-color: #e0e0e0;
+}
+
+tbody.call:nth-of-type(even) {
+    background-color: #e0e0f8;
 }
 
 .wrapper {
