@@ -205,11 +205,12 @@ Raptor.createRenderElementContainer = function (domElementType) {
 		break;
 		
 	    case 'function':
-		Ar.render(function () {
+		// console.log('calling Ar.render');
+		Ar.render(Raptor.makeWrapper(function () {
 		    var v = method.call(domElement, call ? call.value : call);
 		    if (typeof v !== 'undefined')
 			domElement[updateFunction].call(domElement, v);
-		});
+		}));
 		return;
 		
 	    case 'undefined':
@@ -255,6 +256,7 @@ Raptor.createRenderElementContainer = function (domElementType) {
 	 * element is not put back into the new set of elements.
 	 */
 	elements = elements.filter(function (ele, index, obj) {
+	    // console.log('calling render for element');
 	    return ele.render();
 	});
     };
@@ -287,6 +289,7 @@ Raptor.createRenderElementContainer = function (domElementType) {
  */
 Raptor.fetchView = function () {
     new Ajax.Request(Raptor.viewUrl(), {
+	/* wrap function called when view returns */
 	onSuccess: Raptor.makeWrapper(Raptor.viewOnSuccess),
 	onFailure: Raptor.viewOnFailure,
 	method: 'get'
@@ -326,7 +329,10 @@ Raptor.makeWrapper = function (f) {
 	try {
 	    f.apply(this, arguments);
 	} catch (err) {
-	    Raptor.displayException(err);
+	    if (err && (typeof err === 'object') && (typeof err.addListener === 'function'))
+		throw err;
+	    else
+		Raptor.displayException(err);
 	}
     };
 };
@@ -465,6 +471,7 @@ Raptor.viewOnFailure = function (response, x_json) {
  */
 Raptor.fetchCalls = function () {
     new Ajax.Request(Raptor.callsUrl(), {
+	/* wrap functiom called when 'calls' returns */
 	onSuccess: Raptor.makeWrapper(Raptor.callsOnSuccess),
 	onFailure: Raptor.callsOnFailure,
 	method: 'get'
@@ -508,6 +515,41 @@ Raptor.callsOnFailure = function (response, x_json) {
 };
 
 /**
+ * This may be optimized later.  Currently it zaps the view and calls
+ * and then calls fetchCalls and fetchView which eventually causes the
+ * page to be redrawn.
+ *
+ * @function
+ */
+Raptor.redrawPage = function () {
+    delete Raptor.view;
+    delete Raptor.calls;
+
+    window.document.title = Raptor.createTitle();
+    Raptor.updateArgumentTable();
+    Raptor.fetchCalls();
+    Raptor.fetchView();
+};
+
+/**
+ * Called from widgets to change the arguments and go to a new 'Page'
+ *
+ * @function
+ */
+Raptor.internalLink = function (obj) {
+    Raptor.argumentSequence.forEach(function (arg, pos, array) {
+	if (typeof obj[arg] !== 'undefined')
+	    Raptor.currentArguments[arg] = obj[arg];
+    });
+
+    window.history.pushState(Raptor.currentArguments,
+			     Raptor.createTitle(),
+			     Raptor.locationUrl());
+
+    Raptor.redrawPage();
+};
+
+/**
  * Function that will return the URL used to fetch the view, its
  * elements, and widgets.
  * @function
@@ -526,9 +568,18 @@ Raptor.callsUrl = function () {
 
 /**
  * Function that will return the URL for the page.
+ * @function
  */
 Raptor.locationUrl = function () {
     return Raptor.locationUrlPattern.evaluate(Raptor.currentArguments);
+};
+
+/**
+ * Create a new title for the new "page"
+ * @function
+ */
+Raptor.createTitle = function () {
+    return Raptor.titlePattern.evaluate(Raptor.currentArguments);
 };
 
 /**
@@ -540,17 +591,27 @@ Raptor.updateArgumentTable = function () {
     Raptor.observeArgumentButtons();
 };
 
+/**
+ * Function that hooks up observers to the argument's buttons.
+ *
+ * @function
+ */
 Raptor.observeArgumentButtons = function () {
     var tbody = $('arguments').down('tbody').down('tr');
     
     Raptor.argumentSequence.forEach(function (name, pos, array) {
 	var button = tbody.down('button', pos);
+	/* wrap function called when user clicks button to pick a new argument */
 	button.on('click', Raptor.makeWrapper(function(event) {
 	    Raptor.pickNewArgument(name, pos, event);
 	}));
     });
 };
 
+/**
+ * A mapping from the Entity types to a sort order presented to the
+ * user.
+ */
 Raptor.realNameSortOrder = {
     'Team': 1,
     'Dept': 2,
@@ -562,6 +623,14 @@ Raptor.realNameSortOrder = {
     'Level': 8
 };
 
+/**
+ * Method called by the observers of the argument buttons to pick a new argument.
+ *
+ * @param {String} name The type name of the argument
+ * @param {Integer} pos The position in the array for this argument.
+ * @param {Event} event The click event.
+ * @function
+ */
 Raptor.pickNewArgument = function (name, pos, event) {
     var button = event.element();
     /* Will be the sorted list of entities used in the pop up */
@@ -606,7 +675,9 @@ Raptor.pickNewArgument = function (name, pos, event) {
 	    rows += template.evaluate(entity);
 	});
 	wrapper.update(rows + '</table></div></div>');
+	/* wrap function called when user picks a new argument */
 	pickEventHandler = wrapper.down('.pick-body').on('click', Raptor.makeWrapper(pickElement));
+	/* wrap function called when user cancels his pick of a new argument */
 	cancelEventHandler = wrapper.down('.pick-heading').on('click', Raptor.makeWrapper(cancelChange));
     };
 
@@ -623,7 +694,9 @@ Raptor.pickNewArgument = function (name, pos, event) {
 	entity = entities[index];
 	
 	entity.count++;
-	button.update(entity.name);
+	/* No need to do this because we are going to redraw the whole table
+	 * button.update(entity.name);
+	 */
 	event.stop();
 	cleanup();
 	/*
@@ -631,13 +704,25 @@ Raptor.pickNewArgument = function (name, pos, event) {
 	 *
 	 * 1) Change the arguments in Raptor
 	 *
-	 * 2) Create a new URL and push it onto the history
-	 *
+ 	 * 2) Create a new URL and push it onto the history (this
+         * updates the 'location' that the user sees but does not
+         * update the title.
+	 * 
 	 * 3) Process the "new" page.
 	 *
 	 * 4) Send a request to server to bump the count of the thing
          * the user just picked.
 	 */
+	/* 1 */
+	Raptor.currentArguments[name] = entity.name;
+	
+	/* 2 */
+	window.history.pushState(Raptor.currentArguments,
+				 Raptor.createTitle(),
+				 Raptor.locationUrl());
+
+	/* 3 */
+	Raptor.redrawPage();
     };
 
     var cancelChange = function (event) {
@@ -674,6 +759,7 @@ Raptor.pickNewArgument = function (name, pos, event) {
 
     if (typeof Raptor.entities === 'undefined')
 	new Ajax.Request(Raptor.jsonUrl + '/user_entity_counts', {
+	    /* wrap function called when fetch of entities completes */
 	    onSuccess: Raptor.makeWrapper(onSuccess),
 	    onFailure: onFailure,
 	    method: 'get'
@@ -773,6 +859,7 @@ Raptor.renderView = function () {
     var view = Raptor.view;
     var tableSection;
 
+    Raptor.callTable.update('');
     if (!view.sections) {
 	view.sections = [];
 
@@ -800,6 +887,7 @@ Raptor.renderView = function () {
 	    if (!domElement)
 		return;
 	    domElement.addClassName('sortable');
+	    /* wrap function that sorts the table */
 	    domElement.on('click', Raptor.makeWrapper(function(event) {
 		event.stop();
 		Raptor.sortTable(ele);
@@ -816,11 +904,24 @@ Raptor.renderView = function () {
 	    view.sections.push(tableSection);
 	});
     }
+
     view.sections.forEach(function (section, index, obj) {
-	section.container.render();
+	try {
+	    // console.log('calling render for container');
+	    section.container.render();
+	} catch (err) {
+	    Raptor.displayException(err);
+	}
     });
 };
 
+/**
+ * Called when a click occurs on a column that is sortable.
+ *
+ * @param {Element} ele The element the click occurred on (the event
+ * is not passed in -- thats probably a mistake.)
+ * @function
+ */
 Raptor.sortTable = function (ele) {
     var array = [];
     var cmp = ele.widgetCode.cmp;
@@ -933,7 +1034,15 @@ Raptor.getCurrentArguments = function() {
     var name, value;
     var th, td;
 
+    /**
+     * The current arguments for the page
+     */
     Raptor.currentArguments = { };
+
+    /**
+     * The sequence of the arguments -- an array with the name of the
+     * arguments in sequence
+     */
     Raptor.argumentSequence = [ ];
     while (typeof(th = head.down('th', pos)) != 'undefined') {
 	td = body.down('td', pos);
@@ -944,6 +1053,10 @@ Raptor.getCurrentArguments = function() {
 	pos = pos + 1;
 	bodyPattern = bodyPattern + '<td><button>#{' + name + '}</button></td>';
     }
+
+    /**
+     * A pattern (Template) that recreates the argument table.
+     */
     Raptor.argumentTablePattern = new Template(bodyPattern);
     Raptor.observeArgumentButtons();
 };
@@ -995,6 +1108,11 @@ Raptor.runCalls = function() {
     calls = callUrlParts.pop();
 
     /**
+     * Pattern to create a new title for the page.
+     */
+    Raptor.titlePattern = new Template(calls + ' #{' + Raptor.argumentSequence.join('} #{') + '}');
+
+    /**
      * the base URL to get to the Raptor application.
      */
     Raptor.baseUrl = callUrlParts.join('/');
@@ -1025,10 +1143,26 @@ Raptor.runCalls = function() {
      */
     Raptor.viewUrlPattern = new Template(viewUrlParts.join('/'));
 
+    /* Hook up function to catch onPopStack event */
+    window.onpopstate = Raptor.makeWrapper(function(event) {
+	Raptor.currentArguments = event.state;
+	Raptor.redrawPage();
+    });
+
+    /**
+     * Table of calls
+     */
     Raptor.callTable = $('calls');
 
-    Raptor.fetchCalls();
-    Raptor.fetchView();
+    /*
+     * When we first get here, the "state" is not associated with the
+     * current state so we have to set it.
+     */
+    window.history.replaceState(Raptor.currentArguments,
+				Raptor.createTitle(),
+				Raptor.locationUrl());
+    /* Draw the page */
+    Raptor.redrawPage();
 };
 
 Raptor.updateLoadHook = function() {

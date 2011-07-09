@@ -5,12 +5,16 @@ module Json
       def index
         json_send(::Cached::Registration.find(:all,
                                               :conditions => {
-                                                :apptest => retain_user_connection_parameters.apptest}),
-                  :expires_in => 1.day)
+                                                :apptest => retain_user_connection_parameters.apptest}))
       end
 
       def show
-        json_send(::Cached::Registration.find(params[:id]), :expires_in => 1.day)
+        temp = ::Cached::Registration.find(params[:id])
+        options = { }
+        unless temp.name.nil?
+          options[:expires_in] = 1.day
+        end
+        json_send(temp, options)
       end
     end
   end

@@ -196,7 +196,7 @@ var ArRequest = function(obj) {
 	case 'has_many':
 	    var temp = [];
 
-	    var temp = o.map(function (ele, index, oo) {
+	    temp = o.map(function (ele, index, oo) {
 		return Ar.register(obj.class_name, ele);
 	    });
 	    element = temp;
@@ -215,6 +215,7 @@ var ArRequest = function(obj) {
 	    throw('illegal association');
 	    break;
 	};
+
 	cookie.runListeners();
     };
 

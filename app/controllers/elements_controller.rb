@@ -7,7 +7,7 @@ class ElementsController < ApplicationController
   # GET /views/1/elements
   # GET /views/1/elements.xml
   def index
-    @elements = @view.elements.all
+    @elements = @view.elements.all(:order => "row ASC, col ASC")
 
     respond_to do |format|
       format.html # index.html.erb
