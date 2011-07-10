@@ -553,7 +553,7 @@ Raptor.callsOnFailure = function (response, x_json) {
  *
  * @function
  */
-Raptor.redrawPage = function () {
+Raptor.drawPage = function () {
     delete Raptor.view;
     delete Raptor.calls;
 
@@ -571,14 +571,14 @@ Raptor.redrawPage = function () {
 Raptor.internalLink = function (obj) {
     Raptor.argumentSequence.forEach(function (arg, pos, array) {
 	if (typeof obj[arg] !== 'undefined')
-	    Raptor.currentArguments[arg] = obj[arg];
+	    Raptor.currentState.arguments[arg] = obj[arg];
     });
 
-    window.history.pushState(Raptor.currentArguments,
+    window.history.pushState(Raptor.currentState,
 			     Raptor.createTitle(),
 			     Raptor.locationUrl());
 
-    Raptor.redrawPage();
+    Raptor.drawPage();
 };
 
 /**
@@ -587,7 +587,7 @@ Raptor.internalLink = function (obj) {
  * @function
  */
 Raptor.viewUrl = function () {
-    return Raptor.viewUrlPattern.evaluate(Raptor.currentArguments);
+    return Raptor.viewUrlPattern.evaluate(Raptor.currentState.arguments);
 };
 
 /**
@@ -595,7 +595,7 @@ Raptor.viewUrl = function () {
  * @function
  */
 Raptor.callsUrl = function () {
-    return Raptor.callsUrlPattern.evaluate(Raptor.currentArguments);
+    return Raptor.callsUrlPattern.evaluate(Raptor.currentState.arguments);
 };
 
 /**
@@ -603,7 +603,7 @@ Raptor.callsUrl = function () {
  * @function
  */
 Raptor.locationUrl = function () {
-    return Raptor.locationUrlPattern.evaluate(Raptor.currentArguments);
+    return Raptor.locationUrlPattern.evaluate(Raptor.currentState.arguments);
 };
 
 /**
@@ -611,14 +611,14 @@ Raptor.locationUrl = function () {
  * @function
  */
 Raptor.createTitle = function () {
-    return Raptor.titlePattern.evaluate(Raptor.currentArguments);
+    return Raptor.titlePattern.evaluate(Raptor.currentState.arguments);
 };
 
 /**
  * Function to update the argument table with the arguments.
  */
 Raptor.updateArgumentTable = function () {
-    var newBody = Raptor.argumentTablePattern.evaluate(Raptor.currentArguments);
+    var newBody = Raptor.argumentTablePattern.evaluate(Raptor.currentState.arguments);
     $('arguments').down('tbody').update(newBody);
     Raptor.observeArgumentButtons();
 };
@@ -746,15 +746,15 @@ Raptor.pickNewArgument = function (name, pos, event) {
          * the user just picked.
 	 */
 	/* 1 */
-	Raptor.currentArguments[name] = entity.name;
+	Raptor.currentState.arguments[name] = entity.name;
 	
 	/* 2 */
-	window.history.pushState(Raptor.currentArguments,
+	window.history.pushState(Raptor.currentState,
 				 Raptor.createTitle(),
 				 Raptor.locationUrl());
 
 	/* 3 */
-	Raptor.redrawPage();
+	Raptor.drawPage();
     };
 
     var cancelChange = function (event) {
@@ -915,8 +915,8 @@ Raptor.renderView = function () {
          * container has a cmp method that takes two arguments.  If it
          * does, add the 'sortable' class name.
 	 */
-	tableSection.container.forEach(function (ele, index, elements) {
-	    var widget = ele.widgetCode;
+	tableSection.container.forEach(function (renderElement, index, elements) {
+	    var widget = renderElement.widgetCode;
 	    var cmp;
 	    var domElement;
 	    
@@ -928,14 +928,14 @@ Raptor.renderView = function () {
 	    if (!cmp || (typeof cmp !== 'function') || cmp.length != 2)
 		return;
 	    
-	    domElement = ele.domElement;
+	    domElement = renderElement.domElement;
 	    if (!domElement)
 		return;
 	    domElement.addClassName('sortable');
 	    /* wrap function that sorts the table */
 	    domElement.on('click', Raptor.makeWrapper(function(event) {
 		event.stop();
-		Raptor.sortTable(ele);
+		Raptor.sortTable(renderElement);
 	    }));
 	});
 	view.sections.push(tableSection);
@@ -989,8 +989,6 @@ Raptor.renderView = function () {
 	    tableSection.domElement.addClassName('call');
 	    view.sections.push(tableSection);
 	});
-
-	Raptor.lastSort();
     }
 
     view.sections.forEach(function (section, index, obj) {
@@ -1001,6 +999,8 @@ Raptor.renderView = function () {
 	}
     });
 
+    Ar.render(Raptor.makeWrapper(Raptor.lastSort));
+
     /*
      * TODO: Need to stop the old one so we do not add calls as we
      * surf around.
@@ -1009,22 +1009,30 @@ Raptor.renderView = function () {
 };
 
 /**
+ * currentState will be an object.  It starts out undefined until a sort is done.
+ */
+Raptor.currentState = {};
+
+/**
  * lastSort is the function last used to sort the calls table.
  * @function
  */
-Raptor.lastSort = function () {};
+Raptor.lastSort = function () {
+    if (typeof Raptor.currentState.nth === 'undefined')
+	return;
+    
+    var renderElement = Raptor.view.sections[0].container.elements[Raptor.currentState.nth];
+    var domElement = renderElement.domElement;
+    var reverse = Raptor.currentState.reverse;
+    var cmp = renderElement.widgetCode.cmp;
+    var array = [];
 
-/**
- * Called when a click occurs on a column that is sortable.
- *
- * @param {Element} ele The element the click occurred on (the event
- * is not passed in -- thats probably a mistake.)
- * @function
- */
-Raptor.sortTable = function (ele) {
-    var reverse = false;
-    var domElement = ele.domElement; //this is the 'th' element
-    var flag = domElement.hasClassName('sorted-up');
+    /*
+     * The first time, this will obviously be true but after push
+     * or pop state, it may not be.
+     */
+    if (Raptor.currentState.arguments['view'] != Raptor.currentState.sortedView)
+	return;
 
     /* Delete other sorted class names */
     [ 'sorted-down', 'sorted-up' ].forEach(function(domClass) {
@@ -1033,47 +1041,74 @@ Raptor.sortTable = function (ele) {
 	    ele.addClassName('sortable');
 	});
     });
-
-    if (flag) {
-	reverse = true;
+    
+    if (reverse) {
 	domElement.removeClassName('sortable');
 	domElement.addClassName('sorted-down');
     } else {
 	domElement.removeClassName('sortable');
 	domElement.addClassName('sorted-up');
     }
+    
+    /* First we make an array that we can pass to sort. */
+    Raptor.view.sections.forEach(function (tableSection, index, obj) {
+	if (tableSection.call)
+	    array.push(tableSection);
+    });
+    
+    /* Now we sort the array according to the compare function of the elemetn */
+    array.sort(function(l, r) {
+	if (reverse)
+	    return cmp(r.call.value, l.call.value);
+	else
+	    return cmp(l.call.value, r.call.value);
+    });
+    
+    /*
+     * Last, we run through the array.  For each table section, we
+     * remove it from the table and then append it to the end.  When
+     * we are done, we should have appended all the sections in the
+     * sorted order.
+     */
+    array.forEach(function (tableSection, index, obj) {
+	tableSection.domElement.remove();
+	Raptor.callTable.insert({bottom: tableSection.domElement});
+    });
+};
 
-    Raptor.lastSort = function () {
-	var cmp = ele.widgetCode.cmp;
-	var array = [];
+/**
+ * Called when a click occurs on a column that is sortable.
+ *
+ * @param {RenderElement} renderElement The element the click occurred
+ * on (the event is not passed in -- thats probably a mistake.)
+ *
+ * @function
+ */
+Raptor.sortTable = function (renderElement) {
+    /**
+     * Index to the RederElement that was clicked.
+     */
+    Raptor.currentState.nth = Raptor.view.sections[0].container.elements.indexOf(renderElement);
+    
+    var domElement = renderElement.domElement; //this is the 'th' element
 
-	/* First we make an array that we can pass to sort. */
-	Raptor.view.sections.forEach(function (tableSection, index, obj) {
-	    if (tableSection.call)
-		array.push(tableSection);
-	});
-	
-	/* Now we sort the array according to the compare function of the elemetn */
-	array.sort(function(l, r) {
-	    if (reverse)
-		return cmp(r.call.value, l.call.value);
-	    else
-		return cmp(l.call.value, r.call.value);
-	});
-	
-	/*
-	 * Last, we run through the array.  For each table section, we
-	 * remove it from the table and then append it to the end.  When
-	 * we are done, we should have appended all the sections in the
-	 * sorted order.
-	 */
-	array.forEach(function (tableSection, index, obj) {
-	    tableSection.domElement.remove();
-	    Raptor.callTable.insert({bottom: tableSection.domElement});
-	});
-    };
+    /**
+     * Boolean to indicate if the sort is reversed
+     */
+    Raptor.currentState.reverse = domElement.hasClassName('sorted-up');
 
-    Raptor.lastSort();
+    /**
+     * The name of the view that was sorted.  When this changes, we
+     * have no choice but to go to an unsorted state.
+     */
+    Raptor.currentState.sortedView = Raptor.currentState.arguments['view'];
+
+    /* I debated if this should be replaceState or pushState... */
+    window.history.replaceState(Raptor.currentState,
+				Raptor.createTitle(),
+				Raptor.locationUrl());
+
+    Ar.render(Raptor.makeWrapper(Raptor.lastSort));
 };
 
 /**
@@ -1141,7 +1176,7 @@ Raptor.getCurrentArguments = function() {
     /**
      * The current arguments for the page
      */
-    Raptor.currentArguments = { };
+    Raptor.currentState.arguments = { };
 
     /**
      * The sequence of the arguments -- an array with the name of the
@@ -1152,7 +1187,7 @@ Raptor.getCurrentArguments = function() {
 	td = body.down('td', pos);
 	name = th.collectTextNodes().gsub(/[ \n\t]+/, '');
 	value = td.collectTextNodes().gsub(/[ \n\t]+/, '');
-	Raptor.currentArguments[name] = value;
+	Raptor.currentState.arguments[name] = value;
 	Raptor.argumentSequence[pos] = name;
 	pos = pos + 1;
 	bodyPattern = bodyPattern + '<td><button>#{' + name + '}</button></td>';
@@ -1164,6 +1199,19 @@ Raptor.getCurrentArguments = function() {
     Raptor.argumentTablePattern = new Template(bodyPattern);
     Raptor.observeArgumentButtons();
 };
+
+/**
+ * Perhaps a good name.  This takes the current state on the history
+ * stack and causes the page to reflect that state.  i.e. this is
+ * called by the onpopstate event handler.
+ *
+ * @function
+ */
+Raptor.executeState = function () {
+    Raptor.currentState = window.history.state;
+    Raptor.drawPage();
+};
+
 
 /**
  * Called via the on load complete hook to process the calls page.
@@ -1249,8 +1297,7 @@ Raptor.runCalls = function() {
 
     /* Hook up function to catch onPopStack event */
     window.onpopstate = Raptor.makeWrapper(function(event) {
-	Raptor.currentArguments = event.state;
-	Raptor.redrawPage();
+	Raptor.executeState();
     });
 
     /**
@@ -1262,11 +1309,11 @@ Raptor.runCalls = function() {
      * When we first get here, the "state" is not associated with the
      * current state so we have to set it.
      */
-    window.history.replaceState(Raptor.currentArguments,
+    window.history.replaceState(Raptor.currentState,
 				Raptor.createTitle(),
 				Raptor.locationUrl());
     /* Draw the page */
-    Raptor.redrawPage();
+    Raptor.drawPage();
 };
 
 Raptor.updateLoadHook = function() {
