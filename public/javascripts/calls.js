@@ -205,7 +205,6 @@ Raptor.createRenderElementContainer = function (domElementType) {
 		break;
 		
 	    case 'function':
-		// console.log('calling Ar.render');
 		Ar.render(Raptor.makeWrapper(function () {
 		    var v = method.call(domElement, call ? call.value : call);
 		    if (typeof v !== 'undefined')
@@ -256,7 +255,6 @@ Raptor.createRenderElementContainer = function (domElementType) {
 	 * element is not put back into the new set of elements.
 	 */
 	elements = elements.filter(function (ele, index, obj) {
-	    // console.log('calling render for element');
 	    return ele.render();
 	});
     };
@@ -345,6 +343,10 @@ Raptor.makeWrapper = function (f) {
  * @function
  */
 Raptor.viewOnSuccess = function (response, x_json) {
+    /**
+     * Raptor.view not only has the response back from the server but
+     * also contains other objects that are created.
+     */
     Raptor.view = response.responseJSON.view;
     var rows = [];
     var min_row = 999;
@@ -352,6 +354,7 @@ Raptor.viewOnSuccess = function (response, x_json) {
     var max_row = 0;
     var max_col = 0;
     var errors = [];
+    var head = $$('head')[0];
 
     /*
      * We walk through each element to compute the max row and max
@@ -380,11 +383,24 @@ Raptor.viewOnSuccess = function (response, x_json) {
 	if (min_col > last_col)
 	    min_col = last_col;
 
+	if (!Raptor.widgets[ele.widget.name]) {
+	    var script = new Element('script');
+	    script.update('Raptor.widgets.' + ele.widget.name + ' = ' + ele.widget.code).
+		writeAttribute({type: 'text/javascript' });
+	    head.insert({ bottom: script });
+
+	    if (!ele.widget.css) {
+		var css = new Element('style');
+		css.update(ele.widget.css).
+		    writeAttribute({ type: 'text/css' });
+		head.insert({ bottom: css });
+	    }
+	}
 	ele.widget.code = Raptor.widgets[ele.widget.name];
     });
 
     /*
-     * We initialize a two dimensional able full of empty place
+     * We initialize a two dimensional table full of empty place
      * holders.
      */
     for (var row = 0; row <= max_row; ++row) {
@@ -447,8 +463,24 @@ Raptor.viewOnSuccess = function (response, x_json) {
 
     /* We now display any errors we had in the processing of the view's elements */
     Raptor.displayErrors(errors);
+
+    /**
+     * Raptor.view.rows is an array where each element is an object
+     * with one attribute called elements which is also an array that
+     * represent the columns.  They are initialized as empty and then
+     * filled in when the view is first fetched.  These are eventually
+     * used to create the rows and columns of each TableSection.
+     */
     Raptor.view.rows = rows;
+
+    /**
+     * The max row number in the view
+     */
     Raptor.max_row = max_row;
+
+    /**
+    * The max column in the view
+    */
     Raptor.max_col = max_col;
 
     if (typeof Raptor.calls !== 'undefined')
@@ -859,8 +891,21 @@ Raptor.renderView = function () {
     var view = Raptor.view;
     var tableSection;
 
-    Raptor.callTable.update('');
     if (!view.sections) {
+	/*
+	 * Not 100% sure I want to do this here.  We zap the existing
+	 * rows in the table since we are going to create whole new
+	 * sections.  Of course, on the first pass, the table is already
+	 * empty.
+	 */
+	Raptor.callTable.update('');
+
+	/**
+	 * An array of TableSection s. There is one 'head' section,
+	 * one 'foot' section, and a 'body' section for each call.
+	 *
+	 * @name Raptor.view.sections
+	 */
 	view.sections = [];
 
 	tableSection = Raptor.createTableSection('head', 'th');
@@ -903,17 +948,71 @@ Raptor.renderView = function () {
 	    tableSection.domElement.addClassName('call');
 	    view.sections.push(tableSection);
 	});
+    } else {
+	/*
+	 * When calls gets updated, we come here to create the new
+	 * sections and delete the ones no longer listed the new
+	 * calls
+	 */
+	var callsTemp = Raptor.calls.slice(0);
+	var callIds = Raptor.calls.map(function (call) {
+	    return call.id;
+	});
+
+
+	view.sections.forEach(function (section, sectionPos) {
+	    var index;
+
+	    /* head and foot sections are not deleted */
+	    if (section.position == 'head' || section.position == 'foot')
+		return;
+
+	    /* If we find the call in callsTemp, we delete it from callsTemp */
+	    if ((index = callIds.indexOf(section.call.id)) >= 0) {
+		/* We points the section's call to the new call just in case it has changed */
+		section.call = callsTemp[index];
+
+		/* We delete the id and call from the two temp arrays */
+		delete callIds[index];
+		delete callsTemp[index];
+		return;
+	    }
+
+	    /* If we do not find it, we remove the dom element */
+	    delete view.sections[sectionPos];
+	    section.domElement.remove();
+	});
+
+	callsTemp.forEach(function (call) {
+	    /* #### duplicate code ### */
+	    tableSection = Raptor.createTableSection('body', 'td', call);
+	    tableSection.domElement.addClassName('call');
+	    view.sections.push(tableSection);
+	});
+
+	Raptor.lastSort();
     }
 
     view.sections.forEach(function (section, index, obj) {
 	try {
-	    // console.log('calling render for container');
 	    section.container.render();
 	} catch (err) {
 	    Raptor.displayException(err);
 	}
     });
+
+    /*
+     * TODO: Need to stop the old one so we do not add calls as we
+     * surf around.
+     */
+    Raptor.fetchCalls.delay(15 * 60);
 };
+
+/**
+ * lastSort is the function last used to sort the calls table.
+ * @function
+ */
+Raptor.lastSort = function () {};
 
 /**
  * Called when a click occurs on a column that is sortable.
@@ -923,8 +1022,6 @@ Raptor.renderView = function () {
  * @function
  */
 Raptor.sortTable = function (ele) {
-    var array = [];
-    var cmp = ele.widgetCode.cmp;
     var reverse = false;
     var domElement = ele.domElement; //this is the 'th' element
     var flag = domElement.hasClassName('sorted-up');
@@ -946,30 +1043,37 @@ Raptor.sortTable = function (ele) {
 	domElement.addClassName('sorted-up');
     }
 
-    /* First we make an array that we can pass to sort. */
-    Raptor.view.sections.forEach(function (tableSection, index, obj) {
-	if (tableSection.call)
-	    array.push(tableSection);
-    });
+    Raptor.lastSort = function () {
+	var cmp = ele.widgetCode.cmp;
+	var array = [];
 
-    /* Now we sort the array according to the compare function of the elemetn */
-    array.sort(function(l, r) {
-	if (reverse)
-	    return cmp(r.call.value, l.call.value);
-	else
-	    return cmp(l.call.value, r.call.value);
-    });
+	/* First we make an array that we can pass to sort. */
+	Raptor.view.sections.forEach(function (tableSection, index, obj) {
+	    if (tableSection.call)
+		array.push(tableSection);
+	});
+	
+	/* Now we sort the array according to the compare function of the elemetn */
+	array.sort(function(l, r) {
+	    if (reverse)
+		return cmp(r.call.value, l.call.value);
+	    else
+		return cmp(l.call.value, r.call.value);
+	});
+	
+	/*
+	 * Last, we run through the array.  For each table section, we
+	 * remove it from the table and then append it to the end.  When
+	 * we are done, we should have appended all the sections in the
+	 * sorted order.
+	 */
+	array.forEach(function (tableSection, index, obj) {
+	    tableSection.domElement.remove();
+	    Raptor.callTable.insert({bottom: tableSection.domElement});
+	});
+    };
 
-    /*
-     * Last, we run through the array.  For each table section, we
-     * remove it from the table and then append it to the end.  When
-     * we are done, we should have appended all the sections in the
-     * sorted order.
-     */
-    array.forEach(function (tableSection, index, obj) {
-	tableSection.domElement.remove();
-	Raptor.callTable.insert({bottom: tableSection.domElement});
-    });
+    Raptor.lastSort();
 };
 
 /**
