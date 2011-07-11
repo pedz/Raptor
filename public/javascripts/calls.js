@@ -774,11 +774,9 @@ Raptor.pickNewArgument = function (name, pos, event) {
     };
 
     var countOnSuccess = function(response, x_json) {
-	console.log('count success');
     };
 
     var countOnFailure = function(response, x_json) {
-	console.log('count failure');
     };
 
     var cancelChange = function (event) {
