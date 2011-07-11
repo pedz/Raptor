@@ -672,6 +672,7 @@ Raptor.pickNewArgument = function (name, pos, event) {
     /* Will be the event handler that we register */
     var pickEventHandler;
     var cancelEventHandler;
+    var count_path = '/user_entity_counts';
 
     /* Give the user some feedback */
     button.setOpacity(0.50);
@@ -698,13 +699,17 @@ Raptor.pickNewArgument = function (name, pos, event) {
 	wrapper = new Element('div');
 	wrapper.addClassName('wrapper');
 
+	var pickedTemplate = new Template('<tr class="picked"><td>#{name}</td><td>#{real_type}</td></tr>');
 	var template = new Template('<tr><td>#{name}</td><td>#{real_type}</td></tr>');
 	var rows = '<div class="magic"><div class="pick-heading">Pick a choice or click here to cancel</div><div class="pick-body"><table>';
 
 	button.insert({ before: wrapper });
 
 	entities.forEach(function (entity) {
-	    rows += template.evaluate(entity);
+	    if (entity.count > 0)
+		rows += pickedTemplate.evaluate(entity);
+	    else
+		rows += template.evaluate(entity);
 	});
 	wrapper.update(rows + '</table></div></div>');
 	/* wrap function called when user picks a new argument */
@@ -755,6 +760,25 @@ Raptor.pickNewArgument = function (name, pos, event) {
 
 	/* 3 */
 	Raptor.drawPage();
+
+	/* 4 */
+	new Ajax.Request(Raptor.jsonUrl + count_path + '/1', {
+	    onSuccess: countOnSuccess,
+	    onFailure: countOnFailure,
+	    method: 'put',
+	    parameters: {
+		count: entity.count,
+		name: entity.name
+	    }
+	});
+    };
+
+    var countOnSuccess = function(response, x_json) {
+	console.log('count success');
+    };
+
+    var countOnFailure = function(response, x_json) {
+	console.log('count failure');
     };
 
     var cancelChange = function (event) {
@@ -790,7 +814,7 @@ Raptor.pickNewArgument = function (name, pos, event) {
     };
 
     if (typeof Raptor.entities === 'undefined')
-	new Ajax.Request(Raptor.jsonUrl + '/user_entity_counts', {
+	new Ajax.Request(Raptor.jsonUrl + count_path, {
 	    /* wrap function called when fetch of entities completes */
 	    onSuccess: Raptor.makeWrapper(onSuccess),
 	    onFailure: onFailure,

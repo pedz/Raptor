@@ -125,6 +125,10 @@ tbody.call:nth-of-type(even) {
     width: 100%;
 }
 
+.pick-body table tr.picked {
+    background: Aqua;
+}
+
 .pick-body table tr:hover {
     background: lightBlue;
 }
