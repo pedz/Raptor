@@ -76,7 +76,8 @@ module Retain
   class Psrr < Sdi
     set_fetch_request "PSRR"
     set_required_fields(:signon, :password, :group_request)
-    set_optional_fields(:psar_start_date,
+    set_optional_fields(:psar_number,
+                        :psar_start_date,
                         :psar_end_date,
                         :h_or_s,
                         :psar_file_and_symbol,
