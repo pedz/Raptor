@@ -9,3 +9,6 @@ db/*.sqlite3
 REVISION
 log
 tmp
+foo
+Order
+Classes
