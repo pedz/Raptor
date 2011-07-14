@@ -36,26 +36,28 @@ module Combined
 
     def psars
       # logger.debug("psars for registration #{to_param}")
-      if @cached.last_all_fetch.nil? || @cached.last_all_fetch < 1.day.ago
-        # logger.debug("Fetching all PSAR")
-        search_hash = {
-          :psar_number => psar_number, # fetch it if we need to
-          :psar_start_date => 14.days.ago.strftime("%Y%m%d"),
-          :psar_end_date => Time.now.strftime("%Y%m%d")
-        }
-        Combined::Psar.fetch(retain_user_connection_parameters, search_hash)
-        @cached.last_all_fetch = Time.now
-        @cached.last_day_fetch = Time.now
-        @cached.save!
-      elsif @cached.last_day_fetch.nil? || @cached.last_day_fetch < 10.minutes.ago
-        # logger.debug("Fetching days PSAR")
-        search_hash = {
-          :psar_number => @cached.psar_number,
-          :psar_start_date => Time.now.strftime("%Y%m%d")
-        }
-        Combined::Psar.fetch(retain_user_connection_parameters, search_hash)
-        @cached.last_day_fetch = Time.now
-        @cached.save!
+      unless psar_number.nil?
+        if @cached.last_all_fetch.nil? || @cached.last_all_fetch < 1.day.ago
+          # logger.debug("Fetching all PSAR")
+          search_hash = {
+            :psar_number => psar_number, # fetch it if we need to
+            :psar_start_date => 14.days.ago.strftime("%Y%m%d"),
+            :psar_end_date => Time.now.strftime("%Y%m%d")
+          }
+          Combined::Psar.fetch(retain_user_connection_parameters, search_hash)
+          @cached.last_all_fetch = Time.now
+          @cached.last_day_fetch = Time.now
+          @cached.save!
+        elsif @cached.last_day_fetch.nil? || @cached.last_day_fetch < 10.minutes.ago
+          # logger.debug("Fetching days PSAR")
+          search_hash = {
+            :psar_number => @cached.psar_number,
+            :psar_start_date => Time.now.strftime("%Y%m%d")
+          }
+          Combined::Psar.fetch(retain_user_connection_parameters, search_hash)
+          @cached.last_day_fetch = Time.now
+          @cached.save!
+        end
       end
       @cached.psars.wrap_with_combined
     end
