@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# = Cached Retain Models
+# == Cached Retain Models
 #
 # The various retain concepts such as Pmr, Call, Queue, etc are
 # fetched from Retain using SDI and cached in a local database.  Each
@@ -12,97 +12,201 @@
 # Some Retain models will likely be cached eventually.
 #
 module Cached
-  # =Retain Call Model
+  # === Retain Call Model
   #
   # This model is the database cached version of a Retain call.  The
   # database table is <em>cached_calls</em>.
-  #
-  # ==Fields
-  #
-  # <em>id - integer</em>::
-  #   Key for the table.
-  # <em>queue_id - integer</em>::
-  #   Foreign key to <em>cached_queues</em>
-  # <em>ppg - character varying(3)</em>::
-  #   The queue_id and the ppg uniquely specify a call.  The two items
-  #   create a 4-tuple of queue,h_or_s,center,ppg.  For example
-  #   pedz,S,165,221.
-  # <em>pmr_id - integer</em>::
-  #   A call always points to a single PMR (Problem Record).  A Call is
-  #   what is actually on a queue but they are oftem called PMRs by
-  #   mistake.  pmd_id is a foreign key to the cached_pmrs table.
-  # <em>priority - integer</em>::
-  #   Each call has a priority.  The PMR has a severity.
-  # <em>p_s_b - character varying(1)</em>::
-  #   A call can be a primary, secondary, or backup.  The p_s_b field
-  #   is in some Retain SDI calls but not others.
-  # <em>comments - character varying(54)</em>::
-  #   The comments field is what most people would call the PMR's
-  #   title.  Note it is a call field so each call has different
-  #   comments.
-  # <em>nls_customer_name - character varying(28)</em>::
-  #   The customer, company, and contact are also actually call
-  #   specific fields even though that does not make a lot of sense.
-  #   A field with nls in the front denotes a field that carries a
-  #   CCSID which is the Retain way of denoting the code page.
-  # <em>nls_contact_name - character varying(30)</em>::
-  #   The contact as listed in the calls header
-  # <em>contact_phone_1 - character varying(19)</em>::
-  #   The contact's first phone number
-  # <em>contact_phone_2 - character varying(19)</em>::
-  #   The contacts second phone number
-  # <em>cstatus - character varying(7)</em>::
-  #   The cstatus field from Retain (SDI field 1633).
-  # <em>category - character varying(3)</em>::
-  #   Text
-  # <em>system_down - boolean</em>::
-  #   The system down boolean flag
-  # <em>created_at - timestamp without time zone</em>::
-  #   Typical timestamp to record when the database record was created.
-  # <em>updated_at - timestamp without time zone</em>::
-  #   Timestamp to record the last time the database record was
-  #   updated.  This timestamp is used to determine when Retain should
-  #   be queried again under normal conditions to verify that the
-  #   current local copy is up to date.  See also the last_fetched
-  #   timestamp.
-  # <em>slot - integer</em>::
-  #   When the PMCS SDI call is done to get the list of calls on a
-  #   queue, they are presented in a particular order.  slot is the 0
-  #   based index of the order.  It is *not* the same order as the
-  #   calls are presented in the "Raw Retain" list.
-  # <em>call_search_result - bytea</em>::
-  #   Each call has a unique blob attached to it.  This blob actually
-  #   encodes the center, queue_name, and ppg (but not the h or s
-  #   field).  The call_search_result is used to make sure that two
-  #   calls are the same (i.e. when comparing a fresh list of calls
-  #   retrieved from retain and a list in the database, the
-  #   call_search_result is what is used to make the comparison.
-  # <em>dirty - boolean</em>::
-  #   If we know that the database record is out of date, we set the
-  #   dirty bit.
-  # <em>customer_time_zone_adj - integer</em>::
-  #   The time zone adjustment for the customer of the call.  There may
-  #   be remnants still around so I will explain that I did not know
-  #   this field existed so I had a long involved process of going
-  #   from the call to the customer record or the center to get the
-  #   timezone for the customer.  I know should use this field but I
-  #   may still use the other fields in the code somewhere.
-  # <em>time_zone_code - integer</em>::
-  #   Timezones in Retain are a bit weird.  There is a binary form and
-  #   a text form.  I usually fetch both since each is easier to use
-  #   in different places.
-  # <em>last_fetched - timestamp without time zone</em>::
-  #   This is the time stamp of when the call was fetched from Retain
-  #   *and* it was different than what was in the database.  It is the
-  #   time stamp used to determine if a page, action, or fragment
-  #   cache entry is up to date.  If the pmr's last_fetched field is
-  #   changed, this field will also be changed because the fragment
-  #   must be rendered again.
   class Call < Base
+    ##
+    # :attr: id
+    # The primary key for the table.
+
+    ##
+    # :attr: queue_id
+    # The id from the cached_queues table that this call belongs to.
+    # This is used to create the queue belongs to method.
+
+    ##
+    # :attr: ppg
+    # The call's ppg.  A three letter Retain concept.  The first
+    # letter is a digit and is equal to the call's priority.  The next
+    # two letters is a weird hex kind of format.  The ppg will be
+    # unique for a given queue and will not change for a call until it
+    # is deleted or requeued.  Raptor uses a four tuple to uniquely
+    # identify a call at a particular point in time.  The four tuple
+    # is the queue's name, the queue's h_or_s value, the center's
+    # name, and the ppg of the call.
+
+    ##
+    # :attr: pmr_id
+    # The id from the cached_pmrs tabble that is the PMR that this
+    # call belongs to.
+
+    ##
+    # :attr: priority
+    # The call's priority.  Note that the PMR also has a priority and
+    # a severity.  All the user interfaces appear to show the call's
+    # priority and severity.
+
+    ##
+    # :attr: p_s_b
+    # Set to 'P' for the primary call, 'S' for a secondary, and 'B'
+    # for a backup.  Note that this is a weird Retain field because it
+    # only shows up when doing a "CS" on a queue.  It does not appear
+    # to be a field in the call.
+
+    ##
+    # :attr: comments
+    # What might be considered the call's title or abstract.  This is
+    # the field that consumes most of the space on a typical CS screen.
+
+    ##
+    # :attr: nls_customer_name
+    # The NLS version of the customer's name.  Note that this can be
+    # changed and can be different from what is in the Customer record.
+
+    ##
+    # :attr: nls_contact_name
+    # The NLS version of the contact's name.
+
+    ##
+    # :attr: contact_phone_1
+    # The first phone for the contact
+
+    ##
+    # :attr: contact_phone_2
+    # The second phone for the contact
+
+    ##
+    # :attr: cstatus
+    # The cstatus field (call status) field from Retain.
+
+    ##
+    # :attr: category
+    # The categoy of the call
+
+    ##
+    # :attr: system_down
+    # The system down flag
+
+    ##
+    # :attr: created_at
+    # Rails normal created_at timestamp that is when the db record was
+    # created.
+
+    ##
+    # :attr: updated_at
+    # Rails normal updated_at timestamp.  Each time the db record is
+    # saved, this gets updated.
+
+    ##
+    # :attr: slot
+    # When the calls are fetched with the Retain::Pmcs call, the order
+    # that they come from Retain is recorded in this field.  It turns
+    # out to be rather useless since it does not seem to match the
+    # order of the green screen's presentations.
+
+    ##
+    # :attr: call_search_result
+    # This attempts to be a unique string for a call until it has
+    # changed in some way.  This is retrieved during a Retain::Pmcs
+    # call and is saved in order to identify new calls on the queue.
+
+    ##
+    # :attr: dirty
+    # Several database models have a dirty bit which is a Raptor
+    # concept.  If Raptor knows that its database entry is out of
+    # date, it will set this bit.  An example is immediately after an
+    # update, the records being updated are marked as dirty.  This
+    # will cause Raptor to fetch a new copy from Retain when the next
+    # user requests the record.
+
+    ##
+    # :attr: customer_time_zone_adj
+    # A Retain field associated with the call that is used to
+    # determine the end customer's time zone.
+
+    ##
+    # :attr: time_zone_code
+    # The end customer's time zone code.
+
+    ##
+    # :attr: last_fetched
+    # A Raptor concept of the last time this record changed.  The
+    # updated_at is used to determine when the query Retain and it is
+    # updated when the query is made.  last_fetched changes only when
+    # the data retrieved is different.  last_fetched is used to tag
+    # the caches.  However, records sent to the browser use the
+    # updated_at entry because the end user wants to know when Retain
+    # was last queried.  This causes increase load on the network
+    # traffic.
+
+    ##
+    # :attr: dispatched_employee
+    # Which "DR" is dispatched (if any) to the call.
+
+    ##
+    # :attr: call_control_flag_1
+    # A set of flags from Retain.  One bit is set if the call is
+    # dispatched.
+
+    ##
+    # :attr: severity
+    # The call's severity
+
+    ##
+    # :attr: owner_css
+    # A Raptor concept used by Raptor I and is the css class name for
+    # the owner field.  The owner, resolver, and next_queue css,
+    # message, and editoable fields are Raptor concepts and are
+    # computed when the call is updated and cached in an attempt to
+    # save time on the combined_qs page.
+
+    ##
+    # :attr: owner_message
+    # The title message that pops up for the Raptor I owner field.
+
+    ##
+    # :attr: owner_editable
+    # True if the owner field is editable according to the Raptor I criteria.
+
+    ##
+    # :attr: resolver_css
+    # The css class for the resolver button
+
+    ##
+    # :attr: resolver_message
+    # The title message for the resolver button
+
+    ##
+    # :attr: resolver_editable
+    # The editable flag for the resolver button.
+
+    ##
+    # :attr: next_queue_css
+    # The css class for the next queue button.
+
+    ##
+    # :attr: next_queue_message
+    # The title message for the next queue button.
+
+    ##
+    # :attr: next_queue_editable
+    # The editable flag for the next queue button.
+
     set_table_name "cached_calls"
+
+    ##
+    # :attr: queue
+    # A belongs_to association to the Cached::Queue the call is on.
     belongs_to :queue, :class_name => "Cached::Queue"
+
+    ##
+    # :attr: pmr
+    # A belongs_to association to the Cached::Pmr of the call.
     belongs_to :pmr,   :class_name => "Cached::Pmr"
 
+    ##
     # The call_search_result causes the json utf-8 encoder to blow up
     # -- probably because it is not valid utf-8?
     def as_json(options = { })
@@ -122,19 +226,32 @@ module Cached
       super(options)
     end
     
+    ##
+    # During the processing of a queue via the Retain::Pmcs call, the
+    # existing database calls are marked as unused and then set to
+    # used as they are discovered in the new data.  The unused calls
+    # are then deleted from the database.  This is the setter for that
+    # Ruby attribute.
     def used=(value)
       @used = value
     end
 
+    ##
+    # Getter for the used attribute.
     def used
       @used
     end
 
+    ##
+    # The etag used for calls
     def etag
       [ call_search_result, last_fetched, pmr.etag ].flatten
     end
     once :etag
     
+    ##
+    # The tag used by the memcache which is designed to be the same
+    # value until a field in the call changes.
     def cache_tag(tag)
       # We are down in the cached model so the "auto-fetch magic" does
       # not work.  We have to check for nil in all the various fields

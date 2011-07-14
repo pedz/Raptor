@@ -1,14 +1,123 @@
 # -*- coding: utf-8 -*-
 
 module Cached
+  # === Retain Registration Model
+  #
+  # Sometimes referred to as the "DR" it mostly represents a user or a
+  # support specialist from Retain's perspective.  There may be more
+  # fields available that should be cached up.
   class Registration < Base
+    ##
+    # :attr: id
+    # The primary key for the table.
+
+    ##
+    # :attr: signon
+    # The user's "retain id".
+
+    ##
+    # :attr: software_center_id
+    # The id from cached_centers for the software center the record is
+    # associated with.
+
+    ##
+    # :attr: hardware_center_id
+    # The id from cached_centers for the hardware center the record is
+    # associated with.
+
+    ##
+    # :attr: psar_number
+    # Retain uses a second number (this number) for the PSAR entries.
+
+    ##
+    # :attr: name
+    # The name of the user (or specialist as the Retain documents
+    # refer to them).
+
+    ##
+    # :attr: telephone_number
+    # The telephone number of the user.  Note that its not clear how
+    # up to date these entries are kept.
+
+    ##
+    # :attr: daylight_savings_time
+    # A flag to indicate if the user observes daylight savings time.
+
+    ##
+    # :attr: time_zone_adjustment
+    # A flag that is the time zone adjustment for this user.
+
+    ##
+    # :attr: created_at
+    # Rails normal created_at timestamp that is when the db record was
+    # created.
+
+    ##
+    # :attr: updated_at
+    # Rails normal updated_at timestamp.  Each time the db record is
+    # saved, this gets updated.
+
+    ##
+    # :attr: last_day_fetch
+    # A Raptor only field that is the time when all the PSARs for the
+    # day have been fetched.  This is usually done about once an hour
+    # if the user is active.
+
+    ##
+    # :attr: last_all_fetch
+    # A Raptor only field that is the time when all the PSARs that are
+    # available for this user have been fetched.  This is usually done
+    # once a day.
+
+    ##
+    # :attr: apptest
+    # A flag that is true if this DR entry is for the APPTEST side of
+    # Retain.  I'm not super happy with this decision.  A Raptor user
+    # can have multiple Retuser and each Retuser can be either for the
+    # real Retain or the APPTEST retain.  To make things consistent,
+    # that flag is also propagated into these records.
+
     set_table_name "cached_registrations"
+
+    ##
+    # :attr: software_center
+    # A belongs_to association to the Cached::Center for this DRs
+    # software center.
     belongs_to :software_center,  :class_name => "Cached::Center"
+
+    ##
+    # :attr: hardware_center
+    # A belongs_to association to the Cached::Center for this DRs
+    # hardware center.
     belongs_to :hardware_center,  :class_name => "Cached::Center"
-    has_many   :pmrs_as_owner,    :class_name => "Cached::Pmr",       :foreign_key => "owner_id"
-    has_many   :pmrs_as_resolver, :class_name => "Cached::Pmr",       :foreign_key => "resolver_id"
+
+    ##
+    # :attr: pmrs_as_owner
+    # A has_many assocation to the Cached::Pmr entries that list this
+    # DR as its owner.
+    has_many   :pmrs_as_owner,    :class_name => "Cached::Pmr", :foreign_key => "owner_id"
+
+    ##
+    # :attr: pmrs_as_resolver
+    # A has_many association to the Cached::Pmr entries that list this
+    # DR as its resolver.
+    has_many   :pmrs_as_resolver, :class_name => "Cached::Pmr", :foreign_key => "resolver_id"
+
+    ##
+    # :attr: queue_infos
+    # A has_many association to the Cached::QueueInfo entries for this
+    # DR.
     has_many   :queue_infos,      :class_name => "Cached::QueueInfo", :foreign_key => "owner_id"
+
+    ##
+    # :attr: queues
+    # A has_many assocation to the Cached::Queue entries that are the
+    # personal queues for this DR.
     has_many   :queues,           :through    => :queue_infos
+
+    ##
+    # :attr: psars
+    # A has_many assocation to the Cached::Psar entries for this DR.
     has_many   :psars,            :class_name => "Cached::Psar"
     
     ##
@@ -55,6 +164,7 @@ module Cached
     end
     once :default_h_or_s
     
+    ##
     # If h_or_s is 'S' returns the software center if it is not null.
     # Else If h_or_s is 'H' returns the hardware center if it is not null.
     # Else return software center if it is not null,
@@ -75,6 +185,7 @@ module Cached
     end
     once :center
     
+    ##
     # Registration Time Zone as a rational fraction of a day
     #
     # Note that the Combined model has the same method.

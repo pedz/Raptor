@@ -23,7 +23,13 @@ class << AsyncObserver::Queue
   end
 end
 
+##
+# A model that represents an asynchronous request.  These are created
+# by the "front end" (the server process processing user requests) and
+# sent to the "back end" (the worker).
 class AsyncRequest
+  ##
+  # Called to perform the task.  Calls the instance perform
   def self.perform(job)
     # Note: job.ybody wasn't working for me.
     ar = YAML.load(job.body)    # The transmitted AsyncRequest
@@ -39,8 +45,9 @@ class AsyncRequest
     @obj_id = obj.id
   end
 
-  # Not using the one in AsyncObserver::Extensions because it is too
-  # braindead.
+  ##
+  # The meat of the send processing.  Not using the one in
+  # AsyncObserver::Extensions because it is too braindead.
   def async_send(action, opts = { })
     @type = :raptor
     pri = opts.fetch(:pri, AsyncObserver::Queue.default_pri)
@@ -54,6 +61,13 @@ class AsyncRequest
     AsyncObserver::Queue.put!(self, pri, delay, ttr, tube)
   end
 
+  ##
+  # performs the request which is to look up the retain user id,
+  # construct a Combined object based upon the class and id passed in
+  # the request and then call Combined::Base#load_if_stale to get it
+  # updated.
+  #
+  # This method must catch all of the possible exceptions.
   def perform
     retuser = Retuser.find(@retuser_id)
     begin
