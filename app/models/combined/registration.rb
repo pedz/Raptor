@@ -39,7 +39,7 @@ module Combined
       if @cached.last_all_fetch.nil? || @cached.last_all_fetch < 1.day.ago
         # logger.debug("Fetching all PSAR")
         search_hash = {
-          :signon2 => psar_number, # fetch it if we need to
+          :psar_number => psar_number, # fetch it if we need to
           :psar_start_date => 14.days.ago.strftime("%Y%m%d"),
           :psar_end_date => Time.now.strftime("%Y%m%d")
         }
@@ -50,7 +50,7 @@ module Combined
       elsif @cached.last_day_fetch.nil? || @cached.last_day_fetch < 10.minutes.ago
         # logger.debug("Fetching days PSAR")
         search_hash = {
-          :signon2 => @cached.psar_number,
+          :psar_number => @cached.psar_number,
           :psar_start_date => Time.now.strftime("%Y%m%d")
         }
         Combined::Psar.fetch(retain_user_connection_parameters, search_hash)

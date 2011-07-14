@@ -22,9 +22,7 @@ module Combined
         return
       end
 
-      # Note that the "signon2" field in the SDI "PSRR" request is for
-      # the PSAR Employee number -- not the normal Retain signon.  The
-      # default is the current user
+      # The default is to find the PSAR for the current user.
       retuser = local_params.delete(:retuser_id) || signon_user.signon
       
       # Only admins can search for others

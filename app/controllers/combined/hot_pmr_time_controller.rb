@@ -7,9 +7,9 @@ module Combined
       
       local_params = params.symbolize_keys
 
-      # Note that the "signon2" field in the SDI "PSRR" request is for
-      # the PSAR Employee number -- not the normal Retain signon.  The
-      # default is the current user
+      # There once was a confused comment here and I removed it.  See
+      # the comment in the psars_controller if you are curious what
+      # the new comment says.
       retuser = local_params.delete(:retuser_id) || signon_user.signon
       
       # Only admins can search for others

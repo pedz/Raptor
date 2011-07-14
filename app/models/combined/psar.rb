@@ -41,6 +41,7 @@ module Combined
         raise e unless e.rc == 256
       else
         first_field = Combined::Psar.retain_fields.first
+        logger.debug("DE32 length = #{de32s.length}")
         de32s.each do |fields|
           combined = Combined::Psar.find_or_new :psar_file_and_symbol => fields.psar_file_and_symbol
           # Cause a touch
