@@ -1,0 +1,131 @@
+Raptor 2 calls page documentation
+
+When a user goes to .../raptor/calls, they will be redirected to a URL
+such as .../raptor/calls/305356/top/all_calls/standard.  The four
+extra parts of the path are referred to as arguments.  The names of
+the arguments are group, levels, filter, and view.  When the user goes
+to the page, a table of the arguments is placed in the top right
+corner.  The table has four buttons with labels above them.  This will
+be referred to as the argument table.
+
+The main portion of the page is taken up with the calls table.  The
+calls table is a list of calls much like the Raptor 1 combined_qs
+page.  Visually to the user, the table has rows and columns where at
+first glance, each row appears to be a call and the columns are
+various attributes for the call.
+
+The buttons in the arguments table can be clicked.  After a short
+pause the user is presented with a selection list that is suitable for
+that argument.  When a user picks an entry, the button will change to
+what has been selected, the URL at the top of the page will be
+updated, the title is updated, and the calls table is also updated.
+In addition, the transition is put into the browser's history so that
+the forward and back buttons work as a user would expect.
+
+Some of the headings of the table will have a double ended arrow that
+indicates that the calls table can be sorted by that column.  Clicking
+the heading will sort the table and change the double ended arrow into
+an up arrow.  Subsequent clicks will reverse the sort order as well as
+the direction of the arrow.  When the user changes the arguments, the
+state saved will contain the sort order.  And if the change does not
+change the view (the fourth argument), the sort order will be the same
+(by the same column) as it was previously.
+
+The four arguments are each quite different.
+
+The first argument is the group which refers to the group of queues
+that the user is looking at.  The initial default is the user's retain
+id which is used to specify the user's favorite queues (as specified
+in Raptor -- not Retain).  Groups may be defined by normal users and
+will be owned by that user.  The user may then add entities to the
+group.
+
+Groups are thought of as groups of queues but can also be Teams or
+Departments.  In the case of a Team, the entities placed inside should
+be the team lead, the members of the team, the incoming team queues,
+and other teams.  In the example setups, a team like ptcpk contains
+ptcpk-am, ptcpk-emea, and ptcpk-ap.  Then each of those teams contain
+the leads, members, and incoming queues.  A Department is simply a
+collection of Teams.  There is also a group type called Group which is
+intended to be used by users that just want to create a grouping of
+entities.  These groupings can contain any other the other entities
+such as other groups, teams, personal queues, team queues, etc.
+
+Thus the first argument allows the user to switch from his favorite
+queues to his team's incoming queues, or his department's queues, or
+some other person's personal queue, etc.  Raptor 2 knows the
+association between a person and their personal queue so in the list
+of choices for the group argument are all of the area's intranet ids.
+If you want to view my personal queue but don't know what it is, just
+select pedzan@us.ibm.com and Raptor 2 will give you the calls on my
+personal queue.
+
+The group is a general many to many concept.  A group can have many
+entities within it and an entity may be part of many groups.  A check
+is made at definition time to prevent cycles thus if a parent group is
+added to one of its children, an error is thrown.  (There is also a
+catch in the recursion at twenty levels to prevent the server from
+locking up in an infinite loop should a loop somehow get into the
+system.)
+
+The second argument is currently one of two choices.  It is either
+"top" or "all_levels".  The best way to explain this is using a team
+as the example so lets use ptcpk-am.
+
+If ptcpk-am is selected as the group and "top" is selected for the
+levels, then the calls on the top level of the hierarchy are shown.
+In other words, only the incoming team queues for the ptcpk-am team
+are shown.
+
+If ptcpk-am is selected as the group but "all_levels" is select for
+the levels, then all of the calls for the team's incoming queues are
+listed along with all of the calls for all of the members listed in
+the team.  If ptcpk-am had teams within it, the recursion would
+continue into those teams as well.  In other words, if we change our
+example to ptcpk, which includes ptcpk-am, ptcpk-emea, and ptcpk-ap,
+then all of the incoming queues for all those teams would be listed as
+well as all the personal queues for all of the members of those teams.
+
+There is the ability to create other levels so in theory it would be
+possible to create a level, perhaps call it, one_deep which could be
+used on the upper level teams like ptcpk and would list only the
+incoming queues (only go one level deep) but not the personal queues.
+To create these is ultra trivial and individuals are allowed to do
+that just like with creating a group.  That individual would then own
+that level which means that only they could change it. This is true
+for all of the concepts presented.  Also, just to be clear, all of
+these entities are visible for all users but only the owner can alter
+them.  The hope is to freely share between us but still have someone
+be responsible for each entity.
+
+The third argument is the filter.  The best example of this is a
+filter currently defined called sev_one_OR_crit_sit which presents to
+the user only those calls, coming from the group and levels specified
+by the first two arguments, that have a severity of 1, a priority of
+1, a crit sit number, or has been flagged as "hot".  filters can be
+created by individuals.  It is not too difficult to do.  The database
+schema is documented and the filter is just an SQL condition.
+
+If it is not clear, the order of the first three arguments represents
+the order that the code uses.  The group of queues are found, then the
+levels argument is used to limit how deep to recurse into the tree
+that is defined below the group, then the filter is used to select out
+only the desired calls.
+
+The fourth argument is the view.  A view specifies what columns to
+render.  Its probably easiest just to see what is meant by this by
+selecting different views and noticing that different columns are
+shown in the different views.  The standard view will grow in
+complexity until it is roughly equivalent to the combined_qs page.
+Other views can be created for special purposes.  For example, there
+is a view that is more tailored for viewing the hot PMRs.  Views
+specific to what team leads are interested in can be created or
+perhaps views specific to managers, etc.  Smaller simpler views will
+render faster so the individual user can tailor his view to what they
+wants to see.
+
+A normal user can create a view.  The bulk of how to do that is
+documented elsewhere.  The main gist is that any bit of information
+within Retain can be obtained and presented in a view all of which is
+under the control of a normal user and can be shared (or pirated) by
+other users.
