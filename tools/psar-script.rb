@@ -9,7 +9,12 @@ all_ids = []
 
 all_ids.push(my_2nd_line.mail)
 my_2nd_line.manages.each do |m|
-  all_ids.push(m.mail)
+  if m.mail.is_a? Array
+    m.mail.each { |m| all_ids.push(m) }
+  else
+    all_ids.push(m.mail)
+  end
+
   m.manages.each do |p|
     if p.mail.is_a? Array
       p.mail.each { |m| all_ids.push(m) }
