@@ -5,7 +5,7 @@ module Cached
   #
   # This model is the database cached version of a Retain PSAR entry.  The
   # database table is <em>cached_psars</em>.
-  class Psar < Base
+  class Psar < Cached::Base
     ##
     # :attr: id
     # The primary key for the table.

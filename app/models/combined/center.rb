@@ -2,17 +2,14 @@
 
 module Combined
   # === Combined Call model
-  class Center < Base
+  class Center < Combined::Base
     ##
     # :attr: expire_time
     # set to 1.week
     set_expire_time 1.week
 
     set_db_keys :center
-    add_skipped_fields :center
-
     set_db_constants :center
-    add_non_retain_associations :queues
 
     ##
     # words in an array of words whose first element is the name of

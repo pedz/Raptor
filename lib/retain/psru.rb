@@ -43,7 +43,7 @@
 # 1397  :after_hours_time_hex
 # 1398  :local_stop_time_hex
 module Retain
-  class Psru < Sdi
+  class Psru < Retain::Sdi
     set_fetch_request "PSRU"
     set_required_fields(:psar_file_and_symbol,
                         :operand,

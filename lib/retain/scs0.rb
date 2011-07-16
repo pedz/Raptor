@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 module Retain
-  class Scs0 < Sdi
+  class Scs0 < Retain::Sdi
 
     set_fetch_request "SCS0"
     set_required_fields :queue_name, :center, :requested_elements

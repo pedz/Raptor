@@ -7,7 +7,7 @@ module Retain
   # this model.  Also see Combined::Psar for how the particulars on
   # how the Retain model and the Cached model are joined in this
   # particular instance.
-  class Psar < Base
+  class Psar < Retain::Base
     set_fetch_sdi Psrr
 
     def self.range(retain_user_connection_parameters, start_date, stop_date)

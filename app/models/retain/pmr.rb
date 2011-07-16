@@ -7,7 +7,7 @@ module Retain
   # this model.  Also see Combined::Pmr for how the particulars on
   # how the Retain model and the Cached model are joined in this
   # particular instance.
-  class Pmr < Base
+  class Pmr < Retain::Base
     set_fetch_sdi Pmpb
 
     def initialize(retain_user_connection_parameters, options = {})

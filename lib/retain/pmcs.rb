@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 module Retain
-  class Pmcs < Sdi
+  class Pmcs < Retain::Sdi
 
     set_fetch_request "PMCS"
     set_required_fields :queue_name, :center, :signon, :password

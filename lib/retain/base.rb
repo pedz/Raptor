@@ -57,8 +57,8 @@ module Retain
   #
   # The base class for a Retain model.  Retain models are what the
   # higher levels of the Rails application uses and implement the
-  # Retain higher level concepts such as a Problem, Call, PSAR,
-  # Component, etc.
+  # Retain higher level concepts such as a Pmr, Call, Psar, Component,
+  # etc.
   #
   # Each model specifies which Retain::Sdi object to use to fetch the
   # data via set_fetch_sdi.  The reason for the name was because I

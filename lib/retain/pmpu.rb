@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 module Retain
-  class Pmpu < Sdi
+  class Pmpu < Retain::Sdi
     set_fetch_request "PMPU"
     set_required_fields(:problem, :branch, :country,
                         :signon, :password, :last_alter_timestamp)

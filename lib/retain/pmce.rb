@@ -77,7 +77,7 @@
 # 2210 - :vantive_email_selector
 
 module Retain
-  class Pmce < Sdi
+  class Pmce < Retain::Sdi
     set_fetch_request "PMCE"
     set_required_fields(:country,
                         :customer_number,

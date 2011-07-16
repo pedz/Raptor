@@ -4,7 +4,7 @@ module Cached
   # === Retain Text Line Model
   #
   # A Retain text line comes in four different places.
-  class TextLine < Base
+  class TextLine < Cached::Base
     ##
     # :attr: id
     # The primary key for the table.

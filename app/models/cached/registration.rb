@@ -6,7 +6,7 @@ module Cached
   # Sometimes referred to as the "DR" it mostly represents a user or a
   # support specialist from Retain's perspective.  There may be more
   # fields available that should be cached up.
-  class Registration < Base
+  class Registration < Cached::Base
     ##
     # :attr: id
     # The primary key for the table.

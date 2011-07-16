@@ -34,7 +34,7 @@ require 'active_record/connection_adapters/postgresql_adapter'
 module ActiveRecord
   module ConnectionAdapters
     class PostgreSQLAdapter
-      def recreate_database(name) #:nodoc: 
+      def recreate_database(name)
         drop_database(name) 
         create_database(name) 
       end 
@@ -74,7 +74,7 @@ module ActiveRecord
       # 
       # Example: 
       #   drop_database 'matt_development' 
-      def drop_database(name) #:nodoc: 
+      def drop_database(name)
         execute "DROP DATABASE IF EXISTS #{name}" 
       end 
     end

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 module Retain
-  class Pmcc < Sdi
+  class Pmcc < Retain::Sdi
     set_fetch_request "PMCC"
     set_required_fields(:queue_name,
                         :center,

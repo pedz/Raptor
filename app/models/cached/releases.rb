@@ -4,6 +4,6 @@ module Cached
   # === Retain Release model
   #
   # Not used yet.
-  class Releases < Base
+  class Releases < Cached::Base
   end
 end

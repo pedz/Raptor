@@ -16,7 +16,7 @@ module Cached
   #
   # This model is the database cached version of a Retain call.  The
   # database table is <em>cached_calls</em>.
-  class Call < Base
+  class Call < Cached::Base
     ##
     # :attr: id
     # The primary key for the table.

@@ -3,7 +3,7 @@
 module Retain
   # Not fully flushed out or used yet but this will be used for the
   # "formatted" panels in retain (FA and FI)
-  class FormattedPanel < Base
+  class FormattedPanel < Retain::Base
     set_fetch_sdi Pmfb
 
     def initialize(retain_user_connection_parameters, options = { })

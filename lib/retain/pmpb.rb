@@ -215,7 +215,7 @@
 # 2425 -- :vrm
 
 module Retain
-  class Pmpb < Sdi
+  class Pmpb < Retain::Sdi
     set_fetch_request "PMPB"
     set_required_fields(:problem, :branch, :country,
                         :signon, :password,

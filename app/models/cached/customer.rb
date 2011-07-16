@@ -6,7 +6,7 @@ module Cached
   # This model is the database cached version of a Retain customer.
   # The database table is <em>cached_customers</em>.  One of the main
   # purposes of this model is to calculate customer based times.
-  class Customer < Base
+  class Customer < Cached::Base
     ##
     # :attr: id
     # The primary key for the table.

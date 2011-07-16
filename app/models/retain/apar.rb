@@ -3,7 +3,7 @@
 module Retain
   # A model representing Retain APARs.  Currently these are not backed
   # by a Cached model.  Uses Retain::Ssbr to fetch the data.
-  class Apar < Base
+  class Apar < Retain::Base
     set_fetch_sdi Ssbr
 
     def initialize(retain_user_connection_parameters, options = {})

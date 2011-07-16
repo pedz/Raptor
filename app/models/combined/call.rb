@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#
-# = Combined Models
+# === Combined Models
 #
 # These models represent the combined models.  See Combined::Base for
 # more information.
@@ -18,7 +17,7 @@
 # models and picks the first one -- standard ActiveRecord::Base find.
 # When we access a particular field like
 #
-# j = c.ppg
+#     j = c.ppg
 #
 # it will check the updated_at time and the dirty flag to determine if
 # a new copy needs to be fetched from Retain.  If it does, a
@@ -27,18 +26,17 @@
 # database.  j will then get assigned the fresh updated value of ppg.
 #
 # The criterial to determine if the value in the database is current
-# is done by Combined::Base#cache_value?
+# is done by Combined::Base.cache_valid?
 #
 module Combined
   # === Combined Call model
-  class Call < Base
+  class Call < Combined::Base
     ##
     # :attr: expire_time
     # set to 30 minutes
     set_expire_time 30.minutes
 
     set_db_keys :ppg
-    add_skipped_fields :ppg
     add_skipped_fields :slot    # pure db field
 
     # This field comes from Retain in the PMCS call (fetch the queue)

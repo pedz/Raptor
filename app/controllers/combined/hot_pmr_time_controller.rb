@@ -17,7 +17,7 @@ module Combined
         render :status => 401, :layout => false, :file => "public/401.html"
         return
       end
-      req_user = Combined::Registration.from_options(retain_user_connection_parameters, { :signon => retuser })
+      req_user = Cached::Registration.from_options(retain_user_connection_parameters, { :signon => retuser })
       if @no_cache
         req_user.refresh
       end

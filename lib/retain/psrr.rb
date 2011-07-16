@@ -73,7 +73,7 @@
 
 
 module Retain
-  class Psrr < Sdi
+  class Psrr < Retain::Sdi
     set_fetch_request "PSRR"
     set_required_fields(:signon, :password, :group_request)
     set_optional_fields(:psar_number,

@@ -6,7 +6,7 @@ module Cached
   # In Retain, a queue is not a real object or entity so there are
   # very few fields in the database for a queue.  The database table
   # is cached_queues.
-  class Queue < Base
+  class Queue < Cached::Base
     ##
     # :attr: id
     # The primary key for the table.

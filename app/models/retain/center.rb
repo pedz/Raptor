@@ -7,7 +7,7 @@ module Retain
   # this model.  Also see Combined::Center for how the particulars on
   # how the Retain model and the Cached model are joined in this
   # particular instance.
-  class Center < Base
+  class Center < Retain::Base
     set_fetch_sdi Pmbc
 
     def initialize(retain_user_connection_parameters, options = {})

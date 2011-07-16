@@ -3,7 +3,7 @@
 module Retain
   # Class created just so we can check if a queue is valid or not.
   # This class now has no real point since queue now uses PMCS.
-  class Cq < Base
+  class Cq < Retain::Base
     set_fetch_sdi Pmcs
 
     def initialize(retain_user_connection_parameters, options = {})

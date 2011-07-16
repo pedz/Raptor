@@ -7,7 +7,7 @@ module Cached
   # Cached::Registration records of the "owners".  This is over
   # designed since it appears that a queue can have either zero or one
   # owner.
-  class QueueInfo < Base
+  class QueueInfo < Cached::Base
     ##
     # :attr: id
     # The primary key for the table.

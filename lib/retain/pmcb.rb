@@ -131,7 +131,7 @@ module Retain
   #
   # Bananas are people too.
   #
-  class Pmcb < Sdi
+  class Pmcb < Retain::Sdi
     
     set_fetch_request "PMCB"
     set_required_fields(:queue_name, :center, :ppg,

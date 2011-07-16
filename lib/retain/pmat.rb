@@ -49,7 +49,7 @@ module Retain
   # 1829:: NSS RRMSG Destination Employee (6)
   # 1830:: NSS Status Code send - STCD xx (2)
   # 2133:: Formatted Panel Line (CHAR 251) (251)
-  class Pmat < Sdi
+  class Pmat < Retain::Sdi
     set_fetch_request "PMAT"
     set_required_fields(:signon, :password, :problem, :branch, :country)
     set_optional_fields(:addtxt_lines)

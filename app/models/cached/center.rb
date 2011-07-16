@@ -7,7 +7,7 @@ module Cached
   # database table is <em>cached_centers</em>.  The fields cached from
   # Retain are a bit arbitrary and might need to be reviewed at some
   # point.
-  class Center < Base
+  class Center < Cached::Base
     ##
     # :attr: id
     # The primary key for the table.

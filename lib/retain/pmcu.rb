@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 module Retain
-  class Pmcu < Sdi
+  class Pmcu < Retain::Sdi
     
     set_fetch_request "PMCU"
     set_required_fields(:operand, :signon, :password)

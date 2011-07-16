@@ -2,15 +2,13 @@
 
 module Combined
   # === Combined Queue model
-  class Queue < Base
+  class Queue < Combined::Base
     ##
     # :attr: expire_time
     # Set to 5.minutes
     set_expire_time 5.minutes
 
     set_db_keys :queue_name, :h_or_s
-    add_skipped_fields :queue_name, :h_or_s
-    add_non_retain_associations :owners, :queue_infos, :favorite_queues
     set_db_constants :queue_name, :h_or_s, :center
       
     ##

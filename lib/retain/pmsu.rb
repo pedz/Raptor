@@ -32,7 +32,7 @@ module Retain
   #         followed by the data types that represent the fields the remote system
   #         would like RETAIN to return. The length depends upon the number of
   #         data types in the group. (varies)
-  class Pmsu < Sdi
+  class Pmsu < Retain::Sdi
     
     set_fetch_request "PMSU"
     set_required_fields :search_argument, :signon, :password, :group_request

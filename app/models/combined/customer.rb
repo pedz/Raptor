@@ -2,14 +2,14 @@
 
 module Combined
   # === Combined Customer Model
-  class Customer < Base
+  class Customer < Combined::Base
     ##
     # :attr: expire_time
     # set to 3.days
     set_expire_time 3.days
 
     set_db_keys :country, :customer_number
-    add_skipped_fields :country, :customer_number, :pat
+    add_skipped_fields :pat
     
     set_db_constants :country, :customer_number, :center
 

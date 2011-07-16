@@ -7,7 +7,7 @@ module Retain
   # this model.  Also see Combined::Queue for how the particulars on
   # how the Retain model and the Cached model are joined in this
   # particular instance.
-  class Queue < Base
+  class Queue < Retain::Base
     set_fetch_sdi Pmcs
 
     def initialize(retain_user_connection_parameters, options = {})

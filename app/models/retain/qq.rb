@@ -4,7 +4,7 @@ module Retain
   # A retain model that is currently used just to explore retain.
   # Uses Retain::Pmqq.  Retain::QqController uses this model.  I
   # believe eventually the data Pmqq provides needs to be exploited.
-  class Qq < Base
+  class Qq < Retain::Base
     set_fetch_sdi Pmqq
 
     def initialize(retain_user_connection_parameters, options = {})

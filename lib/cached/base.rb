@@ -34,7 +34,7 @@ module Cached
         r
       end
       
-      def once(*ids) # :nodoc:
+      def once(*ids)
         for id in ids
           clean_id_name = "__UNIQUE__#{id.to_s.sub(/\?/, '')}"
           module_eval <<-mod_end

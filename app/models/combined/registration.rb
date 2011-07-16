@@ -2,18 +2,16 @@
 
 module Combined
   # Combined Registration Model
-  class Registration < Base
+  class Registration < Combined::Base
     ##
     # :attr: expire_time
     # Set to 3.days.
     set_expire_time 3.days
 
     set_db_keys :signon
-    add_skipped_fields :signon
     set_db_constants :signon, :software_center, :hardware_center
     add_skipped_fields :software_center_id, :hardware_center_id
     add_extra_fields   :software_center,    :hardware_center
-    add_non_retain_associations :queues, :queue_infos
     # These are DB fields used to keep track of when the PSARs were fetched.
     add_skipped_fields :last_day_fetch, :last_all_fetch
 

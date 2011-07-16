@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 module Retain
-  class Pmcp < Sdi
+  class Pmcp < Retain::Sdi
     set_fetch_request "PMCP"
     set_required_fields(:country, :customer_number, :signon, :password)
     set_optional_fields(:group_request)

@@ -2,14 +2,13 @@
 
 module Combined
   # === Combined PSAR model
-  class Psar < Base
+  class Psar < Combined::Base
     ##
     # :attr: expire_time
     # Set to check_mail_flag
     set_expire_time :check_mail_flag
 
     set_db_keys :psar_file_and_symbol
-    add_skipped_fields :psar_file_and_symbol
 
     add_skipped_fields :pmr_id
     add_extra_fields :problem, :branch, :country, :customer_number

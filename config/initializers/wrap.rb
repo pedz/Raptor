@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 class Object
   #
   # The unwrap to cached will take an object and return the cached
@@ -88,9 +87,8 @@ end
 #
 module ActiveRecord
   module Associations
-    class AssociationProxy #:nodoc:
+    class AssociationProxy
       undef_method :unwrap_to_cached
-      # undef_method :wrap_with_combined
 
       # For now, we are going to wrap a proxy object if it is
       # pretending to be an array.  Otherwise, we ask if it responds
@@ -120,9 +118,8 @@ end
 
 module ActiveRecord
   module NamedScope
-    class Scope #:nodoc:
+    class Scope
       undef_method :unwrap_to_cached
-      # undef_method :wrap_with_combined
 
       # For now, we are going to wrap a proxy object if it is
       # pretending to be an array.  Otherwise, we ask if it responds

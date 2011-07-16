@@ -21,7 +21,7 @@
 # 2133: :formatted_panel_line
 # 
 module Retain
-  class Pmfb < Sdi
+  class Pmfb < Retain::Sdi
     set_fetch_request "PMFB"
     set_required_fields(:center, :format_panel_number, :signon, :password)
     set_optional_fields(:panel_operand, :group_request, :error_message)

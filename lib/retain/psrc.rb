@@ -61,7 +61,7 @@
 # 1398 Local Stop Time - Minutes in Hex
 
 module Retain
-  class Psrc < Sdi
+  class Psrc < Retain::Sdi
     set_fetch_request "PSRC"
     set_required_fields(:signon, :password, :psar_service_code)
     set_optional_fields(:branch,

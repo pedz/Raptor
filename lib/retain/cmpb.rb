@@ -47,7 +47,7 @@ module Retain
   # 1524::  Multiple release table entries CHAR(28)
   # 1525::  Last pin key assigned CHAR(3)
   #
-  class Cmpb < Sdi
+  class Cmpb < Retain::Sdi
     set_fetch_request "CMPB"
     set_required_fields(:list_request, :search_component_id, :signon, :password)
     # set_required_fields(:group_request, :short_component_id, :signon, :password)

@@ -7,7 +7,7 @@ module Retain
   # be retrieved from Retain using this model.  Also see
   # Combined::Registration for how the particulars on how the Retain
   # model and the Cached model are joined in this particular instance.
-  class Registration < Base
+  class Registration < Retain::Base
     set_fetch_sdi Pmdr
 
     def initialize(retain_user_connection_parameters, options = {})

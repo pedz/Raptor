@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 
 module Combined
+  # Common class routines
   module ClassCommon
     alias_method :proxy_respond_to?, :respond_to?
     
-    # respond_to? class method
+    # respond_to? class method which asks if the combined class
+    # responds to the message or if the cached class does.
     def respond_to?(symbol, include_private=false)
       proxy_respond_to?(symbol, include_private) or
         cached_class.respond_to?(symbol, include_private)
     end
     
+    # Unwraps the args, passes them to the cached class, then wraps the results.
     def method_missing(symbol, *args, &block)
       args = args.unwrap_to_cached
       

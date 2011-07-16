@@ -5,7 +5,7 @@ module Cached
   #
   # The model that represents the Problem Record from Retain.  The
   # table this model is stored in is <em>cached_pmrs</em>.
-  class Pmr < Base
+  class Pmr < Cached::Base
     ##
     # :attr: id
     # The primary key for the table.

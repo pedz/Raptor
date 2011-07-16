@@ -199,7 +199,7 @@
 # 1288:   Call record page map for priority 1 calls not assigned or dispatched
 # 1289:   Call record page map for priority 2 calls not assigned or dispatched
 module Retain
-  class Pmqq < Sdi
+  class Pmqq < Retain::Sdi
     set_fetch_request "PMQQ"
     set_required_fields(:queue_name, :center, :h_or_s, :signon,
                         :password)

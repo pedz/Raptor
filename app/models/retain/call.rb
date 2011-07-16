@@ -6,7 +6,7 @@ module Retain
   # this model.  Also see Combined::Call for how the particulars on
   # how the Retain model and the Cached model are joined in this
   # particular instance.
-  class Call < Base
+  class Call < Retain::Base
     set_fetch_sdi Pmcb
 
     def initialize(retain_user_connection_parameters, options = {})

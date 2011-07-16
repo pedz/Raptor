@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 module Retain
-  class Pmcr < Sdi
+  class Pmcr < Retain::Sdi
     set_fetch_request "PMCR"
     set_required_fields(:queue_name, :center, :ppg, :operand, :h_or_s,
                         :signon, :password)

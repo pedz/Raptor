@@ -5,7 +5,7 @@ module Combined
   #
   # This is here simply because we want to be able to go from
   # Combined::Queue to a Combined::Registration or vice versa.
-  class QueueInfo < Base
+  class QueueInfo < Combined::Base
     ##
     # :attr: expire_time
     # Set to :never

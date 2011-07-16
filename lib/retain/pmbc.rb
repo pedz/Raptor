@@ -54,7 +54,7 @@ module Retain
   # 925::  Central center telephone number CHAR(19) (19)
   # 926::  Lost call flag CHAR(1) (1)
   #
-  class Pmbc < Sdi
+  class Pmbc < Retain::Sdi
     set_fetch_request "PMBC"
     set_required_fields(:signon, :password)
     set_optional_fields(:group_request, :center, :owning_retain_node)

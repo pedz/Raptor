@@ -2,7 +2,7 @@
 
 module Combined
   # Combined TextLine Model
-  class TextLine < Base
+  class TextLine < Combined::Base
     ##
     # :attr: expire_time
     # Set to :never

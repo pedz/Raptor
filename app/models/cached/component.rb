@@ -6,7 +6,7 @@ module Cached
   # This model is the database cached version of a Retain component.
   # The database table is <em>cached_components</em>.  This is another
   # model that has not been fully flushed out.
-  class Component < Base
+  class Component < Cached::Base
     ##
     # :attr: id
     # The primary key for the table.
