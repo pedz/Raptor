@@ -105,12 +105,12 @@ module Retain
       @snd_fields = @fields.merge(req_fields)
       options = @options.merge(send_options)
       if false
-        # Rails.logger.debug("class is #{self.class}")
-        # logger.debug("RTN: sendit for #{self.class} called")
-        # logger.debug("RTN: @snd_fields")
+        Rails.logger.debug("class is #{self.class}")
+        logger.debug("RTN: sendit for #{self.class} called")
+        logger.debug("RTN: @snd_fields")
         @snd_fields.dump_fields
-        # logger.debug("RTN: options")
-        # logger.debug("RTN: #{options.to_yaml}")
+        logger.debug("RTN: options")
+        logger.debug("RTN: #{options.to_yaml}")
       end
 
       request = Request.new(@retain_user_connection_parameters.signon, options)

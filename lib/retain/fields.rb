@@ -20,6 +20,7 @@ module Retain
       :branch                      => [    2, :upper_ebcdic,        3 ],
       :country                     => [    3, :upper_ebcdic,        3 ],
       :problem                     => [    4, :upper_ebcdic,        5 ],
+      :search_argument             => [    9, :ebcdic,            126 ],
       :title_format_id             => [   10, :ebcdic,              4 ],
       :customer_number             => [   11, :upper_ebcdic,        7 ],
       :hit_count                   => [   11, :int,                 4 ],
