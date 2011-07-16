@@ -10,13 +10,37 @@
 # Combined model which wraps the matching Retain and Cached models to
 # provide for a consistent and convenient interface.
 #
+# Here is an example.  If we create a Combined::Call with
+#
+#     c = Combined::Call.find(:first)
+#
+# notice that we do a database find which searchs the Cached::Call
+# models and picks the first one -- standard ActiveRecord::Base find.
+# When we access a particular field like
+#
+# j = c.ppg
+#
+# it will check the updated_at time and the dirty flag to determine if
+# a new copy needs to be fetched from Retain.  If it does, a
+# Retain::Call will be created, the fetch from Retain is done, and the
+# results pumped back into the cached model and thus saved into the
+# database.  j will then get assigned the fresh updated value of ppg.
+#
+# The criterial to determine if the value in the database is current
+# is done by Combined::Base#cache_value?
+#
 module Combined
+  # === Combined Call model
   class Call < Base
+    ##
+    # :attr: expire_time
+    # set to 30 minutes
     set_expire_time 30.minutes
 
     set_db_keys :ppg
     add_skipped_fields :ppg
     add_skipped_fields :slot    # pure db field
+
     # This field comes from Retain in the PMCS call (fetch the queue)
     # and is used to see if the calls on the queue have changed.  But,
     # when we get the call itself, we don't want to fetch this field
@@ -36,24 +60,23 @@ module Combined
     add_skipped_fields :resolver_css,   :resolver_message,   :resolver_editable
     add_skipped_fields :next_queue_css, :next_queue_message, :next_queue_editable
 
-    # words is an array of strings in the order of
-    # queue_name,h_or_s,center,ppg
+    ##
+    # Each Combined model should have a similar routine.  words is an
+    # array of strings in the order of queue_name,h_or_s,center,ppg.
+    # Returns a options hash with keys of :queue, :h_or_s, :center,
+    # :ppg
     def self.words_to_options(words)
       ppg = words.pop
       Combined::Queue.words_to_options(words).merge(:ppg => ppg)
     end
     
-    def self.from_words(words)
-      options = words_to_optins(words)
-      if queue = Combined::Queue.from_options(retain_user_connection_parameters, options)
-        call = queue.calls.find_or_initialize_by_ppg(options[:ppg])
-     end
-    end
-
-    # Params must include four parts: queue,S,center,ppg.  signon_user
-    # is passed in.  If param is a single word, we default queue, s,
-    # and center to the signon_user's personal queue if we can find
-    # it.  This work is done when the queue is fetched.
+    ##
+    # Returns an array with the call as the first element and the
+    # queue as the second.  Params must include four parts:
+    # queue,S,center,ppg.  signon_user is passed in.  If param is a
+    # single word, we default queue, s, and center to the
+    # signon_user's personal queue if we can find it.  This work is
+    # done when the queue is fetched.
     def self.from_param_pair!(param, signon_user = nil)
       words = param.split(',')
       raise CallNotFound.new(to_param) if words.empty?
@@ -69,26 +92,37 @@ module Combined
       [ c, queue ]
     end
     
+    ##
+    # Given a set of params, returns the call.
     def self.from_param!(param, signon_user = nil)
       call, queue = from_param_pair!(param, signon_user)
       call
     end
 
+    ##
+    # to_id is used in various Rails routines and usually returns the
+    # database id.  It is overridden to return the
+    # Combined::Queue#to_id followed by underscore and the ppg.
     def to_id
       queue.to_id + '_' + ppg
     end
     
+    ##
+    # Returns the params that could be used to retrieve this call.
     def to_param
       queue.to_param + ',' + ppg
     end
 
+    ##
+    # Returns a hash containing the needed entries to retrieve this
+    # call.
     def to_options
       { :ppg => ppg }.merge(queue.to_options)
     end
 
-    # The validate_xxx methods problem need a name change.  They
-    # return a three element array of a class name, help string, and a
-    # boolean if the field is editable.
+    ##
+    # The validate_xxx methods need a name change.  They return a hash
+    # with entries for css_class, title, editable, name, and width.
     def validate_owner(user)
       if owner_editable.nil?
         load
@@ -108,6 +142,8 @@ module Combined
       }
     end
     
+    ##
+    # Returns a similar hash as validate_owner except for the resolver
     def validate_resolver(user)
       if resolver_editable.nil?
         load
@@ -127,6 +163,9 @@ module Combined
       }
     end
     
+    ##
+    # Returns a similar hash as validate_owner except for the next
+    # queue.
     def validate_next_queue(user)
       if next_queue_editable.nil?
         load
@@ -144,6 +183,9 @@ module Combined
       }
     end
 
+    ##
+    # Returns the type of call.  Either "Primary", "Sec 1", "Sec 2",
+    # "Sec 3", or "Backup"
     def type
       # If we know for sure its a backup
       if self.p_s_b == "B"
@@ -167,10 +209,14 @@ module Combined
       end
     end
 
+    ##
+    # Returns true if call is dispatched to.
     def is_dispatched
       (self.call_control_flag_1 & 2) == 2
     end
 
+    ##
+    # Returns the name of the person dispatched to the call.
     def dispatched_employee_name
       dr = Cached::Registration.find(:first, :conditions => {
                                        :signon => self.dispatched_employee,
@@ -183,6 +229,9 @@ module Combined
       end
     end
 
+    ##
+    # Under initial response guidelines this routine is called to
+    # determine when the call entered the center.
     def center_entry_time(center = queue.center)
       if sig = center_entry_sig(center)
         sig.date
@@ -192,6 +241,7 @@ module Combined
     end
     once :center_entry_time
 
+    ##
     # Returns the signature for the CR that put the call into the
     # designated center
     def center_entry_sig(center = queue.center)
@@ -208,6 +258,7 @@ module Combined
     end
     once :center_entry_sig
 
+    ##
     # The current definition of when initial response is needed is
     # every time the call is queued back to the center.  In theory,
     # this applies to world trade and not U.S.  For U.S., I don't have
@@ -253,11 +304,12 @@ module Combined
 
     private
 
+    ##
     # The validate_owner_private, validate_resolver_private, and
     # validate_next_queue_private were created first.  They each
     # return a three value tuple of a css_class, some text, and a
-    # boolean if the field is editable.  These routines would called
-    # at view time.
+    # boolean if the field is editable.  These routines were called at
+    # view time.  (These routines are not used any more.)
     #
     # New routines will take their place and will be called when the
     # call is fetched and stored in the database.  I decided to
@@ -314,6 +366,8 @@ module Combined
       return [ "wag-wag", "PMR Owner not in same center", true ]
     end
 
+    ##
+    # See validate_owner_private except this is for the resolver
     def validate_resolver_private(user)
       queue = self.queue
       user_center = user.center(queue.h_or_s)
@@ -354,6 +408,8 @@ module Combined
       return [ "wag-wag", "PMR Resolver not in same center", true ]
     end
 
+    ##
+    # See validate_owner_private except this is for the next queue
     def validate_next_queue_private(user)
       queue = self.queue
       user_center = user.center(queue.h_or_s)
@@ -408,7 +464,11 @@ module Combined
       return [ "good", "I can not find anything to complain about", true ]
     end
 
-    # I like the visual clarity of returning the three value tuple.
+    ##
+    # Called when the call is fetched to compute the same triple as
+    # before: the css_value, the title, and the editable flag.  These
+    # are now saved in the database record as Cached::Call#owner_css
+    # and others.
     def compute_owner_private
       queue = @cached.queue
 
@@ -451,6 +511,9 @@ module Combined
       return [ "wag-wag", "PMR Owner not in same center", true ]
     end
 
+    ##
+    # Similar to compute_owner_private except for the resolver
+    # fields.
     def compute_resolver_private
       queue = @cached.queue
 
@@ -487,6 +550,9 @@ module Combined
       return [ "wag-wag", "PMR Resolver not in same center", true ]
     end
 
+    ##
+    # Similar to compute_owner_private except for the next queue
+    # fields.
     def compute_next_queue_private
       queue = @cached.queue
 
@@ -537,6 +603,9 @@ module Combined
       return [ "good", "I can not find anything to complain about", true ]
     end
     
+    ##
+    # Load (fetch) the call from Retain and push the new values into
+    # the database.
     def load
       # logger.debug("CMB: load for #{self.to_param}")
       # Pull the fields we need from the cached record into an options_hash

@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
 module Combined
+  # Combined Registration Model
   class Registration < Base
+    ##
+    # :attr: expire_time
+    # Set to 3.days.
     set_expire_time 3.days
 
     set_db_keys :signon
@@ -23,10 +27,15 @@ module Combined
     # the record from the Retain::Logon#apptest value.
     add_skipped_fields :apptest
 
+    ##
+    # The param is the signon (Retain id).
     def to_param
       @cached.signon
     end
 
+    ##
+    # Sets the last_day_fetch and last_all_fetch to nill which should
+    # cause a refresh to occur.
     def refresh
       # logger.debug("refreshing registration #{to_param}")
       self.last_all_fetch = nil
@@ -34,6 +43,10 @@ module Combined
       self.save!
     end
 
+    ##
+    # Fetches the PSARs for the DR.  All PSARs that are available are
+    # fetched once a day and all PSARs for the day are fetched every
+    # 10 minutes.
     def psars
       # logger.debug("psars for registration #{to_param}")
       unless psar_number.nil?
@@ -62,6 +75,9 @@ module Combined
       @cached.psars.wrap_with_combined
     end
 
+    ##
+    # If a software center is defined, return it.  Otherwise if a
+    # hardware center is defined, return it.  Otherwise return nil.
     def default_center
       if software_center
         software_center
@@ -73,6 +89,10 @@ module Combined
     end
     once :default_center
 
+    ##
+    # Similar to default_center.  If a software center is defined,
+    # return 'S'.  Otherwise if a hardware center is defined, return
+    # 'H'.  Otherwise, return 'S'.
     def default_h_or_s
       if software_center
         'S'
@@ -84,6 +104,7 @@ module Combined
     end
     once :default_h_or_s
     
+    ##
     # If h_or_s is 'S' returns the software center if it is not null.
     # Else If h_or_s is 'H' returns the hardware center if it is not null.
     # Else return software center if it is not null,
@@ -102,6 +123,7 @@ module Combined
     end
     once :center
     
+    ##
     # Registration Time Zone as a rational fraction of a day
     def tz
       time_zone_adjustment.to_r / (24 * 60)
@@ -110,6 +132,8 @@ module Combined
 
     private
     
+    ##
+    # Fetch (load) the registration from Retain.
     def load
       # logger.debug("CMB: load for #{self.to_param}")
       if @cached.signon.blank?

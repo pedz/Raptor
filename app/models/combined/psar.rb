@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
 module Combined
+  # === Combined PSAR model
   class Psar < Base
+    ##
+    # :attr: expire_time
+    # Set to check_mail_flag
     set_expire_time :check_mail_flag
 
     set_db_keys :psar_file_and_symbol
@@ -19,16 +23,24 @@ module Combined
     add_skipped_fields :registration_id
     add_extra_fields :signon2
 
+    ##
+    # A PSAR is specified by the psar_file_and_symbol field.
     def to_param
       psar_file_and_symbol
     end
     
+    ##
+    # Used to determine if the PSAR needs to be fetched again.  If the
+    # psar_mail_flag is set to 'M' then there is no point to fetch it.
+    # Otherwise, we fetch it if it is more than twelve hours old.
     def check_mail_flag
       ret = (@cached && (@cached.psar_mailed_flag == "M") || @cached.updated_at > 12.hours.ago)
       # logger.debug("check_mail_flag for #{@cached.psar_file_and_symbol} is #{ret}")
       return ret
     end
 
+    ##
+    # A convenience method for fetching PSARs given a search hash.
     def self.fetch(retain_user_connection_parameters, search_hash)
       # Cuurently we do this in two steps.  We fetch just the "IRIS"s
       # and then we fetch the contents of each PSAR that is not in our
@@ -50,6 +62,7 @@ module Combined
       end
     end
 
+    ##
     # Returns the Saturday of the week that this PSAR applies to.
     def saturday
       t = Time.local(psar_stop_date_year.to_i,
@@ -60,8 +73,11 @@ module Combined
     end
     once :saturday
 
+    ##
     # True if impact is 1 or if there is a PMR attached to the PSAR
-    # and that PMR is either marked as hot or has a crit-sit
+    # and that PMR is either marked as hot or has a crit-sit.  Note
+    # that we need to add a flag in the database so that the hot-ness
+    # is kepted with the PSAR.
     def hot?
       ((psar_impact == 1) ||
         (pmr && (pmr.hot || pmr.crit_sit)))
@@ -69,6 +85,8 @@ module Combined
 
     private
     
+    ##
+    # load (fetch) the PSAR from Retain.
     def load
       if @cached.psar_mailed_flag == "M"
         # logger.debug("CMB: skipping load for #{self.to_s} -- mailed flag set to M")

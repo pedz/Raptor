@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
 
 module Combined
+  # === Combined Customer Model
   class Customer < Base
+    ##
+    # :attr: expire_time
+    # set to 3.days
     set_expire_time 3.days
+
     set_db_keys :country, :customer_number
     add_skipped_fields :country, :customer_number, :pat
     
@@ -11,11 +16,18 @@ module Combined
     add_skipped_fields :center_id
     add_extra_fields   :center
 
+    ##
+    # A param for a customer is the country with the customer_number
+    # appended to it (no space or comma).
     def to_param
       @cached.country + @cached.customer_number
     end
 
-    # signon_user is not used.
+    ##
+    # signon_user is not used.  Tries to accept various forms.  If
+    # param is 7 letters, then a county of 000 is assumed.  Otherwise,
+    # if param is not 10 letters, an exception is raised.  Returns a
+    # Customer based upon the param passed in.
     def self.from_param(param, signon_user = nil)
       case param.length
       when 7
@@ -30,10 +42,18 @@ module Combined
       find_or_initialize_by_country_and_customer_number(country, cnum)
     end
 
+    ##
+    # Given a start time, adds the specified number of business days
+    # to the time according to the rules for the Customer (their
+    # timezone) and returns that time.
     def business_days(start_time, days)
       jims_business_days(start_time, days)
     end
 
+    ##
+    # Given a start time, adds the specified number of business hours
+    # to the time according to the rules for the Customer and returns
+    # that time.
     def business_hours(start_time, hours)
       jims_business_hours(start_time, hours)
     end
@@ -48,6 +68,9 @@ module Combined
       }
     }
 
+    ##
+    # Called from business_days.  Jim's algorithm proved the most
+    # stable.
     def jims_business_days(start_time, days)
       local_tz = tz || 0
       cust_time = cust_start_time = start_time.new_offset(local_tz)
@@ -67,6 +90,8 @@ module Combined
       start_time + (i1 - start_i1).hours
     end
 
+    ##
+    # Called from business_hours.
     def jims_business_hours(start_time, hours)
       local_tz = tz || 0
       cust_time = start_time.new_offset(local_tz)
@@ -88,6 +113,9 @@ module Combined
 
     private
 
+    ##
+    # Load (fetch) the Customer record from Retain and save it into
+    # the database.
     def load
       # logger.debug("CMB: load for #{self.to_param}")
       

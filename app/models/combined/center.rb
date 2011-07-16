@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 
 module Combined
+  # === Combined Call model
   class Center < Base
-    set_expire_time 1.second
+    ##
+    # :attr: expire_time
+    # set to 1.week
+    set_expire_time 1.week
 
     set_db_keys :center
     add_skipped_fields :center
@@ -10,14 +14,17 @@ module Combined
     set_db_constants :center
     add_non_retain_associations :queues
 
+    ##
     # words in an array of words whose first element is the name of
-    # the center
+    # the center.  Returns an options has that contains a key of
+    # :center.
     def self.words_to_options(words)
       { :center => words[0] }
     end
 
-    # Param is center.  Raises CenterNotFound if center is not in
-    # database or Retain.
+    ##
+    # Param is a string with the name of the center.  Raises
+    # CenterNotFound if center is not in database or Retain.
     def self.from_param!(param, signon_user = nil)
       c = from_param(param, signon_user)
       if c.nil?
@@ -26,19 +33,27 @@ module Combined
       c
     end
 
+    ##
+    # Takes a param string and returns a Center or nil if the center is invalid.
     def self.from_param(param, signon_user = nil)
       param = signon_user.default_center if param.empty?
       create_from_options(retain_user_connection_parameters, :center => param)
     end
 
+    ##
+    # Returns a string with the name of the center.
     def to_param
       @cached.center
     end
 
+    ##
+    # Returns a hash with :center as the key and the name of the
+    # center as its value.
     def to_options
       { :center => center }
     end
 
+    ##
     # Returns true if time is within the center's prime time shift.
     # Currently, daylight savings time is not considered.  The prime
     # shift is 8 a.m. to 5 p.m. (0800-1700) Monday through Friday.
@@ -49,7 +64,8 @@ module Combined
        (8 .. 17) === t.hour && (1 .. 5) === t.wday
     end
 
-    # Center Time Zone as a rational fraction of a day
+    ##
+    # Returns the Center's Time Zone as a rational fraction of a day
     def tz
       minutes_from_gmt.to_r / (24 * 60)
     end
@@ -57,6 +73,9 @@ module Combined
     
     private
 
+    ##
+    # load (fetch) the Center from Retain and save it into the
+    # database.
     def load
       # logger.debug("CMB: load for #{self.to_param}")
       if center == "000"

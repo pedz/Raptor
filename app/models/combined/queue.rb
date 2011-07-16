@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
 module Combined
+  # === Combined Queue model
   class Queue < Base
+    ##
+    # :attr: expire_time
+    # Set to 5.minutes
     set_expire_time 5.minutes
 
     set_db_keys :queue_name, :h_or_s
@@ -9,6 +13,7 @@ module Combined
     add_non_retain_associations :owners, :queue_infos, :favorite_queues
     set_db_constants :queue_name, :h_or_s, :center
       
+    ##
     # Words is an array of string in the order of
     # queue_name,h_or_s,center
     def self.words_to_options(words)
@@ -21,6 +26,7 @@ module Combined
       Combined::Center.words_to_options(words).merge(options)
     end
 
+    ##
     # Param is queue_name,h_or_s,center.  Raises QueueNotFound if
     # queue is not in database or Retain.
     def self.from_param!(param, signon_user = nil)
@@ -31,6 +37,7 @@ module Combined
       q
     end
 
+    ##
     # Param is queue_name,h_or_s,center
     def self.from_param(param, signon_user = nil)
       words = param.upcase.split(',')
@@ -79,25 +86,38 @@ module Combined
       q
     end
     
+    ##
+    # Used by Rails methods and is usually the id field of the active
+    # record.  For this class, we use the params queue_name, h_or_s,
+    # and center concatinated with underscores.
     def to_id
       queue_name.strip + '_' + (h_or_s || 'S') + '_' + self.center.to_param
     end
-    
+
+    ##
+    # Returns the param string suitable for this record which is the
+    # queue_name, h_or_s, and center's name separated by commas.
     def to_param
       queue_name.strip + ',' + (h_or_s || 'S') + ',' + self.center.to_param
     end
     
+    ##
+    # Returns a hash that specifies this queue with the :queue_name,
+    # :h_or_s, and :center keys.
     def to_options
       { :queue_name => queue_name, :h_or_s => h_or_s }.merge(center.to_options)
     end
     
+    ##
     # This was called just valid? but it confused me with the class
-    # methods valid?
+    # methods valid?.  Returns true of the queue is found in Retain.
     def queue_valid?(options = to_options)
       Retain::Cq.valid?(retain_user_connection_parameters, options)
     end
     
-    # format is not used here.
+    ##
+    # format is not used here.  Returns the number of entries on the
+    # queue.
     def hits(format)
       begin
         Retain::Cq.new(retain_user_connection_parameters, to_options).hit_count
@@ -109,6 +129,10 @@ module Combined
 
     private
 
+    ##
+    # loads (fetches) the queue from Retain and moves it into the
+    # database.  In the process, a skeletal instance of each call and
+    # PMR is created
     def load
       # This could be generallized but for now lets just do this
       return if @cached.queue_name.nil?

@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
 module Combined
+  # === Combined Component Model
   class Component < Base
+    ##
+    # :attr: expire_time
+    # at to 1.year
     set_expire_time 1.year
 
     set_db_keys :short_component_name

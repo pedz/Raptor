@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
 module Combined
+  # === Combined PMR Model
   class Pmr < Base
+    ##
+    # :attr: expire_time
+    # Set to 30.minutes.
     set_expire_time 30.minutes
 
     set_db_keys :problem, :branch, :country
@@ -26,8 +30,10 @@ module Combined
 
     add_skipped_fields :hot, :business_justification, :deleted
 
-    # words is an array of string in the order:
-    # problem, branch, country
+    ##
+    # words is an array of string in the order: problem, branch,
+    # country.  Returns an options has with :problem, :branch, and
+    # :country as the keys.
     def self.words_to_options(words)
       {
         :problem => words[0],
@@ -36,7 +42,9 @@ module Combined
       }
     end
     
-    # signon user is not used
+    ##
+    # signon user is not used.  Returns a PMR given a param string
+    # whose format is PPPPP,BBB,CCC for problem, branch, and country.
     def self.from_param(param, signon_user = nil)
       create_from_options(retain_user_connection_parameters, param_to_options(param.upcase))
     end
@@ -49,6 +57,7 @@ module Combined
       pmr
     end
 
+    ##
     # This finds or creates a PMR that is not deleted.  entity must
     # respond to :problem, :branch, and :country (methods).  This can
     # not be done in Cached::Pmr because entity may be stale and cause
@@ -64,14 +73,24 @@ module Combined
       Cached::Pmr.find_or_new(pmr_options)
     end
 
+    ##
+    # Used by various Rails methods.  Usually the database id field is
+    # returned.  For this model, we return the a string with
+    # problem_branch_country (with underscores).
     def to_id
       (problem + '_' + branch + '_' + country).upcase
     end
     
+    ##
+    # Returns a string of problem,branch,country that is suitable to
+    # be used as a param (last leg of a URL).
     def to_param
       pbc
     end
 
+    ##
+    # Returns the PMRs options has that contains :problem, :branch,
+    # and :country as its keys.
     def to_options
       {
         :problem => problem,
@@ -82,6 +101,17 @@ module Combined
     
     private
 
+    ##
+    # load (fetch) the PMR and its associated text lines from Retain
+    # and save it into the database.  The PMR is the only record in
+    # Retain that has a last updated type of field in it.  This field
+    # is called the :last_alter_timestamp.  The method of updating the
+    # database is to first do a "quick" call to Retain to fetch just
+    # that field.  If the PMR has not been updated in retain, we
+    # update the updated_at field in the database to tell us when we
+    # last check Retain and return.  Otherwise, we fetch any new text
+    # lines and the other fields (changed or not) and save them to the
+    # database.
     def load
       # logger.debug("CMB: load for #{self.to_param}")
       
@@ -353,6 +383,7 @@ module Combined
       @cached.update_attributes(retain_options)
     end
 
+    ##
     # Merges pmr_lines into cached_lines.  Offset is the offset into
     # cached_lines to start the update.  line_type is the line_type of
     # the text line to create.
