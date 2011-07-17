@@ -1,15 +1,21 @@
 # -*- coding: utf-8 -*-
 
 module Retain
+  # === Retain Customer Moel
+  #
   # A model representing Retain customers.  See Cached::Customers for
-  # a list of attributes that are cached.  Uses Retain::Pmcp to fetch
-  # data from Retain so see it for what can be retrieved from Retain
-  # using this model.  Also see Combined::Customer for how the
-  # particulars on how the Retain model and the Cached model are
-  # joined in this particular instance.
+  # a list of attributes that are cached and Combined::Customer for
+  # how the particulars on how the Retain model and the Cached model
+  # are joined in this particular instance.
   class Customer < Retain::Base
+    ##
+    # :attr: fetch_sdi
+    # Set to Retain::Pmcp
     set_fetch_sdi Pmcp
 
+    ##
+    # :attr: fetch_sdi
+    # Set to Retain::Ssbr
     def initialize(retain_user_connection_parameters, options = {})
       super(retain_user_connection_parameters, options)
     end

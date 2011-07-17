@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 module Retain
   class TextLine
 

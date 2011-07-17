@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 module Retain
   #
   # Retain::Sdi is the base class for a set of subclasses that

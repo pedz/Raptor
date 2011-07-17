@@ -12,7 +12,7 @@ class HotPmrListsController < ApplicationController
   # manager, or a second line manager
   def index
     temp_user = application_user
-    temp_ldap = temp_user.ldap
+    temp_ldap = temp_user.ldap_user
     if temp_ldap.ismanager != "Y"
       area_mgr = temp_ldap.mgr.mgr
     else

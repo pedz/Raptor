@@ -1,19 +1,26 @@
 # -*- coding: utf-8 -*-
 
 module Retain
-  # A model representing Retain pmrs.  See Cached::Pmrs for a list
-  # of attributes that are cached.  Uses Retain::Pmpb to fetch data
-  # from Retain so see it for what can be retrieved from Retain using
-  # this model.  Also see Combined::Pmr for how the particulars on
-  # how the Retain model and the Cached model are joined in this
-  # particular instance.
+  # === Retain PMR Model
+  #
+  # A model representing Retain pmrs.  See Cached::Pmrs for a list of
+  # attributes that are cached and Combined::Pmr for how the
+  # particulars on how the Retain model and the Cached model are
+  # joined in this particular instance.
   class Pmr < Retain::Base
+    ##
+    # :attr: fetch_sdi
+    # Set to Retain::Pmpb
     set_fetch_sdi Pmpb
 
+    ##
+    # :attr: fetch_sdi
+    # Set to Retain::Ssbr
     def initialize(retain_user_connection_parameters, options = {})
       super(retain_user_connection_parameters, options)
     end
 
+    # Returns problem,branch,country
     def to_s
       "%s,%s,%s" % [ problem, branch, country ]
     end

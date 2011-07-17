@@ -4,6 +4,22 @@
 # items that it contains.  The actual implementation is a view.
 class Containment < ActiveRecord::Base
   ##
+  # :attr:  container_id
+  # The id of the container
+
+  ##
+  # :attr: container_type
+  # The type of the container
+
+  ##
+  # :attr: item_id
+  # The id of the item
+
+  ##
+  # :attr: item_type
+  # The type of the item
+
+  ##
   # :attr: container
   # Object A polymorphic belongs_to which may result in a Name, User,
   # Retuser, etc.

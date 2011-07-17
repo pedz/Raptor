@@ -36,3 +36,10 @@ require 'retain/scs0'
 require 'retain/signature_line'
 require 'retain/ssbr'
 require 'retain/text_line'
+
+# See Retain::Base for most of the meat of the Retain module.  See
+# Retain::Call for a description of how each Retain model works.  See
+# Retain::Sdi for the lower level workings.  Retain::Fields and
+# Retain::Field are also interesting.
+module Retain
+end

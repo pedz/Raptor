@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 
 # A table of legal values for the type field in the Name model.
+#
+# A Name has a NameType.  A NameType has an ArgumentType.  The
+# argument type defines how the entity can be used: e.g. as a filter
+# or as a view.
 class NameType < ActiveRecord::Base
   ##
   # :attr: id

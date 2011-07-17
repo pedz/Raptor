@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 module Retain
-  # This is a model used to update a call.  It is in the models
-  # directory because it is used with views to create the update forms
-  # used in the combined qs and combined calls pages.
+  # == Retain Call Update model
+  #
+  # Not a normal retain model.  This is a model used to update a call.
+  # It is in the models directory because it is used with views to
+  # create the update forms used in the combined qs and combined calls
+  # pages.  (ok... but why is it called "Retain::CallUpdate and not
+  # just CallUpdate?)
   class CallUpdate
 
     attr_reader   :call

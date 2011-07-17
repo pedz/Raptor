@@ -27,12 +27,14 @@ module Json
 
       calls = ::Cached::Call.scoped(:conditions => { :queue_id => queue_ids }).
         scoped(:include => [:pmr, :queue]).scoped(:conditions => filter.item.condition.sql)
-      last_fetched = calls.map do |call|
-        async_fetch(call)
-        call.last_fetched
-      end.max
-
-      fresh_when(:last_modified => last_fetched, :etag => calls)
+      unless calls.nil?
+        last_fetched = calls.map do |call|
+          async_fetch(call)
+          call.last_fetched
+        end.max
+        
+        fresh_when(:last_modified => last_fetched, :etag => calls)
+      end
 
       unless request.fresh?(response)
         render :json => {

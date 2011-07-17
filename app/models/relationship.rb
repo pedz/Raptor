@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Each Relationship specifies a container name that contains an item
-# as well as the relationship type that the two share.
+# A Relationship is a specific instance of a RelationshipType.  See
+# AssociationType for how and why these models exist.  Each
+# Relationship specifies a container name that contains an item as
+# well as the relationship type that the two share.
 class Relationship < ActiveRecord::Base
   ##
   # :attr: id

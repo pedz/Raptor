@@ -14,7 +14,7 @@ class Element < ActiveRecord::Base
 
   ##
   # :attr: widget_id
-  # A foreign key that references the id field in the widgets table.
+  # An id in the widgets table.
 
   ##
   # :attr: widget
@@ -60,6 +60,16 @@ class Element < ActiveRecord::Base
   ##
   # :attr: colspan
   # An Integer for the number of columns this element will consume.
+
+  ##
+  # :attr: created_at
+  # Rails normal created_at timestamp that is when the db record was
+  # created.
+
+  ##
+  # :attr: updated_at
+  # Rails normal updated_at timestamp.  Each time the db record is
+  # saved, this gets updated.
 
   validates_uniqueness_of :col, :scope => [ :view_id, :row ], :message => "[ View, row, col ] must be unique"
 end

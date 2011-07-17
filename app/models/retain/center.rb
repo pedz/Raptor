@@ -1,19 +1,25 @@
 # -*- coding: utf-8 -*-
 
 module Retain
+  # === Retain Center Model
+  #
   # A model representing Retain center.  See Cached::Center for a list
-  # of attributes that are cached.  Uses Retain::Pmbc to fetch data
-  # from Retain so see it for what can be retrieved from Retain using
-  # this model.  Also see Combined::Center for how the particulars on
-  # how the Retain model and the Cached model are joined in this
-  # particular instance.
+  # of attributes that are cached and Combined::Center for how the
+  # particulars on how the Retain model and the Cached model are
+  # joined in this particular instance.
   class Center < Retain::Base
+    ##
+    # :attr: fetch_sdi
+    # Set to Retain::Pmbc
     set_fetch_sdi Pmbc
 
+    # retain_user_connection_parameters and options are passed up to
+    # Retain::Base.initialize
     def initialize(retain_user_connection_parameters, options = {})
       super(retain_user_connection_parameters, options)
     end
 
+    # Returns true if the center is found in Retain
     def self.valid?(retain_user_connection_parameters, options)
       # short circuit asking if "" is a valid center
       return false if options[:center].blank?

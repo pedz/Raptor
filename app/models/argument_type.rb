@@ -23,6 +23,16 @@ class ArgumentType < ActiveRecord::Base
   # An Integer that specifies the position this arguement will be in.
 
   ##
+  # :attr: created_at
+  # Rails normal created_at timestamp that is when the db record was
+  # created.
+
+  ##
+  # :attr: updated_at
+  # Rails normal updated_at timestamp.  Each time the db record is
+  # saved, this gets updated.
+
+  ##
   # :attr: name_types
   # A has_many association of NameType that use this ArgumentType
   has_many :name_types

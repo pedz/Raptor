@@ -13,8 +13,14 @@ class View < Name
   # :attr: elements
   # A has_many relation to the list of type Element that this view uses.
   has_many :elements
+
+  ##
+  # :attr: widgets
+  # A has_many through association for the Widget models that this
+  # view uses.
   has_many :widgets, :through => :elements
 
+  # Cute method but its not used anywhere...
   def widget_names
     self.widgets.map { |widget| widget.name }
   end

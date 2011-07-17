@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# This model belongs to the User model and holds the users retain
-# specific login information.
+# === Raptor's Retain User Model
+#
+# 
 class Retuser < ActiveRecord::Base
   ##
   # :attr: id
@@ -12,18 +13,11 @@ class Retuser < ActiveRecord::Base
   # The Integer id of the User that the Retuser belongs to.
 
   ##
-  # :attr: user
-  # A belongs_to association to a User
-  belongs_to :user
-
-  ##
-  # :attr: retid
-  # A String that has the Retain user's id.
-  validates_presence_of :retid
-
-  ##
   # :attr: password
   # A String that has the Retain user's password.
+  validates_presence_of :password
+  attr_accessor :password_confirmation
+  validates_confirmation_of :password
 
   ##
   # :attr: failed
@@ -31,9 +25,16 @@ class Retuser < ActiveRecord::Base
   # flag must be manually turned back off.  This is to prevent Raptor
   # from trying with an incorrect password three times and locking the
   # user out of his account.
-  validates_presence_of :password
-  attr_accessor :password_confirmation
-  validates_confirmation_of :password
+
+  ##
+  # :attr: created_at
+  # Rails normal created_at timestamp that is when the db record was
+  # created.
+
+  ##
+  # :attr: updated_at
+  # Rails normal updated_at timestamp.  Each time the db record is
+  # saved, this gets updated.
 
   ##
   # :attr: logon_return
@@ -58,6 +59,22 @@ class Retuser < ActiveRecord::Base
 
 
   ##
+  # :attr: hardware_node_id
+  # The Integer id of the RetainNodeSelector used to fetch hardware
+  # elements like PMH entries.  This is set by the user via the
+  # retuser setup pages.
+
+  ##
+  # :attr: user
+  # A belongs_to association to a User
+  belongs_to :user
+
+  ##
+  # :attr: retid
+  # A String that has the Retain user's id.
+  validates_presence_of :retid
+
+  ##
   # :attr: software_name
   # A belongs_to association to a RetainNodeSelector that is used to
   # fetch software Retain elements like a PMR.
@@ -65,12 +82,6 @@ class Retuser < ActiveRecord::Base
              :class_name => "RetainNodeSelector",
              :foreign_key => :software_node_id,
              :include => :retain_node)
-  ##
-  # :attr: hardware_node_id
-  # The Integer id of the RetainNodeSelector used to fetch hardware
-  # elements like PMH entries.  This is set by the user via the
-  # retuser setup pages.
-
   ##
   # :attr: hardware_node
   # A belongs_to association to a RetainNodeSelector that is used to

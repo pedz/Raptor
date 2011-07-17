@@ -79,17 +79,6 @@ class User < ActiveRecord::Base
   # current_retain_id association
   has_many   :favorite_queues,   :through => :current_retain_id, :order => :sort_column
 
-  # These don't exist yet....
-  # ##
-  # # :attr: widgets
-  # # A has_many assocation of type Widget that this User owns.
-  # has_many   :widgets,           :foreign_key => :owner
-
-  # ##
-  # # :attr: views
-  # # A has_many association of type View that this User owns.
-  # has_many   :views,             :foreign_key => :owner
-
   ##
   # :attr: relationships
   # A has_many association to Relationship where this User is the item
@@ -137,21 +126,26 @@ class User < ActiveRecord::Base
   # Entity entries per User
   has_many :user_entity_counts
 
-  def ldap
+  # Returns the LdapUser for this user.
+  def ldap_user
     LdapUser::find(:attribute => 'mail', :value => ldap_id)
   end
 
+  # Returns the first_name (as specified by the LdapUser entry) for
+  # the user.  First tries the hrPreferredName field, then tries
+  # givenName.  If the result is an Array, then the shortest element
+  # is returned.
   def first_name
     @first_name ||= 
-      if (given = ldap.givenName).is_a? Array
+      if (given = (ldap_user.hrPreferredName || ldap_user.givenName)).is_a? Array
         given.min { |a, b| a.length <=> b.length }
       else
         given
       end
   end
 
-  # A common method needed since User can be placed as an item within
-  # a Relationship
+  # Returns the ldap_id.  Needed to alow a User to be placed as an
+  # item within a Relationship
   def item_name
     ldap_id
   end

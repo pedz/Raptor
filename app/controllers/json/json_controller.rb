@@ -14,10 +14,10 @@ module Json
       end
       
       fresh_when(:last_modified => time_stamp, :etag => get_etag(item))
-      if cache_options.has_key?(:expires_in)
-        expires_in(cache_options[:expires_in])
-      end
       unless request.fresh?(response)
+        if cache_options.has_key?(:expires_in)
+          expires_in(cache_options[:expires_in])
+        end
         render :json => item
       end
     end

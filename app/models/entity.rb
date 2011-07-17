@@ -2,13 +2,13 @@
 #
 # An Entity is a very generic term which may be any thing given in the
 # "calls" or "queues" list of arguments.  Entities is a view that is
-# the UNION of Relationship, User, and Retuser tables.  It is then
-# joined to the name_types table and the argument_types table.
+# the UNION of Name, User, Retuser, and Cached::Queue models which are
+# then joined to NameType table and the ArgumentType models.
 #
 # Given a name of an Entity, it can be looked up and the result will
 # contain a polymorphic item which will be the actual item.  This item
-# can later be used to find all of the elements it contains using the
-# Container or Nesting
+# can later be used to find all of the elements it contains or other
+# attributes.
 class Entity < ActiveRecord::Base
   ##
   # :attr: name
@@ -18,7 +18,8 @@ class Entity < ActiveRecord::Base
   # :attr: real_type
   # The actual type of the Entity.  We can't call this "type" or
   # ActiveRecord thinks it is to be used for an STI which we don't
-  # want in this case.
+  # want in this case.  For subclasses of Name, this will be the
+  # subclass such as Team
 
   ##
   # :attr: item_id
@@ -41,7 +42,8 @@ class Entity < ActiveRecord::Base
 
   ##
   # :attr: base_type
-  # The same as NameType#base_type
+  # The same as NameType#base_type.  For subclasses of Name, this will
+  # be Name.
 
   ##
   # :attr: table_name
@@ -76,6 +78,11 @@ class Entity < ActiveRecord::Base
   ##
   # :attr: position
   # The same as ArgumentType#position
+
+  ##
+  # :attr: updated_at
+  # The updated_at field from the record that name came from -- thus
+  # it is when the name record was last updated.
 
   ##
   # :attr: item

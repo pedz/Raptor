@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 # This model specifies or restrictions the types of relationships that
-# can be listed in Containers.  For example, we want a Team like ptcpk
+# can be listed in a Relationship.  For example, we want a Team like ptcpk
 # to have a team lead, team members which will be Users and also have
-# team queues that will be CachedQueues.
+# team queues that will be Cached::Queues.
 #
-# Three examples of a Relationship would be:
+# Three examples of a RelationshipType would be:
 #
 # container_type | association_type | item_type
 # Team           | team lead        | User

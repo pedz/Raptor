@@ -5,7 +5,8 @@ module Json
       def index
         json_send(::Cached::Registration.find(:all,
                                               :conditions => {
-                                                :apptest => retain_user_connection_parameters.apptest}))
+                                                :apptest => retain_user_connection_parameters.apptest
+                                              }))
       end
 
       def show

@@ -5,8 +5,7 @@
 class Filter < Name
   ##
   # :attr: condition
-  # A has_one association of type Condition.  (should this be just a
-  # has one? association?)
+  # A has_one association of type Condition
   has_one :condition, :foreign_key => :name_id
   accepts_nested_attributes_for :condition
 end

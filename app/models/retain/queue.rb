@@ -1,15 +1,20 @@
 # -*- coding: utf-8 -*-
 
 module Retain
+  # === Retain Queue Model
+  #
   # A model representing Retain queues.  See Cached::Queues for a list
-  # of attributes that are cached.  Uses Retain::Pmcs to fetch data
-  # from Retain so see it for what can be retrieved from Retain using
-  # this model.  Also see Combined::Queue for how the particulars on
-  # how the Retain model and the Cached model are joined in this
-  # particular instance.
+  # of attributes that are cached and Combined::Queue for how the
+  # particulars on how the Retain model and the Cached model are
+  # joined in this particular instance.
   class Queue < Retain::Base
+    ##
+    # :attr: fetch_sdi
+    # Set to Retain::Pmcs
     set_fetch_sdi Pmcs
 
+    # retain_user_connection_parameters and options are passed up to
+    # Retain::Base.initialize
     def initialize(retain_user_connection_parameters, options = {})
       super(retain_user_connection_parameters, options)
     end
@@ -37,6 +42,7 @@ module Retain
       end
     end
     
+    # Returns queue_name,center optionally ,H ... thats just weird.
     def to_s
       ret = queue_name.strip + ',' + center
       if h_or_s? && h_or_s != 'S' && h_or_s != 's'
@@ -45,10 +51,9 @@ module Retain
       ret
     end
     
-    #
+
     # Returns the list of calls from the de32 field as Retain::Call
     # objects.
-    #
     def calls
       return [] if hit_count == 0
       local_h_or_s = h_or_s
@@ -71,6 +76,7 @@ module Retain
 
     private
 
+    # Decodes the center field that is returned from the Pmcs call.
     def decode_center(v)
       s = v.ret2ushort
       i1 = s / 100;
@@ -84,7 +90,5 @@ module Retain
       ## Otherwise it is pure numeric
       return ("%03d" % s)
     end
-
-
   end
 end

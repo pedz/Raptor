@@ -86,7 +86,7 @@ module Combined
 
       # Pull the fields we need from the cached record into an options_hash
       options_hash = Hash[ *%w{ center }.map { |field|
-                             [ field.to_sym, cached.attributes[field] ] }.flatten ]
+                             [ field.to_sym, @cached.attributes[field] ] }.flatten ]
 
       # :group_request is a special case
       group_request = self.class.combined_class.retain_fields.map { |field| field.to_sym }
