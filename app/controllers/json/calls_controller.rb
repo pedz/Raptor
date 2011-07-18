@@ -27,15 +27,16 @@ module Json
 
       calls = ::Cached::Call.scoped(:conditions => { :queue_id => queue_ids }).
         scoped(:include => [:pmr, :queue]).scoped(:conditions => filter.item.condition.sql)
-      unless calls.nil?
-        last_fetched = calls.map do |call|
-          async_fetch(call)
+      last_fetched = calls.map do |call|
+        async_fetch(call)
+        if call.last_fetched.nil?
+          1.year.ago
+        else
           call.last_fetched
-        end.max
-        
-        fresh_when(:last_modified => last_fetched, :etag => calls)
-      end
-
+        end
+      end.max
+      
+      fresh_when(:last_modified => last_fetched, :etag => calls)
       unless request.fresh?(response)
         render :json => {
           :class_name => "Cached::Call",
