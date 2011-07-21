@@ -152,12 +152,14 @@ module Retain
       end
       case @cvt
       when :int
-        v = ""
+        # Rails.logger.debug("XXX '#{value}'")
+        v = "\0" * width
         while value > 0
           v << "%c" % (value % 256)
           value /= 256
         end
-        v += "\0" * width
+        v.force_encoding('ASCII-8BIT')
+        # Rails.logger.debug("XXX 1 '#{v}'")
         v.reverse[0...width]
       when :psarfs
         # The first 12 bytes are characters that we encode to ebcdic.

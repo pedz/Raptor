@@ -9,6 +9,7 @@ module Retain
   #         type of user and that user's authority. Because room is needed to
   #         append information about the user, the search argument should be less
   #         than 98 characters. (126)
+  #   10 -  Title line format
   #   11 -  Binary number of search hits. This value may be different from the
   #         number of document ID's (data element 13). (4)
   #   32 -  New for R4. This data element will consist of a total data element
@@ -33,24 +34,14 @@ module Retain
   #         followed by the data types that represent the fields the remote system
   #         would like RETAIN to return. The length depends upon the number of
   #         data types in the group. (varies)
-  class Pmsu < Retain::Sdi
+  class Pmsr < Retain::Sdi
     
-    set_fetch_request "PMSU"
-    set_required_fields :search_argument, :signon, :password, :group_request
-    set_optional_fields :operand, :h_or_s, :hit_limit
+    set_fetch_request "PMSR"
+    set_required_fields :search_argument, :signon, :password
+    set_optional_fields :h_or_s, :hit_limit, :title_format_id
     
     def initialize(retain_user_connection_parameters, options = { })
       super(retain_user_connection_parameters, options)
-      unless @fields.has_key?(:group_request)
-        @fields[:group_request] = [[
-                                    :problem,
-                                    :branch,
-                                    :country,
-                                    :last_alter_timestamp,
-                                    :alteration_date,
-                                    :alteration_time
-                                   ]]
-      end
     end
   end
 end
