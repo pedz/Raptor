@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 class UsersController < ApplicationController
-  before_filter :admin_only, :only => [ :destroy ]
-  before_filter :this_user?, :except => [ :index ]
+  before_filter :admin_only, :only => [ :destroy, :new ]
+  before_filter :this_user?, :except => [ :index, :new ]
 
   # GET /users
   # GET /users.xml

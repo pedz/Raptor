@@ -9,12 +9,12 @@
   <b>Retain user:</b>
   <% if @user.current_retain_id.nil? %>
     <% if @user.retusers.empty? %>
-      <td><%= link_to 'New Retain User Id', new_user_retuser_path(user) %></td>
+      <td><%= link_to 'New Retain User Id', new_config_user_retuser_path(@user) %></td>
     <% else %>
-      <td><%= link_to 'Pick Retain Id', edit_user_path(user) %></td>
+      <td><%= link_to 'Pick Retain Id', edit_config_user_path(@user) %></td>
     <% end %>
   <% else %>
-    <td><%=link_to "#{@user.current_retain_id.retid}", user_retuser_url(@user, @user.current_retain_id) %></td>
+    <td><%=link_to "#{@user.current_retain_id.retid}", config_user_retuser_url(@user, @user.current_retain_id) %></td>
   <% end %>
 </p>
 
@@ -24,5 +24,5 @@
     <%=h @user.admin %>
   </p>
 <% end %>
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Index of Users', users_path %>
+<%= link_to 'Edit', edit_config_user_path(@user) %> |
+<%= link_to 'Index of Users', config_users_path %>

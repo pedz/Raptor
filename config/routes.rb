@@ -94,8 +94,10 @@ ActionController::Routing::Routes.draw do |map|
   # that right now.
   map.resources :combined_psars, :controller => 'combined/psars'
 
-  map.resources :users do |user|
-    user.resources :retusers
+  map.namespace(:config) do |config|
+    config.resources :users do |user|
+      user.resources :retusers
+    end
   end
 
   # Feedback messages, etc.
@@ -158,5 +160,16 @@ ActionController::Routing::Routes.draw do |map|
   # These Controllers are simple things just to poke retain
   # Does a PMRQQ.  Debug and test. No useful info that I can find.
   map.resources :retain_qq, :controller => 'retain/qq'
+
+  map.bases(":bases/:group/:levels/:filter/:view", :controller => 'bases', :action => 'index',
+            :group => /[^\/]+/)
+  map.bases(":bases/:group/:levels/:filter",       :controller => 'bases', :action => 'index',
+            :group => /[^\/]+/)
+  map.bases(":bases/:group/:levels",               :controller => 'bases', :action => 'index',
+            :group => /[^\/]+/)
+  map.bases(":bases/:group",                       :controller => 'bases', :action => 'index',
+            :group => /[^\/]+/)
+  map.bases(":bases",                              :controller => 'bases', :action => 'index')
+
   map.root :controller => "welcome"
 end

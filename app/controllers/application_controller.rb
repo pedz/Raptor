@@ -26,7 +26,11 @@ class ApplicationController < ActionController::Base
     NONE_AUTHENTICATE = File.exists?(RAILS_ROOT + "/config/no_ldap")
   end
 
-  rescue_from Exception, :with => :uncaught_exception
+  # I don't want this for development because it causes footnotes to
+  # be disabled.
+  if Rails.env != "development"
+    rescue_from Exception, :with => :uncaught_exception
+  end
   rescue_from ActiveRecord::StatementInvalid, :with => :pgerror_handler
   rescue_from 'ActiveLdap::LdapError' do |exception|
     render :text => "<h2 style='text-align: center; color: red;'>LDAP Error: #{exception.message}</h2>"
@@ -207,7 +211,7 @@ class ApplicationController < ActionController::Base
     begin
       @user = User.find(user_id)
     rescue ActiveRecord::RecordNotFound
-      if admin?
+      unless admin?
         render :file => "public/404.html", :status => 404, :layout => false
         return
       else
@@ -215,6 +219,7 @@ class ApplicationController < ActionController::Base
       end
     end
     
+    logger.debug("hi 5")
     if @user.nil? || !(admin? || @user.id == session[:user_id])
       flash[:notice] = "Must use your own id"
       redirect_to(:controller => "welcome", :action => "index", :status => 403)

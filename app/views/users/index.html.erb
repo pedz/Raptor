@@ -24,20 +24,20 @@
       %>
     <% if user.current_retain_id.nil? %>
       <% if user.retusers.empty? %>
-	<td><%= link_to 'New Retain User Id', new_user_retuser_path(user) %></td>
+	<td><%= link_to 'New Retain User Id', new_config_user_retuser_path(user) %></td>
       <% else %>
-	<td><%= link_to 'Pick Retain Id', edit_user_path(user) %></td>
+	<td><%= link_to 'Pick Retain Id', edit_config_user_path(user) %></td>
       <% end %>
     <% else %>
-      <td><%=link_to "#{user.current_retain_id.retid}", user_retuser_url(user, user.current_retain_id) %></td>
+      <td><%=link_to "#{user.current_retain_id.retid}", config_user_retuser_url(user, user.current_retain_id) %></td>
     <% end %>
     <% if admin? %>
       <td><%=h user.admin %></td>
     <% end %>
-    <td><%= link_to 'Show', user %></td>
-    <td><%= link_to 'Edit', edit_user_path(user) %></td>
+    <td><%= link_to 'Show', config_user_path(user) %></td>
+    <td><%= link_to 'Edit', edit_config_user_path(user) %></td>
     <% if admin? %>
-      <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
+      <td><%= link_to 'Destroy', config_user_path(user), :confirm => 'Are you sure?', :method => :delete %></td>
     <% end %>
   </tr>
 <% end %>
@@ -45,5 +45,5 @@
 
 <br />
 <% if admin? %>
-  <%= link_to 'New user', new_user_path %>
+  <%= link_to 'New user', new_config_user_path %>
 <% end %>

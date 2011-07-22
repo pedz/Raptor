@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 module Json
   class JsonController < ApplicationController
+    # Even in development, I want this so that JSON errors do not get
+    # cached but we only need to add it if we are in development
+    # because ApplicationController adds it in the other environments.
+    if Rails.env == "development"
+      rescue_from Exception, :with => :uncaught_exception
+    end
+
     # Sends the item, which may be an array, as json but also calls
     # async_fetch on either the item or (in the case item is an
     # array) each element of item.

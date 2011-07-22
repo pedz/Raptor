@@ -4,15 +4,10 @@
 
 <%= error_messages_for :user %>
 
-<% form_for(@user) do |f| %>
+<% form_for(@user, :url => { :namespace => :config}) do |f| %>
   <p>
     <b>Ldap</b><br />
     <%= f.text_field :ldap_id %>
-  </p>
-
-  <p>
-    <b>Retain user</b><br />
-    <%= f.text_field :retain_user_id %>
   </p>
 
   <p>
@@ -25,4 +20,4 @@
   </p>
 <% end %>
 
-<%= link_to 'Index of Users', users_path %>
+<%= link_to 'Index of Users', config_users_path %>
