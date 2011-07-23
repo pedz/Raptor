@@ -1,0 +1,29 @@
+<%# -*- coding: utf-8 -*- -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<% @title = "#{@options["subject"]} #{@options["group"]} #{@options["levels"]} #{@options["filter"]} #{@options["view"]}" %>
+<table id='arguments'>
+  <caption>Current Arguments</caption>
+  <thead>
+    <tr>
+      <% ArgumentType.find(:all, :order => :position).each do |argument_type| %>
+	<th>
+	  <%= h argument_type.name %>
+	</th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <% ArgumentType.find(:all, :order => :position).each do |argument_type| %>
+	<td>
+	  <button>
+	    <%= h @options[argument_type.name] %>
+	  </button>
+	</td>
+      <% end %>
+    </tr>
+  </tbody>
+</table>
+<h1 id='heading'><%= "#{@options["subject"].capitalize}:"%></h1>
+<table id='subjects'>
+</table>

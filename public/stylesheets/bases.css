@@ -1,0 +1,134 @@
+/* public/stylesheets/bases */
+
+#arguments {
+    border: solid;
+    display: table;
+    font-size: medium;
+    font-weight: normal;
+    float: right;
+}
+
+.internal-link {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#subjects {
+    clear: both;
+
+    border-color: DarkBlue;
+    border-width: 4px;
+    border-spacing: 1px;
+    border-style: solid;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#subjects thead,
+#subjects tfoot {
+    background: lightBlue;
+}
+
+#error {
+    color: red;
+}
+
+#error + ul > li {
+    color: red;
+}
+
+.sorted-up {
+    cursor: pointer;
+}
+
+.sorted-up:after {
+    content: url(../images/sorted-up.png);
+}
+
+.sorted-down {
+    cursor: pointer;
+}
+
+.sorted-down:after {
+    content: url(../images/sorted-down.png);
+}
+
+.sortable {
+    cursor: pointer;
+}
+
+.sortable:after {
+    content: url(../images/sortable.png);
+}
+
+.tbody-reset {
+    counter-reset: tbody;
+}
+
+tbody.subject {
+    counter-increment: tbody;
+
+    border-color: DarkBlue;
+    border-width: 1px;
+    border-style: solid;
+}
+
+tbody.subject td,
+tbody.subject th {
+    padding: 4px 8px;
+}
+
+.tbody-count:before {
+    content: counter(tbody);
+}
+
+tbody.subject:nth-of-type(odd) {
+    background-color: #e0e0e0;
+}
+
+tbody.subject:nth-of-type(even) {
+    background-color: #e0e0f8;
+}
+
+.wrapper {
+    position: relative;
+}
+
+.magic {
+    right: 0px;
+    position: absolute;
+    border: 5px solid darkBlue;
+    border-radius: 10px;
+    background: darkBlue;
+    z-index: 100;
+}
+
+.pick-heading {
+    background: darkBlue;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    white-space: pre;
+    margin: 2px;
+}
+
+.pick-body {
+    background: white;
+    height: 20em;
+    overflow-y: scroll;
+    cursor: pointer;
+    margin: 2px;
+}
+
+.pick-body table {
+    width: 100%;
+}
+
+.pick-body table tr.picked {
+    background: Aqua;
+}
+
+.pick-body table tr:hover {
+    background: lightBlue;
+}
