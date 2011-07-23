@@ -24,6 +24,13 @@ class Name < ActiveRecord::Base
   # The Integer id for a User
 
   ##
+  # :attr: match_pattern
+  # A regular expression that defaults to '.*' (matches everything)
+  # that is used to determine when the name can be used.  The pattern
+  # is matched against the 0th position argument (currently called
+  # 'Subject')
+
+  ##
   # :attr: created_at
   # Rails normal created_at timestamp that is when the db record was
   # created.

@@ -85,6 +85,7 @@ class CallsController < Retain::RetainController
   # data as user 2 for a given URL.
   def index
     @redirect = false
+    @argument_array = []
     @redirect_array = []
     @options = { }
     argument_types = ArgumentType.all(:order => "position").each do |argument_type|
@@ -95,24 +96,30 @@ class CallsController < Retain::RetainController
       end
 
       while (e = Entity.find_by_name(v)).nil?
+        d = set_default(argument_type)
+        if v == d
+          raise "Default not found"
+        end
         flash[:error] = "#{v} not known"
-        v = set_default(argument_type)
+        v = d
       end
         
       # Redirect if type is not in the right place
       @redirect = true if e.argument_type.name != argument_type.name
       
-      # See if this is the 2nd argument of this type
+      # See if this is a duplicate argument of this type
       unless @redirect_array[e.argument_type.position].nil?
         flash[:warning] = ("Multiple arguments specified for #{e.argument_type.name}"
                            " (position #{e.argument_type.position})")
         
       end
+      @argument_array[e.argument_type.position] = e
       @redirect_array[e.argument_type.position] = v
       @options[e.argument_type.name] = v
     end
 
     if @redirect
+      @options.delete('subject')
       redirect_to(@options)
     else
       @widgets = View.find_by_name(@options["view"]).widgets.map { |widget| "widgets/#{widget.name}"}
@@ -123,7 +130,14 @@ class CallsController < Retain::RetainController
   private
 
   def set_default(argument_type)
-    @redirect = true
+    @redirect = true unless argument_type.position == 0
+    unless (arg0 = @argument_array[0]).nil? # unless argument position 0 has not been set
+      raise "First argument must be a Name" unless arg0.base_type == 'Name'
+      item = arg0.item
+      argument_default = item.argument_defaults.find_by_argument_position(argument_type.position)
+      return argument_default.default unless argument_default.nil?
+    end
+
     v = argument_type.default
     # I hate special cases...
     v = application_user.current_retain_id.retid if v == "current_retuser_id"

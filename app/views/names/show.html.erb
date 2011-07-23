@@ -10,6 +10,11 @@
     <b>Name:</b>
     <%=h @name.name %>
   </p>
+
+  <p>
+    <b>Match Pattern:</b>
+    <%=h @name.match_pattern %>
+  </p>
 <%- end -%>
 <%= render :partial => 'shared/config_show',
       :locals => { :name => @name.name, :item => @name, :parent => nil } %>

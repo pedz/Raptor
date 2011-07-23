@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <% ArgumentType.find(:all, :order => :position).each do |argument_type| %>
+	<% next if argument_type.position == 0 %>
 	<th>
 	  <%= h argument_type.name %>
 	</th>
@@ -15,6 +16,7 @@
   <tbody>
     <tr>
       <% ArgumentType.find(:all, :order => :position).each do |argument_type| %>
+	<% next if argument_type.position == 0 %>
 	<td>
 	  <button>
 	    <%= h @options[argument_type.name] %>
