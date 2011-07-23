@@ -49,7 +49,7 @@ class ActiveRecord::Base
       case reflection.macro
       when :belongs_to
         if options.has_key? :foreign_key
-          id = self.attributes[options[:foreign_key]]
+          id = self.attributes[options[:foreign_key].to_s]
         else
           id = self.attributes["#{name}_id"]
         end

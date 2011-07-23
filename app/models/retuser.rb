@@ -13,6 +13,11 @@ class Retuser < ActiveRecord::Base
   # The Integer id of the User that the Retuser belongs to.
 
   ##
+  # :attr: retid
+  # A String that has the Retain user's id.
+  validates_presence_of :retid
+
+  ##
   # :attr: password
   # A String that has the Retain user's password.
   validates_presence_of :password
@@ -70,11 +75,6 @@ class Retuser < ActiveRecord::Base
   belongs_to :user
 
   ##
-  # :attr: retid
-  # A String that has the Retain user's id.
-  validates_presence_of :retid
-
-  ##
   # :attr: software_name
   # A belongs_to association to a RetainNodeSelector that is used to
   # fetch software Retain elements like a PMR.
@@ -113,4 +113,19 @@ class Retuser < ActiveRecord::Base
   # :attr: entity
   # A has_one association to an Entity.
   has_one :entity, :class_name => "Entity", :as => :item
+
+  ##
+  # :attr: registration
+  # A has_one association with a Cached::Registration
+  belongs_to(:registration, :class_name => 'Cached::Registration',
+             :foreign_key => :retid, :primary_key => :signon)
+
+  # Never need to send this to the backend to fetch
+  def async_priority(force = false)
+    return :none
+  end
+
+  def last_fetched
+    updated_at
+  end
 end

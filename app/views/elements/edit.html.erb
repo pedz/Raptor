@@ -5,11 +5,7 @@
     <%= f.error_messages %>
     <p>
       <%= f.label :widget_id %><br />
-      <%= f.collection_select(:widget_id, Widget.all, :id, :name) %>
-    </p>
-    <p>
-      <%= f.label :view_id %><br />
-      <%= f.text_field :view_id %>
+      <%= f.collection_select(:widget_id, widget_list, :id, :name) %>
     </p>
     <p>
       <%= f.label :row %><br />

@@ -26,15 +26,15 @@ ActionController::Routing::Routes.draw do |map|
   # The order of these arguments need to match what is in the
   # argument_types table.  This could change and the controller could
   # split the fields apart and this would become more generic.
-  map.calls("calls/:group/:levels/:filter/:view", :controller => 'calls', :action => 'index',
-            :group => /[^\/]+/)
-  map.calls("calls/:group/:levels/:filter",       :controller => 'calls', :action => 'index',
-            :group => /[^\/]+/)
-  map.calls("calls/:group/:levels",               :controller => 'calls', :action => 'index',
-            :group => /[^\/]+/)
-  map.calls("calls/:group",                       :controller => 'calls', :action => 'index',
-            :group => /[^\/]+/)
-  map.calls("calls",                              :controller => 'calls', :action => 'index')
+  # map.calls("calls/:group/:levels/:filter/:view", :controller => 'calls', :action => 'index',
+  #           :group => /[^\/]+/)
+  # map.calls("calls/:group/:levels/:filter",       :controller => 'calls', :action => 'index',
+  #           :group => /[^\/]+/)
+  # map.calls("calls/:group/:levels",               :controller => 'calls', :action => 'index',
+  #           :group => /[^\/]+/)
+  # map.calls("calls/:group",                       :controller => 'calls', :action => 'index',
+  #           :group => /[^\/]+/)
+  # map.calls("calls",                              :controller => 'calls', :action => 'index')
 
   map.resources(:views) do |views|
     views.resources :elements
@@ -45,11 +45,15 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :hot_pmr_lists, :controller => 'hot_pmr_lists', :only => [ :index, :show ]
   map.namespace(:json) do |json|
-    json.calls("calls/:group/:levels/:filter", :controller => 'calls', :group => /[^\/]+/ )
+    # json.calls("calls/:group/:levels/:filter", :controller => 'calls', :group => /[^\/]+/ )
     json.views("views/:view", :controller => 'views')
     json.entities("entities", :controller => 'entities')
     json.resources(:favorite_queues)
     json.resources(:user_entity_counts)
+    json.resources(:users) do |json_user|
+      json_user.resources :retusers
+    end
+    json.resources :retusers
 
     json.namespace(:cached) do |json_cached|
       json_cached.resources(:centers)
@@ -82,6 +86,9 @@ ActionController::Routing::Routes.draw do |map|
       end
       json_combined.resources(:registrations)
     end
+
+    json.bases(":subject/:group/:levels/:filter",       :controller => 'bases', :action => 'index',
+               :group => /[^\/]+/)
   end
 
   # Everything below here is from the old system...

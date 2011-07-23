@@ -149,4 +149,13 @@ class User < ActiveRecord::Base
   def item_name
     ldap_id
   end
+
+  # Never need to send this to the backend to fetch
+  def async_priority(force = false)
+    return :none
+  end
+
+  def last_fetched
+    updated_at
+  end
 end

@@ -691,7 +691,12 @@ Raptor.pickNewArgument = function (name, pos, event) {
     };
 
     var needAnotherName = function () {
-	entities = Raptor.entities[name].sort(function (l, r) {
+	var subject = Raptor.currentState.arguments.subject;
+
+	entities = Raptor.entities[name].filter(function (entity) {
+	    var r = new RegExp(entity.match_pattern);
+	    return subject.match(r);
+	}).sort(function (l, r) {
 	    if (l.count != r.count)
 		return r.count - l.count;
 	    if (l.real_type != r.real_type)
@@ -706,14 +711,10 @@ Raptor.pickNewArgument = function (name, pos, event) {
 	var pickedTemplate = new Template('<tr class="picked"><td>#{name}</td><td>#{real_type}</td></tr>');
 	var template = new Template('<tr><td>#{name}</td><td>#{real_type}</td></tr>');
 	var rows = '<div class="magic"><div class="pick-heading">Pick a choice or click here to cancel</div><div class="pick-body"><table>';
-	var subject = Raptor.currentState.arguments.subject;
 
 	button.insert({ before: wrapper });
 
-	entities.filter(function (entity) {
-	    var r = new RegExp(entity.match_pattern);
-	    return subject.match(r);
-	}).forEach(function (entity) {
+	entities.forEach(function (entity) {
 	    if (entity.count > 0)
 		rows += pickedTemplate.evaluate(entity);
 	    else

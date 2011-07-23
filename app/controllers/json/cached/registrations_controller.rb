@@ -10,7 +10,12 @@ module Json
       end
 
       def show
-        temp = ::Cached::Registration.find(params[:id])
+        id = params[:id]
+        if id.length == 6
+          temp = ::Cached::Registration.find_by_signon(id)
+        else
+          temp = ::Cached::Registration.find(id)
+        end
         options = { }
         unless temp.name.nil?
           options[:expires_in] = 1.day

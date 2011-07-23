@@ -1,12 +1,12 @@
 <%# -*- coding: utf-8 -*- -%>
 <% content_for :body do %>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
   <% form_for([@view, @element]) do |f| %>
     <%= f.error_messages %>
 
     <p>
       <%= f.label :widget_id %><br />
-      <%= f.collection_select(:widget_id, Widget.all, :id, :name) %>
+      <%= f.collection_select(:widget_id, widget_list, :id, :name) %>
     </p>
     <p>
       <%= f.label :row %><br />
