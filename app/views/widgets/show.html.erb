@@ -13,6 +13,10 @@
     <b>Code:</b>
     <%=h @widget.code %>
   </p>
+  <p>
+    <b>Match Pattern:</b>
+    <%=h @widget.match_pattern %>
+  </p>
 <%- end -%>
 <%= render :partial => 'shared/config_show',
       :locals => { :name => @widget.name, :item => @widget, :parent => nil } %>

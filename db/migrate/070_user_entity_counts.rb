@@ -4,6 +4,7 @@ class UserEntityCounts < ActiveRecord::Migration
                SELECT
                  user_id,
                  name,
+                 t1.match_pattern,
                  t1.argument_type,
                  t1.real_type,
                  COALESCE ( t2.count, t1.count ) AS count,
@@ -13,6 +14,7 @@ class UserEntityCounts < ActiveRecord::Migration
                  SELECT
                    u.id AS user_id,
                    e.name,
+                   e.match_pattern,
                    e.argument_type,
                    e.real_type,
                    0 AS count,
