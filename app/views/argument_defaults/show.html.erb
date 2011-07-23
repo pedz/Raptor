@@ -1,0 +1,18 @@
+<p>
+  <b>Name:</b>
+  <%=h @argument_default.name.name %>
+</p>
+
+<p>
+  <b>Arguement position:</b>
+  <%=h @argument_default.argument_type.name %>
+</p>
+
+<p>
+  <b>Default:</b>
+  <%=h @argument_default.default %>
+</p>
+
+
+<%= link_to 'Edit', edit_argument_default_path(@argument_default) %> |
+<%= link_to 'Back', argument_defaults_path %>

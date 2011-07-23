@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+argument_default_one:
+  name: ptcpk_name
+  argument_position: 3
+  default: default_for_ptcpk_3
+
+argument_default_two:
+  name: standard_name
+  argument_position: 1
+  default: default_for_standard_1

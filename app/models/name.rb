@@ -83,6 +83,14 @@ class Name < ActiveRecord::Base
   # A has_one association to the associated Entity.
   has_one :entity, :class_name => "Entity", :as => :item
 
+  ##
+  # :attr: argument_defaults
+  # A has_many association to the ArgumentDefaults for this name.
+  # (Usually this is empty and is only specified for the names that
+  # can be used in argument position 0.
+  # i.e. name_type.argument_type.position == 0.
+  has_many :argument_defaults
+
   validates_uniqueness_of :name
 
   # Returns the name of the item.  Any class used as an item in a

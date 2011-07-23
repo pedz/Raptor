@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 ActionController::Routing::Routes.draw do |map|
+  map.resources :argument_defaults
+
   map.resources :argument_types
   map.resources(:relationships,
                 :collection => {
@@ -161,15 +163,15 @@ ActionController::Routing::Routes.draw do |map|
   # Does a PMRQQ.  Debug and test. No useful info that I can find.
   map.resources :retain_qq, :controller => 'retain/qq'
 
-  map.bases(":bases/:group/:levels/:filter/:view", :controller => 'bases', :action => 'index',
+  map.bases(":subject/:group/:levels/:filter/:view", :controller => 'bases', :action => 'index',
             :group => /[^\/]+/)
-  map.bases(":bases/:group/:levels/:filter",       :controller => 'bases', :action => 'index',
+  map.bases(":subject/:group/:levels/:filter",       :controller => 'bases', :action => 'index',
             :group => /[^\/]+/)
-  map.bases(":bases/:group/:levels",               :controller => 'bases', :action => 'index',
+  map.bases(":subject/:group/:levels",               :controller => 'bases', :action => 'index',
             :group => /[^\/]+/)
-  map.bases(":bases/:group",                       :controller => 'bases', :action => 'index',
+  map.bases(":subject/:group",                       :controller => 'bases', :action => 'index',
             :group => /[^\/]+/)
-  map.bases(":bases",                              :controller => 'bases', :action => 'index')
+  map.bases(":subject",                              :controller => 'bases', :action => 'index')
 
   map.root :controller => "welcome"
 end

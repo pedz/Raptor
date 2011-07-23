@@ -1,0 +1,24 @@
+<h1>Editing argument_default</h1>
+
+<% form_for(@argument_default) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name_id %><br />
+    <%= f.collection_select(:name_id, Name.find(:all), :id, :name, { :include_blank => true }) %>
+  </p>
+  <p>
+    <%= f.label :argument_position %><br />
+    <%= f.collection_select(:argument_position, ArgumentType.find(:all), :position, :name, { :include_blank => true }) %>
+  </p>
+  <p>
+    <%= f.label :default %><br />
+    <%= f.text_field :default %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @argument_default %> |
+<%= link_to 'Back', argument_defaults_path %>

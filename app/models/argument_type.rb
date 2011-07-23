@@ -16,11 +16,13 @@ class ArgumentType < ActiveRecord::Base
 
   ##
   # :attr: default
-  # A String that specifies the default value for this argument.
+  # A String that specifies the default value for this argument.  This
+  # will be used only if there are no argument_defaults for the this
+  # argument position given a particular 0th argument name.
 
   ##
   # :attr: position
-  # An Integer that specifies the position this arguement will be in.
+  # An Integer that specifies the position this argument will be in.
 
   ##
   # :attr: created_at

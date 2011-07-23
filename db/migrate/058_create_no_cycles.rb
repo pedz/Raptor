@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 class CreateNoCycles < ActiveRecord::Migration
   def self.up
-    execute "CREATE LANGUAGE plpgsql;"
+    # In later versions of Postgres, this is not only not needed but
+    # causes an error
+    # execute "CREATE LANGUAGE plpgsql;"
     execute "
       CREATE FUNCTION no_cycles(container_name_id integer,
                                 itemId integer,
@@ -40,6 +42,7 @@ class CreateNoCycles < ActiveRecord::Migration
       DROP FUNCTION no_cycles(container_name_id integer,
                               item_id integer,
                               item_type character varying)"
-    execute "DROP LANGUAGE plpgsql;"
+    # Sse above
+    # execute "DROP LANGUAGE plpgsql;"
   end
 end

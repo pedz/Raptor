@@ -61,4 +61,10 @@ class NameTest < ActiveSupport::TestCase
   test "filter has_one condition" do
     assert_equal @top_condition.id, @top_name.condition.id
   end
+
+  test "argument_default has_many association" do
+    assert_equal 1, @ptcpk_name.argument_defaults.length
+    assert_equal "default_for_ptcpk_3", @ptcpk_name.argument_defaults[0].default
+    assert_equal 3, @ptcpk_name.argument_defaults[0].argument_position
+  end
 end

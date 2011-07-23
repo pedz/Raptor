@@ -67,7 +67,11 @@ class NamesController < ApplicationController
   # PUT /names/1
   # PUT /names/1.xml
   def update
+    p = params[:name]
+    # Is this how I want to do this?
+    type = p.delete(:type)
     @name = Name.find(params[:id]).becomes(Name)
+    @name.type = type
 
     respond_to do |format|
       if @name.update_attributes(params[:name])
