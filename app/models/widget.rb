@@ -22,6 +22,14 @@ class Widget < ActiveRecord::Base
   # String javascript code snippet that implements the Widget.
 
   ##
+  # :attr: match_pattern
+  # A regular expression that defaults to '.*' (matches everything)
+  # that is used to determine when the name can be used.  The pattern
+  # is matched against the what the view has in its match_pattern.
+  # This is only a guide and is used only to select out which widgets
+  # to present to the user while creating a view.
+
+  ##
   # :attr: created_at
   # Rails normal created_at timestamp that is when the db record was
   # created.
