@@ -22,8 +22,8 @@ module Combined
     
     def regroup(psars)
       psars.sort do |a, b|
-        a.stop_date <=> b.stop_date
-      end.group_by(&:stop_date).group_by { |days_list|
+        a.psar_file_and_symbol <=> b.psar_file_and_symbol
+      end.group_by(&:psar_system_date).group_by { |days_list|
         # days_list is of the form (for example):
         # [ 2009-11-16 00:00:00 UTC, [ <Combined::Psar>, <Combined::Psar>, ... <Combined::Psar> ]]
         days_list[1][0].saturday
@@ -31,7 +31,7 @@ module Combined
     end
 
     def summarize(weeks)
-      # logger.debug("PSAR: #{weeks.inspect}")
+      logger.debug("PSAR: #{weeks}")
       weeks.map do |saturday, days|
         week_total = 0
         week_ot_total = 0
@@ -43,8 +43,10 @@ module Combined
           end
           week_total += day_totals[0]
           week_ot_total += day_totals[1]
+          day = Time.utc('20' + day[0...2], day[2...4], day[4...6])
           [day, psars, day_totals[0], day_totals[1]]
         end
+        logger.debug("Saturday: #{saturday.class.to_s}")
         [saturday, days, week_total, week_ot_total]
       end
     end

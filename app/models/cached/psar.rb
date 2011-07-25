@@ -201,10 +201,7 @@ module Cached
     # :attr: stop_time_range
     # A named scope to select PSARs within the range passed in.
     named_scope :stop_time_range, lambda { |range|
-      {
-        :conditions => (%Q{("cached_psars"."stop_time_moc" + "cached_psars"."minutes_from_gmt")} +
-                        "BETWEEN #{range.first} AND #{range.last}")
-      }
+      { :conditions => { :psar_system_date => range } }
     }
 
     ##

@@ -388,17 +388,39 @@ Raptor.viewOnSuccess = function (response, x_json) {
 	    min_col = last_col;
 
 	if (!Raptor.widgets[ele.widget.name]) {
-	    var script = new Element('script');
-	    script.update('Raptor.widgets.' + ele.widget.name + ' = ' + ele.widget.code).
-		writeAttribute({type: 'text/javascript' });
-	    head.insert({ bottom: script });
+	    if (Raptor.widgets[ele.widget.name] !== null) {
+		var script;
 
-	    if (!ele.widget.css) {
-		var css = new Element('style');
-		css.update(ele.widget.css).
-		    writeAttribute({ type: 'text/css' });
-		head.insert({ bottom: css });
+		/*
+		 * We set this to null so that we know that it has not
+		 * been received yet but we have requested it
+		 */
+		Raptor.widgets[ele.widget.name] = null;
+
+		script = new Element('script');
+		if (false) {
+		    script.update('Raptor.widgets.' + ele.widget.name + ' = ' + ele.widget.code).
+			writeAttribute({type: 'text/javascript' });
+		} else {
+		    script.writeAttribute( {
+			type: 'text/javascript',
+			src:  '/raptor/javascripts/widgets/' + ele.widget.name + '.js'
+		    });
+		}
+		head.insert({ bottom: script });
+
+		if (ele.widget.css) {
+		    var css = new Element('style');
+		    css.update(ele.widget.css).
+			writeAttribute({ type: 'text/css' });
+		    head.insert({ bottom: css });
+		}
 	    }
+	}
+	if (!Raptor.widgets[ele.widget.name]) {
+	    if (typeof Raptor.view.fixup === 'undefined')
+		Raptor.view.fixup = [];
+	    Raptor.view.fixup.push(ele);
 	}
 	ele.widget.code = Raptor.widgets[ele.widget.name];
     });
@@ -921,6 +943,20 @@ Raptor.createTableSection = function (position, domType, subject) {
 Raptor.renderView = function () {
     var view = Raptor.view;
     var tableSection;
+
+    /*
+     * If we are waiting on widgets
+     */
+    if (view.fixup) {
+	view.fixup = view.fixup.filter(function (ele) {
+	    return !(ele.widget.code = Raptor.widgets[ele.widget.name]);
+	});
+	if (view.fixup.length > 0) {
+	    Raptor.renderView.delay(0.1);
+	    return;
+	}
+	delete view.fixup;
+    }
 
     if (!view.sections) {
 	/*

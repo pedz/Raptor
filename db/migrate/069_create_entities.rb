@@ -34,7 +34,7 @@ class CreateEntities < ActiveRecord::Migration
                     ldap_id AS name,
                     'User' AS real_type,
                     id AS item_id,
-                    'Person' AS match_pattern,
+                    'people' AS match_pattern,
                     updated_at AS updated_at
                   FROM
                     users
@@ -43,7 +43,7 @@ class CreateEntities < ActiveRecord::Migration
                     retid AS name,
                     'Retuser' AS real_type,
                     id AS item_id,
-                    'Person' AS match_pattern,
+                    'people' AS match_pattern,
                     updated_at AS updated_at
                   FROM
                     retusers
@@ -52,7 +52,7 @@ class CreateEntities < ActiveRecord::Migration
                     q.queue_name || ',' || q.h_or_s || ',' || c.center AS name,
                     'Cached::Queue' AS real_type,
                     q.id AS item_id,
-                    'Queues' AS match_pattern,
+                    'queues' AS match_pattern,
                     q.updated_at AS updated_at
                   FROM
                     cached_queues q,

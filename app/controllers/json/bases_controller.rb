@@ -35,16 +35,23 @@ module Json
       end
 
       logger.debug("SQL => #{entities[:levels].item.condition.sql}")
-      nestings = entities[:group].item.nestings.
-        scoped(:conditions => { :item_type => first_item_type_class.to_s }).
-        scoped(:conditions => "#{entities[:levels].item.condition.sql}")
-      subject_ids = nestings.map(&:item_id).uniq
-      logger.debug("Subject IDs = #{subject_ids}")
+      item = entities[:group].item
+      logger.debug("#{item.class} #{first_item_type_class}")
+      if item.class.to_s == first_item_type_class.to_s
+        subject_ids = [ item.id ]
+        async_fetch(item)
+      else
+        nestings = item.nestings.
+          scoped(:conditions => { :item_type => first_item_type_class.to_s }).
+          scoped(:conditions => "#{entities[:levels].item.condition.sql}")
+        subject_ids = nestings.map(&:item_id).uniq
+        logger.debug("Subject IDs = #{subject_ids}")
 
-      # There may be a better way to do this but for now, I'm just
-      # going to fetch the queues and then ask them to be fetched.
-      first_item_type_class.find(:all, :conditions => { :id => subject_ids }).each do |q|
-        async_fetch(q)
+        # There may be a better way to do this but for now, I'm just
+        # going to fetch the queues and then ask them to be fetched.
+        first_item_type_class.find(:all, :conditions => { :id => subject_ids }).each do |q|
+          async_fetch(q)
+        end
       end
 
       case entities[:subject].name
