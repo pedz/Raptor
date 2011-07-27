@@ -68,7 +68,7 @@ module Combined
     # followed by the retain id (6 digits) followed by a four hex
     # digit date which is the number of days since Dec 31 1989 (if you
     # want to start from zero).
-    RetainPsarDayZero = Time.utc('1899', '12', '31')
+    RetainPsarDayZero = Time.utc('2000', '01', '01') - 36525.days
     def psar_day
       RetainPsarDayZero + psar_file_and_symbol[12..15].hex.days
     end
