@@ -1007,14 +1007,14 @@ Raptor.renderView = function () {
 	});
 	view.sections.push(tableSection);
 
-	tableSection = Raptor.createTableSection('foot', 'td');
-	view.sections.push(tableSection);
-
 	Raptor.subjects.forEach(function (subject, subjectIndex, subjects) {
 	    tableSection = Raptor.createTableSection('body', 'td', subject);
 	    tableSection.domElement.addClassName('subject');
 	    view.sections.push(tableSection);
 	});
+
+	tableSection = Raptor.createTableSection('foot', 'td');
+	view.sections.push(tableSection);
     } else {
 	/*
 	 * When subjects gets updated, we come here to create the new
@@ -1093,6 +1093,7 @@ Raptor.lastSort = function () {
     var reverse = Raptor.currentState.reverse;
     var cmp = renderElement.widgetCode.cmp;
     var array = [];
+    var foot;
 
     /*
      * The first time, this will obviously be true but after push
@@ -1119,10 +1120,12 @@ Raptor.lastSort = function () {
     
     /* First we make an array that we can pass to sort. */
     Raptor.view.sections.forEach(function (tableSection, index, obj) {
-	if (tableSection.subject)
+	if (tableSection.position == 'body')
 	    array.push(tableSection);
+	else if (tableSection.position == 'foot')
+	    foot = tableSection;
     });
-    
+
     /* Now we sort the array according to the compare function of the elemetn */
     array.sort(function(l, r) {
 	if (reverse)
@@ -1141,6 +1144,11 @@ Raptor.lastSort = function () {
 	tableSection.domElement.remove();
 	Raptor.subjectTable.insert({bottom: tableSection.domElement});
     });
+
+    if (foot) {
+	foot.domElement.remove();
+	Raptor.subjectTable.insert({bottom: foot.domElement});
+    }
 };
 
 /**

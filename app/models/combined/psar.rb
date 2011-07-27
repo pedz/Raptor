@@ -63,9 +63,19 @@ module Combined
 
     ##
     # Returns the Saturday of the week that this PSAR applies to.
+    # This is done using the psar_file_and_symbol which has a format
+    # like: PSASrr3053569f280003 -- which is a constant PSARrr
+    # followed by the retain id (6 digits) followed by a four hex
+    # digit date which is the number of days since Dec 31 1989 (if you
+    # want to start from zero).
+    RetainPsarDayZero = Time.utc('1899', '12', '31')
+    def psar_day
+      RetainPsarDayZero + psar_file_and_symbol[12..15].hex.days
+    end
+    once :psar_day
+
     def saturday
-      d = psar_system_date
-      t = Time.utc(('20' + d[0...2]).to_i, d[2...4].to_i, d[4...6].to_i)
+      t = psar_day
       t -= 1.day until t.wday == 6
       t
     end
