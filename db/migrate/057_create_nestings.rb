@@ -4,14 +4,19 @@ class CreateNestings < ActiveRecord::Migration
     execute "
       CREATE VIEW nestings AS
         WITH RECURSIVE temp AS (
-          SELECT * FROM containments
+          SELECT
+            *
+          FROM 
+            containments
           UNION ALL
             SELECT
               temp.container_id,
               temp.container_type,
+              containments.association_type,
               containments.item_id,
               containments.item_type,
-              temp.level + 1 as level
+              temp.level + 1 AS level,
+              containments.updated_at
             FROM
               temp,
               containments
@@ -28,9 +33,11 @@ class CreateNestings < ActiveRecord::Migration
         SELECT
           q.id AS container_id,
           'Cached::Queue' AS container_type,
+          'self' AS association_type,
           q.id AS item_id,
           'Cached::Queue' AS item_type,
-          1 AS level
+          1 AS level,
+          q.updated_at AS updated_at
         FROM
           cached_queues q
       ORDER BY

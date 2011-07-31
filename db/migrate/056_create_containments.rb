@@ -6,34 +6,43 @@ class CreateContainments < ActiveRecord::Migration
         SELECT
           r.container_name_id AS container_id,
           'Name' AS container_type,
+          at.association_type AS association_type,
           r.item_id AS item_id,
           r.item_type AS item_type,
-          1 as level
+          1 as level,
+          r.updated_at AS updated_at
         FROM
-          relationships r
+          relationships r,
+          relationship_types rt,
+          association_types at
+        WHERE
+          r.relationship_type_id = rt.id AND
+          rt.association_type_id = at.id
       UNION ALL
         SELECT
-          u.id AS container_id,
+          r.user_id AS container_id,
           'User' AS container_type,
+          'owner' AS association_type,
           cqi.queue_id AS item_id,
           'Cached::Queue' AS item_type,
-          1 AS level
+          1 AS level,
+          cqi.updated_at AS updated_at
         FROM
-          users u,
           retusers r,
           cached_registrations cr,
           cached_queue_infos cqi
         WHERE
-          u.id = r.user_id AND
           r.retid = cr.signon AND
           cr.id = cqi.owner_id
       UNION ALL
         SELECT
           f.retuser_id AS container_id,
           'Retuser' AS container_type,
+          'favorite' AS association_type,
           f.queue_id AS item_id,
           'Cached::Queue' AS item_type,
-          1 AS level
+          1 AS level,
+          f.updated_at AS updated_at
         FROM
           favorite_queues f
       ;"

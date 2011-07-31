@@ -62,9 +62,18 @@ class FiltersController < ApplicationController
   # PUT /filters/1.xml
   def update
     @filter = ::Filter.find(params[:id])
-
+    filter_params = params[:filter]
+    # I need to make this more secure someday
+    # logger.debug("before: #{filter_params}")
+    # if filter_params && (c = filter_params[:condition_attributes]) && (s = c[:sql])
+    #   logger.debug("here #{s} #{s.class}")
+    #   d = eval(s)
+    #   logger.debug("here2 #{d} #{d.class}")
+    #   c[:sql] = d
+    # end
+    # logger.debug("after: #{filter_params}")
     respond_to do |format|
-      if @filter.update_attributes(params[:filter])
+      if @filter.update_attributes(filter_params)
         flash[:notice] = 'Filter was successfully updated.'
         format.html { redirect_to(@filter) }
         format.xml  { head :ok }

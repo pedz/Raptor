@@ -34,7 +34,9 @@ class ActiveRecord::Base
       options = reflection.options
       # Don't know how to do :through yet so just skip them.
       next if options.has_key? :through
-      if options.has_key? :class_name
+      if (options.has_key? :polymorphic) && (poly = options[:polymorphic]) && poly
+        class_name = self[options[:foreign_type]]
+      elsif options.has_key? :class_name
         class_name = options[:class_name]
       else
         class_name = name.to_s.singularize.camelcase

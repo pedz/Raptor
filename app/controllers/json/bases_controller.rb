@@ -56,15 +56,19 @@ module Json
 
       case entities[:subject].name
       when 'calls'
-        subjects = ::Cached::Call.scoped(:conditions => { :queue_id => subject_ids }).
-          scoped(:include => [:pmr, :queue]).scoped(:conditions => entities[:filter].item.condition.sql)
+        subjects = ::Cached::Call.scoped(:conditions => { :queue_id => subject_ids })
         subject_class = ::Cached::Call
 
       when 'people'
-        subjects = ::User.scoped(:conditions => { :id => subject_ids }).
-          scoped(:conditions => entities[:filter].item.condition.sql)
+        subjects = ::User.scoped(:conditions => { :id => subject_ids })
         subject_class ::User
       end
+
+      # Add in the filter
+      sql = eval(entities[:filter].item.condition.sql)
+      logger.debug("SQL is #{sql} #{sql.class}")
+      subjects = subjects.scoped(sql)
+
       last_fetched = subjects.map do |subject|
         async_fetch(subject)
         if subject.last_fetched.nil?

@@ -34,12 +34,21 @@ ActionController::Routing::Routes.draw do |map|
   map.namespace(:json) do |json|
     json.views("views/:view", :controller => 'views')
     json.entities("entities", :controller => 'entities')
-    json.resources(:favorite_queues)
-    json.resources(:user_entity_counts)
+
+    json.resources :argument_types,     :controller => 'general'
+    json.resources :containments,       :controller => 'general'
+    json.resources :name_types,         :controller => 'general'
+    json.resources :names,              :controller => 'general'
+    json.resources :nestings,           :controller => 'general'
+    json.resources :relationship_types, :controller => 'general'
+    json.resources :relationships,      :controller => 'general'
+
+    json.resources :favorite_queues
+    json.resources :retusers
+    json.resources :user_entity_counts
     json.resources(:users) do |json_user|
       json_user.resources :retusers
     end
-    json.resources :retusers
 
     json.namespace(:cached) do |json_cached|
       json_cached.resources(:centers)
