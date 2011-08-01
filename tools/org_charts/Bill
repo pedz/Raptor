@@ -1,0 +1,69 @@
+Bill - Dept
+  billclar@us.ibm.com - User - manager
+  darshanp@us.ibm.com - User - department lead
+  adunshea@us.ibm.com - User - department lead
+  
+  Networking - Team - contains
+    AMNET - Team - contains
+      AMNET,S,165 - Cached::Queue - team queue
+
+      PTCPK - Team - contains
+        ssrikant@us.ibm.com - User - team lead
+        PATM,S,165 - Cached::Queue - team queue
+        PTCPK,S,165 - Cached::Queue - team queue
+        PCDD,S,165 - Cached::Queue - team queue
+        PCRYPT,S,165 - Cached::Queue - team queue
+        PTTY,S,165 - Cached::Queue - team queue
+        PX25,S,165 - Cached::Queue - team queue
+        WWNETK,S,165 - Cached::Queue - team queue
+        jgaudin@us.ibm.com - User - team member
+        kbaratak@us.ibm.com - User - team member
+        ltp@us.ibm.com - User - team member
+        minkim@us.ibm.com - User - team member
+        pedzan@us.ibm.com - User - team member
+        phh@us.ibm.com - User - team member
+        pizana@us.ibm.com - User - team member
+        ramkumar@us.ibm.com - User - team member
+
+      PTCPA - Team - contains
+        suzanshi@us.ibm.com - User - team lead
+        angiecla@us.ibm.com - User - team member
+        cll@us.ibm.com - User - team member
+        mhk@us.ibm.com - User - team member
+        prakashm@us.ibm.com - User - team member
+        stalmage@us.ibm.com - User - team member
+        wildr@us.ibm.com - User - team member
+
+    EMNET - Team - contains
+      EMNET,S,248 - Cached::Queue - team queue
+      andreas.ehrhardt@de.ibm.com - User - team member
+      daniel.koo@uk.ibm.com - User - team member
+      hafer@de.ibm.com - User - team member
+      sebastian.hartwig@de.ibm.com - User - team member
+
+    APNET - Team - contains
+      APNET,S,95A - Cached::Queue - team queue
+      kwk@kr.ibm.com - User - team member
+      kkaji@jp.ibm.com - User - team member
+
+  Java - Team - contains
+    JAVAIX,S,165 - Cached::Queue - team queue
+    AMAPP,S,165 - Cached::Queue - team queue
+    anandd@us.ibm.com - User - team lead
+    charleen@us.ibm.com - User - team member
+    rbutte@us.ibm.com - User - team member
+    juanz@us.ibm.com - User - team member
+    rtenjarl@us.ibm.com - User - team member
+    weiluo@us.ibm.com - User - team member
+
+  P3P - Team - contains
+    P3P,S,165 - Cached::Queue - team queue
+    garcia1@us.ibm.com - User - team lead
+
+  ISV - Team - contains
+    SDAIX,S,165 - Cached::Queue - team queue
+    pmahajan@us.ibm.com - User - team lead
+    mgakmal@us.ibm.com - User - team member
+    amyr@us.ibm.com - User - team member
+    griff@us.ibm.com - User - team member
+    garcia1@us.ibm.com - User - team member

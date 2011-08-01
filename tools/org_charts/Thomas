@@ -1,0 +1,86 @@
+Thomas - Dept
+  aarontom@us.ibm.com - User - manager
+  gchalemi@us.ibm.com - User - department lead
+
+  Kernel - Team - contains
+    gchalemi@us.ibm.com - User - team lead
+    WWKERN,S,165 - Cached::Queue - team queue
+    WWSC,S,165 - Cached::Queue - team queue
+
+    Kernel-am - Team - contains
+      gchalemi@us.ibm.com - User - team lead
+      AMKERN,S,165 - Cached::Queue - team queue
+
+      VMM - Team - contains
+        sreeni@us.ibm.com - User - team lead
+        gbatra@us.ibm.com - User - team member
+
+      Proc,WPAR - Team - contains
+        griffith@us.ibm.com - User - team lead
+        sekar@us.ibm.com - User - team member
+        msrinir@us.ibm.com - User - team member
+
+      IPL,RAS - Team - contains
+        rmanning@us.ibm.com - User - team lead
+        asulu@us.ibm.com - User - team member
+
+      LDR - Team - contains
+        raghavan@us.ibm.com - User - team lead
+        loulwa@us.ibm.com - User - team member
+        kuo@us.ibm.com - User - team member
+
+      Dumps - Team - contains
+        agarawal@us.ibm.com - User - team lead
+
+    Kernel-ap - Team - contains
+      trickett@nz1.ibm.com - User - team lead
+      kwk@kr.ibm.com - User - team member
+      bjwjianj@cn.ibm.com - User - team member
+      e32257@jp.ibm.com - User - team member
+      APKERN,S,95A - Cached::Queue - team queue
+      
+    Kernel-emea - Team - contains
+      EMKERN,S,248 - Cached::Queue - team queue
+
+  FSLV - Team - contains
+    anildam@us.ibm.com - User - team lead
+    WWFSLV,S,165 - Cached::Queue - team queue
+
+    FSLV-am - Team - contains
+      anildam@us.ibm.com - User - team lead
+      AMFSLV,S,165 - Cached::Queue - team queue
+
+      FS - Team - contains
+        prakash@us.ibm.com - User - team lead
+        karhi@us.ibm.com - User - team member
+
+      LVM - Team - contains
+        sungmc@us.ibm.com - User - team lead
+        robthomp@us.ibm.com - User - team member
+        rakesht@us.ibm.com - User - team member
+        shameek@us.ibm.com - User - team member
+
+      NFS - Team - contains
+        rchirra@us.ibm.com - User - team lead
+        sunruh@us.ibm.com - User - team member
+
+    FSLV-ap - Team - contains
+      bjwjianj@cn.ibm.com - User - team lead
+      kwk@kr.ibm.com - User - team member
+      cwickrem@au1.ibm.com - User - team member
+      rickchan@tw.ibm.com - User - team member
+      xiaoht@cn.ibm.com - User - team member
+      APFSLV,S,95A - Cached::Queue - team queue
+
+    FSLV-emea - Team - contains
+      EMFSLV,S,248 - Cached::Queue - team queue
+
+  PAT - Team - contains
+    kanil@us.ibm.com - User - team lead
+    kunle@us.ibm.com - User - team member
+    abraham1@us.ibm.com - User - team member
+    jaehde@us.ibm.com - User - team member
+    kbaratak@us.ibm.com - User - team member
+    ltp@us.ibm.com - User - team member
+    weiluo@us.ibm.com - User - team member
+    PAT,S,165 - Cached::Queue - team queue
