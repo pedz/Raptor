@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 module Json
   # The first AJAX request sent back by the bases request is to this
   # controller and its index method.
@@ -7,6 +8,7 @@ module Json
     # by the group, levels, and filter parameters.
     def index
       entities = { }
+      items = { }
 
       [ :subject, :group, :levels, :filter].each do |name|
         temp = Entity.find_by_name(params[name])
@@ -19,6 +21,7 @@ module Json
           return
         end
         entities[name] = temp
+        items[name] = temp.item
       end
 
       logger.debug("Subject = #{entities[:subject].name}")
@@ -61,12 +64,11 @@ module Json
 
       when 'people'
         subjects = ::User.scoped(:conditions => { :id => subject_ids })
-        subject_class ::User
+        subject_class = ::User
       end
 
       # Add in the filter
       sql = eval(entities[:filter].item.condition.sql)
-      logger.debug("SQL is #{sql} #{sql.class}")
       subjects = subjects.scoped(sql)
 
       last_fetched = subjects.map do |subject|
@@ -82,7 +84,8 @@ module Json
       unless request.fresh?(response)
         render :json => {
           :class_name => subject_class.to_s,
-          :subjects => subjects
+          :subjects => subjects,
+          :items => items
         }
       end
     end

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 module Json
   class JsonController < ApplicationController
     # Even in development, I want this so that JSON errors do not get

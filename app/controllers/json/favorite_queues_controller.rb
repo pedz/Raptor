@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 module Json
   class FavoriteQueuesController < Retain::RetainController
     def index

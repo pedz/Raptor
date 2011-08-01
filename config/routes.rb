@@ -35,14 +35,6 @@ ActionController::Routing::Routes.draw do |map|
     json.views("views/:view", :controller => 'views')
     json.entities("entities", :controller => 'entities')
 
-    json.resources :argument_types,     :controller => 'general'
-    json.resources :containments,       :controller => 'general'
-    json.resources :name_types,         :controller => 'general'
-    json.resources :names,              :controller => 'general'
-    json.resources :nestings,           :controller => 'general'
-    json.resources :relationship_types, :controller => 'general'
-    json.resources :relationships,      :controller => 'general'
-
     json.resources :favorite_queues
     json.resources :retusers
     json.resources :user_entity_counts
@@ -81,6 +73,34 @@ ActionController::Routing::Routes.draw do |map|
       end
       json_combined.resources(:registrations)
     end
+
+    [
+     :depts,
+     :filters,
+     :groups,
+     :levels,
+     :subjects,
+     :names,
+     :teams
+    ].each do |model|
+      json.resources(model,
+                     :has_many => [
+                                   :container_names,
+                                   :containments,
+                                   :containment_items,
+                                   :nestings,
+                                   :nesting_items,
+                                   :argument_defaults
+                                  ])
+    end
+
+    json.resources :argument_types
+    json.resources :conditions
+    json.resources :containments
+    json.resources :name_types
+    json.resources :nestings
+    json.resources :relationship_types
+    json.resources :relationships
 
     json.bases(":subject/:group/:levels/:filter",       :controller => 'bases', :action => 'index',
                :group => /[^\/]+/)
