@@ -83,9 +83,30 @@ module Retain
 
     def render_row(binding, call)
       hit_cache = true
-      tag = call.cache_tag("qs")
+      # Change: I've decided to make the qs view user specific.  In
+      # particular the 'updated' class I want to be for a particular
+      # user so that they can look at a glance if the PMR has been
+      # updated since they last looked at it.  Coupled with this is a
+      # change that updated will be only if there is not a PSAR from
+      # the given user for the particular PMR since the last update.
+      # i.e. they can make the call be "not updated" by adding time to
+      # it without an update.  This will allow each user to make the
+      # calls as "not updated" without any conflicts.  I'm doing it
+      # this way rather than a private flag because really, users
+      # should add time when they scan the updates for the PMR.  The
+      # third piece of this puzzle that I'm adding is some "ack"
+      # button to add 6 minutes of time to the PMR without adding any
+      # additional text.
+      # So... the first step is to make the cache tags contain the
+      # user's id...
+      if (last_psar = application_user.current_retain_id.registration.psars.find(:last, :conditions => { :pmr_id => call.pmr_id}))
+        suffix = last_psar.psar_file_and_symbol
+      else
+        suffix = application_user.ldap_id
+      end
+      tag = call.cache_tag("qs") + suffix
       cache(tag) do
-        # logger.debug("building fragment for #{tag}")
+        logger.debug("building fragment for #{tag}")
         hit_cache = false
         row_class = call_class(call)
         row_title = call_title(row_class)
@@ -701,26 +722,35 @@ module Retain
       return "system-down" if call.system_down
       return "initial-response" if call.needs_initial_response?
       if call.pmr.signature_lines.empty?
+        last_line = nil
         last_signature_name = "Unknown"
       else
-        last_signature_name = (name = call.pmr.signature_lines.last.name) &&
+        last_line = call.pmr.signature_lines.last
+        last_signature_name = (name = last_line.name) &&
           name.gsub(/ +$/, '')
       end
 
-      # The "owner" of the call is the owner of the queue (I guess --
-      # sorta hard to decide what to do here).  The default is the
-      # resolver of the PMR (whic is more specific than the owner of
-      # the PMR).  We'll see how that goes for now.
-      owner = call.pmr.resolver
-      if owners = call.queue.owners
-        owner = owners[0]
-      end
-      if owner && (name = owner.name)
-        owner_name = name.gsub(/ +$/, '')
+      # "updated" means that there is an update since the last update
+      # of the user.  So... if the last signature is from the user or
+      # if there is a PSAR from the current user since the last
+      # signature we say that it is "normal", othewise we say it is
+      # "updated".
+      user_registration = application_user.current_retain_id.registration
+      if user_registration && (name = user_registration.name)
+        user_registration_name = name.gsub(/ +$/, '')
       else
-        owner_name = ""
+        user_registration_name = ""
       end
-      return "normal" if owner_name == last_signature_name
+      return "normal" if user_registration_name == last_signature_name
+      # Find the psars for this user and PMR
+      last_psar = user_registration.psars.find(:last, :conditions => { :pmr_id => call.pmr_id})
+      if last_psar && last_line
+        logger.debug("PMR: #{call.pmr.problem},#{call.pmr.branch},#{call.pmr.country}")
+        logger.debug("last_psar.stop_time_date = #{last_psar.stop_time_date}")
+        logger.debug("last_line.date = #{last_line.date}")
+        logger.debug("last_psar.stop_time_date > last_line.date = #{last_psar.stop_time_date > last_line.date}")
+        return "normal" if last_psar.stop_time_date > last_line.date
+      end
       return "updated"
     end
 

@@ -163,6 +163,9 @@ module Retain
               do_fade &= (psar.error_class != :error)
               text += create_error_reply(psar, "PSAR")
             else
+              # We added a PSAR so we want to make it so that we fetch
+              # it next time through
+              application_user.current_retain_id.registration.need_last_day
               text += create_reply_span("PSAR Added")
             end
           end
@@ -229,6 +232,7 @@ module Retain
           # dispatched.
           if requeue.rc == 0 || (600 .. 700) === requeue.rc
             # logger.debug("mark queue as dirty -- 1")
+            application_user.current_retain_id.registration.need_last_day if _call_update[:add_time]
             @pmr.mark_all_as_dirty
             need_undispatch = false
           end
@@ -293,6 +297,7 @@ module Retain
               do_fade &= (psar.error_class != :error)
               text += create_error_reply(psar, "PSAR")
             else
+              application_user.current_retain_id.registration.need_last_day
               text += create_reply_span("PSAR Added")
             end
           end
@@ -314,6 +319,7 @@ module Retain
           # dispatched.
           if close.rc == 0 || (600 .. 700) === close.rc
             # logger.debug("mark queue as dirty -- 2")
+            application_user.current_retain_id.registration.need_last_day if _call_update[:add_time]
             @pmr.mark_all_as_dirty
             need_undispatch = false
           end
@@ -337,6 +343,7 @@ module Retain
               do_fade &= (psar.error_class != :error)
               text += create_error_reply(psar, "PSAR")
             else
+              application_user.current_retain_id.registration.need_last_day
               text += create_reply_span("PSAR Added")
             end
           end

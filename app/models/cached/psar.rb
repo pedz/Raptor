@@ -128,8 +128,8 @@ module Cached
 
     ##
     # :attr: psar_system_date
-    # I'm guessing this is the actual date that the PSAR entry was
-    # made but I'm not 100% sure.
+    # This is the actual date that the PSAR entry was made.  It is of
+    # the form YYMMDD.
 
     ##
     # :attr: stop_time_moc
@@ -208,7 +208,7 @@ module Cached
     # Returns the stop time for the PSAR trying to take into account
     # the timezone.
     def stop_time_date
-      Time.moc(stop_time_moc + minutes_from_gmt)
+      Time.moc(stop_time_moc)
     end
     once :stop_time_date
     

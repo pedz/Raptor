@@ -32,6 +32,13 @@ module Combined
     end
 
     ##
+    # Causes the last day's PSARs to be fetched.
+    def need_last_day
+      self.last_day_fetch = nil
+      self.save!
+    end
+
+    ##
     # Sets the last_day_fetch and last_all_fetch to nill which should
     # cause a refresh to occur.
     def refresh
