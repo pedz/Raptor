@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 
 # An element is a piece of a view.  A view will be rendered as an HTML
 # table which will have rows and columns.  An element has rowspan and

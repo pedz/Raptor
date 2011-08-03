@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 
 # This is a class that is not used.  I wrote this while trying to
 # understand how IBM bluepages and LDAP works.  If you are curious, it

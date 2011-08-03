@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 
 # When a user picks an entity in a browser page, a use count is
 # incremented.  This is the model for that usage count.  The use

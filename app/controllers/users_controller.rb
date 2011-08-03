@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 
 class UsersController < ApplicationController
   before_filter :admin_only, :only => [ :destroy, :new ]

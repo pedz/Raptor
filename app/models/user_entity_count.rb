@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 # A database view to simplify the code.  This is a join between the
 # users table and the entities view along with a left outer join to
 # the use_counters table such that each user has an entry for each

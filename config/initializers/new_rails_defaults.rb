@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 
 # These settings change the behavior of Rails 2 apps and will be defaults
 # for Rails 3. You can remove this initializer when Rails 3 is released.

@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 
 # N O T E: this controller is not in the retain or combined
 # subdirectories.  The queries should not assume that data can be

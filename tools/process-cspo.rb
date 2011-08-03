@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
-
-#!/usr/bin/ruby
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
+# -*- coding: utf-8 -*-
 
 require 'rubygems'
 require 'spreadsheet'

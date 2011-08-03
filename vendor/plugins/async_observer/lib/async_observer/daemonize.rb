@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 # async-observer - Rails plugin for asynchronous job execution
 # Copyright (C) 2009 Todd A. Fisher.
 

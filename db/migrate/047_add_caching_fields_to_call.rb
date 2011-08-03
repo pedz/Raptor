@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 #
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
+#
 # This migration adds a batched of fields that were computed during
 # display time but are now computed during fetch time and stored in
 # the database.

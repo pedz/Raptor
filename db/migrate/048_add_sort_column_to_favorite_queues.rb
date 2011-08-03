@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 class AddSortColumnToFavoriteQueues < ActiveRecord::Migration
   def self.up
     # Add a column which will be altered via drag and drop.  Once

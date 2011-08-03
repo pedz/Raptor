@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 
 # This model is the top of a Single Table Inheritance and is here so
 # that names for teams, retain users (retain ids), groups,

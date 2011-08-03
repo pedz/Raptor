@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 
 # For a given container (which is an Entity) there will be a list of
 # items that it contains.  The actual implementation is a view.

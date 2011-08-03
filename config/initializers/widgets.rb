@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 #
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
+#
 # At start up, we need to make sure that a copy of the code of each
 # widget is in the javascript/widgets directory.  It might be much
 # better to have a controller with views and use page caching.  But

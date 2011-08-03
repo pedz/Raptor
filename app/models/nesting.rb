@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 
 # A Nesting is the transitive closure of a Container (over the
 # containers view).  Thus if ptcpk contains ptcpk-am and ptcpk-am

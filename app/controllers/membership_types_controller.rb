@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 class MembershipTypesController < ApplicationController
   # GET /membership_types
   # GET /membership_types.xml

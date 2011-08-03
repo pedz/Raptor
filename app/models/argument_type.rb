@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 
 # The "call" and "queue" URLs have arguments in the form of paths.
 # ArgumentType specifies for a given name, the position it can be in

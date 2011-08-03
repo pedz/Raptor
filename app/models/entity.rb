@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 #
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
+#
 # An Entity is a very generic term which may be any thing given in the
 # "calls" or "queues" list of arguments.  Entities is a view that is
 # the UNION of Name, User, Retuser, and Cached::Queue models which are

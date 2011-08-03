@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 #
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
+#
 # I'm not sure where to put this.  Currently, this approach seems to
 # be working:
 #

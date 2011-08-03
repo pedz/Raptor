@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 # This controller will be used only for maintenance purposes.  There
 # are several models that inherit using "Single Table Inheritance"
 # from the names table.  Those controllers will be for general use.

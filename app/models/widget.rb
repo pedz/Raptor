@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 
 # A widget is a chunk of javascript code that can be added as an
 # element into a view.  When the view is rendered, the javascript code

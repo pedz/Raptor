@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 class CreateRelationshipTypes < ActiveRecord::Migration
   def self.up
     create_table :relationship_types do |t|

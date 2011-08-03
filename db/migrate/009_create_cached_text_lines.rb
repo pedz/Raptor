@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 
 # A PMR has text lines, signature lines, scratch pad lines, FA lines,
 # etc.  All of those lines are kept here.  The common characteristic

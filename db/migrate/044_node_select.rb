@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 #
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
+#
 # Migration to add fields we need so that the user can pick which node
 # to use.  There are parts needed:
 #

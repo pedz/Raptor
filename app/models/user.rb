@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 
 # This model represents a user of Raptor and is looked up by the LDAP
 # id which is assumed to be the user name given via basic http

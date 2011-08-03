@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 # This controller will be very seldom used but created the full
 # scaffold because disk space is cheap.
 class NameTypesController < ApplicationController

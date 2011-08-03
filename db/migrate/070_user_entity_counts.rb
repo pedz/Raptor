@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 class UserEntityCounts < ActiveRecord::Migration
   def self.up
     execute "CREATE VIEW user_entity_counts AS

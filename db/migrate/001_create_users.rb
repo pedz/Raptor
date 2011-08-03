@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
 
 # The users table is the top level table describing a user.  Different
 # user type records hang off of it such as a record for the users ldap
