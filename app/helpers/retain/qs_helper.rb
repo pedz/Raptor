@@ -99,7 +99,7 @@ module Retain
       # additional text.
       # So... the first step is to make the cache tags contain the
       # user's id...
-      if (last_psar = application_user.current_retain_id.registration.psars.find(:last, :conditions => { :pmr_id => call.pmr_id}))
+      if (last_psar = @user_registration.psars.find(:last, :conditions => { :pmr_id => call.pmr_id}))
         suffix = last_psar.psar_file_and_symbol
       else
         suffix = application_user.ldap_id
@@ -735,15 +735,14 @@ module Retain
       # if there is a PSAR from the current user since the last
       # signature we say that it is "normal", othewise we say it is
       # "updated".
-      user_registration = application_user.current_retain_id.registration
-      if user_registration && (name = user_registration.name)
+      if (name = @user_registration.name)
         user_registration_name = name.gsub(/ +$/, '')
       else
         user_registration_name = ""
       end
       return "normal" if user_registration_name == last_signature_name
       # Find the psars for this user and PMR
-      last_psar = user_registration.psars.find(:last, :conditions => { :pmr_id => call.pmr_id})
+      last_psar = @user_registration.psars.find(:last, :conditions => { :pmr_id => call.pmr_id})
       if last_psar && last_line
         logger.debug("PMR: #{call.pmr.problem},#{call.pmr.branch},#{call.pmr.country}")
         logger.debug("last_psar.stop_time_date = #{last_psar.stop_time_date}")

@@ -43,7 +43,8 @@ module Retain
         #
       end
 
-      last_fetched = (@queue.last_fetched || Time.now)
+      user_registration.psars if user_registration.last_day_fetch.nil?
+      last_fetched = [ (@queue.last_fetched || Time.now), user_registration.last_day_fetch ].max
       fresh_when(:last_modified => last_fetched, :etag => @queue.etag)
       
       if !request.fresh?(response)

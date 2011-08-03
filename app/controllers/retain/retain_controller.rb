@@ -63,18 +63,41 @@ module Retain
     end
     alias_method_chain :perform_action, :retain_benchmark
 
-    #
+    ##
+    # Returns the Retuser associated with the current
+    # application_user's current_retain_id (the id that the user has
+    # choosen to use for this session).  If current_retain_id is not
+    # set but there are Retuser entries for this User, then the first
+    # one is choosen.  This may return nil if no Retuser has been set
+    # up for the application User.
+    def retain_user
+      if application_user.current_retain_id.nil? &&
+          (first = application_user.retusers.first)
+        application_user.current_retain_id = first
+        application_user.save
+      end
+      @retain_user = application_user.current_retain_id
+    end
+    helper_method :retain_user
+
+    ##
+    # The Combined::Registration record for the retain_user which is
+    # the selected retain id for the current application_user
+    def user_registration
+      @user_registration
+    end
+    helper_method :user_registration
+
+    ##
     # A before filter for the retain part of the application.  Any
     # controller that might call in to retain should be subclassed as
     # a RetainController.
-    #
     def validate_retuser
-      # logger.debug("RTN: in validate_retuser")
+      logger.debug("RTN: in validate_retuser")
       
       # If no retusers defined for this user, then redirect and
       # set up a retain user.
-      if (retuser = application_user.current_retain_id).nil?
-        # logger.debug("RTN: nil current_retain_id")
+      if (retuser = retain_user).nil?
         session[:original_uri] = request.request_uri
         redirect_to new_user_retuser_url(application_user)
         return false
@@ -98,14 +121,15 @@ module Retain
     # ConnectionParamters structure.  We hold this in the session
     # data.  We also set the Logon instance to use these settings.
     def setup_logon_instance
-      retuser = application_user.current_retain_id
-      @retain_user_connection_parameters = ConnectionParameters.new(retuser)
+      logger.debug("in setup_logon_instance")
+      @retain_user_connection_parameters = ConnectionParameters.new(retain_user)
       # logger.debug("params 2 = #{@retain_user_connection_parameters.inspect}")
       # The Logon instance is the way we pass @retain_user_connection_parameters from the Retain
       # controller to any Combined models.  The Combined models then
       # pass it explicitly to any Retain models that they need.
       # logger.debug("Logon set")
       Logon.instance.set(@retain_user_connection_parameters)
+      @user_registration = retain_user.registration.to_combined
     end
     
     def logon_failed(exception)
@@ -113,7 +137,7 @@ module Retain
       # Find the retuser record and set the failed bit to true so we
       # do not retry until the user resets his password.
       set_expires_now
-      retuser = application_user.current_retain_id
+      retuser = retain_user
       retuser.failed = true
       retuser.logon_return = exception.logon_return
       retuser.logon_reason = exception.logon_reason
@@ -125,7 +149,7 @@ module Retain
 
     def failed_marked_true(exception)
       set_expires_now
-      retuser = application_user.current_retain_id
+      retuser = retain_user
       flash[:warning] = find_logon_error(retuser.logon_return, retuser.logon_reason)
       common_failed_logon(retuser)
     end

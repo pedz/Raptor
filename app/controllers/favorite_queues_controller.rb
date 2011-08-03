@@ -93,7 +93,7 @@ class FavoriteQueuesController < Retain::RetainController
 
     @favorite_queue =
       FavoriteQueue.new(:queue => queue,
-                        :retuser => application_user.current_retain_id,
+                        :retuser => retain_user,
                         :sort_column => application_user.favorite_queues.size)
 
     respond_to do |format|

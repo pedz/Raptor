@@ -121,6 +121,23 @@ module Cached
     has_many   :psars,            :class_name => "Cached::Psar"
     
     ##
+    # Causes the last day's PSARs to be fetched.
+    def need_last_day
+      self.last_day_fetch = nil
+      self.save!
+    end
+
+    ##
+    # Sets the last_day_fetch and last_all_fetch to nill which should
+    # cause a refresh to occur.
+    def refresh
+      # logger.debug("refreshing registration #{to_param}")
+      self.last_all_fetch = nil
+      self.last_day_fetch = nil
+      self.save!
+    end
+
+    ##
     # Find the peronal queue via the QueueInfo relationships
     def personal_queue
       unless (local_queues = self.queues).empty?

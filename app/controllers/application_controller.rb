@@ -131,8 +131,7 @@ class ApplicationController < ActionController::Base
   def async_fetch(obj, force = false)
     pri = obj.async_priority
     return if pri == :none
-    AsyncRequest.new(application_user.current_retain_id.id, obj).
-      async_send(:fetch, :pri => pri)
+    AsyncRequest.new(retain_user.id, obj).async_send(:fetch, :pri => pri)
   end
 
   private :fixit

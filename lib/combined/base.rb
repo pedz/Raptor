@@ -263,6 +263,9 @@ module Combined
     def initialize(arg = { })
       super()
       @retain_user_connection_parameters = Retain::Logon.instance.get
+      if @retain_user_connection_parameters.nil?
+        raise "combined object created before retain_user_connection_paramters set"
+      end
       if arg.kind_of? Hash
         @cached = self.class.cached_class.new(arg.unwrap_to_cached)
       else

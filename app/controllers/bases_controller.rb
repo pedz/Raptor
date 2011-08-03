@@ -57,7 +57,7 @@ class BasesController < Retain::RetainController
 
     v = argument_type.default
     # I hate special cases...
-    v = application_user.current_retain_id.retid if v == "current_retuser_id"
+    v = retain_user.retid if v == "current_retuser_id"
     return v
   end
 end

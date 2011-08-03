@@ -32,28 +32,11 @@ module Combined
     end
 
     ##
-    # Causes the last day's PSARs to be fetched.
-    def need_last_day
-      self.last_day_fetch = nil
-      self.save!
-    end
-
-    ##
-    # Sets the last_day_fetch and last_all_fetch to nill which should
-    # cause a refresh to occur.
-    def refresh
-      # logger.debug("refreshing registration #{to_param}")
-      self.last_all_fetch = nil
-      self.last_day_fetch = nil
-      self.save!
-    end
-
-    ##
     # Fetches the PSARs for the DR.  All PSARs that are available are
     # fetched once a day and all PSARs for the day are fetched every
     # 10 minutes.
     def psars
-      # logger.debug("psars for registration #{to_param}")
+      logger.debug("psars for registration #{to_param}")
       unless psar_number.nil?
         if @cached.last_all_fetch.nil? || @cached.last_all_fetch < 1.day.ago
           # logger.debug("Fetching all PSAR")
