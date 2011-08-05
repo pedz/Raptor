@@ -22,20 +22,20 @@
 	<td><%=h retuser.user.ldap_id %></td>
 	<td><%=h retuser.retid %></td>
 	<td><%=h retuser.failed %></td>
-	<td><%=h retuser.return_value %></td>
-	<td><%=h retuser.reason %></td>
+	<td><%=h retuser.logon_return %></td>
+	<td><%=h retuser.logon_reason %></td>
 	<td><%=h retuser.software_node.description %></td>
 	<td><%=h retuser.hardware_node.description %></td>
-	<td><%= link_to 'Show', user_retuser_path(@user, retuser) %></td>
-	<td><%= link_to 'Edit', edit_user_retuser_path(@user, retuser) %></td>
+	<td><%= link_to 'Show', config_user_retuser_path(@user, retuser) %></td>
+	<td><%= link_to 'Edit', edit_config_user_retuser_path(@user, retuser) %></td>
 	<% if admin? %>
-	  <td><%= link_to 'Destroy', user_retuser_path(@user, retuser), :confirm => 'Are you sure?', :method => :delete %></td>
+	  <td><%= link_to 'Destroy', config_user_retuser_path(@user, retuser), :confirm => 'Are you sure?', :method => :delete %></td>
 	<% end %>
       </tr>
     <% end %>
   </table>
   
   <br/>
-  <%= link_to 'Create Retain User Id', new_user_retuser_path(@user) %>
-  <%= link_to 'Back to User', user_path(@user) %>
+  <%= link_to 'Create Retain User Id', new_config_user_retuser_path(@user) %>
+  <%= link_to 'Back to User', config_user_path(@user) %>
 <%- end -%>

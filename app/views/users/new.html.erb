@@ -6,7 +6,7 @@
 
 <%= error_messages_for :user %>
 
-<% form_for(@user, :url => { :namespace => :config}) do |f| %>
+<% form_for([:config, @user]) do |f| %>
   <p>
     <b>Ldap</b><br />
     <%= f.text_field :ldap_id %>

@@ -27,7 +27,7 @@
   
   <%= error_messages_for :retuser %>
   
-  <% form_for([@user, @retuser]) do |f| %>
+  <% form_for([:config, @user, @retuser]) do |f| %>
     <p>
       <b><%= f.label :retid %></b><br />
       <%= f.text_field :retid %>
@@ -57,7 +57,7 @@
     </p>
   <% end %>
   
-  <%= link_to 'Show', user_retuser_path(@user, @retuser) %> |
-  <%= link_to 'Back to User', user_path(@user) %> |
-  <%= link_to 'List of Retain Ids', user_retusers_path(@user) %>
+  <%= link_to 'Show', config_user_retuser_path(@user, @retuser) %> |
+  <%= link_to 'Back to User', config_user_path(@user) %> |
+  <%= link_to 'List of Retain Ids', config_user_retusers_path(@user) %>
 <%- end -%>
