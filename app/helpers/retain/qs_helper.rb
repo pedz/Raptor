@@ -747,7 +747,7 @@ module Retain
       return "normal" if user_registration_name == last_signature_name
       # Find the psars for this user and PMR
       last_psar = @user_registration.psars.find(:last, :conditions => { :pmr_id => call.pmr_id})
-      if last_psar && last_line
+      if last_psar && last_line && last_psar.stop_time_date && last_line.date
         logger.debug("PMR: #{call.pmr.problem},#{call.pmr.branch},#{call.pmr.country}")
         logger.debug("last_psar.stop_time_date = #{last_psar.stop_time_date}")
         logger.debug("last_line.date = #{last_line.date}")

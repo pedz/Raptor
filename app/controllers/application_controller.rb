@@ -125,13 +125,35 @@ class ApplicationController < ActionController::Base
     return new
   end
 
+  ##
+  # Returns the Retuser associated with the current application_user's
+  # current_retain_id (the id that the user has choosen to use for
+  # this session).  If current_retain_id is not set but there are
+  # Retuser entries for this User, then the first one is choosen.
+  # This may return nil if no Retuser has been set up for the
+  # application User.
+  #
+  # Note that Retuser has *not* been validated.
+  def retain_user
+    if application_user.current_retain_id.nil? &&
+        (first = application_user.retusers.first)
+      application_user.current_retain_id = first
+      application_user.save
+    end
+    @retain_user = application_user.current_retain_id
+  end
+  helper_method :retain_user
+
   # Fetches the object -- which is expected to be a subclass of
   # Cached::Base -- asynchronously using the worker tasks.  This can't
   # be a method of the model because it needs to application_user.
   #
   # calls Cached::Base#async_priority to determine the priority of the
   # request.
+  #
+  # NOTE: This will do nothing if the application_user currently has not 
   def async_fetch(obj, force = false)
+    return if retain_user.nil?
     pri = obj.async_priority
     return if pri == :none
     AsyncRequest.new(retain_user.id, obj).async_send(:fetch, :pri => pri)

@@ -68,23 +68,6 @@ module Retain
     alias_method_chain :perform_action, :retain_benchmark
 
     ##
-    # Returns the Retuser associated with the current
-    # application_user's current_retain_id (the id that the user has
-    # choosen to use for this session).  If current_retain_id is not
-    # set but there are Retuser entries for this User, then the first
-    # one is choosen.  This may return nil if no Retuser has been set
-    # up for the application User.
-    def retain_user
-      if application_user.current_retain_id.nil? &&
-          (first = application_user.retusers.first)
-        application_user.current_retain_id = first
-        application_user.save
-      end
-      @retain_user = application_user.current_retain_id
-    end
-    helper_method :retain_user
-
-    ##
     # The Combined::Registration record for the retain_user which is
     # the selected retain id for the current application_user
     def user_registration
