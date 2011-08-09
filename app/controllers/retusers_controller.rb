@@ -74,7 +74,7 @@ class RetusersController < ApplicationController
         format.html {
           uri = session[:original_uri]
           session[:original_uri] = nil
-          redirect_to(uri || user_retuser_url(@user, @retuser))
+          redirect_to(uri || config_user_retuser_url(@user, @retuser))
         }
         format.xml  { render :xml => @retuser, :status => :created, :location => @retuser }
       else
@@ -95,7 +95,7 @@ class RetusersController < ApplicationController
         format.html {
           uri = session[:original_uri]
           session[:original_uri] = nil
-          redirect_to(uri || user_retuser_url(@user))
+          redirect_to(uri || config_user_retuser_url(@user))
         }
         format.xml  { head :ok }
       else

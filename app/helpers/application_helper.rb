@@ -70,6 +70,12 @@ module ApplicationHelper
   def std_scripts(*extras)
     [ "prototype",
       "scriptaculous",
+      "builder",
+      "effects",
+      "dragdrop",
+      "controls",
+      "slider",
+      "sound",
       "raptor",
       "application" ] + extras
   end

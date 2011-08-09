@@ -80,6 +80,7 @@ class AsyncRequest
       Retain::Logon.instance.set(@retain_user_connection_parameters)
       cmb = rec.to_combined
       cmb.load_if_stale
+      Rails.logger.debug "Worker: #{@obj_class} #{@obj_id} successfully fetched"
 
     rescue ActiveRecord::RecordNotFound
       Rails.logger.debug "Worker: #{@obj_class} #{@obj_id} not found in database"
@@ -91,11 +92,11 @@ class AsyncRequest
       return
       
     rescue Retain::FailedMarkedTrue
-      # user record already marked so just return.
+      Rails.logger.debug "Worker: #{retuser.retid} is marked as failed."
       return
 
     rescue Retain::LogonFailed => exception
-      # Mark user record to prevent excessive errors.
+      Rails.logger.debug "Worker: #{retuser.retid} login failed."
       retuser.failed = true
       retuser.logon_return = exception.logon_return
       retuser.logon_reason = exception.logon_reason
