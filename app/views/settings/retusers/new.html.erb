@@ -8,7 +8,7 @@
 
   <%= error_messages_for :retuser %>
 
-  <% form_for([:config, @user, @retuser]) do |f| %>
+  <% form_for([:settings, @user, @retuser]) do |f| %>
     <p>
       <b>Retain Id</b><br />
       <%= f.text_field :retid %>
@@ -33,6 +33,6 @@
     </p>
   <% end %>
   
-  <%= link_to 'Back to User', config_user_path(@user) %> |
-  <%= link_to 'List of Retain Ids', config_user_retusers_path(@user) %>
+  <%= link_to 'Back to User', settings_user_path(@user) %> |
+  <%= link_to 'List of Retain Ids', settings_user_retusers_path(@user) %>
 <%- end -%>

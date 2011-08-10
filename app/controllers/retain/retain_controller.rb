@@ -86,7 +86,7 @@ module Retain
       # set up a retain user.
       if (retuser = retain_user).nil?
         session[:original_uri] = request.request_uri
-        redirect_to new_config_user_retuser_url(application_user)
+        redirect_to new_settings_user_retuser_url(application_user)
         return false
       end
 
@@ -144,7 +144,7 @@ module Retain
     def common_failed_logon(retuser)
       # Remember what we were trying to do
       session[:original_uri] = request.request_uri
-      redirect_to edit_config_user_retuser_url(application_user, retuser)
+      redirect_to edit_settings_user_retuser_url(application_user, retuser)
     end
 
     #        16 |     18 |      Fail | Retain database not available for userid

@@ -1,0 +1,32 @@
+<%# -*- coding: utf-8 -*- -%>
+<%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+    All Rights Reserved -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<%- content_for(:center) do -%>
+  <p>
+    <b>Ldap:</b>
+    <%=h @user.ldap_id %>
+  </p>
+  
+  <p>
+    <b>Retain user:</b>
+    <% if @user.current_retain_id.nil? %>
+      <% if @user.retusers.empty? %>
+	<td><%= link_to 'New Retain User Id', new_settings_user_retuser_path(@user) %></td>
+      <% else %>
+	<td><%= link_to 'Pick Retain Id', edit_settings_user_path(@user) %></td>
+      <% end %>
+    <% else %>
+      <td><%=link_to "#{@user.current_retain_id.retid}", settings_user_retuser_url(@user, @user.current_retain_id) %></td>
+    <% end %>
+  </p>
+  
+  <% if admin? %>
+    <p>
+      <b>Admin:</b>
+      <%=h @user.admin %>
+    </p>
+  <% end %>
+  <%= link_to 'Edit', edit_settings_user_path(@user) %> |
+  <%= link_to 'Index of Users', settings_users_path %>
+<%- end -%>

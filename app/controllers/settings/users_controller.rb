@@ -4,7 +4,7 @@
 # All Rights Reserved
 #
 
-module Config
+module Settings
   class UsersController < ApplicationController
     before_filter :admin_only, :only => [ :destroy, :new ]
     before_filter :this_user?, :except => [ :index, :new ]

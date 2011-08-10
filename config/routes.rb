@@ -122,8 +122,8 @@ ActionController::Routing::Routes.draw do |map|
   # that right now.
   map.resources :combined_psars, :controller => 'combined/psars'
 
-  map.namespace(:config) do |config|
-    config.resources :users do |user|
+  map.namespace(:settings) do |settings|
+    settings.resources :users do |user|
       user.resources :retusers
     end
   end

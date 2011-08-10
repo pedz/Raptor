@@ -4,7 +4,7 @@
 # All Rights Reserved
 #
 
-module Config
+module Settings
   class RetusersController < ApplicationController
     before_filter :this_user?
     before_filter :this_retuser?, :except => [ :index, :new, :create ]
@@ -75,7 +75,7 @@ module Config
           format.html {
             uri = session[:original_uri]
             session[:original_uri] = nil
-            redirect_to(uri || config_user_retuser_url(@user, @retuser))
+            redirect_to(uri || settings_user_retuser_url(@user, @retuser))
           }
           format.xml  { render :xml => @retuser, :status => :created, :location => @retuser }
         else
@@ -96,7 +96,7 @@ module Config
           format.html {
             uri = session[:original_uri]
             session[:original_uri] = nil
-            redirect_to(uri || config_user_retuser_url(@user))
+            redirect_to(uri || settings_user_retuser_url(@user))
           }
           format.xml  { head :ok }
         else
