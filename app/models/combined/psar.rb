@@ -180,7 +180,6 @@ module Combined
       options[:dirty] = false if @cached.respond_to?("dirty")
       @cached.registration = Cached::Registration.find_or_initialize_by_psar_number_and_apptest(psar.signon2,
                                                                                                 retain_user_connection_parameters.apptest)
-      logger.error("reg.signon = #{@cached.registration.signon}")
       @cached.updated_at = Time.now
       @cached.update_attributes(options)
     end
