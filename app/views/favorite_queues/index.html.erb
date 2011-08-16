@@ -1,68 +1,60 @@
 <%# -*- coding: utf-8 -*- -%>
 <%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
-    All Rights Reserved -%>
+All Rights Reserved -%>
 <% @title = "Favorite Queues" -%>
 <% @stylesheets = "favorite_queues" -%>
 <% @javascripts = ["dragdrop", "favorite_queues" ] -%>
 <% content_for(:center) do -%>
-<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<h1>Listing of Favorite Queues</h1>
-<table id='favorite-queue-list'>
-  <thead>
-    <tr>
-      <th colspan='7'>
-	Favorite Queues last updated <span id="time"><%= Time.now %></span>
-      </th>
-    </tr>
-    <tr>
-      <th>Queue<br/>Status</th>
-      <th>Queue<br/>Type</th>
-      <th>Calls</th>
-      <th>Show</th>
-      <th>Edit</th>
-      <th>Destroy</th>
-    </tr>
-  </thead>
-  <tbody id='favorite_queues'>
-    <% index = 0 -%>
-    <% for favorite_queue in @favorite_queues -%>
-    <%   domid = "favorites_#{favorite_queue.id}" -%>
-    <%   queue = favorite_queue.queue.wrap_with_combined -%>
-    <%   hits = queue.hits(:html)     -%>
-    <%   team = queue.owners.empty?   -%>
-    <%   if team                      -%>
-    <%     q_class = "team"           -%>
-    <%   else                         -%>
-    <%     q_class = "personal"       -%>
-    <%   end                          -%>
-    <%   if hits == 0                 -%>
-    <%     q_class += "-empty"        -%>
-    <%   else                         -%>
-    <%     q_class += "-nonempty"     -%>
-    <%   end                          -%>
-    <tr class='<%= q_class -%>' id='<%= domid %>'>
-      <td><%= button_url queue.to_param, combined_q_url(queue.to_param) -%></td>
-      <td><%= team ? "Team" : "Personal"%></td>
-      <td align='right'><%= h hits -%></td>
-      <%- index += 1 -%>
-      <td><%= button_url "S#{index}", favorite_queue -%></td>
-      <td><%= button_url "E#{index}", edit_polymorphic_path(favorite_queue) -%></td>
-      <td><%= link_to 'Destroy', favorite_queue, :confirm => 'Are you sure?', :method => :delete -%></td>
-    </tr>
-    <% end -%>
-  </tbody>
-  <%= sortable_element('favorite_queues', :url => { :action => :sort }, :tag => "tr") %>
-</table>
-
-<p style='width: 55ex'>
-This table is now drag and drop sortable.  Grab somewhere in the row
-that is not a button, like in the <q>Queue Type</q> column, and then
-drag that row up or down to the place you want in the table and drop
-it.
-</p>
-
-<%= button_url 'New Favorite Queue', new_favorite_queue_path -%>
-<%= button_url 'Expanded View', expanded_favorite_queues_path -%>
-<br/>
-<div id='error-message-box'></div>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <h1>Listing of Favorite Queues</h1>
+  <table id='favorite-queue-list'>
+    <thead>
+      <tr>
+	<th colspan='7'>
+	  Favorite Queues last updated <span id="time"><%= Time.now %></span>
+	</th>
+      </tr>
+      <tr>
+	<th>Queue<br/>Status</th>
+	<th>Queue<br/>Type</th>
+	<th>Calls</th>
+	<th>Show</th>
+	<th>Edit</th>
+	<th>Destroy</th>
+      </tr>
+    </thead>
+    <tbody id='favorite_queues'>
+      <% index = 0 -%>
+      <% for favorite_queue in @favorite_queues -%>
+        <% domid = "favorites_#{favorite_queue.id}" -%>
+	<% queue = favorite_queue.queue.wrap_with_combined -%>
+        <% hits = queue.hits(:html) -%>
+	<% team = (hits >= 0) && queue.owners.empty? -%>
+        <% q_class = team ? "team" : "personal" -%>
+	<% q_class += (hits == 0) ? "-empty" : "-nonempty" -%>
+	<tr class='<%= q_class -%>' id='<%= domid %>'>
+	  <td><%= button_url queue.to_param, combined_q_url(queue.to_param) -%></td>
+	  <td><%= team ? "Team" : "Personal"%></td>
+	  <td align='right'><%= h hits -%></td>
+	  <% index += 1 -%>
+	  <td><%= button_url "S#{index}", favorite_queue -%></td>
+	  <td><%= button_url "E#{index}", edit_polymorphic_path(favorite_queue) -%></td>
+	  <td><%= link_to 'Destroy', favorite_queue, :confirm => 'Are you sure?', :method => :delete -%></td>
+	</tr>
+      <% end -%>
+    </tbody>
+    <%= sortable_element('favorite_queues', :url => { :action => :sort }, :tag => "tr") %>
+  </table>
+  
+  <p style='width: 55ex'>
+    This table is now drag and drop sortable.  Grab somewhere in the row
+    that is not a button, like in the <q>Queue Type</q> column, and then
+    drag that row up or down to the place you want in the table and drop
+    it.
+  </p>
+  
+  <%= button_url 'New Favorite Queue', new_favorite_queue_path -%>
+  <%= button_url 'Expanded View', expanded_favorite_queues_path -%>
+  <br/>
+  <div id='error-message-box'></div>
 <% end -%>
