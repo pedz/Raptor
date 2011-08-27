@@ -5,7 +5,7 @@
 #
 module Json
   module Combined
-    class PsarsController < Retain::RetainController
+    class PsarsController < JsonCombinedController
       #
       # This can be called two different ways.  One is a sub resource
       # of a PMR and the other is a sub resource of a registration.

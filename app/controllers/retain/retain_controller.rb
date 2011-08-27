@@ -8,7 +8,7 @@ module Retain
   class RetainController < ApplicationController
     
     before_filter :validate_retuser
-    cache_sweeper :pmr_sweeper, :call_sweeper
+    # cache_sweeper :pmr_sweeper, :call_sweeper
     
     rescue_from Combined::CallNotFound,     :with => :not_found_page
     rescue_from Combined::CenterNotFound,   :with => :not_found_page

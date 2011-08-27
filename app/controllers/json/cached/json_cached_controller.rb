@@ -14,9 +14,11 @@ module Json
         else
           async_fetch(item)
         end
+        # Note that this controller is a subclass of JsonController.
+        # JsonController has included JsonCommon so this super goes to
+        # the json_send in JsonCommon
         super(item, cache_options)
       end
     end
   end
 end
-  

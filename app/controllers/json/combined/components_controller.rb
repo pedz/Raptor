@@ -5,7 +5,7 @@
 #
 module Json
   module Combined
-    class ComponentsController < Retain::RetainController
+    class ComponentsController < JsonCombinedController
       def index
         render :json => ::Combined::Component.find(:all)
       end

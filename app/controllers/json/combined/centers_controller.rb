@@ -5,7 +5,7 @@
 #
 module Json
   module Combined
-    class CentersController < Retain::RetainController
+    class CentersController < JsonCombinedController
       def index
         render :json => ::Combined::Center.find(:all)
       end

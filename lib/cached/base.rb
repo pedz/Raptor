@@ -127,9 +127,13 @@ module Cached
     # Otherwise, if force is true, the priority will be :low while if
     # force is not true, the priority will be :none.
     def async_priority(force = false)
+      # If object has never fully been fetched
       return  1024 if respond_to?(:last_fetched) && last_fetched.nil?
+      # if object is out of date
       return   512 unless wrap_with_combined.cache_valid?
+      # if requestor asked for a forced refresh
       return     0 if force
+      # else none of the above.
       return :none
     end
 

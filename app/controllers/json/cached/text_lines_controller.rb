@@ -4,8 +4,8 @@
 # All Rights Reserved
 #
 module Json
-  module Combined
-    class QueuesController < JsonCombinedController
+  module Cached
+    class TextLinesController < JsonCachedController
       def index
         begin
           json_send(walk_path)

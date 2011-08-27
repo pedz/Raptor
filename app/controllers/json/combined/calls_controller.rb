@@ -5,7 +5,7 @@
 #
 module Json
   module Combined
-    class CallsController < Retain::RetainController
+    class CallsController < JsonCombinedController
       def index
         render :json => ::Combined::Queue.find(params[:queue_id]).calls
       end
