@@ -27,10 +27,10 @@ module AsyncObserver; end
 module AsyncObserver::Util
   def log_bracketed(name)
     begin
-      # Rails.logger.info "#!#{name}!begin!#{Time.now.utc.xmlschema(6)}"
+      # Rails.logger.debug "worker: #!#{name}!begin!#{Time.now.utc.xmlschema(6)}"
       yield()
     ensure
-      # Rails.logger.info "#!#{name}!end!#{Time.now.utc.xmlschema(6)}"
+      # Rails.logger.debug "worker: #!#{name}!end!#{Time.now.utc.xmlschema(6)}"
     end
   end
 end

@@ -70,7 +70,7 @@ class AsyncObserver::Worker
   end
 
   def main_loop()
-    trap('TERM') { puts "hello" ; @stop = true }
+    # trap('TERM') { Rails.logger.debug("worker: TERM caught #{@stop}"); @stop = true }
     loop do
       break if @stop
       safe_dispatch(get_job())
@@ -80,16 +80,17 @@ class AsyncObserver::Worker
   def startup()
     log_bracketed('worker-startup') do
       appver = AsyncObserver::Queue.app_version
-      # Rails.logger.info "pid is #{$$}"
-      # Rails.logger.info "app version is #{appver}"
+      # Rails.logger.debug "worker: pid is #{$$}"
+      # Rails.logger.debug "worker: app version is #{appver}"
+      # flush_logger
       mark_db_socket_close_on_exec()
       if AsyncObserver::Queue.queue.nil?
-        # Rails.logger.info 'no queue has been configured'
+        # Rails.logger.debug 'worker: no queue has been configured'
         exit(1)
       end
       AsyncObserver::Queue.queue.watch(appver) if appver
     end
-    flush_logger
+    # flush_logger
   end
 
   # This prevents us from leaking fds when we exec. Only works for mysql.
@@ -145,12 +146,12 @@ class AsyncObserver::Worker
         rescue Beanstalk::DeadlineSoonError
           # Do nothing; immediately try again, giving the user a chance to
           # clean up in the before_reserve hook.
-          # Rails.logger.info 'Job deadline soon; you should clean up.'
+          # Rails.logger.debug 'worker: Job deadline soon; you should clean up.'
         rescue Exception => ex
           @q_hint = nil # in case there's something wrong with this conn
-          # Rails.logger.info("#{ex.class}: #{ex}\n" + ex.backtrace.join("\n"))
-          # Rails.logger.info 'something is wrong. We failed to get a job.'
-          # Rails.logger.info "sleeping for #{SLEEP_TIME}s..."
+          # Rails.logger.debug("worker: #{ex.class}: #{ex}\n" + ex.backtrace.join("\n"))
+          # Rails.logger.debug 'worker: something is wrong. We failed to get a job.'
+          # Rails.logger.debug "worker: sleeping for #{SLEEP_TIME}s..."
           sleep(SLEEP_TIME)
         end
       end
@@ -165,10 +166,10 @@ class AsyncObserver::Worker
 
   def safe_dispatch(job)
     log_bracketed('worker-dispatch') do
-      # Rails.logger.info "got #{job.inspect}:\n" + job.body
+      # Rails.logger.debug "worker: got #{job.inspect}:\n" + job.body
       log_bracketed('job-stats') do
         job.stats.each do |k,v|
-          # Rails.logger.info "#{k}=#{v}"
+          # Rails.logger.debug "worker: #{k}=#{v}"
         end
       end
       begin
@@ -179,7 +180,7 @@ class AsyncObserver::Worker
       rescue Exception => ex
         handle_error(job, ex)
       ensure
-        flush_logger
+        # flush_logger
       end
     end
   end
@@ -187,7 +188,7 @@ class AsyncObserver::Worker
   def flush_logger
     if defined?(Rails.logger) &&
         Rails.logger.respond_to?(:flush)
-      Rails.logger.flush
+        # Rails.logger.flush
     end
   end
 
@@ -200,14 +201,14 @@ class AsyncObserver::Worker
   end
 
   def self.default_handle_error(job, ex)
-    # Rails.logger.info "Job failed: #{job.server}/#{job.id}"
-    # Rails.logger.info("#{ex.class}: #{ex}\n" + ex.backtrace.join("\n"))
+    # Rails.logger.debug "worker: Job failed: #{job.server}/#{job.id}"
+    # Rails.logger.debug("worker: #{ex.class}: #{ex}\n" + ex.backtrace.join("\n"))
     job.decay()
   rescue Beanstalk::UnexpectedResponse
   end
 
   def run_ao_job(job)
-    # Rails.logger.info 'running as async observer job'
+    # Rails.logger.debug 'worker: running as async observer job'
     f = self.class.before_filter
     f.call(job) if f
     job.delete if job.ybody[:delete_first]
@@ -232,12 +233,12 @@ class AsyncObserver::Worker
   end
 
   def run_other(job)
-    # Rails.logger.info 'trying custom handler'
+    # Rails.logger.debug 'worker: trying custom handler'
     self.class.handle.call(job)
   end
 
   def do_all_work()
-    # Rails.logger.info 'finishing all running jobs. interrupt again to kill them.'
+    # Rails.logger.debug 'worker: finishing all running jobs. interrupt again to kill them.'
     f = self.class.finish
     f.call() if f
   end
@@ -255,7 +256,7 @@ class Mysql
       @net.set_close_on_exec()
     else
       # we are in the c mysql binding
-      # Rails.logger.info "Warning: we are using the C mysql binding, can't set close-on-exec"
+      # Rails.logger.debug "worker: Warning: we are using the C mysql binding, can't set close-on-exec"
     end
   end
 end

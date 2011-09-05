@@ -75,7 +75,7 @@ class << AsyncObserver::Queue
     pri = pri + rand(fuzz + 1) if !:direct.equal?(pri)
 
     code = gen(obj, sel, args)
-    # Rails.logger.info("put #{pri} #{code}")
+    # Rails.logger.debug("worker: put #{pri} #{code}")
     put!(pkg(code, worker_opts), pri, delay, ttr, tube)
   end
 
