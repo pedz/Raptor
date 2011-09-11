@@ -6,9 +6,9 @@
 class CreateRelationshipTypes < ActiveRecord::Migration
   def self.up
     create_table :relationship_types do |t|
-      t.integer :container_type_id, :null => false
+      t.integer :container_type_id,   :null => false
       t.integer :association_type_id, :null => false
-      t.integer :item_type_id, :null => false
+      t.integer :item_type_id,        :null => false
       t.timestamps
     end
     execute "ALTER TABLE relationship_types ADD CONSTRAINT uq_relationship_type_tuple UNIQUE

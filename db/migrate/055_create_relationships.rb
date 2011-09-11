@@ -6,10 +6,10 @@
 class CreateRelationships < ActiveRecord::Migration
   def self.up
     create_table :relationships do |t|
-      t.integer :container_name_id, :null => false
+      t.integer :container_name_id,    :null => false
       t.integer :relationship_type_id, :null => false
-      t.integer :item_id, :null => false
-      t.string  :item_type, :null => false
+      t.integer :item_id,              :null => false
+      t.string  :item_type,            :null => false
       t.timestamps
     end
     execute "ALTER TABLE relationships ADD CONSTRAINT uq_relationship_tuple UNIQUE
