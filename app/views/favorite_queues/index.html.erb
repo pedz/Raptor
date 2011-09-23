@@ -27,7 +27,8 @@ All Rights Reserved -%>
       <% index = 0 -%>
       <% for favorite_queue in @favorite_queues -%>
 	<tr class='<%= favorite_queue.q_class -%>' id='<%= "favorites_#{favorite_queue.id}" %>'>
-	  <td><%= button_url favorite_queue.queue.to_param, combined_q_url(favorite_queue.queue.to_param) -%></td>
+	  <% queue = favorite_queue.queue.wrap_with_combined -%>
+	  <td><%= button_url queue.to_param, combined_q_url(queue.to_param) -%></td>
 	  <td><%= favorite_queue.team ? "Team" : "Personal"%></td>
 	  <td align='right'><%= favorite_queue.hits -%></td>
 	  <% index += 1 -%>
