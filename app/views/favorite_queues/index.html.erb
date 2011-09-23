@@ -26,16 +26,10 @@ All Rights Reserved -%>
     <tbody id='favorite_queues'>
       <% index = 0 -%>
       <% for favorite_queue in @favorite_queues -%>
-        <% domid = "favorites_#{favorite_queue.id}" -%>
-	<% queue = favorite_queue.queue.wrap_with_combined -%>
-        <% hits = queue.hits(:html) -%>
-	<% team = (hits >= 0) && queue.owners.empty? -%>
-        <% q_class = team ? "team" : "personal" -%>
-	<% q_class += (hits == 0) ? "-empty" : "-nonempty" -%>
-	<tr class='<%= q_class -%>' id='<%= domid %>'>
-	  <td><%= button_url queue.to_param, combined_q_url(queue.to_param) -%></td>
-	  <td><%= team ? "Team" : "Personal"%></td>
-	  <td align='right'><%= h hits -%></td>
+	<tr class='<%= favorite_queue.q_class -%>' id='<%= "favorites_#{favorite_queue.id}" %>'>
+	  <td><%= button_url favorite_queue.queue.to_param, combined_q_url(favorite_queue.queue.to_param) -%></td>
+	  <td><%= favorite_queue.team ? "Team" : "Personal"%></td>
+	  <td align='right'><%= favorite_queue.hits -%></td>
 	  <% index += 1 -%>
 	  <td><%= button_url "S#{index}", favorite_queue -%></td>
 	  <td><%= button_url "E#{index}", edit_polymorphic_path(favorite_queue) -%></td>

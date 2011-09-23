@@ -49,4 +49,23 @@ class FavoriteQueue < ActiveRecord::Base
   # A belogns_to association to a Cached::Queue that the entry refers
   # to.
   belongs_to :queue, :class_name => "Cached::Queue"
+
+  ##
+  # :attr: hits
+  # A non-database backed attribute which acts as a place holder for
+  # the count of calls on the queue.  This is used so the controller
+  # can get the hits and have a place to save them.
+  attr_accessor :hits
+
+  ##
+  # :attr: q_class
+  # A non-database backed attribute which acts as a place holder for
+  # the css class.
+  attr_accessor :q_class
+
+  ##
+  # :attr: team
+  # A non-database backed attribute which acts as a place hold for the
+  # team (if any) that this queue belongs to.
+  attr_accessor :team
 end

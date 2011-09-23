@@ -124,6 +124,7 @@ module Combined
       begin
         Retain::Cq.new(retain_user_connection_parameters, to_options).hit_count
       rescue Retain::SdiReaderError => e
+        logger.error("CMB: queue#hits e.message = '#{e.message}'")
         raise e unless e.message[0,13] == "INVALID QUEUE"
         -1
       end

@@ -9,7 +9,13 @@ class FavoriteQueuesController < Retain::RetainController
   # GET /favorite_queues
   # Reponds to html, xml, and json formats
   def index
-    @favorite_queues = application_user.favorite_queues
+    @favorite_queues = application_user.favorite_queues.each do |favorite_queue|
+      queue = favorite_queue.queue.wrap_with_combined
+      favorite_queue.hits = hits = queue.hits(:html)
+      favorite_queue.team = team = (hits >= 0) && queue.owners.empty?
+      favorite_queue.q_class = ((team ? "team" : "personal") +
+                                ((hits == 0) ? "-empty" : "-nonempty"))
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @favorite_queues }
