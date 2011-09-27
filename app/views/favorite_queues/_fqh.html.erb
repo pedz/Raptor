@@ -1,0 +1,11 @@
+<%# -*- coding: utf-8 -*- -%>
+<%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
+All Rights Reserved -%>
+<tr class='<%= fqh[:q_class] -%>' id='<%= "favorites_#{fqh[:id]}" %>'>
+  <td><%= button_url fqh[:queue].to_param, combined_q_url(fqh[:queue].to_param) -%></td>
+  <td><%= fqh[:team] ? "Team" : "Personal"%></td>
+  <td align='right'><%= fqh[:hits] -%></td>
+  <td><%= button_url "S#{fqh_counter}", fqh[:favorite_queue] -%></td>
+  <td><%= button_url "E#{fqh_counter}", edit_polymorphic_path(fqh[:favorite_queue]) -%></td>
+  <td><%= link_to 'Destroy', fqh[:favorite_queue], :confirm => 'Are you sure?', :method => :delete -%></td>
+</tr>

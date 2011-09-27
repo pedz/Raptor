@@ -24,19 +24,7 @@ All Rights Reserved -%>
       </tr>
     </thead>
     <tbody id='favorite_queues'>
-      <% index = 0 -%>
-      <% for favorite_queue in @favorite_queues -%>
-	<tr class='<%= favorite_queue.q_class -%>' id='<%= "favorites_#{favorite_queue.id}" %>'>
-	  <% queue = favorite_queue.queue.wrap_with_combined -%>
-	  <td><%= button_url queue.to_param, combined_q_url(queue.to_param) -%></td>
-	  <td><%= favorite_queue.team ? "Team" : "Personal"%></td>
-	  <td align='right'><%= favorite_queue.hits -%></td>
-	  <% index += 1 -%>
-	  <td><%= button_url "S#{index}", favorite_queue -%></td>
-	  <td><%= button_url "E#{index}", edit_polymorphic_path(favorite_queue) -%></td>
-	  <td><%= link_to 'Destroy', favorite_queue, :confirm => 'Are you sure?', :method => :delete -%></td>
-	</tr>
-      <% end -%>
+      <%= render :partial => "fqh", :collection => @favorite_queue_hashes %>
     </tbody>
     <%= sortable_element('favorite_queues', :url => { :action => :sort }, :tag => "tr") %>
   </table>
