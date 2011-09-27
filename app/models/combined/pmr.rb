@@ -38,6 +38,7 @@ module Combined
     # country.  Returns an options has with :problem, :branch, and
     # :country as the keys.
     def self.words_to_options(words)
+      raise Combined::PmrNotFound.new("%s,%s,%s" % [ words[0], words[1], words[2] ]) unless words.length == 3
       {
         :problem => words[0],
         :branch => words[1],

@@ -190,6 +190,8 @@ module Retain
 
     def not_found_page(exception)
       set_expires_now
+      # This may be needed other places
+      request.format = :html
       @exception = exception
       render "retain/errors/not_found_page", :layout => "retain/errors", :status => 404
     end

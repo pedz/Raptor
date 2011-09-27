@@ -73,8 +73,8 @@ module Retain
     end
 
     def data_element(id, data)
-      # logger.debug("RTN: Adding data_element #{id}='#{data.retain_to_user}' " +
-      #               "for #{@request}")
+      logger.debug("RTN: Adding data_element #{id}='#{data ? data.retain_to_user : ""}' " +
+                   "for #{@request}")
       @element_count += 1
       s = 0.ushort2ret + id.ushort2ret + 0.ushort2ret + data
       s[0..1] = s.length.ushort2ret
