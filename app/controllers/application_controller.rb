@@ -73,7 +73,7 @@ class ApplicationController < ActionController::Base
   # initialized with the ldap_id field.  The user model is stored in
   # the session.
   def authenticate
-    logger.debug("APP: authorization: #{temp_debug(request)}")
+    logger.info("APP: authorization: #{temp_debug(request)}")
     set_last_uri
     return true unless application_user.nil?
     logger.info("Header NOT-SET = #{request.headers['NOT-SET'].inspect}")
