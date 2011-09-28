@@ -49,13 +49,13 @@ class ApplicationController < ActionController::Base
   # I keep user_id in the session.
   def application_user
     if @application_user.nil?
-      logger.debug("@application_user is nil")
-      logger.debug("session is #{session.inspect}")
+      # logger.debug("@application_user is nil")
+      # logger.debug("session is #{session.inspect}")
       if session.has_key?(:user_id)
-        logger.debug("session[:user_id] set to #{session[:user_id]}")
+        # logger.debug("session[:user_id] set to #{session[:user_id]}")
         tmp = User.find(:first, :conditions => { :id => session[:user_id]})
         if tmp.nil?
-          logger.debug("Did not find user id #{session[:user_id]}")
+          # logger.debug("Did not find user id #{session[:user_id]}")
           reset_session
         else
           logger.info("Request for #{tmp.ldap_id}")
@@ -73,21 +73,21 @@ class ApplicationController < ActionController::Base
   # initialized with the ldap_id field.  The user model is stored in
   # the session.
   def authenticate
-    logger.info("APP: authorization: #{temp_debug(request)}")
+    # logger.info("APP: authorization: #{temp_debug(request)}")
     set_last_uri
     return true unless application_user.nil?
-    logger.info("Header NOT-SET = #{request.headers['NOT-SET'].inspect}")
+    # logger.info("Header NOT-SET = #{request.headers['NOT-SET'].inspect}")
     if request.env.has_key? "REMOTE_USER"
-      logger.info("REMOTE_USER = #{request.env["REMOTE_USER"]}")
+      # logger.info("REMOTE_USER = #{request.env["REMOTE_USER"]}")
       apache_authenticate
     elsif request.headers.has_key?('HTTP_X_FORWARDED_USER')
-      logger.info("Header HTTP_X_FORWARDED_USER = #{request.headers['HTTP_X_FORWARDED_USER']}")
+      # logger.info("Header HTTP_X_FORWARDED_USER = #{request.headers['HTTP_X_FORWARDED_USER']}")
       proxy_apache_authenticate
     elsif Rails.env == "test"
-      logger.info("Authenticate via test")
+      # logger.info("Authenticate via test")
       testing_authenticate
     elsif NONE_AUTHENTICATE
-      logger.info("Authenticate via none")
+      # logger.info("Authenticate via none")
       none_authenticate
     else
       ldap_authenticate
