@@ -132,6 +132,11 @@ class User < ActiveRecord::Base
   # Entity entries per User
   has_many :user_entity_counts
 
+  ##
+  # :attr: owned_names
+  # A has_many association to Name of the names owned by this user.
+  has_many :owned_names, :class_name => "Name", :foreign_key => 'owner_id'
+
   # Returns the LdapUser for this user.
   def ldap_user
     LdapUser::find(:attribute => 'mail', :value => ldap_id)

@@ -113,7 +113,7 @@ module Settings
       @retuser.destroy
       
       respond_to do |format|
-        format.html { redirect_to(user_retusers_url(@user)) }
+        format.html { redirect_to(settings_user_retusers_url(@user)) }
         format.xml  { head :ok }
       end
     end

@@ -50,8 +50,9 @@ module Retain
       @sdi = sdi
       set_backtrace(backtrace)
       logger.error(msg)
-      logger.error(backtrace)
+      logger.error(backtrace.join("\n"))
       sdi.logon_debug
+      sdi.dump_debug
     end
   end
 end

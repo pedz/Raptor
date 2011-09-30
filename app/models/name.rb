@@ -102,6 +102,12 @@ class Name < ActiveRecord::Base
   # i.e. name_type.argument_type.position == 0.
   has_many :argument_defaults
 
+  ##
+  # :attr: condition
+  # A has_many association to the Condition elements associated with
+  # this name.
+  has_many :conditions
+
   validates_uniqueness_of :name
 
   # Returns the name of the item.  Any class used as an item in a
