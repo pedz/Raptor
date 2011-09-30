@@ -289,6 +289,4 @@ class ApplicationController < ActionController::Base
     set_expires_now
     raise exception
   end
-
-
 end

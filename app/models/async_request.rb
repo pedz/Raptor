@@ -61,7 +61,9 @@ class AsyncRequest
     tube = opts.fetch(:tube, (AsyncObserver::Queue.app_version or
                               AsyncObserver::Queue.default_tube))
 
-    Rails.logger.debug("Worker: Sending async request: pri=#{pri}, class=#{@obj_class}, id=#{@obj_id}}")
+    Rails.logger.debug("Worker: Sending async request: pri=#{pri}, " +
+                       "fuzz = #{fuzz}, delay = #{delay}, ttr = #{ttr}, " +
+                       "tube = #{tube}, class=#{@obj_class}, id=#{@obj_id}}")
     AsyncObserver::Queue.put!(self, pri, delay, ttr, tube)
   end
 
@@ -80,10 +82,10 @@ class AsyncRequest
       Retain::Logon.instance.set(@retain_user_connection_parameters)
       cmb = rec.to_combined
       cmb.load_if_stale
-      Rails.logger.debug "Worker: #{@obj_class} #{@obj_id} successfully fetched"
+      Rails.logger.info "Worker: #{@obj_class} #{@obj_id} successfully fetched"
 
     rescue ActiveRecord::RecordNotFound
-      Rails.logger.debug "Worker: #{@obj_class} #{@obj_id} not found in database"
+      Rails.logger.info "Worker: #{@obj_class} #{@obj_id} not found in database"
       return
 
     rescue Combined::CallNotFound, Combined::CenterNotFound,

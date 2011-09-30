@@ -100,7 +100,7 @@ end
 
 module LdapConstants
   GOOD_EMAIL          = 'pedzan@us.ibm.com'
-  GOOD_PASSWORD       = 'r0ckcafe'
+  GOOD_PASSWORD       = 'cows105c'
   GOOD_CONTRACTOR_UID = 'C-5UEV897' # Mine (Perry)
   GOOD_REGULAR_UID    = '807520897' # Tom Phillips
   GOOD_MANAGER_UID    = '617362897' # Bill Clark

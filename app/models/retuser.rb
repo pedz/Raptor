@@ -122,7 +122,7 @@ class Retuser < ActiveRecord::Base
   # :attr: registration
   # A has_one association with a Cached::Registration
   belongs_to(:registration, :class_name => 'Cached::Registration',
-             :foreign_key => :retid, :primary_key => :signon)
+             :foreign_key => 'retid', :primary_key => 'signon')
 
   # Never need to send this to the backend to fetch
   def async_priority(force = false)

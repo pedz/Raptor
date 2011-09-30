@@ -75,7 +75,9 @@ class User < ActiveRecord::Base
   # :attr: current_retain_id
   # A belongs_to association to the Retuser that the User is currently
   # using.  This is set by the User via setup pages.
-  belongs_to :current_retain_id, :class_name => "Retuser", :foreign_key => "current_retuser_id"
+  belongs_to(:current_retain_id,
+             :class_name => "Retuser",
+             :foreign_key => "current_retuser_id")
 
   ##
   # :attr: favorite_queues
