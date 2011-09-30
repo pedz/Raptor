@@ -10,20 +10,20 @@ Bill - Dept
       PTCPK - Team - contains
         ssrikant@us.ibm.com - User - team lead
         PATM,S,165 - Cached::Queue - team queue
-        PTCPK,S,165 - Cached::Queue - team queue
         PCDD,S,165 - Cached::Queue - team queue
         PCRYPT,S,165 - Cached::Queue - team queue
+        PTCPK,S,165 - Cached::Queue - team queue
         PTTY,S,165 - Cached::Queue - team queue
         PX25,S,165 - Cached::Queue - team queue
         WWNETK,S,165 - Cached::Queue - team queue
         jgaudin@us.ibm.com - User - team member
-        kbaratak@us.ibm.com - User - team member
         ltp@us.ibm.com - User - team member
         minkim@us.ibm.com - User - team member
         pedzan@us.ibm.com - User - team member
         phh@us.ibm.com - User - team member
         pizana@us.ibm.com - User - team member
         ramkumar@us.ibm.com - User - team member
+        vjlayton@us.ibm.com - User - team member
 
       PTCPA - Team - contains
         suzanshi@us.ibm.com - User - team lead
@@ -43,16 +43,16 @@ Bill - Dept
 
     APNET - Team - contains
       APNET,S,95A - Cached::Queue - team queue
-      kwk@kr.ibm.com - User - team member
       kkaji@jp.ibm.com - User - team member
+      kwk@kr.ibm.com - User - team member
 
   Java - Team - contains
     JAVAIX,S,165 - Cached::Queue - team queue
     AMAPP,S,165 - Cached::Queue - team queue
     anandd@us.ibm.com - User - team lead
     charleen@us.ibm.com - User - team member
-    rbutte@us.ibm.com - User - team member
     juanz@us.ibm.com - User - team member
+    rbutte@us.ibm.com - User - team member
     rtenjarl@us.ibm.com - User - team member
     weiluo@us.ibm.com - User - team member
 
@@ -63,7 +63,7 @@ Bill - Dept
   ISV - Team - contains
     SDAIX,S,165 - Cached::Queue - team queue
     pmahajan@us.ibm.com - User - team lead
-    mgakmal@us.ibm.com - User - team member
     amyr@us.ibm.com - User - team member
-    griff@us.ibm.com - User - team member
     garcia1@us.ibm.com - User - team member
+    griff@us.ibm.com - User - team member
+    mgakmal@us.ibm.com - User - team member
