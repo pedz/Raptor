@@ -56,7 +56,7 @@ function start_workers
 	    vendor/plugins/async_observer/bin/worker \
 	    -d \
 	    --pid tmp/pids/worker.${worker}.pid \
-	    -e production
+	    -e production >> log/worker.${worker}.out 2>&1
 	let worker=worker+1
     done
 }
