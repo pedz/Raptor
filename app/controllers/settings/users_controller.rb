@@ -69,7 +69,7 @@ module Settings
       respond_to do |format|
         if @user.save
           flash[:notice] = 'User was successfully created.'
-          format.html { redirect_to(@user) }
+          format.html { redirect_to([:settings, @user]) }
           format.xml  { render :xml => @user, :status => :created, :location => @user }
         else
           format.html { render :action => "new" }
@@ -97,7 +97,7 @@ module Settings
       respond_to do |format|
         if @user.save
           flash[:notice] = 'User was successfully updated.'
-          format.html { redirect_to(@user) }
+          format.html { redirect_to([:settings, @user]) }
           format.xml  { head :ok }
         else
           format.html { render :action => "edit" }
@@ -114,7 +114,7 @@ module Settings
       @user.destroy
       
       respond_to do |format|
-        format.html { redirect_to(settings_users_url) }
+        format.html { redirect_to([:settings, @user]) }
         format.xml  { head :ok }
       end
     end
@@ -128,7 +128,7 @@ module Settings
       # return false if ????
       respond_to do |format|
         flash[:error] = "User already has a user record."
-        format.html { redirect_to(settings_users_url) }
+        format.html { redirect_to([:settings, @user]) }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end
       return true

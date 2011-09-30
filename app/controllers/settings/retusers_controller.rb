@@ -96,7 +96,7 @@ module Settings
           format.html {
             uri = session[:original_uri]
             session[:original_uri] = nil
-            redirect_to(uri || settings_user_retuser_url(@user))
+            redirect_to(uri || settings_user_retuser_url(@user, @retuser))
           }
           format.xml  { head :ok }
         else

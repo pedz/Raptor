@@ -238,9 +238,9 @@ module Retain
 
     def dump_debug
       logger.error @connection.debug
-      logger.error("RTN: request fields:\n#{@snd_fields.to_debug}")
+      logger.error("RTN: request fields:\n#{@snd_fields.to_debug}") unless @snd_fields.nil?
       hex_dump("#{@request_type} request", @snd)
-      logger.error("RTN: return fields:\n#{@rcv_fields.to_debug}")
+      logger.error("RTN: return fields:\n#{@rcv_fields.to_debug}") unless @rcv_fields.nil?
       hex_dump("#{@request_type} reply", @reply)
     end
 
