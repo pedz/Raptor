@@ -137,6 +137,8 @@ class User < ActiveRecord::Base
   # A has_many association to Name of the names owned by this user.
   has_many :owned_names, :class_name => "Name", :foreign_key => 'owner_id'
 
+  before_validation :ldap_id_to_lowercase
+
   # Returns the LdapUser for this user.
   def ldap_user
     LdapUser::find(:attribute => 'mail', :value => ldap_id)
@@ -168,5 +170,13 @@ class User < ActiveRecord::Base
 
   def last_fetched
     updated_at
+  end
+
+  private
+
+  # Force the ldap_id to all lowercase
+  def ldap_id_to_lowercase
+    ldap_id.downcase!
+    true
   end
 end

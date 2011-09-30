@@ -114,7 +114,7 @@ module Settings
       @user.destroy
       
       respond_to do |format|
-        format.html { redirect_to(users_url) }
+        format.html { redirect_to(settings_users_url) }
         format.xml  { head :ok }
       end
     end
@@ -128,7 +128,7 @@ module Settings
       # return false if ????
       respond_to do |format|
         flash[:error] = "User already has a user record."
-        format.html { redirect_to(users_url) }
+        format.html { redirect_to(settings_users_url) }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end
       return true

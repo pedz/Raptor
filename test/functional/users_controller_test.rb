@@ -35,7 +35,7 @@ class UsersControllerTest < Test::Unit::TestCase
       post :create, :user => { }
     end
 
-    assert_redirected_to user_path(assigns(:user))
+    assert_redirected_to settings_user_path(assigns(:user))
   end
 
   def test_should_show_user
@@ -50,7 +50,7 @@ class UsersControllerTest < Test::Unit::TestCase
 
   def test_should_update_user
     put :update, :id => 1, :user => { }
-    assert_redirected_to user_path(assigns(:user))
+    assert_redirected_to settings_user_path(assigns(:user))
   end
 
   def test_should_destroy_user
@@ -58,6 +58,6 @@ class UsersControllerTest < Test::Unit::TestCase
       delete :destroy, :id => 1
     end
 
-    assert_redirected_to users_path
+    assert_redirected_to settings_users_path
   end
 end
