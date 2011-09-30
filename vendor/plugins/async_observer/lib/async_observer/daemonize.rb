@@ -22,7 +22,11 @@ module AsyncObserver; end
 
 class AsyncObserver::Daemonize
   def self.detach(pidfile='log/worker.pid',&block)
-    # daemonize, create a pipe to send status to the parent process, after the child has successfully started or failed
+    # daemonize, create a pipe to send status to the parent process,
+    # after the child has successfully started or failed
+    #
+    # Note that at this point, we have not loaded the Rails
+    # environment yet.
     fork do
       Process.setsid
       fork do
@@ -31,8 +35,12 @@ class AsyncObserver::Daemonize
         at_exit { File.unlink(pidfile) }
         File.umask 0000
         STDIN.reopen "/dev/null"
-        STDOUT.reopen "/dev/null", "a"
-        STDERR.reopen STDOUT
+        # Close stdout and stderr if it is a tty.  If it is not, then
+        # it should be hooked up to a file that God has set up for us.
+        if STDOUT.tty?
+          STDOUT.reopen "/dev/null", "a"
+          STDERR.reopen STDOUT
+        end
         block.call
       end
     end

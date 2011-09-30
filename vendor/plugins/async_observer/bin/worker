@@ -31,6 +31,7 @@ def load_rails_and_run
     puts "#!load-rails!begin!#{Time.now.utc.xmlschema(6)}"
     require File.expand_path(File.dirname(__FILE__) + '/../../../../config/boot')
     puts "RAILS_ROOT=#{RAILS_ROOT.inspect}"
+    STDOUT.flush
     require RAILS_ROOT + '/config/environment'
   ensure
     puts "#!load-rails!end!#{Time.now.utc.xmlschema(6)}"
