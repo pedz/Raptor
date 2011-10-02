@@ -2,8 +2,9 @@
 <%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
     All Rights Reserved -%>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<%- @title = "Editing Retain User" -%>
 <%- content_for(:center) do -%>
-  <h1>Editing Retain User</h1>
+  <h1><%= @title %></h1>
   <%- if flash.has_key?(:error) -%>
     <p style='width: 40em;'>
       A logon attempt failed and you were redirected to this screen.  The

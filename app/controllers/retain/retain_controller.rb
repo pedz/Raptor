@@ -85,12 +85,14 @@ module Retain
       # If no retusers defined for this user, then redirect and
       # set up a retain user.
       if (retuser = retain_user).nil?
+        logger.debug("RTN: no retain_user")
         session[:original_uri] = request.request_uri
         redirect_to new_settings_user_retuser_url(application_user)
         return false
       end
 
       if retuser.failed
+        logger.debug("RTN: retuser has failed marked")
         flash[:warning] = find_logon_error(retuser.logon_return, retuser.logon_reason)
         common_failed_logon(retuser)
         return false
@@ -116,7 +118,9 @@ module Retain
       # pass it explicitly to any Retain models that they need.
       # logger.debug("Logon set")
       Logon.instance.set(@retain_user_connection_parameters)
-      @user_registration = retain_user.registration.to_combined
+
+      # Clearly this needs to be cleaned up.
+      @user_registration = signon_user
     end
     
     def logon_failed(exception)
