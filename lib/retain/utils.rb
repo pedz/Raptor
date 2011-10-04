@@ -86,7 +86,7 @@ class String
   # Makes string len length, truncating it if necessary, padding it
   # with padstr otherwise.
   def trim(len, padstr=" ")
-    self.ljust(len, padstr)[0..len]
+    self.ljust(len, padstr)[0...len]
   end
 
   # There is no unpack for signed that is network order.  The only
