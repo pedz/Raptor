@@ -2,11 +2,11 @@
 <%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
 All Rights Reserved -%>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<%= @favorite_queue_hashes.map do |favorite_queue_hash|
+<%= @favorite_queue_hashes.map do |fqh|
   {
     :combined_q_url => combined_q_path(fqh[:queue].to_param),
     :queue => fqh[:queue].to_param,
-    :team => fqh[:team]
+    :team => fqh[:team],
     :hits => fqh[:hits]
   }
 end.to_json
