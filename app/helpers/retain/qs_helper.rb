@@ -86,7 +86,6 @@ module Retain
     end
 
     def render_row(binding, call)
-      hit_cache = true
       # Change: I've decided to make the qs view user specific.  In
       # particular the 'updated' class I want to be for a particular
       # user so that they can look at a glance if the PMR has been
@@ -109,9 +108,8 @@ module Retain
         suffix = application_user.ldap_id
       end
       tag = call.cache_tag("qs") + suffix
-      cache(tag) do
+      value = cache(tag) do
         logger.debug("building fragment for #{tag}")
-        hit_cache = false
         row_class = call_class(call)
         row_title = call_title(row_class)
         tr(binding,
@@ -121,7 +119,11 @@ module Retain
           DISP_LIST.map { |sym| self.send sym, binding, false, call }.join("\n")
         end
       end
-      # logger.debug("reused fragment for #{tag}") if hit_cache
+      if value.encoding != 'utf-8'
+        value = value.dup if value.frozen?
+        value.force_encoding('utf-8')
+      end
+      value
     end
 
     private

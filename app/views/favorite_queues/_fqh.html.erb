@@ -1,6 +1,6 @@
 <%# -*- coding: utf-8 -*- -%>
-<%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
-All Rights Reserved -%>
+<%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith -%>
+<%# Rights Reserved -%>
 <tr class='<%= fqh[:q_class] -%>' id='<%= "favorites_#{fqh[:id]}" %>'>
   <td><%= button_url fqh[:queue].to_param, combined_q_url(fqh[:queue].to_param) -%></td>
   <td><%= fqh[:team] ? "Team" : "Personal"%></td>
