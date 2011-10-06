@@ -29,7 +29,8 @@ my_2nd_line.manages.each do |m|
   end
 end
 
-god_retuser = Retuser.find_by_retid('073110')
+# god_retuser = Retuser.find_by_retid('073110')
+god_retuser = Retuser.find_by_retid('305356')
 retain_user_connection_parameters = Retain::ConnectionParameters.new(god_retuser)
 Retain::Logon.instance.set(retain_user_connection_parameters)
 
@@ -39,6 +40,6 @@ all_ids.each do |ldap_id|
   next if user.nil?
   retuser = user.retusers.find(:first, :conditions => { :apptest => false })
   next if retuser.nil?
-  dr = Combined::Registration.find_by_signon(retuser.retid)
+  dr = Combined::Registration.find_or_create_by_signon(retuser.retid)
   dr.psars
 end
