@@ -108,7 +108,7 @@ module Retain
         suffix = application_user.ldap_id
       end
       tag = call.cache_tag("qs") + suffix
-      value = cache(tag) do
+      cache(tag) do
         logger.debug("building fragment for #{tag}")
         row_class = call_class(call)
         row_title = call_title(row_class)
@@ -116,14 +116,9 @@ module Retain
            :id => "tr-#{call.to_param.gsub(",", "-")}",
            :class => row_class + " pmr-row",
            :title => row_title) do |binding|
-          DISP_LIST.map { |sym| self.send sym, binding, false, call }.join("\n")
+          DISP_LIST.map { |sym| self.send sym, binding, false, call }
         end
       end
-      if value.encoding != 'utf-8'
-        value = value.dup if value.frozen?
-        value.force_encoding('utf-8')
-      end
-      value
     end
 
     private
@@ -1068,5 +1063,14 @@ module Retain
             end", nil, __FILE__, __LINE__ - 8)
     end
 
+  end
+end
+
+class String
+  def safe_concat(s)
+    if self.encoding != s.encoding
+      Rails.logger.error("About to blow up\n #{caller.join("\n")}")
+    end
+    self.concat(s)
   end
 end
