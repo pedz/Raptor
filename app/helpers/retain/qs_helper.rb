@@ -1068,8 +1068,8 @@ end
 
 class String
   def safe_concat(s)
-    if self.encoding != s.encoding
-      Rails.logger.error("About to blow up\n #{caller.join("\n")}")
+    unless Encoding.compatible?(self, s)
+      Rails.logger.error("About to blow up #{self}(#{self.encoding}) #{s}(#{s.encoding})\n#{caller.join("\n")}")
     end
     self.concat(s)
   end
