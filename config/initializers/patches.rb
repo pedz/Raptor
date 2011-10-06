@@ -8,27 +8,27 @@ require 'active_support/rescuable'
 
 module ActiveSupport
   module Rescuable
-      def rescue_with_handler(exception)
-        logger.error("rescue_with_handler class='#{exception.class}' exception='#{exception.inspect}'")
-        # Special case ActionView::TemplateError exception.  Look at
-        # original exception as well
-        if ((handler = handler_for_rescue(exception)).nil? &&
-            exception.class == ActionView::TemplateError &&
-            (temp_exception = exception.original_exception) &&
-            (temp_handler = handler_for_rescue(temp_exception)))
-          handler = temp_handler
-          exception = temp_exception
-        end
+      # def rescue_with_handler(exception)
+      #   logger.error("rescue_with_handler class='#{exception.class}' exception='#{exception.inspect}'")
+      #   # Special case ActionView::TemplateError exception.  Look at
+      #   # original exception as well
+      #   if ((handler = handler_for_rescue(exception)).nil? &&
+      #       exception.class == ActionView::TemplateError &&
+      #       (temp_exception = exception.original_exception) &&
+      #       (temp_handler = handler_for_rescue(temp_exception)))
+      #     handler = temp_handler
+      #     exception = temp_exception
+      #   end
 
-        if handler
-          if handler.arity != 0
-            handler.call(exception)
-          else
-            handler.call
-          end
-          true # don't rely on the return value of the handler
-        end
-      end
+      #   if handler
+      #     if handler.arity != 0
+      #       handler.call(exception)
+      #     else
+      #       handler.call
+      #     end
+      #     true # don't rely on the return value of the handler
+      #   end
+      # end
   end
 end
 

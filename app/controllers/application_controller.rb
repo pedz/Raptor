@@ -31,9 +31,9 @@ class ApplicationController < ActionController::Base
 
   # I don't want this for development because it causes footnotes to
   # be disabled.
-  if Rails.env != "development"
-    rescue_from Exception, :with => :uncaught_exception
-  end
+  # if Rails.env != "development"
+  #   rescue_from Exception, :with => :uncaught_exception
+  # end
   rescue_from ActiveRecord::StatementInvalid, :with => :pgerror_handler
   rescue_from 'ActiveLdap::LdapError' do |exception|
     render :text => "<h2 style='text-align: center; color: red;'>LDAP Error: #{exception.message}</h2>"
