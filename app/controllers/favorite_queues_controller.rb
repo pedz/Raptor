@@ -12,7 +12,12 @@ class FavoriteQueuesController < Retain::RetainController
     @favorite_queue_hashes = application_user.favorite_queues.map do |favorite_queue|
       queue = favorite_queue.queue.wrap_with_combined
       hits = queue.hits(:html)
-      team = (hits >= 0) && queue.owners.empty?
+      # Note: we use favorite_queue below (the Cached::Queue) instead
+      # of queue.  If we use queue, then we end fetching the queue if
+      # it is not up to date which ends up fetching all the calls.  I
+      # don't want to do all that work for this call.  This call needs
+      # to be quicker.
+      team = (hits >= 0) && favorite_queue.queue.owners.empty?
       q_class = ((team ? "team" : "personal") +
                                 ((hits == 0) ? "-empty" : "-nonempty"))
       {
