@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-#
-# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
-# All Rights Reserved
-#
 # Don't change this file!
 # Configure your app in config/environment.rb and config/environments/*.rb
 
