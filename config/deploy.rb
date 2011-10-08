@@ -25,11 +25,14 @@ require "rvm/capistrano"
 # set environment
 set :rvm_ruby_string, 'ruby-1.9.2-p290@raptor'
 
-set :application,     "raptor"
-set :repository,      "#{domain}:repositories/raptor.git"
-set :scm,             :git
-# set :deploy_via,      :copy
+set :application,      "raptor"
+set :repository,       "#{domain}:repositories/raptor.git"
+set :scm,              :git
+set :repository_cache, "repositories/raptor.git"
+set :deploy_via,       :remote_cache
 set :branch,          "master"
+
+# set :deploy_via,      :copy
 # set :copy_remote_tar, "/usr/local/bin/tar"
 
 # deploy_base is my own variable that is the base of where all the
