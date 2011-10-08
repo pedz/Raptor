@@ -324,6 +324,12 @@ module Combined
     ##
     # Returns true if the cache is considered valid.
     #
+    # 1. If expire_time is a symbol and the record responds to that
+    #    symbol, then we call it and return the value that it
+    #    returns. This is used for queue_infos which should not be
+    #    "cached" at all and text_lines which are fully initialized
+    #    when they are created.
+    #
     # 1. If the dirty bit is set, return false.  This happens when an
     #    update occurs through Raptor because we know that Retain has
     #    been changed.
@@ -336,9 +342,6 @@ module Combined
     # 1. If updated_at is equal to created_at then that implies that
     #    we might not have ever fetched the whole record so return
     #    false.
-    #
-    # 1. If expire_time is a symbol and the record responds to that
-    #    symbol, then we call it and return the value that it returns.
     #
     # 1. If @invalid_cache is true, return false.  I believe this is
     #    no longer used.  The @invalid_cache attribute was only held
@@ -355,6 +358,12 @@ module Combined
     #    expire_time is 5.days then return true if updated_at is more
     #    recent (greater than) 5.days.ago
     def cache_valid?
+      # If data type says cache never expires then we are good to go
+      if (expire = expire_time) == :never
+        # logger.debug("CMB: #{self.to_s} cache_valid?: return true: expire set to :never")
+        return true
+      end
+      
       if @cached.respond_to?("dirty") && @cached.dirty
         # logger.debug("CMB: #{self.to_s} cache_valid?: return false: @cached.dirty is true")
         return false
@@ -366,12 +375,6 @@ module Combined
         return false
       end
 
-      # If data type says cache never expires then we are good to go
-      if (expire = expire_time) == :never
-        # logger.debug("CMB: #{self.to_s} cache_valid?: return true: expire set to :never")
-        return true
-      end
-      
       # If the udpated at is equal to the creted at, that might mean
       # that we have never really fetched the whole object.
       if updated_at == created_at

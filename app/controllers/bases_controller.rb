@@ -4,6 +4,16 @@
 # All Rights Reserved
 #
 
+# The universal controller for the "Raptor 2" methodology.  The
+# general url is :subject/:group/:levels/:filter.  This controller is
+# designed so that even that can be easily changed.
+#
+# It is a subclass of Retain::RetaionController in order to validate
+# that the user has a valid Retain id and password and the failed flag
+# is not turned on.  If it is, the user get redirected to fix that
+# before continuing.  All retain accesses are done by the backend
+# worker but we want to make sure that the user can access the data he
+# is going to be looking at.
 class BasesController < Retain::RetainController
   def index
     @redirect = false
