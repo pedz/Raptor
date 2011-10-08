@@ -20,19 +20,17 @@ end
 
 # Added for RVM
 $:.unshift(File.expand_path('./lib', ENV['rvm_path'])) # Add RVM's lib directory to the load path.
-require "rvm/capistrano"                  # Load RVM's capistrano plugin.
-set :rvm_ruby_string, '1.9.1-p378@raptor'      # set environment
+# Load RVM's capistrano plugin.
+require "rvm/capistrano"
+# set environment
+set :rvm_ruby_string, 'ruby-1.9.2-p290@raptor'
 
 set :application,     "raptor"
 set :repository,      "#{domain}:repositories/raptor.git"
 set :scm,             :git
-set :deploy_via,      :copy
+# set :deploy_via,      :copy
 set :branch,          "master"
-set :copy_remote_tar, "/usr/local/bin/tar"
-
-# If you aren't deploying to /u/apps/#{application} on the target
-# servers (which is the default), you can specify the actual location
-# via the :deploy_to variable:
+# set :copy_remote_tar, "/usr/local/bin/tar"
 
 # deploy_base is my own variable that is the base of where all the
 # rails applications live.
