@@ -46,13 +46,11 @@ module Combined
       case words.length
         # default to user's personal queue
       when 0
-        logger.info("when 0")
         return signon_user.personal_queue
         
         # assume the single word is the queue
         # name and get the center and h_or_s from the registration
       when 1
-        logger.info("when 1")
         options = {
           :queue_name => words[0],
           :h_or_s => signon_user.default_h_or_s,
@@ -62,7 +60,6 @@ module Combined
         # assume queue_name and center (since few people know / care
         # about h_or_s.  So, get h_or_s from registration
       when 2
-        logger.info("when 2")
         options = {
           :queue_name => words[0],
           :h_or_s => signon_user.default_h_or_s,
@@ -70,13 +67,11 @@ module Combined
         center = Combined::Center.from_param(words[1], signon_user)
         
       else
-        logger.info("when 3: #{words[2]}")
         options = {
           :queue_name => words[0],
           :h_or_s => words[1],
         }
         center = Combined::Center.from_param(words[2], signon_user)
-        logger.info("center is #{center.center}")
       end
       return nil if center.nil?
 
