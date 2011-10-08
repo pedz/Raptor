@@ -35,11 +35,23 @@ retain_user_connection_parameters = Retain::ConnectionParameters.new(god_retuser
 Retain::Logon.instance.set(retain_user_connection_parameters)
 
 all_ids.each do |ldap_id|
-  puts "Processing #{ldap_id}"
-  user = User.find_by_ldap_id(ldap_id)
-  next if user.nil?
-  retuser = user.retusers.find(:first, :conditions => { :apptest => false })
-  next if retuser.nil?
-  dr = Combined::Registration.find_or_create_by_signon(retuser.retid)
-  dr.psars
+  num = 0
+  begin
+    user = User.find_by_ldap_id(ldap_id)
+    num = -1
+    next if user.nil?
+    retuser = user.retusers.find(:first, :conditions => { :apptest => false })
+    num = -2
+    next if retuser.nil?
+    dr = Combined::Registration.find_or_create_by_signon(retuser.retid)
+    # I keep waffling on this.  Adding this will force us to get all
+    # the PSARs but we shouldn't need to.  The flip side is, it really
+    # doesn't cost that much.
+    dr.refresh
+    num = dr.psars.length
+  rescue Exception => e
+    num = -3
+  ensure
+    puts "#{ldap_id} has #{num} PSARS"
+  end
 end

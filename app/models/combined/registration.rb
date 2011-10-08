@@ -46,7 +46,8 @@ module Combined
           # logger.debug("Fetching all PSAR")
           search_hash = {
             :psar_number => psar_number, # fetch it if we need to
-            :psar_start_date => 14.days.ago.strftime("%Y%m%d"),
+            # We can only fetch the past 14 days I think but lets try for 21 anyway.
+            :psar_start_date => 21.days.ago.strftime("%Y%m%d"),
             :psar_end_date => Time.now.strftime("%Y%m%d")
           }
           Combined::Psar.fetch(retain_user_connection_parameters, search_hash)
