@@ -25,19 +25,14 @@ require "rvm/capistrano"
 # set environment
 set :rvm_ruby_string, 'ruby-1.9.2-p290@raptor'
 
-set :application,      "raptor"
-set :repository,       "#{domain}:repositories/raptor.git"
-set :scm,              :git
-set :repository_cache, "repositories/raptor.git"
-set :deploy_via,       :remote_cache
-set :branch,          "master"
-
-# set :deploy_via,      :copy
-# set :copy_remote_tar, "/usr/local/bin/tar"
+set :application,  "raptor"
+set :repository,   "#{domain}:repositories/raptor.git"
+set :scm,          :git
+set :branch,       "master"
 
 # deploy_base is my own variable that is the base of where all the
 # rails applications live.
-set :deploy_base, "/usr/local/www"
+set :deploy_base,  "/usr/local/www"
 
 # The real database.yml is kept out of the tree in this path
 set :db_path,     "#{deploy_base}/database-files/#{application}-database.yml"

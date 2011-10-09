@@ -13,7 +13,7 @@ namespace :deploy do
   
   desc "Clear the production log via rake"
   task :log_clear, :roles => :app do
-    run "cd #{current_path}/ && rake log:clear"
+    run "cd #{current_path}/ && log/.old/save-log"
   end
 
   desc "The start task is used by :cold_deploy to start the application up"
