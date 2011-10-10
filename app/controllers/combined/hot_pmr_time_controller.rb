@@ -5,7 +5,7 @@
 #
 
 module Combined
-  class HotPmrTimeController < Retain::RetainController
+  class HotPmrTimeController < CombinedController
     def index
       # BARF!!! cut and paste code from psars_controller (for now)
       local_params = params.symbolize_keys

@@ -319,12 +319,19 @@ describe('AR', function() {
 
 	    getTransportSpy = Ajax.getTransport;
 
-	    saved_rec = new SpecBelongsToCachedCallWithElement();
 	    q = {
 		id: Math.floor(Math.random() * 10000),
+		rec : {
+		    id: 65,
+		    banana: "good"
+		},
 		ar_objects: {
-		    rec: saved_rec
-		}
+		    rec: {
+			"class_name":"Cached::Queue",
+			"association_type":"belongs_to",
+			"id":65,
+			"url":"/raptor/json/cached/queues/65"},
+		    }
 	    };
 
 	    new_q = Ar.register('blah', q);
@@ -332,7 +339,9 @@ describe('AR', function() {
 	});
 
 	it("should return rec already", function() {
-	    expect(new_q.value.rec.id).toEqual(176);
+	    /* In case you don't believe this is working... uncomment this */
+	    /* console.log(new_q.value.rec); */
+	    expect(new_q.value.rec.id).toEqual(65);
 	});
 
 	it("should not have called AJAX", function() {

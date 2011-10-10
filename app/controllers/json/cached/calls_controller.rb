@@ -17,7 +17,7 @@ module Json
       end
 
       def show
-        json_send(::Cached::Call.find(params[:id]))
+        json_send(::Cached::Call.find(params[:id]), { }, { :include => :pmr })
       end
     end
   end

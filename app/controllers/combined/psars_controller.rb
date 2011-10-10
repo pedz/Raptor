@@ -5,7 +5,7 @@
 #
 
 module Combined
-  class PsarsController < Retain::RetainController
+  class PsarsController < CombinedController
     # This is not currently used but it is the list of attributes that
     # can be searched via the retain interface.
     SEARCHABLE_FIELDS = [ :psar_number,

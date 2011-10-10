@@ -6,7 +6,7 @@
 module Json
   module Cached
     class JsonCachedController < JsonController
-      def json_send(item, cache_options = { })
+      def json_send(item, cache_options = { }, json_options = { })
         if item.is_a? Array
           item.each do |c|
             async_fetch(c)
@@ -17,7 +17,7 @@ module Json
         # Note that this controller is a subclass of JsonController.
         # JsonController has included JsonCommon so this super goes to
         # the json_send in JsonCommon
-        super(item, cache_options)
+        super(item, cache_options, json_options)
       end
     end
   end

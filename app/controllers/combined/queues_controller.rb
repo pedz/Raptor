@@ -5,7 +5,7 @@
 #
 
 module Combined
-  class QueuesController < Retain::RetainController
+  class QueuesController < CombinedController
     def index
       @combined_queues = Combined::Queues.find(:all)
       respond_to do |format|

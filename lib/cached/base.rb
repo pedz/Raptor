@@ -130,7 +130,7 @@ module Cached
       # If object has never fully been fetched
       return  1024 if respond_to?(:last_fetched) && last_fetched.nil?
       # if object is out of date
-      return   512 unless wrap_with_combined.cache_valid?
+      # return   512 unless wrap_with_combined.cache_valid?
       # if requestor asked for a forced refresh
       return     0 if force
       # else none of the above.

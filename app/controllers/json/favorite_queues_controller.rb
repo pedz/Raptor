@@ -5,6 +5,9 @@
 #
 
 module Json
+  # This predates the "Raptor 2" method.  It is a subclass of
+  # Retain::RetainController although I do not really know why.  I
+  # probably need to redo this at some point.
   class FavoriteQueuesController < Retain::RetainController
     def index
       favorite_queues = application_user.favorite_queues

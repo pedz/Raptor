@@ -6,7 +6,9 @@
 
 module Json
   # The first AJAX request sent back by the bases request is to this
-  # controller and its index method.
+  # controller and its index method.  Seems like this should be a
+  # subclass of Json::JsonController but its not right now.  Perhaps a
+  # TODO.
   class BasesController < ApplicationController
     # Returns the list of bases on the queues that have been specified
     # by the group, levels, and filter parameters.
@@ -17,11 +19,12 @@ module Json
       [ :subject, :group, :levels, :filter].each do |name|
         temp = Entity.find_by_name(params[name])
         if temp.nil?
-          render :json => "#{params[name]} not found", :status => 404
+          render(:json => "#{params[name]} not found", :status => 404)
           return
         end
         if temp.argument_type.name != name.to_s
-          render :json => "#{params[name]} has type #{temp.argument_type.name} instead of #{name}", :status => 500
+          render(:json => "#{params[name]} has type #{temp.argument_type.name} instead of #{name}",
+                 :status => 500)
           return
         end
         entities[name] = temp
@@ -37,7 +40,8 @@ module Json
         first_item_type_class = ::User
         
       else
-        render :json => "base controller doesn't understand subject of #{params[:subject]}", :status => 500
+        render(:json => "base controller doesn't understand subject of #{params[:subject]}",
+               :status => 500)
         return
       end
 

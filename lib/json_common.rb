@@ -2,7 +2,7 @@ module JsonCommon
   # Sends the item, which may be an array, as json but also calls
   # async_fetch on either the item or (in the case item is an
   # array) each element of item.
-  def json_send(item, cache_options = { })
+  def json_send(item, cache_options = { }, json_options)
     if item.is_a?(Array) || item.is_a?(Combined::AssociationProxy)
       time_stamp = item.map do |c|
         get_time_stamp(c)
@@ -16,12 +16,13 @@ module JsonCommon
       if cache_options.has_key?(:expires_in)
         expires_in(cache_options[:expires_in])
       end
-      render :json => item
+      render :json => item.as_json(json_options)
     end
   end
   
   protected
 
+  # Walks down a general URL and interprets what is being asked for.
   def walk_path
     next_path_element = 0
     # @path_elements = request.env["REQUEST_URI"].sub(/.*\/json\//, '').split('/')
@@ -33,12 +34,17 @@ module JsonCommon
     @action = @options.delete(:action)
     logger.debug(@options)
 
+    # The 1st time, base_class will be nil.  Other times, it may be
+    # just a module which indicates that we need to keep scanning
+    # forward.
     while @base_class.class != Class && next_path_element < @path_elements.length
       @base_class = ('::' + (@path_elements[0 .. next_path_element].join('/').camelize.singularize)).constantize
       next_path_element += 1
       # A simple /foos call to index
       logger.debug("@base_class = #{@base_class}")
     end
+    # Unless we are looking at something that parses as an id, we're
+    # done and we send the request (with options) to the base class.
     unless (@path_elements[next_path_element] && @path_elements[next_path_element].match(/^[0-9]+$/))
       if @options.keys.length > 0
         return @base_class.scoped(:conditions => @options)
@@ -47,10 +53,11 @@ module JsonCommon
       end
     end
     
-    # A simple /foos/845 call to show
+    # Otherwise, we pick up the id and find that element
     @base_element = @base_class.find(@path_elements[next_path_element])
     next_path_element += 1
     logger.debug("@base_element = #{@base_element}")
+    # Return this element unless we still have more options.
     return @base_element if @path_elements[next_path_element].nil?
     
     # A has_many under the element e.g. /foos/845/nestings
@@ -65,7 +72,10 @@ module JsonCommon
       end
     end
     
-    # A specific has_many under the elements e.g. /foos/845/nestings/84
+    # A specific has_many under the elements
+    # e.g. /foos/845/nestings/84 -- I believe this never happens.  If
+    # we are really serious about this, we should loop back around
+    # since this may be keep going.
     return @has_many.find(@path_elements[next_path_element])
   end
 
