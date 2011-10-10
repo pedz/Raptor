@@ -35,23 +35,28 @@ retain_user_connection_parameters = Retain::ConnectionParameters.new(god_retuser
 Retain::Logon.instance.set(retain_user_connection_parameters)
 
 all_ids.each do |ldap_id|
-  num = 0
+  status = "Unset"
   begin
     user = User.find_by_ldap_id(ldap_id)
-    num = -1
-    next if user.nil?
+    if user.nil?
+      status = "no User entry."
+      next
+    end
     retuser = user.retusers.find(:first, :conditions => { :apptest => false })
-    num = -2
-    next if retuser.nil?
+    if retuser.nil?
+      status = "no Retuser entry."
+      next
+    end
     dr = Combined::Registration.find_or_create_by_signon(retuser.retid)
     # I keep waffling on this.  Adding this will force us to get all
     # the PSARs but we shouldn't need to.  The flip side is, it really
     # doesn't cost that much.
     dr.refresh
-    num = dr.psars.length
+    r = ( 14.days.ago .. Time.now )
+    status = "#{dr.psars.find_all { |psar| r.cover?(psar.psar_day) }.length} PSARs for the past 14 days."
   rescue Exception => e
-    num = -3
+    status = "caused an exception."
   ensure
-    puts "#{ldap_id} has #{num} PSARS"
+    puts "#{ldap_id} has #{status} PSARS"
   end
 end
