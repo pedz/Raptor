@@ -84,6 +84,11 @@ module Cached
                                            @@text_type_ord_to_text_type.map {
                                              |e| [ e, i += 1 ]
                                            }.flatten) ]
+    ##
+    # :attr: expire_time
+    # Set to :never
+    set_expire_time :never
+
     set_table_name "cached_text_lines"
 
     ##

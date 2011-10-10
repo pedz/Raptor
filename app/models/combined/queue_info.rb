@@ -11,11 +11,6 @@ module Combined
   # Combined::Queue to a Combined::Registration or vice versa.
   class QueueInfo < Combined::Base
     ##
-    # :attr: expire_time
-    # Set to :never
-    set_expire_time :never
-
-    ##
     # Returns the database id as a string.
     def to_param
       @cached.id.to_s

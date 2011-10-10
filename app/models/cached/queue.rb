@@ -56,6 +56,11 @@ module Cached
       end
     end
 
+    ##
+    # :attr: expire_time
+    # Set to 5.minutes
+    set_expire_time 5.minutes
+
     set_table_name "cached_queues"
 
     ##

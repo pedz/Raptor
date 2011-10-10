@@ -198,6 +198,11 @@ module Cached
     # :attr: next_queue_editable
     # The editable flag for the next queue button.
 
+    ##
+    # :attr: expire_time
+    # set to 30 minutes
+    set_expire_time 30.minutes
+
     set_table_name "cached_calls"
 
     ##

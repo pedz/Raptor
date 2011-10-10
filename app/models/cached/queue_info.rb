@@ -36,6 +36,11 @@ module Cached
     # Rails normal updated_at timestamp.  Each time the db record is
     # saved, this gets updated.
 
+    ##
+    # :attr: expire_time
+    # Set to :never
+    set_expire_time :never
+
     set_table_name "cached_queue_infos"
 
     ##

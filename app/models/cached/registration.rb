@@ -81,6 +81,11 @@ module Cached
     # real Retain or the APPTEST retain.  To make things consistent,
     # that flag is also propagated into these records.
 
+    ##
+    # :attr: expire_time
+    # Set to 3.days.
+    set_expire_time 3.days
+
     set_table_name "cached_registrations"
 
     ##

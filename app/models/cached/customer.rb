@@ -59,6 +59,11 @@ module Cached
     # A boolean that is set to true if the customer is a premium
     # support customer.
 
+    ##
+    # :attr: expire_time
+    # set to 3.days
+    set_expire_time 3.days
+
     set_table_name "cached_customers"
 
     ##

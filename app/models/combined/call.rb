@@ -35,11 +35,6 @@
 module Combined
   # === Combined Call model
   class Call < Combined::Base
-    ##
-    # :attr: expire_time
-    # set to 30 minutes
-    set_expire_time 30.minutes
-
     set_db_keys :ppg
     add_skipped_fields :slot    # pure db field
 

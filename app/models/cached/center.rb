@@ -52,6 +52,11 @@ module Cached
     # The absorbed queue list for this center... like I know what that
     # is or something.
 
+    ##
+    # :attr: expire_time
+    # set to 1.week
+    set_expire_time 1.week
+
     set_table_name "cached_centers"
 
     ##

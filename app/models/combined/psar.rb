@@ -7,11 +7,6 @@
 module Combined
   # === Combined PSAR model
   class Psar < Combined::Base
-    ##
-    # :attr: expire_time
-    # Set to check_mail_flag
-    set_expire_time :check_mail_flag
-
     set_db_keys :psar_file_and_symbol
 
     add_skipped_fields :pmr_id
@@ -32,16 +27,6 @@ module Combined
       psar_file_and_symbol
     end
     
-    ##
-    # Used to determine if the PSAR needs to be fetched again.  If the
-    # psar_mail_flag is set to 'M' then there is no point to fetch it.
-    # Otherwise, we fetch it if it is more than twelve hours old.
-    def check_mail_flag
-      ret = (@cached && (@cached.psar_mailed_flag == "M") || @cached.updated_at > 12.hours.ago)
-      # logger.debug("check_mail_flag for #{@cached.psar_file_and_symbol} is #{ret}")
-      return ret
-    end
-
     ##
     # A convenience method for fetching PSARs given a search hash.
     def self.fetch(retain_user_connection_parameters, search_hash)

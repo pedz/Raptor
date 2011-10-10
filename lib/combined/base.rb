@@ -203,25 +203,6 @@ module Combined
         @retain_fields += [ *args ]
       end
 
-      ##
-      # Set in each of the subclasses to a value.  Legal values are:
-      #
-      # 1. :never which means that the cached value never expires.
-      #
-      # 1. A time period such as 30.minutes which means that the
-      #    cached value expires in thirty minutes.
-      #
-      # 1. A symbol for a method that returns if the cache is valid or
-      #    not.
-      #
-      attr_reader :expire_time
-
-      # Called when a subclass is defined to set the expire_time for
-      # that model.
-      def set_expire_time(duration)
-        @expire_time = duration
-      end
-
       # Takes param and split it at commas into a list of words.
       def param_to_options(param)
         words_to_options(param.split(/,/))
@@ -275,6 +256,8 @@ module Combined
       else
         @cached = arg
       end
+      @invalid_cache = false
+      @loaded = false
     end
       
     # Returns the retain connection paramters active when the model
@@ -301,11 +284,6 @@ module Combined
       @cached
     end
 
-    # Returns the expire_time for the class.
-    def expire_time
-      self.class.expire_time
-    end
-
     # Returns the xml for the combined model.  Its curious that it
     # does not make sure that the cache is up to date (bug?).  root is
     # set to the class name.
@@ -321,92 +299,14 @@ module Combined
       call_load unless cache_valid?
     end
 
-    ##
-    # Returns true if the cache is considered valid.
-    #
-    # 1. If expire_time is a symbol and the record responds to that
-    #    symbol, then we call it and return the value that it
-    #    returns. This is used for queue_infos which should not be
-    #    "cached" at all and text_lines which are fully initialized
-    #    when they are created.
-    #
-    # 1. If the dirty bit is set, return false.  This happens when an
-    #    update occurs through Raptor because we know that Retain has
-    #    been changed.
-    #
-    # 1. If updated_at is nil then we have never fetched the record so
-    #    return false.
-    #
-    # 1. If the expire_time is set to :never, return true.
-    #
-    # 1. If updated_at is equal to created_at then that implies that
-    #    we might not have ever fetched the whole record so return
-    #    false.
-    #
-    # 1. If @invalid_cache is true, return false.  I believe this is
-    #    no longer used.  The @invalid_cache attribute was only held
-    #    in the instance and not pushed to the database like the dirty
-    #    flag is.
-    #
-    # 1. If @loaded is true, then return true.  @loaded is set to true
-    #    in the load path.  There are times when fetching the record
-    #    from Retain results in a record that still looks out of date.
-    #    For example, we can not always fetch a DR.  It is pointless
-    #    to keep asking Retain for it when the request isn't helping.
-    #
-    # 1. Finally... we return updated_at > exire_time.ago (e.g. if
-    #    expire_time is 5.days then return true if updated_at is more
-    #    recent (greater than) 5.days.ago
-    def cache_valid?
-      # If data type says cache never expires then we are good to go
-      if (expire = expire_time) == :never
-        # logger.debug("CMB: #{self.to_s} cache_valid?: return true: expire set to :never")
-        return true
-      end
-      
-      if @cached.respond_to?("dirty") && @cached.dirty
-        # logger.debug("CMB: #{self.to_s} cache_valid?: return false: @cached.dirty is true")
-        return false
-      end
-      
-      # If we are not cached at all, then cache is invalid
-      if (updated_at = @cached.updated_at).nil?
-        # logger.debug("CMB: #{self.to_s} cache_valid?: return false: updated_at is nil")
-        return false
-      end
-
-      # If the udpated at is equal to the creted at, that might mean
-      # that we have never really fetched the whole object.
-      if updated_at == created_at
-        # logger.debug("CMB: #{self.to_s} cache_valid?: return false: updated_at == created_at")
-        return false
-      end
-      
-      # See if expire_time is a symbol pointing to a method
-      if expire.is_a?(Symbol) && self.respond_to?(expire)
-        value = self.send(expire)
-        # logger.debug("CMB: #{self.to_s} cache_valid? return result from #{expire} of #{value}")
-        return value
-      end
-
-      # If item has been explicitly marked to be re-fetched
-      if @invalid_cache
-        # logger.debug("CMB: #{self.to_s} cache_valid?: return false: invalid_cache set")
-        return false
-      end
-      
-      # If this has already been loaded, then cache must be valid
-      if @loaded
-        # logger.debug("CMB: #{self.to_s} cache_valid?: return true: @loaded is set")
-        return true
-      end
-
-      # else, return if cache time has expired or not
-      r = updated_at > expire.ago
-      # logger.debug("CMB: #{self.to_s} cache_valid?: updated_at:#{updated_at}, " +
-      #              "expire:#{expire}, expire.ago:#{expire.ago}, " +
-      #              "now:#{Time.now}, r:#{r}")
-      r
+    def mark_as_dirty
+      # logger.debug("CMB: #{@cached} combined.mark_as_dirty")
+      # model is no longer loaded
+      @loaded = false
+      # no point of even calling @cached.cache_valid?
+      @invalid_cache = true
+      # Pass up to cached model
+      @cached.mark_as_dirty
     end
 
     private
@@ -464,6 +364,11 @@ module Combined
       }
     end
 
+    def cache_valid?
+      # logger.debug("CMB: #{@cached} cache_valid? @loaded=#{@loaded}, @invalid_cache=#{@invalid_cache}")
+      @loaded ||= (!@invalid_cache && @cached.cache_valid?)
+    end
+
     # if Combined::Base::DB_ONLY is set, then a fetch to Retain is
     # never done.  Otherwise load is called.  After load returns,
     # @invalid_cache is marked as false and @loaded is marked as true.
@@ -480,6 +385,7 @@ module Combined
           LoadStack.instance.pop
         end
       end
+      # logger.debug("CMB: #{@cached} marking @loaded as true")
       @invalid_cache = false
       @loaded = true
     end

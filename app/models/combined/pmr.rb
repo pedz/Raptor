@@ -7,11 +7,6 @@
 module Combined
   # === Combined PMR Model
   class Pmr < Combined::Base
-    ##
-    # :attr: expire_time
-    # Set to 30.minutes.
-    set_expire_time 30.minutes
-
     set_db_keys :problem, :branch, :country
 
     set_db_constants :problem, :branch, :country, :customer

@@ -223,6 +223,11 @@ module Cached
     # The field that changes from OP for open to CL1L1 for closed,
     # etc.
 
+    ##
+    # :attr: expire_time
+    # Set to 30.minutes.
+    set_expire_time 30.minutes
+
     set_table_name "cached_pmrs"
 
     ##

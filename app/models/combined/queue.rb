@@ -7,11 +7,6 @@
 module Combined
   # === Combined Queue model
   class Queue < Combined::Base
-    ##
-    # :attr: expire_time
-    # Set to 5.minutes
-    set_expire_time 5.minutes
-
     set_db_keys :queue_name, :h_or_s
     set_db_constants :queue_name, :h_or_s, :center
       

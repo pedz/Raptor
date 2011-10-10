@@ -45,6 +45,11 @@ module Cached
     # Rails normal updated_at timestamp.  Each time the db record is
     # saved, this gets updated.
 
+    ##
+    # :attr: expire_time
+    # at to 1.year
+    set_expire_time 1.year
+
     set_table_name "cached_components"
   end
 end

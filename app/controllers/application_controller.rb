@@ -154,7 +154,9 @@ class ApplicationController < ActionController::Base
   #
   # NOTE: This will do nothing if the application_user currently has not 
   def async_fetch(obj, force = false)
-    return if retain_user.nil?
+    return if retain_user.nil? || (Rails.env == "test")
+    return unless obj.respond_to? :async_priority
+
     pri = obj.async_priority
     return if pri == :none
     AsyncRequest.new(retain_user.id, obj).async_send(:fetch, :pri => pri)

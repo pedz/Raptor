@@ -7,11 +7,6 @@
 module Combined
   # === Combined Call model
   class Center < Combined::Base
-    ##
-    # :attr: expire_time
-    # set to 1.week
-    set_expire_time 1.week
-
     set_db_keys :center
     set_db_constants :center
 

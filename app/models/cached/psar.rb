@@ -164,6 +164,11 @@ module Cached
     # The id from cached_registrations of the support person who made
     # the PSAR entry.
 
+    ##
+    # :attr: expire_time
+    # Set to check_mail_flag
+    set_expire_time :check_mail_flag
+
     set_table_name "cached_psars"
 
     ##
@@ -190,6 +195,15 @@ module Cached
     # :attr: apar
     # There is also a belongs_to for APARs but it is not used in our
     # area so it is not hooked up yet.
+
+    ##
+    # Used to determine if the PSAR needs to be fetched again.  If the
+    # psar_mail_flag is set to 'M' then there is no point to fetch it.
+    # Otherwise, we fetch it if it is more than twelve hours old.
+    def check_mail_flag
+      ret = (psar_mailed_flag == "M") || (updated_at > 12.hours.ago)
+      return ret
+    end
 
     ##
     # :attr: today
