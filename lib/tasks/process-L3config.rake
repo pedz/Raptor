@@ -89,22 +89,27 @@ task :l3config do
 
       next if intranet_id.blank? || retain_id.blank? || q.blank? ||loc.blank? || queue_type != "PERSONAL"
       user = User.find_or_create_by_ldap_id(intranet_id)
-      puts "User id is #{user.id}"
+      # puts "User id is #{user.id}"
       retuser = user.retusers.find_by_retid_and_apptest(retain_id, false)
       if retuser.nil?
         retuser = user.retusers.create :retid => retain_id, :apptest => false, :password => 'xxxxxxxx'
       end
-      puts "Retuser id is #{retuser.id}"
+      # puts "Retuser id is #{retuser.id}"
 
       registration = Cached::Registration.find_or_create_by_signon(retain_id)
-      puts "Registration id is #{registration.id}"
+      # puts "Registration id is #{registration.id}"
 
       center = Cached::Center.find_or_create_by_center(loc)
-      puts "Center id is #{center.id}"
+      # puts "Center id is #{center.id}"
       queue = (center.queues.find(:first, :conditions => { :queue_name => q, :h_or_s => 'S'}) ||
                center.queues.create(:queue_name => q, :h_or_s => 'S'))
-      puts "Queue id is #{queue.id}"
+      # puts "Queue id is #{queue.id}"
       
+      if queue.owners.length > 1
+        puts "#{queue.queue_name} has more than one owner.  Clearing all of them."
+        queue.queue_infos.clear
+      end
+
       # If queue and owner is already hooked up
       next if !queue.owners.empty? && queue.owners[0].id == registration.id
 

@@ -2,7 +2,7 @@ module JsonCommon
   # Sends the item, which may be an array, as json but also calls
   # async_fetch on either the item or (in the case item is an
   # array) each element of item.
-  def json_send(item, cache_options = { }, json_options)
+  def json_send(item, cache_options = { }, json_options = { })
     if item.is_a?(Array) || item.is_a?(Combined::AssociationProxy)
       time_stamp = item.map do |c|
         get_time_stamp(c)
