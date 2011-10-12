@@ -159,6 +159,7 @@ class ApplicationController < ActionController::Base
 
     pri = obj.async_priority
     return if pri == :none
+    logger.debug("async fetch of #{obj} for #{application_user.ldap_id}")
     AsyncRequest.new(retain_user.id, obj).async_send(:fetch, :pri => pri)
   end
 
