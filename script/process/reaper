@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env ruby -KU
 # -*- coding: utf-8 -*-
 require File.expand_path('../../config/boot',  __FILE__)
 require 'commands/process/reaper'
