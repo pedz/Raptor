@@ -4,6 +4,7 @@
 # All Rights Reserved
 #
 
+STDERR.puts "I'm on '#{system hostname}"
 unless respond_to?(:env)
   STDERR.puts "Please use --set-before env=<env>"
   exit 1
