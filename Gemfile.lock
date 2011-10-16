@@ -38,7 +38,7 @@ GEM
     gettext_i18n_rails (0.2.2)
       fast_gettext
     highline (1.6.2)
-    icu4r (0.1.5)
+    icu4r_19 (1.0)
     jasmine (1.0.2.1)
       json_pure (>= 1.4.3)
       rack (>= 1.1)
@@ -88,7 +88,7 @@ DEPENDENCIES
   activeldap
   beanstalk-client
   capistrano
-  icu4r
+  icu4r_19
   jasmine
   pg
   rails (~> 2.3.14)

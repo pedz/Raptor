@@ -3,7 +3,7 @@ source :gemcutter
 gem "rails", "~> 2.3.14"
 gem "ruby-ldap"
 gem "activeldap", :require => "active_ldap"
-gem "icu4r"
+gem "icu4r_19"
 gem "beanstalk-client"
 gem "pg"
 gem "capistrano"
