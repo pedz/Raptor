@@ -27,6 +27,6 @@ config.action_mailer.raise_delivery_errors = false
 # Use mem cache in development to test it.
 config.cache_store = :mem_cache_store
 
-config.gem "rails-footnotes", :lib => "rails-footnotes", :source => "http://gems.github.com"
+# config.gem "rails-footnotes", :lib => "rails-footnotes", :source => "http://gems.github.com"
 # gem 'rails-footnotes', '3.6.7', :git => 'http://github.com/jasoncodes/rails-footnotes.git', :branch => 'rails2'
-config.gem "jasmine"
+# config.gem "jasmine"

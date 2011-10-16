@@ -2,3 +2,8 @@ magicbook:
   ports: 5000..5001
   workers: 1
   environment: development
+
+default:
+  ports: 5000..5001
+  workers: 1
+  environment: development

@@ -16,7 +16,7 @@ god_config = god_configs['default'] unless god_config
 God.pid_file_directory = File.join(RAILS_ROOT, "tmp/pids")
 
 def common(w)
-  # applog(w, :debug, "PEDZ hello #{w.pid_file}")
+  # applog(w, :info, "PEDZ hello #{w.pid_file}")
   w.log = File.join(RAILS_ROOT, "log/#{w.name}.out")
   w.err_log = File.join(RAILS_ROOT, "log/#{w.name}.err")
   w.pid_file = w.pid_file
