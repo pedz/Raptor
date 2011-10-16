@@ -6,6 +6,7 @@ gem "activeldap", :require => "active_ldap"
 gem "icu4r"
 gem "beanstalk-client"
 gem "pg"
+gem "capistrano"
 
 group :development do
   gem('rails-footnotes',
