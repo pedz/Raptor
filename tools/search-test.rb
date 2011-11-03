@@ -31,15 +31,28 @@ end
 retuser = Retuser.find_by_retid('305356')
 retain_user_connection_parameters = Retain::ConnectionParameters.new(retuser)
 Retain::Logon.instance.set(retain_user_connection_parameters)
-search = Retain::Search2.new(retain_user_connection_parameters,
-                             :search_argument => 'L165 A11/07/15',
-                             :hit_limit => 499)
-
-de32s = search.de32s
-puts search.hit_count
-puts de32s.length
-de32s.each do |de32|
-  puts "#{de32.problem},#{de32.branch},#{de32.country} #{de32.alteration_date} #{de32.alteration_time}"
+(1 .. 4).each do |i|
+  search = Retain::Search2.new(retain_user_connection_parameters,
+                               :search_argument => "L165 A11/10/19 S#{i}",
+                               :group_request => [[
+                                                   :problem,
+                                                   :branch,
+                                                   :country,
+                                                   :last_alter_timestamp,
+                                                   :alteration_date,
+                                                   :alteration_time,
+                                                   :center,
+                                                   :severity
+                                                  ]],
+                               :hit_limit => 499)
+  
+  de32s = search.de32s
+  puts search.hit_count
+  puts de32s.length
+  de32s.each do |de32|
+    puts "#{de32.problem},#{de32.branch},#{de32.country} " +
+      "#{de32.alteration_date} #{de32.alteration_time} #{de32.severity}, #{de32.center}"
+  end
 end
 # call_search_results = search.call_search_results
 # puts search.hit_count

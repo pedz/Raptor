@@ -11,7 +11,7 @@
   <% else -%>
     <% for div in divs -%>
       <div id="<%= div.to_s.gsub(/_/, '-') %>">
-        <%= yield div %>
+	<%= yield div %>
       </div>
     <% end -%>
   <% end -%>

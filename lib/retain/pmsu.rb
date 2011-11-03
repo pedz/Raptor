@@ -52,7 +52,8 @@ module Retain
                                     :country,
                                     :last_alter_timestamp,
                                     :alteration_date,
-                                    :alteration_time
+                                    :alteration_time,
+                                    :last_alter_timestamp
                                    ]]
       end
     end

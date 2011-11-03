@@ -1,528 +1,557 @@
-THIRD     SECOND     FIRST           DEPT  RETAIN_ID IND_SERIAL NAME                      Q      LOC QTYPE    TEAM            APAR_LEVEL    INTRANET_ID                  ORG
---------- ---------- --------------- ----- --------- ---------- ------------------------- ------ --- -------- --------------- ------------- ---------------------------- ------
-Ling      McConathy  Brock           I4SA  952374    052374     Tucker,Stephen            STEVE  248 PERSONAL HA              L2_TECH       stucker@uk.ibm.com           SATEUR
-Ling      McConathy  Brock           I4SA  305547    C-55DG     Choudhary,Bimalendu       BIMALC 165 PERSONAL LIB             L2_TECH       bimalen@us.ibm.com           ZTRANS
-Unknown   Unknown    Unknown         FAKE  614601    6A4601     Milliner,Nancy            NJM    165 PERSONAL ZHMC            L2_TECH       milliner@us.ibm.com          OTHER
-Ling      McConathy  Testone         XILA  008422    E08421     Vovk,Janez                JKJ    248 PERSONAL STOR            L2_TECH       janez.vovk@si.ibm.com        SATEUR
-Ling      McConathy  Clark           5IEA  000090    097151     Haferkorn,Christian       HAFER  248 PERSONAL NET             L2_TECH       hafer@de.ibm.com             SATEUR
-Ling      McConathy  Sutcliffe       39KA  582676    582676     Simon,Robert              PPSSRV 13A OTHER    CLST_FS         L2_SCREEN_POK rsimon@us.ibm.com            POK
-Unknown   Unknown    Unknown         CJHS  380577    380577     Bloomer,Richard           BOOM   165 PERSONAL LVM             L3_DEVELOPER  boomboom@us.ibm.com          DEV
-Ling      McConathy  Clark           5IEA  000253    135914     Hartwig,Sebastian         SHART  248 PERSONAL NET             L2_TECH       sebastian.hartwig@de.ibm.com SATEUR
-Unknown   Unknown    Unknown         CJHS  924485    924485     Li,Li                     LILI   165 PERSONAL HACMP           L3_DEVELOPER  lili1@us.ibm.com             DEV
-Unknown   Unknown    Unknown         CJHS  116878_0  1A6878     Thornal,Timothy           TTHORN 165 PERSONAL STORAGE DD      L3_DEVELOPER  tthornal@us.ibm.com          DEV
-Ling      McConathy  Aaron           D1ZA  000254    052361     Romac,Christophe          CROMAC 248 PERSONAL DUMP            L2_TECH       cromac@fr.ibm.com            SATEUR
-Ling      McConathy  Aaron           D1ZA  081159    081159     Braunbeck,Thomas          FUZZY  248 PERSONAL KERN            L2_TECH       braunbec@de.ibm.com          SATEUR
-Ling      McConathy  Aaron           D1ZA  188100    088100     Ancel,Thomas              ANCEL  248 PERSONAL FSLV            L2_TECH       thomas.ancel@fr.ibm.com      SATEUR
-Ling      McConathy  Sutcliffe       39KA  582676    582676     Simon,Robert              CLREJ  13A INCOMING CLST_FS         L2_SCREEN_POK rsimon@us.ibm.com            POK
-Ling      McConathy  Sutcliffe       39KA  377557    377557     Richman,Murray            CLSTAP 13A INCOMING CLST_AP         L2_SCREEN_POK mrichman@us.ibm.com          POK
-Ling      McConathy  Aaron           D1ZA  215881    215881     Chalemin,Tex (Glen)       TEX    165 PERSONAL KERN            L2_TECH       gchalemi@us.ibm.com          ZTRANS
-Murillo   Townsend   St. Pierre      B9RS  930433    930433     Liu,Su                    L3BIDI 165 INCOMING NLS             L3_DEVELOPER  suliu@us.ibm.com             DEV
-Ling      McConathy  Sutcliffe       39KA  080859    080859     Normann,Steven            CLSTFS 13A INCOMING CLST_FS         L2_SCREEN_POK norseman@us.ibm.com          POK
-Unknown   Unknown    Unknown         INDIA 023305    023304     Ahmed,Junaid              JUNAID 165 PERSONAL HACMP           L3_DEVELOPER  junaahme@in.ibm.com          DEV
-Ling      McConathy  Sutcliffe       39KA  614151    614151     Swart,T.R.                CLSTHA 13A INCOMING CLST_HA         L2_SCREEN_POK trswart@us.ibm.com           POK
-Ling      McConathy  Sutcliffe       39KA  595866    595866     Struble,Timothy           CLSTMG 13A INCOMING CLST_MG         L2_TECH       tstruble@us.ibm.com          POK
-Unknown   Unknown    Unknown         INDIA 014987    014987     Langer,Kunal              KUNAL  165 PERSONAL HACMP           L3_DEVELOPER  kunal.langer@in.ibm.com      DEV
-Ling      McConathy  Clark           5IEA  717297    7A7297     Shi,Suzanne               PCIFS  165 INCOMING NET             L2_SCREEN_AUS suzanshi@us.ibm.com          ZTRANS
-Ling      McConathy  Testone         XILA  000255    050246     Spiller,Christian         SPILLS 248 PERSONAL VIRT            L2_TECH       spillerc@uk.ibm.com          SATEUR
-Ling      McConathy  Clark           5IEA  303451    C-3MW1     Khan,M. H.                MH     165 PERSONAL NET             L2_TECH       mhk@us.ibm.com               ZTRANS
-Ling      McConathy  Clark           5IEA  305338    C-5338     Tenjarla,Rama             RAMA   165 PERSONAL ZISV            L2_TECH       rtenjarl@us.ibm.com          ZTRANS
-Murillo   Jones      Epsztein        6T4A  886778    886778     Ricca,Noel                NRICCA 165 PERSONAL RAS             L3_DEVELOPER                               DEV
-Ling      McConathy  Testone         XILA  797720    051718     Spornhauer,Michael        MIKE   248 PERSONAL INST            L2_TECH       spornhau@de.ibm.com          SATEUR
-Murillo   Simon      Barenys         WZ8S  305537    C-55C7     Plattard,Xavier           XAVIER 165 PERSONAL Distrib FS      L3_DEVELOPER                               DEV
-Ling      McConathy  Testone         XILA  214681    2A4681     Patel,Rajendra            RAJPAT 165 PERSONAL VIRT            L2_SCREEN_AUS rajpat@us.ibm.com            ZTRANS
-Ling      McConathy  Clark           5IEA  068596    068596     Blancke,Alexandre         ALBL   248 PERSONAL LIB             L2_TECH       ablancke@fr.ibm.com          SATEUR
-Ling      McConathy  Aaron           D1ZA  305817    C-5HJY     Rao,Srinivasa             MSRINI 165 PERSONAL KERN            L2_SCREEN_AUS msrinir@us.ibm.com           ZTRANS
-Ling      McConathy  Clark           5IEA  302289    C-BBHG     Zalles,Juan               JUANZ  165 PERSONAL APP             L2_TECH       juanz@us.ibm.com             ZTRANS
-Ling      McConathy  Aaron           D1ZA  919578    9A9578     Salem,Loulwa              LOULWA 165 PERSONAL KERN            L2_TECH       loulwa@us.ibm.com            ZTRANS
-Murillo   Simon      Beck            UD3A  220282    220282     Vaddagiri,Murali          MURALI 165 PERSONAL SECURITY        L3_DEVELOPER  murali.vad@in.ibm.com        DEV
-Ling      McConathy  Aaron           D1ZA  302316    C-BUAX     Chakraborty,Shameek       CHAKRA 165 PERSONAL KERN            L2_TECH       shameek@us.ibm.com           ZTRANS
-Unknown   Unknown    Unknown         FAKE  614601    6A4601     Milliner,Nancy            PHMC   165 INCOMING ZHMC            L2_TECH       milliner@us.ibm.com          OTHER
-Ling      McConathy  Clark           5IEA  306965    3A6965     Dunshea,Andrew            ANDREW 165 PERSONAL Z3P             L2_SCREEN_AUS adunshea@us.ibm.com          ZTRANS
-Murillo   Simon      Beck            UD3A  023233    023232     Gadekar,Vinay             VGADEK 165 PERSONAL SECURITY        L3_DEVELOPER  vgadekar@in.ibm.com          DEV
-Ling      McConathy  Clark           5IEA  792217    123500     Ehrhardt,Andreas          ANDI   248 PERSONAL NET             L2_TECH       andreas.ehrhardt@de.ibm.com  SATEUR
-Ling      McConathy  Aaron           D1ZA  302147    869578     Griffith,Doug             DUGROC 165 PERSONAL KERN            L2_SCREEN_AUS griffith@us.ibm.com          ZTRANS
-Ling      McConathy  Testone         XILA  304458    0G7886     Meyer,Aaron               JAM    165 PERSONAL VIRT            L2_SCREEN_AUS meyera@us.ibm.com            ZTRANS
-Ling      McConathy  Brock           I4SA  960601    960601     HA,Intern1                IHA001 165 PERSONAL HA              L2_TECH       itra03@truth2.austin.ibm.com ZTRANS
-Ling      McConathy  Brock           I4SA  024248    024248     Bozzini,Antonio           BOZZ   248 PERSONAL PERF            L2_TECH       abozzini@it.ibm.com          SATEUR
-Ling      McConathy  Testone         XILA  303612    0G4898     Atluri,Uma Sankar         USA    165 PERSONAL STOR            L2_TECH       usa@us.ibm.com               ZTRANS
-Unknown   Unknown    Unknown         INDIA 000155    000155     Ahmad,Faraz               FARAZZ 165 PERSONAL HACMP           L3_DEVELOPER  farahmad@in.ibm.com          DEV
-Ling      McConathy  Brock           I4SA  960603    960603     PERF,Intern1              IPERF1 165 PERSONAL PERF            L2_TECH       itra04@truth2.austin.ibm.com ZTRANS
-Ling      McConathy  Clark           5IEA  304624    9D0131     Srikanth,Sangeetha        PTCPK  165 INCOMING NET             L2_SCREEN_AUS ssrikant@us.ibm.com          ZTRANS
-Ling      McConathy  Clark           5IEA  717297    7A7297     Shi,Suzanne               PTCPA  165 INCOMING NET             L2_SCREEN_AUS suzanshi@us.ibm.com          ZTRANS
-Ling      McConathy  Testone         XILA  174970    017497     Ullmann,Harry             HARRY  165 PERSONAL MISC            L2_SCREEN_AUS hullmann@us.ibm.com          ZTRANS
-Unknown   Unknown    Unknown         CJHS  118620    1A8620     Talley,Nicole             TALLEY 165 PERSONAL INSTALL         L3_DEVELOPER  ntalley@us.ibm.com           DEV
-Ling      McConathy  Brock           I4SA  960604    960604     LIB,Intern1               ILIB01 165 PERSONAL LIB             L2_TECH       itra05@truth2.austin.ibm.com ZTRANS
-Ling      McConathy  Testone         XILA  917466    9A7466     Wallis,Rob                WALLIS 165 PERSONAL STOR            L2_TECH       rwallis@us.ibm.com           ZTRANS
-Ling      McConathy  Aaron           D1ZA  305331    0G4920     Makineedi,Sreeni          SREENI 165 PERSONAL KERN            L2_SCREEN_AUS sreeni@us.ibm.com            ZTRANS
-Ling      McConathy  Brock           I4SA  362492    362492     McLeod,Alex               HAAWT  165 INCOMING HA              L2_SCREEN_AUS amcleod@us.ibm.com           ZTRANS
-Ling      McConathy  Aaron           D1ZA  305171    0G8168     Batra,Gaurav              GBATRA 165 PERSONAL KERN            L2_TECH       gbatra@us.ibm.com            ZTRANS
-Ling      McConathy  Brock           I4SA  305893    C-5HR3     Boles,Brandon             BBOLES 165 PERSONAL HA              L2_TECH       bboles@us.ibm.com            ZTRANS
-Ling      McConathy  Clark           5IEA  303442    C-34DK     Butte,Rashid              RBUTTE 165 PERSONAL APP             L2_TECH       rbutte@us.ibm.com            ZTRANS
-Unknown   Unknown    Unknown         CJHS  710262    469781     OBrien,Janice             JANICE 165 PERSONAL SECURITY        L3_DEVELOPER  brienjo@us.ibm.com           DEV
-Ling      McConathy  Brock           I4SA  917439    917438     Chen,Tao                  TYLER  95A PERSONAL PERF            L2_TECH       chenttao@cn.ibm.com          SATCHN
-Murillo   Simon      Love            LNJA  240841    +0943A     Nimmagadda,Rajeev         RAJEEV 165 PERSONAL UNKNOWN         L2_TECH       rajeevn@us.ibm.com           DEV
-Ling      McConathy  Brock           I4SA  302991    C-BR9A     Gibbs,Ben                 BGIBBS 165 PERSONAL PERF            L2_TECH       bengibbs@us.ibm.com          ZTRANS
-Unknown   Unknown    Unknown         INDIA 389833    389833     Josiah,Samuel             PTOOLS 165 INCOMING Performance     L3_DEVELOPER  josamuel@in.ibm.com          DEV
-Ling      McConathy  Clark           5IEA  303525    C-35TE     Rupp,Amy                  AMYR   165 PERSONAL ZISV            L2_TECH       amyr@us.ibm.com              ZTRANS
-Murillo   Townsend   St. Pierre      B9RS  305440    100293     Isoard,Matthieu           ISOARD 165 PERSONAL PTX             L3_DEVELOPER  misoard@us.ibm.com           DEV
-Unknown   Unknown    Unknown         INDIA 917929    917929     Anbalagan,Arun            ARUN   165 PERSONAL Install/update  L3_DEVELOPER  arunprasath@in.ibm.com       DEV
-Murillo   Townsend   Ellett-Salmoran 4VRA  816763    8A6763     Bias,Garius               GBIAS  165 PERSONAL VIO             L3_DEVELOPER  gbias@us.ibm.com             DEV
-Gupta     Makis      Young           OEIA  833108    833108     Michel,Dirk               PRFDEV 165 INCOMING Performance     L3_DEVELOPER  dirkm@us.ibm.com             DEV
-Murillo   Centofonti Hoffman         BWJS  413672    4A3672     Castillo,Gilbert          GILCAS 165 PERSONAL BUILD           L3_DEVELOPER  gcastill@us.ibm.com          DEV
-Murillo   Townsend   Chang           D59S  796087    796087     Rathi,Sanket              SANKET 165 PERSONAL                                                            DEV
-Unknown   Unknown    Unknown         CJHS  404400    C-04DH     Abbot,Stephen             ABBOT  165 PERSONAL HACMP           L3_DEVELOPER  sabbot@us.ibm.com            DEV
-Unknown   Unknown    Unknown         INDIA 229763    229763     Gaonkar,Chetan            CGAON  165 PERSONAL SYSPROC         L3_DEVELOPER  cgaonkar@in.ibm.com          DEV
-Ling      McConathy  Testone         XILA  416371    416371     Dixon,Gary                DIXON  165 PERSONAL INST            L2_TECH       grdixon@us.ibm.com           ZTRANS
-Murillo   Townsend   St. Pierre      B9RS  040370    +4037A     Harris,Jan                JANH   165 PERSONAL NLS             L3_DEVELOPER  jan2@us.ibm.com              DEV
-Ling      McConathy  Brock           I4SA  312261    3A2261     Kennedy,Nick              NICK   165 PERSONAL LIB             L2_TECH       kennedyn@us.ibm.com          ZTRANS
-Unknown   Unknown    Unknown         INDIA 019662    019662     Rangaswamaiah,Rajath      RAJ34  165 PERSONAL TCP/IP          L3_DEVELOPER  rajath.nr@in.ibm.com         DEV
-Ling      McConathy  Brock           I4SA  602187    6A2187     Davidson,Grover           GROVER 165 PERSONAL PERF            L2_SCREEN_AUS grover@us.ibm.com            ZTRANS
-Ling      McConathy  Weber           WQPA  431780    903268     K,Anil                    ANIL   165 PERSONAL ZETC            L2_TECH       kanil@us.ibm.com             ZTRANS
-Ling      McConathy  Clark           5IEA  073110    7A2818     Mahajan,Puneet            PUNEET 165 PERSONAL ZISV            L2_SCREEN_AUS pmahajan@us.ibm.com          ZTRANS
-Ling      McConathy                  E59S  857919    045033     Bulhof,Roger              BULHOF 165 PERSONAL ZMGMT           MANAGER       bulhof@us.ibm.com            ZTRANS
-Ling      McConathy  Clark           5IEA  507643    507643     Patel,Darshan             DP     165 PERSONAL NET             L2_SCREEN_AUS darshanp@us.ibm.com          ZTRANS
-Ling      McConathy  Aaron           D1ZA  106782    006782     Young,Andrew              ANDYY  248 PERSONAL KERN            L2_TECH       andyoung@uk.ibm.com          SATEUR
-Ling      McConathy  Aaron           D1ZA  215881    215881     Chalemin,Tex (Glen)       WWKERN 165 INCOMING KERN            L2_TECH       gchalemi@us.ibm.com          ZTRANS
-Ling      McConathy  Clark           5IEA  489320    489320     Gaudin,Jim                GAUDIN 165 PERSONAL NET             L2_TECH       jgaudin@us.ibm.com           ZTRANS
-Ling      McConathy  Aaron           D1ZA  353422    353421     Wickremasinghe,Chris      CHRISW 95A PERSONAL FSLV            L2_TECH       cwickrem@au1.ibm.com         SATCHN
-Ling      McConathy  Brock           I4SA  022431    022431     Lehner,Wolfgang           LEHNER 248 PERSONAL LIB             L2_TECH       wolfgang_lehner@at.ibm.com   SATEUR
-Unknown   Unknown    Unknown         INDIA 002210    002210     Mohan,Gomathi             GOMATI 165 PERSONAL PTX             L3_DEVELOPER  gommohan@in.ibm.com          DEV
-Ling      McConathy  Brock           I4SA  276448    1A8831     Wong,Kathy                KWONG  165 PERSONAL LIB             L2_SCREEN_AUS wongk@us.ibm.com             ZTRANS
-Ling      McConathy  Aaron           D1ZA  347516    3D7516     Damodaran,Anil            WWFSLV 165 INCOMING FSLV            L2_SCREEN_AUS anildam@us.ibm.com           ZTRANS
-Ling      McConathy  Aaron           D1ZA  051178    959488     Manning,Robert            MANN   165 PERSONAL KERN            L2_SCREEN_AUS rmanning@us.ibm.com          ZTRANS
-Murillo   Simon      Thomas          BN2S  055070    055070     Mishra,Rajeev             MISHRA 165 PERSONAL Kernel          L3_DEVELOPER  mrtagg@ca.ibm.com            DEV
-Ling      McConathy  Brock           I4SA  960602    960602     HA,Intern2                IHA002 165 PERSONAL HA              L2_TECH       itra02@truth2.austin.ibm.com ZTRANS
-Unknown   Unknown    Unknown         INDIA 024235    024235     MB Bhat,Suma              SUMA   165 PERSONAL SECURITY        L3_DEVELOPER  summbhat@in.ibm.com          DEV
-Unknown   Unknown    Unknown         INDIA 023153    023153     Kulshreshtha,Manish       MANISH 165 PERSONAL CMDS            L3_DEVELOPER  mkulshre@in.ibm.com          DEV
-Unknown   Unknown    Unknown         INDIA 083303    083303     Anantha,Lalitha           LALIT  165 PERSONAL CMDS            L3_DEVELOPER  lanantha@in.ibm.com          DEV
-Ling      McConathy  Clark           5IEA  807520    807520     Phillips,Tom              TOMP   165 PERSONAL PREM            L2_TECH       ltp@us.ibm.com               ZTRANS
-Ling      McConathy  Brock           I4SA  006640    006640     Pham,Teresa               TPHAM  165 PERSONAL LIB             L2_SCREEN_AUS teresaph@us.ibm.com          ZTRANS
-Ling      McConathy  Clark           5IEA  067270    +6727A     Akmal,MG                  MGA    165 PERSONAL ZISV            L2_TECH       mgakmal@us.ibm.com           ZTRANS
-Unknown   Unknown    Unknown         INDIA 020064    020064     Fransis,Walesa            WALESA 165 PERSONAL HACMP           L3_DEVELOPER  walesafran@in.ibm.com        DEV
-Ling      McConathy  Aaron           D1ZA  300474    346519     Alvarez,Abraham           ABE    165 PERSONAL PREM            L2_TECH       abraham1@us.ibm.com          ZTRANS
-Ling      McConathy  Aaron           D1ZA  066392    066392     Thompson,R.W.             ROBERT 165 PERSONAL FSLV            L2_SCREEN_AUS robthomp@us.ibm.com          ZTRANS
-Collins   Engleman   Grosch          YXIA  077299    077299     Flaig,Greg                GFLAIG 165 PERSONAL HSC Development L3_DEVELOPER  gregory.flaig@us.ibm.com     DEV
-Murillo   Jones      Epsztein        6T4A  083023    083023     Shaffer,J.J.              SHAFFE 165 PERSONAL RAS             L3_DEVELOPER  jshaffer@us.ibm.com          DEV
-Paranjape Contreras  Tan             HMYS  092644    092644     Segura,Ernest             EBS    165 PERSONAL SysMgt Framewrk L3_DEVELOPER  esegura@us.ibm.com           DEV
-Unknown   Unknown    Unknown         INDIA 024054    024054     Mada,Kiran                MKIRAN 165 PERSONAL HACMP           L3_DEVELOPER  kiramada@in.ibm.com          DEV
-Ling      McConathy  Testone         XILA  978084    978084     Xiao,HongTao              HONGTA 95A PERSONAL STOR            L2_TECH       xiaoht@cn.ibm.com            SATCHN
-Murillo   Simon      Love            LNJA  405547    4A5547     Garcia,Frank              KNARF  165 PERSONAL HACMP           L3_DEVELOPER  fgarcia@us.ibm.com           DEV
-Unknown   Unknown    Unknown         INDIA 214332    214332     Chandolu,Uma Maheswara    MAHESH 165 PERSONAL SECURITY        L3_DEVELOPER  uchandol@in.ibm.com          DEV
-Murillo   Simon      Wadehra         E18S  170986    170986     Rogers,M.D.               ROGERS 165 PERSONAL VMM             L3_DEVELOPER  mrogers@us.ibm.com           DEV
-Ling      McConathy  Aaron           D1ZA  240069    C-1U0K     Agarawal,Harish           HCAG   165 PERSONAL DUMP            L2_TECH       agarawal@us.ibm.com          ZTRANS
-Paranjape Contreras  Ellsworth       B4RS  269393    269393     Cuan,Elizabeth            LIZ    165 PERSONAL SysMgt Solution L3_DEVELOPER  cuan@us.ibm.com              DEV
-Unknown   Unknown    Unknown         INDIA 078131    078130     Das,Raj                   RAJDAS 165 PERSONAL PTX             L3_DEVELOPER  drajarshi@in.ibm.com         DEV
-Ling      McConathy  Clark           5IEA  303280    C-CBP9     Layton,Vince              LAYTON 165 PERSONAL NET             L2_TECH       vjlayton@us.ibm.com          ZTRANS
-Murillo   Simon      Beck            UD3A  301892    301892     Wilson,J.H.               JWILSN 165 PERSONAL UNKNOWN         L3_DEVELOPER  jhwilson@us.ibm.com          DEV
-Murillo   Jones      Epsztein        6T4A  302881    302881     Brenner,Larry             LARRY  165 PERSONAL RAS             L3_DEVELOPER  lbrenner@us.ibm.com          DEV
-Ling      McConathy  Clark           5IEA  303480    C-3M80     Wildgoose,Rosemary        RW     165 PERSONAL NET             L2_TECH       wildr@us.ibm.com             ZTRANS
-Murillo   Simon      Beck            UD3A  329545    329545     Toungate,Marvin           TOUNGA 165 PERSONAL PRINTERS        L3_DEVELOPER  toungate@us.ibm.com          DEV
-Murillo   Townsend   Ellett-Salmoran 4VRA  205889    2A5889     Rosas,Morgan              ROSAS1 165 PERSONAL VIO             L3_DEVELOPER  rosas1@us.ibm.com            DEV
-Unknown   Unknown    Unknown         9TRA  366477    366477     Damron,T.M.               DAMRON 165 PERSONAL SysMgt Solution L3_DEVELOPER  tmdamron@us.ibm.com          DEV
-Murillo   Simon      Wadehra         E18S  386850    386850     Hinderliter,D.S.          HINDER 165 PERSONAL VMM             L3_DEVELOPER  hinder@us.ibm.com            DEV
-Murillo   Townsend   Ellett-Salmoran 4VRA  894366    894366     Anderson,Ray              RAY2   165 PERSONAL VIO             L3_DEVELOPER  ray2@us.ibm.com              DEV
-Murillo   Jones      Epsztein        6T4A  412708    412708     Mealey,B.G.               MEALEY 165 PERSONAL RAS             L3_DEVELOPER  mealey@us.ibm.com            DEV
-Unknown   Unknown    Unknown         INDIA 074189    074189     Shankar,Bharath           BHARAT 165 PERSONAL HACMP           L3_DEVELOPER  bharathshankar@in.ibm.com    DEV
-Murillo   Simon      Barenys         WZ8S  441148    441148     Sheffield,D.W.            DWS    165 PERSONAL NFS             L3_DEVELOPER  sheff@us.ibm.com             DEV
-Paranjape Contreras  Tan             HMYS  486565    486565     Panico,M.W.               PANICO 165 PERSONAL SysMgt Framewrk L3_DEVELOPER  panico@us.ibm.com            DEV
-Murillo   Townsend   Kehne           BTGS  497208    497208     McNichol,Daniel           DAN    165 PERSONAL GRAPHICS        L3_DEVELOPER  dmcnicho@us.ibm.com          DEV
-Ling      McConathy  Clark           5IEA  919075    919075     Wu,JianJun                WUJJ   95A PERSONAL APP             L2_TECH       bjwjianj@cn.ibm.com          SATCHN
-Ling      McConathy  Testone         XILA  043230    6A2198     Ramagiri,Vani             PLPM   165 INCOMING VIRT            L2_SCREEN_AUS vani@us.ibm.com              ZTRANS
-Murillo   Townsend   St. Pierre      B9RS  040370    +4037A     Harris,Jan                ILBIDI 165 PERSONAL NLS             L3_DEVELOPER  jan2@us.ibm.com              DEV
-Ling      McConathy  Clark           5IEA  507643    507643     Patel,Darshan             PCRYPT 165 INCOMING NET             L2_SCREEN_AUS darshanp@us.ibm.com          ZTRANS
-Murillo   Jones                      ZI9S  549271    549271     Craft,Julie               JULIEL 165 PERSONAL Kernel          L3_DEVELOPER  jcraft@us.ibm.com            DEV
-Paranjape Contreras  Ellsworth       B4RS  549539    549539     Shieh,J.M.                SHIEH  165 PERSONAL SysMgt Solution L3_DEVELOPER  jshieh@us.ibm.com            DEV
-Murillo   Jones      Paul            D58S  550169    550169     Messing,J.P.              JEM    165 PERSONAL TCP/IP          L3_DEVELOPER  messingj@us.ibm.com          DEV
-Murillo                              E99S  550475    550475     Jones,Corradino           CJONES 165 PERSONAL Dev Mgr         MANAGER       cdjones@us.ibm.com           DEV
-Ling      McConathy  Brock           I4SA  303016    4D6655     Cline,Kemton              PLAB   165 INCOMING ZOPS            L2_TECH       kemton@us.ibm.com            ZTRANS
-Unknown   Unknown    Unknown         INDIA 992506    992506     Karakavalasa,Dileep       DILEEP 165 PERSONAL RAS             L3_DEVELOPER  dileep.kk@in.ibm.com         DEV
-Ling      McConathy  Clark           5IEA  301623    C-AFT3     Kim,Minchong              MIN    165 PERSONAL NET             L2_TECH       minkim@us.ibm.com            ZTRANS
-Murillo   Simon      Wadehra         E18S  611627    611627     Cronk,Matthew             XCOFF  165 PERSONAL BRINGUP         L3_DEVELOPER  mcronk@us.ibm.com            DEV
-Murillo   Simon      Wadehra         E18S  611627    611627     Cronk,Matthew             MACRO  165 PERSONAL BRINGUP         L3_DEVELOPER  mcronk@us.ibm.com            DEV
-Ling      McConathy  Brock           I4SA  082708    082706     Weber,Ingo                INGO   248 PERSONAL HA              L2_TECH       iweber@de.ibm.com            SATEUR
-Ling      McConathy  Brock           I4SA  303016    4D6655     Cline,Kemton              KEMTON 165 PERSONAL ZOPS            L2_TECH       kemton@us.ibm.com            ZTRANS
-Murillo   Jones      Paul            D58S  707285    7A7285     Vo,Patrick                PVO    165 PERSONAL TCP/IP          L3_DEVELOPER  pvo@us.ibm.com               DEV
-Ling      McConathy  Brock           I4SA  960612    960612     LIB,Intern2               ILIB02 165 PERSONAL LIB                                                        ZTRANS
-Murillo   Townsend   Chang           D59S  656838    656838     Allen,J.P.                JALLEN 165 PERSONAL STORAGE DD      L3_DEVELOPER  jpallen@us.ibm.com           DEV
-Murillo   Townsend   Ellett-Salmoran 4VRA  665278    665278     Partridge,James           JAMESP 165 PERSONAL VIO             L3_DEVELOPER  jamesp@us.ibm.com            DEV
-Paranjape Contreras  Tan             HMYS  707294    7A7294     Nogueras,Jorge            RAFAEL 165 PERSONAL SysMgt Framewrk L3_DEVELOPER  rafaeln@us.ibm.com           DEV
-Murillo   Townsend   Mulvey          UDYA  723047    723047     Dea,F.                    FRANKD 165 PERSONAL NETWORK DD      L3_DEVELOPER  frankdea@us.ibm.com          DEV
-Murillo   Townsend   St. Pierre      B9RS  930433    930433     Liu,Su                    SULIU  165 PERSONAL NLS             L3_DEVELOPER  suliu@us.ibm.com             DEV
-Unknown   Unknown    Unknown         INDIA 083300    083300     Nagar,Sunita              SUNITA 165 PERSONAL CMDS            L3_DEVELOPER  sunitnag@in.ibm.com          DEV
-Ling      McConathy  Brock           I4SA  073831    3D7484     Schlachter,Gus            HAINT  165 PERSONAL HA              L2_TECH       gussch@us.ibm.com            ZTRANS
-Paranjape Contreras  Ellsworth       B4RS  802762    802762     Lowe,Suanne               SUE    165 PERSONAL SysMgt Solution L3_DEVELOPER  suelo@us.ibm.com             DEV
-Paranjape Contreras  Ellsworth       B4RS  802762    802762     Lowe,Suanne               REGDEV 165 INCOMING SysMgt Solution L3_DEVELOPER  suelo@us.ibm.com             DEV
-Paranjape Contreras  Ellsworth       B4RS  830476    830476     Laffey,Patrick            LAFFEY 165 PERSONAL SysMgt Solution L3_DEVELOPER  plaffey@us.ibm.com           DEV
-Ling      McConathy  Clark           5IEA  960605    960605     NET Intern1,06            INET01 165 PERSONAL NET             L2_TECH       itra06@truth2.austin.ibm.com ZTRANS
-Murillo   Jones      Epsztein        6T4A  838267    838267     Warrier,Suresh            WARIER 165 PERSONAL RAS             L3_DEVELOPER  swarrier@us.ibm.com          DEV
-Collins   Engleman   Grosch          YXIA  303399    C-3C9R     Joseph,Garland            HMCDEV 165 INCOMING HSC Development                                            DEV
-Ling      McConathy  Aaron           D1ZA  960606    960606     KERN,Intern1              IKERN1 165 PERSONAL KERN            L2_TECH       itra01@truth2.austin.ibm.com ZTRANS
-Murillo   Jones      Paul            D58S  858179    858179     Dai,Zhi-Wei               ZDAI   165 PERSONAL TCP/IP          L3_DEVELOPER  zdai@us.ibm.com              DEV
-Ling      McConathy  Aaron           D1ZA  702755    7A2755     Chirra,Radhika            RC     165 PERSONAL FSLV            L2_SCREEN_AUS rchirra@us.ibm.com           ZTRANS
-Unknown   Unknown    Unknown         CJHS  881141    881141     Younghaus,J.V.            BOWWOW 165 PERSONAL INSTALL         L3_DEVELOPER  younghau@us.ibm.com          DEV
-Ling      McConathy  Aaron           D1ZA  960607    960607     FSLV,Intern1              IFSLV1 165 PERSONAL FSLV            L2_TECH       itra07@truth2.austin.ibm.com ZTRANS
-Ling      McConathy  Testone         XILA  174970    017497     Ullmann,Harry             WWMISC 165 INCOMING MISC            L2_SCREEN_AUS hullmann@us.ibm.com          ZTRANS
-Ling      McConathy  Aaron           D1ZA  960609    960609     FSLV,Intern2              IFSLV2 165 PERSONAL FSLV                                                       ZTRANS
-Unknown   Unknown    Unknown         INDIA 051110    05111A     Balakumar,Vinayapriya     VINAYA 165 PERSONAL LVM             L3_DEVELOPER  vbalakum@in.ibm.com          DEV
-Ling      McConathy  Brock           I4SA  917866    C-7GV8     Beck,Shanna               SHANNA 165 PERSONAL PERF            L2_TECH       shannab@us.ibm.com           ZTRANS
-Murillo   Townsend   St. Pierre      B9RS  116646    1A6646     Tran,Scott                STTRAN 165 PERSONAL INSTALL         L3_DEVELOPER  scotttran@us.ibm.com         DEV
-Ling      McConathy  Aaron           D1ZA  960610    960610     DUMP,Intern1              IDUMP1 165 PERSONAL DUMP            L2_TECH       itra10@truth2.austin.ibm.com ZTRANS
-Murillo   Townsend   Mulvey          UDYA  937224    937224     Willis,D.E.               WILLIS 165 PERSONAL NETWORK DD      L3_DEVELOPER  dewillis@us.ibm.com          DEV
-Murillo   Townsend   Mulvey          UDYA  717310    7A7310     Cardona,Omar              OMAR   165 PERSONAL NETWORK DD      L3_DEVELOPER  ocardona@us.ibm.com          DEV
-Ling      McConathy  Testone         XILA  952818    952818     Hezari,Emilia             EMILIA 165 PERSONAL INST            L2_TECH       ehezari@us.ibm.com           ZTRANS
-Murillo   Simon      Beck            UD3A            395296     Tenginakai,Jyoti          JYOTIT 165 PERSONAL SECURITY        L3_DEVELOPER  jyoti.b.t@in.ibm.com         DEV
-Unknown   Unknown    Unknown         INDIA 194493    194493     Joseph,Frederic Maria     FRED   165 PERSONAL TCP/IP          L3_DEVELOPER  fmariajo@in.ibm.com          DEV
-Ling      McConathy  Clark           5IEA  794421    794421     Xu,Charleen               AMAPP  165 INCOMING APP             L2_TECH       charleen@us.ibm.com          ZTRANS
-Ling      McConathy  Clark           5IEA  960611    960611     APP,Intern1               IAPP01 165 PERSONAL APP             L2_TECH       itra11@truth2austin.ibm.com  ZTRANS
-Ling      McConathy  Testone         XILA  960613    960613     STOR,Intern1              ISTOR1 165 PERSONAL STOR            L2_TECH       itra13@truth2.austin.ibm.com ZTRANS
-Murillo   Simon      Beck            UD3A  973715    973715     Hausmann,Sally            SALLY  165 PERSONAL SECURITY        L3_DEVELOPER  shausman@us.ibm.com          DEV
-Unknown   Unknown    Unknown         FAKE            000001     Q_owner,Fake              DVPERF 165 INCOMING UNKNOWN                                                    OTHER
-Murillo   Townsend   St. Pierre      B9RS  040370    +4037A     Harris,Jan                ILSJP  165 INCOMING NLS             L3_DEVELOPER  jan2@us.ibm.com              DEV
-Ling      McConathy  Testone         XILA  960614    960614     STOR,Intern2              ISTOR2 165 PERSONAL STOR                          itra14@truth2.austin.ibm.com ZTRANS
-Paranjape Contreras  Ellsworth       B4RS  359927    359927     Neible,Theodore           TEDN   165 PERSONAL SysMgt Solution L3_DEVELOPER  tneible@us.ibm.com           DEV
-Paranjape Contreras  Ellsworth       B4RS  537450    537450     Tran,K.V.                 KVTRAN 165 PERSONAL SysMgt Solution L3_DEVELOPER  kvtran@us.ibm.com            DEV
-Ling      McConathy  Testone         XILA  558166    558166     Barrett,Cindy             CINDY  165 PERSONAL VIRT            L2_SCREEN_AUS barrett@us.ibm.com           ZTRANS
-Ling      McConathy  Testone         XILA  960615    960615     VIRT,Intern1              IVIRT1 165 PERSONAL VIRT            L2_TECH       itra15@truth2.austin.ibm.com ZTRANS
-Ling      McConathy  Testone         XILA  960616    960616     VIRT,Intern2              IVIRT2 165 PERSONAL VIRT            L2_TECH       itra16@truth2.austin.ibm.com ZTRANS
-Ling      McConathy  Testone         XILA  960617    960617     INST,Intern1              IINST1 165 PERSONAL INST            L2_TECH       itra17@truth2.austin.ibm.com ZTRANS
-Murillo   Simon      Thomas          BN2S  618485    618485     Fought,Kevin              FOUGHT 165 PERSONAL Kernel          L3_DEVELOPER  fought@us.ibm.com            DEV
-Paranjape Contreras  Ellsworth       B4RS  802762    802762     Lowe,Suanne               PEGCIM 165 INCOMING SysMgt Solution L3_DEVELOPER  suelo@us.ibm.com             DEV
-Murillo   Jones      Paul            D58S  009822    0A9822     Venkatsubra,Venkat        VENKAT 165 PERSONAL TCP/IP          L3_DEVELOPER  venkats@us.ibm.com           DEV
-Murillo   Townsend   Ellett-Salmoran 4VRA  399827    399827     Kovacs,Bob                KOVACS 165 PERSONAL VIO             L3_DEVELOPER  bkovacs@us.ibm.com           DEV
-Ling      McConathy  Testone         XILA  960618    960618     INST,Intern2              IINST2 165 PERSONAL INST            L2_TECH       itra18@truth2.austin.ibm.com ZTRANS
-Ling      McConathy  Testone         XILA  000588    069840     Varraz,Lilian             WWWLIV 248 PERSONAL VIRT            L2_TECH       lilianvarraz@fr.ibm.com      SATEUR
-Unknown   Unknown    Unknown         CJHS  051860    51860+     Veeramalla,Ramesh         RAMV   165 PERSONAL FILESYSTEMS     L3_DEVELOPER  rameshv@us.ibm.com           DEV
-Murillo   Simon      Barenys         WZ8S  417018    417018     Mazzurana,Paul D.         PDMAZZ 165 PERSONAL NFS             L3_DEVELOPER  pdmazz@us.ibm.com            DEV
-Murillo   Simon      Barenys         WZ8S  687200    687200     Nichols,Frank             L3FLN  165 PERSONAL NFS             L3_DEVELOPER  nichols3@us.ibm.com          DEV
-Murillo   Townsend   St. Pierre      B9RS  463406    463406     Wigginton,Ann             ANN    165 PERSONAL INSTALL         L3_DEVELOPER  awiggint@us.ibm.com          DEV
-Ling      McConathy  Clark           5IEA  205799    2A5799     Ostrander,Angie           DMGR   165 INCOMING NET             L2_TECH       angiecla@us.ibm.com          ZTRANS
-Ling      McConathy  Clark           5IEA  305356    C-5UEV     Smith,Perry               PEDZ   165 PERSONAL NET             L2_TECH       pedzan@us.ibm.com            ZTRANS
-Ling      McConathy  Testone         XILA  001243    003202     Honore,Aaron              WWWAAH 248 PERSONAL VIRT            L2_TECH       aaron.honore@fr.ibm.com      SATEUR
-Ling      McConathy  Aaron           D1ZA  240069    C-1U0K     Agarawal,Harish           AMDUMP 165 INCOMING DUMP            L2_TECH       agarawal@us.ibm.com          ZTRANS
-Ling      McConathy  Testone         XILA  404214    4A4214     Moss,Leon                 LEON   165 PERSONAL STOR            L2_TECH       moss1@us.ibm.com             ZTRANS
-Unknown   Unknown    Unknown         INDIA 951517    951517     Tah,Arnab                 ARNAB  165 PERSONAL CIFS            L3_DEVELOPER  arnabtah@in.ibm.com          DEV
-Ling      McConathy  Aaron           D1ZA  347516    3D7516     Damodaran,Anil            AMFSLV 165 INCOMING FSLV            L2_SCREEN_AUS anildam@us.ibm.com           ZTRANS
-Murillo   Simon      Barenys         WZ8S  200752    2A0752     Solomon,Andrew            ASOLO  165 PERSONAL NFFS            L3_DEVELOPER  asolomon@us.ibm.com          DEV
-Murillo   Townsend                   B2WS  105527    105527     Genty,D.M.                GENTY  165 PERSONAL Dev Mgr         MANAGER       genty@us.ibm.com             DEV
-Murillo   Townsend   Mulvey          UDYA  222031    122031     Cunningham,J.B.           JBC    165 PERSONAL NETWORK DD      L3_DEVELOPER  jbc@us.ibm.com               DEV
-Murillo   Jones      Paul            D58S  107337    1A7337     Banerjee,Dwip             DWIP   165 PERSONAL TCP/IP          L3_DEVELOPER  dnbanerg@us.ibm.com          DEV
-Gupta     Makis      Young           OEIA  598893    598893     Kashyap,Neeraj Kumar      NKCDE  165 PERSONAL Performance     L3_DEVELOPER  nkashyap@in.ibm.com          DEV
-Ling      McConathy  Clark           5IEA  208342    2A8342     Garcia,Antonio            P3P    165 INCOMING Z3P             L2_TECH       garcia1@us.ibm.com           ZTRANS
-Murillo   Townsend   Mulvey          UDYA  202998    2A2998     Torres,Pedro              PEDRO  165 PERSONAL NETWORK DD      L3_DEVELOPER  pvtorres@us.ibm.com          DEV
-Ling      McConathy  Testone         XILA  558166    558166     Barrett,Cindy             RATRAN 165 OTHER    VIRT            L2_SCREEN_AUS barrett@us.ibm.com           ZTRANS
-Murillo   Townsend   St. Pierre      B9RS  040370    +4037A     Harris,Jan                ILSDEV 165 INCOMING NLS             L3_DEVELOPER  jan2@us.ibm.com              DEV
-Ling      McConathy  Brock           I4SA  362492    362492     McLeod,Alex               AMHA   165 INCOMING HA              L2_SCREEN_AUS amcleod@us.ibm.com           ZTRANS
-Ling      McConathy  Clark           5IEA  301622    C-AFT2     Talmage,Steve             ST     165 PERSONAL NET             L2_TECH       stalmage@us.ibm.com          ZTRANS
-Ling      McConathy  Clark           5IEA  043370    6A2207     Hernandez,Paul            HERNP  165 PERSONAL NET             L2_TECH       phh@us.ibm.com               ZTRANS
-Ling      McConathy  Aaron           D1ZA  303765    C-3P6E     Unruh,Steven              SUNRUH 165 PERSONAL FSLV            L2_TECH       sunruh@us.ibm.com            ZTRANS
-Ling      McConathy  Brock           I4SA  302776    C-2P7F     Guenter-Smith,Nancy       FAKEQ1 165 PERSONAL ZOPS            L2_TECH                                    ZTRANS
-Ling      McConathy  Testone         XILA  303925    C-3RBE     Zhang,Erho                ERHO   165 PERSONAL MISC            L2_TECH       erho@us.ibm.com              ZTRANS
-Ling      McConathy  Brock           I4SA  049654    C+66YW     Thurston,Signe            FAKEQ2 165 PERSONAL ZOPS                          sest@us.ibm.com              ZTRANS
-Ling      McConathy  Brock           I4SA  303345    954319     Sutton,Rick               SUTTON 165 PERSONAL PERF            L2_TECH       rbsutton@us.ibm.com          ZTRANS
-Ling      McConathy  Testone         XILA  040670    4A2757     Puig,Rick                 PUIG   165 PERSONAL INST            L2_SCREEN_AUS puigr@us.ibm.com             ZTRANS
-Ling      McConathy  Brock           I4SA  049655    C-66YW     Thurston2,Signe           FAKEQ3 165 PERSONAL ZOPS                          sest@us.ibm.com              ZTRANS
-Ling      McConathy  Clark           5IEA  073110    7A2818     Mahajan,Puneet            SDAIX  165 INCOMING ZISV            L2_SCREEN_AUS pmahajan@us.ibm.com          ZTRANS
-Ling      McConathy  Aaron           D1ZA  303951    7D9242     Bello,Adekunle            KUNLE  165 PERSONAL FSLV            L2_SCREEN_AUS kunle@us.ibm.com             ZTRANS
-Ling      McConathy  Testone         XILA  043230    6A2198     Ramagiri,Vani             VANI   165 PERSONAL VIRT            L2_SCREEN_AUS vani@us.ibm.com              ZTRANS
-Ling      McConathy  Brock           I4SA  165874    165874     Zimmer,Linda              FAKEQ4 165 PERSONAL ZOPS            L2_TECH       zimmerl@us.ibm.com           ZTRANS
-Murillo   Townsend   Chang           D59S  318491    3A8491     Tinnakul,Teerasit         TINN   165 PERSONAL STORAGE DD      L3_DEVELOPER  teerasit@us.ibm.com          DEV
-Unknown   Unknown    Unknown         CJHS  053771    053771     Vazzalwar,Girish          GIRISH 165 PERSONAL SYSPROC         L3_DEVELOPER  girishva@us.ibm.com          DEV
-Ling      McConathy  Brock           I4SA  024262    024261     Marcantoni,Claudio        CLAM   248 PERSONAL HA              L2_TECH       claudiom@it.ibm.com          SATEUR
-Murillo   Townsend   Ellett-Salmoran 4VRA  308504    3A8504     Vallabhaneni,Vasu         VASU   165 PERSONAL VIO             L3_DEVELOPER  vasuvall@us.ibm.com          DEV
-Murillo   Simon      Barenys         WZ8S  912581    9A2580     Jennings,Cheryl L         KRNHLD 165 INCOMING FILESYSTEMS     L3_DEVELOPER  halllc@us.ibm.com            DEV
-Unknown   Unknown    Unknown         INDIA 077322    077322     Kumar,Kislaya             KISLAY 165 PERSONAL CMDS            L3_DEVELOPER  kislakum@in.ibm.com          DEV
-Ling      McConathy  Aaron           D1ZA  215881    215881     Chalemin,Tex (Glen)       AMKERN 165 INCOMING KERN            L2_TECH       gchalemi@us.ibm.com          ZTRANS
-Ling      McConathy  Brock           I4SA  276448    1A8831     Wong,Kathy                AMLIB  165 INCOMING LIB             L2_SCREEN_AUS wongk@us.ibm.com             ZTRANS
-Ling      McConathy  Brock           I4SA  001251    E05101     Merzel,Mirko              WWWMEM 248 PERSONAL LIB             L2_TECH       mirko.merzel@si.ibm.com      SATEUR
-Ling      McConathy  Testone         XILA  301848    9A7790     Lang,Steven               SLANG  165 PERSONAL STOR            L2_SCREEN_AUS stevenla@us.ibm.com          ZTRANS
-Ling      McConathy  Brock           I4SA  300516    483515     Quinn,William             QUINNW 165 PERSONAL PERF            L2_TECH       quinnw@us.ibm.com            ZTRANS
-Ling      McConathy  Testone         XILA  356754    356754     Leva,Dominick             LEVA   165 PERSONAL INST            L2_TECH       dleva@us.ibm.com             ZTRANS
-Unknown   Unknown    Unknown         INDIA 032768    032768     Smitha,Radhakrishnan      SMITHA 165 PERSONAL Performance     L3_DEVELOPER  smradhak@in.ibm.com          DEV
-Unknown   Unknown    Unknown         INDIA 030140    030140     Rengasamy,Errappan        RENGA  165 PERSONAL Performance     L3_DEVELOPER  rerrappa@in.ibm.com          DEV
-Murillo   Simon      Beck            UD3A  691118    691118     Dugan,Katherine           KDUGAN 165 PERSONAL SECURITY        L3_DEVELOPER  kdugan@us.ibm.com            DEV
-Ling      McConathy  Testone         XILA  174970    017497     Ullmann,Harry             AMMISC 165 INCOMING MISC            L2_SCREEN_AUS hullmann@us.ibm.com          ZTRANS
-Unknown   Unknown    Unknown         INDIA 389833    389833     Josiah,Samuel             JOE    165 PERSONAL Performance     L3_DEVELOPER  josamuel@in.ibm.com          DEV
-Ling      McConathy  Clark           5IEA  001250    008188     Koo Mo Shan,Daniel        WWWDKS 248 PERSONAL NET             L2_TECH       daniel.koo@uk.ibm.com        SATEUR
-Ling      McConathy  Clark           5IEA  403604    4A3604     Baratakke,Kavitha         KAVIB  165 PERSONAL PREM            L2_TECH       kbaratak@us.ibm.com          ZTRANS
-Ling      McConathy  Testone         XILA  276058    2A5849     Mohammad,Barkat           BARKAT 165 PERSONAL INST            L2_SCREEN_AUS barkat@us.ibm.com            ZTRANS
-Murillo   Simon      Barenys         WZ8S  912581    9A2580     Jennings,Cheryl L         AIXNAS 165 INCOMING FILESYSTEMS     L3_DEVELOPER  halllc@us.ibm.com            DEV
-Unknown   Unknown    Unknown         INDIA 031241    031241     Gundurao,Srinivas         GSRINI 165 PERSONAL NFS             L3_DEVELOPER  sgundura@in.ibm.com          DEV
-Murillo   Townsend   Chang           D59S  307299    307299     Maddali,Sudhir            SUDHIR 165 PERSONAL STORAGE DD      L3_DEVELOPER  smaddali@in.ibm.com          DEV
-Murillo   Simon      Beck            UD3A            395296     Tenginakai,Jyoti          OPNSRC 165 INCOMING SECURITY        L3_DEVELOPER  jyoti.b.t@in.ibm.com         DEV
-Murillo   Townsend   Chang           D59S  139249    139249     Domrow,Gary               RALGSD 165 PERSONAL STORAGE DD      L3_DEVELOPER  domrow@us.ibm.com            DEV
-Ling      McConathy  Clark           5IEA  043370    6A2207     Hernandez,Paul            AMNET  165 INCOMING NET             L2_TECH       phh@us.ibm.com               ZTRANS
-Murillo   Townsend   Chang           D59S  715803    7A5803     Kassem,Fadi               KASSEM 165 PERSONAL UNKNOWN         L3_DEVELOPER  fmkassem@us.ibm.com          DEV
-Murillo   Townsend   Chang           D59S  716293    7A6293     Ham,Nick                  NSHAM  165 PERSONAL STORAGE DD      L3_DEVELOPER  nsham@us.ibm.com             DEV
-Unknown   Unknown    Unknown         INDIA 301471    919767     Dey,Prashanto             PDEY   165 PERSONAL VIO             L3_DEVELOPER  prashand@in.ibm.com          DEV
-Murillo   Simon      Beck            UD3A  023233    023232     Gadekar,Vinay             VINAY  165 PERSONAL SECURITY        L3_DEVELOPER  vgadekar@in.ibm.com          DEV
-Ling      McConathy  Clark           5IEA  301220    0G7885     Kumar,Ram                 RK     165 PERSONAL NET             L2_TECH       ramkumar@us.ibm.com          ZTRANS
-Ling      McConathy  Aaron           D1ZA  347516    3D7516     Damodaran,Anil            ANILD  165 PERSONAL FSLV            L2_SCREEN_AUS anildam@us.ibm.com           ZTRANS
-Ling      McConathy  Clark           5IEA  300538    0G5093     Desai,Anand               ANAND  165 PERSONAL APP             L2_TECH       anandd@us.ibm.com            ZTRANS
-Ling      McConathy  Clark           5IEA  712802    7A2802     Luo,Wei                   WEI    165 PERSONAL PREM            L2_SCREEN_AUS weiluo@us.ibm.com            ZTRANS
-Unknown   Unknown    Unknown         E54S  756557    756557     Das,Manoj Kumar           MANOJK 165 PERSONAL Performance     L3_DEVELOPER  manojkdas@in.ibm.com         DEV
-Ling      McConathy  Testone         XILA  001226    123276     Begau,Bertram             WWWBBE 248 PERSONAL STOR            L2_TECH       bertram.begau@de.ibm.com     SATEUR
-Ling      McConathy  Brock           I4SA  362492    362492     McLeod,Alex               MCLEOD 165 PERSONAL HA              L2_SCREEN_AUS amcleod@us.ibm.com           ZTRANS
-Ling      McConathy  Brock           I4SA  300473    900193     Jaehde,Astrid             ASTRID 165 PERSONAL HA              L2_SCREEN_AUS jaehde@us.ibm.com            ZTRANS
-Murillo   Simon      Thomas          BN2S  301334    C-1LLV     Hegde,Nikhil              NH     165 PERSONAL Core Kernel     L3_DEVELOPER  nhegde@us.ibm.com            DEV
-Manasso              Hayes           5U5A  301379    C-1C79     Bandi,Saila               SAILA  165 PERSONAL UNKNOWN         L2_TECH       sbandi@us.ibm.com            ZTRANS
-Murillo   Simon      Barenys         WZ8S  912581    9A2580     Jennings,Cheryl L         HALLLC 165 PERSONAL FILESYSTEMS     L3_DEVELOPER  halllc@us.ibm.com            DEV
-Ling      McConathy  Brock           I4SA  001249    062803     Oost,Geert                WWWGOD 248 PERSONAL PERF            L2_TECH       geert_oost@nl.ibm.com        SATEUR
-Ling      McConathy  Aaron           D1ZA  311356    C-1LEX     Ranganathan,Prakash       PRAKAS 165 PERSONAL FSLV            L2_TECH       prakash@us.ibm.com           ZTRANS
-Ling      McConathy  Aaron           D1ZA  000582    910750     Ylipiessa,Heikki          WWWHEY 248 PERSONAL KERN            L2_TECH       heikki.ylipiessa@fi.ibm.com  SATEUR
-Ling      McConathy  Aaron           D1ZA  301187    0G8524     Raghavan,Srini            SRIRAG 165 PERSONAL KERN            L2_TECH       raghavan@us.ibm.com          ZTRANS
-Murillo   Jones      Epsztein        6T4A  910262    910262     Lepakshaiah,Mallesh       ML     165 PERSONAL RAS             L3_DEVELOPER  mallesh@us.ibm.com           DEV
-Ling      McConathy  Clark           5IEA  794421    794421     Xu,Charleen               CHAR   165 PERSONAL APP             L2_TECH       charleen@us.ibm.com          ZTRANS
-Ling      McConathy  Aaron           D1ZA  001248    082630     Khan-Afshar,Kurosh        WWWKKA 248 PERSONAL KERN            L2_TECH       kurosh.ka@es.ibm.com         SATEUR
-Ling      McConathy  Testone         XILA  301552    4D1344     Moore,Shannon             SMORES 165 PERSONAL STOR            L2_SCREEN_AUS shamoore@us.ibm.com          ZTRANS
-Manasso              Hayes           5U5A  302042    C-20MK     Roy,Suparna               SUPARN 165 PERSONAL UNKNOWN         L2_TECH       suparna@us.ibm.com           OTHER
-Unknown   Unknown    Unknown         CJHS  911624    9A1624     Zoss,Evan                 EVAN   165 PERSONAL LVM             L3_DEVELOPER  evanzoss@us.ibm.com          DEV
-Unknown   Unknown    Unknown         INDIA 290704    290704     Nagaraj,Ramesh C          RAMESH 165 PERSONAL STORAGE DD      L3_DEVELOPER  ramesh.cn@in.ibm.com         DEV
-Ling      McConathy  Aaron           D1ZA  000254    052361     Romac,Christophe          EMDUMP 248 INCOMING DUMP            L2_TECH       cromac@fr.ibm.com            SATEUR
-Ling      McConathy  Brock           I4SA  024262    024261     Marcantoni,Claudio        EMHA   248 INCOMING HA              L2_TECH       claudiom@it.ibm.com          SATEUR
-Ling      McConathy  Testone         XILA  276058    2A5849     Mohammad,Barkat           AMINST 165 INCOMING INST            L2_SCREEN_AUS barkat@us.ibm.com            ZTRANS
-Ling      McConathy  Testone         XILA  797720    051718     Spornhauer,Michael        EMINST 248 INCOMING INST            L2_TECH       spornhau@de.ibm.com          SATEUR
-Ling      McConathy  Sutcliffe       39KA  582676    582676     Simon,Robert              ZAIX   13A INCOMING CLST_FS         L2_SCREEN_POK rsimon@us.ibm.com            POK
-Ling      McConathy  Sutcliffe       39KA  582676    582676     Simon,Robert              SCI13A 13A INCOMING CLST_FS         L2_SCREEN_POK rsimon@us.ibm.com            POK
-Unknown   Unknown    Unknown         INDIA 011846    011846     Prashant,Arpana           ARPANA 165 PERSONAL CMDS            L3_DEVELOPER  arprasha@in.ibm.com          DEV
-Ling      McConathy  Sutcliffe       39KA  582676    582676     Simon,Robert              AIXFUP 13A OTHER    CLST_FS         L2_SCREEN_POK rsimon@us.ibm.com            POK
-Ling      McConathy  Aaron           D1ZA  081159    081159     Braunbeck,Thomas          EMKERN 248 INCOMING KERN            L2_TECH       braunbec@de.ibm.com          SATEUR
-Ling      McConathy  Sutcliffe       39KA  582676    582676     Simon,Robert              PPSWT  13A OTHER    CLST_FS         L2_SCREEN_POK rsimon@us.ibm.com            POK
-Ling      McConathy  Sutcliffe       39KA  582676    582676     Simon,Robert              JUDY   13A PERSONAL CLST_FS         L2_SCREEN_POK rsimon@us.ibm.com            POK
-Ling      McConathy  Weber           WQPA  431780    903268     K,Anil                    AMPREM 165 INCOMING ZETC            L2_TECH       kanil@us.ibm.com             ZTRANS
-Ling      McConathy  Brock           I4SA  022431    022431     Lehner,Wolfgang           EMLIB  248 INCOMING LIB             L2_TECH       wolfgang_lehner@at.ibm.com   SATEUR
-Paranjape Contreras  Tan             HMYS  908057    908057     Birgen,G.C.               WSMDEV 165 INCOMING SysMgt Framewrk L3_DEVELOPER  birgen@us.ibm.com            DEV
-Ling      McConathy  Testone         XILA  301848    9A7790     Lang,Steven               AMSTOR 165 INCOMING STOR            L2_SCREEN_AUS stevenla@us.ibm.com          ZTRANS
-Ling      McConathy  Clark           5IEA  001250    008188     Koo Mo Shan,Daniel        EMNET  248 INCOMING NET             L2_TECH       daniel.koo@uk.ibm.com        SATEUR
-Ling      McConathy  Clark           5IEA  794421    794421     Xu,Charleen               JAVAIX 165 INCOMING APP             L2_TECH       charleen@us.ibm.com          ZTRANS
-Ling      McConathy  Brock           I4SA  024248    024248     Bozzini,Antonio           EMPERF 248 INCOMING PERF            L2_TECH       abozzini@it.ibm.com          SATEUR
-Ling      McConathy  Weber           WQPA  002007    3D9915     Cline,Kyle                KCLINE 165 PERSONAL ZETC            L2_TECH       kcline@us.ibm.com            ZTRANS
-Ling      McConathy  Testone         XILA  001226    123276     Begau,Bertram             EMSTOR 248 INCOMING STOR            L2_TECH       bertram.begau@de.ibm.com     SATEUR
-Unknown   Unknown    Unknown         INDIA 319963    319963     Singh,Dilip               DILIPK 165 PERSONAL SYSPROC         L3_DEVELOPER  dilsingh@in.ibm.com          DEV
-Ling      McConathy  Testone         XILA  001243    003202     Honore,Aaron              EMVIRT 248 INCOMING VIRT            L2_TECH       aaron.honore@fr.ibm.com      SATEUR
-Murillo   Jones      Paul            D58S  918416    918416     Ranadip,Das               RANAD  165 PERSONAL TCP/IP          L3_DEVELOPER  dranadip@in.ibm.com          DEV
-Ling      McConathy  Clark           5IEA  712802    7A2802     Luo,Wei                   PAT    165 INCOMING PREM            L2_SCREEN_AUS weiluo@us.ibm.com            ZTRANS
-Unknown   Unknown    Unknown         CJHS  226777    226777     SANCHEZ,DOUGLAS           DOUGS  165 PERSONAL VIO             L3_DEVELOPER  desanch@us.ibm.com           DEV
-Unknown   Unknown    Unknown         E92S  445539    4D5539     Venteicher,Bryan          BRYANV 165 PERSONAL FILESYSTEMS     L3_DEVELOPER  bventei@us.ibm.com           DEV
-Ling      McConathy  Testone         XILA  043230    6A2198     Ramagiri,Vani             AMVIRT 165 INCOMING VIRT            L2_SCREEN_AUS vani@us.ibm.com              ZTRANS
-Ling      McConathy  Testone         XILA  040670    4A2757     Puig,Rick                 LEGACY 165 INCOMING INST            L2_SCREEN_AUS puigr@us.ibm.com             ZTRANS
-Unknown   Unknown    Unknown         INDIA 611290    611290     Lingappa,Shivakumar       SHIVA  165 PERSONAL NETWORK DD      L3_DEVELOPER  shivakumar_kl@in.ibm.com     DEV
-Ling      McConathy  Clark           5IEA  304417    C-441Y     Lin,Chiang-Lung           CLL    165 PERSONAL NET             L2_TECH       cll@us.ibm.com               ZTRANS
-Murillo   Townsend   Chang           D59S  216810    2A6810     Patel,Jayant              JAYANT 165 PERSONAL VIO             L3_DEVELOPER  jayantp@us.ibm.com           DEV
-Ling      McConathy  Clark           5IEA  301561    C-AE618    Griffiths,Paul            GRIFF  165 PERSONAL ZISV            L2_TECH       griff@us.ibm.com             ZTRANS
-Unknown   Unknown    Unknown         INDIA 014532    014532     Srinivas,Gargi            GARGI  165 PERSONAL CMDS            L3_DEVELOPER  gargi.srinivas@in.ibm.com    DEV
-Unknown   Unknown    Unknown         CJHS  303482    C-3VH2     Steves,Doug               STEVES 165 PERSONAL VMM             L3_DEVELOPER  dsteves@us.ibm.com           DEV
-Unknown   Unknown    Unknown         INDIA 137406    137406     Chandran,Shajith          SHAJ   165 PERSONAL SYSLDR          L3_DEVELOPER  shajithchandran@in.ibm.com   DEV
-Unknown   Unknown    Unknown         INDIA 003205    003205     Jacob,Sophia              SOPHIA 165 PERSONAL SECURITY        L3_DEVELOPER  sophiajacob@in.ibm.com       DEV
-Murillo   Simon      Barenys         WZ8S  912581    9A2580     Jennings,Cheryl L         AIXOS  165 INCOMING FILESYSTEMS     L3_DEVELOPER  halllc@us.ibm.com            DEV
-Unknown   Unknown    Unknown         CJHS  301157    C-A1EX     Hayden,Ross               OEMAIX 165 INCOMING Dev Support     L3_DEVELOPER  rossome@us.ibm.com           DEV
-Unknown   Unknown    Unknown         INDIA 153264    153264     Venkatachalam,Ponraj      PONRAJ 165 PERSONAL TCP/IP          L3_DEVELOPER  ponvenka@in.ibm.com          DEV
-Unknown   Unknown    Unknown         INDIA 075977    075977     Katyayan,Kunal            KKATYA 165 PERSONAL PRINTERS        L3_DEVELOPER  kkatyaya@in.ibm.com          DEV
-Unknown   Unknown    Unknown         CJHS  915357    9A5357     Onwuta,Azubuike V. (Zuby) ZUBY   165 PERSONAL CIFS            L3_DEVELOPER  onwuta@us.ibm.com            DEV
-Unknown   Unknown    Unknown         INDIA 003206    070757     Rahiman,Nabil             NABIL  165 PERSONAL CMDS            L3_DEVELOPER  nrahiman@in.ibm.com          DEV
-Unknown   Unknown    Unknown         INDIA 072883    072883     Padmanabhan,Dinoja        DINOJA 165 PERSONAL TCP/IP          L3_DEVELOPER  dinojapadmanabhan@in.ibm.com DEV
-Ling      McConathy  Brock           I4SA  602187    6A2187     Davidson,Grover           AMPERF 165 INCOMING PERF            L2_SCREEN_AUS grover@us.ibm.com            ZTRANS
-Ling      McConathy  Testone         XILA  232768    232768     Martin,Glen               GLENC  165 PERSONAL VIRT            L2_TECH       glenc@us.ibm.com             ZTRANS
-Ling      McConathy  Aaron           D1ZA  113347    013347     Chan,Rick                 RSSH   95A PERSONAL DUMP            L2_TECH       rickchan@tw.ibm.com          SATCHN
-Unknown   Unknown    Unknown         INDIA 891664    891664     Singh,Anil                ANILKS 165 PERSONAL CMDS            L3_DEVELOPER  anisingh@in.ibm.com          DEV
-Murillo   Jones      Paul            D58S  301551    C-1E5S     Srinivasan,Niranjan       NIRAN  165 PERSONAL TCP/IP          L3_DEVELOPER  niran@us.ibm.com             DEV
-Ling      McConathy  Brock           I4SA  073831    3D7484     Schlachter,Gus            GUSS   165 PERSONAL HA              L2_TECH       gussch@us.ibm.com            ZTRANS
-Murillo   Townsend   Kehne           BTGS  201719    2A1719     Arbab,Reza                NSMOZ  165 INCOMING GRAPHICS        L3_DEVELOPER  arbab@us.ibm.com             DEV
-Ling      McConathy  Aaron           D1ZA  304661    220774     Chun,Sung                 SUNGMC 165 PERSONAL FSLV            L2_SCREEN_AUS sungmc@us.ibm.com            ZTRANS
-Unknown   Unknown    Unknown         INDIA 628739    628739     Mansur,Vishal R           VISHAL 165 PERSONAL NETWORK DD      L3_DEVELOPER  vimansur@in.ibm.com          DEV
-Ling      McConathy  Clark           5IEA  304624    9D0131     Srikanth,Sangeetha        SSRIKA 165 PERSONAL NET             L2_SCREEN_AUS ssrikant@us.ibm.com          ZTRANS
-Murillo   Simon      Beck            UD3A  728742    728742     Lita,Christian            DEVP11 165 PERSONAL SECURITY                                                   DEV
-Ling      McConathy  Aaron           D1ZA  301274    C-ATY1     Thoutem,Rakesh            RAK    165 PERSONAL FSLV            L2_TECH       rakesht@us.ibm.com           ZTRANS
-Ling      McConathy  Aaron           D1ZA  303335    C-C3CN     Kuo,Wei                   KUO    165 PERSONAL KERN            L2_TECH       kuo@us.ibm.com               ZTRANS
-Unknown   Unknown    Unknown         CJHS  319572    C-9WG289   OBryan,Joe                JBRYAN 165 PERSONAL LVM             L3_DEVELOPER  josbryan@us.ibm.com          DEV
-Ling      McConathy  Aaron           D1ZA  303723    C-3PTT     Ranganathan,Sekar         SEKAR  165 PERSONAL KERN            L2_TECH       sekar@us.ibm.com             ZTRANS
-Ling      McConathy  Aaron           D1ZA  300366    C-0CFF     Sulu,Amarendar            ASULU  165 PERSONAL KERN            L2_TECH       asulu@us.ibm.com             ZTRANS
-Ling      McConathy  Clark           5IEA  304624    9D0131     Srikanth,Sangeetha        PCDD   165 INCOMING NET             L2_SCREEN_AUS ssrikant@us.ibm.com          ZTRANS
-Ling      McConathy  Testone         XILA  301848    9A7790     Lang,Steven               PASTOR 165 INCOMING STOR            L2_SCREEN_AUS stevenla@us.ibm.com          ZTRANS
-Ling      McConathy  Clark           5IEA  304624    9D0131     Srikanth,Sangeetha        WWNETK 165 INCOMING NET             L2_SCREEN_AUS ssrikant@us.ibm.com          ZTRANS
-Ling      McConathy  Clark           5IEA  717297    7A7297     Shi,Suzanne               WWNETA 165 INCOMING NET             L2_SCREEN_AUS suzanshi@us.ibm.com          ZTRANS
-Ling      McConathy  Brock           I4SA  301152    C-AAWB     Hou,Alex                  ALEXH  165 PERSONAL LIB             L2_TECH       alexhou@us.ibm.com           ZTRANS
-Unknown   Unknown    Unknown         INDIA 046701    04670G     Korlapati,Amulya          AMULYA 165 PERSONAL CMDS            L3_DEVELOPER  akorlapa@in.ibm.com          DEV
-Unknown   Unknown    Unknown         INDIA 027772    02777H     Kulkarni,Chidambar        CHIDUK 165 PERSONAL SYSPROC         L3_DEVELOPER  chidkulk@in.ibm.com          DEV
-Unknown   Unknown    Unknown         INDIA 100142    000142     Kulkarni,Vaibhav          VAIBHA 165 PERSONAL TCP/IP          L3_DEVELOPER  vaibhkul@in.ibm.com          DEV
-Ling      McConathy  Brock           I4SA  602187    6A2187     Davidson,Grover           PPERF  165 INCOMING PERF            L2_SCREEN_AUS grover@us.ibm.com            ZTRANS
-Ling      McConathy  Testone         XILA  276058    2A5849     Mohammad,Barkat           PINST  165 INCOMING INST            L2_SCREEN_AUS barkat@us.ibm.com            ZTRANS
-Ling      McConathy  Testone         XILA  304458    0G7886     Meyer,Aaron               PDIAG  165 INCOMING VIRT            L2_SCREEN_AUS meyera@us.ibm.com            ZTRANS
-Ling      McConathy  Aaron           D1ZA  240069    C-1U0K     Agarawal,Harish           PDUMPS 165 INCOMING DUMP            L2_TECH       agarawal@us.ibm.com          ZTRANS
-Ling      McConathy  Testone         XILA  043230    6A2198     Ramagiri,Vani             PVIOS  165 INCOMING VIRT            L2_SCREEN_AUS vani@us.ibm.com              ZTRANS
-Ling      McConathy  Brock           I4SA  276448    1A8831     Wong,Kathy                PCMDS  165 INCOMING LIB             L2_SCREEN_AUS wongk@us.ibm.com             ZTRANS
-Unknown   Unknown    Unknown         INDIA 070710    07071G     Jaiswal,Mansi             MANSIJ 165 PERSONAL CMDS            L3_DEVELOPER  mansjais@in.ibm.com          DEV
-Ling      McConathy  Testone         XILA  303925    C-3RBE     Zhang,Erho                PXDSK  165 INCOMING MISC            L2_TECH       erho@us.ibm.com              ZTRANS
-Ling      McConathy  Testone         XILA  303925    C-3RBE     Zhang,Erho                PSMWS  165 INCOMING MISC            L2_TECH       erho@us.ibm.com              ZTRANS
-Ling      McConathy  Testone         XILA  303925    C-3RBE     Zhang,Erho                PNLSA  165 INCOMING MISC            L2_TECH       erho@us.ibm.com              ZTRANS
-Ling      McConathy  Testone         XILA  303925    C-3RBE     Zhang,Erho                PAICC  165 INCOMING MISC            L2_TECH       erho@us.ibm.com              ZTRANS
-Ling      McConathy  Testone         XILA  174970    017497     Ullmann,Harry             PGOS   165 INCOMING MISC            L2_SCREEN_AUS hullmann@us.ibm.com          ZTRANS
-Ling      McConathy  Clark           5IEA  507643    507643     Patel,Darshan             PX25   165 INCOMING NET             L2_SCREEN_AUS darshanp@us.ibm.com          ZTRANS
-Ling      McConathy  Clark           5IEA  304624    9D0131     Srikanth,Sangeetha        PATM   165 INCOMING NET             L2_SCREEN_AUS ssrikant@us.ibm.com          ZTRANS
-Ling      McConathy  Brock           I4SA  073831    3D7484     Schlachter,Gus            PHACMP 165 INCOMING HA              L2_TECH       gussch@us.ibm.com            ZTRANS
-Ling      McConathy  Clark           5IEA  205799    2A5799     Ostrander,Angie           PPRNT  165 INCOMING NET             L2_TECH       angiecla@us.ibm.com          ZTRANS
-Ling      McConathy  Clark           5IEA  205799    2A5799     Ostrander,Angie           PTTY   165 INCOMING NET             L2_TECH       angiecla@us.ibm.com          ZTRANS
-Ling      McConathy  Brock           I4SA  276448    1A8831     Wong,Kathy                PLIB   165 INCOMING LIB             L2_SCREEN_AUS wongk@us.ibm.com             ZTRANS
-Ling      McConathy  Brock           I4SA  276448    1A8831     Wong,Kathy                PAUTH  165 INCOMING LIB             L2_SCREEN_AUS wongk@us.ibm.com             ZTRANS
-Ling      McConathy  Brock           I4SA  276448    1A8831     Wong,Kathy                WWACL  165 INCOMING LIB             L2_SCREEN_AUS wongk@us.ibm.com             ZTRANS
-Ling      McConathy  Testone         XILA  302504    C-B50V     Willcox,Wayne             KTM400 165 PERSONAL STOR            L2_TECH       wwillcox@us.ibm.com          ZTRANS
-Ling      McConathy  Brock           I4SA  977963    977963     Ni,WeiHua                 WEIHUA 95A PERSONAL LIB             L2_TECH       niweihua@cn.ibm.com          SATCHN
-Unknown   Unknown    Unknown         INDIA 313975    313975     Gupta,Saurabh K           SAURAB 165 PERSONAL SECURITY        L3_DEVELOPER  saukgupt@in.ibm.com          DEV
-Unknown   Unknown    Unknown         INDIA 675770    675770     Deuri,Kokil Kumar         KKOKIL 165 PERSONAL TCP/IP          L3_DEVELOPER  kokdeuri@in.ibm.com          DEV
-Ling      McConathy  Clark           5IEA  205799    2A5799     Ostrander,Angie           ANGIE  165 PERSONAL NET             L2_TECH       angiecla@us.ibm.com          ZTRANS
-Ling      McConathy  Clark           5IEA  303172    C-CAPT     McInerney,Kevin           KEVINM 165 PERSONAL APP             L2_TECH       kevmc@us.ibm.com             ZTRANS
-Ling      McConathy  Brock           I4SA  980679    980679     Zhou,XingChen             ZHOUXC 95A PERSONAL LIB             L2_TECH       zhouxch@cn.ibm.com           SATCHN
-Unknown   Unknown    Unknown         FAKE  214796    2A4796     Patel,Kasturi             KPATEL 165 PERSONAL ZHMC            L2_TECH       kasturip@us.ibm.com          OTHER
-Ling      McConathy  Testone         XILA  064836    064836     Yeung,Evelyn              MOYA   165 PERSONAL STOR            L2_TECH       eyeung@us.ibm.com            ZTRANS
-Ling      McConathy  Clark           5IEA  717297    7A7297     Shi,Suzanne               SUZAN  165 PERSONAL NET             L2_SCREEN_AUS suzanshi@us.ibm.com          ZTRANS
-Ling      McConathy  Clark           5IEA  980672    980672     Xu,Hong                   XUHONG 95a PERSONAL NET             L2_TECH       xuhxh@cn.ibm.com             SATCHN
-Ling      McConathy  Clark           5IEA  208342    2A8342     Garcia,Antonio            GARCIA 165 PERSONAL Z3P             L2_TECH       garcia1@us.ibm.com           ZTRANS
-Unknown   Unknown    Unknown         INDIA 608830    608830     Satapathy,Partha S        PARTHA 165 PERSONAL CMDS            L3_DEVELOPER  partha.s.s@in.ibm.com        DEV
-Unknown   Unknown    Unknown         INDIA 002262    002262     Koteeswaran,Vijeyalakshum VIJI   165 PERSONAL TCP/IP          L3_DEVELOPER  vkoteesw@in.ibm.com          DEV
-Ling      McConathy  Brock           I4SA  305243    C-52M3     Graber,Loel               LOEL   165 PERSONAL LIB             L2_TECH       graber@us.ibm.com            ZTRANS
-Unknown   Unknown    Unknown         INDIA 000930    000930     Perichiappan,Solaiyappan  SOLAI  165 PERSONAL HACMP           L3_DEVELOPER  solaiperi@in.ibm.com         DEV
-Ling      McConathy  Clark           5IEA  305204    C-520M     Mannepalli,Prakash        PRAKM  165 PERSONAL NET             L2_TECH       prakashm@us.ibm.com          ZTRANS
-Murillo   Simon      Beck            UD3A  007123    007123     Sharma,Shruthi            SHRUTH 165 PERSONAL SECURITY        L3_DEVELOPER  shrutsha@in.ibm.com          DEV
-Ling      McConathy  Clark           5IEA  894555    894555     Pizana,Luis               PIZANQ 165 PERSONAL NET             L2_TECH       pizana@us.ibm.com            ZTRANS
-Ling      McConathy  Brock           I4SA  925563    925563     Pham,Minh                 MMPHAM 165 PERSONAL HA              L2_SCREEN_AUS mmpham@us.ibm.com            ZTRANS
-Ling      McConathy  Testone         XILA  043230    6A2198     Ramagiri,Vani             PAMS   165 INCOMING VIRT            L2_SCREEN_AUS vani@us.ibm.com              ZTRANS
-Ling      McConathy  Testone         XILA  977968    977967     Wang,HaiRong              STEVET 95A PERSONAL MISC            L2_TECH       hairongw@cn.ibm.com          SATCHN
-Ling      McConathy  Brock           I4SA  900014    000014     Trickett,Nigel            NIGELT 95A PERSONAL PERF            L2_TECH       trickett@nz1.ibm.com         SATCHN
-Ling      McConathy  Testone         XILA  368067    368066     Gong,Eric                 ERICG  95A PERSONAL INST            L2_TECH       bcgong@au1.ibm.com           SATCHN
-Ling      McConathy  Clark           5IEA  322578    322578     Inoue,Masaki              MASA   95A PERSONAL APP             L2_TECH       e32257@jp.ibm.com            SATCHN
-Ling      McConathy  Clark           5IEA  300658    300657     Kajitani,Kenichi          KENI   95A PERSONAL NET             L2_TECH       kkaji@jp.ibm.com             SATCHN
-Ling      McConathy  Aaron           D1ZA  050954    050954     Kim,KiWaon                KWK    95A PERSONAL KERN            L2_TECH       kwk@kr.ibm.com               SATCHN
-Ling      McConathy  Brock           I4SA  028002    028002     Ha,SoonKwon               SK     95A PERSONAL HA              L2_TECH       hask@kr.ibm.com              SATCHN
-Ling      McConathy  Aaron           D1ZA  951445    051445     Lee,John                  JOHNL  95A PERSONAL DUMP            L2_TECH       leejohn@hk1.ibm.com          SATCHN
-Ling      McConathy  Aaron           D1ZA  347410    3D7410     Karhi,Kari                KARHI  165 PERSONAL FSLV            L2_TECH       karhi@us.ibm.com             ZTRANS
-Murillo   Townsend   St. Pierre      B9RS  788019    788019     Finley,Paul                                   INSTALL         L3_DEVELOPER  pfinley@us.ibm.com           DEV
-Murillo   Townsend   Kehne           BTGS  820381    820381     Kuo,Wei                                       Graphics                                                   DEV
-Ling      McConathy  Sutcliffe       39KA  415344    445777     Scala,Antonio                                 CLST_HA         L2_TECH       antscala@us.ibm.com          POK
-Unknown   Unknown    Unknown         INDIA 056050    05605I     Saraswat,Ashutosh                             CMDS            L3_DEVELOPER  ashsaras@in.ibm.com          DEV
-Ling      McConathy  Weber           WQPA  300135    299985     Tiwary,Ashu                                   ZETC            L2_SCREEN_AUS ashu@us.ibm.com              ZTRANS
-Murillo   Townsend   Mulvey          UDYA  906668    906668     De Leon III,Baltazar                          NETWORK DD                    balt@us.ibm.com              DEV
-Paranjape Contreras  Tan             HMYS  924777    924777     Martinez,Rene                                 SysMgt Framewrk L3_DEVELOPER  rrmartin@us.ibm.com          DEV
-Murillo   Jones      Epsztein        6T4A  940229    940229     Stence,Donald                                 RAS             L3_DEVELOPER  dstence@us.ibm.com           DEV
-Unknown   Unknown    Unknown         L3POK 595628    595628     Cham,Linda                                    PokDev          L3_SCREEN_POK lcham@us.ibm.com             DEV
-Ling      McConathy  Sutcliffe       39KA  360029    360029     Malinovsky,Bob                                CLST_FS         L2_TECH       h04rfm1@us.ibm.com           POK
-Ling      McConathy                  E59S  420434    420434     Weber,Lynne                                   ZMGMT           MANAGER       lweber@us.ibm.com            ZTRANS
-Ling      McConathy                  E59S  617362    617362     Clark,W.G.                                    ZMGMT           MANAGER       billclar@us.ibm.com          ZTRANS
-Ling      McConathy  Sutcliffe       39KA  922378    922378     Li,Ping                                       CLST_HA         L2_TECH       pingli1@us.ibm.com           POK
-Murillo   Simon      Thomas          BN2S  614606    6A4606     Villarreal,Marcos                             SYSPROC                                                    DEV
-Ling      McConathy  Sutcliffe       39KA  698965    698965     Mah,Mustafa                                   CLST_FS         L2_TECH       yassin@us.ibm.com            POK
-Murillo   Jones      Patel           BWUS  395447    395447     White,J                                       BUILD           L3_DEVELOPER  janiew@us.ibm.com            DEV
-Murillo   Townsend   Chang           D59S  934672    934672     Dutta,Hemanta                                 STORAGE DD      L3_DEVELOPER  hemanta@us.ibm.com           DEV
-Murillo   Simon      Wadehra         E18S  707269    7A7269     Hepkin,David                                  VMM             L3_DEVELOPER  dhepkin@us.ibm.com           DEV
-Unknown   Unknown    Unknown         E54S  079444    079444     Ramirez,Anthony                               Performance     L3_DEVELOPER  F079444@FRVM.vnet.ibm.com    DEV
-Collins   Engleman                   DCMG  440977    440977     Grosch,M.W.                                   HSC Development MANAGER       mgrosch@us.ibm.com           DEV
-Murillo   Simon      Thomas          BN2S  849709    849709     Vaidyanathan,Basu                             SYSPROC         L3_DEVELOPER  basu@us.ibm.com              DEV
-Murillo   Simon      Thomas          BN2S  103778    1A3778     Wildstrom,Jonathan                            Kernel          L3_DEVELOPER  jwildstr@us.ibm.com          DEV
-Unknown   Unknown    Unknown         INDIA 066180    066180     Nagaraj,Arun H                                HACMP           L3_DEVELOPER  arnagraj@in.ibm.com          DEV
-Manasso              Hayes           5U5A  042712    908119     Kuhnel,Walter                                                 L2_TECH       kuhnel@us.ibm.com            OTHER
-Ling      McConathy  Sutcliffe       39KA  251095    251095     Kelly,Kevin                                   CLST_FS         L2_TECH       kpsk@us.ibm.com              POK
-Unknown   Unknown    Unknown         INDIA 029712    029712     Adari,Divakar                                 Dev Support     L3_DEVELOPER  divakar.adari@in.ibm.com     DEV
-Ling      McConathy                  E59S  889664    889664     Testone,P.S.                                  ZMGMT           MANAGER       testone@us.ibm.com           ZTRANS
-Ling      McConathy  Sutcliffe       39KA  163381    163381     Moyer,Dawn                                    CLST_MG         L2_TECH       dawnstar@us.ibm.com          POK
-Unknown   Unknown    Unknown         92HS  611625    611625     Nallapati,K.V.                                Dev Mgr         MANAGER       kumarn@us.ibm.com            DEV
-Murillo   Simon      Wadehra         E18S  003073    0A3073     Albot,Andre                                   BRINGUP         L3_DEVELOPER  albot@us.ibm.com             DEV
-Murillo   Simon      Barenys         WZ8S  446024    4D6024     Kumar,Manoj                                                   L3_DEVELOPER                               DEV
-Ling      McConathy  Sutcliffe       39KA  482555    482555     Shanes,Charles                                CLST_FS         L2_TECH       shanes@us.ibm.com            POK
-Gupta     Makis      Petrossian      CG8S  086111    086111     Do,Thanh                                      Performance     L3_DEVELOPER  thanhdo@us.ibm.com           DEV
-Murillo   Centofonti Hoffman         BWJS  664925    664925     Machine,Build                                 BUILD           L3_DEVELOPER  maagervi@in.ibm.com          DEV
-Murillo   Townsend   Mulvey          UDYA  580455    580455     Ross,Bob                                      NETWORK DD      L3_DEVELOPER  bobross@us.ibm.com           DEV
-Murillo   Townsend   Mulvey          UDYA  681216    681216     Nguyen,Paul                                   NETWORK DD      L3_DEVELOPER  nguyenp@us.ibm.com           DEV
-Unknown   Unknown    Unknown         CJHS  302272    C-BKYB     Ashtari,Farshid                               Dev Support     L3_DEVELOPER  farshid@us.ibm.com           DEV
-Ling      McConathy  Sutcliffe       39KA  208663    2A8663     Johnson,Charles                               CLST_AP         L2_SCREEN_POK cjohn1@us.ibm.com            POK
-Paranjape Contreras  Tan             HMYS  717302    7A7302     Warren,Philip                                 SysMgt Framewrk L3_DEVELOPER  pkw@us.ibm.com               DEV
-Ling      McConathy  Sutcliffe       39KA  813981    813981     Doherty,James                                 CLST_AP         L2_TECH       JimDoherty@us.ibm.com        POK
-Unknown   Unknown    Unknown         INDIA 017272    017272     Ramachandran,Puvichakrava                     PTX             L3_DEVELOPER  puvichakravarthy@in.ibm.com  DEV
-Paranjape Contreras  Ellsworth       B4RS  117610    +1761A     Hoetzel,Mary                                  SysMgt Solution L3_DEVELOPER  hhoetzel@us.ibm.com          DEV
-Unknown   Unknown    Unknown         INDIA 086575    086575     M. Pandian,Boopathy                           TCP/IP          L3_DEVELOPER  bopandia@in.ibm.com          DEV
-Murillo   Simon      Barenys         WZ8S  974305    974305     Patel,Priyesh                                                                                            DEV
-Unknown   Unknown    Unknown         INDIA 031700    03107C     Uppuluru,Durga                                HACMP           L3_DEVELOPER  uppulurub@in.ibm.com         DEV
-Ling                                 Z2LN  462573    462573     McConathy,T.J.                                UNKNOWN         MANAGER       mcconath@us.ibm.com          DEV
-Murillo   Townsend   Chang           D59S  271578    271578     White,George                                  STORAGE DD      L3_DEVELOPER  glwhite1@us.ibm.com          DEV
-Murillo   Townsend   Kehne           CVRS  519182    519182     Edwards,Mark                                  Diagnostics     L3_DEVELOPER  marke@us.ibm.com             DEV
-Murillo   Simon                      E97S  549818    549818     Beck,Jay                                      Dev Mgr         MANAGER                                    DEV
-Murillo   Centofonti                 WXBA  010054    010054     Riggle,Betty                                  Dev Support     L3_DEVELOPER  betty@us.ibm.com             DEV
-Murillo   Townsend   Chang           D59S  311720    3A1720     Grande,Marcus                                 STORAGE DD      L3_DEVELOPER  mgrande@us.ibm.com           DEV
-Collins   Engleman   Grosch          YXIA  001097    +1097A     Clark,George                                  HSC Development L3_DEVELOPER  gwciv@us.ibm.com             DEV
-Murillo   Townsend   Kehne           CVRS  103019    1A3019     Awada,Faisal                                  Diagnostics     L3_DEVELOPER  faisal@us.ibm.com            DEV
-Murillo   Townsend   Kehne           CVRS  812562    812562     Arbeitman,Bob                                 Diagnostics     L3_DEVELOPER  arbeitmn@us.ibm.com          DEV
-Murillo   Townsend   St. Pierre      B9RS  658944    658944     Wong,A.L.                                     INSTALL         L3_DEVELOPER  andywong@us.ibm.com          DEV
-Unknown   Unknown    Unknown         INDIA 077292    077292     Bharani,Chikbala                              GRAPHICS        L3_DEVELOPER  bharanve@in.ibm.com          DEV
-Paranjape Contreras  Ellsworth       B4RS  201146    1A1146     Phillips,Joshua                               SysMgt Solution L3_DEVELOPER  joshua1@us.ibm.com           DEV
-Murillo   Townsend   Mulvey          UDYA  696342    696342     Thomas,Dan                                    DIAGS           L3_DEVELOPER  dpthomas@us.ibm.com          DEV
-Collins   Engleman   Grosch          YXIA  042470    +4247A     Unnikrishnan,Rama                             HSC Development L3_DEVELOPER                               DEV
-Unknown   Unknown    Unknown         L3POK 303773    303773     Gresseau,Nassica                              PokDev          L3_SCREEN_POK gresseau@us.ibm.com          DEV
-Unknown   Unknown    Unknown         INDIA 053010    05301H     Duraisamy,Madhusudhanan                       HACMP           L3_DEVELOPER  madurais@in.ibm.com          DEV
-Gupta     Makis      Young           OEIA  723673    723673     Chen,Jim                                      Performance     L3_DEVELOPER                               DEV
-Murillo   Townsend   Chang           D59S  316259    3A6259     Tee,Stephen                                   STORAGE DD      L3_DEVELOPER  tees@us.ibm.com              DEV
-Ling      McConathy  Sutcliffe       39KA  980036    980036     Hiller,Saul                                   CLST_HA         L2_TECH       shiller@us.ibm.com           POK
-Murillo   Simon      Barenys         WZ8S  422262    422262     Adkins,Janet                                  FILESYSTEMS     L3_DEVELOPER  janeta@us.ibm.com            DEV
-Murillo   Simon      Beck            UD3A  615127    6A6127     Persaud-Deolall,Shiva                         SECURITY        L3_DEVELOPER  shivapd@us.ibm.com           DEV
-Murillo   Simon      Wadehra         E18S  806766    806766     Seibold,Robert                                BRINGUP         L3_DEVELOPER  rseibol@us.ibm.com           DEV
-Unknown   Unknown    Unknown         INDIA 070860    07086H     Vicky,Vikas                                   PRINTERS        L3_DEVELOPER  vikvicky@in.ibm.com          DEV
-Murillo   Jones      Epsztein        6T4A  959664    959664     Michel,Larry                                  RAS             L3_DEVELOPER  lmic@us.ibm.com              DEV
-Paranjape Contreras  Ellsworth       B4RS  002197    2A3192     George,Jeffrey                                SysMgt Solution L3_DEVELOPER  jgeorge@us.ibm.com           DEV
-Murillo   Jones      Epsztein        6T4A  811118    811118     Darmawan,Agustinus                            RAS             L3_DEVELOPER  darmawan@us.ibm.com          DEV
-Murillo   Townsend   St. Pierre      B9RS  914478    914478     Thota,Rupesh                                  Install/update  L3_DEVELOPER  trupesh@in.ibm.com           DEV
-Unknown   Unknown    Unknown         INDIA 017728    017728     Kumar,Keerthi B                               SECURITY        L3_DEVELOPER  keerthikumarb@in.ibm.com     DEV
-Murillo   Simon      Thomas          BN2S  201996    2A1996     Jain,Vinit                                    Kernel          L3_DEVELOPER  vjain@us.ibm.com             DEV
-Unknown   Unknown    Unknown         CJHS  079468    0G9468     Vargas,Hernan                                 Kernel          L3_DEVELOPER  hlvargas@us.ibm.com          DEV
-Gupta     Makis      Young           OEIA  013626    013626     Mena,Augie                                    Performance     L3_DEVELOPER                               DEV
-Unknown   Unknown    Unknown         INDIA 223919    223919     Saggar,Sunil                                  PTX             L3_DEVELOPER  sunil.saggar@in.ibm.com      DEV
-Murillo   Townsend                   B2WS  392996    392996     Ellett-Salmoran,Sandra                        Dev Mgr         MANAGER       sjes@us.ibm.com              DEV
-Murillo   Simon      Beck            UD3A  549238    549238     Mullen,Shawn                                  SECURITY        L3_DEVELOPER  smullen@us.ibm.com           DEV
-Murillo   Simon      Barenys         WZ8S  905229    905229     Yerneni,Lakshmi                               FILESYSTEMS     L3_DEVELOPER  lakshmiy@us.ibm.com          DEV
-Unknown   Unknown    Unknown         INDIA 082815    082815     Mallayya,Sangamesh                            GRAPHICS        L3_DEVELOPER  smallayy@in.ibm.com          DEV
-Murillo   Townsend   St. Pierre      B9RS  584843    584843     Molis,Steve                                   INSTALL         L3_DEVELOPER  smolis@us.ibm.com            DEV
-Ling      McConathy  Sutcliffe       39KA  740793    740793     Fitzgerald,Dan                                CLST_FS         L2_TECH       djfitz@us.ibm.com            POK
-Unknown   Unknown    Unknown         INDIA 964016    964016     Siddegowda,Ramachandra C                      CMDS            L3_DEVELOPER  rasiddeg@in.ibm.com          DEV
-Unknown   Unknown    Unknown         CJHS  EEEEEE    EEEEEE     Dey (Screener),Prashanto                                      L3_SCREEN_AUS PRASHAND@IN.IBM.COM          DEV
-Ling      McConathy  Sutcliffe       39KA  764232    764232     McKnight,Joseph                               POKADMIN        L2_TECH       mcknigh@us.ibm.com           POK
-Paranjape Contreras  Tan             HMYS  591459    591459     Hannon,John                                   SysMgt Framewrk L3_DEVELOPER  jhannon@us.ibm.com           DEV
-Murillo   Townsend   Chang           D59S  304667    C-4667     Mankus,Eric                                   STORAGE DD      L3_DEVELOPER  mankus@us.ibm.com            DEV
-Murillo   Simon      Thomas          BN2S  408262    4A8262     Shvartsman,Eddie                              Kernel          L3_DEVELOPER  edshvart@us.ibm.com          DEV
-Ling      McConathy                  E59S  877978    877978     Aaron,Thomas                                  ZMGMT           MANAGER       aarontom@us.ibm.com          ZTRANS
-Collins   Engleman   Grosch          YXIA  336850    +3685A     Feng,Jian                                     HSC Development L3_DEVELOPER  jianhua@us.ibm.com           DEV
-Unknown   Unknown    Unknown         L3POK 805430    805430     Parkes,Michael                                PokDev          L3_SCREEN_POK parkes@us.ibm.com            DEV
-Ling      McConathy                  E59S  440157    440157     Harney,Pat                                    ZMGMT           MANAGER       pharney@us.ibm.com           ZTRANS
-Murillo   Simon      Barenys         WZ8S  717260    7A7260     Madan,Sheena                                  FILESYSTEMS     L3_DEVELOPER  gmadan@us.ibm.com            DEV
-Murillo   Townsend   Ellett-Salmoran 4VRA  579969    579969     Pafumi,James                                  VIO             L3_DEVELOPER  jpafumi@us.ibm.com           DEV
-Murillo   Townsend   Kehne           CVRS  518047    518047     McCardle,John                                 Diagnostics     L3_DEVELOPER  mccardle@us.ibm.com          DEV
-Unknown   Unknown    Unknown         E54S  253881    253881     Pattanshetti,Manjunath A                      Performance     L3_DEVELOPER  ronr@us.ibm.com              DEV
-Unknown   Unknown    Unknown         INDIA 088550    088550     Chillarege,Naresh                             TCP/IP          L3_DEVELOPER  nareshc1@in.ibm.com          DEV
-Murillo   Simon      Barenys         WZ8S  910133    910133     Neuman,Grover                                 FILESYSTEMS     L3_DEVELOPER  neuman@us.ibm.com            DEV
-Unknown   Unknown    Unknown         INDIA 030450    03045B     Dewangan,Chandan                              PRINTERS        L3_DEVELOPER  cdewanga@in.ibm.com          DEV
-Murillo   Townsend   Chang           D59S  305058    C-505H     Chinari,Dinesh                                STORAGE DD      L3_DEVELOPER  chinari@us.ibm.com           DEV
-Unknown   Unknown    Unknown         L3POK 965256    965256     Cotter,Richard                                PokDev          L3_SCREEN_POK rcotter@us.ibm.com           DEV
-Murillo   Jones      Patel           BWUS  156176    156176     Lee,D.P.                                      BUILD           L3_DEVELOPER  leedp@us.ibm.com             DEV
-Unknown   Unknown    Unknown         INDIA 014541    014541     Ranganath,Deepak                              CMDS            L3_DEVELOPER  derangan@in.ibm.com          DEV
-Ling      McConathy  Sutcliffe       39KA  948168    9D8168     Ali,Asmahan                                   CLST_FS         L2_TECH       aaali@us.ibm.com             POK
-Murillo   Townsend   Mulvey          UDYA  995168    995168     Li,Shouchun                                   NETWORK DD      L3_DEVELOPER  shouchun@us.ibm.com          DEV
-Murillo   Simon      Barenys         WZ8S  007657    007657     Williams,Michael                              FILESYSTEMS     L3_DEVELOPER  mswill@us.ibm.com            DEV
-Murillo   Simon      Barenys         WZ8S  400624    400624     Grubbs,Mark                                   FILESYSTEMS     L3_DEVELOPER  mgrubbs@us.ibm.com           DEV
-Murillo   Simon      Barenys         WZ8S  710078    7A0078     Bodepudi,Smita                                CIFS            L3_DEVELOPER  bsmita@us.ibm.com            DEV
-Murillo   Simon      Beck            UD3A  906554    906554     Celikkan,Ufuk                                 SECURITY        L3_DEVELOPER  celikkan@us.ibm.com          DEV
-Paranjape Contreras  Ellsworth       B4RS  710794    7A0794     Chen,Douglas                                  SysMgt Solution L3_DEVELOPER  gychen@us.ibm.com            DEV
-Unknown   Unknown    Unknown         INDIA 749408    749408     Madhavan Pillai,Pradeep K                     CMDS            L3_DEVELOPER  pradeepkumar@in.ibm.com      DEV
-Gupta     Makis      Young           OEIA  324253    324253     Minns,Bob                                     UNKNOWN         L3_DEVELOPER                               DEV
-Murillo   Simon      Beck            UD3A  801633    8A1633     Reddy,Bhargav                                 IP SECURITY     L3_DEVELOPER  bheem@us.ibm.com             DEV
-Ling      McConathy                  E59S  709845    709845     Brock,Jim                                     ZMGMT           MANAGER       jdbrock@us.ibm.com           ZTRANS
-Paranjape Contreras  Tan             HMYS  595376    595376     Amin,S.A.                                     SysMgt Framewrk L3_DEVELOPER  samin@us.ibm.com             DEV
-Murillo   Simon      Barenys         WZ8S  619639    619639     Brown,William                                 Distrib FS      L3_DEVELOPER  wilbrown@us.ibm.com          DEV
-Paranjape Contreras  Tan             HMYS  111290    1A1290     Rodriguez,Jorge                               SysMgt Framewrk L3_DEVELOPER  jorgedr@us.ibm.com           DEV
-Unknown   Unknown    Unknown         L3POK 056723    2A5966     Lewars,John                                   PokDev          L3_DEVELOPER  jlewars@us.ibm.com           DEV
-Paranjape Contreras  Tan             HMYS  596413    596413     Feuerbacher,Frank                             SysMgt Framewrk L3_DEVELOPER  fbacher@us.ibm.com           DEV
-Murillo   Townsend   Mulvey          UDYA  714660    7A4660     Yoder,Kent                                    NETWORK DD      L3_DEVELOPER  yoder1@us.ibm.com            DEV
-Murillo   Townsend   Chang           D59S  181942    181941     Hart,Brian                                    STORAGE DD      L3_DEVELOPER  hartb@us.ibm.com             DEV
-Paranjape Contreras  Ellsworth       B4RS  702790    7A2790     Hoetzel,Heidemarie                            SysMgt Solution L3_DEVELOPER  hhoetzel@us.ibm.com          DEV
-Paranjape Contreras  Ellsworth       B4RS  547855    547855     Lew,Michael                                   SysMgt Solution L3_DEVELOPER  milewis@us.ibm.com           DEV
-Murillo   Townsend                   B2WS  054878    054878     Rasoulian,B.                                                  L3_DEVELOPER                               DEV
-Collins   Engleman   Grosch          YXIA  257769    257769     Lipp,W.M.                                     HSC Development L3_DEVELOPER  wlipp@us.ibm.com             DEV
-Murillo   Jones      Paul            D58S  789257    789257     Qin,Xiaohan                                   TCP/IP          L3_DEVELOPER  xqin@us.ibm.com              DEV
-Murillo                              E99S  595871    595871     Centofonti,Kay                                Dev Support     MANAGER       kayc@us.ibm.com              DEV
-Ling      McConathy  Sutcliffe       39KA  495969    495969     Guo,Jean                                      CLST_MG         L2_TECH       guo@us.ibm.com               POK
-Ling      McConathy  Sutcliffe       39KA  004626    0A4626     Apuzzo,Joe                                    CLST_FS         L2_TECH       apuzzoj@us.ibm.com           POK
-Murillo   Simon      Thomas          BN2S  123493    1A3493     Brandyberry,Matthew                           SYSPROC         L3_DEVELOPER  mbrandy@us.ibm.com           DEV
-Collins   Engleman   Grosch          YXIA  709241    709241     Conklin,Chris                                 HSC Development L3_DEVELOPER  smokey@us.ibm.com            DEV
+	
+	CFG_WEEK_L3_ROLL
+	AMT - dbman 
+	to:
+	Cindy Barrett
+	10/31/2011 05:04 AM
+	
+	Default custom expiration date: 10/30/2012
+	Show Details
+
+
+
+
+ THIRD     SECOND    FIRST           DEPT  RETAIN_ID IND_SERIAL NAME                      Q      LOC QTYPE    TEAM            APAR_LEVEL    INTRANET_ID                  ORG
+ --------- --------- --------------- ----- --------- ---------- ------------------------- ------ --- -------- --------------- ------------- ---------------------------- ------
+ Ling      McConathy Brock           I4SA  952374    052374     Tucker,Stephen            STEVE  248 PERSONAL HA              L2_TECH       stucker@uk.ibm.com           SATEUR
+ Ling      McConathy Brock           I4SA  305547    C-55DG     Choudhary,Bimalendu       BIMALC 165 PERSONAL LIB             L2_TECH       bimalen@us.ibm.com           ZTRANS
+ Unknown   Unknown   Unknown         FAKE  614601    6A4601     Milliner,Nancy            NJM    165 PERSONAL ZHMC            L2_TECH       milliner@us.ibm.com          OTHER
+ Ling      McConathy Testone         XILA  008422    E08421     Vovk,Janez                JVK    248 PERSONAL STOR            L2_TECH       janez.vovk@si.ibm.com        SATEUR
+ Ling      McConathy Clark           5IEA  000090    097151     Haferkorn,Christian       HAFER  248 PERSONAL NET             L2_TECH       hafer@de.ibm.com             SATEUR
+ Ling      McConathy Sutcliffe       39KA  582676    582676     Simon,Robert              PPSSRV 13A OTHER    CLST_FS         L2_SCREEN_POK rsimon@us.ibm.com            POK
+ Murillo   WXBA Mgr2 CJHS Mgr1       CJHS  380577    380577     Bloomer,Richard           BOOM   165 PERSONAL LVM             L3_DEVELOPER  boomboom@us.ibm.com          DEV
+ Ling      McConathy Clark           5IEA  000253    135914     Hartwig,Sebastian         SHART  248 PERSONAL NET             L2_TECH       sebastian.hartwig@de.ibm.com SATEUR
+ Murillo   WXBA Mgr2 CJHS Mgr1       CJHS  924485    924485     Li,Li                     LILI   165 PERSONAL HACMP           L3_DEVELOPER  lili1@us.ibm.com             DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       CJHS  116878_0  1A6878     Thornal,Timothy           TTHORN 165 PERSONAL STORAGE DD      L3_DEVELOPER  tthornal@us.ibm.com          DEV
+ Ling      McConathy Aaron           D1ZA  000254    052361     Romac,Christophe          CROMAC 248 PERSONAL DUMP            L2_TECH       cromac@fr.ibm.com            SATEUR
+ Ling      McConathy Aaron           D1ZA  081159    081159     Braunbeck,Thomas          FUZZY  248 PERSONAL KERN            L2_TECH       braunbec@de.ibm.com          SATEUR
+ Ling      McConathy Aaron           D1ZA  188100    088100     Ancel,Thomas              ANCEL  248 PERSONAL FSLV            L2_TECH       thomas.ancel@fr.ibm.com      SATEUR
+ Ling      McConathy Sutcliffe       39KA  582676    582676     Simon,Robert              CLREJ  13A INCOMING CLST_FS         L2_SCREEN_POK rsimon@us.ibm.com            POK
+ Ling      McConathy Sutcliffe       39KA  377557    377557     Richman,Murray            CLSTAP 13A INCOMING CLST_AP         L2_SCREEN_POK mrichman@us.ibm.com          POK
+ Ling      McConathy Aaron           D1ZA  215881    215881     Chalemin,Tex (Glen)       TEX    165 PERSONAL KERN            L2_TECH       gchalemi@us.ibm.com          ZTRANS
+ Murillo   Townsend  St. Pierre      B9RS  930433    930433     Liu,Su                    L3BIDI 165 INCOMING NLS             L3_DEVELOPER  suliu@us.ibm.com             DEV
+ Ling      McConathy Sutcliffe       39KA  080859    080859     Normann,Steven            CLSTFS 13A INCOMING CLST_FS         L2_SCREEN_POK norseman@us.ibm.com          POK
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 023305    023304     Ahmed,Junaid              JUNAID 165 PERSONAL HACMP           L3_DEVELOPER  junaahme@in.ibm.com          DEV
+ Ling      McConathy Sutcliffe       39KA  614151    614151     Swart,T.R.                CLSTHA 13A INCOMING CLST_HA         L2_SCREEN_POK trswart@us.ibm.com           POK
+ Ling      McConathy Sutcliffe       39KA  595866    595866     Struble,Timothy           CLSTMG 13A INCOMING CLST_MG         L2_TECH       tstruble@us.ibm.com          POK
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 014987    014987     Langer,Kunal              KUNAL  165 PERSONAL HACMP           L3_DEVELOPER  kunal.langer@in.ibm.com      DEV
+ Ling      McConathy Clark           5IEA  717297    7A7297     Shi,Suzanne               PCIFS  165 INCOMING NET             L2_SCREEN_AUS suzanshi@us.ibm.com          ZTRANS
+ Ling      McConathy Testone         XILA  000255    050246     Spiller,Christian         SPILLS 248 PERSONAL VIRT            L2_TECH       spillerc@uk.ibm.com          SATEUR
+ Ling      McConathy Clark           5IEA  303451    C-3MW1     Khan,M. H.                MH     165 PERSONAL NET             L2_TECH       mhk@us.ibm.com               ZTRANS
+ Ling      McConathy Clark           5IEA  305338    C-5338     Tenjarla,Rama             RAMA   165 PERSONAL ZISV            L2_TECH       rtenjarl@us.ibm.com          ZTRANS
+ Murillo   Jones     Epsztein        6T4A  886778    886778     Ricca,Noel                NRICCA 165 PERSONAL RAS             L3_DEVELOPER                               DEV
+ Ling      McConathy Testone         XILA  797720    051718     Spornhauer,Michael        MIKE   248 PERSONAL INST            L2_TECH       spornhau@de.ibm.com          SATEUR
+ Murillo   Simon     Barenys         WZ8S  305537    C-55C7     Plattard,Xavier           XAVIER 165 PERSONAL Distrib FS      L3_DEVELOPER                               DEV
+ Ling      McConathy Testone         XILA  214681    2A4681     Patel,Rajendra            RAJPAT 165 PERSONAL VIRT            L2_SCREEN_AUS rajpat@us.ibm.com            ZTRANS
+ Ling      McConathy Brock           I4SA  001315    068596     Blancke,Alexandre         ALBL   248 PERSONAL LIB             L2_TECH       ablancke@fr.ibm.com          SATEUR
+ Ling      McConathy Aaron           D1ZA  305817    C-5HJY     Rao,Srinivasa             MSRINI 165 PERSONAL KERN            L2_SCREEN_AUS msrinir@us.ibm.com           ZTRANS
+ Ling      McConathy Clark           5IEA  302289    C-BBHG     Zalles,Juan               JUANZ  165 PERSONAL APP             L2_TECH       juanz@us.ibm.com             ZTRANS
+ Ling      McConathy Aaron           D1ZA  919578    9A9578     Salem,Loulwa              LOULWA 165 PERSONAL KERN            L2_TECH       loulwa@us.ibm.com            ZTRANS
+ Murillo   Simon     Beck            UD3A  220282    220282     Vaddagiri,Murali          MURALI 165 PERSONAL SECURITY        L3_DEVELOPER  murali.vad@in.ibm.com        DEV
+ Ling      McConathy Aaron           D1ZA  302316    C-BUAX     Chakraborty,Shameek       CHAKRA 165 PERSONAL KERN            L2_TECH       shameek@us.ibm.com           ZTRANS
+ Unknown   Unknown   Unknown         FAKE  614601    6A4601     Milliner,Nancy            PHMC   165 INCOMING ZHMC            L2_TECH       milliner@us.ibm.com          OTHER
+ Ling      McConathy Clark           5IEA  306965    3A6965     Dunshea,Andrew            ANDREW 165 PERSONAL Z3P             L2_SCREEN_AUS adunshea@us.ibm.com          ZTRANS
+ Murillo   Simon     Beck            UD3A  023233    023232     Gadekar,Vinay             VGADEK 165 PERSONAL SECURITY        L3_DEVELOPER  vgadekar@in.ibm.com          DEV
+ Ling      McConathy Clark           5IEA  001319    123500     Ehrhardt,Andreas          ANDI   248 PERSONAL NET             L2_TECH       andreas.ehrhardt@de.ibm.com  SATEUR
+ Ling      McConathy Aaron           D1ZA  302147    869578     Griffith,Doug             DUGROC 165 PERSONAL KERN            L2_SCREEN_AUS griffith@us.ibm.com          ZTRANS
+ Ling      McConathy Testone         XILA  304458    0G7886     Meyer,Aaron               JAM    165 PERSONAL VIRT            L2_SCREEN_AUS meyera@us.ibm.com            ZTRANS
+ Ling      McConathy Brock           I4SA  960601    960601     HA,Intern1                IHA001 165 PERSONAL HA              L2_TECH       itra03@truth2.austin.ibm.com ZTRANS
+ Ling      McConathy Brock           I4SA  024248    024248     Bozzini,Antonio           BOZZ   248 PERSONAL PERF            L2_TECH       abozzini@it.ibm.com          SATEUR
+ Ling      McConathy Testone         XILA  303612    0G4898     Atluri,Uma Sankar         USA    165 PERSONAL STOR            L2_TECH       usa@us.ibm.com               ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 000155    000155     Ahmad,Faraz               FARAZZ 165 PERSONAL HACMP           L3_DEVELOPER  farahmad@in.ibm.com          DEV
+ Ling      McConathy Brock           I4SA  960603    960603     PERF,Intern1              IPERF1 165 PERSONAL PERF            L2_TECH       itra04@truth2.austin.ibm.com ZTRANS
+ Ling      McConathy Clark           5IEA  304624    9D0131     Srikanth,Sangeetha        PTCPK  165 INCOMING NET             L2_SCREEN_AUS ssrikant@us.ibm.com          ZTRANS
+ Ling      McConathy Clark           5IEA  717297    7A7297     Shi,Suzanne               PTCPA  165 INCOMING NET             L2_SCREEN_AUS suzanshi@us.ibm.com          ZTRANS
+ Ling      McConathy Testone         XILA  174970    017497     Ullmann,Harry             HARRY  165 PERSONAL MISC            L2_SCREEN_AUS hullmann@us.ibm.com          ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       CJHS  118620    1A8620     Talley,Nicole             TALLEY 165 PERSONAL INSTALL         L3_DEVELOPER  ntalley@us.ibm.com           DEV
+ Ling      McConathy Brock           I4SA  960604    960604     LIB,Intern1               ILIB01 165 PERSONAL LIB             L2_TECH       itra05@truth2.austin.ibm.com ZTRANS
+ Ling      McConathy Testone         XILA  917466    9A7466     Wallis,Rob                WALLIS 165 PERSONAL STOR            L2_TECH       rwallis@us.ibm.com           ZTRANS
+ Ling      McConathy Aaron           D1ZA  305331    0G4920     Makineedi,Sreeni          SREENI 165 PERSONAL KERN            L2_SCREEN_AUS sreeni@us.ibm.com            ZTRANS
+ Ling      McConathy Brock           I4SA  362492    362492     McLeod,Alex               HAAWT  165 INCOMING HA              L2_SCREEN_AUS amcleod@us.ibm.com           ZTRANS
+ Ling      McConathy Aaron           D1ZA  305171    0G8168     Batra,Gaurav              GBATRA 165 PERSONAL KERN            L2_TECH       gbatra@us.ibm.com            ZTRANS
+ Ling      McConathy Brock           I4SA  305893    C-5HR3     Boles,Brandon             BBOLES 165 PERSONAL HA              L2_TECH       bboles@us.ibm.com            ZTRANS
+ Ling      McConathy Clark           5IEA  303442    C-34DK     Butte,Rashid              RBUTTE 165 PERSONAL APP             L2_TECH       rbutte@us.ibm.com            ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       CJHS  710262    469781     OBrien,Janice             JANICE 165 PERSONAL SECURITY        L3_DEVELOPER  brienjo@us.ibm.com           DEV
+ Ling      McConathy Brock           I4SA  917439    917438     Chen,Tao                  TYLER  95A PERSONAL PERF            L2_TECH       chenttao@cn.ibm.com          SATCHN
+ Murillo   Simon     Love            LNJA  240841    +0943A     Nimmagadda,Rajeev         RAJEEV 165 PERSONAL UNKNOWN         L2_TECH       rajeevn@us.ibm.com           DEV
+ Ling      McConathy Brock           I4SA  302991    C-BR9A     Gibbs,Ben                 BGIBBS 165 PERSONAL PERF            L2_TECH       bengibbs@us.ibm.com          ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 389833    389833     Josiah,Samuel             PTOOLS 165 INCOMING Performance     L3_DEVELOPER  josamuel@in.ibm.com          DEV
+ Ling      McConathy Clark           5IEA  303525    C-35TE     Rupp,Amy                  AMYR   165 PERSONAL ZISV            L2_TECH       amyr@us.ibm.com              ZTRANS
+ Murillo   Townsend  St. Pierre      B9RS  305440    100293     Isoard,Matthieu           ISOARD 165 PERSONAL PTX             L3_DEVELOPER  misoard@us.ibm.com           DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 917929    917929     Anbalagan,Arun            ARUN   165 PERSONAL Install/update  L3_DEVELOPER  arunprasath@in.ibm.com       DEV
+ Murillo   Townsend  Ellett-Salmoran 4VRA  816763    8A6763     Bias,Garius               GBIAS  165 PERSONAL VIO             L3_DEVELOPER  gbias@us.ibm.com             DEV
+ Gupta     Makis     Young           OEIA  833108    833108     Michel,Dirk               PRFDEV 165 INCOMING Performance     L3_DEVELOPER  dirkm@us.ibm.com             DEV
+ Murillo   WXBA Mgr2 Hoffman         BWJS  413672    4A3672     Castillo,Gilbert          GILCAS 165 PERSONAL BUILD           L3_DEVELOPER  gcastill@us.ibm.com          DEV
+ Murillo   Townsend  Chang           D59S  796087    796087     Rathi,Sanket              SANKET 165 PERSONAL                                                            DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       CJHS  404400    C-04DH     Abbot,Stephen             ABBOT  165 PERSONAL HACMP           L3_DEVELOPER  sabbot@us.ibm.com            DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 229763    229763     Gaonkar,Chetan            CGAON  165 PERSONAL SYSPROC         L3_DEVELOPER  cgaonkar@in.ibm.com          DEV
+ Ling      McConathy Testone         XILA  416371    416371     Dixon,Gary                DIXON  165 PERSONAL INST            L2_TECH       grdixon@us.ibm.com           ZTRANS
+ Murillo   Townsend  St. Pierre      B9RS  040370    +4037A     Harris,Jan                JANH   165 PERSONAL NLS             L3_DEVELOPER  jan2@us.ibm.com              DEV
+ Ling      McConathy Brock           I4SA  312261    3A2261     Kennedy,Nick              NICK   165 PERSONAL LIB             L2_TECH       kennedyn@us.ibm.com          ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 019662    019662     Rangaswamaiah,Rajath      RAJ34  165 PERSONAL TCP/IP          L3_DEVELOPER  rajath.nr@in.ibm.com         DEV
+ Ling      McConathy Brock           I4SA  602187    6A2187     Davidson,Grover           GROVER 165 PERSONAL PERF            L2_SCREEN_AUS grover@us.ibm.com            ZTRANS
+ Ling      McConathy Weber           WQPA  431780    903268     K,Anil                    ANIL   165 PERSONAL ZETC            L2_TECH       kanil@us.ibm.com             ZTRANS
+ Ling      McConathy Clark           5IEA  073110    7A2818     Mahajan,Puneet            PUNEET 165 PERSONAL ZISV            L2_SCREEN_AUS pmahajan@us.ibm.com          ZTRANS
+ Ling      McConathy                 E59S  857919    045033     Bulhof,Roger              BULHOF 165 PERSONAL ZMGMT           MANAGER       bulhof@us.ibm.com            ZTRANS
+ Ling      McConathy Clark           5IEA  507643    507643     Patel,Darshan             DP     165 PERSONAL NET             L2_SCREEN_AUS darshanp@us.ibm.com          ZTRANS
+ Ling      McConathy Aaron           D1ZA  001317    006782     Young,Andrew              ANDYY  248 PERSONAL KERN            L2_TECH       andyoung@uk.ibm.com          SATEUR
+ Ling      McConathy Aaron           D1ZA  215881    215881     Chalemin,Tex (Glen)       WWKERN 165 INCOMING KERN            L2_TECH       gchalemi@us.ibm.com          ZTRANS
+ Ling      McConathy Clark           5IEA  489320    489320     Gaudin,Jim                GAUDIN 165 PERSONAL NET             L2_TECH       jgaudin@us.ibm.com           ZTRANS
+ Ling      McConathy Aaron           D1ZA  353422    353421     Wickremasinghe,Chris      CHRISW 95A PERSONAL FSLV            L2_TECH       cwickrem@au1.ibm.com         SATCHN
+ Ling      McConathy Brock           I4SA  001318    022431     Lehner,Wolfgang           LEHNER 248 PERSONAL LIB             L2_TECH       wolfgang_lehner@at.ibm.com   SATEUR
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 002210    002210     Mohan,Gomathi             GOMATI 165 PERSONAL PTX             L3_DEVELOPER  gommohan@in.ibm.com          DEV
+ Ling      McConathy Brock           I4SA  276448    1A8831     Wong,Kathy                KWONG  165 PERSONAL LIB             L2_SCREEN_AUS wongk@us.ibm.com             ZTRANS
+ Ling      McConathy Aaron           D1ZA  347516    3D7516     Damodaran,Anil            WWFSLV 165 INCOMING FSLV            L2_SCREEN_AUS anildam@us.ibm.com           ZTRANS
+ Ling      McConathy Aaron           D1ZA  051178    959488     Manning,Robert            MANN   165 PERSONAL KERN            L2_SCREEN_AUS rmanning@us.ibm.com          ZTRANS
+ Murillo   Simon     Thomas          BN2S  055070    055070     Mishra,Rajeev             MISHRA 165 PERSONAL Kernel          L3_DEVELOPER  mrtagg@ca.ibm.com            DEV
+ Ling      McConathy Brock           I4SA  960602    960602     HA,Intern2                IHA002 165 PERSONAL HA              L2_TECH       itra02@truth2.austin.ibm.com ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 024235    024235     MB Bhat,Suma              SUMA   165 PERSONAL SECURITY        L3_DEVELOPER  summbhat@in.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 023153    023153     Kulshreshtha,Manish       MANISH 165 PERSONAL CMDS            L3_DEVELOPER  mkulshre@in.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 083303    083303     Anantha,Lalitha           LALIT  165 PERSONAL CMDS            L3_DEVELOPER  lanantha@in.ibm.com          DEV
+ Ling      McConathy Clark           5IEA  807520    807520     Phillips,Tom              TOMP   165 PERSONAL PREM            L2_TECH       ltp@us.ibm.com               ZTRANS
+ Ling      McConathy Brock           I4SA  006640    006640     Pham,Teresa               TPHAM  165 PERSONAL LIB             L2_SCREEN_AUS teresaph@us.ibm.com          ZTRANS
+ Ling      McConathy Clark           5IEA  067270    +6727A     Akmal,MG                  MGA    165 PERSONAL ZISV            L2_TECH       mgakmal@us.ibm.com           ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 020064    020064     Fransis,Walesa            WALESA 165 PERSONAL HACMP           L3_DEVELOPER  walesafran@in.ibm.com        DEV
+ Ling      McConathy Aaron           D1ZA  300474    346519     Alvarez,Abraham           ABE    165 PERSONAL PREM            L2_TECH       abraham1@us.ibm.com          ZTRANS
+ Ling      McConathy Aaron           D1ZA  066392    066392     Thompson,R.W.             ROBERT 165 PERSONAL FSLV            L2_SCREEN_AUS robthomp@us.ibm.com          ZTRANS
+ Collins   Engleman  Grosch          YXIA  077299    077299     Flaig,Greg                GFLAIG 165 PERSONAL HSC Development L3_DEVELOPER  gregory.flaig@us.ibm.com     DEV
+ Murillo   Jones     Epsztein        6T4A  083023    083023     Shaffer,J.J.              SHAFFE 165 PERSONAL RAS             L3_DEVELOPER  jshaffer@us.ibm.com          DEV
+ Paranjape Contreras Tan             HMYS  092644    092644     Segura,Ernest             EBS    165 PERSONAL SysMgt Framewrk L3_DEVELOPER  esegura@us.ibm.com           DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 024054    024054     Mada,Kiran                MKIRAN 165 PERSONAL HACMP           L3_DEVELOPER  kiramada@in.ibm.com          DEV
+ Ling      McConathy Testone         XILA  978084    978084     Xiao,HongTao              HONGTA 95A PERSONAL STOR            L2_TECH       xiaoht@cn.ibm.com            SATCHN
+ Murillo   Simon     Love            LNJA  405547    4A5547     Garcia,Frank              KNARF  165 PERSONAL HACMP           L3_DEVELOPER  fgarcia@us.ibm.com           DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 214332    214332     Chandolu,Uma Maheswara    MAHESH 165 PERSONAL SECURITY        L3_DEVELOPER  uchandol@in.ibm.com          DEV
+ Murillo   Simon     Wadehra         E18S  170986    170986     Rogers,M.D.               ROGERS 165 PERSONAL VMM             L3_DEVELOPER  mrogers@us.ibm.com           DEV
+ Ling      McConathy Aaron           D1ZA  240069    C-1U0K     Agarawal,Harish           HCAG   165 PERSONAL DUMP            L2_TECH       agarawal@us.ibm.com          ZTRANS
+ Paranjape Contreras Ellsworth       B4RS  269393    269393     Cuan,Elizabeth            LIZ    165 PERSONAL SysMgt Solution L3_DEVELOPER  cuan@us.ibm.com              DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 078131    078130     Das,Raj                   RAJDAS 165 PERSONAL PTX             L3_DEVELOPER  drajarshi@in.ibm.com         DEV
+ Ling      McConathy Clark           5IEA  303280    C-CBP9     Layton,Vince              LAYTON 165 PERSONAL NET             L2_TECH       vjlayton@us.ibm.com          ZTRANS
+ Murillo   Simon     Beck            UD3A  301892    301892     Wilson,J.H.               JWILSN 165 PERSONAL UNKNOWN         L3_DEVELOPER  jhwilson@us.ibm.com          DEV
+ Murillo   Jones     Epsztein        6T4A  302881    302881     Brenner,Larry             LARRY  165 PERSONAL RAS             L3_DEVELOPER  lbrenner@us.ibm.com          DEV
+ Ling      McConathy Clark           5IEA  303480    C-3M80     Wildgoose,Rosemary        RW     165 PERSONAL NET             L2_TECH       wildr@us.ibm.com             ZTRANS
+ Murillo   Simon     Beck            UD3A  329545    329545     Toungate,Marvin           TOUNGA 165 PERSONAL PRINTERS        L3_DEVELOPER  toungate@us.ibm.com          DEV
+ Murillo   Townsend  Ellett-Salmoran 4VRA  205889    2A5889     Rosas,Morgan              ROSAS1 165 PERSONAL VIO             L3_DEVELOPER  rosas1@us.ibm.com            DEV
+ Unknown   Unknown   Unknown         9TRA  366477    366477     Damron,T.M.               DAMRON 165 PERSONAL SysMgt Solution L3_DEVELOPER  tmdamron@us.ibm.com          DEV
+ Murillo   Simon     Wadehra         E18S  386850    386850     Hinderliter,D.S.          HINDER 165 PERSONAL VMM             L3_DEVELOPER  hinder@us.ibm.com            DEV
+ Murillo   Townsend  Ellett-Salmoran 4VRA  894366    894366     Anderson,Ray              RAY2   165 PERSONAL VIO             L3_DEVELOPER  ray2@us.ibm.com              DEV
+ Murillo   Jones     Epsztein        6T4A  412708    412708     Mealey,B.G.               MEALEY 165 PERSONAL RAS             L3_DEVELOPER  mealey@us.ibm.com            DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 074189    074189     Shankar,Bharath           BHARAT 165 PERSONAL HACMP           L3_DEVELOPER  bharathshankar@in.ibm.com    DEV
+ Murillo   Simon     Barenys         WZ8S  441148    441148     Sheffield,D.W.            DWS    165 PERSONAL NFS             L3_DEVELOPER  sheff@us.ibm.com             DEV
+ Paranjape Contreras Tan             HMYS  486565    486565     Panico,M.W.               PANICO 165 PERSONAL SysMgt Framewrk L3_DEVELOPER  panico@us.ibm.com            DEV
+ Murillo   Townsend  Kehne           BTGS  497208    497208     McNichol,Daniel           DAN    165 PERSONAL GRAPHICS        L3_DEVELOPER  dmcnicho@us.ibm.com          DEV
+ Ling      McConathy Clark           5IEA  919075    919075     Wu,JianJun                WUJJ   95A PERSONAL APP             L2_TECH       bjwjianj@cn.ibm.com          SATCHN
+ Ling      McConathy Testone         XILA  043230    6A2198     Ramagiri,Vani             PLPM   165 INCOMING VIRT            L2_SCREEN_AUS vani@us.ibm.com              ZTRANS
+ Murillo   Townsend  St. Pierre      B9RS  040370    +4037A     Harris,Jan                ILBIDI 165 PERSONAL NLS             L3_DEVELOPER  jan2@us.ibm.com              DEV
+ Ling      McConathy Clark           5IEA  507643    507643     Patel,Darshan             PCRYPT 165 INCOMING NET             L2_SCREEN_AUS darshanp@us.ibm.com          ZTRANS
+ Murillo   Jones                     ZI9S  549271    549271     Craft,Julie               JULIEL 165 PERSONAL Kernel          L3_DEVELOPER  jcraft@us.ibm.com            DEV
+ Paranjape Contreras Ellsworth       B4RS  549539    549539     Shieh,J.M.                SHIEH  165 PERSONAL SysMgt Solution L3_DEVELOPER  jshieh@us.ibm.com            DEV
+ Murillo   Jones     Paul            D58S  550169    550169     Messing,J.P.              JEM    165 PERSONAL TCP/IP          L3_DEVELOPER  messingj@us.ibm.com          DEV
+ Murillo                             E99S  550475    550475     Jones,Corradino           CJONES 165 PERSONAL Dev Mgr         MANAGER       cdjones@us.ibm.com           DEV
+ Ling      McConathy Brock           I4SA  303016    4D6655     Cline,Kemton              PLAB   165 INCOMING ZOPS            L2_TECH       kemton@us.ibm.com            ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 992506    992506     Karakavalasa,Dileep       DILEEP 165 PERSONAL RAS             L3_DEVELOPER  dileep.kk@in.ibm.com         DEV
+ Ling      McConathy Clark           5IEA  301623    C-AFT3     Kim,Minchong              MIN    165 PERSONAL NET             L2_TECH       minkim@us.ibm.com            ZTRANS
+ Murillo   Simon     Wadehra         E18S  611627    611627     Cronk,Matthew             XCOFF  165 PERSONAL BRINGUP         L3_DEVELOPER  mcronk@us.ibm.com            DEV
+ Murillo   Simon     Wadehra         E18S  611627    611627     Cronk,Matthew             MACRO  165 PERSONAL BRINGUP         L3_DEVELOPER  mcronk@us.ibm.com            DEV
+ Ling      McConathy Brock           I4SA  082708    082706     Weber,Ingo                INGO   248 PERSONAL HA              L2_TECH       iweber@de.ibm.com            SATEUR
+ Ling      McConathy Brock           I4SA  303016    4D6655     Cline,Kemton              KEMTON 165 PERSONAL ZOPS            L2_TECH       kemton@us.ibm.com            ZTRANS
+ Murillo   Jones     Paul            D58S  707285    7A7285     Vo,Patrick                PVO    165 PERSONAL TCP/IP          L3_DEVELOPER  pvo@us.ibm.com               DEV
+ Ling      McConathy Brock           I4SA  960612    960612     LIB,Intern2               ILIB02 165 PERSONAL LIB                                                        ZTRANS
+ Murillo   Townsend  Chang           D59S  656838    656838     Allen,J.P.                JALLEN 165 PERSONAL STORAGE DD      L3_DEVELOPER  jpallen@us.ibm.com           DEV
+ Murillo   Townsend  Ellett-Salmoran 4VRA  665278    665278     Partridge,James           JAMESP 165 PERSONAL VIO             L3_DEVELOPER  jamesp@us.ibm.com            DEV
+ Paranjape Contreras Tan             HMYS  707294    7A7294     Nogueras,Jorge            RAFAEL 165 PERSONAL SysMgt Framewrk L3_DEVELOPER  rafaeln@us.ibm.com           DEV
+ Murillo   Townsend  Mulvey          UDYA  723047    723047     Dea,F.                    FRANKD 165 PERSONAL NETWORK DD      L3_DEVELOPER  frankdea@us.ibm.com          DEV
+ Murillo   Townsend  St. Pierre      B9RS  930433    930433     Liu,Su                    SULIU  165 PERSONAL NLS             L3_DEVELOPER  suliu@us.ibm.com             DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 083300    083300     Nagar,Sunita              SUNITA 165 PERSONAL CMDS            L3_DEVELOPER  sunitnag@in.ibm.com          DEV
+ Ling      McConathy Brock           I4SA  073831    3D7484     Schlachter,Gus            HAINT  165 PERSONAL HA              L2_TECH       gussch@us.ibm.com            ZTRANS
+ Paranjape Contreras Ellsworth       B4RS  802762    802762     Lowe,Suanne               SUE    165 PERSONAL SysMgt Solution L3_DEVELOPER  suelo@us.ibm.com             DEV
+ Paranjape Contreras Ellsworth       B4RS  802762    802762     Lowe,Suanne               REGDEV 165 INCOMING SysMgt Solution L3_DEVELOPER  suelo@us.ibm.com             DEV
+ Paranjape Contreras Ellsworth       B4RS  830476    830476     Laffey,Patrick            LAFFEY 165 PERSONAL SysMgt Solution L3_DEVELOPER  plaffey@us.ibm.com           DEV
+ Ling      McConathy Clark           5IEA  960605    960605     NET Intern1,06            INET01 165 PERSONAL NET             L2_TECH       itra06@truth2.austin.ibm.com ZTRANS
+ Murillo   Jones     Epsztein        6T4A  838267    838267     Warrier,Suresh            WARIER 165 PERSONAL RAS             L3_DEVELOPER  swarrier@us.ibm.com          DEV
+ Collins   Engleman  Grosch          YXIA  303399    C-3C9R     Joseph,Garland            HMCDEV 165 INCOMING HSC Development                                            DEV
+ Ling      McConathy Aaron           D1ZA  960606    960606     KERN,Intern1              IKERN1 165 PERSONAL KERN            L2_TECH       itra01@truth2.austin.ibm.com ZTRANS
+ Murillo   Jones     Paul            D58S  858179    858179     Dai,Zhi-Wei               ZDAI   165 PERSONAL TCP/IP          L3_DEVELOPER  zdai@us.ibm.com              DEV
+ Ling      McConathy Aaron           D1ZA  702755    7A2755     Chirra,Radhika            RC     165 PERSONAL FSLV            L2_SCREEN_AUS rchirra@us.ibm.com           ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       CJHS  881141    881141     Younghaus,J.V.            BOWWOW 165 PERSONAL INSTALL         L3_DEVELOPER  younghau@us.ibm.com          DEV
+ Ling      McConathy Aaron           D1ZA  960607    960607     FSLV,Intern1              IFSLV1 165 PERSONAL FSLV            L2_TECH       itra07@truth2.austin.ibm.com ZTRANS
+ Ling      McConathy Testone         XILA  174970    017497     Ullmann,Harry             WWMISC 165 INCOMING MISC            L2_SCREEN_AUS hullmann@us.ibm.com          ZTRANS
+ Ling      McConathy Aaron           D1ZA  960609    960609     FSLV,Intern2              IFSLV2 165 PERSONAL FSLV                                                       ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 051110    05111A     Balakumar,Vinayapriya     VINAYA 165 PERSONAL LVM             L3_DEVELOPER  vbalakum@in.ibm.com          DEV
+ Ling      McConathy Brock           I4SA  917866    C-7GV8     Beck,Shanna               SHANNA 165 PERSONAL PERF            L2_TECH       shannab@us.ibm.com           ZTRANS
+ Murillo   Townsend  St. Pierre      B9RS  116646    1A6646     Tran,Scott                STTRAN 165 PERSONAL INSTALL         L3_DEVELOPER  scotttran@us.ibm.com         DEV
+ Ling      McConathy Aaron           D1ZA  960610    960610     DUMP,Intern1              IDUMP1 165 PERSONAL DUMP            L2_TECH       itra10@truth2.austin.ibm.com ZTRANS
+ Murillo   Townsend  Mulvey          UDYA  937224    937224     Willis,D.E.               WILLIS 165 PERSONAL NETWORK DD      L3_DEVELOPER  dewillis@us.ibm.com          DEV
+ Murillo   Townsend  Mulvey          UDYA  717310    7A7310     Cardona,Omar              OMAR   165 PERSONAL NETWORK DD      L3_DEVELOPER  ocardona@us.ibm.com          DEV
+ Ling      McConathy Testone         XILA  952818    952818     Hezari,Emilia             EMILIA 165 PERSONAL INST            L2_TECH       ehezari@us.ibm.com           ZTRANS
+ Murillo   Simon     Beck            UD3A            395296     Tenginakai,Jyoti          JYOTIT 165 PERSONAL SECURITY        L3_DEVELOPER  jyoti.b.t@in.ibm.com         DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 194493    194493     Joseph,Frederic Maria     FRED   165 PERSONAL TCP/IP          L3_DEVELOPER  fmariajo@in.ibm.com          DEV
+ Ling      McConathy Clark           5IEA  794421    794421     Xu,Charleen               AMAPP  165 INCOMING APP             L2_TECH       charleen@us.ibm.com          ZTRANS
+ Ling      McConathy Clark           5IEA  960611    960611     APP,Intern1               IAPP01 165 PERSONAL APP             L2_TECH       itra11@truth2austin.ibm.com  ZTRANS
+ Ling      McConathy Testone         XILA  960613    960613     STOR,Intern1              ISTOR1 165 PERSONAL STOR            L2_TECH       itra13@truth2.austin.ibm.com ZTRANS
+ Murillo   Simon     Beck            UD3A  973715    973715     Hausmann,Sally            SALLY  165 PERSONAL SECURITY        L3_DEVELOPER  shausman@us.ibm.com          DEV
+ Unknown   Unknown   Unknown         FAKE            000001     Q_owner,Fake              DVPERF 165 INCOMING UNKNOWN                                                    OTHER
+ Murillo   Townsend  St. Pierre      B9RS  040370    +4037A     Harris,Jan                ILSJP  165 INCOMING NLS             L3_DEVELOPER  jan2@us.ibm.com              DEV
+ Ling      McConathy Testone         XILA  960614    960614     STOR,Intern2              ISTOR2 165 PERSONAL STOR                          itra14@truth2.austin.ibm.com ZTRANS
+ Paranjape Contreras Ellsworth       B4RS  359927    359927     Neible,Theodore           TEDN   165 PERSONAL SysMgt Solution L3_DEVELOPER  tneible@us.ibm.com           DEV
+ Paranjape Contreras Ellsworth       B4RS  537450    537450     Tran,K.V.                 KVTRAN 165 PERSONAL SysMgt Solution L3_DEVELOPER  kvtran@us.ibm.com            DEV
+ Ling      McConathy Testone         XILA  558166    558166     Barrett,Cindy             CINDY  165 PERSONAL VIRT            L2_SCREEN_AUS barrett@us.ibm.com           ZTRANS
+ Ling      McConathy Testone         XILA  960615    960615     VIRT,Intern1              IVIRT1 165 PERSONAL VIRT            L2_TECH       itra15@truth2.austin.ibm.com ZTRANS
+ Ling      McConathy Testone         XILA  960616    960616     VIRT,Intern2              IVIRT2 165 PERSONAL VIRT            L2_TECH       itra16@truth2.austin.ibm.com ZTRANS
+ Ling      McConathy Testone         XILA  960617    960617     INST,Intern1              IINST1 165 PERSONAL INST            L2_TECH       itra17@truth2.austin.ibm.com ZTRANS
+ Murillo   Simon     Thomas          BN2S  618485    618485     Fought,Kevin              FOUGHT 165 PERSONAL Kernel          L3_DEVELOPER  fought@us.ibm.com            DEV
+ Paranjape Contreras Ellsworth       B4RS  802762    802762     Lowe,Suanne               PEGCIM 165 INCOMING SysMgt Solution L3_DEVELOPER  suelo@us.ibm.com             DEV
+ Murillo   Jones     Paul            D58S  009822    0A9822     Venkatsubra,Venkat        VENKAT 165 PERSONAL TCP/IP          L3_DEVELOPER  venkats@us.ibm.com           DEV
+ Murillo   Townsend  Ellett-Salmoran 4VRA  399827    399827     Kovacs,Bob                KOVACS 165 PERSONAL VIO             L3_DEVELOPER  bkovacs@us.ibm.com           DEV
+ Ling      McConathy Testone         XILA  960618    960618     INST,Intern2              IINST2 165 PERSONAL INST            L2_TECH       itra18@truth2.austin.ibm.com ZTRANS
+ Ling      McConathy Testone         XILA  000588    069840     Varraz,Lilian             WWWLIV 248 PERSONAL VIRT            L2_TECH       lilianvarraz@fr.ibm.com      SATEUR
+ Murillo   WXBA Mgr2 CJHS Mgr1       CJHS  051860    51860+     Veeramalla,Ramesh         RAMV   165 PERSONAL FILESYSTEMS     L3_DEVELOPER  rameshv@us.ibm.com           DEV
+ Murillo   Simon     Barenys         WZ8S  417018    417018     Mazzurana,Paul D.         PDMAZZ 165 PERSONAL NFS             L3_DEVELOPER  pdmazz@us.ibm.com            DEV
+ Murillo   Simon     Barenys         WZ8S  687200    687200     Nichols,Frank             L3FLN  165 PERSONAL NFS             L3_DEVELOPER  nichols3@us.ibm.com          DEV
+ Murillo   Townsend  St. Pierre      B9RS  463406    463406     Wigginton,Ann             ANN    165 PERSONAL INSTALL         L3_DEVELOPER  awiggint@us.ibm.com          DEV
+ Ling      McConathy Clark           5IEA  205799    2A5799     Ostrander,Angie           DMGR   165 INCOMING NET             L2_TECH       angiecla@us.ibm.com          ZTRANS
+ Ling      McConathy Clark           5IEA  305356    C-5UEV     Smith,Perry               PEDZ   165 PERSONAL NET             L2_TECH       pedzan@us.ibm.com            ZTRANS
+ Ling      McConathy Testone         XILA  001243    003202     Honore,Aaron              WWWAAH 248 PERSONAL VIRT            L2_TECH       aaron.honore@fr.ibm.com      SATEUR
+ Ling      McConathy Aaron           D1ZA  240069    C-1U0K     Agarawal,Harish           AMDUMP 165 INCOMING DUMP            L2_TECH       agarawal@us.ibm.com          ZTRANS
+ Ling      McConathy Testone         XILA  404214    4A4214     Moss,Leon                 LEON   165 PERSONAL STOR            L2_TECH       moss1@us.ibm.com             ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 951517    951517     Tah,Arnab                 ARNAB  165 PERSONAL CIFS            L3_DEVELOPER  arnabtah@in.ibm.com          DEV
+ Ling      McConathy Aaron           D1ZA  347516    3D7516     Damodaran,Anil            AMFSLV 165 INCOMING FSLV            L2_SCREEN_AUS anildam@us.ibm.com           ZTRANS
+ Murillo   Simon     Barenys         WZ8S  200752    2A0752     Solomon,Andrew            ASOLO  165 PERSONAL NFFS            L3_DEVELOPER  asolomon@us.ibm.com          DEV
+ Murillo   Townsend                  B2WS  105527    105527     Genty,D.M.                GENTY  165 PERSONAL Dev Mgr         MANAGER       genty@us.ibm.com             DEV
+ Murillo   Townsend  Mulvey          UDYA  122031    122031     Cunningham,J.B.           JBC    165 PERSONAL NETWORK DD      L3_DEVELOPER  jbc@us.ibm.com               DEV
+ Murillo   Jones     Paul            D58S  107337    1A7337     Banerjee,Dwip             DWIP   165 PERSONAL TCP/IP          L3_DEVELOPER  dnbanerg@us.ibm.com          DEV
+ Gupta     Makis     Young           OEIA  598893    598893     Kashyap,Neeraj Kumar      NKCDE  165 PERSONAL Performance     L3_DEVELOPER  nkashyap@in.ibm.com          DEV
+ Ling      McConathy Clark           5IEA  208342    2A8342     Garcia,Antonio            P3P    165 INCOMING Z3P             L2_TECH       garcia1@us.ibm.com           ZTRANS
+ Murillo   Townsend  Mulvey          UDYA  202998    2A2998     Torres,Pedro              PEDRO  165 PERSONAL NETWORK DD      L3_DEVELOPER  pvtorres@us.ibm.com          DEV
+ Ling      McConathy Testone         XILA  558166    558166     Barrett,Cindy             RATRAN 165 OTHER    VIRT            L2_SCREEN_AUS barrett@us.ibm.com           ZTRANS
+ Murillo   Townsend  St. Pierre      B9RS  040370    +4037A     Harris,Jan                ILSDEV 165 INCOMING NLS             L3_DEVELOPER  jan2@us.ibm.com              DEV
+ Ling      McConathy Brock           I4SA  362492    362492     McLeod,Alex               AMHA   165 INCOMING HA              L2_SCREEN_AUS amcleod@us.ibm.com           ZTRANS
+ Ling      McConathy Clark           5IEA  301622    C-AFT2     Talmage,Steve             ST     165 PERSONAL NET             L2_TECH       stalmage@us.ibm.com          ZTRANS
+ Ling      McConathy Clark           5IEA  043370    6A2207     Hernandez,Paul            HERNP  165 PERSONAL NET             L2_TECH       phh@us.ibm.com               ZTRANS
+ Ling      McConathy Aaron           D1ZA  303765    C-3P6E     Unruh,Steven              SUNRUH 165 PERSONAL FSLV            L2_TECH       sunruh@us.ibm.com            ZTRANS
+ Ling      McConathy Brock           I4SA  302776    C-2P7F     Guenter-Smith,Nancy       FAKEQ1 165 PERSONAL ZOPS            L2_TECH                                    ZTRANS
+ Ling      McConathy Testone         XILA  303925    C-3RBE     Zhang,Erho                ERHO   165 PERSONAL MISC            L2_TECH       erho@us.ibm.com              ZTRANS
+ Ling      McConathy Brock           I4SA  049654    C+66YW     Thurston,Signe            FAKEQ2 165 PERSONAL ZOPS                          sest@us.ibm.com              ZTRANS
+ Ling      McConathy Brock           I4SA  303345    954319     Sutton,Rick               SUTTON 165 PERSONAL PERF            L2_TECH       rbsutton@us.ibm.com          ZTRANS
+ Ling      McConathy Testone         XILA  040670    4A2757     Puig,Rick                 PUIG   165 PERSONAL INST            L2_SCREEN_AUS puigr@us.ibm.com             ZTRANS
+ Ling      McConathy Brock           I4SA  049655    C-66YW     Thurston2,Signe           FAKEQ3 165 PERSONAL ZOPS                          sest@us.ibm.com              ZTRANS
+ Ling      McConathy Clark           5IEA  073110    7A2818     Mahajan,Puneet            SDAIX  165 INCOMING ZISV            L2_SCREEN_AUS pmahajan@us.ibm.com          ZTRANS
+ Ling      McConathy Aaron           D1ZA  303951    7D9242     Bello,Adekunle            KUNLE  165 PERSONAL FSLV            L2_SCREEN_AUS kunle@us.ibm.com             ZTRANS
+ Ling      McConathy Testone         XILA  043230    6A2198     Ramagiri,Vani             VANI   165 PERSONAL VIRT            L2_SCREEN_AUS vani@us.ibm.com              ZTRANS
+ Ling      McConathy Brock           I4SA  165874    165874     Zimmer,Linda              FAKEQ4 165 PERSONAL ZOPS            L2_TECH       zimmerl@us.ibm.com           ZTRANS
+ Murillo   Townsend  Chang           D59S  318491    3A8491     Tinnakul,Teerasit         TINN   165 PERSONAL STORAGE DD      L3_DEVELOPER  teerasit@us.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       CJHS  053771    053771     Vazzalwar,Girish          GIRISH 165 PERSONAL SYSPROC         L3_DEVELOPER  girishva@us.ibm.com          DEV
+ Ling      McConathy Brock           I4SA  024262    024261     Marcantoni,Claudio        CLAM   248 PERSONAL HA              L2_TECH       claudiom@it.ibm.com          SATEUR
+ Murillo   Townsend  Ellett-Salmoran 4VRA  308504    3A8504     Vallabhaneni,Vasu         VASU   165 PERSONAL VIO             L3_DEVELOPER  vasuvall@us.ibm.com          DEV
+ Murillo   Simon     Barenys         WZ8S  912581    9A2580     Jennings,Cheryl L         KRNHLD 165 INCOMING FILESYSTEMS     L3_DEVELOPER  halllc@us.ibm.com            DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 077322    077322     Kumar,Kislaya             KISLAY 165 PERSONAL CMDS            L3_DEVELOPER  kislakum@in.ibm.com          DEV
+ Ling      McConathy Aaron           D1ZA  215881    215881     Chalemin,Tex (Glen)       AMKERN 165 INCOMING KERN            L2_TECH       gchalemi@us.ibm.com          ZTRANS
+ Ling      McConathy Brock           I4SA  276448    1A8831     Wong,Kathy                AMLIB  165 INCOMING LIB             L2_SCREEN_AUS wongk@us.ibm.com             ZTRANS
+ Ling      McConathy Brock           I4SA  001251    E05101     Merzel,Mirko              WWWMEM 248 PERSONAL LIB             L2_TECH       mirko.merzel@si.ibm.com      SATEUR
+ Ling      McConathy Testone         XILA  301848    9A7790     Lang,Steven               SLANG  165 PERSONAL STOR            L2_SCREEN_AUS stevenla@us.ibm.com          ZTRANS
+ Ling      McConathy Brock           I4SA  300516    483515     Quinn,William             QUINNW 165 PERSONAL PERF            L2_TECH       quinnw@us.ibm.com            ZTRANS
+ Ling      McConathy Testone         XILA  356754    356754     Leva,Dominick             LEVA   165 PERSONAL INST            L2_TECH       dleva@us.ibm.com             ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 032768    032768     Smitha,Radhakrishnan      SMITHA 165 PERSONAL Performance     L3_DEVELOPER  smradhak@in.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 030140    030140     Rengasamy,Errappan        RENGA  165 PERSONAL Performance     L3_DEVELOPER  rerrappa@in.ibm.com          DEV
+ Murillo   Simon     Beck            UD3A  691118    691118     Dugan,Katherine           KDUGAN 165 PERSONAL SECURITY        L3_DEVELOPER  kdugan@us.ibm.com            DEV
+ Ling      McConathy Testone         XILA  174970    017497     Ullmann,Harry             AMMISC 165 INCOMING MISC            L2_SCREEN_AUS hullmann@us.ibm.com          ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 389833    389833     Josiah,Samuel             JOE    165 PERSONAL Performance     L3_DEVELOPER  josamuel@in.ibm.com          DEV
+ Ling      McConathy Clark           5IEA  001250    008188     Koo Mo Shan,Daniel        WWWDKS 248 PERSONAL NET             L2_TECH       daniel.koo@uk.ibm.com        SATEUR
+ Ling      McConathy Clark           5IEA  403604    4A3604     Baratakke,Kavitha         KAVIB  165 PERSONAL PREM            L2_TECH       kbaratak@us.ibm.com          ZTRANS
+ Ling      McConathy Testone         XILA  276058    2A5849     Mohammad,Barkat           BARKAT 165 PERSONAL INST            L2_SCREEN_AUS barkat@us.ibm.com            ZTRANS
+ Murillo   Simon     Barenys         WZ8S  912581    9A2580     Jennings,Cheryl L         AIXNAS 165 INCOMING FILESYSTEMS     L3_DEVELOPER  halllc@us.ibm.com            DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 031241    031241     Gundurao,Srinivas         GSRINI 165 PERSONAL NFS             L3_DEVELOPER  sgundura@in.ibm.com          DEV
+ Murillo   Townsend  Chang           D59S  307299    307299     Maddali,Sudhir            SUDHIR 165 PERSONAL STORAGE DD      L3_DEVELOPER  smaddali@in.ibm.com          DEV
+ Murillo   Simon     Beck            UD3A            395296     Tenginakai,Jyoti          OPNSRC 165 INCOMING SECURITY        L3_DEVELOPER  jyoti.b.t@in.ibm.com         DEV
+ Murillo   Townsend  Chang           D59S  139249    139249     Domrow,Gary               RALGSD 165 PERSONAL STORAGE DD      L3_DEVELOPER  domrow@us.ibm.com            DEV
+ Ling      McConathy Clark           5IEA  043370    6A2207     Hernandez,Paul            AMNET  165 INCOMING NET             L2_TECH       phh@us.ibm.com               ZTRANS
+ Murillo   Townsend  Chang           D59S  715803    7A5803     Kassem,Fadi               KASSEM 165 PERSONAL UNKNOWN         L3_DEVELOPER  fmkassem@us.ibm.com          DEV
+ Murillo   Townsend  Chang           D59S  716293    7A6293     Ham,Nick                  NSHAM  165 PERSONAL STORAGE DD      L3_DEVELOPER  nsham@us.ibm.com             DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 301471    919767     Dey,Prashanto             PDEY   165 PERSONAL VIO             L3_DEVELOPER  prashand@in.ibm.com          DEV
+ Murillo   Simon     Beck            UD3A  023233    023232     Gadekar,Vinay             VINAY  165 PERSONAL SECURITY        L3_DEVELOPER  vgadekar@in.ibm.com          DEV
+ Ling      McConathy Clark           5IEA  301220    0G7885     Kumar,Ram                 RK     165 PERSONAL NET             L2_TECH       ramkumar@us.ibm.com          ZTRANS
+ Ling      McConathy Aaron           D1ZA  347516    3D7516     Damodaran,Anil            ANILD  165 PERSONAL FSLV            L2_SCREEN_AUS anildam@us.ibm.com           ZTRANS
+ Ling      McConathy Clark           5IEA  300538    0G5093     Desai,Anand               ANAND  165 PERSONAL APP             L2_TECH       anandd@us.ibm.com            ZTRANS
+ Ling      McConathy Clark           5IEA  712802    7A2802     Luo,Wei                   WEI    165 PERSONAL PREM            L2_SCREEN_AUS weiluo@us.ibm.com            ZTRANS
+ Unknown   Unknown   Unknown         E54S  756557    756557     Das,Manoj Kumar           MANOJK 165 PERSONAL Performance     L3_DEVELOPER  manojkdas@in.ibm.com         DEV
+ Ling      McConathy Testone         XILA  001226    123276     Begau,Bertram             WWWBBE 248 PERSONAL STOR            L2_TECH       bertram.begau@de.ibm.com     SATEUR
+ Ling      McConathy Brock           I4SA  362492    362492     McLeod,Alex               MCLEOD 165 PERSONAL HA              L2_SCREEN_AUS amcleod@us.ibm.com           ZTRANS
+ Ling      McConathy Brock           I4SA  300473    900193     Jaehde,Astrid             ASTRID 165 PERSONAL HA              L2_SCREEN_AUS jaehde@us.ibm.com            ZTRANS
+ Murillo   Simon     Thomas          BN2S  301334    C-1LLV     Hegde,Nikhil              NH     165 PERSONAL Core Kernel     L3_DEVELOPER  nhegde@us.ibm.com            DEV
+ Manasso             Hayes           5U5A  301379    C-1C79     Bandi,Saila               SAILA  165 PERSONAL UNKNOWN         L2_TECH       sbandi@us.ibm.com            ZTRANS
+ Murillo   Simon     Barenys         WZ8S  912581    9A2580     Jennings,Cheryl L         HALLLC 165 PERSONAL FILESYSTEMS     L3_DEVELOPER  halllc@us.ibm.com            DEV
+ Ling      McConathy Brock           I4SA  001249    062803     Oost,Geert                WWWGOD 248 PERSONAL PERF            L2_TECH       geert_oost@nl.ibm.com        SATEUR
+ Ling      McConathy Aaron           D1ZA  311356    C-1LEX     Ranganathan,Prakash       PRAKAS 165 PERSONAL FSLV            L2_TECH       prakash@us.ibm.com           ZTRANS
+ Ling      McConathy Aaron           D1ZA  000582    910750     Ylipiessa,Heikki          WWWHEY 248 PERSONAL KERN            L2_TECH       heikki.ylipiessa@fi.ibm.com  SATEUR
+ Ling      McConathy Aaron           D1ZA  301187    0G8524     Raghavan,Srini            SRIRAG 165 PERSONAL KERN            L2_TECH       raghavan@us.ibm.com          ZTRANS
+ Murillo   Jones     Epsztein        6T4A  910262    910262     Lepakshaiah,Mallesh       ML     165 PERSONAL RAS             L3_DEVELOPER  mallesh@us.ibm.com           DEV
+ Ling      McConathy Clark           5IEA  794421    794421     Xu,Charleen               CHAR   165 PERSONAL APP             L2_TECH       charleen@us.ibm.com          ZTRANS
+ Ling      McConathy Aaron           D1ZA  001248    082630     Khan-Afshar,Kurosh        WWWKKA 248 PERSONAL KERN            L2_TECH       kurosh.ka@es.ibm.com         SATEUR
+ Ling      McConathy Testone         XILA  301552    4D1344     Moore,Shannon             SMORES 165 PERSONAL STOR            L2_SCREEN_AUS shamoore@us.ibm.com          ZTRANS
+ Manasso             Hayes           5U5A  302042    C-20MK     Roy,Suparna               SUPARN 165 PERSONAL UNKNOWN         L2_TECH       suparna@us.ibm.com           OTHER
+ Murillo   WXBA Mgr2 CJHS Mgr1       CJHS  911624    9A1624     Zoss,Evan                 EVAN   165 PERSONAL LVM             L3_DEVELOPER  evanzoss@us.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 290704    290704     Nagaraj,Ramesh C          RAMESH 165 PERSONAL STORAGE DD      L3_DEVELOPER  ramesh.cn@in.ibm.com         DEV
+ Ling      McConathy Aaron           D1ZA  000254    052361     Romac,Christophe          EMDUMP 248 INCOMING DUMP            L2_TECH       cromac@fr.ibm.com            SATEUR
+ Ling      McConathy Brock           I4SA  024262    024261     Marcantoni,Claudio        EMHA   248 INCOMING HA              L2_TECH       claudiom@it.ibm.com          SATEUR
+ Ling      McConathy Testone         XILA  276058    2A5849     Mohammad,Barkat           AMINST 165 INCOMING INST            L2_SCREEN_AUS barkat@us.ibm.com            ZTRANS
+ Ling      McConathy Testone         XILA  797720    051718     Spornhauer,Michael        EMINST 248 INCOMING INST            L2_TECH       spornhau@de.ibm.com          SATEUR
+ Ling      McConathy Sutcliffe       39KA  582676    582676     Simon,Robert              ZAIX   13A INCOMING CLST_FS         L2_SCREEN_POK rsimon@us.ibm.com            POK
+ Ling      McConathy Sutcliffe       39KA  582676    582676     Simon,Robert              SCI13A 13A INCOMING CLST_FS         L2_SCREEN_POK rsimon@us.ibm.com            POK
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 011846    011846     Prashant,Arpana           ARPANA 165 PERSONAL CMDS            L3_DEVELOPER  arprasha@in.ibm.com          DEV
+ Ling      McConathy Sutcliffe       39KA  582676    582676     Simon,Robert              AIXFUP 13A OTHER    CLST_FS         L2_SCREEN_POK rsimon@us.ibm.com            POK
+ Ling      McConathy Aaron           D1ZA  081159    081159     Braunbeck,Thomas          EMKERN 248 INCOMING KERN            L2_TECH       braunbec@de.ibm.com          SATEUR
+ Ling      McConathy Sutcliffe       39KA  582676    582676     Simon,Robert              PPSWT  13A OTHER    CLST_FS         L2_SCREEN_POK rsimon@us.ibm.com            POK
+ Ling      McConathy Sutcliffe       39KA  582676    582676     Simon,Robert              JUDY   13A PERSONAL CLST_FS         L2_SCREEN_POK rsimon@us.ibm.com            POK
+ Ling      McConathy Weber           WQPA  431780    903268     K,Anil                    AMPREM 165 INCOMING ZETC            L2_TECH       kanil@us.ibm.com             ZTRANS
+ Ling      McConathy Brock           I4SA  001318    022431     Lehner,Wolfgang           EMLIB  248 INCOMING LIB             L2_TECH       wolfgang_lehner@at.ibm.com   SATEUR
+ Paranjape Contreras Tan             HMYS  908057    908057     Birgen,G.C.               WSMDEV 165 INCOMING SysMgt Framewrk L3_DEVELOPER  birgen@us.ibm.com            DEV
+ Ling      McConathy Testone         XILA  301848    9A7790     Lang,Steven               AMSTOR 165 INCOMING STOR            L2_SCREEN_AUS stevenla@us.ibm.com          ZTRANS
+ Ling      McConathy Clark           5IEA  001250    008188     Koo Mo Shan,Daniel        EMNET  248 INCOMING NET             L2_TECH       daniel.koo@uk.ibm.com        SATEUR
+ Ling      McConathy Clark           5IEA  794421    794421     Xu,Charleen               JAVAIX 165 INCOMING APP             L2_TECH       charleen@us.ibm.com          ZTRANS
+ Ling      McConathy Brock           I4SA  024248    024248     Bozzini,Antonio           EMPERF 248 INCOMING PERF            L2_TECH       abozzini@it.ibm.com          SATEUR
+ Ling      McConathy Weber           WQPA  002007    3D9915     Cline,Kyle                KCLINE 165 PERSONAL ZETC            L2_TECH       kcline@us.ibm.com            ZTRANS
+ Ling      McConathy Testone         XILA  001226    123276     Begau,Bertram             EMSTOR 248 INCOMING STOR            L2_TECH       bertram.begau@de.ibm.com     SATEUR
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 319963    319963     Singh,Dilip               DILIPK 165 PERSONAL SYSPROC         L3_DEVELOPER  dilsingh@in.ibm.com          DEV
+ Ling      McConathy Testone         XILA  001243    003202     Honore,Aaron              EMVIRT 248 INCOMING VIRT            L2_TECH       aaron.honore@fr.ibm.com      SATEUR
+ Murillo   Jones     Paul            D58S  918416    918416     Ranadip,Das               RANAD  165 PERSONAL TCP/IP          L3_DEVELOPER  dranadip@in.ibm.com          DEV
+ Ling      McConathy Clark           5IEA  712802    7A2802     Luo,Wei                   PAT    165 INCOMING PREM            L2_SCREEN_AUS weiluo@us.ibm.com            ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       CJHS  226777    226777     SANCHEZ,DOUGLAS           DOUGS  165 PERSONAL VIO             L3_DEVELOPER  desanch@us.ibm.com           DEV
+ Unknown   Unknown   Unknown         E92S  445539    4D5539     Venteicher,Bryan          BRYANV 165 PERSONAL FILESYSTEMS     L3_DEVELOPER  bventei@us.ibm.com           DEV
+ Ling      McConathy Testone         XILA  043230    6A2198     Ramagiri,Vani             AMVIRT 165 INCOMING VIRT            L2_SCREEN_AUS vani@us.ibm.com              ZTRANS
+ Ling      McConathy Testone         XILA  040670    4A2757     Puig,Rick                 LEGACY 165 INCOMING INST            L2_SCREEN_AUS puigr@us.ibm.com             ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 611290    611290     Lingappa,Shivakumar       SHIVA  165 PERSONAL NETWORK DD      L3_DEVELOPER  shivakumar_kl@in.ibm.com     DEV
+ Ling      McConathy Clark           5IEA  304417    C-441Y     Lin,Chiang-Lung           CLL    165 PERSONAL NET             L2_TECH       cll@us.ibm.com               ZTRANS
+ Murillo   Townsend  Chang           D59S  216810    2A6810     Patel,Jayant              JAYANT 165 PERSONAL VIO             L3_DEVELOPER  jayantp@us.ibm.com           DEV
+ Ling      McConathy Clark           5IEA  301561    C-AE618    Griffiths,Paul            GRIFF  165 PERSONAL ZISV            L2_TECH       griff@us.ibm.com             ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 014532    014532     Srinivas,Gargi            GARGI  165 PERSONAL CMDS            L3_DEVELOPER  gargi.srinivas@in.ibm.com    DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       CJHS  303482    C-3VH2     Steves,Doug               STEVES 165 PERSONAL VMM             L3_DEVELOPER  dsteves@us.ibm.com           DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 137406    137406     Chandran,Shajith          SHAJ   165 PERSONAL SYSLDR          L3_DEVELOPER  shajithchandran@in.ibm.com   DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 003205    003205     Jacob,Sophia              SOPHIA 165 PERSONAL SECURITY        L3_DEVELOPER  sophiajacob@in.ibm.com       DEV
+ Murillo   Simon     Barenys         WZ8S  912581    9A2580     Jennings,Cheryl L         AIXOS  165 INCOMING FILESYSTEMS     L3_DEVELOPER  halllc@us.ibm.com            DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       CJHS  301157    C-A1EX     Hayden,Ross               OEMAIX 165 INCOMING Dev Support     L3_DEVELOPER  rossome@us.ibm.com           DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 153264    153264     Venkatachalam,Ponraj      PONRAJ 165 PERSONAL TCP/IP          L3_DEVELOPER  ponvenka@in.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 075977    075977     Katyayan,Kunal            KKATYA 165 PERSONAL PRINTERS        L3_DEVELOPER  kkatyaya@in.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       CJHS  915357    9A5357     Onwuta,Azubuike V. (Zuby) ZUBY   165 PERSONAL CIFS            L3_DEVELOPER  onwuta@us.ibm.com            DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 003206    070757     Rahiman,Nabil             NABIL  165 PERSONAL CMDS            L3_DEVELOPER  nrahiman@in.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 072883    072883     Padmanabhan,Dinoja        DINOJA 165 PERSONAL TCP/IP          L3_DEVELOPER  dinojapadmanabhan@in.ibm.com DEV
+ Ling      McConathy Brock           I4SA  602187    6A2187     Davidson,Grover           AMPERF 165 INCOMING PERF            L2_SCREEN_AUS grover@us.ibm.com            ZTRANS
+ Ling      McConathy Testone         XILA  232768    232768     Martin,Glen               GLENC  165 PERSONAL VIRT            L2_TECH       glenc@us.ibm.com             ZTRANS
+ Ling      McConathy Aaron           D1ZA  113347    013347     Chan,Rick                 RSSH   95A PERSONAL DUMP            L2_TECH       rickchan@tw.ibm.com          SATCHN
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 891664    891664     Singh,Anil                ANILKS 165 PERSONAL CMDS            L3_DEVELOPER  anisingh@in.ibm.com          DEV
+ Murillo   Jones     Paul            D58S  301551    C-1E5S     Srinivasan,Niranjan       NIRAN  165 PERSONAL TCP/IP          L3_DEVELOPER  niran@us.ibm.com             DEV
+ Ling      McConathy Brock           I4SA  073831    3D7484     Schlachter,Gus            GUSS   165 PERSONAL HA              L2_TECH       gussch@us.ibm.com            ZTRANS
+ Murillo   Townsend  Kehne           BTGS  201719    2A1719     Arbab,Reza                NSMOZ  165 INCOMING GRAPHICS        L3_DEVELOPER  arbab@us.ibm.com             DEV
+ Ling      McConathy Aaron           D1ZA  304661    220774     Chun,Sung                 SUNGMC 165 PERSONAL FSLV            L2_SCREEN_AUS sungmc@us.ibm.com            ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 628739    628739     Mansur,Vishal R           VISHAL 165 PERSONAL NETWORK DD      L3_DEVELOPER  vimansur@in.ibm.com          DEV
+ Ling      McConathy Clark           5IEA  304624    9D0131     Srikanth,Sangeetha        SSRIKA 165 PERSONAL NET             L2_SCREEN_AUS ssrikant@us.ibm.com          ZTRANS
+ Murillo   Simon     Beck            UD3A  728742    728742     Lita,Christian            DEVP11 165 PERSONAL SECURITY                                                   DEV
+ Ling      McConathy Aaron           D1ZA  301274    C-ATY1     Thoutem,Rakesh            RAK    165 PERSONAL FSLV            L2_TECH       rakesht@us.ibm.com           ZTRANS
+ Ling      McConathy Aaron           D1ZA  303335    C-C3CN     Kuo,Wei                   KUO    165 PERSONAL KERN            L2_TECH       kuo@us.ibm.com               ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       CJHS  319572    C-9WG289   OBryan,Joe                JBRYAN 165 PERSONAL LVM             L3_DEVELOPER  josbryan@us.ibm.com          DEV
+ Ling      McConathy Aaron           D1ZA  303723    C-3PTT     Ranganathan,Sekar         SEKAR  165 PERSONAL KERN            L2_TECH       sekar@us.ibm.com             ZTRANS
+ Ling      McConathy Aaron           D1ZA  300366    C-0CFF     Sulu,Amarendar            ASULU  165 PERSONAL KERN            L2_TECH       asulu@us.ibm.com             ZTRANS
+ Ling      McConathy Clark           5IEA  304624    9D0131     Srikanth,Sangeetha        PCDD   165 INCOMING NET             L2_SCREEN_AUS ssrikant@us.ibm.com          ZTRANS
+ Ling      McConathy Testone         XILA  301848    9A7790     Lang,Steven               PASTOR 165 INCOMING STOR            L2_SCREEN_AUS stevenla@us.ibm.com          ZTRANS
+ Ling      McConathy Clark           5IEA  304624    9D0131     Srikanth,Sangeetha        WWNETK 165 INCOMING NET             L2_SCREEN_AUS ssrikant@us.ibm.com          ZTRANS
+ Ling      McConathy Clark           5IEA  717297    7A7297     Shi,Suzanne               WWNETA 165 INCOMING NET             L2_SCREEN_AUS suzanshi@us.ibm.com          ZTRANS
+ Ling      McConathy Brock           I4SA  301152    C-AAWB     Hou,Alex                  ALEXH  165 PERSONAL LIB             L2_TECH       alexhou@us.ibm.com           ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 046701    04670G     Korlapati,Amulya          AMULYA 165 PERSONAL CMDS            L3_DEVELOPER  akorlapa@in.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 027772    02777H     Kulkarni,Chidambar        CHIDUK 165 PERSONAL SYSPROC         L3_DEVELOPER  chidkulk@in.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 100142    000142     Kulkarni,Vaibhav          VAIBHA 165 PERSONAL TCP/IP          L3_DEVELOPER  vaibhkul@in.ibm.com          DEV
+ Ling      McConathy Brock           I4SA  602187    6A2187     Davidson,Grover           PPERF  165 INCOMING PERF            L2_SCREEN_AUS grover@us.ibm.com            ZTRANS
+ Ling      McConathy Testone         XILA  276058    2A5849     Mohammad,Barkat           PINST  165 INCOMING INST            L2_SCREEN_AUS barkat@us.ibm.com            ZTRANS
+ Ling      McConathy Testone         XILA  304458    0G7886     Meyer,Aaron               PDIAG  165 INCOMING VIRT            L2_SCREEN_AUS meyera@us.ibm.com            ZTRANS
+ Ling      McConathy Aaron           D1ZA  240069    C-1U0K     Agarawal,Harish           PDUMPS 165 INCOMING DUMP            L2_TECH       agarawal@us.ibm.com          ZTRANS
+ Ling      McConathy Testone         XILA  043230    6A2198     Ramagiri,Vani             PVIOS  165 INCOMING VIRT            L2_SCREEN_AUS vani@us.ibm.com              ZTRANS
+ Ling      McConathy Brock           I4SA  276448    1A8831     Wong,Kathy                PCMDS  165 INCOMING LIB             L2_SCREEN_AUS wongk@us.ibm.com             ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 070710    07071G     Jaiswal,Mansi             MANSIJ 165 PERSONAL CMDS            L3_DEVELOPER  mansjais@in.ibm.com          DEV
+ Ling      McConathy Testone         XILA  303925    C-3RBE     Zhang,Erho                PXDSK  165 INCOMING MISC            L2_TECH       erho@us.ibm.com              ZTRANS
+ Ling      McConathy Testone         XILA  303925    C-3RBE     Zhang,Erho                PSMWS  165 INCOMING MISC            L2_TECH       erho@us.ibm.com              ZTRANS
+ Ling      McConathy Testone         XILA  303925    C-3RBE     Zhang,Erho                PNLSA  165 INCOMING MISC            L2_TECH       erho@us.ibm.com              ZTRANS
+ Ling      McConathy Testone         XILA  303925    C-3RBE     Zhang,Erho                PAICC  165 INCOMING MISC            L2_TECH       erho@us.ibm.com              ZTRANS
+ Ling      McConathy Testone         XILA  174970    017497     Ullmann,Harry             PGOS   165 INCOMING MISC            L2_SCREEN_AUS hullmann@us.ibm.com          ZTRANS
+ Ling      McConathy Clark           5IEA  507643    507643     Patel,Darshan             PX25   165 INCOMING NET             L2_SCREEN_AUS darshanp@us.ibm.com          ZTRANS
+ Ling      McConathy Clark           5IEA  304624    9D0131     Srikanth,Sangeetha        PATM   165 INCOMING NET             L2_SCREEN_AUS ssrikant@us.ibm.com          ZTRANS
+ Ling      McConathy Brock           I4SA  073831    3D7484     Schlachter,Gus            PHACMP 165 INCOMING HA              L2_TECH       gussch@us.ibm.com            ZTRANS
+ Ling      McConathy Clark           5IEA  205799    2A5799     Ostrander,Angie           PPRNT  165 INCOMING NET             L2_TECH       angiecla@us.ibm.com          ZTRANS
+ Ling      McConathy Clark           5IEA  205799    2A5799     Ostrander,Angie           PTTY   165 INCOMING NET             L2_TECH       angiecla@us.ibm.com          ZTRANS
+ Ling      McConathy Brock           I4SA  276448    1A8831     Wong,Kathy                PLIB   165 INCOMING LIB             L2_SCREEN_AUS wongk@us.ibm.com             ZTRANS
+ Ling      McConathy Brock           I4SA  276448    1A8831     Wong,Kathy                PAUTH  165 INCOMING LIB             L2_SCREEN_AUS wongk@us.ibm.com             ZTRANS
+ Ling      McConathy Testone         XILA  977968    977967     Wang,HaiRong              HAIRON 95A PERSONAL MISC            L2_TECH       hairongw@cn.ibm.com          SATCHN
+ Ling      McConathy Brock           I4SA  276448    1A8831     Wong,Kathy                WWACL  165 INCOMING LIB             L2_SCREEN_AUS wongk@us.ibm.com             ZTRANS
+ Ling      McConathy Testone         XILA  302504    C-B50V     Willcox,Wayne             KTM400 165 PERSONAL STOR            L2_TECH       wwillcox@us.ibm.com          ZTRANS
+ Ling      McConathy Brock           I4SA  977963    977963     Ni,WeiHua                 WEIHUA 95A PERSONAL LIB             L2_TECH       niweihua@cn.ibm.com          SATCHN
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 313975    313975     Gupta,Saurabh K           SAURAB 165 PERSONAL SECURITY        L3_DEVELOPER  saukgupt@in.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 675770    675770     Deuri,Kokil Kumar         KKOKIL 165 PERSONAL TCP/IP          L3_DEVELOPER  kokdeuri@in.ibm.com          DEV
+ Ling      McConathy Clark           5IEA  205799    2A5799     Ostrander,Angie           ANGIE  165 PERSONAL NET             L2_TECH       angiecla@us.ibm.com          ZTRANS
+ Ling      McConathy Clark           5IEA  303172    C-CAPT     McInerney,Kevin           KEVINM 165 PERSONAL APP             L2_TECH       kevmc@us.ibm.com             ZTRANS
+ Ling      McConathy Brock           I4SA  980679    980679     Zhou,XingChen             ZHOUXC 95A PERSONAL LIB             L2_TECH       zhouxch@cn.ibm.com           SATCHN
+ Unknown   Unknown   Unknown         FAKE  214796    2A4796     Patel,Kasturi             KPATEL 165 PERSONAL ZHMC            L2_TECH       kasturip@us.ibm.com          OTHER
+ Ling      McConathy Testone         XILA  064836    064836     Yeung,Evelyn              MOYA   165 PERSONAL STOR            L2_TECH       eyeung@us.ibm.com            ZTRANS
+ Ling      McConathy Clark           5IEA  717297    7A7297     Shi,Suzanne               SUZAN  165 PERSONAL NET             L2_SCREEN_AUS suzanshi@us.ibm.com          ZTRANS
+ Ling      McConathy Clark           5IEA  980672    980672     Xu,Hong                   XUHONG 95a PERSONAL NET             L2_TECH       xuhxh@cn.ibm.com             SATCHN
+ Ling      McConathy Clark           5IEA  208342    2A8342     Garcia,Antonio            GARCIA 165 PERSONAL Z3P             L2_TECH       garcia1@us.ibm.com           ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 608830    608830     Satapathy,Partha S        PARTHA 165 PERSONAL CMDS            L3_DEVELOPER  partha.s.s@in.ibm.com        DEV
+ Ling      McConathy Testone         XILA  040670    4A2757     Puig,Rick                 ESP    165 INCOMING INST            L2_SCREEN_AUS puigr@us.ibm.com             ZTRANS
+ Ling      McConathy Testone         XILA  471463    471463     Stumpff,Mike              MIKES  165 PERSONAL INST            L2_TECH       mstumpff@us.ibm.com          ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 002262    002262     Koteeswaran,Vijeyalakshum VIJI   165 PERSONAL TCP/IP          L3_DEVELOPER  vkoteesw@in.ibm.com          DEV
+ Ling      McConathy Brock           I4SA  305243    C-52M3     Graber,Loel               LOEL   165 PERSONAL LIB             L2_TECH       graber@us.ibm.com            ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 000930    000930     Perichiappan,Solaiyappan  SOLAI  165 PERSONAL HACMP           L3_DEVELOPER  solaiperi@in.ibm.com         DEV
+ Ling      McConathy Clark           5IEA  305204    C-520M     Mannepalli,Prakash        PRAKM  165 PERSONAL NET             L2_TECH       prakashm@us.ibm.com          ZTRANS
+ Ling      McConathy Clark           5IEA  303737    C-CG3P     Krishnan,Uma              KUMA   165 PERSONAL NET             L2_SCREEN_AUS kuma@us.ibm.com              ZTRANS
+ Murillo   Simon     Beck            UD3A  007123    007123     Sharma,Shruthi            SHRUTH 165 PERSONAL SECURITY        L3_DEVELOPER  shrutsha@in.ibm.com          DEV
+ Ling      McConathy Brock           I4SA  344985    812143     Cravens,Dan               DCRAV  165 PERSONAL PERF            L2_TECH       dcraven@us.ibm.com           ZTRANS
+ Ling      McConathy Clark           5IEA  894555    894555     Pizana,Luis               PIZANQ 165 PERSONAL NET             L2_TECH       pizana@us.ibm.com            ZTRANS
+ Ling      McConathy Brock           I4SA  925563    925563     Pham,Minh                 MMPHAM 165 PERSONAL HA              L2_SCREEN_AUS mmpham@us.ibm.com            ZTRANS
+ Ling      McConathy Testone         XILA  171999    1G1999     Vaters,Paul               PAULV  165 PERSONAL STOR            L2_TECH       pavaters@us.ibm.com          ZTRANS
+ Ling      McConathy Testone         XILA  043230    6A2198     Ramagiri,Vani             PAMS   165 INCOMING VIRT            L2_SCREEN_AUS vani@us.ibm.com              ZTRANS
+ Ling      McConathy Testone         XILA  172554    1G2554     Laird,Ed                  LAIRD  165 PERSONAL INST            L2_TECH       edlaird@us.ibm.com           ZTRANS
+ Ling      McConathy Brock           I4SA  900014    000014     Trickett,Nigel            NIGELT 95A PERSONAL PERF            L2_TECH       trickett@nz1.ibm.com         SATCHN
+ Ling      McConathy Testone         XILA  368067    368066     Gong,Eric                 ERICG  95A PERSONAL INST            L2_TECH       bcgong@au1.ibm.com           SATCHN
+ Ling      McConathy Clark           5IEA  322578    322578     Inoue,Masaki              MASA   95A PERSONAL APP             L2_TECH       e32257@jp.ibm.com            SATCHN
+ Ling      McConathy Clark           5IEA  300658    300657     Kajitani,Kenichi          KENI   95A PERSONAL NET             L2_TECH       kkaji@jp.ibm.com             SATCHN
+ Ling      McConathy Aaron           D1ZA  050954    050954     Kim,KiWaon                KWK    95A PERSONAL KERN            L2_TECH       kwk@kr.ibm.com               SATCHN
+ Ling      McConathy Brock           I4SA  028002    028002     Ha,SoonKwon               SK     95A PERSONAL HA              L2_TECH       hask@kr.ibm.com              SATCHN
+ Ling      McConathy Aaron           D1ZA  951445    051445     Lee,John                  JOHNL  95A PERSONAL DUMP            L2_TECH                                    SATCHN
+ Ling      McConathy Aaron           D1ZA  347410    3D7410     Karhi,Kari                KARHI  165 PERSONAL FSLV            L2_TECH       karhi@us.ibm.com             ZTRANS
+ Ling      McConathy Weber           WQPA  172584    1G2584     Piotrowski,Leonard        FAKEQ5 165 PERSONAL ZETC            L2_TECH       llpiotro@us.ibm.com          ZTRANS
+ Ling      McConathy Weber           WQPA  170921    1G0921     BeanG,Greg                FAKEQ6 165 PERSONAL ZETC            L2_TECH       gbean@us.ibm.com             ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 056050    05605I     Saraswat,Ashutosh                             CMDS            L3_DEVELOPER  ashsaras@in.ibm.com          DEV
+ Murillo   Townsend  St. Pierre      B9RS  788019    788019     Finley,Paul                                   INSTALL         L3_DEVELOPER  pfinley@us.ibm.com           DEV
+ Murillo   Townsend  Kehne           BTGS  820381    820381     Kuo,Wei                                       Graphics                                                   DEV
+ Ling      McConathy Sutcliffe       39KA  415344    445777     Scala,Antonio                                 CLST_HA         L2_TECH       antscala@us.ibm.com          POK
+ Ling      McConathy Weber           WQPA  300135    299985     Tiwary,Ashu                                   ZETC            L2_SCREEN_AUS ashu@us.ibm.com              ZTRANS
+ Murillo   Townsend  Mulvey          UDYA  906668    906668     De Leon III,Baltazar                          NETWORK DD                    balt@us.ibm.com              DEV
+ Paranjape Contreras Tan             HMYS  924777    924777     Martinez,Rene                                 SysMgt Framewrk L3_DEVELOPER  rrmartin@us.ibm.com          DEV
+ Murillo   Jones     Epsztein        6T4A  940229    940229     Stence,Donald                                 RAS             L3_DEVELOPER  dstence@us.ibm.com           DEV
+ Unknown   Unknown   Unknown         L3POK 595628    595628     Cham,Linda                                    PokDev          L3_SCREEN_POK lcham@us.ibm.com             DEV
+ Ling      McConathy Sutcliffe       39KA  360029    360029     Malinovsky,Bob                                CLST_FS         L2_TECH       h04rfm1@us.ibm.com           POK
+ Ling      McConathy                 E59S  420434    420434     Weber,Lynne                                   ZMGMT           MANAGER       lweber@us.ibm.com            ZTRANS
+ Ling      McConathy                 E59S  617362    617362     Clark,W.G.                                    ZMGMT           MANAGER       billclar@us.ibm.com          ZTRANS
+ Ling      McConathy Sutcliffe       39KA  922378    922378     Li,Ping                                       CLST_HA         L2_TECH       pingli1@us.ibm.com           POK
+ Murillo   Simon     Thomas          BN2S  614606    6A4606     Villarreal,Marcos                             SYSPROC                                                    DEV
+ Ling      McConathy Sutcliffe       39KA  698965    698965     Mah,Mustafa                                   CLST_FS         L2_TECH       yassin@us.ibm.com            POK
+ Murillo   Jones     Patel           BWUS  395447    395447     White,J                                       BUILD           L3_DEVELOPER  janiew@us.ibm.com            DEV
+ Murillo   Townsend  Chang           D59S  934672    934672     Dutta,Hemanta                                 STORAGE DD      L3_DEVELOPER  hemanta@us.ibm.com           DEV
+ Murillo   Simon     Wadehra         E18S  707269    7A7269     Hepkin,David                                  VMM             L3_DEVELOPER  dhepkin@us.ibm.com           DEV
+ Unknown   Unknown   Unknown         E54S  079444    079444     Ramirez,Anthony                               Performance     L3_DEVELOPER  F079444@FRVM.vnet.ibm.com    DEV
+ Collins   Engleman                  DCMG  440977    440977     Grosch,M.W.                                   HSC Development MANAGER       mgrosch@us.ibm.com           DEV
+ Murillo   Simon     Thomas          BN2S  849709    849709     Vaidyanathan,Basu                             SYSPROC         L3_DEVELOPER  basu@us.ibm.com              DEV
+ Murillo   Simon     Thomas          BN2S  103778    1A3778     Wildstrom,Jonathan                            Kernel          L3_DEVELOPER  jwildstr@us.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 029712    029712     Adari,Divakar                                 Dev Support     L3_DEVELOPER  divakar.adari@in.ibm.com     DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 066180    066180     Nagaraj,Arun H                                HACMP           L3_DEVELOPER  arnagraj@in.ibm.com          DEV
+ Murillo   Simon     Barenys         WZ8S  446024    4D6024     Kumar,Manoj                                                   L3_DEVELOPER                               DEV
+ Manasso             Hayes           5U5A  042712    908119     Kuhnel,Walter                                                 L2_TECH       kuhnel@us.ibm.com            OTHER
+ Ling      McConathy Sutcliffe       39KA  251095    251095     Kelly,Kevin                                   CLST_FS         L2_TECH       kpsk@us.ibm.com              POK
+ Ling      McConathy                 E59S  889664    889664     Testone,P.S.                                  ZMGMT           MANAGER       testone@us.ibm.com           ZTRANS
+ Ling      McConathy Sutcliffe       39KA  163381    163381     Moyer,Dawn                                    CLST_MG         L2_TECH       dawnstar@us.ibm.com          POK
+ Unknown   Unknown   Unknown         92HS  611625    611625     Nallapati,K.V.                                Dev Mgr         MANAGER       kumarn@us.ibm.com            DEV
+ Murillo   Simon     Wadehra         E18S  003073    0A3073     Albot,Andre                                   BRINGUP         L3_DEVELOPER  albot@us.ibm.com             DEV
+ Ling      McConathy Sutcliffe       39KA  482555    482555     Shanes,Charles                                CLST_FS         L2_TECH       shanes@us.ibm.com            POK
+ Gupta     Makis     Petrossian      CG8S  086111    086111     Do,Thanh                                      Performance     L3_DEVELOPER  thanhdo@us.ibm.com           DEV
+ Murillo   WXBA Mgr2 Hoffman         BWJS  664925    664925     Machine,Build                                 BUILD           L3_DEVELOPER  maagervi@in.ibm.com          DEV
+ Murillo   Townsend  Mulvey          UDYA  580455    580455     Ross,Bob                                      NETWORK DD      L3_DEVELOPER  bobross@us.ibm.com           DEV
+ Murillo   Townsend  Mulvey          UDYA  681216    681216     Nguyen,Paul                                   NETWORK DD      L3_DEVELOPER  nguyenp@us.ibm.com           DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       CJHS  302272    C-BKYB     Ashtari,Farshid                               Dev Support     L3_DEVELOPER  farshid@us.ibm.com           DEV
+ Ling      McConathy Sutcliffe       39KA  208663    2A8663     Johnson,Charles                               CLST_AP         L2_SCREEN_POK cjohn1@us.ibm.com            POK
+ Paranjape Contreras Tan             HMYS  717302    7A7302     Warren,Philip                                 SysMgt Framewrk L3_DEVELOPER  pkw@us.ibm.com               DEV
+ Ling      McConathy Sutcliffe       39KA  813981    813981     Doherty,James                                 CLST_AP         L2_TECH       JimDoherty@us.ibm.com        POK
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 017272    017272     Ramachandran,Puvichakrava                     PTX             L3_DEVELOPER  puvichakravarthy@in.ibm.com  DEV
+ Paranjape Contreras Ellsworth       B4RS  117610    +1761A     Hoetzel,Mary                                  SysMgt Solution L3_DEVELOPER  hhoetzel@us.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 086575    086575     M. Pandian,Boopathy                           TCP/IP          L3_DEVELOPER  bopandia@in.ibm.com          DEV
+ Murillo   Simon     Barenys         WZ8S  974305    974305     Patel,Priyesh                                                                                            DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 031700    03107C     Uppuluru,Durga                                HACMP           L3_DEVELOPER  uppulurub@in.ibm.com         DEV
+ Ling                                Z2LN  462573    462573     McConathy,T.J.                                UNKNOWN         MANAGER       mcconath@us.ibm.com          DEV
+ Murillo   Townsend  Chang           D59S  271578    271578     White,George                                  STORAGE DD      L3_DEVELOPER  glwhite1@us.ibm.com          DEV
+ Murillo   Townsend  Kehne           CVRS  519182    519182     Edwards,Mark                                  Diagnostics     L3_DEVELOPER  marke@us.ibm.com             DEV
+ Murillo   Simon                     E97S  549818    549818     Beck,Jay                                      Dev Mgr         MANAGER                                    DEV
+ Murillo   WXBA Mgr2                 WXBA  010054    010054     Riggle,Betty                                  Dev Support     L3_DEVELOPER  betty@us.ibm.com             DEV
+ Murillo   Townsend  Chang           D59S  311720    3A1720     Grande,Marcus                                 STORAGE DD      L3_DEVELOPER  mgrande@us.ibm.com           DEV
+ Collins   Engleman  Grosch          YXIA  001097    +1097A     Clark,George                                  HSC Development L3_DEVELOPER  gwciv@us.ibm.com             DEV
+ Murillo   Townsend  Kehne           CVRS  103019    1A3019     Awada,Faisal                                  Diagnostics     L3_DEVELOPER  faisal@us.ibm.com            DEV
+ Murillo   Townsend  Kehne           CVRS  812562    812562     Arbeitman,Bob                                 Diagnostics     L3_DEVELOPER  arbeitmn@us.ibm.com          DEV
+ Murillo   Townsend  St. Pierre      B9RS  658944    658944     Wong,A.L.                                     INSTALL         L3_DEVELOPER  andywong@us.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 077292    077292     Bharani,Chikbala                              GRAPHICS        L3_DEVELOPER  bharanve@in.ibm.com          DEV
+ Paranjape Contreras Ellsworth       B4RS  201146    1A1146     Phillips,Joshua                               SysMgt Solution L3_DEVELOPER  joshua1@us.ibm.com           DEV
+ Murillo   Townsend  Mulvey          UDYA  696342    696342     Thomas,Dan                                    DIAGS           L3_DEVELOPER  dpthomas@us.ibm.com          DEV
+ Collins   Engleman  Grosch          YXIA  042470    +4247A     Unnikrishnan,Rama                             HSC Development L3_DEVELOPER                               DEV
+ Unknown   Unknown   Unknown         L3POK 303773    303773     Gresseau,Nassica                              PokDev          L3_DEVELOPER                               DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 081146    081146     Ayyagari,Phani                                STORAGE DD      L3_DEVELOPER  phanikumar@in.ibm.com        DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 099177    099177     Joshi,Santosh                                 SECURITY        L3_DEVELOPER  sasjoshi@in.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 053010    05301H     Duraisamy,Madhusudhanan                       HACMP           L3_DEVELOPER  madurais@in.ibm.com          DEV
+ Murillo   Townsend  Chang           D59S  316259    3A6259     Tee,Stephen                                   STORAGE DD      L3_DEVELOPER  tees@us.ibm.com              DEV
+ Ling      McConathy Sutcliffe       39KA  980036    980036     Hiller,Saul                                   CLST_HA         L2_TECH       shiller@us.ibm.com           POK
+ Murillo   Simon     Barenys         WZ8S  422262    422262     Adkins,Janet                                  FILESYSTEMS     L3_DEVELOPER  janeta@us.ibm.com            DEV
+ Murillo   Simon     Beck            UD3A  615127    6A6127     Persaud-Deolall,Shiva                         SECURITY        L3_DEVELOPER  shivapd@us.ibm.com           DEV
+ Murillo   Simon     Wadehra         E18S  806766    806766     Seibold,Robert                                BRINGUP         L3_DEVELOPER  rseibol@us.ibm.com           DEV
+ Gupta     Makis     Young           OEIA  723673    723673     Chen,Jim                                      Performance     L3_DEVELOPER                               DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 070860    07086H     Vicky,Vikas                                   PRINTERS        L3_DEVELOPER  vikvicky@in.ibm.com          DEV
+ Murillo   Jones     Epsztein        6T4A  959664    959664     Michel,Larry                                  RAS             L3_DEVELOPER  lmic@us.ibm.com              DEV
+ Paranjape Contreras Ellsworth       B4RS  002197    2A3192     George,Jeffrey                                SysMgt Solution L3_DEVELOPER  jgeorge@us.ibm.com           DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 017728    017728     Kumar,Keerthi B                               SECURITY        L3_DEVELOPER  keerthikumarb@in.ibm.com     DEV
+ Murillo   Jones     Epsztein        6T4A  811118    811118     Darmawan,Agustinus                            RAS             L3_DEVELOPER  darmawan@us.ibm.com          DEV
+ Murillo   Townsend  St. Pierre      B9RS  914478    914478     Thota,Rupesh                                  Install/update  L3_DEVELOPER  trupesh@in.ibm.com           DEV
+ Murillo   Townsend  St. Pierre      B9RS  584843    584843     Molis,Steve                                   INSTALL         L3_DEVELOPER  smolis@us.ibm.com            DEV
+ Murillo   Simon     Thomas          BN2S  201996    2A1996     Jain,Vinit                                    Kernel          L3_DEVELOPER  vjain@us.ibm.com             DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       CJHS  079468    0G9468     Vargas,Hernan                                 Kernel          L3_DEVELOPER  hlvargas@us.ibm.com          DEV
+ Gupta     Makis     Young           OEIA  013626    013626     Mena,Augie                                    Performance     L3_DEVELOPER                               DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 223919    223919     Saggar,Sunil                                  PTX             L3_DEVELOPER  sunil.saggar@in.ibm.com      DEV
+ Murillo   Townsend                  B2WS  392996    392996     Ellett-Salmoran,Sandra                        Dev Mgr         MANAGER       sjes@us.ibm.com              DEV
+ Murillo   Simon     Beck            UD3A  549238    549238     Mullen,Shawn                                  SECURITY        L3_DEVELOPER  smullen@us.ibm.com           DEV
+ Murillo   Simon     Barenys         WZ8S  905229    905229     Yerneni,Lakshmi                               FILESYSTEMS     L3_DEVELOPER  lakshmiy@us.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 082815    082815     Mallayya,Sangamesh                            GRAPHICS        L3_DEVELOPER  smallayy@in.ibm.com          DEV
+ Ling      McConathy Sutcliffe       39KA  740793    740793     Fitzgerald,Dan                                CLST_FS         L2_TECH       djfitz@us.ibm.com            POK
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 964016    964016     Siddegowda,Ramachandra C                      CMDS            L3_DEVELOPER  rasiddeg@in.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       CJHS  EEEEEE    EEEEEE     Dey (Screener),Prashanto                                      L3_SCREEN_AUS PRASHAND@IN.IBM.COM          DEV
+ Ling      McConathy Sutcliffe       39KA  764232    764232     McKnight,Joseph                               POKADMIN        L2_TECH       mcknigh@us.ibm.com           POK
+ Paranjape Contreras Tan             HMYS  591459    591459     Hannon,John                                   SysMgt Framewrk L3_DEVELOPER  jhannon@us.ibm.com           DEV
+ Murillo   Townsend  Chang           D59S  304667    C-4667     Mankus,Eric                                   STORAGE DD      L3_DEVELOPER  mankus@us.ibm.com            DEV
+ Murillo   Simon     Thomas          BN2S  408262    4A8262     Shvartsman,Eddie                              Kernel          L3_DEVELOPER  edshvart@us.ibm.com          DEV
+ Ling      McConathy                 E59S  877978    877978     Aaron,Thomas                                  ZMGMT           MANAGER       aarontom@us.ibm.com          ZTRANS
+ Collins   Engleman  Grosch          YXIA  336850    +3685A     Feng,Jian                                     HSC Development L3_DEVELOPER  jianhua@us.ibm.com           DEV
+ Unknown   Unknown   Unknown         L3POK 805430    805430     Parkes,Michael                                PokDev          L3_SCREEN_POK parkes@us.ibm.com            DEV
+ Ling      McConathy                 E59S  440157    440157     Harney,Pat                                    ZMGMT           MANAGER       pharney@us.ibm.com           ZTRANS
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 002990    00299F     Madiwalar,Manjunath                           Core Kernel     L3_DEVELOPER  mamadiwa@in.ibm.com          DEV
+ Murillo   Simon     Barenys         WZ8S  717260    7A7260     Madan,Sheena                                  FILESYSTEMS     L3_DEVELOPER  gmadan@us.ibm.com            DEV
+ Murillo   Townsend  Ellett-Salmoran 4VRA  579969    579969     Pafumi,James                                  VIO             L3_DEVELOPER  jpafumi@us.ibm.com           DEV
+ Murillo   Townsend  Kehne           CVRS  518047    518047     McCardle,John                                 Diagnostics     L3_DEVELOPER  mccardle@us.ibm.com          DEV
+ Unknown   Unknown   Unknown         E54S  253881    253881     Pattanshetti,Manjunath A                      Performance     L3_DEVELOPER  ronr@us.ibm.com              DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 088550    088550     Chillarege,Naresh                             TCP/IP          L3_DEVELOPER  nareshc1@in.ibm.com          DEV
+ Murillo   Simon     Barenys         WZ8S  910133    910133     Neuman,Grover                                 FILESYSTEMS     L3_DEVELOPER  neuman@us.ibm.com            DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 096680    096680     Thoorpu,Raghavendra                           STORAGE DD      L3_DEVELOPER  rthoorpu@in.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 030450    03045B     Dewangan,Chandan                              PRINTERS        L3_DEVELOPER  cdewanga@in.ibm.com          DEV
+ Murillo   Townsend  Chang           D59S  305058    C-505H     Chinari,Dinesh                                STORAGE DD      L3_DEVELOPER  chinari@us.ibm.com           DEV
+ Unknown   Unknown   Unknown         L3POK 965256    965256     Cotter,Richard                                PokDev          L3_SCREEN_POK rcotter@us.ibm.com           DEV
+ Murillo   Jones     Patel           BWUS  156176    156176     Lee,D.P.                                      BUILD           L3_DEVELOPER  leedp@us.ibm.com             DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 014541    014541     Ranganath,Deepak                              CMDS            L3_DEVELOPER  derangan@in.ibm.com          DEV
+ Ling      McConathy Sutcliffe       39KA  948168    9D8168     Ali,Asmahan                                   CLST_FS         L2_TECH       aaali@us.ibm.com             POK
+ Murillo   Townsend  Mulvey          UDYA  995168    995168     Li,Shouchun                                   NETWORK DD      L3_DEVELOPER  shouchun@us.ibm.com          DEV
+ Murillo   Simon     Barenys         WZ8S  007657    007657     Williams,Michael                              FILESYSTEMS     L3_DEVELOPER  mswill@us.ibm.com            DEV
+ Murillo   Simon     Barenys         WZ8S  400624    400624     Grubbs,Mark                                   FILESYSTEMS     L3_DEVELOPER  mgrubbs@us.ibm.com           DEV
+ Murillo   Simon     Barenys         WZ8S  710078    7A0078     Bodepudi,Smita                                CIFS            L3_DEVELOPER  bsmita@us.ibm.com            DEV
+ Murillo   Simon     Beck            UD3A  906554    906554     Celikkan,Ufuk                                 SECURITY        L3_DEVELOPER  celikkan@us.ibm.com          DEV
+ Paranjape Contreras Ellsworth       B4RS  710794    7A0794     Chen,Douglas                                  SysMgt Solution L3_DEVELOPER  gychen@us.ibm.com            DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 749408    749408     Madhavan Pillai,Pradeep K                     CMDS            L3_DEVELOPER  pradeepkumar@in.ibm.com      DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 095370    095370     Singh,Santosh                                                 L3_DEVELOPER  santsin8@in.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 094160    094160     Beura,Rudhisundar                             SECURITY        L3_DEVELOPER  rudbeura@in.ibm.com          DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 004920    00492P     Ramadass,Narain                               STORAGE DD      L3_DEVELOPER  narain.cr@in.ibm.com         DEV
+ Gupta     Makis     Young           OEIA  324253    324253     Minns,Bob                                     UNKNOWN         L3_DEVELOPER                               DEV
+ Murillo   WXBA Mgr2 CJHS Mgr1       INDIA 091110    09111C     Samal,Kamal                                   TCP/IP          L3_DEVELOPER  kamsamal@in.ibm.com          DEV
+ Murillo   Simon     Beck            UD3A  801633    8A1633     Reddy,Bhargav                                 IP SECURITY     L3_DEVELOPER  bheem@us.ibm.com             DEV
+ Ling      McConathy                 E59S  709845    709845     Brock,Jim                                     ZMGMT           MANAGER       jdbrock@us.ibm.com           ZTRANS
+ Paranjape Contreras Tan             HMYS  595376    595376     Amin,S.A.                                     SysMgt Framewrk L3_DEVELOPER  samin@us.ibm.com             DEV
+ Murillo   Simon     Barenys         WZ8S  619639    619639     Brown,William                                 Distrib FS      L3_DEVELOPER  wilbrown@us.ibm.com          DEV
+ Paranjape Contreras Tan             HMYS  111290    1A1290     Rodriguez,Jorge                               SysMgt Framewrk L3_DEVELOPER  jorgedr@us.ibm.com           DEV
+ Unknown   Unknown   Unknown         L3POK 056723    2A5966     Lewars,John                                   PokDev          L3_DEVELOPER  jlewars@us.ibm.com           DEV
+ Paranjape Contreras Tan             HMYS  596413    596413     Feuerbacher,Frank                             SysMgt Framewrk L3_DEVELOPER  fbacher@us.ibm.com           DEV
+ Murillo   Townsend  Mulvey          UDYA  714660    7A4660     Yoder,Kent                                    NETWORK DD      L3_DEVELOPER  yoder1@us.ibm.com            DEV
+ Murillo   Townsend  Chang           D59S  181942    181941     Hart,Brian                                    STORAGE DD      L3_DEVELOPER  hartb@us.ibm.com             DEV
+ Paranjape Contreras Ellsworth       B4RS  702790    7A2790     Hoetzel,Heidemarie                            SysMgt Solution L3_DEVELOPER  hhoetzel@us.ibm.com          DEV
+ Paranjape Contreras Ellsworth       B4RS  547855    547855     Lew,Michael                                   SysMgt Solution L3_DEVELOPER  milewis@us.ibm.com           DEV
+ Murillo   Townsend                  B2WS  054878    054878     Rasoulian,B.                                                  L3_DEVELOPER                               DEV
+ Collins   Engleman  Grosch          YXIA  257769    257769     Lipp,W.M.                                     HSC Development L3_DEVELOPER  wlipp@us.ibm.com             DEV
+ Murillo   Jones     Paul            D58S  789257    789257     Qin,Xiaohan                                   TCP/IP          L3_DEVELOPER  xqin@us.ibm.com              DEV
+ Ling      McConathy Sutcliffe       39KA  495969    495969     Guo,Jean                                      CLST_MG         L2_TECH       guo@us.ibm.com               POK
+ Ling      McConathy Sutcliffe       39KA  004626    0A4626     Apuzzo,Joe                                    CLST_FS         L2_TECH       apuzzoj@us.ibm.com           POK
+ Murillo   Simon     Thomas          BN2S  123493    1A3493     Brandyberry,Matthew                           SYSPROC         L3_DEVELOPER  mbrandy@us.ibm.com           DEV
+ Collins   Engleman  Grosch          YXIA  709241    709241     Conklin,Chris                                 HSC Development L3_DEVELOPER  smokey@us.ibm.com            DEV
+
