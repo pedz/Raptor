@@ -1,0 +1,241 @@
+/*
+	Order of tables dumped out:
+
+1) name_types
+ name             | character varying(255)      | not null
+ base_type        | character varying(255)      | not null
+ table_name       | character varying(255)      | not null
+ argument_type_id | integer                     | not null
+ container        | boolean                     | not null default false
+ containable      | boolean                     | not null default false
+ created_at       | timestamp without time zone | 
+ updated_at       | timestamp without time zone | 
+
+2) names
+ type          | character varying(255)      | not null
+ name          | character varying(255)      | not null
+ owner_id      | integer                     | not null
+ created_at    | timestamp without time zone | 
+ updated_at    | timestamp without time zone | 
+ match_pattern | character varying(255)      | not null default '.*'::character varying
+
+3) argument_defaults
+ name_id           | integer                     | not null
+ argument_position | integer                     | not null
+ default           | character varying(255)      | not null
+ created_at        | timestamp without time zone | 
+ updated_at        | timestamp without time zone | 
+
+4) argument_types
+ name       | character varying(255)      | not null
+ default    | character varying(255)      | not null
+ position   | integer                     | not null
+ created_at | timestamp without time zone | 
+ updated_at | timestamp without time zone | 
+
+5) association_types
+ id               | integer                     | not null default nextval('association_types_id_seq'::regclass)
+ association_type | character varying(255)      | not null
+ created_at       | timestamp without time zone | 
+ updated_at       | timestamp without time zone | 
+
+6) conditions
+ name_id    | integer                     | not null
+ sql        | character varying(255)      | not null
+ created_at | timestamp without time zone | 
+ updated_at | timestamp without time zone | 
+
+7) widgets
+ name          | character varying(255)      | not null
+ owner_id      | integer                     | not null
+ code          | text                        | not null
+ created_at    | timestamp without time zone | 
+ updated_at    | timestamp without time zone | 
+ match_pattern | character varying(255)      | not null default '.*'::character varying
+
+8) elements
+ widget_id  | integer                     | not null
+ view_id    | integer                     | not null
+ owner_id   | integer                     | not null
+ row        | integer                     | not null
+ col        | integer                     | not null
+ rowspan    | integer                     | not null default 1
+ colspan    | integer                     | not null default 1
+ created_at | timestamp without time zone | 
+ updated_at | timestamp without time zone | 
+
+9) relationship_types
+ container_type_id   | integer                     | not null
+ association_type_id | integer                     | not null
+ item_type_id        | integer                     | not null
+ created_at          | timestamp without time zone | 
+ updated_at          | timestamp without time zone | 
+
+10) relationships
+ container_name_id    | integer                     | not null
+ relationship_type_id | integer                     | not null
+ item_id              | integer                     | not null
+ item_type            | character varying(255)      | not null
+ created_at           | timestamp without time zone | 
+ updated_at           | timestamp without time zone | 
+
+	List of other tables:
+
+cached_calls
+cached_centers
+cached_components
+cached_customers
+cached_pmrs
+cached_psars
+cached_queue_infos
+cached_queues
+cached_registrations
+cached_releases
+cached_text_lines
+favorite_queues
+feedback_notes
+feedbacks
+retain_node_selectors
+retain_nodes
+retain_service_action_cause_tuples
+retain_service_given_codes
+retain_solution_codes
+retusers
+schema_migrations
+use_counters
+users
+
+*/
+
+/* Delete old data */
+/* 10 */ SELECT 'DELETE FROM "relationships";';
+/*  9 */ SELECT 'DELETE FROM "relationship_types";';
+/*  8 */ SELECT 'DELETE FROM "elements";';
+/*  7 */ SELECT 'DELETE FROM "widgets";';
+/*  6 */ SELECT 'DELETE FROM "conditions";';
+/*  5 */ SELECT 'DELETE FROM "association_types";';
+/*  4 */ SELECT 'DELETE FROM "argument_defaults";';
+/*  3 */ SELECT 'DELETE FROM "names";';
+/*  2 */ SELECT 'DELETE FROM "name_types";';
+/*  1 */ SELECT 'DELETE FROM "argument_types";';
+
+/* Now add data back in */
+/*  1 */
+SELECT 'INSERT INTO "argument_types" ( "name", "default", "position", "created_at", "updated_at" ) VALUES ( ',
+    quote_literal("name"), ', ',
+    quote_literal("default"), ', ',
+    quote_literal("position"), ', ''now'', ''now'' );'
+  FROM argument_types
+  ORDER BY id;
+
+/*  2 */
+SELECT 'INSERT INTO "name_types" ( "name", "base_type", "table_name", "argument_type_id", "container", "containable", "created_at", "updated_at" ) SELECT ',
+    quote_literal(n."name"), ', ',
+    quote_literal(n."base_type"), ', ',
+    quote_literal(n."table_name"), ', id, ',
+    quote_literal(n."container"), ', ',
+    quote_literal(n."containable"), ', ''now'', ''now'' FROM argument_types WHERE name = ', quote_literal(a.name), ';'
+  FROM "name_types" n, "argument_types" a WHERE n.argument_type_id = a.id
+  ORDER BY n.id;
+
+/*  3 */
+SELECT 'INSERT INTO "names" ( "type", "name", "owner_id", "created_at", "updated_at", "match_pattern" ) SELECT ',
+    quote_literal(n."type"), ', ',
+    quote_literal(n."name"), ', id, ''now'', ''now'', ',
+    quote_literal(n."match_pattern"), ' FROM users WHERE ldap_id = ', quote_literal(u.ldap_id), ';'
+  FROM "users" u, "names" n WHERE n.owner_id = u.id
+  ORDER BY n.id;
+
+/*  4 */
+SELECT 'INSERT INTO "argument_defaults" ( "name_id", "argument_position", "default", "created_at", "updated_at" ) SELECT ',
+    'id, ',
+    quote_literal(a."argument_position"), ', ',
+    quote_literal(a.default), ', ''now'', ''now'' FROM names WHERE name = ', quote_literal(n.name), ';'
+  FROM "names" n, "argument_defaults" a WHERE n.id = a.name_id
+  ORDER BY a.id;
+
+/*  5 */
+SELECT 'INSERT INTO "association_types" (  "association_type", "created_at", "updated_at" ) VALUES ( ',
+    quote_literal("association_type"), ', ''now'', ''now'' );'
+  FROM "association_types"
+  ORDER BY id;
+
+/*  6 */
+SELECT 'INSERT INTO "conditions" ( "name_id", "sql", "created_at", "updated_at" ) SELECT ',
+    'id, ',
+    quote_literal(c."sql"), ', ''now'', ''now'' FROM names WHERE name = ', quote_literal(n."name"), ';'
+  FROM "names" n, "conditions" c WHERE n.id = c.name_id
+  ORDER BY c.id;
+
+/*  7 */
+SELECT 'INSERT INTO "widgets" ( "name", "owner_id", "code", "created_at", "updated_at", "match_pattern" ) SELECT ',
+    quote_literal(n."name"), ', id, ',
+    quote_literal(n."name"), ', ''now'', ''now'', ',
+    quote_literal(n."match_pattern"), ' FROM users WHERE ldap_id = ', quote_literal(u.ldap_id), ';'
+  FROM "users" u, "widgets" n WHERE n.owner_id = u.id
+  ORDER BY n.id;
+
+/*  8 */
+SELECT 'INSERT INTO "elements" ( "widget_id", "view_id", "owner_id", "row", "col", "rowspan", "colspan", "created_at", "updated_at" ) SELECT ',
+    'w.id, ',
+    'v.id, ',
+    'u.id, ',
+    quote_literal(e."row"), ', ',
+    quote_literal(e."col"), ', ',
+    quote_literal(e."rowspan"), ', ',
+    quote_literal(e."colspan"), ', ''now'', ''now'' ',
+    'FROM users u, names v, widgets w ',
+    'WHERE u.ldap_id = ', quote_literal(u.ldap_id),
+    ' AND v.name = ', quote_literal(v.name),
+    ' AND w.name = ', quote_literal(w.name), ';'
+  FROM users u, widgets w, names v, elements e
+  WHERE e.owner_id = u.id AND e.widget_id = w.id AND e.view_id = v.id
+  ORDER BY e.id;
+
+/*  9 */
+SELECT 'INSERT INTO "relationship_types" ( "container_type_id", "association_type_id", "item_type_id", "created_at", "updated_at" ) SELECT ',
+    'c.id, ',
+    'a.id, ',
+    'i.id, ',
+    '''now'', ''now'' ',
+    'FROM association_types a, name_types c, name_types i ',
+    'WHERE a.association_type = ', quote_literal(a.association_type),
+    ' AND c.name = ', quote_literal(c.name),
+    ' AND i.name = ', quote_literal(i.name), ';'
+  FROM association_types a, name_types c, name_types i, relationship_types r
+  WHERE a.id = r.association_type_id AND c.id = r.container_type_id AND i.id = r.item_type_id
+  ORDER BY r.id;
+
+/* 10 */
+SELECT 'INSERT INTO "relationships" ( "container_name_id", "relationship_type_id", "item_id", "item_type", "created_at", "updated_at" ) SELECT ',
+    'c.id, ',
+    'rt.id, ',
+    'i.id, ',
+    quote_literal(r.item_type), ', ',
+    '''now'', ''now'' ',
+    'FROM name_types c, name_types i, relationship_types rt, association_types at, name_types ct, name_types it ',
+    'WHERE c.name = ', quote_literal(c.name),
+    ' AND i.name = ', quote_literal(i.name),
+    ' AND rt.container_type_id = ct.id',
+    ' AND ct.name = ', quote_literal(ct.name),
+    ' AND rt.association_type_id = at.id',
+    ' AND at.association_type = ', quote_literal(at.association_type),
+    ' AND rt.item_type_id = it.id',
+    ' AND it.name = ', quote_literal(it.name),
+    ';'
+  FROM
+    name_types c,
+    name_types i,
+    relationships r,
+    relationship_types rt,
+    name_types ct,
+    association_types at,
+    name_types it
+  WHERE
+    r.container_name_id = c.id AND
+    r.relationship_type_id = rt.id AND
+    r.item_id = i.id AND
+    rt.container_type_id = ct.id AND
+    rt.association_type_id = at.id AND
+    rt.item_type_id = it.id
+  ORDER BY r.id;
