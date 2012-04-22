@@ -9,33 +9,41 @@ task :dump_items do
       nil
     end
   end
+  STDERR.puts "Dumping ArgumentTypes" if STDERR.isatty
   puts ArgumentType.all.to_json(:except => :id)
   
   # NameType has an external reference to ArgumentType which can be
   # made via the name or the posisition.  I'll use name
+  STDERR.puts "Dumping NameTypes" if STDERR.isatty
   puts NameType.all.to_json(:except => :id, :include => { :argument_type => { :only => :name }})
 
   # Name has two external references but the reference to the NameType
   # is by the name itself and not by the id so it does not need any
   # extra work.  The owner however, does.  This will become the rule
   # for most of the other types.
+  STDERR.puts "Dumping Names" if STDERR.isatty
   puts Name.all.to_json(:except => :id, :include => { :owner => { :only => :ldap_id }})
 
   # ArgumentDefault has an external reference to a name
+  STDERR.puts "Dumping ArgumentDefaults" if STDERR.isatty
   puts ArgumentDefault.all.to_json(:except => :id, :include => { :name => { :only => :name }})
 
   # AssociationType has only a name
+  STDERR.puts "Dumping AssociationTypes" if STDERR.isatty
   puts AssociationType.all.to_json(:except => :id)
 
   # Condition has a name_id
+  STDERR.puts "Dumping Conditions" if STDERR.isatty
   puts Condition.all.to_json(:except => :id, :include => { :name => { :only => :name }})
 
   # Widget has an owner
+  STDERR.puts "Dumping Widgets" if STDERR.isatty
   puts Widget.all.to_json(:except => :id, :include => { :owner => { :only => :ldap_id }})
 
   # Element has an owner, view, and widget.  owner will use ldap_id,
   # widget will use the name in the widget, view is actually a name
   # and will use the name
+  STDERR.puts "Dumping Elements" if STDERR.isatty
   puts Element.all.to_json(:except=> :id,
                            :include => {
                              :owner => { :only => :ldap_id},
@@ -46,6 +54,7 @@ task :dump_items do
   #   1) container_type which is actually a name_type so will use the name_type's name,
   #   2) association_type which will use the association's association (I hate that name).
   #   3) item_type which is also a name_type so will use the name_type's name.
+  STDERR.puts "Dumping RelationshipTypes" if STDERR.isatty
   puts RelationshipType.all.to_json(:except => :id,
                                     :include => {
                                       :container_type => { :only => :name},
@@ -61,6 +70,7 @@ task :dump_items do
   #      the method item_name (already defiend for each type of
   #      element that can be contained) to get the unique name for the
   #      item.
+  STDERR.puts "Dumping Relationships" if STDERR.isatty
   puts Relationship.all.to_json(:except => :id,
                                 :include => {
                                   :container_name => { :only => :name},
