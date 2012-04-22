@@ -23,6 +23,56 @@ task :dump_items do
 
   # ArgumentDefault has an external reference to a name
   puts ArgumentDefault.all.to_json(:except => :id, :include => { :name => { :only => :name }})
+
+  # AssociationType has only a name
+  puts AssociationType.all.to_json(:except => :id)
+
+  # Condition has a name_id
+  puts Condition.all.to_json(:except => :id, :include => { :name => { :only => :name }})
+
+  # Widget has an owner
+  puts Widget.all.to_json(:except => :id, :include => { :owner => { :only => :ldap_id }})
+
+  # Element has an owner, view, and widget.  owner will use ldap_id,
+  # widget will use the name in the widget, view is actually a name
+  # and will use the name
+  puts Element.all.to_json(:except=> :id,
+                           :include => {
+                             :owner => { :only => :ldap_id},
+                             :widget => { :only => :name },
+                             :view => { :only => :name}})
+  
+  # RelationshipType has
+  #   1) container_type which is actually a name_type so will use the name_type's name,
+  #   2) association_type which will use the association's association (I hate that name).
+  #   3) item_type which is also a name_type so will use the name_type's name.
+  puts RelationshipType.all.to_json(:except => :id,
+                                    :include => {
+                                      :container_type => { :only => :name},
+                                      :assocation_type => { :only => :association },
+                                      :item_type => { :only => :name}})
+
+  # Relationship is the bitch of them all.  It has
+  #   1) container_name which is a name so will use the name's name
+  #   2) relationship_type which needs to use the triple of the
+  #      container's name, the association's association, and the
+  #      item_type's name.
+  #   3) The item which is polymorphic so will record the type and use
+  #      the method item_name (already defiend for each type of
+  #      element that can be contained) to get the unique name for the
+  #      item.
+  puts Relationship.all.to_json(:except => :id,
+                                :include => {
+                                  :container_name => { :only => :name},
+                                  :relationship_type => {
+                                    :include => { 
+                                      :container_type => { :only => :name},
+                                      :assocation_type => { :only => :association },
+                                      :item_type => { :only => :name}}},
+                                  :item => {
+                                    :only => :item_type,
+                                    :methods => :item_name
+                                  }})
 end
 
 task :restore_items do
