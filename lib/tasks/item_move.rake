@@ -207,6 +207,7 @@ task :restore_items do
       container_name_name = o.delete("container_name")["name"]
       c = Name.find_by_name(container_name_name)
       o['container_name_id'] = c.id
+
       # Fix relationship_type
       relationship_type = o.delete("relationship_type")
       container_type = relationship_type['container_type']
@@ -220,12 +221,13 @@ task :restore_items do
                                   "item_types_relationship_types.name" => item_type['name']
                                 })
       o['relationship_type_id'] = r.id
+
       # Fix item_id and item_type
       item = o.delete("item")
       c = o['item_type'].camelize.constantize
-      puts o['item_type']
       i = c.find_by_item_name(item['item_name'])
       o['item_id'] = i.id
+
       update_attributes(o)
     end
   end
