@@ -1,7 +1,14 @@
 /*
 	Order of tables dumped out:
 
-1) name_types
+1) argument_types
+ name       | character varying(255)      | not null
+ default    | character varying(255)      | not null
+ position   | integer                     | not null
+ created_at | timestamp without time zone | 
+ updated_at | timestamp without time zone | 
+
+2) name_types
  name             | character varying(255)      | not null
  base_type        | character varying(255)      | not null
  table_name       | character varying(255)      | not null
@@ -11,7 +18,7 @@
  created_at       | timestamp without time zone | 
  updated_at       | timestamp without time zone | 
 
-2) names
+3) names
  type          | character varying(255)      | not null
  name          | character varying(255)      | not null
  owner_id      | integer                     | not null
@@ -19,19 +26,12 @@
  updated_at    | timestamp without time zone | 
  match_pattern | character varying(255)      | not null default '.*'::character varying
 
-3) argument_defaults
+4) argument_defaults
  name_id           | integer                     | not null
  argument_position | integer                     | not null
  default           | character varying(255)      | not null
  created_at        | timestamp without time zone | 
  updated_at        | timestamp without time zone | 
-
-4) argument_types
- name       | character varying(255)      | not null
- default    | character varying(255)      | not null
- position   | integer                     | not null
- created_at | timestamp without time zone | 
- updated_at | timestamp without time zone | 
 
 5) association_types
  id               | integer                     | not null default nextval('association_types_id_seq'::regclass)
