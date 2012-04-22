@@ -10,56 +10,61 @@ task :dump_items do
     end
   end
   STDERR.puts "Dumping ArgumentTypes" if STDERR.isatty
-  puts ArgumentType.all.to_json(:except => :id)
+  puts ArgumentType.all(:order => :name).to_json(:except => :id)
   
   # NameType has an external reference to ArgumentType which can be
   # made via the name or the posisition.  I'll use name
   STDERR.puts "Dumping NameTypes" if STDERR.isatty
-  puts NameType.all.to_json(:except => [:id, :argument_type_id ], :include => { :argument_type => { :only => :name }})
+  puts NameType.all(:order => :name).to_json(:except => [:id, :argument_type_id ],
+                                             :include => { :argument_type => { :only => :name }})
 
   # Name has two external references but the reference to the NameType
   # is by the name itself and not by the id so it does not need any
   # extra work.  The owner however, does.  This will become the rule
   # for most of the other types.
   STDERR.puts "Dumping Names" if STDERR.isatty
-  puts Name.all.to_json(:except => [:id, :owner_id ], :include => { :owner => { :only => :ldap_id }})
+  puts Name.all(:order => :name).to_json(:except => [:id, :owner_id ], :include => { :owner => { :only => :ldap_id }})
 
   # ArgumentDefault has an external reference to a name
   STDERR.puts "Dumping ArgumentDefaults" if STDERR.isatty
-  puts ArgumentDefault.all.to_json(:except => [:id, :name_id ], :include => { :name => { :only => :name }})
+  puts ArgumentDefault.all(:order => :argument_position).to_json(:except => [:id, :name_id ], :include => { :name => { :only => :name }})
 
   # AssociationType has only a name
   STDERR.puts "Dumping AssociationTypes" if STDERR.isatty
-  puts AssociationType.all.to_json(:except => :id)
+  puts AssociationType.all(:order => :association_type).to_json(:except => :id)
 
   # Condition has a name_id
   STDERR.puts "Dumping Conditions" if STDERR.isatty
-  puts Condition.all.to_json(:except => [:id, :name_id ], :include => { :name => { :only => :name }})
+  puts Condition.all(:include => :name, :order => "names.name").to_json(:except => [:id, :name_id ],
+                                                                       :include => { :name => { :only => :name }})
 
   # Widget has an owner
   STDERR.puts "Dumping Widgets" if STDERR.isatty
-  puts Widget.all.to_json(:except => [:id, :owner_id ], :include => { :owner => { :only => :ldap_id }})
+  puts Widget.all(:order => :name).to_json(:except => [:id, :owner_id ], :include => { :owner => { :only => :ldap_id }})
 
   # Element has an owner, view, and widget.  owner will use ldap_id,
   # widget will use the name in the widget, view is actually a name
   # and will use the name
   STDERR.puts "Dumping Elements" if STDERR.isatty
-  puts Element.all.to_json(:except=> [:id, :owner_id, :widget_id, :view_id ],
-                           :include => {
-                             :owner => { :only => :ldap_id},
-                             :widget => { :only => :name },
-                             :view => { :only => :name}})
+  puts Element.all(:include => :view, :order => "names.name, elements.row, elements.col").to_json(:except=> [:id, :owner_id, :widget_id, :view_id ],
+                                                                                    :include => {
+                                                                                      :owner => { :only => :ldap_id},
+                                                                                      :widget => { :only => :name },
+                                                                                      :view => { :only => :name}})
   
   # RelationshipType has
   #   1) container_type which is actually a name_type so will use the name_type's name,
   #   2) association_type which will use the association's association (I hate that name).
   #   3) item_type which is also a name_type so will use the name_type's name.
+  #
+  # We can't really order this correctly so we'll punt and just order it by id.
   STDERR.puts "Dumping RelationshipTypes" if STDERR.isatty
-  puts RelationshipType.all.to_json(:except => [:id, :container_type_id, :association_type_id, :item_type_id ],
-                                    :include => {
-                                      :container_type => { :only => :name},
-                                      :association_type => { :only => :association_type },
-                                      :item_type => { :only => :name }})
+  puts RelationshipType.all(:include => [ :container_type, :association_type, :item_type], :order => :id).
+    to_json(:except => [:id, :container_type_id, :association_type_id, :item_type_id ],
+            :include => {
+              :container_type => { :only => :name},
+              :association_type => { :only => :association_type },
+              :item_type => { :only => :name }})
 
   # Relationship is the bitch of them all.  It has
   #   1) container_name which is a name so will use the name's name
