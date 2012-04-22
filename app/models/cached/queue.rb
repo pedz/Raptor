@@ -196,5 +196,11 @@ module Cached
     def item_name
       "#{queue_name},#{h_or_s},#{center.center}"
     end
+
+    def self.find_by_item_name(name)
+      queue_name, h_or_s, center = name.split(',')
+      c = Cached::Center.find_or_create_by_center(center)
+      c.queues.find_or_create_by_queue_name_and_h_or_s(queue_name, h_or_s)
+    end
   end
 end

@@ -116,4 +116,8 @@ class Name < ActiveRecord::Base
   def item_name
     name
   end
+
+  def self.find_by_item_name(name)
+    Name.find_by_name(name)
+  end
 end

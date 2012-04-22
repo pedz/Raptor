@@ -69,7 +69,6 @@ module Cached
     # :attr: queues
     # A has_many association of Cached::Queue that belong to this
     # center.
-
     has_many :queues,           :class_name => "Cached::Queue"
 
     ##

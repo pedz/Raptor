@@ -77,13 +77,15 @@ task :dump_items do
   STDERR.puts "Dumping Relationships" if STDERR.isatty
   puts Relationship.all.to_json(:except => [:id, :container_name_id, :relationship_type_id, :item_id ],
                                 :include => {
-                                  :container_name => { :only => :name},
+                                  :container_name => { :only => :name },
                                   :relationship_type => {
+                                    :except => [:id, :container_type_id, :association_type_id, :item_type_id ],
                                     :include => { 
                                       :container_type => { :only => :name},
                                       :association_type => { :only => :association_type },
                                       :item_type => { :only => :name}}},
                                   :item => {
+                                    :only => [ :created_at, :updated_at ],
                                     :methods => :item_name
                                   }})
 end
@@ -220,8 +222,11 @@ task :restore_items do
       o['relationship_type_id'] = r.id
       # Fix item_id and item_type
       item = o.delete("item")
-      c = item['type'].camelize.constantize
+      c = o['item_type'].camelize.constantize
+      puts o['item_type']
       i = c.find_by_item_name(item['item_name'])
+      o['item_id'] = i.id
+      update_attributes(o)
     end
   end
 
