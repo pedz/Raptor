@@ -49,8 +49,8 @@ task :dump_items do
   puts RelationshipType.all.to_json(:except => :id,
                                     :include => {
                                       :container_type => { :only => :name},
-                                      :assocation_type => { :only => :association },
-                                      :item_type => { :only => :name}})
+                                      :association_type => { :only => :association_type },
+                                      :item_type => { :only => :name }})
 
   # Relationship is the bitch of them all.  It has
   #   1) container_name which is a name so will use the name's name
@@ -67,7 +67,7 @@ task :dump_items do
                                   :relationship_type => {
                                     :include => { 
                                       :container_type => { :only => :name},
-                                      :assocation_type => { :only => :association },
+                                      :association_type => { :only => :association_type },
                                       :item_type => { :only => :name}}},
                                   :item => {
                                     :only => :item_type,
