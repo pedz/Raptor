@@ -163,6 +163,10 @@ class User < ActiveRecord::Base
     ldap_id
   end
 
+  def self.find_by_item_name(name)
+    User.find_by_ldap_id(name)
+  end
+
   # Never need to send this to the backend to fetch
   def async_priority(force = false)
     return :none

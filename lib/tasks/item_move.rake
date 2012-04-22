@@ -56,10 +56,9 @@ task :dump_items do
   #   1) container_type which is actually a name_type so will use the name_type's name,
   #   2) association_type which will use the association's association (I hate that name).
   #   3) item_type which is also a name_type so will use the name_type's name.
-  #
-  # We can't really order this correctly so we'll punt and just order it by id.
   STDERR.puts "Dumping RelationshipTypes" if STDERR.isatty
-  puts RelationshipType.all(:include => [ :container_type, :association_type, :item_type], :order => :id).
+  puts RelationshipType.all(:include => [ :container_type, :association_type, :item_type],
+                            :order => "name_types.name, association_types.association_type, item_types_relationship_types.name").
     to_json(:except => [:id, :container_type_id, :association_type_id, :item_type_id ],
             :include => {
               :container_type => { :only => :name},
@@ -76,7 +75,7 @@ task :dump_items do
   #      element that can be contained) to get the unique name for the
   #      item.
   STDERR.puts "Dumping Relationships" if STDERR.isatty
-  puts Relationship.all.to_json(:except => [:id, :container_name_id, :relationship_type_id, :item_id, :item_type ],
+  puts Relationship.all.to_json(:except => [:id, :container_name_id, :relationship_type_id, :item_id ],
                                 :include => {
                                   :container_name => { :only => :name},
                                   :relationship_type => {
@@ -85,7 +84,6 @@ task :dump_items do
                                       :association_type => { :only => :association_type },
                                       :item_type => { :only => :name}}},
                                   :item => {
-                                    :only => :item_type,
                                     :methods => :item_name
                                   }})
 end
@@ -106,6 +104,7 @@ task :restore_items do
     o['owner_id'] = u.id
   end
 
+  require 'argument_type'
   class ArgumentType < ActiveRecord::Base
     # ArgumentType has no external references that need to get resolved.
     def import(o)
@@ -113,6 +112,7 @@ task :restore_items do
     end
   end
 
+  require 'name_type'
   class NameType < ActiveRecord::Base
     # NameType has no external references that need to get resolved.
     def import(o)
@@ -123,6 +123,7 @@ task :restore_items do
     end
   end
 
+  require 'name'
   class Name < ActiveRecord::Base
     # NameType has no external references that need to get resolved.
     def import(o)
@@ -131,6 +132,7 @@ task :restore_items do
     end
   end
 
+  require 'argument_default'
   class ArgumentDefault < ActiveRecord::Base
     def import(o)
       fix_name(o)
@@ -138,12 +140,14 @@ task :restore_items do
     end
   end
 
+  require 'association_type'
   class AssociationType < ActiveRecord::Base
     def import(o)
       update_attributes(o)
     end
   end
 
+  require 'condition'
   class Condition < ActiveRecord::Base
     def import(o)
       fix_name(o)
@@ -151,6 +155,7 @@ task :restore_items do
     end
   end
 
+  require 'widget'
   class Widget < ActiveRecord::Base
     def import(o)
       fix_owner(o)
@@ -158,6 +163,7 @@ task :restore_items do
     end
   end
   
+  require 'element'
   class Element < ActiveRecord::Base
     def import(o)
       fix_owner(o)
@@ -173,6 +179,7 @@ task :restore_items do
     end
   end
   
+  require 'relationship_type'
   class RelationshipType < ActiveRecord::Base
     def import(o)
       # Fix container_type
@@ -191,11 +198,32 @@ task :restore_items do
     end
   end
   
+  require 'relationship'
   class Relationship < ActiveRecord::Base
     def import(o)
+      # Fix container_name
+      container_name_name = o.delete("container_name")["name"]
+      c = Name.find_by_name(container_name_name)
+      o['container_name_id'] = c.id
+      # Fix relationship_type
+      relationship_type = o.delete("relationship_type")
+      container_type = relationship_type['container_type']
+      association_type = relationship_type['association_type']
+      item_type = relationship_type['item_type']
+      r = RelationshipType.find(:first,
+                                :include => [ :container_type, :association_type, :item_type ],
+                                :conditions => {
+                                  "name_types.name" => container_type['name'],
+                                  "association_types.association_type" => association_type['association_type'],
+                                  "item_types_relationship_types.name" => item_type['name']
+                                })
+      o['relationship_type_id'] = r.id
+      # Fix item_id and item_type
+      item = o.delete("item")
+      c = item['type'].camelize.constantize
+      i = c.find_by_item_name(item['item_name'])
     end
   end
-  
 
   Relationship.destroy_all
   RelationshipType.destroy_all
