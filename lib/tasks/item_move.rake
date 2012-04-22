@@ -85,7 +85,7 @@ task :dump_items do
                                       :association_type => { :only => :association_type },
                                       :item_type => { :only => :name}}},
                                   :item => {
-                                    :only => [ :created_at, :updated_at ],
+                                    :only => [ ],
                                     :methods => :item_name
                                   }})
 end
