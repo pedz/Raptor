@@ -194,6 +194,7 @@ ActionController::Routing::Routes.draw do |map|
   # These Controllers are simple things just to poke retain
   # Does a PMRQQ.  Debug and test. No useful info that I can find.
   map.resources :retain_qq, :controller => 'retain/qq'
+  map.resources :retain_iosc, :controller => 'retain/iosc'
 
   map.bases(":subject/:group/:levels/:filter/:view", :controller => 'bases', :action => 'index',
             :group => /[^\/]+/)

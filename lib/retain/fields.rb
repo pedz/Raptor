@@ -574,7 +574,7 @@ module Retain
       :daylight_savings_stop_date  => [ 3890, :ebcdic,             10 ],
       :isoc_entitleent_system      => [ 3895, :ebcdic,              2 ],
       :isoc_embargo_flag           => [ 3896, :ebcdic,              1 ],
-      :apar_outline_data           => [ 3898, :ebcdic,             26 ]
+      :apar_outline                => [ 3898, :ebcdic,             26 ]
     }
     
     # return the width of the field given its symbolic name
