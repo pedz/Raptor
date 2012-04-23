@@ -567,7 +567,14 @@ module Retain
       :monday_end_2                => [ 2673, :ebcdic,              5 ],
       :monday_start_1              => [ 2678, :ebcdic,              5 ],
       :monday_start_2              => [ 2679, :ebcdic,              5 ],
-      :div                         => [ 3883, :ebcdic,              2 ]
+      :div                         => [ 3883, :ebcdic,              2 ],
+      :isoc_country_name           => [ 3887, :ebcdic,             25 ],
+      :isoc_cntry_name_prt_2       => [ 3888, :ebcdic,             25 ],
+      :daylight_savings_start_date => [ 3889, :ebcdic,             10 ],
+      :daylight_savings_stop_date  => [ 3890, :ebcdic,             10 ],
+      :isoc_entitleent_system      => [ 3895, :ebcdic,              2 ],
+      :isoc_embargo_flag           => [ 3896, :ebcdic,              1 ],
+      :apar_outline_data           => [ 3898, :ebcdic,             26 ]
     }
     
     # return the width of the field given its symbolic name
