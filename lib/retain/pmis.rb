@@ -15,6 +15,7 @@ module Retain
         @fields[:group_request] = [[
                                     :isoc_country_name,
                                     :isoc_cntry_name_prt_2,
+                                    :country,
                                     :daylight_savings_start_date,
                                     :daylight_savings_stop_date,
                                     :isoc_entitleent_system
