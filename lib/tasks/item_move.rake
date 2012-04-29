@@ -90,6 +90,7 @@ task :dump_items do
                                   }})
 end
 
+desc "Task to restore items -- currently reads from a file named 'K2'"
 task :restore_items do
   Rake::Task["rake:environment"].invoke
 
