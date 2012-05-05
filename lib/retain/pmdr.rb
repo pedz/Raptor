@@ -6,8 +6,8 @@
 
 module Retain
   # 1     Area (region) number CHAR(2) (2)
-  # 2     Total number of lines of text for this document. This is a SEE
-  # 3     Closing date - YY/MM/DD format in EBCDIC (8)
+  # 2     Branch
+  # 3     Country
   # 27    Problem Management queue name CHAR(6). For PMDR, this is the queue of
   # 41    Support center number CHAR(3). For PMDR, this is the center of the
   # 48    Business unit CHAR(3) (3)
