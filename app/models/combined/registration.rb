@@ -48,6 +48,7 @@ module Combined
           Combined::Psar.fetch(retain_user_connection_parameters, search_hash)
           @cached.last_all_fetch = Time.now
           @cached.last_day_fetch = Time.now
+          load
           @cached.save!
         elsif @cached.last_day_fetch.nil? || @cached.last_day_fetch < 10.minutes.ago
           # logger.debug("Fetching days PSAR")
