@@ -1,0 +1,18 @@
+<p>
+  <b>Subject:</b>
+  <%=h @mapping.subject_id %>
+</p>
+
+<p>
+  <b>Source:</b>
+  <%=h @mapping.source_id %>
+</p>
+
+<p>
+  <b>Sql:</b>
+  <%=h @mapping.sql %>
+</p>
+
+
+<%= link_to 'Edit', edit_mapping_path(@mapping) %> |
+<%= link_to 'Back', mappings_path %>

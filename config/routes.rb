@@ -5,6 +5,8 @@
 #
 
 ActionController::Routing::Routes.draw do |map|
+  map.resources :mappings
+
   map.resources :argument_defaults
 
   map.resources :argument_types
