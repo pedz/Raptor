@@ -7,14 +7,16 @@
 module Retain
   class CallController < RetainController
     rescue_from Retain::SdiReaderError do |exception|
+      logger.debug "#{exception.inspect} #{exception.rc} #{exception.class} #{exception.backtrace.join("\n")}\n sr=#{exception.sr} ex=#{exception.ex}"
       raise exception unless exception.rc == 251
       case @exception_type
       when nil
         render :action => "not_found"
+        # not_found_page(exception)
       when :text
         render :text => @exception_text
       when :json
-        rendon :json => @exception_json
+        render :json => @exception_json
       end
     end
     
