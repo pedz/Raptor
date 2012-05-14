@@ -1,18 +1,22 @@
-<p>
-  <b>Subject:</b>
-  <%=h @mapping.subject_id %>
-</p>
+<%# -*- coding: utf-8 -*- -%>
+<%# Copyright 2012 Ease Software, Inc. and Perry Smith -%>
+<%# All Rights Reserved -%>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <p>
+    <b>Subject:</b>
+    <%=h @mapping.subject.name %>
+  </p>
 
-<p>
-  <b>Source:</b>
-  <%=h @mapping.source_id %>
-</p>
+  <p>
+    <b>Source:</b>
+    <%=h @mapping.source.base_type %>
+  </p>
 
-<p>
-  <b>Sql:</b>
-  <%=h @mapping.sql %>
-</p>
-
-
-<%= link_to 'Edit', edit_mapping_path(@mapping) %> |
-<%= link_to 'Back', mappings_path %>
+  <p>
+    <b>Sql:</b>
+    <%=h @mapping.sql %>
+  </p>
+<%- end -%>
+<%= render :partial => 'shared/config_show',
+      :locals => { :name => "#{@mapping.subject.name} => #{@mapping.source.base_type}", :item => @mapping, :parent => nil } %>

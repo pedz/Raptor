@@ -1,4 +1,6 @@
 class MappingsController < ApplicationController
+  layout "configuration"
+
   # GET /mappings
   # GET /mappings.xml
   def index

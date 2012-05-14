@@ -1,21 +1,22 @@
 <%# -*- coding: utf-8 -*- -%>
 <%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith -%>
 <%# All Rights Reserved -%>
-<p>
-  <b>Name:</b>
-  <%=h @argument_default.name.name %>
-</p>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <p>
+    <b>Name:</b>
+    <%=h @argument_default.name.name %>
+  </p>
 
-<p>
-  <b>Arguement position:</b>
-  <%=h @argument_default.argument_type.name %>
-</p>
+  <p>
+    <b>Arguement position:</b>
+    <%=h @argument_default.argument_type.name %>
+  </p>
 
-<p>
-  <b>Default:</b>
-  <%=h @argument_default.default %>
-</p>
-
-
-<%= link_to 'Edit', edit_argument_default_path(@argument_default) %> |
-<%= link_to 'Back', argument_defaults_path %>
+  <p>
+    <b>Default:</b>
+    <%=h @argument_default.default %>
+  </p>
+<%- end -%>
+<%= render :partial => 'shared/config_show',
+      :locals => { :name => @argument_default.name.name, :item => @argument_default, :parent => nil } %>

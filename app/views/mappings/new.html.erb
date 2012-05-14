@@ -1,23 +1,27 @@
-<h1>New mapping</h1>
+<%# -*- coding: utf-8 -*- -%>
+<%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith -%>
+<%# All Rights Reserved -%>
+<% content_for :body do %>
+  <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+  <% form_for(@mapping) do |f| %>
+    <%= f.error_messages %>
 
-<% form_for(@mapping) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.label :subject_id %><br />
-    <%= f.text_field :subject_id %>
-  </p>
-  <p>
-    <%= f.label :source_id %><br />
-    <%= f.text_field :source_id %>
-  </p>
-  <p>
-    <%= f.label :sql %><br />
-    <%= f.text_field :sql %>
-  </p>
-  <p>
-    <%= f.submit 'Create' %>
-  </p>
-<% end %>
-
-<%= link_to 'Back', mappings_path %>
+    <p>
+      <%= f.label :subject_id %><br />
+      <%= f.collection_select(:subject_id, Name.find(:all, :conditions => { :type => 'Subject'}), :id, :name, { :include_blank => true }) %>
+    </p>
+    <p>
+      <%= f.label :source_id %><br />
+      <%= f.collection_select(:source_id, NameType.find(:all, :conditions => "base_type != 'Name'"), :id, :base_type, { :include_blank => true }) %>
+    </p>
+    <p>
+      <%= f.label :sql %><br />
+      <%= f.text_field :sql %>
+    </p>
+    <p>
+      <%= f.submit 'Create' %>
+    </p>
+  <% end %>
+<%- end -%>
+<%= render :partial => 'shared/config_new',
+      :locals => { :item => @mapping, :parent => nil } %>
