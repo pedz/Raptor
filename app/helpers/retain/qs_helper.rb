@@ -950,8 +950,9 @@ module Retain
         
         # Sev 2,3,4 during Primeshift: Initial customer callback is
         #           within 2 business hours
-        # logger.debug("center is #{pmr.center.center}")
-        # logger.debug("entry time is #{entry_time}")
+        logger.debug("center is #{pmr.center.center}")
+        logger.debug("prime_shift is #{pmr.center.prime_shift(entry_time)}")
+        logger.debug("entry time is #{entry_time}")
         if pmr.center.prime_shift(entry_time)
           # logger.debug("prime_shift")
           return customer.business_hours(entry_time, 2)

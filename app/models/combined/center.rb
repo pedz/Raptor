@@ -56,6 +56,7 @@ module Combined
     # time is assumed to be a DateTime object (or something that acts
     # like it).
     def prime_shift(time)
+      logger.debug("center.tz is #{tz}")
       t = time.new_offset(tz)
        (8 .. 17) === t.hour && (1 .. 5) === t.wday
     end

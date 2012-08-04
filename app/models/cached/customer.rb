@@ -59,6 +59,16 @@ module Cached
     # A boolean that is set to true if the customer is a premium
     # support customer.
 
+    class << self
+      ##
+      # Overrides the ActiveRecord method which returns just "Queue".
+      # This, instead, returns "Cached::Queue".  This is needed to get
+      # things to work right for entities and relationships.
+      def base_class
+        self
+      end
+    end
+
     ##
     # :attr: expire_time
     # set to 3.days

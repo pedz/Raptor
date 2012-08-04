@@ -73,23 +73,27 @@ class ApplicationController < ActionController::Base
   # initialized with the ldap_id field.  The user model is stored in
   # the session.
   def authenticate
-    # logger.info("APP: authorization: #{temp_debug(request)}")
+    logger.info("APP: authorization: #{temp_debug(request)}")
+    request.env.keys.each do |key|
+      logger.debug"request.env['#{key}'] = '#{request.env[key]}'"
+    end
     set_last_uri
     return true unless application_user.nil?
-    # logger.info("Header NOT-SET = #{request.headers['NOT-SET'].inspect}")
+    logger.info("Header NOT-SET = #{request.headers['NOT-SET'].inspect}")
     if request.env.has_key? "REMOTE_USER"
-      # logger.info("REMOTE_USER = #{request.env["REMOTE_USER"]}")
+      logger.info("REMOTE_USER = #{request.env["REMOTE_USER"]}")
       apache_authenticate
     elsif request.headers.has_key?('HTTP_X_FORWARDED_USER')
-      # logger.info("Header HTTP_X_FORWARDED_USER = #{request.headers['HTTP_X_FORWARDED_USER']}")
+      logger.info("Header HTTP_X_FORWARDED_USER = #{request.headers['HTTP_X_FORWARDED_USER']}")
       proxy_apache_authenticate
     elsif Rails.env == "test"
-      # logger.info("Authenticate via test")
+      logger.info("Authenticate via test")
       testing_authenticate
     elsif NONE_AUTHENTICATE
-      # logger.info("Authenticate via none")
+      logger.info("Authenticate via none")
       none_authenticate
     else
+      logger.info("Authenticate else")
       ldap_authenticate
     end
   end

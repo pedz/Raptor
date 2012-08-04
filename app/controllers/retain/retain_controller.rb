@@ -175,6 +175,9 @@ module Retain
     #         0 |      n |      Pass | Userid/Password validated,
     #           |        |           |   password will expire in n (8 to
     #           |        |           |   90) days
+    #
+    # Need to move this
+    #
     def find_logon_error(logon_return, logon_reason)
       return "Retain database not available for userid validation" if logon_return == 16 && logon_reason == 18
       return "Userid is set to inactive" if logon_return == 70 && logon_reason == 19

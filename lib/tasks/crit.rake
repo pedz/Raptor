@@ -25,8 +25,22 @@ task :add_crits do
         retain_pmr = Retain::Pmr.new(params, pmpb_options)
         begin
           problem_crit_sit = retain_pmr.problem_crit_sit    # cause the fetch
-        rescue Exception
+        rescue ::Retain::LogonFailed => e
+          puts "#{e.message} #{e.logon_return} #{e.logon_reason}"
+          retuser.failed = true
+          retuser.logon_return = e.logon_return
+          retuser.logon_reason = e.logon_reason
+          retuser.save
+          exit 1
+
+        rescue ::Retain::FailedMarkedTrue => e
+          puts "#{e.message}"
+          exit 1
+
+        rescue Exception => e
+          # puts "Exception hit -- bailing #{e.class} #{e.message}"
           # puts "#{problem},#{branch},#{country} not fetched"
+          # exit 1
           next
         end
         
