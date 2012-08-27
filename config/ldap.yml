@@ -1,5 +1,5 @@
 development:
-  host: bluepages.ibm.com
+  host: bluepages.boulder.ibm.com
   port: 389
   base: o=ibm.com
   # base: ou=bluepages,o=ibm.com
@@ -9,7 +9,7 @@ development:
   # password: secret
 
 staging:
-  host: bluepages.ibm.com
+  host: bluepages.boulder.ibm.com
   port: 389
   base: o=ibm.com
   # port: 636
@@ -18,7 +18,7 @@ staging:
   # password: secret
 
 test:
-  host: bluepages.ibm.com
+  host: bluepages.boulder.ibm.com
   port: 389
   base: o=ibm.com
   # port: 636
@@ -27,9 +27,11 @@ test:
   # password: secret
 
 production:
-  host: bluepages.ibm.com
-  port: 389
+  host: localhost
+  port: 5389
   base: o=ibm.com
+  # host: bluepages.boulder.ibm.com
+  # port: 389
   # port: 636
   # method: :ssl
   # bind_dn: cn=admin,dc=local,dc=net
