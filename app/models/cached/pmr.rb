@@ -522,12 +522,14 @@ module Cached
     ACTION_TAKEN = "action taken".freeze
     ACTION_PLAN  = "action plan".freeze
     TESTCASE     = "testcase".freeze
+    SUMMARY      = "summary".freeze
     ECPAAT_HEADINGS = [ "Environment",
                         "Customer Rep",
                         "Problem",
                         "Action Taken",
                         "Action Plan",
-                        "Testcase" ].freeze
+                        "Testcase",
+                        "Summary"].freeze
     ##
     # A regular expression that matches the ECPAAT headings.
     ECPAAT_REGEXP = Regexp.new("^(" +
@@ -536,7 +538,8 @@ module Cached
                                "(#{PROBLEM})|" +
                                "(#{ACTION_TAKEN})|" +
                                "(#{ACTION_PLAN})|" +
-                               "(#{TESTCASE})" +
+                               "(#{TESTCASE})|" +
+                               "(#{SUMMARY})" +
                                "): *(.*)$", Regexp::IGNORECASE).freeze
 
     #
@@ -712,6 +715,7 @@ module Cached
       current_section = nil
       add_blank_line = false
       first_line = false
+      line_count = 0
       all_text_lines.find_all { |text_line|
         if text_line.text_type == :normal
           text = text_line.text
@@ -719,9 +723,10 @@ module Cached
             current_section = get_current_section(md)
             @ecpaat_signature[current_section] = last_signature
             @ecpaat[current_section] = []
-            text = md[8]
+            text = md[ECPAAT_HEADINGS.length + 2]
             add_blank_line = false
             first_line = true
+            line_count = 1
             # logger.debug("CHC: ECPAAT found #{current_section}")
           end
           if current_section
@@ -730,10 +735,15 @@ module Cached
             else
               first_line = false
               if add_blank_line
+                line_count += 1
                 @ecpaat[current_section] << ""
               end
+              line_count += 1
               @ecpaat[current_section] << text
               add_blank_line = false
+            end
+            if line_count > 8
+              current_section = nil
             end
           end
         else                    # end of section
@@ -751,7 +761,7 @@ module Cached
     # matched by the match data passed in.
     def get_current_section(md)
       # logger.debug("CHC: get_current_section: md[2]=#{md[2].inspect}, md[3]=#{md[3].inspect}")
-      index = (0 .. 5).select { |i| !md[i+2].nil? }.first
+      index = (0 ... ECPAAT_HEADINGS.length).select { |i| !md[i+2].nil? }.first
       ECPAAT_HEADINGS[index]
     end
 
