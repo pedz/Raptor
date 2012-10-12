@@ -288,7 +288,9 @@ module Combined
         :country => pmr.country,
         :customer_number => pmr.customer_number
       }
-      @cached.customer = Cached::Customer.find_or_new(cust_options)
+      customer = Cached::Customer.find_or_create(cust_options)
+      customer.save if customer.new_record?
+      @cached.customer = customer
 
       # Make or find the primary call and its associated queue and center
       @cached.center = nil
