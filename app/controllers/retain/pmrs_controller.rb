@@ -12,21 +12,19 @@ module Retain
       # logger.debug("params 1 = #{retain_user_connection_parameters.inspect}")
       @pmr = Combined::Pmr.from_param!(params[:id], signon_user)
       
-      # This is a hack.  I had my belongs_to association botched and
-      # the primary_call was not being created.  This checks to see if
-      # the primary call is nil.  If it is, it forces the code to go
-      # back to retain and, hopefully, set up the primary call.  I
-      # assume, eventually, this could be removed.  Likewise,
-      # eventually, the primary fields could be marked as 'not null'.
+      # The is not a hack... The primary call can become null for
+      # various reasons.  In particular, if the call is deleted,
+      # "primary" is set to null.
       if @pmr.primary_call.nil?
         @pmr.last_alter_timestamp = nil
         @pmr.mark_cache_invalid
+        force_update = @pmr.ppg
       end
       
       respond_to do |format|
         format.html {
           # if primary call, use it -- otherwise, use the pmr show page (default)
-          unless @pmr.ppg == "0" || @pmr.ppg.nil?
+          unless @pmr.primary.nil?
             redirect_to(@pmr.primary_call)
           end
         }
