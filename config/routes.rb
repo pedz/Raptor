@@ -103,7 +103,7 @@ ActionController::Routing::Routes.draw do |map|
   # Everything below here is from the old system...
 
   map.resources :hot_pmr_lists, :controller => 'hot_pmr_lists', :only => [ :index, :show ]
-  map.resources :combined_hot_pmr_time, :controller => 'combined/hot_pmr_time'
+  map.resource  :combined_hot_pmr_time, :controller => 'combined/hot_pmr_time'
   map.resources :retain_solution_codes, :controller => 'retain/solution_codes'
   map.resources :retain_service_given_codes, :controller => 'retain/service_given_codes'
   map.resources :retain_service_action_cause_tuples

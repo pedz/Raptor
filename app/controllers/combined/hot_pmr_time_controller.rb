@@ -6,7 +6,7 @@
 
 module Combined
   class HotPmrTimeController < CombinedController
-    def index
+    def show
       # BARF!!! cut and paste code from psars_controller (for now)
       local_params = params.symbolize_keys
 
