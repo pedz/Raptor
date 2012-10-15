@@ -6,7 +6,7 @@
 
 module Combined
   class HotPmrTimeController < CombinedController
-    def index
+    def show
       # BARF!!! cut and paste code from psars_controller (for now)
       local_params = params.symbolize_keys
 
@@ -51,9 +51,9 @@ module Combined
 
       # Just to make it look prettier
       psar_proxy = req_user.psars.stop_time_range(start_moc .. stop_moc)
-      result = psar_proxy.find(:all,
-                               :conditions => db_search_fields,
-                               :include => :pmr)
+      @combined_psars = result = psar_proxy.find(:all,
+                                                 :conditions => db_search_fields,
+                                                 :include => :pmr)
       result = result.find_all { |psar| psar.hot? }
       result = result.group_by(&:saturday)
       @result = result.map do |saturday, days|
