@@ -17,8 +17,8 @@ module Retain
       # "primary" is set to null.
       if @pmr.primary_call.nil?
         @pmr.last_alter_timestamp = nil
-        @pmr.mark_cache_invalid
-        force_update = @pmr.ppg
+        @pmr.mark_as_dirty
+        force_update = @pmr.comments
       end
       
       respond_to do |format|
