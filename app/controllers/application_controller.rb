@@ -198,8 +198,21 @@ class ApplicationController < ActionController::Base
     return true
   end
 
-  # Apache has already authenticated but we are behind a proxy so use
-  # HTTP_X_FORWARDED_USER instead
+  # Apache has already authenticated but we are behind a proxy
+  # (e.g. Proxy balancer) so use HTTP_X_FORWARDED_USER instead Note
+  # that this header is produced by the httpd config file rules:
+  #
+  # RewriteCond %{LA-U:REMOTE_USER} (.+)
+  # RewriteRule .* - [E=RU:%1]
+  # RequestHeader add X-Forwarded-User %{RU}e
+  #
+  # I believe the reason is the proxy request is sent to the other
+  # process (like thin or mongrel) so the environment is not passed.
+  # Thus a header has to be introduced.  Somewhere someone picked
+  # X-Forwarded-User.  Rails takes all incoming headers and stores
+  # them in headers as
+  # "HTTP_" original_header_name.upcase.gsub(/-/, '_').  See
+  # actionpack/lib/action_dispatch/http/headers.rb
   def proxy_apache_authenticate
     # logger.info("proxy_apache_authenticate as #{request.env["HTTP_X_FORWARDED_USER"]}")
     common_authenticate(request.headers["HTTP_X_FORWARDED_USER"])
