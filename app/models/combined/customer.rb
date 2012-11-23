@@ -110,6 +110,17 @@ module Combined
       start_time + (i1 - start_i1).hours
     end
 
+    ##
+    # Customer Time Zone as a rational fraction of a day
+    def tz
+      # logger.debug("CHC: customer tz called from #{caller.join("\n")}")
+      if tzb = time_zone_binary
+        tzb.to_r / Cached::Customer::MINS_PER_DAY
+      else
+        nil
+      end
+    end
+
     private
 
     ##
