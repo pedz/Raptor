@@ -157,6 +157,12 @@ ActionController::Routing::Routes.draw do |map|
                          :action => 'update',
                          :method => :post)
   
+  # Call FI 5312 map.
+  map.retain_call_fi5312('retain/call/:id',
+                         :controller => 'retain/call',
+                         :action => 'fi5312',
+                         :method => :post)
+  
   # Reasonably well flushed out resources
   map.resources(:combined_call,
                 :controller => 'retain/call',

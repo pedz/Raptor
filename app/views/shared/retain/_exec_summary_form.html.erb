@@ -1,0 +1,59 @@
+<%# -*- coding: utf-8 -*- -%>
+<%# Copyright 2013 Ease Software, Inc. and Perry Smith -%>
+<%# All Rights Reserved -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<%- submit_id = id_for(call_fi5312, "submit") -%>
+<%- remote_form_for(call_fi5312,
+                    :loading => "Raptor.disableSubmit($('#{submit_id}'));",
+                    :complete => "Raptor.enableSubmit($('#{submit_id}'));",
+                    :html => html_tag(call_fi5312, "form")) do |cfi| -%>
+<%=   do_label "eSummary:", "line_1", call_fi5312 -%>
+<%=   do_text_field(cfi, :line_1, 60, call_fi5312,
+                    :placeholder => 'Enter three lines of executive summary') -%><br />
+<%=   do_label "&nbsp;-", "line_2", call_fi5312 -%>
+<%=   do_text_field(cfi, :line_2, 67, call_fi5312) -%><br />
+<%=   do_label "&nbsp;-", "line_3", call_fi5312 -%>
+<%=   do_text_field(cfi, :line_3, 67, call_fi5312) -%><br />
+<%=   do_label "Next Action Owner:", "next-action-owner", call_fi5312 -%><br />
+<%=   do_label "DCT", "dct-radio", call_fi5312 -%>
+<%=   cfi.radio_button(:next_action_owner, "DCT", html_tag(call_fi5312, "dct-radio")) -%>
+<%=   do_label "DSS", "dss-radio", call_fi5312 -%>
+<%=   cfi.radio_button(:next_action_owner, "DSS", html_tag(call_fi5312, "dss-radio")) -%>
+<%=   do_label "Frontend", "frontend-radio", call_fi5312 -%>
+<%=   cfi.radio_button(:next_action_owner, "Frontend", html_tag(call_fi5312, "frontend-radio")) -%>
+<%=   do_label "Customer", "customer-radio", call_fi5312 -%>
+<%=   cfi.radio_button(:next_action_owner, "Customer", html_tag(call_fi5312, "customer-radio")) -%>
+<%=   do_label "HW", "hw-radio", call_fi5312 -%>
+<%=   cfi.radio_button(:next_action_owner, "HW", html_tag(call_fi5312, "hw-radio")) -%>
+<%=   do_label "Advocate", "advocate-radio", call_fi5312 -%>
+<%=   cfi.radio_button(:next_action_owner, "Advocate", html_tag(call_fi5312, "advocate-radio")) -%><br />
+<%=   do_label "Follow-up Date:", "month", call_fi5312 -%>
+<%=   do_text_field(cfi, :month, 2, call_fi5312) -%>
+<%=   do_label "/", "day", call_fi5312 -%>
+<%=   do_text_field(cfi, :day, 2, call_fi5312) -%>
+<%=   do_label "/", "year", call_fi5312 -%>
+<%=   do_text_field(cfi, :year, 4, call_fi5312) -%><br />
+<%=   cfi.submit "Submit", html_tag(call_fi5312, "submit") -%>
+<%  end -%>
+
+<%# <form id='exec-summary-form' style='font-family: "Monico", Courier, monospace;'> -%>
+<%#   eSummary: <input type='text' name='line1' maxlength='60' size='60' class='exec-form' -%>
+<%# 		    placeholder='Enter three lines of executive summary'><br/> -%>
+<%#   -- <input type='text' name='line2' maxlength='67' size='67' class='exec-form'><br/> -%>
+<%#   -- <input type='text' name='line3' maxlength='67' size='67' class='exec-form'><br/> -%>
+<%#   <label for="DCT">DCT</label> -%>
+<%#   <input type="radio" name="owner" value="DCT" id="DCT"> -%>
+<%#   <label for="DSS">DSS</label> -%>
+<%#   <input type="radio" name="owner" value="DSS" id="DSS"> -%>
+<%#   <label for="Frontend">Frontend</label> -%>
+<%#   <input type="radio" name="owner" value="Frontend" id="Frontend"> -%>
+<%#   <label for="Customer">Customer</label> -%>
+<%#   <input type="radio" name="owner" value="Customer" id="Customer"> -%>
+<%#   <label for="HW">HW</label> -%>
+<%#   <input type="radio" name="owner" value="HW" id="HW"> -%>
+<%#   <label for="Advocate">Advocate</label> -%>
+<%#   <input type="radio" name="owner" value="Advocate" id="Advocate"> -%>
+<%#   <br/> -%>
+<%#   Follow-up Date: < % = exec_follow_up_date % > -%>
+<%#   <input type='submit' class='exec-form'> -%>
+<%# </form> -%>

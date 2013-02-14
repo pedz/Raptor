@@ -2,25 +2,37 @@
 <%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith -%>
 <%# All Rights Reserved -%>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<%  i = 0 %>
 <%  @formatted_panel.format_panel.each do |format_panel_line| %>
-<%    text = (0 ... 72).inject("<span style='font-weight: normal; color: red;'>") do |memo, i|
+<%    i += 1 %>
+<%    raw_text = "" %>
+<%    text = (0 ... 72).inject("<span style='font-weight: normal; color: black'; background: white;>") do |memo, i|
+        raw_text << "%02x" % format_panel_line.raw_char(i)
         s = format_panel_line.char(i)
         case s
         when :normal_protected
-          r = "</span><span style='font-weight: normal; color: red;'>"
+          r = "</span><span style='font-weight: normal; color: red; background: white;'>"
         when :normal_unprotected
-          r = "</span><span style='font-weight: normal; color: blue;'>"
+          r = "</span><span style='font-weight: normal; color: green; background: white;'>"
         when :intensified_protected
-          r = "</span><span style='font-weight: bold;   color: red;'>"
+          r = "</span><span style='font-weight: normal;   color: red; background: black;'>"
         when :intensified_unprotected
-          r = "</span><span style='font-weight: bold;   color: blue;'>"
+          r = "</span><span style='font-weight: normal;   color: green; background: black;'>"
         else
-          r = s
+          r = (s == " ") ? "&#9830;" : s
         end
         memo << r
         memo
       end + "</span>"
 %>
-<%=   text %><br/>
+<%=   "Line #{i}: Leading Line Attribute: %02x" % format_panel_line.leading_line_attribute %><br/>
+<%=   "Line #{i}:#{text}:" %><br/>
+<%=   "Line #{i}:#{raw_text}" %><br/>
+<%=   "Line #{i}: Trailing Line Attribute: %02x" % format_panel_line.trailing_line_attribute %><br/>
+<%=   "Line #{i}: Arrow is '#{format_panel_line.arrow_field}'" %><br/>
+<%=   "Line #{i}: Line Number is %04x" % format_panel_line.line_number_count %><br/>
 <%  end %>
-<%= "#{@formatted_panel.offset_to_first_input_field.length}" %>
+<% @formatted_panel.fields.fields.each_pair do |key, value| %>
+<%=  "#{key} #{value.class}" %><br/>
+<% end %>
+<%= "#{@formatted_panel.offset_to_first_input_field}" %>
