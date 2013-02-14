@@ -5,6 +5,14 @@
 #
 
 module Retain
+  # Elements in requeset:
+  #     41: :center
+  #    630: :format_panel_number
+  #   1236: :signon
+  #   1237: :password
+  #  {632}: :panel_operand
+  # {1253}: :group_request
+  # {1384}: :error_message
   #
   # Allowed in group request:
   #   41: :center

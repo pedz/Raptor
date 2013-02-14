@@ -6,20 +6,20 @@
 
 module Retain
   module CallUpdateHelper
-    def id_for(call_update, tag)
-      "call_update_#{tag.gsub(/-/, '_')}_#{call_update.to_id}"
+    def id_for(call_model, tag)
+      "#{call_model_underscore(call_model)}_#{tag.gsub(/-/, '_')}_#{call_model.to_id}"
     end
 
-    def html_tag(call_update, tag, options = { })
+    def html_tag(call_model, tag, options = { })
       options.merge({
-        :id => id_for(call_update, tag),
-        :class => "call-update-#{tag.gsub(/_/, '-')}"
+        :id => id_for(call_model, tag),
+        :class => "#{call_model_dash(call_model)}-#{tag.gsub(/_/, '-')}"
       })
     end
 
-    def send_mail_button(call_update)
-      pmr = call_update.call.pmr
-      id = id_for(call_update, "send-mail")
+    def send_mail_button(call_model)
+      pmr = call_model.call.pmr
+      id = id_for(call_model, "send-mail")
       hash = {
         :class => 'send-email-button',
         :id => id
@@ -40,9 +40,9 @@ module Retain
       content_tag :button, text, hash
     end
 
-    def clear_boxes_button(call_update)
-      pmr = call_update.call.pmr
-      id = id_for(call_update, "clear-boxes")
+    def clear_boxes_button(call_model)
+      pmr = call_model.call.pmr
+      id = id_for(call_model, "clear-boxes")
       hash = {
         :class => 'clear-boxes-button',
         :id => id
@@ -50,8 +50,8 @@ module Retain
       content_tag :button, "Clear Boxes", hash
     end
 
-    def to_owner_button(call_update)
-      call = call_update.call
+    def to_owner_button(call_model)
+      call = call_model.call
       pmr = call.pmr
       to_queue = nil
       person = nil
@@ -64,25 +64,26 @@ module Retain
       
       hash = {
         :value => to_queue.to_param,
-        :id => id_for(call_update, 'setup-to-send-back'),
+        :id => id_for(call_model, 'setup-to-send-back'),
         :class => 'setup-to-send-back'
       }
       content_tag :button, "Queue back to #{person.name}", hash
     end
 
-    def do_text_field(base, field, size, call_update)
-      base.text_field field, html_tag(call_update, field.to_s,
-                                      :size => size, :maxlength => size)
+    def do_text_field(base, field, size, call_model, options = {})
+      base.text_field field, html_tag(call_model, field.to_s,
+                                      options.merge(:size => size, :maxlength => size))
     end
 
-    def do_select_field(psar, field, collection, value_method, text_method, call_update)
+    def do_select_field(psar, field, collection, value_method, text_method, call_model)
       psar.collection_select(field, collection, value_method, text_method,
                         { :prompt => false },
-                         html_tag(call_update, field.to_s))
+                         html_tag(call_model, field.to_s))
     end
 
-    def do_label(label, for_field, call_update)
-      content_tag :label, label, :for => id_for(call_update, for_field)
+    def do_label(label, for_field, call_model)
+      content_tag(:label, label, :for => id_for(call_model, for_field), 
+                  :class => "#{call_model_dash(call_model)}-#{for_field}-label")
     end
 
     def add_sac_tuples
@@ -93,6 +94,19 @@ module Retain
         }
       end
       add_page_setting("sac_tuples", @sac_tuples)
+    end
+
+    private
+
+    def call_model_underscore(call_model)
+      # we have Retain::CallUpdate or Retain::CallFi5312 and we want
+      # to underscore'ize that name but we don't want the leading
+      # retain/ part of the name.
+      call_model.class.to_s.underscore.sub(/^[^\/]*\//, '')
+    end
+
+    def call_model_dash(call_model)
+      call_model_underscore(call_model).gsub('_', '-')
     end
   end
 end

@@ -21,7 +21,7 @@ module Retain
     end
     
     def char(index)
-      s = case @raw_text[index + 1]
+      s = case @raw_text[index + 1].ord
           when 0x4f, 0x0b, 0x32; :normal_protected
           when 0x6e, 0x22; :normal_unprotected
           when 0x50, 0x3a; :intensified_protected
@@ -29,6 +29,22 @@ module Retain
           else @raw_text[index + 1,1].retain_to_user
           end
       s
+    end
+
+    def raw_char(index)
+      @raw_text[index + 1].ord
+    end
+
+    def trailing_line_attribute
+      @raw_text[73].ord
+    end
+    
+    def arrow_field
+      @raw_text[74,4].retain_to_user
+    end
+    
+    def line_number_count
+      @raw_text[78].ord * 256 + @raw_text[79].ord
     end
 
     def text_line
