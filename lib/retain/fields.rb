@@ -418,7 +418,7 @@ module Retain
       :alter_create_time           => [ 1322, :ebcdic,              5 ],
       :format_chain                => [ 1323, :ebcdic,              7 ],
       :format_line_count_binary    => [ 1324, :ebcdic,              1 ],
-      :offset_to_first_input_field => [ 1325, :ebcdic,              2 ],
+      :offset_to_first_input_field => [ 1325, :short,               2 ],
       :panel_keyword_table         => [ 1326, :ebcdic,             55 ],
       :error_message               => [ 1384, :ebcdic,             79 ],
       :call_received_time          => [ 1386, :short,               2 ],
@@ -741,6 +741,10 @@ module Retain
       cvt = field_name_to_cvt(sym)
       width = field_name_to_width(sym)
       writer(sym, cvt, width, value)
+    end
+
+    def keys
+      @fields.keys
     end
 
     # def each_pair

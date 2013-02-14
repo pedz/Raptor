@@ -136,7 +136,17 @@ module Retain
         concat(link_to("#{lead}#{text}: #{link_param}", combined_call_path(link_param)) + "<br/>\n")
       end
     end
-    
+
+    def exec_summary_button
+      button("Exec Summary", "$(\"exec-summary-form\").toggle()")
+    end
+
+    def exec_summary_form(binding, call)
+      call_fi5312 = CallFi5312.new(call)
+      concat(render(:partial => "shared/retain/exec_summary_form",
+                    :locals => { :call_fi5312 => call_fi5312 }))
+    end
+
     def call_list(binding, call)
       pmr = call.pmr
       param = call.to_param
@@ -175,28 +185,6 @@ module Retain
           concat(calls)
         end
       end
-#       ul binding do |binding|
-#         if pmr.primary_param
-#           li binding do |binding|
-#             concat "Primary: #{pmr.primary_param}"
-#           end
-#         end
-#         if pmr.secondary_1_param
-#           li binding do |binding|
-#             concat "Sec 1: #{pmr.secondary_1_param}"
-#           end
-#         end
-#         if pmr.secondary_2_param
-#           li binding do |binding|
-#             concat "Sec 2: #{pmr.secondary_2_param}"
-#           end
-#         end
-#         if pmr.secondary_3_param
-#           li binding do |binding|
-#             concat "Sec 3: #{pmr.secondary_3_param}"
-#           end
-#         end
-#       end
     end
   end
 end
