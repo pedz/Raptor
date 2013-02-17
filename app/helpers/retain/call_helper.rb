@@ -62,10 +62,10 @@ module Retain
         # \x2a   => \xc2 \x8a -- High Intensity Unprotected
         # The following four lines no longer work with UTF-8... I need
         # to go fix them TODO
-        # temp = temp.gsub("\x16",     '</span><span class="normal-protected">&nbsp;')
-        # temp = temp.gsub("\xc2\x82", '</span><span class="normal-unprotected">&nbsp;')
-        # temp = temp.gsub("\xc2\x9a", '</span><span class="intensified-protected">&nbsp;')
-        # temp = temp.gsub("\xc2\x8a", '</span><span class="intensified-unprotected">&nbsp;')
+        temp = temp.gsub("\u0016",     '</span><span class="normal-protected">&nbsp;')
+        temp = temp.gsub("\u0082", '</span><span class="normal-unprotected">&nbsp;')
+        temp = temp.gsub("\u009a", '</span><span class="intensified-protected">&nbsp;')
+        temp = temp.gsub("\u008a", '</span><span class="intensified-unprotected">&nbsp;')
 
         # Find APARs and link them to Condor
         temp = temp.gsub(APAR_Regexp, "<a href=\"#{Condor_URL}swinfos/\\0\">\\0</a>")
@@ -88,17 +88,33 @@ module Retain
 
     def display_update_button(binding)
       span binding, :class => 'call-update-span' do |binding|
-        concat(button("Update Call", "$(\"call_update_span\").toggleCallUpdateForm();"))
+        concat(button("Update Call", "$(\"call-update-div\").toggleCallUpdateForm();"))
       end
     end
 
     def display_update_form(binding, call)
       div(binding,
-           :id => 'call_update_span',
+           :id => 'call-update-div',
            :class => 'call-update-container') do |binding|
         call_update = CallUpdate.new(call)
         concat(render(:partial => 'shared/retain/call_update',
                       :locals => { :call_update => call_update }))
+      end
+    end
+
+    def exec_summary_button(binding)
+      span binding, :class => 'call-fi5312-span' do |binding|
+        concat(button("Exec Summary", "$(\"call-fi5312-div\").toggleCallUpdateForm();"))
+      end
+    end
+
+    def exec_summary_form(binding, call)
+      div(binding,
+           :id => 'call-fi5312-div',
+           :class => 'call-fi5312-container') do |binding|
+        call_fi5312 = CallFi5312.new(call)
+        concat(render(:partial => "shared/retain/exec_summary_form",
+                      :locals => { :call_fi5312 => call_fi5312 }))
       end
     end
 
@@ -135,16 +151,6 @@ module Retain
         end
         concat(link_to("#{lead}#{text}: #{link_param}", combined_call_path(link_param)) + "<br/>\n")
       end
-    end
-
-    def exec_summary_button
-      button("Exec Summary", "$(\"exec-summary-form\").toggle()")
-    end
-
-    def exec_summary_form(binding, call)
-      call_fi5312 = CallFi5312.new(call)
-      concat(render(:partial => "shared/retain/exec_summary_form",
-                    :locals => { :call_fi5312 => call_fi5312 }))
     end
 
     def call_list(binding, call)

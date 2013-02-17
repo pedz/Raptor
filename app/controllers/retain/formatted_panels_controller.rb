@@ -10,6 +10,7 @@ module Retain
       options = { }
       options[:center] = signon_user.default_center.center
       options[:format_panel_number] = params[:id]
+      options[:panel_operand] = "X"
       @formatted_panel = Retain::FormattedPanel.new(retain_user_connection_parameters, options)
     end
   end
