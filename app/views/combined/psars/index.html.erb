@@ -75,4 +75,5 @@
   <%= favorites_button %>
   <%= button_url 'New psar', new_combined_psar_path %>
   <%= button_url "Boyd's Thing", combined_psars_path(:ice_cream => 1) %>
+  <%= button_url("Hot PMR Time", combined_hot_pmr_time_path(:psar_start_date => Time.previous_saturday.strftime("%Y%m%d"))) %>
 <%- end -%>
