@@ -1,0 +1,57 @@
+<%# -*- coding: utf-8 -*- -%>
+<%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith -%>
+<%# All Rights Reserved -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<%- @title = "HOT PMR Time" -%>
+<%- @result.each do |saturday, pmr_list| -%>
+      <h3>Week Starting Saturday: <%= saturday %></h3>
+<%-   body = []
+      ot_time = 0
+      pmr_list.each do |pmr_id, total_time|
+     	# total_time is in minutes
+        ot_time += total_time
+     	if @ot
+     	  header = "OT Hours:"
+     	  if @ot > total_time
+     	    @ot -= total_time
+     	  elsif @ot == 0
+     	    break
+     	  else
+     	    total_time = @ot
+     	    @ot = 0
+     	  end
+     	else
+     	  header = "PSAR Hours:"
+     	end
+     	pmr = Cached::Pmr.find(pmr_id)
+     	if (call = pmr.primary_call) && ! call.severity.blank?
+     	  severity = call.severity
+     	else
+     	  severity = pmr.severity
+     	end
+     	if ! pmr.business_justification.blank?
+     	  justification = pmr.business_justification
+     	elsif ! pmr.crit_sit.blank?
+     	  justification = "Crit sit: #{pmr.crit_sit}"
+     	else
+     	  justification = "Sev 1 PMR"
+     	end -%>
+     	<%= link_to "#{pmr.pbc}", combined_pmr_path(pmr.pbc) %><br/>
+     	<%= "Severity: #{severity}" %><br/>
+     	<%= "Business Justification: #{justification}"	%><br/>
+     	<%= "#{header} #{total_time / 60}.#{total_time % 60 / 6}" %><br/>
+     	<br/>
+<%-     body << pmr.pbc
+	body << "Severity: #{severity}"
+     	body << "Business Justification: #{justification}"
+     	body << "#{header} #{total_time / 60}.#{total_time % 60 / 6}"
+	body << "" -%>
+<%-   end -%>
+<%-   week_total = @weekly_totals[saturday][:week_total]
+      body << "Total PSAR Hours: #{week_total / 60}.#{week_total % 60 / 6}"
+      body << "Total HOT PSAR Hours: #{ot_time / 60}.#{ot_time % 60 / 6}"
+      body << "Total OT Hours Billed: "
+      subject = "OT for Week Starting Saturday: #{ saturday.strftime("%Y-%m-%d") }" -%>
+      <a href='mailto:ssrikant@us.ibm.com?subject=<%= subject %>&body=<%= body.join("%0A") %>'><button>Send Email</button></a>
+<%-   break if @ot && @ot == 0 -%>
+<%- end -%>

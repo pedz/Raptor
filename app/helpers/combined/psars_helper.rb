@@ -35,7 +35,7 @@ module Combined
     end
 
     def summarize(weeks)
-      logger.debug("PSAR: #{weeks}")
+      # logger.debug("PSAR: #{weeks}")
       weeks.map do |saturday, days|
         week_total = 0
         week_ot_total = 0
@@ -49,7 +49,6 @@ module Combined
           week_ot_total += day_totals[1]
           [day, psars, day_totals[0], day_totals[1]]
         end
-        logger.debug("Saturday: #{saturday.class.to_s}")
         [saturday, days, week_total, week_ot_total]
       end
     end
