@@ -212,6 +212,7 @@ module Retain
       :system_problem              => [  626, :ebcdic,              2 ], # time
       :rams_cad_key                => [  627, :ebcdic,             22 ],
       :rams_cad_flag               => [  628, :ebcdic,              1 ],
+      :format_panel_op_type        => [  629, :ebcdic,              2 ],
       :format_panel_number         => [  630, :ebcdic,              4 ],
       :format_panel                => [  631, :format_panel_lines, 80 ],
       :panel_operand               => [  632, :ebcdic,              1 ],

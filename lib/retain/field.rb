@@ -214,8 +214,12 @@ module Retain
         raise "Can not encode nls text lines yet"
       when :text_lines
         value.trim(width).user_to_retain
+      when :format_panel_lines
+        Rails.logger.debug("value.class = #{value.class}")
+        Rails.logger.debug("value[0].class = #{value[0].class}")
+        value.map { |panel_line| panel_line.raw_text }.join(''.user_to_retain)
       else
-        raise "Unknown version method: #{@cvt}"
+        raise "Unknown encode method: #{@cvt}"
       end
     end
 

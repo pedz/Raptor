@@ -20,6 +20,7 @@ module Retain
       @raw_text[0] = value.chr
     end
     
+    # This was here first... so I'll keep it.
     def char(index)
       s = case @raw_text[index + 1].ord
           when 0x4f, 0x0b, 0x32; :normal_protected
@@ -29,6 +30,22 @@ module Retain
           else @raw_text[index + 1,1].retain_to_user
           end
       s
+    end
+    
+    def [](index)
+      s = case @raw_text[index].ord
+          when 0x4f, 0x0b, 0x32; :normal_protected
+          when 0x6e, 0x22; :normal_unprotected
+          when 0x50, 0x3a; :intensified_protected
+          when 0x4e, 0x2a; :intensified_unprotected
+          else @raw_text[index,1].retain_to_user
+          end
+      s
+    end
+
+    def []=(index, value)
+      value = value.user_to_retain
+      @raw_text[index, value.length] = value
     end
 
     def raw_char(index)
@@ -54,5 +71,10 @@ module Retain
     def text_line=(new_text)
       @raw_text[1,72] = new_text.ljust(72)[1,72].user_to_retain
     end
+
+    def raw_text
+      @raw_text
+    end
+    
   end
 end

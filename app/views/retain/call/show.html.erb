@@ -123,8 +123,8 @@
 <div class='even'>
   <% tz = signon_user.tz %>
 <!-- <%= "TZ=#{tz}"%> -->
-  <% all_lines.each_with_index do |line, index| %>
-  <%= show_line(line, index, tz) %>
+  <% all_lines.each_with_index do |line, index| -%>
+  <%= show_line(line, index, tz) -%>
   <% end -%>
 </div>
 <%= push_page_settings %>
@@ -203,7 +203,7 @@
   <%= psar_button %>
   <%= registration_button %>
   <% display_update_button(binding) %>
-  <%= exec_summary_button %>
+  <% exec_summary_button(binding) %>
   <% display_update_form(binding, @call) %>
   <% exec_summary_form(binding, @call) %>
 </div>

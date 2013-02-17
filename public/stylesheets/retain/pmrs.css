@@ -106,19 +106,21 @@
 }
 
 .normal-protected {
-    color: red;
-}
-
-.normal-unprotected {
-    color: pink;
+    color: orange;
 }
 
 .intensified-protected {
     color: orange;
+    font-weight: bold;
+}
+
+.normal-unprotected {
+    color: #118844;
 }
 
 .intensified-unprotected {
-    color: tan;
+    color: #118844;
+    font-weight: bold;
 }
 
 .even {
