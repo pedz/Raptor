@@ -56,7 +56,8 @@ module Retain
   class Pmat < Retain::Sdi
     set_fetch_request "PMAT"
     set_required_fields(:signon, :password, :problem, :branch, :country)
-    set_optional_fields(:addtxt_lines)
+    set_optional_fields(:addtxt_lines, :center, :format_panel_op_type,
+                        :format_panel_number, :format_panels, :panel_operand)
 
     def initialize(retain_user_connection_parameters, options = {})
       super(retain_user_connection_parameters, options)

@@ -15,7 +15,7 @@ Raptor.getSelText = function () {
 Raptor.newUrl = function(to, sub) {
     Raptor.didNewUrl = true;
     txt = Raptor.getSelText();
-    $("mailto").href = "mailto:" + to + "?subject=" + sub + "&body=" + txt
+    $("mailto").href = "mailto:" + to + "?subject=" + sub + "&body=" + txt;
 };
 
 Raptor.didNewUrl = false;
@@ -123,7 +123,17 @@ document.observe('dom:loaded', function() {
 	$$('.call-update-container').each(function (ele) {
 		ele.toggleCallUpdateForm = Raptor.callToggleCallUpdateForm.bind(ele);
 		Raptor.fixUpdateContainer(ele);
-	    });
+	});
+
+	$$('.call-fi5312-container').each(function (ele) {
+	    var div = ele.down('.call-fi5312-div');
+	    ele.toggleCallUpdateForm = Raptor.callToggleCallUpdateForm.bind(ele);
+	    div.redraw = function() {
+		$(ele).down('form').reset();
+	    };
+	    div.close = Raptor.closeDiv.bind(div);
+	    ele.hide();
+	});
 
 	Raptor.right = $('right');
 	Raptor.right_tab = $('right-tab');

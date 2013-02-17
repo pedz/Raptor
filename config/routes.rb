@@ -158,7 +158,7 @@ ActionController::Routing::Routes.draw do |map|
                          :method => :post)
   
   # Call FI 5312 map.
-  map.retain_call_fi5312('retain/call/:id',
+  map.retain_call_fi5312('retain/call/:id/fi5312',
                          :controller => 'retain/call',
                          :action => 'fi5312',
                          :method => :post)
