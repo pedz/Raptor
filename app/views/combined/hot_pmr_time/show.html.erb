@@ -52,6 +52,6 @@
       body << "Total HOT PSAR Hours: #{ot_time / 60}.#{ot_time % 60 / 6}"
       body << "Total OT Hours Billed: "
       subject = "OT for Week Starting Saturday: #{ saturday.strftime("%Y-%m-%d") }" -%>
-      <a href='mailto:ssrikant@us.ibm.com?subject=<%= subject %>&body=<%= body.join("%0A") %>'><button>Send Email</button></a>
+      <a href='mailto:?subject=<%= subject %>&body=<%= body.join("%0A") %>'><button>Send Email</button></a>
 <%-   break if @ot && @ot == 0 -%>
 <%- end -%>
