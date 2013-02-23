@@ -28,8 +28,6 @@ module Combined
 
     add_skipped_fields :hot, :business_justification, :deleted
 
-    # add_skipped_fields :opc
-    
     ##
     # words is an array of string in the order: problem, branch,
     # country.  Returns an options has with :problem, :branch, and
@@ -127,15 +125,6 @@ module Combined
       # We also need the signon and password but we get that from the
       # Logon singleton automatically.
       
-      options_hash[:group_request] = [[ :opc ]]
-      pmr = Retain::Pmr.new(retain_user_connection_parameters, options_hash)
-      begin
-        opc = pmr.opc
-        logger.debug("HEREHERE opc = #{opc}")
-      rescue Exception => e
-        logger.debug("HEREHERE exception #{e.message}")
-      end
-
       # We do the update in two steps hoping to save time and also
       # effort on Retain.  The first is to get just the time the PMR
       # was last altered.  This step is skipped if alteration_date (in

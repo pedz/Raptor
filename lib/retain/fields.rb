@@ -183,7 +183,7 @@ module Retain
       :target_queue                => [  587, :ebcdic_strip,        6 ],
       :target_center               => [  588, :ebcdic_strip,        3 ],
       :hit_limit                   => [  591, :int,                 4 ],
-      :opc                         => [  592, :ebddic,           1152 ],
+      :opc                         => [  592, :ebcdic,           1152 ],
       :profile_exceptions_message  => [  596, :ebcdic,             64 ],
       :new_excessive_call          => [  597, :ebcdic,              1 ],
       :new_excessive_problem       => [  598, :ebcdic,              1 ],
