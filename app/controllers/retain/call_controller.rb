@@ -109,10 +109,11 @@ module Retain
           if @pmr.country != '000' && @call.p_s_b == 'P'
             render(:update) { |page|
               page.replace_html(reply_span,
-                                "<span class='sdi-error>" +
+                                "<span class='sdi-error'>" +
                                 "Can not close WT PMRs" +
                                 "</span>")
               page.show reply_span
+              logger.error "Can not close WT PMRs"
             }
             return
           end
@@ -204,10 +205,11 @@ module Retain
               else
                 render(:update) { |page|
                   page.replace_html(reply_span,
-                                    "<span class='sdi-error>" +
+                                    "<span class='sdi-error'>" +
                                     "Can only requeue to and from software or hardware" +
                                     "</span>")
                   page.show reply_span
+                  logger.error "Can only requeue to and from software or hardware"
                 }
                 return
               end
@@ -395,7 +397,7 @@ module Retain
       rescue ArgumentError => e
         text = create_reply_span(e.message, :error)
         render_message(text, area)
-        logger.debug(e.backtrace.join("\n"))
+        logger.error(e.backtrace.join("\n"))
         return nil
       end
       return obj
@@ -766,6 +768,7 @@ module Retain
     
     def render_error(sdi, area, request)
       render_message(create_error_reply(sdi, request), area)
+      logger.error "render_error called: request = #{request} sdi.error_message = #{sdi.error_message}"
     end
 
     def render_message(msg, area)
