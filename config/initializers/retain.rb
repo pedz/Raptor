@@ -23,7 +23,7 @@ begin
   # BASE_PORT.  The default is to not have a file and default to not
   # tunnelled (see rescue below).
   file = Rails.root.join('config', 'saved', Socket.gethostname.sub(/\..*/, '') + '.rb')
-  Rails.logger.info("Loading #{file}")
+  Rails.logger.info("Loading #{file} - pid = #{Process.pid}, ppid = #{Process.ppid}")
   load(file)
   Rails.logger.info('load worked')
 rescue LoadError
