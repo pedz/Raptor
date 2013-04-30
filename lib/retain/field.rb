@@ -293,6 +293,8 @@ module Retain
           list = "#{list} #{queue},#{center}"
         end
         list
+      else
+        raise "Unknown encode method: #{@cvt}"
       end
     end
 
