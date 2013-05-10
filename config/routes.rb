@@ -131,13 +131,13 @@ ActionController::Routing::Routes.draw do |map|
   # Mapping between Queue and Person... Needs much work.
   map.resources :combined_queue_infos, :controller => 'retain/queue_infos'
 
-  # Never has worked but will eventually display a PMR (instead of a call)
   map.resources(:combined_pmrs,
                 :controller => 'retain/pmrs',
                 :format => 'html',
                 :member => {
                   :addtime => :post,
-                  :addtxt  => :post
+                  :addtxt  => :post,
+                  :opc => :post
                 })
 
   # "Queue Status" -- my Techjump page

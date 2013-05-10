@@ -1,0 +1,15 @@
+#!/bin/bash
+
+curl -n \
+-F 'set=D006' \
+-F 'kv[][key]=A' \
+-F 'kv[][value]=Blah' \
+-F 'kv[][key]=B' \
+-F 'kv[][value]=Blee' \
+-F 'kv[][key]=C' \
+-F 'kv[][value]=xxyyzz' \
+-F 'kv[][key]=D' \
+-F 'kv[][value]=dada' \
+-F 'kv[][key]=E' \
+-F 'kv[][value]=momma' \
+http://localhost/raptor/combined_pmrs/12345,abc,000/opc

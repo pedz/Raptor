@@ -31,82 +31,18 @@ module Retain
         format.xml { render :xml => @pmr.to_xml( :include => :text_lines ) }
       end
     end
+    
+    # POST
+    def opc
+      logger.debug("set = #{params[:set]}")
+      logger.debug("kv.length = #{params[:kv].length}")
+      params[:kv].each_with_index do |h, index|
+        logger.debug("kv[#{index}] = { key => #{h['key']}, value = #{h['value']}}")
+      end
+      render json: "banana"
+    end
 
-    private
-    
-    # GET /retain_pmrs
-    # GET /retain_pmrs.xml
-    def index
-      @retain_pmrs = RetainPmr.find(:all)
-      
-      respond_to do |format|
-        format.html # index.html.erb
-        format.xml  { render :xml => @retain_pmrs }
-      end
-    end
-    
-    # GET /retain_pmrs/new
-    # GET /retain_pmrs/new.xml
-    def new
-      @retain_pmr = RetainPmr.new
-      
-      respond_to do |format|
-        format.html # new.html.erb
-        format.xml  { render :xml => @retain_pmr }
-      end
-    end
-    
-    # GET /retain_pmrs/1/edit
-    def edit
-      @retain_pmr = RetainPmr.find(params[:id])
-    end
-    
-    # POST /retain_pmrs
-    # POST /retain_pmrs.xml
-    def create
-      @retain_pmr = RetainPmr.new(params[:retain_pmr])
-      
-      respond_to do |format|
-        if @retain_pmr.save
-          flash[:notice] = 'RetainPmr was successfully created.'
-          format.html { redirect_to(@retain_pmr) }
-          format.xml  { render :xml => @retain_pmr, :status => :created, :location => @retain_pmr }
-        else
-          format.html { render :action => "new" }
-          format.xml  { render :xml => @retain_pmr.errors, :status => :unprocessable_entity }
-        end
-      end
-    end
-    
-    # PUT /retain_pmrs/1
-    # PUT /retain_pmrs/1.xml
-    def update
-      @retain_pmr = RetainPmr.find(params[:id])
-      
-      respond_to do |format|
-        if @retain_pmr.update_attributes(params[:retain_pmr])
-          flash[:notice] = 'RetainPmr was successfully updated.'
-          format.html { redirect_to(@retain_pmr) }
-          format.xml  { head :ok }
-        else
-          format.html { render :action => "edit" }
-          format.xml  { render :xml => @retain_pmr.errors, :status => :unprocessable_entity }
-        end
-      end
-    end
-    
-    # DELETE /retain_pmrs/1
-    # DELETE /retain_pmrs/1.xml
-    def destroy
-      @retain_pmr = RetainPmr.find(params[:id])
-      @retain_pmr.destroy
-      
-      respond_to do |format|
-        format.html { redirect_to(retain_pmrs_url) }
-        format.xml  { head :ok }
-      end
-    end
-    
+    # POST
     def addtime
       options = Combined::Pmr.param_to_options(params[:id])
       options.merge!(params[:psar].symbolize_keys)
@@ -140,6 +76,7 @@ module Retain
       render(:update) { |page| page.replace_html 'add-time-reply', full_text}
     end
 
+    # POST
     def addtxt
       options = Combined::Pmr.param_to_options(params[:id])
       # logger.debug("options=#{options.inspect}")
@@ -178,6 +115,8 @@ module Retain
       end
       render(:update) { |page| page.replace_html 'addtxt-reply', "Addtxt rc = #{addtxt.rc}"}
     end
+
+    private
 
   end
 end
