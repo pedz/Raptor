@@ -34,12 +34,33 @@ module Retain
     
     # POST
     def opc
-      logger.debug("set = #{params[:set]}")
-      logger.debug("kv.length = #{params[:kv].length}")
-      params[:kv].each_with_index do |h, index|
-        logger.debug("kv[#{index}] = { key => #{h['key']}, value = #{h['value']}}")
-      end
-      render json: "banana"
+      suffix = "\x0B"
+      number = "395350"
+      pmr = Combined::Pmr.from_param!(params[:id], signon_user)
+      # logger.debug("service_request = #{pmr.service_request}")
+      # logger.debug("set = #{params[:set]}")
+      # logger.debug("comp = #{params[:comp]}")
+      # logger.debug("kv.length = #{params[:kv].length}")
+      # params[:kv].each_with_index do |h, index|
+      #   logger.debug("kv[#{index}] = { key => #{h['key']}, value = #{h['value']}}")
+      # end
+      s = pmr.service_request + params[:set] + params[:comp] + suffix
+      s += params[:kv].map do |h|
+        key = h['key']
+        value = h['value']
+        value = application_user.ldap_id if value == '__user'
+        key + value + suffix
+      end.join('')
+      s = "%-1122s" % s
+      s += number + "                        "
+      options = pmr.to_options
+      options[:opc] = s
+      pmpu = Retain::Pmpu.new(retain_user_connection_parameters, options)
+      fields = Retain::Fields.new
+      pmpu.sendit(fields)
+      rc = pmpu.rc
+      logger.debug("rc = #{rc}")
+      render json: s
     end
 
     # POST
