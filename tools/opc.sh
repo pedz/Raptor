@@ -1,21 +1,32 @@
 #!/bin/ksh
+typeset url_base="http://localhost/raptor/combined_pmrs"
 
 typeset pmr
 typeset prog=$(basename $0 )
 
 # Set to y when -n is passed on command line to not actually call curl
+# and force a few variables to the same value.  The main intent is to
+# use -n for testing purposes.
 typeset nflag=n
 
 typeset -i start_time=$( date +%s )
 typeset -i stop_time
 typeset -i duration_index
 
+# A temp file for the Component data
 typeset COMP=/tmp/Comp.$$
+
+# A temp file for the questions and answers data
 typeset QA=/tmp/QA.$$
+
+# A temp file used to store the current possible selection list.
 typeset TEMP=/tmp/TEMP.$$
+
+# Where to send interactive prompts and debug to.
 typeset TTY=/dev/tty
 
-# The call to OPC requires the question set.  This is currently preset
+# The call to OPC requires the question set.  This is currently
+# preset.  It is suppose to change based upon the component.
 typeset qset=Q006
 
 # The call to OPC requires a component.  This is set via a call to
@@ -26,13 +37,13 @@ typeset comp
 # dynamically define the components in a compond variable.  So, I'll
 # fall back to a set of single index arrays.
 
-# The "name" of the question (denoted by Q:)
+# The "name" of the question (denoted by Name:)
 typeset question_name
 
 # The code for the question (denoted by Code:)
 typeset question_code
 
-# The restriction for the question (denoted by R:)
+# The restriction for the question (denoted by Restriction:)
 typeset question_restriction
 
 # The short text for the question (denoted by Text:)
@@ -68,13 +79,18 @@ else
     interactive=no
 fi
 
-trap "rm -f ${COMP} ${QA} ${TEMP}; exit" 0
+trap "rm -f ${COMP} ${QA} ${TEMP}" 0
 
+# Do:
+#   debug hello world
+# to see hello world
 function debug
 {
     echo "$@" > "${TTY}"
 }
 
+# Use this to get prompts out to userland.  prompts are suppressed if
+# not interactive (i.e. if stdin is redirected from a file).
 function prompt
 {
     if [[ $interactive = yes ]] ; then
@@ -91,7 +107,7 @@ function cleanup_line
 }
 
 # $1 is the first level topic e.g. Networking
-# Returns the possible selections for that topic
+# Puts the possible selections for that topic into TEMP
 function sub_comps
 {
     sed -n -e "/^$1/,/^[^ ]/ {" -e '/^ /p' -e '}' "${COMP}" > "${TEMP}"
@@ -297,33 +313,33 @@ EOF
 
     # Note that we can't have single quotes in the text below
     cat <<'EOF' > ${QA}
-Q: time
+Name: time
 Code: @
-R: None
+Restriction: 0 == 1
 Function: user_time
 
-Q: user
+Name: user
 Code: #
-R: None
+Restriction: 0 == 1
 Function: user_name
 
-Q: date
+Name: date
 Code: $
-R: None
+Restriction: 0 == 1
 Function: get_date
 
-Q: 1
+Name: Q1
 Code: O
-R: None
+Restriction: 0 == 1
 Text: Outage?
 Description: Outage: a critical system partition is down/unusable, a critical application is hung/unusable, there is no access to data, performance is impacting the ability to do business, an install/RA is exceeding the maint window or a backup system/appl is down.
 Response: 
 No => N
 Yes => Y
 
-Q: 2
+Name: Q2
 Code: T
-R: Q1 == Y
+Restriction: $Q1 == N
 Text: Outage type?
 Description: Which piece/criteria of the outage definition did this PMR meet?
 Response: 
@@ -334,18 +350,18 @@ Performance impacted business => P
 Install/RA exceeded maintenance window => I
 Backup system/application down => B
 
-Q: 3
+Name: Q3
 Code: C
-R: Q1 == Y
+Restriction: $Q1 == N
 Text: Crash or hang?
 Description: Did this problem result in a crash or hang affecting a single or multiple partitions?
 Response: 
 No => N
 Yes => Y
 
-Q: 4
+Name: Q4
 Code: D
-R: Q3 == Y
+Restriction: $Q1 == N || $Q3 == N
 Text: Outage duration?
 Description: How long was the critical system partition down/unusable, the critical application hung/unusable, the lack of access to data, the performance impact, the install/RA time or the backup system/appl down?
 Response: 
@@ -359,7 +375,7 @@ Unknown => U
 EOF
 }
 
-# Parses the QA file into the questions shell variable
+# Parses the QA file into the questions_* and response_* shell array variables
 function grok_qa
 {
     typeset -i index=0
@@ -381,27 +397,27 @@ function grok_qa
 		field="${line%%:*}"
 		value="${line#*: }"
 		case $field in
-		    Q)
-			question_name[$index]=$value
+		    Name)
+			question_name[index]=$value
 			;;
 		    Code)
-			question_code[$index]=$value
+			question_code[index]=$value
 			;;
-		    R)
-			question_restriction[$index]=$value
+		    Restriction)
+			question_restriction[index]=$value
 			;;
 		    Text)
-			question_text[$index]=$value
+			question_text[index]=$value
 			;;
 		    Description)
-			question_description[$index]=$value
+			question_description[index]=$value
 			;;
 		    Function)
-			question_function[$index]=$value
+			question_function[index]=$value
 			;;
 		    Response)
-			question_response_start[$index]="${#response_code[@]}"
-			question_response_end[$index]=-1
+			question_response_start[index]="${#response_code[@]}"
+			question_response_end[index]=-1
 			mode=response
 			;;
 		    *)
@@ -412,10 +428,10 @@ function grok_qa
 
 	    response)
 		text="${line% =>*}"
-		code="${line#*=> }"
+		code="${line##*=> }"
 		response_code[${#response_code[@]}]=$code
 		response_text[${#response_text[@]}]=$text
-		question_response_end[$index]="${#response_code[@]}"
+		question_response_end[index]="${#response_code[@]}"
 		;;
 	esac
     done < "${QA}"
@@ -428,49 +444,94 @@ function ask_questions
     typeset -i response_start
     typeset -i response_end
     typeset -i response_cnt
+    typeset name
+    typeset answer
+    typeset restriction
+    typeset result
     typeset last_question="${#question_name[@]}"
     typeset -i resp
     
     while [[ $index -lt $last_question ]] ; do
-	if [[ "${question_function[$index]}x" != x ]] ; then
-	    case "${question_function[$index]}" in
-		user_time)
-		    duration_index=$index
-		    ;;
+	# default answer is empty
+	answer=''
 
-		user_name)
-		    question_answer[$index]=__user
-		    ;;
+	# See if the restriction wants this question asked.
+	restriction="${question_restriction[index]}"
+	if ! eval "[[ ${restriction} ]]" ; then
+	    # First do the special case "Functions"
+	    if [[ "${question_function[index]}x" != x ]] ; then
+		case "${question_function[index]}" in
+		    user_time)
+			duration_index=$index
+			;;
+		    
+		    user_name)
+			answer=__user
+			;;
+		    
+		    get_date)
+			# if -n is set, always set date to my birthday.
+			if [[ $nflag = n ]] ; then
+			    answer=1958-12-11
+			else
+			    answer=$( date +%Y-%m-%d )
+			fi
+			;;
+		    
+		    *)
+			echo "Unknown function ${question_function[index]}" 1>&2
+			exit 1
+			;;
+		esac
+	    else
+		# Normal interactive questions...
 
-		get_date)
-		    question_answer[$index]=$( date +%Y-%m-%d )
-		    ;;
+		prompt "\n\n\n"
 
-		*)
-		    echo "Unknown function ${question_function[$index]}" 1>&2
-		    exit 1
-		    ;;
-	    esac
-	else
-	    prompt "\n\n\n"
-	    response_start="${question_response_start[$index]}"
-	    response_end="${question_response_end[$index]}"
-	    (( response_cnt = response_end - response_start ))
-	    response_index=0
-	    while [[ $response_index -lt $response_cnt ]] ; do
-		prompt "%2d) %s\n" $(( response_index + 1 )) \
-		    "${response_text[response_start + response_index]}"
-		(( response_index++ ))
-	    done
-	    prompt "%s " "${question_text[$index]}"
-	    read resp
-	    if [[ $resp < 1 || $resp -gt $response_index ]] ; then
-		prompt "Invalid response.\n"
-		continue
+		# Figure out the range of possible responses
+		response_start="${question_response_start[index]}"
+		response_end="${question_response_end[index]}"
+		(( response_cnt = response_end - response_start ))
+		response_index=0
+
+		# Put out long description
+		prompt "%s\n" "$( echo "${question_description[index]}" | fold -s -b -w 72 )"
+
+		# Loop through possible responses
+		while [[ $response_index -lt $response_cnt ]] ; do
+		    prompt "%2d) %s\n" $(( response_index + 1 )) \
+			"${response_text[response_start + response_index]}"
+		    (( response_index++ ))
+		done
+
+		# Ask the question
+		prompt "%s " "${question_text[index]}"
+
+		# Get the reply
+		read resp
+
+		# validate reply
+		if [[ $resp < 1 || $resp -gt $response_index ]] ; then
+		    prompt "Invalid response.\n"
+		    continue
+		fi
+		
+		# calculate which response user picked
+		(( response_index = response_start + resp - 1 ))
+
+		# Set answer equal to the code
+		answer="${response_code[response_index]}"
 	    fi
-	    (( response_index = response_start + response_index - 1 ))
-	    question_answer[$index]="${response_code[$response_index]}"
 	fi
+
+	question_answer[index]="$answer"
+
+	# Set a variable with the same name as the question equal to the answer.
+	# e.g. if the question has Name: Dog, then we'll set Dog equal
+	# to the answer.  This allows the restrictions to refer to $Dog.
+	name="${question_name[index]}"
+	eval "${name}='${answer}'"
+
 	(( index = index + 1 ))
     done
 }
@@ -479,7 +540,13 @@ function stop_clock
 {
     stop_time=$( date +%s )
     (( stop_time = stop_time - start_time ))
-    question_answer[$duration_index]=$stop_time
+
+    # if -n is set, we always set the time to 42.
+    if [[ $nflag = n ]] ; then
+	question_answer[duration_index]=42
+    else
+	question_answer[duration_index]=$stop_time
+    fi
 }
 
 function send_curl
@@ -488,18 +555,22 @@ function send_curl
     typeset -i arg_index=0
     typeset -i question_index=0
     typeset -i question_end="${#question_name[@]}"
+    typeset answer
 
     args[arg_index++]='-n'
     args[arg_index++]='-d' ; args[arg_index++]="set=$qset"
     args[arg_index++]='-d' ; args[arg_index++]="comp=$comp"
     while [[ $question_index -lt $question_end ]] ; do
-	args[arg_index++]='-d'
-	args[arg_index++]="kv[][key]=${question_code[$question_index]}"
-	args[arg_index++]='-d'
-	args[arg_index++]="kv[][value]=${question_answer[$question_index]}"
+	answer="${question_answer[question_index]}"
+	if [[ "x${answer}" != "x" ]] ; then
+	    args[arg_index++]='-d'
+	    args[arg_index++]="kv[][key]=${question_code[question_index]}"
+	    args[arg_index++]='-d'
+	    args[arg_index++]="kv[][value]=$answer"
+	fi
 	(( question_index = question_index + 1 ))
     done
-    args[arg_index++]="http://localhost/raptor/combined_pmrs/${pmr}/opc"
+    args[arg_index++]="${url_base}/${pmr}/opc"
     echo curl "${args[@]}"
     if [[ $nflag = n ]] ; then
 	curl "${args[@]}"
@@ -514,6 +585,7 @@ function usage
 
 # Main
 
+# Parse the args and find the pmr #
 while getopts "n" option; do
     case $option in
 	n)
@@ -530,6 +602,7 @@ if [[ $# -ne 1 ]] ; then
     usage
 fi
 pmr=$1
+
 make_tmp_files
 grok_qa
 pick_comp
