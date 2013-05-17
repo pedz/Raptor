@@ -161,6 +161,12 @@ ActionController::Routing::Routes.draw do |map|
                          :action => 'fi5312',
                          :method => :post)
   
+  # Call OPC map.
+  map.retain_call_opc('retain/call/:id/opc',
+                         :controller => 'retain/call',
+                         :action => 'opc',
+                         :method => :post)
+  
   # Reasonably well flushed out resources
   map.resources(:combined_call,
                 :controller => 'retain/call',

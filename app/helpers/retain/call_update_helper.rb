@@ -6,14 +6,47 @@
 
 module Retain
   module CallUpdateHelper
-    def id_for(call_model, tag)
-      "#{call_model_underscore(call_model)}_#{tag.gsub(/-/, '_')}_#{call_model.to_id}"
+    def clean_tag(tag, s)
+      tag.gsub(/[-\[\]._]+/, s).gsub(/#{s}+/, s).sub(/#{s}$/, '').sub(/^#{s}/, '')
     end
 
+    def attr_string(attr, value)
+      %Q{#{attr}="#{value}"}
+    end
+
+    def id_for(call_model, tag)
+      "#{call_model_underscore(call_model)}_#{clean_tag(tag, '_')}_#{call_model.to_id}"
+    end
+
+    def id_string(call_model, tag)
+      attr_string('id', id_for(call_model, tag))
+    end
+
+    def class_for(call_model, tag)
+      "#{call_model_dash(call_model)}-#{clean_tag(tag, '-')}"
+    end
+
+    def class_string(call_model, tag)
+      attr_string('class', class_for(call_model, tag))
+    end
+
+    def data_string(name, value)
+      attr_string("data-#{name}", value)
+    end
+
+    def name_for(call_model, tag)
+      temp = tag.gsub(/\[[0-9]+\]/, '[]')
+      "#{call_model.class.to_s.underscore.gsub('/', '_')}#{temp}"
+    end
+
+    def name_string(call_model, tag)
+      attr_string('name', name_for(call_model, tag))
+    end
+    
     def html_tag(call_model, tag, options = { })
       options.merge({
         :id => id_for(call_model, tag),
-        :class => "#{call_model_dash(call_model)}-#{tag.gsub(/_/, '-')}"
+        :class => class_for(call_model, tag)
       })
     end
 
@@ -71,14 +104,57 @@ module Retain
     end
 
     def do_text_field(base, field, size, call_model, options = {})
-      base.text_field field, html_tag(call_model, field.to_s,
-                                      options.merge(:size => size, :maxlength => size))
+      base.text_field(field, html_tag(call_model, field.to_s,
+                                      options.merge(:size => size, :maxlength => size)))
     end
 
-    def do_select_field(psar, field, collection, value_method, text_method, call_model)
-      psar.collection_select(field, collection, value_method, text_method,
-                        { :prompt => false },
-                         html_tag(call_model, field.to_s))
+    def format_code_field(index, call_opc)
+      result = ""
+      kv = call_opc.kv[index]
+      name = data_string('name', kv[:name])
+      key_field = "[kv][#{index}][key]"
+      value_field = "[kv][#{index}][value]"
+      result += xx_hidden_field(key_field, kv[:code], call_opc, name)
+      if kv.has_key?(:function)
+        function = data_string('function', kv[:function])
+        result += xx_hidden_field(value_field, kv[:value], call_opc, function)
+      else
+        restriction = data_string('restriction', kv[:restriction])
+        result += "<p>#{kv[:description]}</p>\n"
+        result += do_label(kv[:text], clean_tag(value_field, '-'), call_opc)
+        options = kv[:response].map { |h| [ h[:text], h[:value] ] }
+        options.unshift(['Pick One', ''])
+        c = class_string(call_opc, value_field)
+        i = id_string(call_opc, value_field)
+        n = name_string(call_opc, value_field)
+        result += "<select #{i} #{c} #{n} #{restriction}>"
+        result += options_for_select(options)
+        result += "</select>"
+      end
+      result
+    end
+
+    def xx_hidden_field(name, value, call_model, data_elements = '')
+      c = class_string(call_model, name)
+      i = id_string(call_model, name)
+      n = name_string(call_model, name)
+      "<input #{c} #{i} #{n} type='hidden' #{data_elements} value='#{value}'/>\n"
+    end
+
+    def do_hidden_field(base, field, call_model, options = {})
+      base.hidden_field(field, html_tag(call_model, field.to_s, options))
+    end
+
+    def do_select_field(base, field, collection, value_method, text_method, call_model)
+      base.collection_select(field, collection, value_method, text_method,
+                             { :prompt => false },
+                             html_tag(call_model, field.to_s))
+    end
+
+    def do_grouped_select_field(base, field, collection, group_method, group_label_method, value_method, text_method, call_model)
+      base.grouped_collection_select(field, collection, group_method, group_label_method, value_method, text_method,
+                                     { :prompt => 'Pick One' },
+                                     html_tag(call_model, field.to_s))
     end
 
     def do_label(label, for_field, call_model)

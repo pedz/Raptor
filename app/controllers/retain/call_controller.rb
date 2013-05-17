@@ -62,14 +62,6 @@ module Retain
 
     # Update the call
     def update
-      # logger.debug("protect_against_forgery? = #{protect_against_forgery?}")
-      # logger.debug("!protect_against_forgery? = #{!protect_against_forgery?}")
-      # logger.debug("request.get? = #{request.get?}")
-      # logger.debug("form_authenticity_token = #{form_authenticity_token}")
-      # logger.debug("form_authenticity_param = #{form_authenticity_param}")
-      # logger.debug("request.headers['X-CSRF-Token'] = #{request.headers['X-CSRF-Token']}")
-      # logger.debug("request.xhr? = #{request.xhr?}")
-
       @call = Combined::Call.from_param!(params[:id], signon_user)
       @queue = @call.queue
       call_options = @call.to_options
@@ -668,10 +660,9 @@ module Retain
       if addtxt.rc != 0
         do_fade &= (addtxt.error_class != :error)
         text.push(sdi_error_mess(addtxt, "Addtxt"))
-        return
+      else
+        text.push(mess("Form Insert Completed"))
       end
-
-      text.push(mess("Form Insert Completed"))
       @pmr.mark_all_as_dirty
 
       # Respond back to the user.
@@ -680,6 +671,59 @@ module Retain
           page.visual_effect(:fade, reply_span, :duration => 5.0)
           page[fi5312_div].redraw
           page[fi5312_div].close
+        end
+      end
+    end
+
+    def opc
+      call = Combined::Call.from_param!(params[:id], signon_user)
+      queue = call.queue
+      call_options = call.to_options
+      pmr = call.pmr
+      pmr_options = pmr.to_options
+      opc_options = params[:retain_call_opc]
+      text = []
+      do_fade = true
+
+      # ids for the div and reply span
+      opc_div = "call_opc_div_#{call.to_id}"
+      reply_span = "call_opc_reply_span_#{call.to_id}"
+
+      logger.debug("service_request = #{pmr.service_request}")
+      logger.debug("set = #{opc_options[:qset]}")
+      logger.debug("comp = #{opc_options[:comp]}")
+      logger.debug("kv.length = #{opc_options[:kv].length}")
+      opc_options[:kv].each_with_index do |h, index|
+        logger.debug("kv[#{index}] = { key => #{h['key']}, value = #{h['value']}}")
+      end
+      suffix = "\x0B"
+      number = "395350"
+      s = pmr.service_request + opc_options[:qset] + opc_options[:comp] + suffix
+      s += opc_options[:kv].map do |h|
+        next if h['value'] == ''
+        key = h['key']
+        value = h['value']
+        value = application_user.ldap_id if value == '__user'
+        key + value + suffix
+      end.join('')
+      s = "%-1122s" % s
+      s += number + "                        "
+      pmr_options[:opc] = s
+      pmpu = Retain::Pmpu.new(retain_user_connection_parameters, pmr_options)
+      fields = Retain::Fields.new
+      pmpu.sendit(fields)
+      if pmpu.rc != 0
+        do_fade &= (pmpu.error_class != :error)
+        text.push(sdi_error_mess(pmpu, "OPC"))
+      else
+        text.push(mess("OPC Completed"))
+      end
+      pmr.mark_all_as_dirty
+      render_message(reply_span, text) do |page|
+        if do_fade
+          page.visual_effect(:fade, reply_span, :duration => 5.0)
+          page[opc_div].redraw
+          page[opc_div].close
         end
       end
     end
