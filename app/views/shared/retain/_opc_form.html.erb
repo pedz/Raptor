@@ -1,0 +1,21 @@
+<%# -*- coding: utf-8 -*- -%>
+<%# Copyright 2013 Ease Software, Inc. and Perry Smith -%>
+<%# All Rights Reserved -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<%  content_tag :div, html_tag(call_opc, 'div', :style => 'border:solid 1px;') do -%>
+<%=   content_tag :span, "", html_tag(call_opc, 'reply-span') %>
+<%-   submit_id = id_for(call_opc, "submit") -%>
+<%-   remote_form_for(call_opc,
+     		      :loading => "Raptor.disableSubmit($('#{submit_id}'));",
+     		      :complete => "Raptor.enableSubmit($('#{submit_id}'));",
+     		      :html => html_tag(call_opc, "form")) do |opc| -%>
+<%=     do_hidden_field(opc, :qset, call_opc) -%>
+<%=     do_label("Affected Component", "comp", call_opc) -%>
+<%=     do_grouped_select_field(opc, :comp, call_opc.component_groups, :children,
+	                        :group_text, :value, :text, call_opc) %>
+<%-     call_opc.kv.length.times do |index| -%>
+<%=       format_code_field(index, call_opc) %>
+<%-     end -%>
+<%=     opc.submit "Submit", html_tag(call_opc, "submit") -%>
+<%    end -%>
+<%  end -%>
