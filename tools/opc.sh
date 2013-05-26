@@ -340,7 +340,7 @@ Yes => Y
 Name: Q2
 Code: T
 Restriction: $Q1 == N
-Text: Outage type?
+Text: Outage Type?
 Description: Which piece/criteria of the outage definition did this PMR meet?
 Response: 
 Critical system partition down => S
