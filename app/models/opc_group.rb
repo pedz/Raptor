@@ -9,4 +9,5 @@ class OpcGroup < ActiveRecord::Base
   set_table_name "c_opc_group"
 
   has_many :components, :foreign_key => :opc_group_id, :primary_key => :opc_group_id
+  has_many :target_components, :foreign_key => :opc_group_id, :primary_key => :opc_group_id
 end
