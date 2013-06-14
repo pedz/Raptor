@@ -44,5 +44,13 @@ module Retain
                                          )
       @component.send(:component_name)
     end
+
+    # this is not a super logical place to put this.
+    # This get request returns the complicated OPC data starting at
+    # the requested component and working down.
+    def opc
+      @component = ::Component.find_by_retain_comp_id(params[:id])
+      render :json => @component.to_json(:except => :ar_objects)
+    end
   end
 end
