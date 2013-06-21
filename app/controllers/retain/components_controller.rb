@@ -50,7 +50,61 @@ module Retain
     # the requested component and working down.
     def opc
       @component = ::Component.find_by_retain_comp_id(params[:id])
-      render :json => @component.to_json(:except => :ar_objects)
+      render :json => @component.to_json(:include => {
+                                           :opc_group => {},
+                                           :question_set => {
+                                             :include => {
+                                               :question_set_versions => {
+                                                 :include => {
+                                                   :base_version => {
+                                                     :root_question => {
+                                                       :include => {
+                                                         :opc_information => {
+                                                           :include => {
+                                                             :children => {
+                                                               :include => {
+                                                                 :question => {},
+                                                                 :opc_dependency => {},
+                                                                 :children => {
+                                                                   :include => {
+                                                                     :answer => {}
+                                                                   }
+                                                                 }
+                                                               }
+                                                             }
+                                                           }
+                                                         }
+                                                       }
+                                                     }
+                                                   },
+                                                   :root_question => {
+                                                     :include => {
+                                                       :opc_information => {
+                                                         :include => {
+                                                           :children => {
+                                                             :include => {
+                                                               :question => {},
+                                                               :opc_dependency => {},
+                                                               :children => {
+                                                                 :include => {
+                                                                   :answer => {}
+                                                                 }
+                                                               }
+                                                             }
+                                                           }
+                                                         }
+                                                       }
+                                                     }
+                                                   }
+                                                 }
+                                               }
+                                             }
+                                           },
+                                           :component_versions => {},
+                                           :target_components => {},
+                                           :overwritten_descriptions => {},
+                                           :ignore_base_items => {}
+                                         })
     end
   end
 end

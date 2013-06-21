@@ -120,10 +120,6 @@ Raptor.closeLeft = function () {
     $('left').hide();
 };
 
-Raptor.opc_state_machine = function (event) {
-    console.log('hi');
-};
-
 document.observe('dom:loaded', function() {
 	$$('.call-update-container').each(function (ele) {
 		ele.toggleCallUpdateForm = Raptor.callToggleCallUpdateForm.bind(ele);
@@ -142,32 +138,18 @@ document.observe('dom:loaded', function() {
 
 	$$('.call-opc-container').each(function (ele) {
 	    var div = ele.down('.call-opc-div');
-	    ele.toggleCallUpdateForm = Raptor.callToggleCallUpdateForm.bind(ele);
+	    ele.toggleCallUpdateForm = function () {
+		var path = location.pathname;
+
+		
+		new Ajax.request();
+		Raptor.callToggleCallUpdateForm.bind(ele);
+	    };
 	    div.redraw = function() {
 		$(ele).down('form').reset();
 	    };
 	    div.close = Raptor.closeDiv.bind(div);
 	    ele.hide();
-	});
-
-	// Disable all the select input elements in the OPC form
-	$$('.call-opc-container select').each(function(ele) {
-	    ele.disable();
-	});
-	    
-	// Disable the submit input element in the OPC form
-	$$('.call-opc-container input[type=submit]').each(function(ele) {
-	    ele.disable();
-	});
-
-	// Enable the component select element
-	$$('.call-opc-comp').each(function(ele) {
-	    ele.enable();
-	});
-	    
-	// Hook up a handler for when the OPC form changes.
-	$$('.call-opc-container form').each(function(ele) {
-	    ele.observe('change', Raptor.opc_state_machine.bindAsEventListener(ele));
 	});
 
 	Raptor.right = $('right');
