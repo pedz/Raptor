@@ -19,5 +19,5 @@ class Component < ActiveRecord::Base
 
   # Logically I believe this is via question_set
   has_many :overwritten_descriptions, :foreign_key => :question_set_id, :primary_key => :question_set_id
-  has_many :ignore_base_items, :primary_key => :question_set_id, :primary_key => :question_set_id
+  has_many :ignore_base_items, :foreign_key => :question_set_id, :primary_key => :question_set_id
 end
