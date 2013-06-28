@@ -57,17 +57,19 @@ module Retain
                                                :question_set_versions => {
                                                  :include => {
                                                    :base_version => {
-                                                     :root_question => {
-                                                       :include => {
-                                                         :opc_information => {
-                                                           :include => {
-                                                             :children => {
-                                                               :include => {
-                                                                 :question => {},
-                                                                 :opc_dependency => {},
-                                                                 :children => {
-                                                                   :include => {
-                                                                     :answer => {}
+                                                     :include => {
+                                                       :root_question => {
+                                                         :include => {
+                                                           :opc_information => {
+                                                             :include => {
+                                                               :children => {
+                                                                 :include => {
+                                                                   :question => {},
+                                                                   :opc_dependency => {},
+                                                                   :children => {
+                                                                     :include => {
+                                                                       :answer => {}
+                                                                     }
                                                                    }
                                                                  }
                                                                }
