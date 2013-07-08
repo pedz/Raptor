@@ -120,49 +120,6 @@ Raptor.closeLeft = function () {
     $('left').hide();
 };
 
-Raptor.opc_receive = function (response) {
-    Raptor.opc = response.responseJSON;
-    /*
-     * This probably should be moved out to its own file because its
-     * going to become huge.
-     */
-    /*
-     * The top item is "component".  Lets dig inside of that and make
-     * sure that the retain component id matches what we expect
-     */
-    var component = Raptor.opc.component;
-    /*
-     * Yes. it does.  Now we need to find the ignore_base_itmes which
-     * is an array of nodes.
-     */
-    var ignore_base_items = component.ignore_base_items;
-
-    /*
-     * We now need the question set versions which are active --
-     * should be only 1.
-     */
-    var question_set_version = component.question_set.question_set_versions.
-	    filter(function(ele, index, arr) {
-		return ele.status == "A";
-	    })[0];
-
-    /*
-     * We find the active root quesetions by filtering the root
-     * questions with the ignore_base_items list
-     */
-    var active_base_questions = question_set_version.base_version.root_question.
-	    opc_information.children.filter(function(ele, i1, a1) {
-		return ! ignore_base_items.some(function(base, i2, a2) {
-		    return ele.opc_information_id == base.opc_information_id;
-		});
-	    });
-    console.log(active_base_questions);
-};
-
-Raptor.opc_error = function () {
-    console.log('opc fetch failed');
-};
-
 document.observe('dom:loaded', function() {
 	$$('.call-update-container').each(function (ele) {
 		ele.toggleCallUpdateForm = Raptor.callToggleCallUpdateForm.bind(ele);
@@ -179,24 +136,7 @@ document.observe('dom:loaded', function() {
 	    ele.hide();
 	});
 
-	$$('.call-opc-container').each(function (ele) {
-	    var div = ele.down('.call-opc-div');
-	    ele.toggleCallUpdateForm = function () {
-		var component = $('comp-spec').innerHTML.trim();
-		var path = "/raptor/combined_components/" + component + "/opc";
-		new Ajax.Request(path, {
-		    onSuccess: Raptor.opc_receive,
-		    onFailure: Raptor.opc_error,
-		    method: 'get'
-		});
-		Raptor.callToggleCallUpdateForm.apply(ele);
-	    };
-	    div.redraw = function() {
-		$(ele).down('form').reset();
-	    };
-	    div.close = Raptor.closeDiv.bind(div);
-	    ele.hide();
-	});
+	$$('.call-opc-container').each(Raptor.opc_init);
 
 	Raptor.right = $('right');
 	Raptor.right_tab = $('right-tab');

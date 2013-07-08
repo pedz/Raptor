@@ -9,6 +9,5 @@
      		      :loading => "Raptor.disableSubmit($('#{submit_id}'));",
      		      :complete => "Raptor.enableSubmit($('#{submit_id}'));",
      		      :html => html_tag(call_opc, "form")) do |opc| -%>
-<%=     do_hidden_field(opc, :qset, call_opc) -%>
 <%    end -%>
 <%  end -%>
