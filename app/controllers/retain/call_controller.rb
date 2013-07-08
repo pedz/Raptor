@@ -691,34 +691,34 @@ module Retain
 
       logger.debug("service_request = #{pmr.service_request}")
       logger.debug("set = #{opc_options[:qset]}")
-      logger.debug("comp = #{opc_options[:comp]}")
-      logger.debug("kv.length = #{opc_options[:kv].length}")
-      opc_options[:kv].each_with_index do |h, index|
-        logger.debug("kv[#{index}] = { key => #{h['key']}, value = #{h['value']}}")
-      end
-      suffix = "\x0B"
-      number = "395350"
-      s = pmr.service_request + opc_options[:qset] + opc_options[:comp] + suffix
-      s += opc_options[:kv].map do |h|
-        next if h['value'] == ''
-        key = h['key']
-        value = h['value']
-        value = application_user.ldap_id if value == '__user'
-        key + value + suffix
-      end.join('')
-      s = "%-1122s" % s
-      s += number + "                        "
-      pmr_options[:opc] = s
-      pmpu = Retain::Pmpu.new(retain_user_connection_parameters, pmr_options)
-      fields = Retain::Fields.new
-      pmpu.sendit(fields)
-      if pmpu.rc != 0
-        do_fade &= (pmpu.error_class != :error)
-        text.push(sdi_error_mess(pmpu, "OPC"))
-      else
-        text.push(mess("OPC Completed"))
-      end
-      pmr.mark_all_as_dirty
+      text.push(mess("set=#{opc_options[:qset]}"))
+      # logger.debug("kv.length = #{opc_options[:kv].length}")
+      # opc_options[:kv].each_with_index do |h, index|
+      #   logger.debug("kv[#{index}] = { key => #{h['key']}, value = #{h['value']}}")
+      # end
+      # suffix = "\x0B"
+      # number = "395350"
+      # s = pmr.service_request + opc_options[:qset] + opc_options[:comp] + suffix
+      # s += opc_options[:kv].map do |h|
+      #   next if h['value'] == ''
+      #   key = h['key']
+      #   value = h['value']
+      #   value = application_user.ldap_id if value == '__user'
+      #   key + value + suffix
+      # end.join('')
+      # s = "%-1122s" % s
+      # s += number + "                        "
+      # pmr_options[:opc] = s
+      # pmpu = Retain::Pmpu.new(retain_user_connection_parameters, pmr_options)
+      # fields = Retain::Fields.new
+      # pmpu.sendit(fields)
+      # if pmpu.rc != 0
+      #   do_fade &= (pmpu.error_class != :error)
+      #   text.push(sdi_error_mess(pmpu, "OPC"))
+      # else
+      #   text.push(mess("OPC Completed"))
+      # end
+      # pmr.mark_all_as_dirty
       render_message(reply_span, text) do |page|
         if do_fade
           page.visual_effect(:fade, reply_span, :duration => 5.0)
