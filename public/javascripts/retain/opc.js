@@ -55,7 +55,6 @@ Raptor.opc_receive = function (response) {
 	type: 'submit',
 	value: 'Submit'
     });
-    this.opc_form.insert({ bottom: this.opc_form.my_submit });
 
     /*
      * We find the active root quesetions by filtering the root
@@ -68,7 +67,51 @@ Raptor.opc_receive = function (response) {
 		});
 	    });
 
-    console.log(active_base_questions);
+    // console.log(active_base_questions);
+
+    var component_select = new Element('select');
+
+    /*
+     * First we need to find the active components
+     */
+    var target_components = component.target_components.filter(function(ele, index, arr) {
+	return ele.status == "A";
+    }).sort(function(left, right) {
+	return left.sequence - right.sequence;
+    });
+
+    // console.log(target_components);
+
+    /*
+     * Now, find the top level components
+     */
+    var top_target_components = target_components.filter(function(ele, index, arr) {
+	return ele.parent_id == null;
+    });
+    // console.log(top_target_components);
+
+    /*
+     * Loop through top level components.  Each of these becomes an
+     * optgroup *and* the first option within the group.
+     */
+    top_target_components.forEach(function(top, index, arr) {
+	var optGroup = new Element('optgroup', {label: top.display_text});
+	optGroup.insert({
+	    bottom: new Element('option', { label: top.code }).update(top.display_text)
+	});
+	target_components.forEach(function(child, child_index, child_arr) {
+	    if (child.parent_id != top.target_component_id)
+		return;
+	    optGroup.insert({
+		bottom: new Element('option', { label: child.code }).update(child.display_text)
+	    });
+	});
+	component_select.insert({ bottom: optGroup });
+    });
+
+    this.opc_form.insert({ bottom: component_select });
+
+    this.opc_form.insert({ bottom: this.opc_form.my_submit });
 };
 
 Raptor.opc_error = function () {
@@ -84,13 +127,16 @@ Raptor.opc_init = function (ele) {
     ele.reply_span = div.down('.call-opc-reply-span');
     ele.opc_form = div.down('form');
     ele.toggleCallUpdateForm = function () {
-	var component = $('comp-spec').innerHTML.trim();
-	var path = "/raptor/combined_components/" + component + "/opc";
-	new Ajax.Request(path, {
-	    onSuccess: Raptor.opc_receive.bindAsEventListener(ele),
-	    onFailure: Raptor.opc_error.bindAsEventListener(ele),
-	    method: 'get'
-	});
+	if (typeof ele.setup == "undefined") {
+	    ele.setup = 1;
+	    var component = $('comp-spec').innerHTML.trim();
+	    var path = "/raptor/combined_components/" + component + "/opc";
+	    new Ajax.Request(path, {
+		onSuccess: Raptor.opc_receive.bindAsEventListener(ele),
+		onFailure: Raptor.opc_error.bindAsEventListener(ele),
+		method: 'get'
+	    });
+	}
 	Raptor.callToggleCallUpdateForm.apply(ele);
     };
     div.redraw = function() {
