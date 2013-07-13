@@ -684,6 +684,7 @@ module Retain
       opc_options = params[:retain_call_opc]
       text = []
       do_fade = true
+      base_results = "x" * 46   # a string of 46 x's
 
       # ids for the div and reply span
       opc_div = "call_opc_div_#{call.to_id}"
@@ -691,23 +692,79 @@ module Retain
 
       logger.debug("service_request = #{pmr.service_request}")
       logger.debug("set = #{opc_options[:qset]}")
-      text.push(mess("set=#{opc_options[:qset]}"))
-      # logger.debug("kv.length = #{opc_options[:kv].length}")
-      # opc_options[:kv].each_with_index do |h, index|
-      #   logger.debug("kv[#{index}] = { key => #{h['key']}, value = #{h['value']}}")
-      # end
-      # suffix = "\x0B"
-      # number = "395350"
-      # s = pmr.service_request + opc_options[:qset] + opc_options[:comp] + suffix
-      # s += opc_options[:kv].map do |h|
-      #   next if h['value'] == ''
-      #   key = h['key']
-      #   value = h['value']
-      #   value = application_user.ldap_id if value == '__user'
-      #   key + value + suffix
-      # end.join('')
-      # s = "%-1122s" % s
-      # s += number + "                        "
+      # text.push(mess("set=#{opc_options[:qset]}"))
+      logger.debug("kv.length = #{opc_options[:kv].length}")
+      opc_options[:kv].each_with_index do |h, index|
+        # text.push(mess("kv[#{index}][key]=#{h['key']}"))
+        # text.push(mess("kv[#{index}][encode]=#{h['encode']}"))
+        # text.push(mess("kv[#{index}][type]=#{h['type']}"))
+        # text.push(mess("kv[#{index}][value]=#{h['value']}"))
+        logger.debug("kv[#{index}] = { key => #{h['key']}, encode = #{h['encode']}, type = #{h['type']}, value = #{h['value']}}")
+      end
+      suffix = "\x0B"
+      opc_group_id = opc_options[:opc_group_id]
+      start = DateTime.strptime(opc_options[:start], "%FT%H:%M:%S.%L%Z")
+
+      # If the question type is 'T', the set of answers is the target
+      # components.
+      #
+      # If the question code is blank, it is part of the first field.
+      # The first field starts at character 15 and is 46 x's with the
+      # answers to the base questions laid over the x's starting at
+      # column "encoding sequence" * 3 for 3 characters -- except (it
+      # seems) if the question type is T in which case, it consumes 4
+      # characters left justified and space filled.
+      #
+      # The fields end with a 0x0B character.
+      #
+      # The opc_group_id is added in with an appropriate white space
+      # (the left most digit is in column 1122 and the entire field is
+      # 1152 characters long.
+      #
+      optional_questions = opc_options[:kv].map do |h|
+        key = h['key']
+        value = h['value']
+        encode = h['encode'].to_i
+        type = h['type']
+        
+        # disabled question
+        next if value == '' || value.nil?
+        logger.debug "value = #{value.inspect}"
+
+        # base question
+        if key == ''
+          if type == 'T'
+            value = '%-4s' % value
+          end
+          logger.debug "value = #{value.inspect}, length = #{value.length}"
+          base_results[(encode * 3), value.length] = value
+          next
+        end
+        
+        if encode < 0
+          case value
+          when 'user_time'
+            value = (Time.now - start.to_time).to_i.to_s
+
+          when 'user_name'
+            value = application_user.ldap_id
+
+          when 'get_date'
+            value = start.strftime("%F")
+
+          end
+        end
+        key + value + suffix
+      end.join('')
+      s = ( pmr.service_request +
+            opc_options[:qset] +
+            base_results + suffix +
+            optional_questions )
+      s = "%-1122s" % s
+      s += "%-30s" % opc_group_id
+      logger.debug "s = '#{s}'"
+      text.push(mess(s))
+
       # pmr_options[:opc] = s
       # pmpu = Retain::Pmpu.new(retain_user_connection_parameters, pmr_options)
       # fields = Retain::Fields.new
