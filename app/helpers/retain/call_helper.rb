@@ -118,6 +118,22 @@ module Retain
       end
     end
 
+    def opc_button(binding)
+      span binding, :class => 'call-opc-span' do |binding|
+        concat(button("OPC", "$(\"call-opc-div\").toggleCallUpdateForm();"))
+      end
+    end
+
+    def opc_form(binding, call)
+      div(binding,
+           :id => 'call-opc-div',
+           :class => 'call-opc-container') do |binding|
+        call_opc = CallOpc.new(call)
+        concat(render(:partial => "shared/retain/opc_form",
+                      :locals => { :call_opc => call_opc }))
+      end
+    end
+
     def display_pmr_owner(binding, call)
       td binding, :class => "owner" do |binding|
         span binding, :class => "field-header" do |binding|

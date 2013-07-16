@@ -12,26 +12,26 @@
                       :complete => "Raptor.enableSubmit($('#{submit_id}'));",
                       :html => html_tag(call_update, "form")) do |cu| -%>
 <%=     cu.check_box :update_pmr, html_tag(call_update, "update-pmr") -%><%=
-        do_label "Update PMR", "update-pmr", call_update %>
+        do_label("Update PMR", "update-pmr", call_update) -%>
 <%      content_tag :span, html_tag(call_update, 'action-span') do %>
 <%=       cu.radio_button :update_type, "addtxt", html_tag(call_update, "addtxt-radio") -%><%=
-          do_label "Add Text Only", "addtxt-radio", call_update %>
+          do_label("Add Text Only", "addtxt-radio", call_update) -%>
 <%=       cu.radio_button :update_type, "requeue", html_tag(call_update, "requeue-radio") -%><%=
-          do_label "Requeue", "requeue-radio", call_update %>
+          do_label("Requeue", "requeue-radio", call_update) -%>
 <%=       cu.radio_button :update_type, "dup", html_tag(call_update, "dup-radio") -%><%=
-          do_label "Dup", "dup-radio", call_update %>
+          do_label("Dup", "dup-radio", call_update) -%>
 <%=       cu.radio_button :update_type, "close", html_tag(call_update, "close-radio") -%><%=
-          do_label "Close", "close-radio", call_update %>
+          do_label("Close", "close-radio", call_update) -%>
 <%      end %>
 <%=     tag("br") %>
 <%=     send_mail_button(call_update) %>
 <%      content_tag :span, html_tag(call_update, 'ct-span') do -%>
-          <%= do_label "CT", "do-ct", call_update %><%=
+          <%= do_label("CT", "do-ct", call_update) -%><%=
               cu.check_box :do_ct, html_tag(call_update, "do-ct") %>
 <%      end -%>
 <%      content_tag :span, html_tag(call_update, 'ca-span') do -%>
 <%        if call_update.call.pmr.special_application == "E" && call_update.call.p_s_b == "P" -%>
-            <%= do_label "Electronic Requeue", "do-ca", call_update %><%=
+            <%= do_label("Electronic Requeue", "do-ca", call_update) -%><%=
                 cu.check_box :do_ca, html_tag(call_update, "do-ca") %>
 <%        end -%>
 <%      end -%>
@@ -69,14 +69,14 @@
 		Retain::ServiceActionCauseTuple.find(:all), :id,
 		:description, call_update) %>
 	    <% content_tag :span, html_tag(call_update, 'apar-number-span') do -%>
-	      <%= do_label "APAR:", "psar-apar-number", call_update %>
+	      <%= do_label("APAR:", "psar-apar-number", call_update) -%>
 	      <%= do_text_field psar, :psar_apar_number, 7, call_update %>
 	    <% end -%>
 <%=         tag("br") %>
 <%=         do_select_field(psar, :psar_solution_code,
 	        Retain::SolutionCode.find(:all), :psar_solution_code,
 	        :description, call_update) %>
-<%=         do_label "Impact:", "psar_impact", call_update %>
+<%=         do_label("Impact:", "psar_impact", call_update) -%>
 <%=         do_text_field psar, :psar_impact, 1, call_update %>
 <%=         tag("br") %>
             Time <span style='text-decoration: line-through'>wasted</span> spent

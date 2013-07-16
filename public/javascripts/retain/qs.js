@@ -58,7 +58,8 @@ Raptor.qsToggleCallUpdateForm = function() {
 	    var that = effect.element;
 	    if (that.visible()) {
 		var update_box = that.select('.call-update-update-pmr')[0];
-		update_box.redraw();
+		if (update_box)
+		    update_box.redraw();
 		that.ancestors().each(function (ancestor) {
 		    if (ancestor.hasClassName('pmr-row')) {
 			ancestor.updateFormShow();

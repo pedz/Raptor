@@ -131,23 +131,28 @@ ActionController::Routing::Routes.draw do |map|
   # Mapping between Queue and Person... Needs much work.
   map.resources :combined_queue_infos, :controller => 'retain/queue_infos'
 
-  # Never has worked but will eventually display a PMR (instead of a call)
   map.resources(:combined_pmrs,
                 :controller => 'retain/pmrs',
                 :format => 'html',
                 :member => {
                   :addtime => :post,
-                  :addtxt  => :post
+                  :addtxt  => :post,
+                  :opc => :post
                 })
 
   # "Queue Status" -- my Techjump page
   map.resources(:combined_qs,         :controller => 'retain/qs')
   map.resources(:combined_customers,  :controller => 'retain/customers')
   map.resources(:combined_centers,    :controller => 'retain/centers')
-  map.resources(:combined_components, :controller => 'retain/components')
   map.resources(:combined_apars,      :controller => 'retain/apars')
   map.resources(:combined_queues,     :controller => 'combined/queues')
   
+  # Component and OPC
+  map.resources(:combined_components,
+                :controller => 'retain/components',
+                :member => {
+                  :opc => :get
+                })
 
   # Call Update map.
   map.retain_call_update('retain/call/:id',
@@ -159,6 +164,12 @@ ActionController::Routing::Routes.draw do |map|
   map.retain_call_fi5312('retain/call/:id/fi5312',
                          :controller => 'retain/call',
                          :action => 'fi5312',
+                         :method => :post)
+  
+  # Call OPC map.
+  map.retain_call_opc('retain/call/:id/opc',
+                         :controller => 'retain/call',
+                         :action => 'opc',
                          :method => :post)
   
   # Reasonably well flushed out resources

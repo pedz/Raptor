@@ -32,7 +32,8 @@ Raptor.callToggleCallUpdateForm = function() {
 	    var that = effect.element;
 	    if (that.visible()) {
 		var update_box = that.select('.call-update-update-pmr')[0];
-		update_box.redraw();
+		if (update_box)
+		    update_box.redraw();
 	    }
 	    Raptor.recalcDimensions();
 	}
@@ -135,6 +136,8 @@ document.observe('dom:loaded', function() {
 	    ele.hide();
 	});
 
+	$$('.call-opc-container').each(Raptor.opc_init);
+
 	Raptor.right = $('right');
 	Raptor.right_tab = $('right-tab');
 	Raptor.right_width = parseInt(window.getComputedStyle(Raptor.right, null).width);
@@ -174,8 +177,8 @@ document.observe('dom:loaded', function() {
 		ele.hide();
 		ele.observe('click', function (event) {
 			if (event.element().readAttribute('href') || Raptor.didNewUrl) {
-			    Raptor.didNewUrl = false
-				} else {
+			    Raptor.didNewUrl = false;
+			} else {
 			    event.stop();
 			    ele.hide();
 			    Raptor.recalcDimensions();
@@ -195,20 +198,6 @@ document.observe('dom:loaded', function() {
 			Raptor.recalcDimensions();
 		    }.bindAsEventListener(ele));
 	    });
-
-	// The elements of class inplace-edit need to be set up.  This may
-	// not be complete and working yet but preserves the previous code
-	// for now.
-	// $$('.inplace-edit').each(function (ele) {
-	//     var url = ele.readAttribute('href');
-	//     var v = ele.readAttribute('value');
-	//     var ajaxOptions = { method: 'post' };
-	//     var options = {
-	//         callback: function(form, value) { return v + '=' + escape(value) },
-	//         ajaxOptions: ajaxOptions
-	//     };
-	//     new Ajax.InPlaceEditor(ele, url, options);
-	// });
 
 	$('left-tab').observe('mouseover', Raptor.leftDelayStart.bindAsEventListener($('left')));
 	$('left-tab').observe('mouseout', Raptor.leftDelayStop.bindAsEventListener($('left')));
