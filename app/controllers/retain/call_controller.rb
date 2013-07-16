@@ -763,19 +763,19 @@ module Retain
       s = "%-1122s" % s
       s += "%-30s" % opc_group_id
       logger.debug "s = '#{s}'"
-      text.push(mess(s))
+      # text.push(mess(s))
 
-      # pmr_options[:opc] = s
-      # pmpu = Retain::Pmpu.new(retain_user_connection_parameters, pmr_options)
-      # fields = Retain::Fields.new
-      # pmpu.sendit(fields)
-      # if pmpu.rc != 0
-      #   do_fade &= (pmpu.error_class != :error)
-      #   text.push(sdi_error_mess(pmpu, "OPC"))
-      # else
-      #   text.push(mess("OPC Completed"))
-      # end
-      # pmr.mark_all_as_dirty
+      pmr_options[:opc] = s
+      pmpu = Retain::Pmpu.new(retain_user_connection_parameters, pmr_options)
+      fields = Retain::Fields.new
+      pmpu.sendit(fields)
+      if pmpu.rc != 0
+        do_fade &= (pmpu.error_class != :error)
+        text.push(sdi_error_mess(pmpu, "OPC"))
+      else
+        text.push(mess("OPC Completed"))
+      end
+      pmr.mark_all_as_dirty
       render_message(reply_span, text) do |page|
         if do_fade
           page.visual_effect(:fade, reply_span, :duration => 5.0)
