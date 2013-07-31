@@ -63,7 +63,7 @@ Raptor.qsCheckCtTime = function (ele) {
 	//if we match, the match is an array.
 	line1 = line1[0];	//we want the first element
 	if (line1.match(/^last ct:/i))
-	    line2 = Raptor.month_names[last_ct.getMonth()] + " " + last_ct.getDay();
+	    line2 = Raptor.month_names[last_ct.getMonth()] + " " + last_ct.getDate();
 	else
 	    line2 = last_ct.getHours() + ":" + last_ct.getMinutes();
 	ele.innerHTML = line1 + "<br />" + line2;
