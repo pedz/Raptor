@@ -1011,7 +1011,7 @@ module Retain
         else
           nt = ct_normal_response_requirement(call)
           last_ct_time = call.pmr.last_ct_time.new_offset(signon_user.tz)
-          td_hash['data-last-ct-time'] = last_ct_time.to_s
+          td_hash['data-last-ct'] = last_ct_time.to_s
           title = "Last CT: #{last_ct_time.strftime("%a, %d %b %Y %H:%M")}"
         end
         
