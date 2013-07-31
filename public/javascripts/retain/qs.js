@@ -56,6 +56,7 @@ Raptor.qsCheckCtTime = function (ele) {
 	line1 = ele.the_title.match(/^[^:]*:/);
 	if (!line1) {
 	    ele.innerHTML = 'CT Overdue';
+	    Raptor.chainsaw_massacre[ele.textContent] = ele.next_ct;
 	    return;
 	}
 
@@ -66,6 +67,7 @@ Raptor.qsCheckCtTime = function (ele) {
 	else
 	    line2 = last_ct.getHours() + ":" + last_ct.getMinutes();
 	ele.innerHTML = line1 + "<br />" + line2;
+	Raptor.chainsaw_massacre[ele.textContent] = ele.next_ct;
 	return;
     }
 
