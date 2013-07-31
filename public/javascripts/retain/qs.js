@@ -4,50 +4,90 @@
  * calls the proper rowCallUpdateFormShow or rowCallUpdateFormHide.
  */
 
+Raptor.month_names = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Arp",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+];
+
 Raptor.qsCheckCtTime = function (ele) {
-    var due = Raptor.qsCtDateToDate(ele.innerHTML);
-	
-    if (due == null) {	// already set as Overdue
+    var next_ct;
+    var last_ct;
+    var now;
+    var oneDay;
+    var tomorrow;
+    var day;
+    var line1;
+    var line2;
+    var suffix;
+
+    if (typeof ele.next_ct == 'undefined') {
+	if (typeof Raptor.chainsaw_massacre == 'undefined')
+	    Raptor.chainsaw_massacre = {};
+	ele.next_ct = new Date(Date.parse(ele.readAttribute('data-next-ct')));
+	ele.last_ct = new Date(Date.parse(ele.readAttribute('data-last-ct')));
+	ele.the_title = ele.readAttribute('title'); //may be redundant
+	Raptor.chainsaw_massacre[ele.textContent] = ele.next_ct;
+    }
+    next_ct = ele.next_ct;
+    last_ct = ele.last_ct;
+    now = new Date();
+
+    if (next_ct == null || last_ct == null) {
 	return;
     }
 
-    var pattern = /(Last CT:|Entry Time:) (.*)/;
-    var title = ele.readAttribute('title');
-    var m = title.match(pattern);
-    if (m == null) {
-	return;
-    }
-    var lastCt = new Date(m[2]);
-    var now = new Date();
-    if (due < lastCt) {		// wrap in years
-	due.setYear(due.getFullYear() + 1);
-    }
-    if (now > due) {		  // too late; mark as past due
+    if (next_ct < now) {	// overdue
 	ele.removeClassName('normal');
 	ele.removeClassName('warn');
 	ele.addClassName('wag-wag');
-	ele.innerHTML = 'CT Overdue';
+
+	// equivalent Ruby code
+	// text = entry_time.new_offset(signon_user.tz).strftime("Entry Time:<br />%b %d")
+	line1 = ele.the_title.match(/^[^:]*:/);
+	if (!line1) {
+	    ele.innerHTML = 'CT Overdue';
+	    return;
+	}
+
+	//if we match, the match is an array.
+	line1 = line1[0];	//we want the first element
+	if (line1.match(/^last ct:/i))
+	    line2 = Raptor.month_names[last_ct.getMonth()] + " " + last_ct.getDay();
+	else
+	    line2 = last_ct.getHours() + ":" + last_ct.getMinutes();
+	ele.innerHTML = line1 + "<br />" + line2;
 	return;
     }
-    var oneDay = 24 * 60 * 60 * 1000; // what to add
-    var tomorrow = new Date(now.valueOf() + oneDay);
-    var day = tomorrow.getDay();
+
+    oneDay = 24 * 60 * 60 * 1000; // what to add
+    tomorrow = new Date(now.valueOf() + oneDay);
+    day = tomorrow.getDay();
     if (day == 6) {		// Saturday so move it up to Monday
 	tomorrow = new Date(now.valueOf() + 3 * oneDay);
     }
     if (day == 0) {		// Sunday so mve it up to Monday as well
 	tomorrow = new Date(now.valueOf() + 2 * oneDay);
     }
-    if (tomorrow > due) {	// within the next working 24 hours
+    if (tomorrow > next_ct) {	// within the next working 24 hours
 	ele.removeClassName('normal');
 	ele.addClassName('warn');
 	return;
     }
-};
+}
 
 Raptor.qsCheckCtTimes = function () {
     $$('td.next-ct').each(Raptor.qsCheckCtTime);
-};
+}
 
 /* Called when the button to show the update form is poked */
 Raptor.qsToggleCallUpdateForm = function() {
@@ -86,7 +126,6 @@ Raptor.rowCallUpdateFormShow = function () {
 	ele.removeClassName('click-to-edit-button');
 	var child = ele.firstDescendant();
 	var title = child.readAttribute('title').sub(/: Click .*/, '');
-	// console.log(title);	
 	child.writeAttribute('title', title);
     });
 };
@@ -100,94 +139,12 @@ Raptor.rowCallUpdateFormHide = function () {
 	ele.addClassName('click-to-edit-button');
 	var child = ele.firstDescendant();
 	var title = child.readAttribute('title').sub(/: Click .*/, '');
-	// console.log(title);
 	child.writeAttribute('title', title + ": Click to edit");
     });
 };
 
-Raptor.qsCtDateToDate = function(v) {
-    var toMonth = function(m) {
-	var months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
-	for (var i = 0; i < 12; ++i) {
-	    if (months[i] == m) {
-		return i;
-	    }
-	}
-    };
-
-    var d = new Date();
-    var reg = /[^A-Z]*([A-Z]..) *@ *([0-9][0-9]):([0-9][0-9])[^A-Z]*([A-Z]..) *([0-9][0-9]*)/;
-    var m = v.match(reg);
-    if (m) {
-	d.setMilliseconds(0);
-	d.setSeconds(0);
-	d.setHours(m[2]);
-	d.setMinutes(m[3]);
-	d.setDate(m[5]);
-	d.setMonth(toMonth(m[4]));
-	/*
-	    console.log("'" + v +
-			"' Hour:" + m[2] +
-			" Mins:" + m[3] +
-			" Mon:" + m[4] +
-			" Mon value:" + toMonth(m[4]) +
-			" Day:" + m[5] +
-			" Value:" + d.valueOf());
-            */
-	return d;
-    }
-    // Return 0 for "CT Overdue" which effectively maps to
-    // negative infinity
-    return null;
-};
-
 Raptor.myDateSort = function(a, b) {
-    var calc = function(v) {
-	var v = Raptor.qsCtDateToDate(v);
-	if (v) {
-	    return v.valueOf();
-	} else {
-	    return 0;
-	}
-    };
-
-    var aCalc = a ? calc(a) : 0;
-    var bCalc = b ? calc(b) : 0;
-
-    if (a && b) {
-	/*
-         * Since we do not have the year, we try and catch a wrap
-         * where one date is Jan and the other date is Dec of the
-         * previous year.  maxDiff is 200 days in milliseconds;
-         */
-	var aCalc = calc(a);
-	var bCalc = calc(b);
-	var diff = aCalc - bCalc;
-	if (diff == 0) {
-	    return 0;
-	}
-	var maxDiff = 200 * 24 * 60 * 60 * 1000;
-	if (diff > 0) {
-	    if (diff > maxDiff) { // We wrapped so
-		if (bCalc == 0) { // b is "Overdue"
-		    return 1;	  // a is greater -- futher in future
-		} else {
-		    return -1;	  // a < b
-		}
-	    }
-	    return 1;		// a > b
-	} else {
-	    if (diff < -maxDiff) { // We wrapped so
-		if (aCalc == 0) {  // a is "Overdue"
-		    return -1;	   // b is greater -- futher in future
-		} else {
-		    return 1;	   // a > b
-		}
-	    }
-	    return -1;		// a < b
-	}
-    }
-    return SortableTable.compare(aCalc, bCalc);
+    return Raptor.chainsaw_massacre[a] - Raptor.chainsaw_massacre[b];
 };
 
 SortableTable.addSortType("my-date", Raptor.myDateSort);
@@ -215,9 +172,6 @@ Raptor.qsNewRow = function(str) {
 
 document.observe('dom:loaded', function() {
 	$$('.pmr-row').each(Raptor.qsFixRow);
-
-	// Moved to inside qsFixRow
-	// Raptor.qsCheckCtTimes();
 
 	var search = window.location.search;
 	var time = 600;

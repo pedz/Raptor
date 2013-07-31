@@ -1000,22 +1000,29 @@ module Retain
           concat("Next CT")
         end
       else
+        td_hash = {}
         # logger.debug("pmr's center is #{call.pmr.center.center}")
         is_initial = call.needs_initial_response?
         if is_initial
           nt = ct_initial_response_requirement(call)
           entry_time = call.center_entry_time.new_offset(signon_user.tz)
+          td_hash['data-entry-time'] = entry_time.to_s
           title = "Entry Time: #{entry_time.strftime("%a, %d %b %Y %H:%M")}"
         else
           nt = ct_normal_response_requirement(call)
           last_ct_time = call.pmr.last_ct_time.new_offset(signon_user.tz)
+          td_hash['data-last-ct-time'] = last_ct_time.to_s
           title = "Last CT: #{last_ct_time.strftime("%a, %d %b %Y %H:%M")}"
         end
         
-        
         now = DateTime.now
         if now > nt
-          text = "CT Overdue"
+          # Note: currently, this text is only seen if Javascript is disabled.
+          if is_initial
+            text = entry_time.new_offset(signon_user.tz).strftime("Entry Time:<br />%b %d")
+          else
+            text = last_ct_time.new_offset(signon_user.tz).strftime("Last CT:<br />%b %d")
+          end
           css_class = "wag-wag"
         else
           text = nt.new_offset(signon_user.tz).strftime("%a @ %H:%M<br />%b %d")
@@ -1027,7 +1034,10 @@ module Retain
           end
         end
         css_class << ' next-ct'
-        td binding, :class => css_class, :title => title do |binding|
+        td_hash[:class] = css_class
+        td_hash[:title] = title
+        td_hash['data-next-ct'] = nt.to_s
+        td binding, td_hash do |binding|
           concat(text)
         end
       end
