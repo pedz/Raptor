@@ -340,10 +340,11 @@ module Cached
       else
         except = :last_alter_timestamp
       end
+      methods_to_add = [:last_ct_time, :ecpaat, :ecpaat_signature]
       if options.has_key? :methods
-        methods = [ options[:methods] ].push(:last_ct_time).flatten.uniq
+        methods = [ options[:methods] ].push(methods_to_add).flatten.uniq
       else
-        methods = :last_ct_time
+        methods = methods_to_add
       end
       super(options.merge(:methods => methods, :except => except));
     end
