@@ -20,6 +20,7 @@ Raptor.month_names = [
 ];
 
 Raptor.qsCheckCtTime = function (ele) {
+    var entry_time;
     var next_ct;
     var last_ct;
     var now;
@@ -31,26 +32,41 @@ Raptor.qsCheckCtTime = function (ele) {
     var suffix;
 
     if (typeof ele.next_ct == 'undefined') {
+	var temp;
+
 	if (typeof Raptor.chainsaw_massacre == 'undefined')
 	    Raptor.chainsaw_massacre = {};
-	ele.next_ct = new Date(Date.parse(ele.readAttribute('data-next-ct')));
-	ele.last_ct = new Date(Date.parse(ele.readAttribute('data-last-ct')));
+
+	/* Should always be present */
+	if ((temp = ele.readAttribute('data-next-ct')))
+	    ele.next_ct = new Date(Date.parse(temp));
+
+	/* Present only part of the time */
+	if ((temp = ele.readAttribute('data-entry-time')))
+	    ele.entry_time = new Date(Date.parse(temp));
+
+	/* Also present only part of the time */
+	if ((temp = ele.readAttribute('data-last-ct')))
+	    ele.last_ct = new Date(Date.parse(temp));
 	ele.the_title = ele.readAttribute('title'); //may be redundant
 	Raptor.chainsaw_massacre[ele.textContent] = ele.next_ct;
     }
+
     next_ct = ele.next_ct;
     last_ct = ele.last_ct;
+    entry_time = ele.entry_time;
     now = new Date();
 
-    if (next_ct == null || last_ct == null) {
+    /* next_ct last_ct would be falsy... undefined or something */
+    if (!next_ct || (!last_ct && !entry_time)) {
 	return;
     }
-
+    
     if (next_ct < now) {	// overdue
 	ele.removeClassName('normal');
 	ele.removeClassName('warn');
 	ele.addClassName('wag-wag');
-
+	    
 	// equivalent Ruby code
 	// text = entry_time.new_offset(signon_user.tz).strftime("Entry Time:<br />%b %d")
 	line1 = ele.the_title.match(/^[^:]*:/);
@@ -59,13 +75,18 @@ Raptor.qsCheckCtTime = function (ele) {
 	    Raptor.chainsaw_massacre[ele.textContent] = ele.next_ct;
 	    return;
 	}
-
+	    
 	//if we match, the match is an array.
 	line1 = line1[0];	//we want the first element
-	if (line1.match(/^last ct:/i))
+	if (ele.last_ct)
 	    line2 = Raptor.month_names[last_ct.getMonth()] + " " + last_ct.getDate();
-	else
-	    line2 = last_ct.getHours() + ":" + last_ct.getMinutes();
+	else {
+	    var minutes = entry_time.getMinutes();
+	    if (minutes < 10)
+		line2 = entry_time.getHours() + ":0" + minutes;
+	    else
+		line2 = entry_time.getHours() + ":" + minutes;
+	}
 	ele.innerHTML = line1 + "<br />" + line2;
 	Raptor.chainsaw_massacre[ele.textContent] = ele.next_ct;
 	return;
