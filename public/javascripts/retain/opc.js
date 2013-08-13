@@ -30,14 +30,30 @@ Raptor.opc_update_select_values = function(select_elements) {
 
     select_elements.forEach(function(select_element) {
 	var question_opc = select_element.question_opc;
-	var opc_dependency = question_opc.opc_dependency;
-	if (opc_dependency) {
-	    var dependent = opc_dependency.dependent_opc_information_id;
-	    if (select_elements.some(function(test_element) { return test_element.answer_id == dependent; })) {
-		select_element.disable();
-	    } else {
-		select_element.enable();
-	    }
+	var opc_dependencies = question_opc.opc_dependencies;
+	var do_disable = false;
+	opc_dependencies.forEach(function(opc_dependency) {
+	    var dependent;
+
+	    if (do_disable)
+		return;
+
+	    dependent = opc_dependency.dependent_opc_information_id;
+
+	    do_disable = select_elements.some(function(test_element) {
+		if (test_element.disabled === true) {
+		    return false;
+		}
+		if (test_element.answer_id == dependent) {
+		    return true;
+		}
+		return false;
+	    });
+	});
+	if (do_disable) {
+	    select_element.disable();
+	} else {
+	    select_element.enable();
 	}
     });
 };

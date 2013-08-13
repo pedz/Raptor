@@ -65,7 +65,7 @@ module Retain
                                                                :children => {
                                                                  :include => {
                                                                    :question => {},
-                                                                   :opc_dependency => {},
+                                                                   :opc_dependencies => {},
                                                                    :children => {
                                                                      :include => {
                                                                        :answer => {}
@@ -86,7 +86,7 @@ module Retain
                                                            :children => {
                                                              :include => {
                                                                :question => {},
-                                                               :opc_dependency => {},
+                                                               :opc_dependencies => {},
                                                                :children => {
                                                                  :include => {
                                                                    :answer => {}

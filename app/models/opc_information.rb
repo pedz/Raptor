@@ -20,5 +20,5 @@ class OpcInformation < ActiveRecord::Base
            :class_name => 'OpcInformation',
            :foreign_key => :parent_id,
            :primary_key => :opc_information_id)
-  has_one(:opc_dependency, :primary_key => :opc_information_id, :foreign_key => :dependency_opc_information_id)
+  has_many(:opc_dependencies, :primary_key => :opc_information_id, :foreign_key => :dependency_opc_information_id)
 end
