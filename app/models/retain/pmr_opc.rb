@@ -4,13 +4,13 @@
 # All Rights Reserved
 #
 module Retain
-  class CallOpc
-    attr_reader   :call
+  class PmrOpc
+    attr_reader   :pmr
     
-    # The call can be a call or a PMR
-    def initialize(call)
-      @call = call
-      @opc = Opc.new(@call)
+    # The pmr can be a pmr or a PMR
+    def initialize(pmr)
+      @pmr = pmr
+      @opc = Opc.new(@pmr)
     end
 
     def to_id
