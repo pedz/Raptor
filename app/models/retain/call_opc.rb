@@ -8,6 +8,7 @@ module Retain
     # The call can be a call or a PMR
     def initialize(call)
       @call = call
+      @opc = Opc.new(call)
       @pmr_opc = PmrOpc.new(@call.pmr)
     end
 
@@ -25,6 +26,10 @@ module Retain
 
     def update(opc_options)
       @pmr_opc.update(opc_options)
+    end
+
+    def opc
+      @opc
     end
   end
 end

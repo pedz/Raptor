@@ -88,7 +88,7 @@ module Retain
 
     def display_update_button(binding)
       span binding, :class => 'call-update-span' do |binding|
-        concat(button("Update Call", "$(\"call-update-div\").toggleCallUpdateForm();"))
+        concat(button("Update Call", "$(\"call-update-div\").toggleForm();"))
       end
     end
 
@@ -104,7 +104,7 @@ module Retain
 
     def exec_summary_button(binding)
       span binding, :class => 'call-fi5312-span' do |binding|
-        concat(button("Exec Summary", "$(\"call-fi5312-div\").toggleCallUpdateForm();"))
+        concat(button("Exec Summary", "$(\"call-fi5312-div\").toggleForm();"))
       end
     end
 
@@ -119,15 +119,15 @@ module Retain
     end
 
     def opc_button(binding)
-      span binding, :class => 'call-opc-span' do |binding|
-        concat(button("OPC", "$(\"call-opc-div\").toggleCallUpdateForm();"))
+      span binding, :class => 'opc-span' do |binding|
+        concat(button("OPC", "$(\"opc-div\").toggleForm();"))
       end
     end
 
     def opc_form(binding, call)
       div(binding,
-           :id => 'call-opc-div',
-           :class => 'call-opc-container') do |binding|
+           :id => 'opc-div',
+           :class => 'opc-container') do |binding|
         opc = Retain::CallOpc.new(call)
         concat(render(:partial => "shared/retain/opc_form",
                       :locals => { :opc => opc }))
