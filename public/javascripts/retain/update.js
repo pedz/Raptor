@@ -205,7 +205,7 @@ Raptor.redrawAction = function() {
 Raptor.closeDiv = function() {
     var parent = this.up();
     if (parent.visible()) {
-	parent.toggleCallUpdateForm();
+	parent.toggleForm();
     }
 };
 

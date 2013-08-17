@@ -551,9 +551,9 @@ module Retain
         end
       else
         td(binding,
-           :id => 'call-opc-div_$#{call.ppg}',
+           :id => 'opc-div_$#{call.ppg}',
            :style => 'display: none;',
-           :class => 'call-opc-container') do |binding|
+           :class => 'opc-container') do |binding|
           opc = CallOpc.new(call)
           concat(render(:partial => "shared/retain/opc_form",
                         :locals => { :opc => opc }))
@@ -569,7 +569,7 @@ module Retain
         end
       else
         td binding, :class => 'update' do |binding|
-          concat(button("Update", "$(\"call_update_td_#{call.ppg}\").toggleCallUpdateForm();"))
+          concat(button("Update", "$(\"call_update_td_#{call.ppg}\").toggleForm();"))
         end
       end
     end
@@ -581,7 +581,7 @@ module Retain
         end
       else
         td binding, :class => 'exec_summary' do |binding|
-          concat(button("Exec Summary", "$(\"call_exec_summary_td_#{call.ppg}\").toggleCallUpdateForm();"))
+          concat(button("Exec Summary", "$(\"call_exec_summary_td_#{call.ppg}\").toggleForm();"))
         end
       end
     end
@@ -593,7 +593,7 @@ module Retain
         end
       else
         td binding, :class => 'opc' do |binding|
-          concat(button("OPC", "$(\"call_opc_td_#{call.ppg}\").toggleCallUpdateForm();"))
+          concat(button("OPC", "$(\"call_opc_td_#{call.ppg}\").toggleForm();"))
         end
       end
     end

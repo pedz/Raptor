@@ -1,7 +1,7 @@
 /*
  * When a button to toggle the update form is pressed, the toggleForm
  * method on the form element is triggered.  This is sent here.  This
- * calls the proper rowCallUpdateFormShow or rowCallUpdateFormHide.
+ * calls the proper rowFormShow or rowFormHide.
  */
 
 Raptor.month_names = [
@@ -113,7 +113,7 @@ Raptor.qsCheckCtTimes = function () {
 }
 
 /* Called when the button to show the update form is poked */
-Raptor.qsToggleCallUpdateForm = function() {
+Raptor.qsToggleForm = function() {
     new Effect.toggle(this, 'appear', {
 	duration: 0.5,
 	queue: 'end',
@@ -143,7 +143,7 @@ Raptor.qsToggleCallUpdateForm = function() {
 /*
  * A row specific hook called when the update form is shown
  */
-Raptor.rowCallUpdateFormShow = function () {
+Raptor.rowFormShow = function () {
     this.select('.collection-edit-name').each(function (ele) {
 	ele.unhook();
 	ele.removeClassName('click-to-edit-button');
@@ -156,7 +156,7 @@ Raptor.rowCallUpdateFormShow = function () {
 /*
  * A row specific hook called when the update form is hidden
  */
-Raptor.rowCallUpdateFormHide = function () {
+Raptor.rowFormHide = function () {
     this.select('.collection-edit-name').each(function (ele) {
 	ele.hookup();
 	ele.addClassName('click-to-edit-button');
@@ -173,10 +173,10 @@ Raptor.myDateSort = function(a, b) {
 SortableTable.addSortType("my-date", Raptor.myDateSort);
 
 Raptor.qsFixRow = function (ele) {
-    ele.updateFormShow = Raptor.rowCallUpdateFormShow.bind(ele);
-    ele.updateFormHide = Raptor.rowCallUpdateFormHide.bind(ele);
+    ele.updateFormShow = Raptor.rowFormShow.bind(ele);
+    ele.updateFormHide = Raptor.rowFormHide.bind(ele);
     ele.select('.call-update-container').each(function (ele) {
-	    ele.toggleCallUpdateForm = Raptor.qsToggleCallUpdateForm.bind(ele);
+	    ele.toggleForm = Raptor.qsToggleForm.bind(ele);
 	    Raptor.fixUpdateContainer(ele);
 	});
     ele.select('.links').each(Raptor.setupPopup);

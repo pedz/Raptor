@@ -677,14 +677,12 @@ module Retain
 
     def opc
       call = Combined::Call.from_param!(params[:id], signon_user)
-      # ids for the div and reply span
-      opc_div = "call_opc_div_#{call.to_id}"
-      reply_span = "call_opc_reply_span_#{call.to_id}"
+      opc_div = "opc_div_#{call.to_id}"
+      reply_span = "opc_reply_span_#{call.to_id}"
       call_opc = Retain::CallOpc.new(call)
-      opc_options = params[:retain_call_opc].merge(:user_name => application_user.ldap_id,
-                                                   :retain_params => retain_user_connection_parameters)
+      opc_options = params[:retain_opc].merge(:user_name => application_user.ldap_id,
+                                              :retain_params => retain_user_connection_parameters)
       text, do_fade = call_opc.update(opc_options)
-      
       render_message(reply_span, text) do |page|
         if do_fade
           page.visual_effect(:fade, reply_span, :duration => 5.0)
