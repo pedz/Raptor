@@ -128,9 +128,9 @@ module Retain
       div(binding,
            :id => 'call-opc-div',
            :class => 'call-opc-container') do |binding|
-        call_opc = CallOpc.new(call)
+        opc = Retain::CallOpc.new(call)
         concat(render(:partial => "shared/retain/opc_form",
-                      :locals => { :call_opc => call_opc }))
+                      :locals => { :opc => opc }))
       end
     end
 
