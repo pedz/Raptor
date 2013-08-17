@@ -10,9 +10,8 @@ module Retain
   module QsHelper
 
     DISP_LIST = [
-                 :call_button, :link_etc, :pri_sev, :p_s_b,
-                 :biggem, :age, :jeff, :next_ct, :ct,
-                 :dispatch, :sg, :psar_time
+                 :link_etc, :pri_sev, :p_s_b, :biggem, :age, :jeff, :next_ct,
+                 :sg, :psar_time
                 ]
 
     HELP_TEXT = <<-EOF
@@ -136,9 +135,10 @@ module Retain
     private
 
     BIGGEM_COLUMNS = [
-                      [ :customer, :owner, :resolver, :next_queue ],
-                      [ :comments, :component_check, :call_update_field ],
-                      [ :call_update_form ]
+                      [ :customer, :owner, :resolver, :next_queue  ],
+                      [ :comments, :component_check, :menu_button ],
+                      [ :call_update_form ],
+                      [ :opc_call_form ]
                      ]
     def biggem(binding, header, call)
       # logger.debug("QS: biggem #{call.nil? ? "header" : call.to_param}")
@@ -447,12 +447,12 @@ module Retain
         td binding, :class => 'dispatch' do |binding|
           if call.is_dispatched
             if call.dispatched_employee == @retain_user_connection_parameters.signon
-              concat(link_to_remote("Undispatch", :url => dispatch_combined_call_path(call)))
+              concat(button_to_remote("Undispatch", :url => dispatch_combined_call_path(call)))
             else
               concat("N/A")
             end
           else
-            concat(link_to_remote("Dispatch", :url => dispatch_combined_call_path(call)))
+            concat(button_to_remote("Dispatch", :url => dispatch_combined_call_path(call)))
           end
         end
       end
@@ -467,7 +467,7 @@ module Retain
       else
         sig_text = nil
         if (sg_lines = call.pmr.service_given_lines).empty?
-          title = "Get Off your ASS!!!"
+          title = "Serivce has not been given"
           sg = "NG"
         else
           last_sg = sg_lines.last
@@ -540,6 +540,25 @@ module Retain
       end
     end
 
+    def opc_call_form(binding, header, call)
+      if header
+        th(binding,
+           :class => 'call-update-container',
+           :colspan => 4) do |binding|
+          concat("")
+        end
+      else
+        td(binding,
+           :id => 'call-opc-div_$#{call.ppg}',
+           :style => 'display: none;',
+           :class => 'call-opc-container') do |binding|
+          opc = CallOpc.new(call)
+          concat(render(:partial => "shared/retain/opc_form",
+                        :locals => { :opc => opc }))
+        end
+      end
+    end
+
     def call_update_field(binding, header, call)
       # logger.debug("QS: call_update_field #{call.nil? ? "header" : call.to_param}")
       if header
@@ -548,11 +567,35 @@ module Retain
         end
       else
         td binding, :class => 'update' do |binding|
-          concat(button("U#{call.ppg}", "$(\"call_update_td_#{call.ppg}\").toggleCallUpdateForm();"))
+          concat(button("Update", "$(\"call_update_td_#{call.ppg}\").toggleCallUpdateForm();"))
         end
       end
     end
     
+    def exec_summary_field(binding, header, call)
+      if header
+        th binding, :class => 'exec_summary' do |binding|
+          concat("Exec Summary")
+        end
+      else
+        td binding, :class => 'exec_summary' do |binding|
+          concat(button("Exec Summary", "$(\"call_exec_summary_td_#{call.ppg}\").toggleCallUpdateForm();"))
+        end
+      end
+    end
+    
+    def opc_field(binding, header, call)
+      if header
+        th binding, :class => 'opc' do |binding|
+          concat("OPC")
+        end
+      else
+        td binding, :class => 'opc' do |binding|
+          concat(button("OPC", "$(\"call_opc_td_#{call.ppg}\").toggleCallUpdateForm();"))
+        end
+      end
+    end
+
     def customer(binding, header, call)
       # logger.debug("QS: customer #{call.nil? ? "header" : call.to_param}")
       if header
@@ -606,11 +649,33 @@ module Retain
         end
       else
         td binding, :class => 'ct' do |binding|
-          concat(link_to_remote("ct", :url => ct_combined_call_path(call)))
+          concat(button_to_remote("ct", :url => ct_combined_call_path(call)))
         end
       end
     end
     
+    def menu_button(binding, header, call)
+      menu_options = {
+        "Update ..." => "update",
+        "OPC ..." => "opc",
+        "Exec Summary ..." => "exec_summary",
+        "CT" => "ct",
+        "Dispatch" => "dispatch",
+        "Undispatch" => "undispatch"
+      }
+      # logger.debug("QS: call_button #{call.nil? ? "header" : call.to_param}")
+      if header
+        th binding, :class => 'call-button number' do |binding|
+          concat("Actions")
+        end
+      else
+        td binding, :class => 'call-button number' do |binding|
+          concat(collection_select(:not_used, :not_used, menu_options, :last, :first, {:prompt => true }))
+        end
+      end
+    end
+
+    # No longer used
     def call_button(binding, header, call)
       # logger.debug("QS: call_button #{call.nil? ? "header" : call.to_param}")
       if header

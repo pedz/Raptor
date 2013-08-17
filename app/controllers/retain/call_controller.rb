@@ -701,15 +701,32 @@ module Retain
       @pmr.mark_all_as_dirty
 
       # Respond back to the user.
-      render(:update) { |page|
-        page.replace_html reply_span, text                          
-        page.show reply_span
+      render_message(reply_span, text) do |page|
         if do_fade
           page.visual_effect(:fade, reply_span, :duration => 5.0)
           page[fi5312_div].redraw
           page[fi5312_div].close
         end
-      }
+      end
+    end
+
+    def opc
+      call = Combined::Call.from_param!(params[:id], signon_user)
+      # ids for the div and reply span
+      opc_div = "call_opc_div_#{call.to_id}"
+      reply_span = "call_opc_reply_span_#{call.to_id}"
+      call_opc = Retain::CallOpc.new(call)
+      opc_options = params[:retain_call_opc].merge(:user_name => application_user.ldap_id,
+                                                   :retain_params => retain_user_connection_parameters)
+      text, do_fade = call_opc.update(opc_options)
+      
+      render_message(reply_span, text) do |page|
+        if do_fade
+          page.visual_effect(:fade, reply_span, :duration => 5.0)
+          page[opc_div].redraw
+          page[opc_div].close
+        end
+      end
     end
     
     private

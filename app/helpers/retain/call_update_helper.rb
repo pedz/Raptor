@@ -71,8 +71,18 @@ module Retain
     end
 
     def do_text_field(base, field, size, call_model, options = {})
-      base.text_field field, html_tag(call_model, field.to_s,
-                                      options.merge(:size => size, :maxlength => size))
+      base.text_field(field, html_tag(call_model, field.to_s,
+                                      options.merge(:size => size, :maxlength => size)))
+    end
+
+    def do_hidden_field(base, field, call_model, options = {})
+      base.hidden_field(field, html_tag(call_model, field.to_s, options))
+    end
+
+    def do_select_field(base, field, collection, value_method, text_method, call_model)
+      base.collection_select(field, collection, value_method, text_method,
+                             { :prompt => false },
+                             html_tag(call_model, field.to_s))
     end
 
     def do_select_field(psar, field, collection, value_method, text_method, call_model)
