@@ -7,6 +7,7 @@ module Retain
   class PmrOpc
     def initialize(pmr)
       @pmr = pmr
+      @opc = Opc.new(pmr)
     end
 
     def to_id
@@ -102,6 +103,10 @@ module Retain
       end
       @pmr.mark_all_as_dirty
       return text, do_fade
+    end
+
+    def opc
+      @opc
     end
 
     private

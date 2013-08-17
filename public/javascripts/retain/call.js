@@ -21,7 +21,7 @@ Raptor.newUrl = function(to, sub) {
 Raptor.didNewUrl = false;
 
 /* Called when the button to show the update form is poked */
-Raptor.callToggleCallUpdateForm = function() {
+Raptor.callToggleForm = function() {
     new Effect.toggle(this, 'appear', {
 	duration: 0.1,
 	queue: 'end',
@@ -122,13 +122,13 @@ Raptor.closeLeft = function () {
 
 document.observe('dom:loaded', function() {
 	$$('.call-update-container').each(function (ele) {
-		ele.toggleCallUpdateForm = Raptor.callToggleCallUpdateForm.bind(ele);
+		ele.toggleForm = Raptor.callToggleForm.bind(ele);
 		Raptor.fixUpdateContainer(ele);
 	});
 
 	$$('.call-fi5312-container').each(function (ele) {
 	    var div = ele.down('.call-fi5312-div');
-	    ele.toggleCallUpdateForm = Raptor.callToggleCallUpdateForm.bind(ele);
+	    ele.toggleForm = Raptor.callToggleForm.bind(ele);
 	    div.redraw = function() {
 		$(ele).down('form').reset();
 	    };
@@ -136,7 +136,7 @@ document.observe('dom:loaded', function() {
 	    ele.hide();
 	});
 
-	$$('.call-opc-container').each(Raptor.opc_init);
+	$$('.opc-container').each(Raptor.opc_init);
 
 	Raptor.right = $('right');
 	Raptor.right_tab = $('right-tab');

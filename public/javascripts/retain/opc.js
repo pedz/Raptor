@@ -68,7 +68,7 @@ Raptor.opc_change = function (event) {
 };
 
 /*
- * bound with call-opc-container as this
+ * bound with opc-container as this
  */
 Raptor.opc_receive = function (response) {
     // console.log(this);
@@ -106,15 +106,15 @@ Raptor.opc_receive = function (response) {
 	    })[0];
 
 /*
- * <input class="call-opc-qset" id="call_opc_qset_PEDZ_S_165_201" 
- *        name="retain_call_opc[qset]" type="hidden" value="Q007" />
+ * <input class="opc-qset" id="call_opc_qset_PEDZ_S_165_201" 
+ *        name="retain_opc[qset]" type="hidden" value="Q007" />
  * I don't see the point of adding the class and id but here is how:
- * class: 'call-opc-qset',
+ * class: 'opc-qset',
  * id: call_opc_container.opc_div.id.replace('div', 'qset'),
  */
     opc_form.insert({
 	bottom: new Element('input', {
-	    name: 'retain_call_opc[qset]',
+	    name: 'retain_opc[qset]',
 	    type: 'hidden',
 	    value: 'Q' + question_set_version.version
 	})
@@ -125,14 +125,14 @@ Raptor.opc_receive = function (response) {
  */
     opc_form.insert({
 	bottom: new Element('input', {
-	    name: 'retain_call_opc[opc_group_id]',
+	    name: 'retain_opc[opc_group_id]',
 	    type: 'hidden',
 	    value: component.opc_group_id
 	})
     });
 
 /*
- * <input id="call_opc_submit_PEDZ_S_165_204" class="call-opc-submit" 
+ * <input id="call_opc_submit_PEDZ_S_165_204" class="opc-submit" 
  *        type="submit" value="Submit" name="commit">
  */
     opc_form.my_submit = new Element('input', {
@@ -171,7 +171,7 @@ Raptor.opc_receive = function (response) {
      * yet so I'm going to skip them.
      */
 
-    var component_select = new Element('select', { name: 'retain_call_opc[kv][][value]'});
+    var component_select = new Element('select', { name: 'retain_opc[kv][][value]'});
 
     /*
      * First we need to find the active components
@@ -212,7 +212,7 @@ Raptor.opc_receive = function (response) {
     var add_hidden_field = function(name, value) {
 	opc_form.insert({
 	    bottom: new Element('input', {
-		name: 'retain_call_opc[kv][][' + name + ']',
+		name: 'retain_opc[kv][][' + name + ']',
 		type: 'hidden',
 		value: value
 	    })
@@ -250,7 +250,7 @@ Raptor.opc_receive = function (response) {
 	add_hidden_fields(question.question_code, question.encoding_sequence, question.question_type);
 	opc_form.insert({ bottom: label });
 	if (Raptor.opc_use_answers(question_opc)) {
-	    value = new Element('select', { name: 'retain_call_opc[kv][][value]'});
+	    value = new Element('select', { name: 'retain_opc[kv][][value]'});
 	    question_opc.children.sort(sequence_sort).
 		forEach(function(answer_opc, aindex, arr) {
 		    var answer = answer_opc.answer;
@@ -290,24 +290,24 @@ Raptor.opc_error = function () {
 };
 
 /*
- * ele is the call-opc-container
+ * ele is the opc-container
  */
 Raptor.opc_init = function (ele) {
-    var div = ele.down('.call-opc-div');
+    var div = ele.down('.opc-div');
     var start_id;
     var start_value;
 
     ele.opc_div = div;
-    ele.reply_span = div.down('.call-opc-reply-span');
+    ele.reply_span = div.down('.opc-reply-span');
     ele.opc_form = div.down('form');
     start_id = ele.opc_div.id.replace('div', 'start');
-    ele.toggleCallUpdateForm = function () {
+    ele.toggleForm = function () {
 	start_value = (new Date).toISOString();
 	if (typeof ele.setup == "undefined") {
 	    ele.opc_form.insert({
 		top: new Element('input', {
 		    id: start_id,
-		    name: 'retain_call_opc[start]',
+		    name: 'retain_opc[start]',
 		    type: 'hidden',
 		    value: start_value
 		})
@@ -326,7 +326,7 @@ Raptor.opc_init = function (ele) {
 	} else {
 	    $(start_id).setValue(start_value);
 	}
-	Raptor.callToggleCallUpdateForm.apply(ele);
+	Raptor.callToggleForm.apply(ele);
     };
     div.redraw = function() {
 	$(ele).down('form').reset();
