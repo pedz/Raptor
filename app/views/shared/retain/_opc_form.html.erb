@@ -2,12 +2,12 @@
 <%# Copyright 2013 Ease Software, Inc. and Perry Smith -%>
 <%# All Rights Reserved -%>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<%  content_tag :div, html_tag(call_opc, 'div', :style => 'border:solid 1px;') do -%>
-<%=   content_tag :span, "", html_tag(call_opc, 'reply-span') %>
-<%-   submit_id = id_for(call_opc, "submit") -%>
-<%-   remote_form_for(call_opc,
+<%  content_tag :div, html_tag(opc, 'div', :style => 'border:solid 1px;') do -%>
+<%=   content_tag :span, "", html_tag(opc, 'reply-span') %>
+<%-   submit_id = id_for(opc, "submit") -%>
+<%-   remote_form_for(opc,
      		      :loading => "Raptor.disableSubmit($('#{submit_id}'));",
      		      :complete => "Raptor.enableSubmit($('#{submit_id}'));",
-     		      :html => html_tag(call_opc, "form")) do |opc| -%>
+     		      :html => html_tag(opc, "form")) do |opc| -%>
 <%    end -%>
 <%  end -%>

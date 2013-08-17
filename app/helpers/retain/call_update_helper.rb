@@ -108,39 +108,6 @@ module Retain
                                       options.merge(:size => size, :maxlength => size)))
     end
 
-    def format_code_field(index, call_opc)
-      result = ""
-      kv = call_opc.kv[index]
-      name = data_string('name', kv[:name])
-      key_field = "[kv][#{index}][key]"
-      value_field = "[kv][#{index}][value]"
-      result += xx_hidden_field(key_field, kv[:code], call_opc, name)
-      if kv.has_key?(:function)
-        function = data_string('function', kv[:function])
-        result += xx_hidden_field(value_field, kv[:value], call_opc, function)
-      else
-        restriction = data_string('restriction', kv[:restriction])
-        result += "<p>#{kv[:description]}</p>\n"
-        result += do_label(kv[:text], clean_tag(value_field, '-'), call_opc)
-        options = kv[:response].map { |h| [ h[:text], h[:value] ] }
-        options.unshift(['Pick One', ''])
-        c = class_string(call_opc, value_field)
-        i = id_string(call_opc, value_field)
-        n = name_string(call_opc, value_field)
-        result += "<select #{i} #{c} #{n} #{restriction}>"
-        result += options_for_select(options)
-        result += "</select>"
-      end
-      result
-    end
-
-    def xx_hidden_field(name, value, call_model, data_elements = '')
-      c = class_string(call_model, name)
-      i = id_string(call_model, name)
-      n = name_string(call_model, name)
-      "<input #{c} #{i} #{n} type='hidden' #{data_elements} value='#{value}'/>\n"
-    end
-
     def do_hidden_field(base, field, call_model, options = {})
       base.hidden_field(field, html_tag(call_model, field.to_s, options))
     end

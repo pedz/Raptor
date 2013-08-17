@@ -136,8 +136,7 @@ ActionController::Routing::Routes.draw do |map|
                 :format => 'html',
                 :member => {
                   :addtime => :post,
-                  :addtxt  => :post,
-                  :opc => :post
+                  :addtxt  => :post
                 })
 
   # "Queue Status" -- my Techjump page
@@ -168,9 +167,15 @@ ActionController::Routing::Routes.draw do |map|
   
   # Call OPC map.
   map.retain_call_opc('retain/call/:id/opc',
-                         :controller => 'retain/call',
-                         :action => 'opc',
-                         :method => :post)
+                      :controller => 'retain/call',
+                      :action => 'opc',
+                      :method => :post)
+  
+  # PMR OPC map.
+  map.retain_pmr_opc('combined_pmrs/:id/opc',
+                     :controller => 'retain/pmrs',
+                     :action => 'opc',
+                     :method => :post)
   
   # Reasonably well flushed out resources
   map.resources(:combined_call,
