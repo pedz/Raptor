@@ -27,9 +27,9 @@ module Retain
       respond_to do |format|
         format.html {
           # Redirect to a call if there is one
-          unless call.nil?
-            redirect_to(call)
-          end
+          # unless call.nil?
+          #   redirect_to(call)
+          # end
         }
         format.xml { render :xml => @pmr.to_xml( :include => :text_lines ) }
       end

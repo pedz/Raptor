@@ -21,6 +21,8 @@ class CreateRetainNodeSelectors < ActiveRecord::Migration
     #
     RetainNode.find(:first, :conditions => { :node => "bdc", :port => 3381 }).
       retain_node_selectors.create({ :description => "Default software node for Austin Teams" })
+    RetainNode.find(:first, :conditions => { :node => "rta", :port => 3781 }).
+      retain_node_selectors.create({ :description => "Backup software node for Austin Teams" })
     RetainNode.find(:first, :conditions => { :node => "sf2", :port => 3581 }).
       retain_node_selectors.create({ :description => "Default hardware node for Austin Teams" })
     RetainNode.find(:first, :conditions => { :node => "rs4", :port => 3291 }).
