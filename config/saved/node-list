@@ -4,6 +4,8 @@
 # for Austin to use BDC and SF2 and EMEA teams to use RS4 and RAL
 # nodes.
 #
+# RTA is Austin's backup software node.
+#
 -
     host:          ral.boulder.ibm.com
     node:          rta

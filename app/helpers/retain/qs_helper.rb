@@ -542,6 +542,7 @@ module Retain
       end
     end
 
+    # Adds the OPC form.  Also adds in to the pageSettings this PMR's current OPC.
     def opc_call_form(binding, header, call)
       if header
         th(binding,
@@ -550,6 +551,7 @@ module Retain
           concat("")
         end
       else
+        add_page_setting("opc_#{call.to_id}", call.pmr.opc)
         td(binding,
            :id => 'opc-div_$#{call.ppg}',
            :style => 'display: none;',
@@ -586,6 +588,8 @@ module Retain
       end
     end
     
+    # Not used currently.  Added during experimentation of the new QS
+    # page layout.
     def opc_field(binding, header, call)
       if header
         th binding, :class => 'opc' do |binding|

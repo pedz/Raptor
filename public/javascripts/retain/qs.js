@@ -196,6 +196,7 @@ Raptor.qsNewRow = function(str) {
 document.observe('dom:loaded', function() {
 	$$('.pmr-row').each(Raptor.qsFixRow);
 
+	$$('.opc-container').each(Raptor.opc_init);
 	var search = window.location.search;
 	var time = 600;
 	if (typeof(search) == "string" && search.length > 0) {

@@ -166,7 +166,7 @@ Raptor.sacChange = function(event) {
 };
 
 Raptor.redrawSac = function() {
-    var visible = pageSettings['sac_tuples'][this.getValue()]
+    var visible = pageSettings['sac_tuples'][this.getValue()];
     if (visible)
 	this.aparField.show();
     else
