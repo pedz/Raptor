@@ -13,6 +13,7 @@ module Retain
     end
 
     def opc_pmr_form(binding, pmr)
+      add_page_setting("opc_#{pmr.to_id}", pmr.opc)
       div(binding,
            :id => 'opc-div',
            :class => 'opc-container') do |binding|

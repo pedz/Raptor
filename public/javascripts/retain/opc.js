@@ -1,6 +1,7 @@
+
 /*
- * A utility function that returns true if the "answers" for a
- * particular questions are the children of the question.
+ * Returns true if we should use the answers for a question rather
+ * than the target component.
  */
 Raptor.opc_use_answers = function(question_opc) {
     return question_opc.question.question_type == 'Q';
@@ -68,23 +69,30 @@ Raptor.opc_change = function (event) {
 };
 
 /*
- * bound with opc-container as this
+ * Called when the Ajax call to fetch the opc information for the
+ * particular component returns successfully.  bound with
+ * opc-container as this
  */
 Raptor.opc_receive = function (response) {
     // console.log(this);
     // console.log(this.opc_div);
     // console.log(this.reply_span);
     // console.log(this.opc_form);
+
+    // var div_id = div.id;
+    // var opc_name = "opc_" + div_id.slice(8);
+    // var opc = pageSettings[opc_name];
+    // console.log(div_id);
+    // console.log(opc_name);
+    // console.log(opc.split("\x0B").length);
+
     var call_opc_container = this;
     var opc_form = call_opc_container.opc_form;
     this.temp_span.hide();
     opc_form.select_elements = new Array();
 
     Raptor.opc = response.responseJSON;
-    /*
-     * This probably should be moved out to its own file because its
-     * going to become huge.
-     */
+
     /*
      * The top item is "component".  Lets dig inside of that and make
      * sure that the retain component id matches what we expect
@@ -105,13 +113,13 @@ Raptor.opc_receive = function (response) {
 		return ele.status == "A";
 	    })[0];
 
-/*
- * <input class="opc-qset" id="call_opc_qset_PEDZ_S_165_201" 
- *        name="retain_opc[qset]" type="hidden" value="Q007" />
- * I don't see the point of adding the class and id but here is how:
- * class: 'opc-qset',
- * id: call_opc_container.opc_div.id.replace('div', 'qset'),
- */
+    /*
+     * <input class="opc-qset" id="call_opc_qset_PEDZ_S_165_201" 
+     *        name="retain_opc[qset]" type="hidden" value="Q007" />
+     * I don't see the point of adding the class and id but here is how:
+     * class: 'opc-qset',
+     * id: call_opc_container.opc_div.id.replace('div', 'qset'),
+     */
     opc_form.insert({
 	bottom: new Element('input', {
 	    name: 'retain_opc[qset]',
@@ -120,9 +128,9 @@ Raptor.opc_receive = function (response) {
 	})
     });
 
-/*
- * same except for the opc_group_id
- */
+    /*
+     * same except for the opc_group_id
+     */
     opc_form.insert({
 	bottom: new Element('input', {
 	    name: 'retain_opc[opc_group_id]',
@@ -131,10 +139,10 @@ Raptor.opc_receive = function (response) {
 	})
     });
 
-/*
- * <input id="call_opc_submit_PEDZ_S_165_204" class="opc-submit" 
- *        type="submit" value="Submit" name="commit">
- */
+    /*
+     * <input id="call_opc_submit_PEDZ_S_165_204" class="opc-submit" 
+     *        type="submit" value="Submit" name="commit">
+     */
     opc_form.my_submit = new Element('input', {
 	name: 'commit',
 	type: 'submit',
@@ -285,12 +293,17 @@ Raptor.opc_receive = function (response) {
     Raptor.recalcDimensions();
 };
 
+/*
+ * called when the Ajax call to retrieve the opc information for a
+   particular component fails.
+ */
 Raptor.opc_error = function () {
     console.log('opc fetch failed');
 };
 
 /*
- * ele is the opc-container
+ * Called at page load time for each opc-container on the page.  ele
+ * is the opc-container
  */
 Raptor.opc_init = function (ele) {
     var div = ele.down('.opc-div');
