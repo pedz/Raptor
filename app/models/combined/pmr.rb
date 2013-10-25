@@ -359,7 +359,7 @@ module Combined
           addr.match(addr_pattern)
         }.map { |addr|
           addr.sub(addr_pattern, '\2').sub(/[ _]+$/, "")
-        }.join(', ')
+        }.join(',')
         retain_options[:problem_e_mail] = email
       end
 
