@@ -254,7 +254,12 @@ module Retain
         cs = Ccsid.to_cs(ccsid)
         # This seems to be the fastest way to trim off two bytes from
         # the front of a string.  The 10^9 is roughly MAXINT.
-        value[2, 1000000000].retain_to_user(cs)
+        begin
+          value[2, 1000000000].retain_to_user(cs)
+        rescue ArgumentError
+          Rails.logger.debug("cs is #{cs}")
+          value[2, 1000000000].retain_to_user
+        end
       when :binary_center
         decode_center(value)
       when :group
