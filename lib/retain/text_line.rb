@@ -38,7 +38,12 @@ module Retain
         text = text.dup
         text[0] = ' '.to_u.to_s(cs)
       end
-      @text = text.retain_to_user(cs)
+      begin
+        @text = text.retain_to_user(cs)
+      rescue ArgumentError
+        Rails.logger.debug("cs is #{cs}")
+        @text = text.retain_to_user
+      end
     end
   end
 end
