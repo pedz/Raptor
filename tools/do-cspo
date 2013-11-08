@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-tools/process-cspo.rb ~/Desktop/CSPO\ Crit\ Sit\ Crawl.*.xls \
+tools/process-cspo.rb ~/Desktop/CSPO*.xls \
 	> public/crit-sit-pmrs.txt &&
     rake add_crits &&
     rm ~/Desktop/CSPO\ Crit\ Sit\ Crawl.*.xls &&
