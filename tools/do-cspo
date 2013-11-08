@@ -2,6 +2,6 @@
 tools/process-cspo.rb ~/Desktop/CSPO*.xls \
 	> public/crit-sit-pmrs.txt &&
     rake add_crits &&
-    rm ~/Desktop/CSPO\ Crit\ Sit\ Crawl.*.xls &&
+    rm ~/Desktop/CSPO*.xls &&
     git add public/crit-sit-pmrs.txt &&
     git commit -m 'crit-sit update'
