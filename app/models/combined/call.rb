@@ -64,6 +64,7 @@ module Combined
     # :ppg
     def self.words_to_options(words)
       ppg = words.pop
+      ppg.downcase!
       Combined::Queue.words_to_options(words).merge(:ppg => ppg)
     end
     
@@ -78,6 +79,7 @@ module Combined
       words = param.split(',')
       raise CallNotFound.new(to_param) if words.empty?
       ppg = words.pop
+      ppg.downcase!
       queue = Combined::Queue.from_param!(words.join(','), signon_user)
       # We did not raise an exception so queue must be valid
       c = queue.calls.find_or_initialize_by_ppg(ppg)
