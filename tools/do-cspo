@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
-tools/process-cspo.rb ~/Desktop/CSPO*.xls \
+
+if [[ "$#" -ne 1 ]] ; then
+  echo "Usage: $( basename $0 ) <path to CSPO file>" 1>&2
+  exit 1
+fi
+CSPO="$1"
+tools/process-cspo.rb "$CSPO" \
 	> public/crit-sit-pmrs.txt &&
     rake add_crits &&
-    rm ~/Desktop/CSPO\ Crit\ Sit\ Crawl.*.xls &&
+    rm "$f" &&
     git add public/crit-sit-pmrs.txt &&
     git commit -m 'crit-sit update'
