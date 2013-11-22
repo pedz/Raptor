@@ -8,6 +8,6 @@ CSPO="$1"
 tools/process-cspo.rb "$CSPO" \
 	> public/crit-sit-pmrs.txt &&
     rake add_crits &&
-    rm "$f" &&
+    rm "$CSPO" &&
     git add public/crit-sit-pmrs.txt &&
     git commit -m 'crit-sit update'
