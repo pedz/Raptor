@@ -26,7 +26,7 @@ module Retain
       @update_pmr = true
       @do_ct = true
       @do_ca = false
-      @newtxt = "Action Taken:\n\nAction Plan:\n\nSummary:\n"
+      @newtxt = "Action Taken:\n\nAction Plan:\n"
       @add_time = true
       @psar_update = PsarUpdate.new(75, 57, 50, call.priority, 9, 0, 30)
       @new_queue = call.queue.to_param
