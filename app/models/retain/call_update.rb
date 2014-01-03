@@ -32,9 +32,18 @@ module Retain
       @new_queue = call.queue.to_param
       @new_priority = call.priority
       @service_given = 99
-      pmr = call.pmr
-      @hot = pmr.hot
-      @business_justification = pmr.business_justification
+      @pmr = call.pmr
+      @hot = @pmr.hot
+      @business_justification = @pmr.business_justification
+    end
+
+    def last_sg
+      sg_lines = @pmr.service_given_lines
+      if sg_lines.empty?
+        "NG"
+      else
+        sg_lines.last.service_given
+      end
     end
 
     def to_id

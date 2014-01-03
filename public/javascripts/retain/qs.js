@@ -181,6 +181,10 @@ Raptor.qsFixRow = function (ele) {
 	});
     ele.select('.links').each(Raptor.setupPopup);
     ele.select('td.next-ct').each(Raptor.qsCheckCtTime);
+    ele.select('.opc-container').each(function (ele) {
+	Raptor.opc_init(ele, Raptor.qsToggleForm);
+    });
+    ele.select('.call-action').each(Raptor.call_action_init);
 };
 
 // Called for Ajax updates.
@@ -193,17 +197,65 @@ Raptor.qsNewRow = function(str) {
     $$('.pmr-row').each(SortableTable.addRowClass);
 };
 
-document.observe('dom:loaded', function() {
-	$$('.pmr-row').each(Raptor.qsFixRow);
+Raptor.call_action_perform = function (event) {
+    var ele = $(event.target);
+    var val = ele.getValue();
+    var tbody = ele.up('tbody');
+    var update = tbody.down('.call-update-container');
+    var opc = tbody.down('.opc-container');
 
-	$$('.opc-container').each(Raptor.opc_init);
-	var search = window.location.search;
-	var time = 600;
-	if (typeof(search) == "string" && search.length > 0) {
-	    eval("var " + search.replace('?', ''));
-	    if ((undefined != test) && (test == true)) {
-		time = 10;
-	    }
+    if (val == "update") {
+	if (!update.visible())
+	    update.toggleForm();
+    } else {
+	if (update.visible())
+	    update.toggleForm();
+    }
+    if (val == "opc") {
+	if (!opc.visible())
+	    opc.toggleForm();
+    } else {
+	if (opc.visible())
+	    opc.toggleForm();
+    }
+    if (val == "ct") {
+	var url = ele.readAttribute('data-ct');
+	ele.disable();
+	new Ajax.Request(url,
+			 {
+			     asynchronous : true,
+			     evalScripts : true,
+			     parameters : 'authenticity_token=' + encodeURIComponent(pageSettings.authenticityToken)
+			 });
+    }
+    if (val == "dispatch" || val == "undispatch") {
+	var url = ele.readAttribute('data-dispatch');
+	ele.disable();
+	new Ajax.Request(url,
+			 {
+			     asynchronous : true,
+			     evalScripts : true,
+			     parameters : 'authenticity_token=' + encodeURIComponent(pageSettings.authenticityToken)
+			 });
+    }
+};
+
+Raptor.call_action_init = function(ele) {
+    ele.observe('change', Raptor.call_action_perform);
+};
+
+// new Ajax.Request('/raptor/combined_call/PEDZ,S,165,302/dispatch', {asynchronous:true, evalScripts:true, parameters:'authenticity_token=' + encodeURIComponent('Ik66IThxIvuatBiYik9GYW/FTbt4JXt0VQkkU2fCpro=')}); return false;
+
+document.observe('dom:loaded', function() {
+    $$('.pmr-row').each(Raptor.qsFixRow);
+
+    var search = window.location.search;
+    var time = 600;
+    if (typeof(search) == "string" && search.length > 0) {
+	eval("var " + search.replace('?', ''));
+	if ((undefined != test) && (test == true)) {
+	    time = 10;
 	}
-	Raptor.qs_updater = new  PeriodicalExecuter(Raptor.qsCheckCtTimes, time);
-    });
+    }
+    Raptor.qs_updater = new  PeriodicalExecuter(Raptor.qsCheckCtTimes, time);
+});

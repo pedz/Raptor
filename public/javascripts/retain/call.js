@@ -20,26 +20,6 @@ Raptor.newUrl = function(to, sub) {
 
 Raptor.didNewUrl = false;
 
-/* Called when the button to show the update form is poked */
-Raptor.callToggleForm = function() {
-    new Effect.toggle(this, 'appear', {
-	duration: 0.1,
-	queue: 'end',
-	afterUpdate: function(effect) {
-	    Raptor.recalcDimensions();
-	},
-	afterFinish: function(effect) {
-	    var that = effect.element;
-	    if (that.visible()) {
-		var update_box = that.select('.call-update-update-pmr')[0];
-		if (update_box)
-		    update_box.redraw();
-	    }
-	    Raptor.recalcDimensions();
-	}
-    });
-};
-
 /* Bound with right as this */
 Raptor.rightDelayStart = function (event) {
     event.stop();
@@ -120,6 +100,26 @@ Raptor.closeLeft = function () {
     $('left').hide();
 };
 
+/* Called when the button to show the update form is poked */
+Raptor.callToggleForm = function() {
+    new Effect.toggle(this, 'appear', {
+	duration: 0.1,
+	queue: 'end',
+	afterUpdate: function(effect) {
+	    Raptor.recalcDimensions();
+	},
+	afterFinish: function(effect) {
+	    var that = effect.element;
+	    if (that.visible()) {
+		var update_box = that.select('.call-update-update-pmr')[0];
+		if (update_box)
+		    update_box.redraw();
+	    }
+	    Raptor.recalcDimensions();
+	}
+    });
+};
+
 document.observe('dom:loaded', function() {
 	$$('.call-update-container').each(function (ele) {
 		ele.toggleForm = Raptor.callToggleForm.bind(ele);
@@ -136,7 +136,9 @@ document.observe('dom:loaded', function() {
 	    ele.hide();
 	});
 
-	$$('.opc-container').each(Raptor.opc_init);
+	$$('.opc-container').each(function (ele) {
+	    Raptor.opc_init(ele, Raptor.callToggleForm);
+	});
 
 	Raptor.right = $('right');
 	Raptor.right_tab = $('right-tab');
