@@ -305,7 +305,7 @@ Raptor.opc_error = function () {
  * Called at page load time for each opc-container on the page.  ele
  * is the opc-container
  */
-Raptor.opc_init = function (ele) {
+Raptor.opc_init = function (ele, cascade_function) {
     var div = ele.down('.opc-div');
     var start_id;
     var start_value;
@@ -326,7 +326,8 @@ Raptor.opc_init = function (ele) {
 		})
 	    });
 	    ele.setup = 1;
-	    var component = $('comp-spec').innerHTML.trim();
+	    var component = $('comp-spec') || ele.up('tbody').down('.comp-spec');
+	    component = component.innerHTML.trim();
 	    var path = "/raptor/combined_components/" + component + "/opc";
 	    ele.temp_span = new Element('span', { id: ele.opc_div.id.replace('div', 'temp-span') }).
 		update('Fetching OPC Data');
@@ -339,7 +340,7 @@ Raptor.opc_init = function (ele) {
 	} else {
 	    $(start_id).setValue(start_value);
 	}
-	Raptor.callToggleForm.apply(ele);
+	cascade_function.apply(ele);
     };
     div.redraw = function() {
 	$(ele).down('form').reset();

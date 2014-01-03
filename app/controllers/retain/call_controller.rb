@@ -450,6 +450,10 @@ module Retain
       end
 
       render_message('message-area', [ mess("CT completed successfully") ]) do |page|
+        page.replace("tr-#{@call.to_param.gsub(",", "-")}",
+                     :partial => 'retain/qs/qs_row',
+                     :locals => { :call => @call })
+        page.call('Raptor.qsNewRow', "tr-#{@call.to_param.gsub(",", "-")}")
         page.visual_effect :fade, 'message-area'
       end
     end
