@@ -8,4 +8,4 @@ if [[ ! -r "$f" ]] ; then
   echo "Can't find the CSPO file" 1>& 2
   exit 1
 fi
-git checkout master && tools/do-cspo "$f" && git checkout p51-production
+git checkout crit-sits && tools/do-cspo "$f" && git checkout p51-production
