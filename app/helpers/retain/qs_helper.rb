@@ -431,6 +431,7 @@ module Retain
           td_class = "good"
           td_title = "Hitachi not checked"
         end
+        td_class += " comp-spec"
         td binding, :class => td_class, :title => td_title do |binding|
           concat(pmr_comp)
         end
@@ -551,7 +552,7 @@ module Retain
       else
         add_page_setting("opc_#{call.to_id}", call.pmr.opc)
         td(binding,
-           :id => 'opc-div_$#{call.ppg}',
+           :id => "opc_div_#{call.ppg}",
            :style => 'display: none;',
            :class => 'opc-container') do |binding|
           opc = CallOpc.new(call)
@@ -659,22 +660,34 @@ module Retain
     end
     
     def menu_button(binding, header, call)
-      menu_options = {
-        "Update ..." => "update",
-        "OPC ..." => "opc",
-        "Exec Summary ..." => "exec_summary",
-        "CT" => "ct",
-        "Dispatch" => "dispatch",
-        "Undispatch" => "undispatch"
-      }
       # logger.debug("QS: call_button #{call.nil? ? "header" : call.to_param}")
       if header
         th binding, :class => 'call-button number' do |binding|
           concat("Actions")
         end
       else
+        opc_text = call.pmr.valid_opc ? "Update OPC ..." : "Create OPC ..."
+        menu_options = [
+                        ["Update Call ...", "update"],
+                        [opc_text, "opc"],
+                        ["Do CT", "ct"]
+                       ]
+        if call.is_dispatched
+          if call.dispatched_employee == @retain_user_connection_parameters.signon
+            menu_options.push(["Undispatch", "undispatch"])
+          end
+        else
+          menu_options.push(["Dispatch", "dispatch"])
+        end
+        
         td binding, :class => 'call-button number' do |binding|
-          concat(collection_select(:not_used, :not_used, menu_options, :last, :first, {:prompt => true }))
+          concat(collection_select("#{call.to_param}", :action, menu_options,
+                                   :last, :first, {:prompt => true },
+                                   {
+                                     :class => "call-action",
+                                     "data-dispatch" => dispatch_combined_call_path(call),
+                                     "data-ct" => ct_combined_call_path(call)
+                                   }))
         end
       end
     end

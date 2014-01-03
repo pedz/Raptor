@@ -694,6 +694,12 @@ module Cached
       (problem + ',' + branch + ',' + country).upcase
     end
     
+    # Returns true if the PMR has a valid OPC
+    def valid_opc
+      temp = self.opc
+      temp && (temp.length > 11) && (temp[0,11] == self.service_request)
+    end
+
     private
 
     ##

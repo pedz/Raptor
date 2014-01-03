@@ -41,7 +41,6 @@ module Retain
     end
 
     def clear_boxes_button(call_model)
-      pmr = call_model.call.pmr
       id = id_for(call_model, "clear-boxes")
       hash = {
         :class => 'clear-boxes-button',
@@ -50,6 +49,12 @@ module Retain
       content_tag :button, "Clear Boxes", hash
     end
 
+    def last_sg_span(call_model)
+      content_tag(:span,
+                  "Last SG was #{call_model.last_sg}",
+                  html_tag(call_model, 'last-service-given-span'))
+    end
+    
     def to_owner_button(call_model)
       call = call_model.call
       pmr = call.pmr

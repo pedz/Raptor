@@ -9,6 +9,7 @@ Raptor.addtxtClicked = function(event) {
     this.requeueSpan.hide();
     this.prioritySpan.hide();
     this.serviceGivenSpan.hide();
+    this.lastServiceGivenSpan.hide();
 };
 
 Raptor.clearBoxes = function(event) {
@@ -47,6 +48,7 @@ Raptor.requeueClicked = function(event) {
     this.requeueSpan.show();
     this.prioritySpan.show();
     this.serviceGivenSpan.show();
+    this.lastServiceGivenSpan.show();
     if (typeof this.inputListSetup == "undefined") {
 	Raptor.textInputWithList(this.the_form.inputList);
 	this.inputListSetup = true;
@@ -59,6 +61,7 @@ Raptor.dupClicked = function(event) {
     this.requeueSpan.show();
     this.prioritySpan.show();
     this.serviceGivenSpan.hide();
+    this.lastServiceGivenSpan.hide();
     if (typeof this.inputListSetup == "undefined") {
 	Raptor.textInputWithList(this.the_form.inputList);
 	this.inputListSetup = true;
@@ -71,6 +74,7 @@ Raptor.closeClicked = function(event) {
     this.requeueSpan.hide();
     this.prioritySpan.hide();
     this.serviceGivenSpan.show();
+    this.lastServiceGivenSpan.show();
 };
 
 /* called when the add time check box is clicked */
@@ -102,10 +106,11 @@ Raptor.updateClicked = function(event) {
  */
 Raptor.setupRadioButtonSpans = function(ele) {
     var form = ele.up('form');
-    ele.caSpan           = form.down('.call-update-ca-span');
-    ele.requeueSpan      = form.down('.call-update-requeue-span');
-    ele.prioritySpan     = form.down('.call-update-priority-span');
-    ele.serviceGivenSpan = form.down('.call-update-service-given-span');
+    ele.caSpan               = form.down('.call-update-ca-span');
+    ele.requeueSpan          = form.down('.call-update-requeue-span');
+    ele.prioritySpan         = form.down('.call-update-priority-span');
+    ele.serviceGivenSpan     = form.down('.call-update-service-given-span');
+    ele.lastServiceGivenSpan = form.down('.call-update-last-service-given-span');
     ele.the_form = form;
 };
 

@@ -118,9 +118,10 @@ module Retain
       end
     end
 
-    def opc_button(binding)
+    def opc_button(binding, call)
+      opc_text = call.pmr.valid_opc ? "Update OPC" : "Create OPC"
       span binding, :class => 'opc-span' do |binding|
-        concat(button("OPC", "$(\"opc-div\").toggleForm();"))
+        concat(button(opc_text, "$(\"opc-div\").toggleForm();"))
       end
     end
 
