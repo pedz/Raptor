@@ -38,11 +38,13 @@ module Retain
         :problem => options[:problem],
         :branch => options[:branch],
         :country => options[:country],
-        :group_request => [[ :comments ]]
+        :group_request => [[ :creation_date ]]
       }
       pmr = new(retain_user_connection_parameters, new_options)
       begin
-        comments = pmr.comments
+        cd = pmr.creation_date  # causes the fetch
+        logger.debug("pmr in valid? is #{pmr}; class is #{pmr.class}")
+        pmr                     # return entire result
       rescue Retain::SdiReaderError => e
         if e.sr == 115 && e.ex == 125
           raise Combined::PmrNotFound.new("%s,%s,%s" % [ pmr.problem, pmr.branch, pmr.country ])

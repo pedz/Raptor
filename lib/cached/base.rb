@@ -66,7 +66,7 @@ module Cached
       end
       
       def find_or_new(options)
-        find(:first, :conditions => keys_only(options)) || new(options)
+        find(:first, :conditions => keys_only(options)) || new(fields_only(options))
       end
       
       # Fetch or create the DB record from a Retain record
@@ -82,19 +82,13 @@ module Cached
       def from_options(retain_user_connection_parameters, options)
         # logger.debug("CHC: from_options #{self} with #{options.inspect}")
         temp = find(:first, :conditions => keys_only(options))
-        if temp.nil? && retain_class.valid?(retain_user_connection_parameters, options)
-          # I changed this July 14, 2008.  It use to be new instead of
-          # create.  But, if the queue is valid, lets go ahead and save
-          # it in the database.  This makes the cascade of objects more
-          # stable (when this object is used to create another object).
-          # This might turn out to be a hugh mistake... Lets see...
-          #
-          # Ok.  That didn't work because when pmr.rb calls this to find
-          # the call, the call is saved before the PMR is hooked up.
-          # So, we are going to move this back to new and create two new
-          # methods create_from_options and new_from_options.
-          # new_from_options is just an alias while create will ask if
-          # the record is new and save it if it is.
+        if temp.nil? && (rtemp = retain_class.valid?(retain_user_connection_parameters, options))
+          # currently just used for PMRs.  Allows the valid? to return
+          # a retain object that fills in more fields such as the
+          # creation date of a PMR.
+          unless rtemp == true
+            options.merge!(options_from_retain(rtemp))
+          end
           temp = new(fields_only(options))
         end
         temp

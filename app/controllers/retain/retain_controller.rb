@@ -113,9 +113,10 @@ module Retain
       logger.debug("in setup_logon_instance")
       @retain_user_connection_parameters = ConnectionParameters.new(retain_user)
       # logger.debug("params 2 = #{@retain_user_connection_parameters.inspect}")
-      # The Logon instance is the way we pass @retain_user_connection_parameters from the Retain
-      # controller to any Combined models.  The Combined models then
-      # pass it explicitly to any Retain models that they need.
+      # The Logon instance is the way we pass
+      # @retain_user_connection_parameters from the Retain controller
+      # to any Combined models.  The Combined models then pass it
+      # explicitly to any Retain models that they need.
       # logger.debug("Logon set")
       Logon.instance.set(@retain_user_connection_parameters)
 
