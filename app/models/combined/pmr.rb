@@ -75,7 +75,10 @@ module Combined
           :country => entity.country,
           :deleted => false
       }
-      create_from_options(retain_user_connection_parameters, pmr_options)
+      if (pmr = create_from_options(retain_user_connection_parameters, pmr_options))
+        pmr = pmr.unwrap_to_cached
+      end
+      pmr
     end
 
     ##
