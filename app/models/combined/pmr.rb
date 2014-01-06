@@ -7,7 +7,7 @@
 module Combined
   # === Combined PMR Model
   class Pmr < Combined::Base
-    set_db_keys :problem, :branch, :country
+    set_db_keys :problem, :branch, :country, :creation_date
 
     set_db_constants :problem, :branch, :country, :customer
 
@@ -58,9 +58,15 @@ module Combined
 
     ##
     # This finds or creates a PMR that is not deleted.  entity must
-    # respond to :problem, :branch, and :country (methods).  This can
-    # not be done in Cached::Pmr because entity may be stale and cause
-    # a retain fetch.
+    # respond to :problem, :branch, and :country (methods) and is
+    # assumed to be a subclass of Retain so a fetch might occur and
+    # this prevents the code from being in Cached::Pmr.
+    #
+    # This is called from the load method of other Combined entities
+    # such as Call and Psar.  They do not know the creation date of
+    # the PMR but this routine assumes that the PMR is valid in Retain
+    # at the time of the call.  If it can not find a matching PMR, it
+    # returns null (which I'm waffling about).
     def self.find_existing_pmr(entity)
       # This may cause a fetch from Retain if the entity is stale.
       pmr_options = {
@@ -69,7 +75,7 @@ module Combined
           :country => entity.country,
           :deleted => false
       }
-      Cached::Pmr.find_or_new(pmr_options)
+      create_from_options(retain_user_connection_parameters, pmr_options)
     end
 
     ##

@@ -13,9 +13,6 @@ RAILS_GEM_VERSION = '2.3.14' unless defined? RAILS_GEM_VERSION
 require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
-  # Prefer small numbers for migrations
-  config.active_record.timestamped_migrations = false
-
   # Tell Rails we are at a relative offset...
   config.action_controller.relative_url_root = "/raptor"
 
