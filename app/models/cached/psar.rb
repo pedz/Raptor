@@ -242,11 +242,11 @@ module Cached
     # A hook to call the Retain interface to delete the PSAR entry on
     # Retain before destroying it in the database.
     def before_destroy
-      # The call to Retain::Psru below needs to have params come from
-      # somewhere.  I don't know how to do that yet.
-      return false
-      options = { :operand => 'DEL ', :psar_file_and_symbol => psar_file_and_symbol }
-      psru = Retain::Psru.new(options)
+      options = {
+        :operand => 'DEL ',
+        :psar_file_and_symbol => psar_file_and_symbol
+      }
+      psru = Retain::Psru.new(Retain::Logon.instance.get, options)
       begin
         psru.sendit(Retain::Fields.new)
       rescue Retain::SdiReaderError => err
