@@ -1,0 +1,12 @@
+#!/bin/bash
+
+url1='https://techsupport.rchland.ibm.com
+https://techsupport.rchland.ibm.com/wps/portal/Login
+https://techsupport.rchland.ibm.com/wps/portal/!ut/p/c5/04_SB8K8xLLM9MSSzPy8xBz9CP0os3gnA38XV2cXE0P3MCdnA09_Q5dQZ19HIwNvI6B8pFm8AQ7gaEBAdzjIPrN4Z3dHDxNzHwMDd3MjUwMjP9NgI1_HMAMDT2OIPB7z_Tzyc1P1C3IjDLJMHBUBXL6Yfg!!/dl3/d3/L0lDU0lKSkpDZ3BSQ1NBISEvb0VvZ0FFSVFoakZFSUFBak9NNFJrb0lBSVFBIS80QzFiOVdfTnIwUkprQWxJSWlSLS83X0pMMTNUTDU1MTBJSjYwSUFRRkpBR0UwMDg3L2libS5pbnYvMjUxNjYyNjc0Mjgx/
+https://techsupport.rchland.ibm.com/wps/portal/!ut/p/c5/04_SB8K8xLLM9MSSzPy8xBz9CP0os3gnA38XV2cXE0P3MCdnA09_Q5dQZ19HIwNvI6B8pFm8AQ7gaEBAdzjIPrN4Z3dHDxNzHwMDd3MjUwMjP9NgI1_HMAMDT2OIPB7z_Tzyc1P1C3IjDLJMHBUBXL6Yfg!!/dl3/d3/L0lDU0lKSkpDZ3BSQ1NBISEvb0VvZ0FFSVFoakZFSUFBak9NNFJrb0lBSVFBIS80QzFiOVdfTnIwUkprQWxJSWlSLS83X0pMMTNUTDU1MTBJSjYwSUFRRkpBR0UwMDg3L2libS5pbnYvMjUxNjYyNzI4MDky/
+https://techsupport.rchland.ibm.com/wps/portal/!ut/p/c5/04_SB8K8xLLM9MSSzPy8xBz9CP0os3hnd0cPE3MfAwN3cyNTAyM_02AjX8cwAwNfQ6B8pFm8AQ7gaEBAdzjIPrz6_Tzyc1P1C3IjDHQdFRUBcTDFuQ!!/dl3/d3/L0lDU0lKSkpDZ3BSQ1NBISEvb0VvZ0FFSVFoakZFSUFBak9NNFJrb0lBSVFBIS80QzFiOVdfTnIwUkprQWxJSWlSLS83X0pMMTNUTDU1MTBJSjYwSUFRRkpBR0UwMDg1L2libS5pbnYvMjUxNjYyODEwNzIx/
+rm -rf cookies
+curl --cookie-jar cookies \
+  --user-agent 'Mozilla/5.0%20(Macintosh;%20Intel%20Mac%20OS%20X%2010.8;%20rv:26.0)%20Gecko/20100101%20Firefox/26.0'%20\
+  "$url1"
+echo $? 1>&2

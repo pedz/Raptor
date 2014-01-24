@@ -1,0 +1,3111 @@
+ 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<!--[if IE 6]></base><![endif]-->
+<script type="text/javascript" src="/wps/menu/menu_service.js"></script>
+<script type="text/javascript" >var menuService_AppletCodebase ="/wps/menu";</script>
+
+
+
+<!--[if IE 6]>
+<script type="text/javascript">document.getElementsByTagName("html")[0].className+=" lotusui_ie lotusui_ie6";</script>
+<![endif]--> 
+<!--[if IE 7]>
+<script type="text/javascript">document.getElementsByTagName("html")[0].className+=" lotusui_ie lotusui_ie7";</script>
+<![endif]--> 
+<!--[if IE 8]>
+<script type="text/javascript">document.getElementsByTagName("html")[0].className+=" lotusui_ie8";</script>
+<![endif]-->
+<script type="text/javascript"> 
+
+	var djConfig = {parseOnLoad: false, locale: 'en'.replace(/_/, '-').replace(/iw/, 'he').toLowerCase(), baseUrl: "/portal_dojo/dojo/"}; //fix locale compatibility issues in Dojo
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	
+	ibmPortalConfig =   {
+	isDebug: true,
+	isRTL: false,
+	currentPageOID: "6_B0ODECD41GVBC0IO1DUCMA20K2",
+	parentPageID: "6_CGAH47L00G72502N5S2MAV00I3",
+	portalURI: "/wps/portal",
+	themeRootURI: "/w3pagebuilder/themes/html/w3PageBuilderTheme",
+	docUrl: "/wps/doc/en",
+	proxyURL: "/wps/proxy",
+	locale: "en",
+	hasEditorRole: false,
+	hasEditorRoleOnContentNode: false,
+	hasPrivRole: false,
+	hasPrivRoleOnContentNode: false,
+	canMakePrivateChild: false,
+	isPrivatePage: false,
+	isApplication: false,
+	isStatic: false,
+	inEditMode: false,
+	isPageAddedStrategySet: false,
+	isShareStrategySet: false,
+	isMinimalTheme: false,
+	canMovePortlets: false,
+	canCustomize: false,
+	canShare: false,
+    canEditPage: false,
+	isPortletMaximized: false,
+	isWcmPresent: false,
+	portalPublicURI: "/wps/portal",
+	portalProtectedURI: "/wps/myportal",
+	portalContext: "/wps",
+	contentHandlerURI: "/wps/contenthandler/!ut/p/digest!N_5daMHgbyRiOPvt7gua6g/",
+	umSecureHandlerURI: "/wps/um/secure",
+	umHandlerURI: "/wps/um",
+	mmiLogicUrl: '/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lKQSEvUUt3RS9ZUHchL3N5c3RlbSUwbW1pX2xvZ2lj/?canCreateNewPage=true&canMove=false&hasContentManagerRole=false&appGuid=&hasEditorRole=false',
+	isUserLoggedIn: false,
+	xMethodOverride: false,
+	dndPortletsWithHandles: true,
+	dndPortletsWithGhost: true,
+	portletDndSource: "com.ibm.portal.dnd.PortletSourceGhost",
+	isLabel: "false",
+	colorPalette: "defaultTheme/framework/layoutTheme",
+	currentPageLayout: "3columnCenter",
+	hasPageLayout: true,
+	defaultPageLayout: "3columnCenter",
+	defaultPageLayoutContainers: 3,
+	autoNavigateToNewPages: true,
+	defaultPageCache: 86400,
+	contentRenderers: {
+		feed: "pm:oid:wps.p.Feedspace",
+		wcm: "pm:oid:ibm.portal.Web.Content.Viewer.Jsr286"
+	},
+	uiStrings: {	
+		theme_share: "Share ",
+		theme_share_page: "Share Page",
+		theme_add_pages_shared: "Add Pages Shared with Me ",
+		theme_more_actions: "More Actions ",
+		emptyMenuText: "No actions currently available.",
+		errorMsg: "An error occurred rendering the page menu. "
+	},
+	navWidgetEmbeddedEditorParams: {
+		showMakePrivate:false,
+		beforeSubmit: function(){ 
+			if(!dojo.isOpera || dojo.isOpera >= 9.8){ 
+				var waitDlg = new com.ibm.customize.LotusWaitingDialog({"spinner":"/w3pagebuilder/themes/html/w3PageBuilderTheme/css/images/loading.gif","message":"Loading..."}).show();
+			}
+		},
+		blankImg:'/w3pagebuilder/themes/html/w3PageBuilderTheme/css/images/blank.gif'
+	},
+	wcmPageMetadata: {
+		contentRoot: "",
+		sharingScope: ""
+	}
+};
+</script>
+<!-- head.jspf -->
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Description" content="Portal for the IBM i Global Support Center" />
+<meta name="Keywords" content="Portal IBM i Global Support Center Rochester RSC intranet home page" />
+<meta name="Owner" content="gwatts@us.ibm.com" />
+<meta name="Feedback" content="gwatts@us.ibm.com" />
+<meta name="Robots" content="index,follow" />
+<meta name="Security" content="IBM internal use only" />
+<meta name="Source" content="v8 template generator" />
+<meta name="IBM.Country" content="en-US" />
+<meta name="DC.Date" scheme="iso8601" content="2004-02-05" />
+<meta name="DC.Language" scheme="rfc1766" content="en-US" />
+<meta name="DC.Rights" content="Copyright (c) 2001,2004 by IBM Corporation"  />
+<meta name="DC.Type" scheme="IBM_ContentClassTaxonomy" content="ZZ999" />
+<meta name="DC.Subject" scheme="IBM_SubjectTaxonomy" content="taxonomy" />
+<meta name="DC.Publisher" content="IBM Corporation" />
+<meta name="IBM.Effective" scheme="W3CDTF" content="2004-03-06" />
+<meta name="IBM.Industry" scheme="IBM_IndustryTaxonomy" content="ZZ" />
+
+
+    
+        
+	           
+			   
+	
+        	   
+	
+        	   
+	
+        	   
+	
+        	   
+	
+        	   
+	
+
+		
+<title>My Portal for the IBM i Global Support Center | Home</title>
+<link href='about:blank' rel="shortcut icon">
+
+
+
+
+<link rel="styleSheet" href="/wps/CacheProxyServlet/colorPalette/default/browserVendor/Netscape/browserName/Navigator/browserVersion/unknown/locale/en/forwardurl/w3pagebuilder/themes/html/w3PageBuilderTheme/w3Styles.jsp" type="text/css" />
+<link href="/w3pagebuilder/themes/html/w3PageBuilderTheme/images/Portal.ico" rel="shortcut icon" />
+<link rel="bookmark" title='Home' href='/wps/poc/!ut/p/digest!N_5daMHgbyRiOPvt7gua6g/nm/oid:6_B0ODECD41GVBC0IO1DUCMA20K2' hreflang="en"/>
+<link rel="stylesheet" href="/portal_dojo/dijit/themes/tundra/tundra.css" type="text/css" />
+<link rel="stylesheet" href="/portal_dojo/com/ibm/widgets/css/widgets.css" type="text/css" />
+<link rel="stylesheet" href="/w3pagebuilder/themes/html/w3PageBuilderTheme/css/base/styles.jsp" type="text/css" />
+<link rel="stylesheet" href="/w3pagebuilder/themes/html/w3PageBuilderTheme/css/defaultTheme/styles.jsp" type="text/css" />
+<link title="initial" href="/w3pagebuilder/themes/html/w3PageBuilderTheme/css/defaultTheme/framework/layoutTheme.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/mum/css/accessControl.css" type="text/css" />
+<link rel="stylesheet" href="/mum/css/viewMorePage.css" type="text/css" />
+<link rel="stylesheet" href="/mum/css/sharingWithMePage.css" type="text/css" />
+<link rel="stylesheet" href="/mum/css/customDialog.css" type="text/css" />
+<link rel="stylesheet" href="/mum/css/reorderPage.css" type="text/css" />
+
+<script type="text/javascript" src="/w3pagebuilder/themes/html/w3PageBuilderTheme/js/js.jsp"></script>
+<script type="text/javascript" src="/wps_semanticTag/javascript/semanticTagService.js"></script>
+<script type="text/javascript">
+dojo.addOnLoad(function() {
+	
+    var bodyElem = document.getElementsByTagName("body")[0];
+    if (dojo.hasClass(bodyElem, "dijit_a11y")) {            
+        dojo.addClass(bodyElem, "lotusImagesOff");
+    }
+});
+
+	
+	
+
+	initializeResolverStore(); 
+	(function(){
+		var selPath=[],data=[],decodeXML=com.ibm.domUtilities.decodeXML;
+	
+	data={"id":"nm:oid:6_000000000000000000000000A0","title":"Content Root"};data.title=decodeXML(data.title,true);selPath.push(ibmPortalConfig.resolver.seedStore(data,{parent:selPath[selPath.length-1]}));data={"id":"nm:oid:6_CGAH47L00G72502N5S2MAV00I3","title":"My RSC Portal"};data.title=decodeXML(data.title,true);selPath.push(ibmPortalConfig.resolver.seedStore(data,{parent:selPath[selPath.length-1]}));data={"id":"nm:oid:6_B0ODECD41GVBC0IO1DUCMA20K2","title":"Home","contentNodeId":"cm:oid:6_B0ODECD41GVBC0IO1DUCMA20K2"};data.title=decodeXML(data.title,true);selPath.push(ibmPortalConfig.resolver.seedStore(data,{parent:selPath[selPath.length-1]}));
+		initializeSelectionPath(selPath);
+	})();
+	
+	dojo.addOnLoad(function(){	
+		dojo.forEach(["topNavLinksContainer", "navTabsRoot", "themeSearchBoxContainer"], dojo.parser.parse, dojo.parser);
+	});
+dojo.addOnLoad(function() { 
+	ibmPortalSetupStatusBar(
+		"Clear",
+		"Print",
+		"Show Details",
+		"Hide Details",
+		"Warning",
+		"Error",
+		"Information",
+		"A runtime error occured",
+		"messages are available for review",
+		"items are available for review");
+}); 
+</script>
+</head>
+<body class="lotusuiBody tundra "  >
+<div class="lotusFrame">
+
+    <div id="masthead">  
+        <div class="lotusRightCorner">
+            <div class="lotusInner">
+                <h2 class="access">Start of masthead</h2>
+                <div id="w3-sitemark">
+                    <img id="menu_6_B0ODECD41GVBC0IO1DUCMA20K2_main" src="/w3pagebuilder/themes/html/w3PageBuilderTheme/v8/images/id-w3-sitemark-large.gif" alt="IBM logo" width="266" height="70" usemap="#sitemark_map" />
+                    <map id="sitemark_map" name="sitemark_map"><area shape="rect" alt="Link to W3 Home Page" coords="0,0,130,70" href="/wps/myportal" accesskey="1"  />
+                        <span id="menu_6_B0ODECD41GVBC0IO1DUCMA20K2_main_img"/>
+                    </map>
+                </div>
+
+                
+                
+<!-- toolbar.jspf -->
+
+<div id="personalization-links">
+	
+	
+	
+	
+
+	 
+	
+	        <a tabindex="7"  href="/wps/portal/Login">Sign in</a>
+	
+	
+</div>
+<div id="site-title-only">
+		
+		
+ 		
+			
+ 				
+ 			Portal for the IBM i Global Support Center
+ 		
+ 		
+ 		<br/>
+ 		<p id="site-mission-statement-title">
+ 		   
+ 		       
+ 		   World Class Remote Technical Support efficiently delivered to ensure the success of our clients
+ 		</p>
+</div>
+<div id="ibm-logo">
+		<img src="/w3pagebuilder/themes/html/w3PageBuilderTheme/v8/images/id-ibm-logo.gif" alt="IBM Logo" width="44" height="15" />
+</div>
+
+<div id="persistent-nav">
+	 
+	<a id="w3home" target="_blank" href="//w3.ibm.com/" > w3 Home </a>
+	<a id="bluepages" target="_blank" href="//w3.ibm.com/bluepages/"> BluePages </a>
+	<a id="helpnow" target="_blank" href="//w3.ibm.com/help/">Help Central </a>
+	<a id="feedback" target="_blank" href="//techsupport.rchland.ibm.com/w_dir/webcom.nsf/comment?openform " > Feedback </a>
+</div>
+                
+            </div>  
+        </div>  
+    </div>  
+    <div id="ibmPortalStatusBarContainer"></div>
+	    <a id="lotusMainContent" name="lotusMainContent"></a>   
+	<div class="lotusui lotusTitleBar">
+	    <div class="lotusRightCorner">
+	        <div class="lotusInner">
+	            
+	            <div id="navTabsRoot">
+	                
+	                <div id="navTabs" class="dndHasHandles" dojoType="com.ibm.widgets.NavigationWidget" model="ibmPortalConfig.navModel" selectionModel="ibmPortalConfig.selectionModel" tiedToSelection="true" level="1" showInlineEditor="false" embeddedEditorPopup="com.ibm.widgets.NewPageDialog" embeddedEditorPopupParams="ibmPortalConfig.navWidgetEmbeddedEditorParams" dndEnabled="false" dndType="'nm'" dndAccept="'nm'" dndCreator="com.ibm.dnd.PAGE_CREATOR.creator" closeDelay="500" popupDelay="0">
+	                     <ul class="lotusTabs">
+	                         
+	                             
+	                             
+	                             <li dojoType="com.ibm.widgets.DataTab" class="lotusTab dojoDndItem lotusSelected" item="{&#034;id&#034;:&#034;nm:oid:6_B0ODECD41GVBC0IO1DUCMA20K2&#034;,&#034;title&#034;:&#034;Home&#034;,&#034;mayHaveChildren&#034;:0}"><a href="?uri=nm:oid:6_B0ODECD41GVBC0IO1DUCMA20K2">
+	                                 
+	                                     <strong>Home</strong>
+	                                     
+	                                 
+	                                 </a><span class="modelHasChildrenIcon" dojoAttachPoint="hasChildrenIconNode"><img src="/portal_dojo/dojo/resources/blank.gif" alt="" waiRole="presentation" class="dijitArrowButtonInner"/><span class="dijitArrowButtonChar">&#9660;</span></span>
+	                             </li>
+	                         
+	                             
+	                             
+	                             <li dojoType="com.ibm.widgets.DataTab" class="lotusTab dojoDndItem" item="{&#034;id&#034;:&#034;nm:oid:6_B0ODECD41GVBC0IO1DUCMA20K7&#034;,&#034;title&#034;:&#034;Team Wikis&#034;,&#034;mayHaveChildren&#034;:0}"><a href="?uri=nm:oid:6_B0ODECD41GVBC0IO1DUCMA20K7">
+	                                 
+	                                     
+	                                     Team Wikis
+	                                 
+	                                 </a><span class="modelHasChildrenIcon" dojoAttachPoint="hasChildrenIconNode"><img src="/portal_dojo/dojo/resources/blank.gif" alt="" waiRole="presentation" class="dijitArrowButtonInner"/><span class="dijitArrowButtonChar">&#9660;</span></span>
+	                             </li>
+	                         
+	                             
+	                             
+	                             <li dojoType="com.ibm.widgets.DataTab" class="lotusTab dojoDndItem" item="{&#034;id&#034;:&#034;nm:oid:6_B0ODECD41GVBC0IO1DUCMA20C1&#034;,&#034;title&#034;:&#034;Tools&#034;,&#034;mayHaveChildren&#034;:0}"><a href="?uri=nm:oid:6_B0ODECD41GVBC0IO1DUCMA20C1">
+	                                 
+	                                     
+	                                     Tools
+	                                 
+	                                 </a><span class="modelHasChildrenIcon" dojoAttachPoint="hasChildrenIconNode"><img src="/portal_dojo/dojo/resources/blank.gif" alt="" waiRole="presentation" class="dijitArrowButtonInner"/><span class="dijitArrowButtonChar">&#9660;</span></span>
+	                             </li>
+	                         
+	                             
+	                             
+	                             <li dojoType="com.ibm.widgets.DataTab" class="lotusTab dojoDndItem" item="{&#034;id&#034;:&#034;nm:oid:6_JL13TL5510QSD0IQU9OC1R3GM2&#034;,&#034;title&#034;:&#034;IBM i&#034;,&#034;mayHaveChildren&#034;:0}"><a href="?uri=nm:oid:6_JL13TL5510QSD0IQU9OC1R3GM2">
+	                                 
+	                                     
+	                                     IBM i
+	                                 
+	                                 </a><span class="modelHasChildrenIcon" dojoAttachPoint="hasChildrenIconNode"><img src="/portal_dojo/dojo/resources/blank.gif" alt="" waiRole="presentation" class="dijitArrowButtonInner"/><span class="dijitArrowButtonChar">&#9660;</span></span>
+	                             </li>
+	                         
+	                             
+	                             
+	                             <li dojoType="com.ibm.widgets.DataTab" class="lotusTab dojoDndItem" item="{&#034;id&#034;:&#034;nm:oid:6_B0ODECD41OF880ISRHKGT32025&#034;,&#034;title&#034;:&#034;Gadgets&#034;,&#034;mayHaveChildren&#034;:0}"><a href="?uri=nm:oid:6_B0ODECD41OF880ISRHKGT32025">
+	                                 
+	                                     
+	                                     Gadgets
+	                                 
+	                                 </a><span class="modelHasChildrenIcon" dojoAttachPoint="hasChildrenIconNode"><img src="/portal_dojo/dojo/resources/blank.gif" alt="" waiRole="presentation" class="dijitArrowButtonInner"/><span class="dijitArrowButtonChar">&#9660;</span></span>
+	                             </li>
+	                         
+	                             
+	                             
+	                             <li dojoType="com.ibm.widgets.DataTab" class="lotusTab dojoDndItem" item="{&#034;id&#034;:&#034;nm:oid:6_JL13TL551O7M80IALPL4BI3000&#034;,&#034;title&#034;:&#034;Help&#034;,&#034;mayHaveChildren&#034;:0}"><a href="?uri=nm:oid:6_JL13TL551O7M80IALPL4BI3000">
+	                                 
+	                                     
+	                                     Help
+	                                 
+	                                 </a><span class="modelHasChildrenIcon" dojoAttachPoint="hasChildrenIconNode"><img src="/portal_dojo/dojo/resources/blank.gif" alt="" waiRole="presentation" class="dijitArrowButtonInner"/><span class="dijitArrowButtonChar">&#9660;</span></span>
+	                             </li>
+	                         
+	                     </ul>
+	                 </div>  
+	             </div>  
+	             <table id="searchAndEdit">
+	                 <tr>
+	                     
+	                     
+	                 </tr>
+	             </table>
+	             <div style="clear: both;"></div>
+	         </div>  
+	     </div>  
+	 </div>  
+
+	 
+	 
+	 <div class="lotusMain" id="lotusMain">
+	     <div id="navSelectionCrumbs"></div>
+	     <div id="ibmPortalCustomizeShelf" style="clear:both"></div>
+
+	     <div id="layoutContainers" class="ibmPortalLayoutContainers" role="main">
+	         
+	             
+	             
+
+
+
+
+
+
+
+
+
+
+
+	<div class="ibmPortalContentCenterCol1 ibmPortalLayoutContainer" id="oid:7_B0ODECD41GMD20I2FB4VBN0000" orientation=V ordinal=0 directions={right:'1'}>
+		
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+		
+	
+		<div class="portlet-gray" id="w3_login">
+	
+		
+		
+	
+	
+		
+	<div  class="portlet-head-gray-light">
+
+					
+					<span>
+						<h2 class="portlet-head-gray-light" id="title.7_JL13TL5510IJ60IAQFJAGE0087">
+						    <span id="title.7_JL13TL5510IJ60IAQFJAGE0087">
+							    Sign in
+							</span>
+						</h2>
+					</span>
+					
+				
+
+		
+				 
+				
+				
+				<span class="portlet-icons">
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+						    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lDU0NsQSEhL3dHa0FKTk1BLzRCRWo5NEFnLzdfSkwxM1RMNTUxMElKNjBJQVFGSkFHRTAwODcvbWluaW1pemVk/'><img width="16" height="13"  src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-minimize-dark.gif"  alt='Minimize' title='Minimize'/></a>
+						</span>
+										
+					
+					    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+						    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lJSklLVW9wUUEhIS9JTmpBQUF4QUFFUWtMRWlrb0EhIS80Qm40UklBMklQaEMvNl9CME9ERUNENDFHVkJDMElPMURVQ01BMjBLMi83X0pMMTNUTDU1MTBJSjYwSUFRRkpBR0UwMDg3L2hlbHAvbWF4aW1pemVk/'><img width="16" height="13" src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-help-dark.gif" alt='Help' title='Help'/></a>
+						</span>
+			        
+				</span>
+				
+				
+				
+						
+	</div>
+	
+	
+		<div class='portlet-content' id='w3_login-portlet-content'>
+			<p class="access"><a href="#page-index">skip to Page Index</a></p>
+			
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+function ns_7_JL13TL5510IJ60IAQFJAGE0087_isEmpty(myText) 
+{
+	var re = /^\s{1,}$/g; //match any white space including space, tab, form-feed, etc.
+
+	if ((myText.value==null) || (myText.value.length==0) || ((myText.value.search(re)) > -1)) 
+	{
+		return true;
+	}
+	else 
+	{
+		return false;
+	}
+}
+
+
+//----------------------------------------------------------//
+//Validate the data entered
+//----------------------------------------------------------//
+function ns_7_JL13TL5510IJ60IAQFJAGE0087_ValidateLogin(myForm)
+{
+	if (ns_7_JL13TL5510IJ60IAQFJAGE0087_isEmpty(myForm.ns_7_JL13TL5510IJ60IAQFJAGE0087_LoginPortletFormID))
+	{
+		alert("You must fill in your intranet e-mail ID before submitting");
+		myForm.ns_7_JL13TL5510IJ60IAQFJAGE0087_LoginPortletFormID.focus();
+		return false;
+	}
+		
+	if (ns_7_JL13TL5510IJ60IAQFJAGE0087_isEmpty(myForm.ns_7_JL13TL5510IJ60IAQFJAGE0087_LoginPortletFormPassword))
+	{
+		alert("You must fill in the password for your intranet e-mail ID before submitting");
+		myForm.ns_7_JL13TL5510IJ60IAQFJAGE0087_LoginPortletFormPassword.focus();
+		return false;
+	}
+
+	return true;
+}
+
+</script>
+
+<div >
+<div >
+
+<form name="ns_7_JL13TL5510IJ60IAQFJAGE0087_LoginForm" action="https://techsupport.rchland.ibm.com/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lDU0lKSkthWWtnIS9JSFNBQ0lpTXdxSkFDQUpvb0dHRUR1QSEvNEMxYjlXX05yeFFDSWtmZy83X0pMMTNUTDU1MTBJSjYwSUFRRkpBR0UwMDg3LzI1MTY2MjI1NDQzOQ!!/" method="post">
+<table class="sign-in-table" cellspacing="2" cellpadding="2">
+	<tbody>
+		<tr>
+			<td id="sign-in-user">
+			<label for="userid">Internet e-mail ID:</label>
+			<input class="sign-in-text-field" style="width: 100%" id="userID" dir="ltr" name="ns_7_JL13TL5510IJ60IAQFJAGE0087_LoginPortletFormID" value=""/>
+			(e.g., joe@us.ibm.com)
+			</td>
+		</tr>
+		<tr>
+			<td id="sign-in-pass">
+				<label for="password">Password:</label>
+				<input class="sign-in-text-field" style="width: 100%" id="password" dir="ltr" type="password" name="ns_7_JL13TL5510IJ60IAQFJAGE0087_LoginPortletFormPassword" />
+				<input type="hidden" name="login-form-type" value="pwd"/>
+			</td>
+		</tr>
+		
+		<tr>
+			<td id="sign-in-check">
+				<p><a href="//w3.ibm.com/password">Forgot your password?</a></p>
+			</td>
+		</tr>
+		<tr>
+			<td class="button-blue" align="right" id="sign-in-submit">
+<div class="hrule-dots"> </div>
+<p><input type="submit" value="Submit" name="ns_7_JL13TL5510IJ60IAQFJAGE0087_LoginPortletFormSubmit" 
+	onClick="return ns_7_JL13TL5510IJ60IAQFJAGE0087_ValidateLogin(document.ns_7_JL13TL5510IJ60IAQFJAGE0087_LoginForm)" /></p>
+</td>
+		</tr>
+	</tbody>
+</table>
+<input id="resumeSession" type="hidden" value="true" name="resumeSession" /></form>
+</div>
+</div>
+
+<script type="text/javascript">
+
+function ns_7_JL13TL5510IJ60IAQFJAGE0087_setFocus()
+{
+	document.ns_7_JL13TL5510IJ60IAQFJAGE0087_LoginForm.ns_7_JL13TL5510IJ60IAQFJAGE0087_LoginPortletFormID.focus();
+}
+
+setTimeout(ns_7_JL13TL5510IJ60IAQFJAGE0087_setFocus, 400);
+
+</script>
+
+			
+		</div>
+		
+	
+	<div class="clearing"></div>
+	</div>
+	
+	
+	
+	
+	
+
+<a name="skipportlet7_JL13TL5510IJ60IAQFJAGE0087"></a>
+
+<script type="text/javascript">
+var dynamicTitle =
+    "Sign in";
+var titleElement = 
+    document.getElementById("title.7_JL13TL5510IJ60IAQFJAGE0087");
+if (titleElement != null) {
+    if (dynamicTitle != "" && dynamicTitle != "null")
+        titleElement.innerHTML = dynamicTitle;
+    }
+</script>
+<script type="text/javascript">var e=document.getElementById('title.7_JL13TL5510IJ60IAQFJAGE0087');if(e){e.innerHTML='Sign in';}</script>
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+		
+	
+		<div class="portlet-blue" id="xx">
+	
+		
+		
+	
+	
+		
+	<div  class="portlet-head-blue-med">
+
+					
+					<span>
+						<h2 class="portlet-head-blue-med" id="title.7_JL13TL55102A80IAQ386BG00O7">
+						    <span id="title.7_JL13TL55102A80IAQ386BG00O7">
+							    SharedBookmarks
+							</span>
+						</h2>
+					</span>
+					
+				
+
+		
+				 
+				
+				
+				<span class="portlet-icons">
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+						
+						    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+							    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lDU0tLVUEhL3dPa0FKRk5FRENBIS80QkVqOTRBZy83X0pMMTNUTDU1MTAyQTgwSUFRMzg2QkcwME83L21heGltaXplZA!!/'><img width="16" height="13" src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-maximize-light.gif" alt='Maximize' title='Maximize'/></a>
+							</span>
+						
+					
+					
+					
+					
+					
+					    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+						    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lDU0NsQSEhL3dHa0FKTk1BLzRCRWo5NEFnLzdfSkwxM1RMNTUxMDJBODBJQVEzODZCRzAwTzcvbWluaW1pemVk/'><img width="16" height="13"  src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-minimize-light.gif"  alt='Minimize' title='Minimize'/></a>
+						</span>
+										
+					
+					    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+						    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lJSklLVW9wUUEhIS9JTmpBQUF4QUFFUWtMRWlrb0EhIS80Qm40UklBMklQaEMvNl9CME9ERUNENDFHVkJDMElPMURVQ01BMjBLMi83X0pMMTNUTDU1MTAyQTgwSUFRMzg2QkcwME83L2hlbHAvbWF4aW1pemVk/'><img width="16" height="13" src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-help-light.gif" alt='Help' title='Help'/></a>
+						</span>
+			        
+				</span>
+				
+				
+				
+						
+	</div>
+	
+	
+		<div class='portlet-content' id='xx-portlet-content'>
+			<p class="access"><a href="#page-index">skip to Page Index</a></p>
+			
+
+
+
+
+
+
+
+<form method="POST" name="ns_7_JL13TL55102A80IAQ386BG00O7_viewform">
+
+<table style="overflow:hidden">
+	
+		
+		
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://w3.rchland.ibm.com" target="_blank" class="BookmarkBean" title="http://w3.rchland.ibm.com">Rochester w3 intranet site</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://rtsweb1.raleigh.ibm.com/tscp/" target="_blank" class="BookmarkBean" title="http://rtsweb1.raleigh.ibm.com/tscp/">Tech Support Collaboration</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://techsupport.rchland.ibm.com/s_dir/slkbase.nsf/slkbase" target="_blank" class="BookmarkBean" title="http://techsupport.rchland.ibm.com/s_dir/slkbase.nsf/slkbase">Software Knowledgebase</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://techsupport.rchland.ibm.com/s_dir/slkbase.nsf/slkhdw?openform" target="_blank" class="BookmarkBean" title="http://techsupport.rchland.ibm.com/s_dir/slkbase.nsf/slkhdw?openform">Hardware Knowledgebase</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://techsupport.rchland.ibm.com/a_dir/as4ptf.nsf/as4ptfhome" target="_blank" class="BookmarkBean" title="http://techsupport.rchland.ibm.com/a_dir/as4ptf.nsf/as4ptfhome">PTF Cover Letters Database</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://techsupport.rchland.ibm.com/s_dir/sline003.nsf/sline003home" target="_blank" class="BookmarkBean" title="http://techsupport.rchland.ibm.com/s_dir/sline003.nsf/sline003home">PSP Database</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="https://longspeakz.boulder.ibm.com/WebRetain/DispatcherServlet?oper=retainweb" target="_blank" class="BookmarkBean" title="https://longspeakz.boulder.ibm.com/WebRetain/DispatcherServlet?oper=retainweb">RETAIN</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://techsupport.rchland.ibm.com/StartCCMon/CCMonLaunch.html" target="_blank" class="BookmarkBean" title="http://techsupport.rchland.ibm.com/StartCCMon/CCMonLaunch.html">CCMON</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://w3.rchland.ibm.com/projects/pst/SRC/codelookup.html" target="_blank" class="BookmarkBean" title="http://w3.rchland.ibm.com/projects/pst/SRC/codelookup.html">SRC Lookup</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://w3.rchland.ibm.com/~slicst/liclog/lookup.htm" target="_blank" class="BookmarkBean" title="http://w3.rchland.ibm.com/~slicst/liclog/lookup.htm">VLOG Lookup</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="https://w3.ibm.com/services/technology/datacase/primary/index.wss" target="_blank" class="BookmarkBean" title="https://w3.ibm.com/services/technology/datacase/primary/index.wss">TSKBS (Primary)</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="https://techsupport.rchland.ibm.com/i_dir/idoctor2.nsf/" target="_blank" class="BookmarkBean" title="https://techsupport.rchland.ibm.com/i_dir/idoctor2.nsf/">iDoctor (internal)</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://techsupport.rchland.ibm.com/d_dir/DASD.nsf" target="_blank" class="BookmarkBean" title="http://techsupport.rchland.ibm.com/d_dir/DASD.nsf">DASD tracker</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://itcenter.mainz.de.ibm.com/ecurep/emea.html" target="_blank" class="BookmarkBean" title="http://itcenter.mainz.de.ibm.com/ecurep/emea.html">ECuRep</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://techsupport.rchland.ibm.com/c_dir/commond.nsf/1049300e69305958862564d0004ab1f6/935001756a59dbf5862564ad004b2bb8?OpenDocument" target="_blank" class="BookmarkBean" title="http://techsupport.rchland.ibm.com/c_dir/commond.nsf/1049300e69305958862564d0004ab1f6/935001756a59dbf5862564ad004b2bb8?OpenDocument">List of RSC lab servers</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="https://techsupport.rchland.ibm.com/PolicyEditor/Editor/Start" target="_blank" class="BookmarkBean" title="https://techsupport.rchland.ibm.com/PolicyEditor/Editor/Start">Policy Editor</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://bsoinfo.rchland.ibm.com/" target="_blank" class="BookmarkBean" title="http://bsoinfo.rchland.ibm.com/">Rochester BSO</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://rchasa05.rchland.ibm.com/pwd/input" target="_blank" class="BookmarkBean" title="http://rchasa05.rchland.ibm.com/pwd/input">User ID reset on RS1, RS2 & RS4</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+							
+								<a href="notes://scdbsrv1.rchland.ibm.com/86257A8A00714D56" target="_self" class="BookmarkBean" title="notes://scdbsrv1.rchland.ibm.com/86257A8A00714D56">Calendar Tool</a>
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="https://build.rchland.ibm.com/userprofilemanager/create.wss" target="_blank" class="BookmarkBean" title="https://build.rchland.ibm.com/userprofilemanager/create.wss">RSC lab server profile request</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://techsupport.rchland.ibm.com/s_dir/SCHome.nsf/all/SupportCenterHP" target="_blank" class="BookmarkBean" title="http://techsupport.rchland.ibm.com/s_dir/SCHome.nsf/all/SupportCenterHP">Old RSC home page</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://w3.tap.ibm.com/w3ki/display/RSCTT" target="_blank" class="BookmarkBean" title="http://w3.tap.ibm.com/w3ki/display/RSCTT">Workstation tools support</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+		
+	
+</table>
+</form>
+			
+		</div>
+		
+	
+	<div class="clearing"></div>
+	</div>
+	
+	
+	
+	
+	
+
+<a name="skipportlet7_JL13TL55102A80IAQ386BG00O7"></a>
+
+<script type="text/javascript">
+var dynamicTitle =
+    "Shared Bookmarks";
+var titleElement = 
+    document.getElementById("title.7_JL13TL55102A80IAQ386BG00O7");
+if (titleElement != null) {
+    if (dynamicTitle != "" && dynamicTitle != "null")
+        titleElement.innerHTML = dynamicTitle;
+    }
+</script>
+<script type="text/javascript">var e=document.getElementById('title.7_JL13TL55102A80IAQ386BG00O7');if(e){e.innerHTML='Shared Bookmarks';}</script>
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+		
+	
+		<div class="portlet-blue" id="xx">
+	
+		
+		
+	
+	
+		
+	<div  class="portlet-head-blue-med">
+
+					
+					<span>
+						<h2 class="portlet-head-blue-med" id="title.7_JL13TL55102A80IAQ386BG0044">
+						    <span id="title.7_JL13TL55102A80IAQ386BG0044">
+							    SharedBookmarks
+							</span>
+						</h2>
+					</span>
+					
+				
+
+		
+				 
+				
+				
+				<span class="portlet-icons">
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+						
+						    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+							    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lDU0tLVUEhL3dPa0FKRk5FRENBIS80QkVqOTRBZy83X0pMMTNUTDU1MTAyQTgwSUFRMzg2QkcwMDQ0L21heGltaXplZA!!/'><img width="16" height="13" src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-maximize-light.gif" alt='Maximize' title='Maximize'/></a>
+							</span>
+						
+					
+					
+					
+					
+					
+					    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+						    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lDU0NsQSEhL3dHa0FKTk1BLzRCRWo5NEFnLzdfSkwxM1RMNTUxMDJBODBJQVEzODZCRzAwNDQvbWluaW1pemVk/'><img width="16" height="13"  src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-minimize-light.gif"  alt='Minimize' title='Minimize'/></a>
+						</span>
+										
+					
+					    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+						    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lJSklLVW9wUUEhIS9JTmpBQUF4QUFFUWtMRWlrb0EhIS80Qm40UklBMklQaEMvNl9CME9ERUNENDFHVkJDMElPMURVQ01BMjBLMi83X0pMMTNUTDU1MTAyQTgwSUFRMzg2QkcwMDQ0L2hlbHAvbWF4aW1pemVk/'><img width="16" height="13" src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-help-light.gif" alt='Help' title='Help'/></a>
+						</span>
+			        
+				</span>
+				
+				
+				
+						
+	</div>
+	
+	
+		<div class='portlet-content' id='xx-portlet-content'>
+			<p class="access"><a href="#page-index">skip to Page Index</a></p>
+			
+
+
+
+
+
+
+
+<form method="POST" name="ns_7_JL13TL55102A80IAQ386BG0044_viewform">
+
+<table style="overflow:hidden">
+	
+		
+		
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://www.ibm.com/systems/support/i/fixes/index.html" target="_blank" class="BookmarkBean" title="http://www.ibm.com/systems/support/i/fixes/index.html">Fixes</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://www.ibm.com/support/entry/portal/Hardware/Systems/System_i" target="_blank" class="BookmarkBean" title="http://www.ibm.com/support/entry/portal/Hardware/Systems/System_i">IBM System i support</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://www.ibm.com/systems/support/i/forums/index.html" target="_blank" class="BookmarkBean" title="http://www.ibm.com/systems/support/i/forums/index.html">IBM i Forums</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://www.ibm.com/systems/support/i/planning/index.html" target="_blank" class="BookmarkBean" title="http://www.ibm.com/systems/support/i/planning/index.html">IBM i Planning</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://www.ibm.com/systems/support/i/probsolv/index.html" target="_blank" class="BookmarkBean" title="http://www.ibm.com/systems/support/i/probsolv/index.html">IBM i Problem Solving</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://www.ibm.com/systems/support/i/services/index.html" target="_blank" class="BookmarkBean" title="http://www.ibm.com/systems/support/i/services/index.html">IBM i Services</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://www.ibm.com/systems/support/i/library/index.html" target="_blank" class="BookmarkBean" title="http://www.ibm.com/systems/support/i/library/index.html">IBM i Technical Library</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://www.ibm.com/systems/support/i/tools/index.html" target="_blank" class="BookmarkBean" title="http://www.ibm.com/systems/support/i/tools/index.html">IBM i Tools</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://www.ibm.com/software/support/exchangeinfo.html" target="_blank" class="BookmarkBean" title="http://www.ibm.com/software/support/exchangeinfo.html">Client Diagnostic Data Repository</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="https://www-912.ibm.com/i_dir/iDoctor.nsf" target="_blank" class="BookmarkBean" title="https://www-912.ibm.com/i_dir/iDoctor.nsf">iDoctor (external)</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+		
+	
+</table>
+</form>
+			
+		</div>
+		
+	
+	<div class="clearing"></div>
+	</div>
+	
+	
+	
+	
+	
+
+<a name="skipportlet7_JL13TL55102A80IAQ386BG0044"></a>
+
+<script type="text/javascript">
+var dynamicTitle =
+    "Shared Bookmarks";
+var titleElement = 
+    document.getElementById("title.7_JL13TL55102A80IAQ386BG0044");
+if (titleElement != null) {
+    if (dynamicTitle != "" && dynamicTitle != "null")
+        titleElement.innerHTML = dynamicTitle;
+    }
+</script>
+<script type="text/javascript">var e=document.getElementById('title.7_JL13TL55102A80IAQ386BG0044');if(e){e.innerHTML='Shared Bookmarks';}</script>
+		
+		    <div><p class="terms"><a href="javascript:openTOU();">Terms of use</a></p></div>
+		
+	</div><!--end colLeft-->
+
+
+
+	<div class="ibmPortalContentCenterCol2 ibmPortalLayoutContainer ibmPortalMainContainer" id="oid:7_B0ODECD41GMD20I2FB4VBN0004" orientation=V ordinal=1 directions={right:'2',left:'0'}>
+		
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+		
+	
+		<div class="portlet-white" id="xx">
+	
+		
+		
+	
+	
+		
+	<div  class="portlet-head-gray-med">
+
+					
+					<span>
+						<h2 class="portlet-head-gray-med" id="title.7_JL13TL55102A80IAQ386BG00O6">
+						    <span id="title.7_JL13TL55102A80IAQ386BG00O6">
+							    Welcome
+							</span>
+						</h2>
+					</span>
+					
+				
+
+		
+				 
+				
+				
+				<span class="portlet-icons">
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+						    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lDU0NsQSEhL3dHa0FKTk1BLzRCRWo5NEFnLzdfSkwxM1RMNTUxMDJBODBJQVEzODZCRzAwTzYvbWluaW1pemVk/'><img width="16" height="13"  src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-minimize-light.gif"  alt='Minimize' title='Minimize'/></a>
+						</span>
+										
+					
+				</span>
+				
+				
+				
+						
+	</div>
+	
+	
+		<div class='portlet-content' id='xx-portlet-content'>
+			<p class="access"><a href="#page-index">skip to Page Index</a></p>
+			
+
+
+
+
+<div style="margin: 3px">
+<h2><strong>Welcome to the Portal for the IBM i Global Support Center</strong></h2>
+<br/>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td valign="bottom" width="150"><img width="110" height="72" align="left" src='/wps/PA_Welcome/images/phones_w3v8_39.jpg' alt="Phones"/></td>
+<td>
+With the new Portal for the IBM i Global Support Center, you can:
+<br/><br/>
+<table  border="0"  cellspacing="0" cellpadding="0">
+<tr><td width="10"><img src='/wps/PA_Welcome/images/dot.jpg' alt="bullet"/></td><td>&nbsp;Customize your support environment</td></tr>
+<tr><td width="10"><img src='/wps/PA_Welcome/images/dot.jpg' alt="bullet"/></td><td>&nbsp;Share bookmarks to commonly used tools</td></tr>
+<tr><td width="10"><img src='/wps/PA_Welcome/images/dot.jpg' alt="bullet"/></td><td>&nbsp;Search our integrated Domino Domain Index</td></tr>
+<tr><td width="10"><img src='/wps/PA_Welcome/images/dot.jpg' alt="bullet"/></td><td>&nbsp;Read IBM i Support related and general news (RSS)</td></tr>
+<tr><td width="10"><img src='/wps/PA_Welcome/images/dot.jpg' alt="bullet"/></td><td>&nbsp;Try IBM i specific portlets</td></tr>
+<tr><td width="10"><img src='/wps/PA_Welcome/images/dot.jpg' alt="bullet"/></td><td>&nbsp;Work with Google&#0153; Gadgets and more!</td></tr>
+</table>
+</td></tr>
+</table>
+<br/>
+<table  border="0"><tr><td>
+<div id="border_ul" style="border: 2px; border-color: #FFFFFF; border: solid; border-top-color: #DDDDDD; border-left-color: #888888; border-bottom-color: #666666; border-right-color: #AAAAAA; background-color: #D8F8B8;">
+<div style="border: 3px; border-left: 5px; border-top: 5px; border-right: none; border-bottom: none; border-color: #222222;">
+<div style="padding-top: 3px; padding-bottom: 3px;padding-left: 8px; padding-right: 3px; border: 1px; border-color: #AAAAAA; border-style: solid; border-bottom: none; border-right: none">
+<img src='/wps/PA_Welcome/images/hand.jpg' alt="Hand" hspace="2" vspace="1" align="right"/>
+<span style="font-family: Verdana, Arial; font-weight: bolder; font-size: 20px;">Receive personalized content</span>
+<p style="font-family: Verdana, Arial; font-size: 13px; margin-top: 9px;"><a href="/wps/portal/Login"><b>Sign in</b></a> 
+today to customize the Portal for the IBM i Global Support Center to suit your needs.</p></div></div></div></td></tr></table> 
+</div>
+			
+		</div>
+		
+	
+	<div class="clearing"></div>
+	</div>
+	
+	
+	
+	
+	
+
+<a name="skipportlet7_JL13TL55102A80IAQ386BG00O6"></a>
+
+<script type="text/javascript">
+var dynamicTitle =
+    "Welcome";
+var titleElement = 
+    document.getElementById("title.7_JL13TL55102A80IAQ386BG00O6");
+if (titleElement != null) {
+    if (dynamicTitle != "" && dynamicTitle != "null")
+        titleElement.innerHTML = dynamicTitle;
+    }
+</script>
+<script type="text/javascript">var e=document.getElementById('title.7_JL13TL55102A80IAQ386BG00O6');if(e){e.innerHTML='Welcome';}</script>
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+		
+	
+		<div class="portlet-white" id="xx">
+	
+		
+		
+	
+	
+		
+	<div  class="portlet-head-gray-med">
+
+					
+					<span>
+						<h2 class="portlet-head-gray-med" id="title.7_JL13TL5518B3B0I6KLDU7R00C0">
+						    <span id="title.7_JL13TL5518B3B0I6KLDU7R00C0">
+							    Support Center News
+							</span>
+						</h2>
+					</span>
+					
+				
+
+		
+				 
+				
+				
+				<span class="portlet-icons">
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+						
+						    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+							    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lDU0tLVUEhL3dPa0FKRk5FRENBIS80QkVqOTRBZy83X0pMMTNUTDU1MThCM0IwSTZLTERVN1IwMEMwL21heGltaXplZA!!/'><img width="16" height="13" src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-maximize-light.gif" alt='Maximize' title='Maximize'/></a>
+							</span>
+						
+					
+					
+					
+					
+					
+					    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+						    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lDU0NsQSEhL3dHa0FKTk1BLzRCRWo5NEFnLzdfSkwxM1RMNTUxOEIzQjBJNktMRFU3UjAwQzAvbWluaW1pemVk/'><img width="16" height="13"  src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-minimize-light.gif"  alt='Minimize' title='Minimize'/></a>
+						</span>
+										
+					
+					    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+						    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lJSklLVUEhL3dQTUFCa0FFaWlBIS80Qm40UklBMklJQSEvNl9CME9ERUNENDFHVkJDMElPMURVQ01BMjBLMi83X0pMMTNUTDU1MThCM0IwSTZLTERVN1IwMEMwL2hlbHA!/'><img width="16" height="13" src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-help-light.gif" alt='Help' title='Help'/></a>
+						</span>
+			        
+				</span>
+				
+				
+				
+						
+	</div>
+	
+	
+		<div class='portlet-content' id='xx-portlet-content'>
+			<p class="access"><a href="#page-index">skip to Page Index</a></p>
+			<link rel="stylesheet" href='/wps/PA_wp.feedspace/theme/Styles.css' type="text/css"></link>
+<link rel="stylesheet" href='/wps/PA_wp.feedspace/theme/FeedspaceMsgImageSprite.css' type="text/css"></link>
+<!-- <script type="text/javascript" language="JavaScript" src="/lotus/themes/dojo/portal_dojo/dojo/dojo.js"></script> -->
+<script type="text/javascript" language="JavaScript" src="/wps/PA_wp.feedspace/js/ibm_feedspace.js"></script>
+<script type="text/javascript" language="Javascript">
+
+var ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx=new com_ibm_wps_portlets_FeedspaceScriptingContext('ns_7_JL13TL5518B3B0I6KLDU7R00C0_');
+ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.expandImage=new Image(11,11);
+ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.expandImage.src='/wps/PA_wp.feedspace/theme/images/expand.gif';
+ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.collapseImage=new Image(11,11);
+ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.collapseImage.src='/wps/PA_wp.feedspace/theme/images/collapse.gif';
+ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.expandNodeImage=new Image(19,15);
+ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.expandNodeImage.src='/wps/PA_wp.feedspace/theme/images/Expand_Tree.gif';
+ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.collapseNodeImage=new Image(19,15);
+ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.collapseNodeImage.src='/wps/PA_wp.feedspace/theme/images/Collapse_Tree.gif';
+ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.expandedNodeImage=new Image(19,15);
+ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.expandedNodeImage.src='/wps/PA_wp.feedspace/theme/images/FolderOpen_Tree.gif';
+ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.collapsedNodeImage=new Image(19,15);
+ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.collapsedNodeImage.src='/wps/PA_wp.feedspace/theme/images/FolderClosed_Tree.gif';
+
+</script>
+
+
+<!-- %@ include file="view/subscriptionListPopup.jspf" % -->
+<div class="synd-feedbar">
+
+
+
+<button class="synd-twisty" type="button" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_feed_3_button" title="Collapse channel iGSC News" title2="Expand channel iGSC News" onclick="return ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.toggleExpansion('feed_3');"><img id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_feed_3_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/collapse.gif" width="11" height="11" alt="Collapse channel iGSC News" title="Collapse channel iGSC News" alt2="Expand channel iGSC News" /></button>
+&nbsp;
+
+<span class="synd-breadcrumb-trail">
+
+
+<span>iGSC News</span>
+
+</span>
+
+</div><div class="synd-feed" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_feed_3"><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_0_button" title="Expand article" title2="Collapse article" onclick="return ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.toggleExpansion('synd_item_0_0');"><img id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_0_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><span class="synd-article-label">(Process) Recently changed iGSC process documentation</span></div><div class="synd-item-content synd-hidden" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_0"><div><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+<h5 class="synd-item-date">Author: Tools Support (Tue, 21-Jan-2014 05:45 CST)</h5><p>Here are the recent iGSC process changes<br/><br/>1) (IBM i Global Support Center Process) <a href="notes://scdbsrv1.rchland.ibm.com/c_dir/commonD.nsf/0/86256417005D39F7.nsf/0/0253483413623E3686257C13006C7D0E">Voicemail</a><br/>2) (Process Databases) <a href="notes://d27db001.rchland.ibm.com/p_dir/process.nsf/0/86256C7E00733E1E.nsf/0/B0F2BCEE011D1674862579E2006F918D">Italian Team "on call" pager schedule</a><br/></p></div></div><div class="synd-item-separator" style="height:10px;"><img border="0" src="/wps/PA_wp.feedspace/theme/images/dot.gif" width="1" height="10" alt="This image is a placeholder for Internet Explorer." title="This image is a placeholder for Internet Explorer." /></div><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_1_button" title="Expand article" title2="Collapse article" onclick="return ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.toggleExpansion('synd_item_0_1');"><img id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_1_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><span class="synd-article-label">(Tools requests) Recently closed Tools Requests</span></div><div class="synd-item-content synd-hidden" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_1"><div><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+<h5 class="synd-item-date">Author: Tools Support (Tue, 21-Jan-2014 02:02 CST)</h5><p>Here are the recently closed Tools Requests<br/><br/><a href="notes://scdbsrv1.rchland.ibm.com/__86256CE000780132.nsf/0/E1991CB7EA0F760886257C5900693B4E">Add Autopage queues</a><br/></p></div></div><div class="synd-item-separator" style="height:10px;"><img border="0" src="/wps/PA_wp.feedspace/theme/images/dot.gif" width="1" height="10" alt="This image is a placeholder for Internet Explorer." title="This image is a placeholder for Internet Explorer." /></div><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_2_button" title="Expand article" title2="Collapse article" onclick="return ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.toggleExpansion('synd_item_0_2');"><img id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_2_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><a class="synd-article-label" href="http://techsupport.rchland.ibm.com/s_dir/SCHome.nsf/document/68802815" title="(Wall of Fame) Wall of Fame letters (Oct '13)" target="ns_7_JL13TL5518B3B0I6KLDU7R00C0_targetWin">(Wall of Fame) Wall of Fame letters (Oct '13)</a></div><div class="synd-item-content synd-hidden" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_2"><div><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+<h5 class="synd-item-date">Author: Linda Mueller (Mon, 11-Nov-2013 15:51 CST)</h5><p>Letters/comments posted on the iGSC's "wall of fame" on 11/12/13 (see above for the link to the letters/comments -and- below for the pictures).<br/><br/>Check out the people who are now featured on the Wall of Fame and take time to congratulate them when you see them in the hallway! These customer letters / survey comments are posted down the hallway from the Duty Managers' office.<br/><br/>Photo Policy: only business-appropriate photos are copied from Blue Pages for consistency purposes. A "silhouette" photo will be used for anyone with no picture in Blue Pages or with a picture viewed inappropriate for posting here. Please consider updating your Blue Pages profile accordingly. Thank you!</p><table><tbody style="border:2px solid black"><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="/i_dir/igsc_rss.nsf/FSilhouette.png" alt="Photo" width="115" height="115" Title="Silhouette" /><br/><strong>Cinda Peterson</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/0G9339897.jpg?cnum=0G9339897" alt="Photo" width="115" height="115" title="Image of Robert Dieser" /><br/><strong>Robert Dieser</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/818689897.jpg?cnum=818689897" alt="Photo" width="115" height="115" title="Image of Dawn Clark" /><br/><strong>Dawn Clark</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/3D4030897.jpg?cnum=3D4030897" alt="Photo" width="115" height="115" title="Image of Carl Drayton" /><br/><strong>Carl Drayton</strong></td></tr><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/032954649.jpg?cnum=032954649" alt="Photo" width="115" height="115" title="Image of Francois Biron" /><br/><strong>Francois Biron</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/C-7VN1897.jpg?cnum=C-7VN1897" alt="Photo" width="115" height="115" title="Image of Geoff Warren" /><br/><strong>Geoff Warren</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/854146897.jpg?cnum=854146897" alt="Photo" width="115" height="115" title="Image of Alex Marquis" /><br/><strong>Alex Marquis</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="/i_dir/igsc_rss.nsf/MSilhouette.png" alt="Photo" width="115" height="115" Title="Silhouette" /><br/><strong>Howard Kastner</strong></td></tr></tbody></table></div></div><div class="synd-item-separator" style="height:10px;"><img border="0" src="/wps/PA_wp.feedspace/theme/images/dot.gif" width="1" height="10" alt="This image is a placeholder for Internet Explorer." title="This image is a placeholder for Internet Explorer." /></div><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_3_button" title="Expand article" title2="Collapse article" onclick="return ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.toggleExpansion('synd_item_0_3');"><img id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_3_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><a class="synd-article-label" href="http://techsupport.rchland.ibm.com/s_dir/SCHome.nsf/document/68465628" title="(Wall of Fame) Wall of Fame letters (Sept '13)" target="ns_7_JL13TL5518B3B0I6KLDU7R00C0_targetWin">(Wall of Fame) Wall of Fame letters (Sept '13)</a></div><div class="synd-item-content synd-hidden" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_3"><div><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+<h5 class="synd-item-date">Author: Linda Mueller (Mon, 7-Oct-2013 11:54 CDT)</h5><p>Letters/comments posted on the iGSC's "wall of fame" on 10/07/13 (see above for the link to the letters/comments -and- below for the pictures).<br/><br/>Check out the people who are now featured on the Wall of Fame and take time to congratulate them when you see them in the hallway! These customer letters / survey comments are posted down the hallway from the Duty Managers' office.<br/><br/>Photo Policy: only business-appropriate photos are copied from Blue Pages for consistency purposes. A "silhouette" photo will be used for anyone with no picture in Blue Pages or with a picture viewed inappropriate for posting here. Please consider updating your Blue Pages profile accordingly. Thank you!</p><table><tbody style="border:2px solid black"><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/2G3673897.jpg?cnum=2G3673897" alt="Photo" width="115" height="115" title="Image of Daniel Pierce" /><br/><strong>Daniel Pierce</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/1G6459897.jpg?cnum=1G6459897" alt="Photo" width="115" height="115" title="Image of Brian Zomok" /><br/><strong>Brian Zomok</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="/i_dir/igsc_rss.nsf/FSilhouette.png" alt="Photo" width="115" height="115" Title="Silhouette" /><br/><strong>Cindy Nelson</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/C-6ARC897.jpg?cnum=C-6ARC897" alt="Photo" width="115" height="115" title="Image of Terri Stewart" /><br/><strong>Terri Stewart</strong></td></tr><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/848107897.jpg?cnum=848107897" alt="Photo" width="115" height="115" title="Image of Skye Harney" /><br/><strong>Skye Harney</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/966875897.jpg?cnum=966875897" alt="Photo" width="115" height="115" title="Image of Kristen Walton-Kimball" /><br/><strong>Kristen Walton-Kimball</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/294508897.jpg?cnum=294508897" alt="Photo" width="115" height="115" title="Image of Kevin Trisko" /><br/><strong>Kevin Trisko</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/1477+1897.jpg?cnum=1477+1897" alt="Photo" width="115" height="115" title="Image of Connie Myran" /><br/><strong>Connie Myran</strong></td></tr><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/082742838.jpg?cnum=082742838" alt="Photo" width="115" height="115" title="Image of Fernando Sanz Lopez" /><br/><strong>Fernando Sanz Lopez</strong></td></tr></tbody></table></div></div><div class="synd-item-separator" style="height:10px;"><img border="0" src="/wps/PA_wp.feedspace/theme/images/dot.gif" width="1" height="10" alt="This image is a placeholder for Internet Explorer." title="This image is a placeholder for Internet Explorer." /></div><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_4_button" title="Expand article" title2="Collapse article" onclick="return ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.toggleExpansion('synd_item_0_4');"><img id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_4_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><a class="synd-article-label" href="http://techsupport.rchland.ibm.com/s_dir/SCHome.nsf/document/68184036" title="(Wall of Fame) Wall of Fame letters (Aug '13)" target="ns_7_JL13TL5518B3B0I6KLDU7R00C0_targetWin">(Wall of Fame) Wall of Fame letters (Aug '13)</a></div><div class="synd-item-content synd-hidden" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_4"><div><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+<h5 class="synd-item-date">Author: Linda Mueller (Mon, 9-Sep-2013 10:39 CDT)</h5><p>Letters/comments posted on the iGSC's "wall of fame" on 09/09/13 (see above for the link to the letters/comments -and- below for the pictures).<br/><br/>Check out the people who are now featured on the Wall of Fame and take time to congratulate them when you see them in the hallway! These customer letters / survey comments are posted down the hallway from the Duty Managers' office.<br/><br/>Photo Policy: only business-appropriate photos are copied from Blue Pages for consistency purposes. A "silhouette" photo will be used for anyone with no picture in Blue Pages or with a picture viewed inappropriate for posting here. Please consider updating your Blue Pages profile accordingly. Thank you!</p><table><tbody style="border:2px solid black"><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/C-BL4X897.jpg?cnum=C-BL4X897" alt="Photo" width="115" height="115" title="Image of Heidi Feltman" /><br/><strong>Heidi Feltman</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/0G9157897.jpg?cnum=0G9157897" alt="Photo" width="115" height="115" title="Image of Philip Rosen" /><br/><strong>Philip Rosen</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/969777897.jpg?cnum=969777897" alt="Photo" width="115" height="115" title="Image of Walter Scanlan" /><br/><strong>Walter Scanlan</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/2D3749897.jpg?cnum=2D3749897" alt="Photo" width="115" height="115" title="Image of Mike Swenson" /><br/><strong>Mike Swenson</strong></td></tr><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/281937897.jpg?cnum=281937897" alt="Photo" width="115" height="115" title="Image of Joel Biermeier" /><br/><strong>Joel Biermeier</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/C-1JAW897.jpg?cnum=C-1JAW897" alt="Photo" width="115" height="115" title="Image of Jim Startz" /><br/><strong>Jim Startz</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/1580+1897.jpg?cnum=1580+1897" alt="Photo" width="115" height="115" title="Image of Kay Geppert" /><br/><strong>Kay Geppert</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/025980758.jpg?cnum=025980758" alt="Photo" width="115" height="115" title="Image of Giovanni Regorda" /><br/><strong>Giovanni Regorda</strong></td></tr></tbody></table></div></div><div class="synd-item-separator" style="height:10px;"><img border="0" src="/wps/PA_wp.feedspace/theme/images/dot.gif" width="1" height="10" alt="This image is a placeholder for Internet Explorer." title="This image is a placeholder for Internet Explorer." /></div><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_5_button" title="Expand article" title2="Collapse article" onclick="return ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.toggleExpansion('synd_item_0_5');"><img id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_5_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><a class="synd-article-label" href="http://techsupport.rchland.ibm.com/s_dir/SCHome.nsf/document/67853332" title="(Wall of Fame) Wall of Fame letters (July '13)" target="ns_7_JL13TL5518B3B0I6KLDU7R00C0_targetWin">(Wall of Fame) Wall of Fame letters (July '13)</a></div><div class="synd-item-content synd-hidden" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_5"><div><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+<h5 class="synd-item-date">Author: Linda Mueller (Wed, 7-Aug-2013 07:29 CDT)</h5><p>Letters/comments posted on the iGSC's "wall of fame" on 08/07/13 (see above for the link to the letters/comments -and- below for the pictures).<br/><br/>Check out the people who are now featured on the Wall of Fame and take time to congratulate them when you see them in the hallway! These customer letters / survey comments are posted down the hallway from the Duty Managers' office.<br/><br/>Photo Policy: only business-appropriate photos are copied from Blue Pages for consistency purposes. A "silhouette" photo will be used for anyone with no picture in Blue Pages or with a picture viewed inappropriate for posting here. Please consider updating your Blue Pages profile accordingly. Thank you!</p><table><tbody style="border:2px solid black"><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/638877897.jpg?cnum=638877897" alt="Photo" width="115" height="115" title="Image of John Krumm" /><br/><strong>John Krumm</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/3D7870897.jpg?cnum=3D7870897" alt="Photo" width="115" height="115" title="Image of Jason Muhs" /><br/><strong>Jason Muhs</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/2G3981897.jpg?cnum=2G3981897" alt="Photo" width="115" height="115" title="Image of Tony Gibson" /><br/><strong>Tony Gibson</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/4D8275897.jpg?cnum=4D8275897" alt="Photo" width="115" height="115" title="Image of Bob Crawford" /><br/><strong>Bob Crawford</strong></td></tr><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/2040+1897.jpg?cnum=2040+1897" alt="Photo" width="115" height="115" title="Image of Marian Robinett" /><br/><strong>Marian Robinett</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="/i_dir/igsc_rss.nsf/MSilhouette.png" alt="Photo" width="115" height="115" Title="Silhouette" /><br/><strong>Pascal Cardon</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/342490897.jpg?cnum=342490897" alt="Photo" width="115" height="115" title="Image of Richard Halleen" /><br/><strong>Richard Halleen</strong></td></tr></tbody><tr style="border:0px solid transparent"><td>&nbsp;</td></tr><tbody style="border:2px solid black"><tr><td align="center" style="padding-right:5px;border:0px solid transparent"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/0G9339897.jpg?cnum=0G9339897" alt="Photo" width="115" height="115" title="Image of Robert Dieser" /><br/><strong>Robert Dieser</strong></td><td align="center" style="padding-right:5px;border:0px solid transparent"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/3D8700897.jpg?cnum=3D8700897" alt="Photo" width="115" height="115" title="Image of Sara Dunnington" /><br/><strong>Sara Dunnington</strong></td><td align="center" style="padding-right:5px;border:0px solid transparent"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/810813897.jpg?cnum=810813897" alt="Photo" width="115" height="115" title="Image of Vivian Kirkpatrick" /><br/><strong>Vivian Kirkpatrick</strong></td><td align="center" style="padding-right:5px;border:0px solid transparent"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/2A3075897.jpg?cnum=2A3075897" alt="Photo" width="115" height="115" title="Image of Holly Rademacher" /><br/><strong>Holly Rademacher</strong></td></tr><tr><td align="center" style="padding-right:5px;border:0px solid transparent"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/030910706.jpg?cnum=030910706" alt="Photo" width="115" height="115" title="Image of Eric Villard" /><br/><strong>Eric Villard</strong></td><td style="padding-right:5px;border:0px solid transparent">&nbsp;</td><td style="padding-right:5px;border:0px solid transparent">&nbsp;</td><td style="padding-right:5px;border:0px solid transparent">&nbsp;</td></tr></tbody></table></div></div><div class="synd-item-separator" style="height:10px;"><img border="0" src="/wps/PA_wp.feedspace/theme/images/dot.gif" width="1" height="10" alt="This image is a placeholder for Internet Explorer." title="This image is a placeholder for Internet Explorer." /></div><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_6_button" title="Expand article" title2="Collapse article" onclick="return ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.toggleExpansion('synd_item_0_6');"><img id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_6_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><a class="synd-article-label" href="http://techsupport.rchland.ibm.com/s_dir/SCHome.nsf/document/67544335" title="(Wall of Fame) Wall of Fame letters (June '13)" target="ns_7_JL13TL5518B3B0I6KLDU7R00C0_targetWin">(Wall of Fame) Wall of Fame letters (June '13)</a></div><div class="synd-item-content synd-hidden" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_6"><div><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+<h5 class="synd-item-date">Author: Linda Mueller (Fri, 5-Jul-2013 10:17 CDT)</h5><p>Letters/comments posted on the iGSC's "wall of fame" on 07/05/13 (see above for the link to the letters/comments -and- below for the pictures).<br/><br/>Check out the people who are now featured on the Wall of Fame and take time to congratulate them when you see them in the hallway! These customer letters / survey comments are posted down the hallway from the Duty Managers' office.<br/><br/>Photo Policy: only business-appropriate photos are copied from Blue Pages for consistency purposes. A "silhouette" photo will be used for anyone with no picture in Blue Pages or with a picture viewed inappropriate for posting here. Please consider updating your Blue Pages profile accordingly. Thank you!</p><table><tbody style="border:2px solid black"><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="/i_dir/igsc_rss.nsf/MSilhouette.png" alt="Photo" width="115" height="115" Title="Silhouette" /><br/><strong>Art Lubera</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/3D8700897.jpg?cnum=3D8700897" alt="Photo" width="115" height="115" title="Image of Sara Dunnington" /><br/><strong>Sara Dunnington</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/342490897.jpg?cnum=342490897" alt="Photo" width="115" height="115" title="Image of Richard Halleen" /><br/><strong>Richard Halleen</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/1766+1897.jpg?cnum=1766+1897" alt="Photo" width="115" height="115" title="Image of Chris Kraai" /><br/><strong>Chris Kraai</strong></td></tr><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/642614897.jpg?cnum=642614897" alt="Photo" width="115" height="115" title="Image of Shane Olson" /><br/><strong>Shane Olson</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/969777897.jpg?cnum=969777897" alt="Photo" width="115" height="115" title="Image of Walter Scanlan" /><br/><strong>Walter Scanlan</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/222019897.jpg?cnum=222019897" alt="Photo" width="115" height="115" title="Image of Sonia Stehr" /><br/><strong>Sonia Stehr</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="/i_dir/igsc_rss.nsf/MSilhouette.png" alt="Photo" width="115" height="115" Title="Silhouette" /><br/><strong>Louis Bartholomew</strong></td></tr><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/454799897.jpg?cnum=454799897" alt="Photo" width="115" height="115" title="Image of Lynn Kelly" /><br/><strong>Lynn Kelly</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/033547613.jpg?cnum=033547613" alt="Photo" width="115" height="115" title="Image of Mariano Felitti" /><br/><strong>Mariano Felitti</strong></td></tr></tbody></table></div></div><div class="synd-item-separator" style="height:10px;"><img border="0" src="/wps/PA_wp.feedspace/theme/images/dot.gif" width="1" height="10" alt="This image is a placeholder for Internet Explorer." title="This image is a placeholder for Internet Explorer." /></div><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_7_button" title="Expand article" title2="Collapse article" onclick="return ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.toggleExpansion('synd_item_0_7');"><img id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_7_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><a class="synd-article-label" href="http://techsupport.rchland.ibm.com/s_dir/SCHome.nsf/document/67254942" title="(Wall of Fame) Wall of Fame letters (May '13)" target="ns_7_JL13TL5518B3B0I6KLDU7R00C0_targetWin">(Wall of Fame) Wall of Fame letters (May '13)</a></div><div class="synd-item-content synd-hidden" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_7"><div><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+<h5 class="synd-item-date">Author: Linda Mueller (Thu, 6-Jun-2013 12:02 CDT)</h5><p>Letters/comments posted on the iGSC's "wall of fame" on 06/06/13 (see the above link for the letters -and- the pictures below).<br/><br/>Check out the people who are now featured on the Wall of Fame and take time to congratulate them when you see them in the hallway! These customer letters / survey comments are posted down the hallway from the Duty Managers' office.<br/><br/>Photo Policy: only business-appropriate photos are copied from Blue Pages for consistency purposes. A "silhouette" photo will be used for anyone with no picture in Blue Pages or with a picture that includes a favorite hobby item / vacation spot / sports team or gear -or- children / pets / etc. Please consider updating your Blue Pages profile accordingly. Thank you!<br/></p><table><tbody style="border:2px solid black"><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/894133897.jpg?cnum=894133897" alt="Photo" width="115" height="115" title="Image of Brad Menges" /><br/><strong>Brad Menges</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/789370897.jpg?cnum=789370897" alt="Photo" width="115" height="115" title="Image of Nguyen Nguyen" /><br/><strong>Nguyen Nguyen</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/883438897.jpg?cnum=883438897" alt="Photo" width="115" height="115" title="Image of Ben Rabe" /><br/><strong>Ben Rabe</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="/i_dir/igsc_rss.nsf/MSilhouette.png" alt="Photo" width="115" height="115" Title="Silhouette" /><br/><strong>Ron Koster</strong></td></tr><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/691153897.jpg?cnum=691153897" alt="Photo" width="115" height="115" title="Image of Rich Torgerson" /><br/><strong>Rich Torgerson</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/5D0242897.jpg?cnum=5D0242897" alt="Photo" width="115" height="115" title="Image of Joyce O'Connell" /><br/><strong>Joyce O'Connell</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/109974724.jpg?cnum=109974724" alt="Photo" width="115" height="115" title="Image of Stephan Schuettler" /><br/><strong>Stephan Schuettler</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/9D0560897.jpg?cnum=9D0560897" alt="Photo" width="115" height="115" title="Image of Keith Mueller" /><br/><strong>Keith Mueller</strong></td></tr><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/C-84TN897.jpg?cnum=C-84TN897" alt="Photo" width="115" height="115" title="Image of Eric Sunde" /><br/><strong>Eric Sunde</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/C-6ARC897.jpg?cnum=C-6ARC897" alt="Photo" width="115" height="115" title="Image of Terri Stewart" /><br/><strong>Terri Stewart</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="/i_dir/igsc_rss.nsf/FSilhouette.png" alt="Photo" width="115" height="115" Title="Silhouette" /><br/><strong>Kary Garvey</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/229212897.jpg?cnum=229212897" alt="Photo" width="115" height="115" title="Image of Bob Blom" /><br/><strong>Bob Blom</strong></td></tr></tbody></table></div></div><div class="synd-item-separator" style="height:10px;"><img border="0" src="/wps/PA_wp.feedspace/theme/images/dot.gif" width="1" height="10" alt="This image is a placeholder for Internet Explorer." title="This image is a placeholder for Internet Explorer." /></div><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_8_button" title="Expand article" title2="Collapse article" onclick="return ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.toggleExpansion('synd_item_0_8');"><img id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_8_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><a class="synd-article-label" href="http://techsupport.rchland.ibm.com/s_dir/SCHome.nsf/document/66963038" title="(Wall of Fame) Wall of Fame letters (Apr '13)" target="ns_7_JL13TL5518B3B0I6KLDU7R00C0_targetWin">(Wall of Fame) Wall of Fame letters (Apr '13)</a></div><div class="synd-item-content synd-hidden" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_8"><div><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+<h5 class="synd-item-date">Author: Linda Mueller (Tue, 7-May-2013 14:39 CDT)</h5><p>Check out the people who are now featured on the Wall of Fame and take time to congratulate them when you see them in the hallway! These customer letters are posted down the hallway outside the Duty Managers' office.<br/><br/>Photo Policy: Only business-appropriate photos are copied from Blue Pages for consistency purposes. A "silhouette" photo will be used for anyone with no picture in Blue Pages or with a picture that includes a favorite hobby item / vacation spot / sports team or gear -or- children / pets / etc. Please consider updating your Blue Pages profile accordingly. Thank you!<br/></p><table><tbody style="border:2px solid black"><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/8A0482897.jpg?cnum=8A0482897" alt="Photo" width="115" height="115" title="Image of Shawn R Reding" /><br/><strong>Shawn R Reding</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="/i_dir/igsc_rss.nsf/FSilhouette.png" alt="Photo" width="115" height="115" Title="Silhouette" /><br/><strong>Deborah Hill</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/908437897.jpg?cnum=908437897" alt="Photo" width="115" height="115" title="Image of Jaime Gaug" /><br/><strong>Jaime Gaug</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/038417864.jpg?cnum=038417864" alt="Photo" width="115" height="115" title="Image of Daryl Hutchinson" /><br/><strong>Daryl Hutchinson</strong></td></tr><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/977799897.jpg?cnum=977799897" alt="Photo" width="115" height="115" title="Image of Josh A Majsterski" /><br/><strong>Josh A Majsterski</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/041758897.jpg?cnum=041758897" alt="Photo" width="115" height="115" title="Image of Timothy Hilbert" /><br/><strong>Timothy Hilbert</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/457820897.jpg?cnum=457820897" alt="Photo" width="115" height="115" title="Image of Ronald Brown" /><br/><strong>Ronald Brown</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/805690897.jpg?cnum=805690897" alt="Photo" width="115" height="115" title="Image of Kristie Edwards" /><br/><strong>Kristie Edwards</strong></td></tr><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/9A5333897.jpg?cnum=9A5333897" alt="Photo" width="115" height="115" title="Image of Tosh Bimbra" /><br/><strong>Tosh Bimbra</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="/i_dir/igsc_rss.nsf/MSilhouette.png" alt="Photo" width="115" height="115" Title="Silhouette" /><br/><strong>Joe Jacoby</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/0G9157897.jpg?cnum=0G9157897" alt="Photo" width="115" height="115" title="Image of Phil Rosen" /><br/><strong>Phil Rosen</strong></td></tr></tbody></table></div></div><div class="synd-item-separator" style="height:10px;"><img border="0" src="/wps/PA_wp.feedspace/theme/images/dot.gif" width="1" height="10" alt="This image is a placeholder for Internet Explorer." title="This image is a placeholder for Internet Explorer." /></div><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_9_button" title="Expand article" title2="Collapse article" onclick="return ns_7_JL13TL5518B3B0I6KLDU7R00C0_Ctx.toggleExpansion('synd_item_0_9');"><img id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_9_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><a class="synd-article-label" href="http://techsupport.rchland.ibm.com/s_dir/SCHome.nsf/document/66695406" title="(Wall of Fame) Wall of Fame letters (Mar '13)" target="ns_7_JL13TL5518B3B0I6KLDU7R00C0_targetWin">(Wall of Fame) Wall of Fame letters (Mar '13)</a></div><div class="synd-item-content synd-hidden" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_synd_item_0_9"><div><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+<h5 class="synd-item-date">Author: Linda Mueller (Wed, 10-Apr-2013 09:50 CDT)</h5><p>Letters/comments posted on the iGSC's "wall of fame" on 04/10/13 (see above link for the letters; pictures are below)<br/><br/>Check out the people who are now featured on the Wall of Fame, and take time to congratulate them when you see them in the hallway! These customer letters/comments are posted on the wall outside the Duty Manager's office.<br/><br/>Photo Policy: Only business-appropriate photos are copied from Blue Pages for consistency purposes. A "silhouette" photo will be used for anyone with no picture in Blue Pages or with a picture that includes a favorite hobby item / vacation spot / sports team or gear -or- children / pets / etc. Please consider updating your Blue Pages profile accordingly. Thank you!<br/></p><table><tbody style="border:2px solid black"><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/017327678.jpg?cnum=017327678" alt="Photo" width="115" height="115" title="Image of Tommy Rasmussen" /><br/><strong>Tommy Rasmussen</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/319973897.jpg?cnum=319973897" alt="Photo" width="115" height="115" title="Image of Tim Covalt" /><br/><strong>Tim Covalt</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/009332866.jpg?cnum=009332866" alt="Photo" width="115" height="115" title="Image of Stuart Bray" /><br/><strong>Stuart Bray</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="/i_dir/igsc_rss.nsf/MSilhouette.png" alt="Photo" width="115" height="115" Title="Silhouette" /><br/><strong>Johnnie Talamantes</strong></td></tr><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/849978897.jpg?cnum=849978897" alt="Photo" width="115" height="115" title="Image of Aaron McClellan" /><br/><strong>Aaron McClellan</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/6141+1897.jpg?cnum=6141+1897" alt="Photo" width="115" height="115" title="Image of Traci Rau" /><br/><strong>Traci Rau</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/841226897.jpg?cnum=841226897" alt="Photo" width="115" height="115" title="Image of Chris Pilcher" /><br/><strong>Chris Pilcher</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/966875897.jpg?cnum=966875897" alt="Photo" width="115" height="115" title="Image of Kristen M Walton-Kimball" /><br/><strong>Kristen M Walton-Kimball</strong></td></tr><tr><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/095312897.jpg?cnum=095312897" alt="Photo" width="115" height="115" title="Image of Donna Davis" /><br/><strong>Donna Davis</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/100350897.jpg?cnum=100350897" alt="Photo" width="115" height="115" title="Image of Bill Krause" /><br/><strong>Bill Krause</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/691153897.jpg?cnum=691153897" alt="Photo" width="115" height="115" title="Image of Rich Torgerson" /><br/><strong>Rich Torgerson</strong></td><td align="center" style="padding-right:5px;border:2px solid black"><img src="//w3.ibm.com/bluepages/photo/ImageServlet.wss/294508897.jpg?cnum=294508897" alt="Photo" width="115" height="115" title="Image of Kevin Trisko" /><br/><strong>Kevin Trisko</strong></td></tr></tbody></table></div></div>
+
+<div class="synd-feed-ticker" id="ns_7_JL13TL5518B3B0I6KLDU7R00C0_feed_3ticker">
+	<a href="/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lDU0lKSkthWWtLQ2xFS0NsRUpJL29Eb2dBRUlRaGpCS0VRQUVBRVpDZ0dRNEtRcGNFclN0Y1ZhQ0FHTUEvNEMxYjlXX05yeFFERVNaSUpSQ2t5WVNoRVJJX0FBISEvN19KTDEzVEw1NTE4QjNCMEk2S0xEVTdSMDBDMC8yNTE2NjIyNTQ1MzIvc3luZF9mZWVkX3pvb20vJTAzL3N5bmRfZmVlZF96b29tX2lkeC8w/" title="More">More:</a>&nbsp;&nbsp;
+	
+		
+		<span style="white-space:nowrap;"><a class="synd-secondary-title" href="http://techsupport.rchland.ibm.com/s_dir/SCHome.nsf/document/66341857" title="(Wall of Fame) Wall of Fame letters (Feb '13)" target="_blank">(Wall of Fame) Wall of Fame lett...</a></span>
+			
+	</ul>
+</div>
+
+
+</div>
+			
+		</div>
+		
+	
+	<div class="clearing"></div>
+	</div>
+	
+	
+	
+	
+	
+
+<a name="skipportlet7_JL13TL5518B3B0I6KLDU7R00C0"></a>
+
+<script type="text/javascript">
+var dynamicTitle =
+    "Support Center News";
+var titleElement = 
+    document.getElementById("title.7_JL13TL5518B3B0I6KLDU7R00C0");
+if (titleElement != null) {
+    if (dynamicTitle != "" && dynamicTitle != "null")
+        titleElement.innerHTML = dynamicTitle;
+    }
+</script>
+<script type="text/javascript">var e=document.getElementById('title.7_JL13TL5518B3B0I6KLDU7R00C0');if(e){e.innerHTML='Support Center News';}</script>
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+		
+	
+		<div class="portlet-white" id="xx">
+	
+		
+		
+	
+	
+		
+	<div  class="portlet-head-gray-med">
+
+					
+					<span>
+						<h2 class="portlet-head-gray-med" id="title.7_B0ODECD410QQC0ICVPIE403004">
+						    <span id="title.7_B0ODECD410QQC0ICVPIE403004">
+							    My News
+							</span>
+						</h2>
+					</span>
+					
+				
+
+		
+				 
+				
+				
+				<span class="portlet-icons">
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+						
+						    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+							    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lDU0tLVUEhL3dPa0FKRk5FRENBIS80QkVqOTRBZy83X0IwT0RFQ0Q0MTBRUUMwSUNWUElFNDAzMDA0L21heGltaXplZA!!/'><img width="16" height="13" src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-maximize-light.gif" alt='Maximize' title='Maximize'/></a>
+							</span>
+						
+					
+					
+					
+					
+					
+					    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+						    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lDU0NsQSEhL3dHa0FKTk1BLzRCRWo5NEFnLzdfQjBPREVDRDQxMFFRQzBJQ1ZQSUU0MDMwMDQvbWluaW1pemVk/'><img width="16" height="13"  src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-minimize-light.gif"  alt='Minimize' title='Minimize'/></a>
+						</span>
+										
+					
+					    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+						    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lJSklLVUEhL3dQTUFCa0FFaWlBIS80Qm40UklBMklJQSEvNl9CME9ERUNENDFHVkJDMElPMURVQ01BMjBLMi83X0IwT0RFQ0Q0MTBRUUMwSUNWUElFNDAzMDA0L2hlbHA!/'><img width="16" height="13" src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-help-light.gif" alt='Help' title='Help'/></a>
+						</span>
+			        
+				</span>
+				
+				
+				
+						
+	</div>
+	
+	
+		<div class='portlet-content' id='xx-portlet-content'>
+			<p class="access"><a href="#page-index">skip to Page Index</a></p>
+			<link rel="stylesheet" href='/wps/PA_wp.feedspace/theme/Styles.css' type="text/css"></link>
+<link rel="stylesheet" href='/wps/PA_wp.feedspace/theme/FeedspaceMsgImageSprite.css' type="text/css"></link>
+<!-- <script type="text/javascript" language="JavaScript" src="/lotus/themes/dojo/portal_dojo/dojo/dojo.js"></script> -->
+<script type="text/javascript" language="JavaScript" src="/wps/PA_wp.feedspace/js/ibm_feedspace.js"></script>
+<script type="text/javascript" language="Javascript">
+
+var ns_7_B0ODECD410QQC0ICVPIE403004_Ctx=new com_ibm_wps_portlets_FeedspaceScriptingContext('ns_7_B0ODECD410QQC0ICVPIE403004_');
+ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.expandImage=new Image(11,11);
+ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.expandImage.src='/wps/PA_wp.feedspace/theme/images/expand.gif';
+ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.collapseImage=new Image(11,11);
+ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.collapseImage.src='/wps/PA_wp.feedspace/theme/images/collapse.gif';
+ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.expandNodeImage=new Image(19,15);
+ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.expandNodeImage.src='/wps/PA_wp.feedspace/theme/images/Expand_Tree.gif';
+ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.collapseNodeImage=new Image(19,15);
+ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.collapseNodeImage.src='/wps/PA_wp.feedspace/theme/images/Collapse_Tree.gif';
+ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.expandedNodeImage=new Image(19,15);
+ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.expandedNodeImage.src='/wps/PA_wp.feedspace/theme/images/FolderOpen_Tree.gif';
+ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.collapsedNodeImage=new Image(19,15);
+ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.collapsedNodeImage.src='/wps/PA_wp.feedspace/theme/images/FolderClosed_Tree.gif';
+
+</script>
+
+
+<!-- %@ include file="view/subscriptionListPopup.jspf" % -->
+<div class="synd-toolbar">
+
+
+</div><div class="synd-feedbar">
+
+
+
+<button class="synd-twisty" type="button" id="ns_7_B0ODECD410QQC0ICVPIE403004_feed_1_0_button" title="Collapse channel IBM Press Releases &#045; All Topics &#045; United States" title2="Expand channel IBM Press Releases &#045; All Topics &#045; United States" onclick="return ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.toggleExpansion('feed_1_0');"><img id="ns_7_B0ODECD410QQC0ICVPIE403004_feed_1_0_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/collapse.gif" width="11" height="11" alt="Collapse channel IBM Press Releases &#045; All Topics &#045; United States" title="Collapse channel IBM Press Releases &#045; All Topics &#045; United States" alt2="Expand channel IBM Press Releases &#045; All Topics &#045; United States" /></button>
+&nbsp;
+
+<span class="synd-breadcrumb-trail">
+
+
+<span>My News</span>
+
+
+<span class="synd-breadcrumb-separator">/</span>
+
+<span>IBM Press Releases &#045; All Topics &#045; United States</span>
+
+</span>
+
+</div><div class="synd-feed" id="ns_7_B0ODECD410QQC0ICVPIE403004_feed_1_0"><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_0_0_button" title="Expand article" title2="Collapse article" onclick="return ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.toggleExpansion('synd_item_0_0');"><img id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_0_0_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><a class="synd-article-label" href="http://www.ibm.com/press/us/en/pressrelease/43008.wss" title="IBM Reports 2013 Fourth-Quarter and Full-Year Results" target="ns_7_B0ODECD410QQC0ICVPIE403004_targetWin">IBM Reports 2013 Fourth-Quarter and Full-Year Results</a></div><div class="synd-item-content synd-hidden" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_0_0"><div><h5 class="synd-item-date">Published: Tue, 21 Jan 2014 09:27:25 GMT</h5><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+
+					IBM today announced fourth-quarter 2013 diluted earnings of $5.73 per share, compared with diluted earnings of $5.13 per share in the fourth quarter of 2012, an increase of 12 percent.  Operating (non-GAAP) diluted earnings were $6.13 per share, compared with operating diluted earnings of $5.39 per share in the fourth quarter of 2012, an increase of 14 percent.
+					
+					<table border="0" cellspacing="1" cellpadding="1" summary="">
+						<tr><td colspan="8"><img src="http://www.ibm.com/c.gif" alt="" width="0" height="1"></td></tr>
+						<tr>
+							<td><img src="http://www.ibm.com/press/img/email.gif" border="0" alt="" /></td><td><a href="http://www.ibm.com/vrm/bin/sendThisPage/Corporate_Press_Site_USEN.cgi?http_referer=http://www.ibm.com/press/us/en/pressrelease/43008.wss" target="_blank">E-mail this page</a></td>
+							<td><img src="http://www.ibm.com/c.gif" alt="" width="2" height="0"></td>
+							<td><img src="http://www.ibm.com/press/img/delicious_small.gif"></td><td><a href="http://del.icio.us/post?v=4&noui&jump=close&url=http://www.ibm.com/press/us/en/pressrelease/43008.wss&title=IBM Reports 2013 Fourth-Quarter and Full-Year Results" target="_blank">Save to del.icio.us</a></td>
+							<td><img src="http://www.ibm.com/c.gif" alt="" width="2" height="0"></td>
+							<td><img src="http://www.ibm.com/press/img/digg-thumb.gif"></td><td><a href="http://digg.com/submit?phase=2&url=http://www.ibm.com/press/us/en/pressrelease/43008.wss&title=IBM Reports 2013 Fourth-Quarter and Full-Year Results" target="_blank">Digg this</a></td>
+						</tr>
+						<tr><td colspan="8"><img src="http://www.ibm.com/c.gif" alt="" width="0" height="1"></td></tr>
+					</table>
+					
+					
+					</div></div><div class="synd-item-separator" style="height:10px;"><img border="0" src="/wps/PA_wp.feedspace/theme/images/dot.gif" width="1" height="10" alt="This image is a placeholder for Internet Explorer." title="This image is a placeholder for Internet Explorer." /></div><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_0_1_button" title="Expand article" title2="Collapse article" onclick="return ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.toggleExpansion('synd_item_0_1');"><img id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_0_1_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><a class="synd-article-label" href="http://www.ibm.com/press/us/en/pressrelease/42981.wss" title="IBM Rallies Tennis Fans with Innovative Technology at the Australian Open 2014" target="ns_7_B0ODECD410QQC0ICVPIE403004_targetWin">IBM Rallies Tennis Fans with Innovative Technology at the Australian Open 2014</a></div><div class="synd-item-content synd-hidden" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_0_1"><div><h5 class="synd-item-date">Published: Mon, 20 Jan 2014 08:02:57 GMT</h5><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+
+					 
+					
+					<table border="0" cellspacing="1" cellpadding="1" summary="">
+						<tr><td colspan="8"><img src="http://www.ibm.com/c.gif" alt="" width="0" height="1"></td></tr>
+						<tr>
+							<td><img src="http://www.ibm.com/press/img/email.gif" border="0" alt="" /></td><td><a href="http://www.ibm.com/vrm/bin/sendThisPage/Corporate_Press_Site_USEN.cgi?http_referer=http://www.ibm.com/press/us/en/pressrelease/42981.wss" target="_blank">E-mail this page</a></td>
+							<td><img src="http://www.ibm.com/c.gif" alt="" width="2" height="0"></td>
+							<td><img src="http://www.ibm.com/press/img/delicious_small.gif"></td><td><a href="http://del.icio.us/post?v=4&noui&jump=close&url=http://www.ibm.com/press/us/en/pressrelease/42981.wss&title=IBM Rallies Tennis Fans with Innovative Technology at the Australian Open 2014" target="_blank">Save to del.icio.us</a></td>
+							<td><img src="http://www.ibm.com/c.gif" alt="" width="2" height="0"></td>
+							<td><img src="http://www.ibm.com/press/img/digg-thumb.gif"></td><td><a href="http://digg.com/submit?phase=2&url=http://www.ibm.com/press/us/en/pressrelease/42981.wss&title=IBM Rallies Tennis Fans with Innovative Technology at the Australian Open 2014" target="_blank">Digg this</a></td>
+						</tr>
+						<tr><td colspan="8"><img src="http://www.ibm.com/c.gif" alt="" width="0" height="1"></td></tr>
+					</table>
+					
+					
+					</div></div><div class="synd-item-separator" style="height:10px;"><img border="0" src="/wps/PA_wp.feedspace/theme/images/dot.gif" width="1" height="10" alt="This image is a placeholder for Internet Explorer." title="This image is a placeholder for Internet Explorer." /></div><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_0_2_button" title="Expand article" title2="Collapse article" onclick="return ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.toggleExpansion('synd_item_0_2');"><img id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_0_2_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><a class="synd-article-label" href="http://www.ibm.com/press/us/en/pressrelease/42980.wss" title="Suzhou PowerCore Technology Co. Intends To Use IBM POWER Technology For Chip Design That Pushes Innovation In China" target="ns_7_B0ODECD410QQC0ICVPIE403004_targetWin">Suzhou PowerCore Technology Co. Intends To Use IBM POWER Technology For Chip Design That Pushes Innovation In China</a></div><div class="synd-item-content synd-hidden" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_0_2"><div><h5 class="synd-item-date">Published: Sun, 19 Jan 2014 01:01:46 GMT</h5><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+
+					IBM, the Suzhou PowerCore Technology Company and the Research Institute of Jiangsu Industrial Technology today announced the two Chinese organizations will join the OpenPOWER Foundation, with Suzhou PowerCore intending to use IBM&#39;s POWER architecture to provide customized chip design solutions to push server innovation in such areas as Big Data, cloud computing and next generation data centers.
+					
+					<table border="0" cellspacing="1" cellpadding="1" summary="">
+						<tr><td colspan="8"><img src="http://www.ibm.com/c.gif" alt="" width="0" height="1"></td></tr>
+						<tr>
+							<td><img src="http://www.ibm.com/press/img/email.gif" border="0" alt="" /></td><td><a href="http://www.ibm.com/vrm/bin/sendThisPage/Corporate_Press_Site_USEN.cgi?http_referer=http://www.ibm.com/press/us/en/pressrelease/42980.wss" target="_blank">E-mail this page</a></td>
+							<td><img src="http://www.ibm.com/c.gif" alt="" width="2" height="0"></td>
+							<td><img src="http://www.ibm.com/press/img/delicious_small.gif"></td><td><a href="http://del.icio.us/post?v=4&noui&jump=close&url=http://www.ibm.com/press/us/en/pressrelease/42980.wss&title=Suzhou PowerCore Technology Co. Intends To Use IBM POWER Technology For Chip Design That Pushes Innovation In China" target="_blank">Save to del.icio.us</a></td>
+							<td><img src="http://www.ibm.com/c.gif" alt="" width="2" height="0"></td>
+							<td><img src="http://www.ibm.com/press/img/digg-thumb.gif"></td><td><a href="http://digg.com/submit?phase=2&url=http://www.ibm.com/press/us/en/pressrelease/42980.wss&title=Suzhou PowerCore Technology Co. Intends To Use IBM POWER Technology For Chip Design That Pushes Innovation In China" target="_blank">Digg this</a></td>
+						</tr>
+						<tr><td colspan="8"><img src="http://www.ibm.com/c.gif" alt="" width="0" height="1"></td></tr>
+					</table>
+					
+					
+					</div></div><div class="synd-item-separator" style="height:10px;"><img border="0" src="/wps/PA_wp.feedspace/theme/images/dot.gif" width="1" height="10" alt="This image is a placeholder for Internet Explorer." title="This image is a placeholder for Internet Explorer." /></div><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_0_3_button" title="Expand article" title2="Collapse article" onclick="return ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.toggleExpansion('synd_item_0_3');"><img id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_0_3_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><a class="synd-article-label" href="http://www.ibm.com/press/us/en/pressrelease/42965.wss" title="IBM Closes Acquisition of Aspera " target="ns_7_B0ODECD410QQC0ICVPIE403004_targetWin">IBM Closes Acquisition of Aspera </a></div><div class="synd-item-content synd-hidden" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_0_3"><div><h5 class="synd-item-date">Published: Fri, 17 Jan 2014 07:01:00 GMT</h5><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+
+					IBM today announced it has completed the acquisition of Aspera, Inc., a privately held company that securely speeds the movement of massive data files around the world. Financial terms of the deal were not disclosed.
+					
+					<table border="0" cellspacing="1" cellpadding="1" summary="">
+						<tr><td colspan="8"><img src="http://www.ibm.com/c.gif" alt="" width="0" height="1"></td></tr>
+						<tr>
+							<td><img src="http://www.ibm.com/press/img/email.gif" border="0" alt="" /></td><td><a href="http://www.ibm.com/vrm/bin/sendThisPage/Corporate_Press_Site_USEN.cgi?http_referer=http://www.ibm.com/press/us/en/pressrelease/42965.wss" target="_blank">E-mail this page</a></td>
+							<td><img src="http://www.ibm.com/c.gif" alt="" width="2" height="0"></td>
+							<td><img src="http://www.ibm.com/press/img/delicious_small.gif"></td><td><a href="http://del.icio.us/post?v=4&noui&jump=close&url=http://www.ibm.com/press/us/en/pressrelease/42965.wss&title=IBM Closes Acquisition of Aspera " target="_blank">Save to del.icio.us</a></td>
+							<td><img src="http://www.ibm.com/c.gif" alt="" width="2" height="0"></td>
+							<td><img src="http://www.ibm.com/press/img/digg-thumb.gif"></td><td><a href="http://digg.com/submit?phase=2&url=http://www.ibm.com/press/us/en/pressrelease/42965.wss&title=IBM Closes Acquisition of Aspera " target="_blank">Digg this</a></td>
+						</tr>
+						<tr><td colspan="8"><img src="http://www.ibm.com/c.gif" alt="" width="0" height="1"></td></tr>
+					</table>
+					
+					
+					</div></div><div class="synd-item-separator" style="height:10px;"><img border="0" src="/wps/PA_wp.feedspace/theme/images/dot.gif" width="1" height="10" alt="This image is a placeholder for Internet Explorer." title="This image is a placeholder for Internet Explorer." /></div><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_0_4_button" title="Expand article" title2="Collapse article" onclick="return ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.toggleExpansion('synd_item_0_4');"><img id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_0_4_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><a class="synd-article-label" href="http://www.ibm.com/press/us/en/pressrelease/42956.wss" title="IBM Commits $1.2 Billion to Expand Global Cloud Footprint" target="ns_7_B0ODECD410QQC0ICVPIE403004_targetWin">IBM Commits $1.2 Billion to Expand Global Cloud Footprint</a></div><div class="synd-item-content synd-hidden" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_0_4"><div><h5 class="synd-item-date">Published: Fri, 17 Jan 2014 01:01:47 GMT</h5><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+
+					IBM today announced plans to commit  over $1.2 billion to significantly expand its global cloud footprint. This investment includes a network of cloud centers designed to bring clients greater flexibility, transparency and control over how they manage their data, run their business and deploy their IT operations locally in the cloud.  
+					
+					<table border="0" cellspacing="1" cellpadding="1" summary="">
+						<tr><td colspan="8"><img src="http://www.ibm.com/c.gif" alt="" width="0" height="1"></td></tr>
+						<tr>
+							<td><img src="http://www.ibm.com/press/img/email.gif" border="0" alt="" /></td><td><a href="http://www.ibm.com/vrm/bin/sendThisPage/Corporate_Press_Site_USEN.cgi?http_referer=http://www.ibm.com/press/us/en/pressrelease/42956.wss" target="_blank">E-mail this page</a></td>
+							<td><img src="http://www.ibm.com/c.gif" alt="" width="2" height="0"></td>
+							<td><img src="http://www.ibm.com/press/img/delicious_small.gif"></td><td><a href="http://del.icio.us/post?v=4&noui&jump=close&url=http://www.ibm.com/press/us/en/pressrelease/42956.wss&title=IBM Commits $1.2 Billion to Expand Global Cloud Footprint" target="_blank">Save to del.icio.us</a></td>
+							<td><img src="http://www.ibm.com/c.gif" alt="" width="2" height="0"></td>
+							<td><img src="http://www.ibm.com/press/img/digg-thumb.gif"></td><td><a href="http://digg.com/submit?phase=2&url=http://www.ibm.com/press/us/en/pressrelease/42956.wss&title=IBM Commits $1.2 Billion to Expand Global Cloud Footprint" target="_blank">Digg this</a></td>
+						</tr>
+						<tr><td colspan="8"><img src="http://www.ibm.com/c.gif" alt="" width="0" height="1"></td></tr>
+					</table>
+					
+					
+					</div></div>
+
+<div class="synd-feed-ticker" id="ns_7_B0ODECD410QQC0ICVPIE403004_feed_1_0ticker">
+	<a href="/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lDU0lKSkthWWtLQ2xFS0NsRUpJL29Eb2dBRUlRaGpCS0VRQUVBRVpDZ0dRNEtRcGNFclN0Y1ZhQ0FHTUEvNEMxYjlXX05yeFFERVNaSUpSQ2t5WVNoRVJJX0FBISEvN19CME9ERUNENDEwUVFDMElDVlBJRTQwMzAwNC8yNTE2NjIyNTQ1NDEvc3luZF9mZWVkX3pvb20vJTAxJTAwL3N5bmRfZmVlZF96b29tX2lkeC8w/" title="More">More:</a>&nbsp;&nbsp;
+	
+		
+		<span style="white-space:nowrap;"><a class="synd-secondary-title" href="http://www.ibm.com/press/us/en/pressrelease/42796.wss" title="IBM Introduces X6 Architecture, Optimizes x86-Based Servers for Cloud, Analytics" target="_blank">IBM Introduces X6 Architecture, ...</a></span>
+		
+		<span style="white-space:nowrap;"><a class="synd-secondary-title" href="http://www.ibm.com/press/us/en/pressrelease/42928.wss" title="Multiplay and KUULUU Launch Games with SoftLayer, an IBM Company " target="_blank">Multiplay and KUULUU Launch Game...</a></span>
+		
+		<span style="white-space:nowrap;"><a class="synd-secondary-title" href="http://www.ibm.com/press/us/en/pressrelease/42875.wss" title="IBM Sets U.S. Patent Record
+" target="_blank">IBM Sets U.S. Patent Record
+</a></span>
+			
+	</ul>
+</div>
+
+
+</div><div class="synd-feed-separator">&nbsp;</div><div class="synd-feedbar">
+
+
+
+<button class="synd-twisty" type="button" id="ns_7_B0ODECD410QQC0ICVPIE403004_feed_1_1_button" title="Collapse channel IBM Redbooks &#124; Just Published" title2="Expand channel IBM Redbooks &#124; Just Published" onclick="return ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.toggleExpansion('feed_1_1');"><img id="ns_7_B0ODECD410QQC0ICVPIE403004_feed_1_1_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/collapse.gif" width="11" height="11" alt="Collapse channel IBM Redbooks &#124; Just Published" title="Collapse channel IBM Redbooks &#124; Just Published" alt2="Expand channel IBM Redbooks &#124; Just Published" /></button>
+&nbsp;
+
+<span class="synd-breadcrumb-trail">
+
+
+<span>My News</span>
+
+
+<span class="synd-breadcrumb-separator">/</span>
+
+<span>IBM Redbooks &#124; Just Published</span>
+
+</span>
+
+</div><div class="synd-feed" id="ns_7_B0ODECD410QQC0ICVPIE403004_feed_1_1"><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_1_0_button" title="Expand article" title2="Collapse article" onclick="return ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.toggleExpansion('synd_item_1_0');"><img id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_1_0_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><a class="synd-article-label" href="http://w3.itso.ibm.com/redpieces/abstracts/sg248201.html?Open" title="IBM Intelligent Operations Center 1.6 Programming Guide" target="ns_7_B0ODECD410QQC0ICVPIE403004_targetWin">IBM Intelligent Operations Center 1.6 Programming Guide</a></div><div class="synd-item-content synd-hidden" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_1_0"><div><h5 class="synd-item-date">Published: Tue, 21 Jan 2014 13:30:00 GMT</h5><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+ <strong>Draft Redbook, last updated: Tue, 21 Jan 2014</strong><p>
+- Unleash the full potential of the programming model<br>
+- Extend and customize the base solution<br>
+- Learn from practical examples and sample code<p>
+IBM® Intelligent Operations Center is an integrated solution; it provides a rich set of capabilities and line of business tools that business users with domain expertise and no technical background can use out-of-the-box.</div></div><div class="synd-item-separator" style="height:10px;"><img border="0" src="/wps/PA_wp.feedspace/theme/images/dot.gif" width="1" height="10" alt="This image is a placeholder for Internet Explorer." title="This image is a placeholder for Internet Explorer." /></div><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_1_1_button" title="Expand article" title2="Collapse article" onclick="return ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.toggleExpansion('synd_item_1_1');"><img id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_1_1_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><a class="synd-article-label" href="http://w3.itso.ibm.com/abstracts/tips1150.html?Open" title="Using the IBM DS8870 in an OpenStack Cloud Environment" target="ns_7_B0ODECD410QQC0ICVPIE403004_targetWin">Using the IBM DS8870 in an OpenStack Cloud Environment</a></div><div class="synd-item-content synd-hidden" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_1_1"><div><h5 class="synd-item-date">Published: Tue, 21 Jan 2014 13:30:00 GMT</h5><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+ <strong>Web Doc, published: Tue, 21 Jan 2014</strong><p>
+The IBM® DS8870 comes with characteristics and functions that make it an ideal storage foundation for building a workload-aware cloud, especially with the availability of the IBM Storage Driver for OpenStack.</div></div><div class="synd-item-separator" style="height:10px;"><img border="0" src="/wps/PA_wp.feedspace/theme/images/dot.gif" width="1" height="10" alt="This image is a placeholder for Internet Explorer." title="This image is a placeholder for Internet Explorer." /></div><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_1_2_button" title="Expand article" title2="Collapse article" onclick="return ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.toggleExpansion('synd_item_1_2');"><img id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_1_2_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><a class="synd-article-label" href="http://w3.itso.ibm.com/redpieces/abstracts/sg248189.html?Open" title="Implementing IBM FlashSystem 840" target="ns_7_B0ODECD410QQC0ICVPIE403004_targetWin">Implementing IBM FlashSystem 840</a></div><div class="synd-item-content synd-hidden" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_1_2"><div><h5 class="synd-item-date">Published: Tue, 21 Jan 2014 13:30:00 GMT</h5><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+ <strong>Draft Redbook, last updated: Tue, 21 Jan 2014</strong><p>
+- Extreme performance with IBM Micro latency and Macro efficiency<br>
+- Improve system availability with Concurrent code load<br>
+- New intuitive Graphical User Interface<p>
+Almost all technological components in the data center are getting faster; central processing units, network, SAN, and memory.</div></div><div class="synd-item-separator" style="height:10px;"><img border="0" src="/wps/PA_wp.feedspace/theme/images/dot.gif" width="1" height="10" alt="This image is a placeholder for Internet Explorer." title="This image is a placeholder for Internet Explorer." /></div><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_1_3_button" title="Expand article" title2="Collapse article" onclick="return ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.toggleExpansion('synd_item_1_3');"><img id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_1_3_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><a class="synd-article-label" href="http://w3.itso.ibm.com/abstracts/redp4720.html?Open" title="IBM System z Qualified DWDM: Ciena 565/5100/5200 Advanced Services Platform Release Level 11.21" target="ns_7_B0ODECD410QQC0ICVPIE403004_targetWin">IBM System z Qualified DWDM: Ciena 565/5100/5200 Advanced Services Platform Release Level 11.21</a></div><div class="synd-item-content synd-hidden" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_1_3"><div><h5 class="synd-item-date">Published: Mon, 20 Jan 2014 13:30:00 GMT</h5><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+ <strong>Redpaper, published: Mon, 20 Jan 2014</strong><p>
+This IBM® Redpaper™ publication is one in a series that describes IBM System z® qualified dense wavelength division multiplexing (DWDM) vendor products for IBM Geographically Dispersed Parallel Sysplex™ (IBM GDPS®) solutions with Server Time Protocol (STP).</div></div><div class="synd-item-separator" style="height:10px;"><img border="0" src="/wps/PA_wp.feedspace/theme/images/dot.gif" width="1" height="10" alt="This image is a placeholder for Internet Explorer." title="This image is a placeholder for Internet Explorer." /></div><div class="synd-item-title"><button class="synd-twisty" type="button" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_1_4_button" title="Expand article" title2="Collapse article" onclick="return ns_7_B0ODECD410QQC0ICVPIE403004_Ctx.toggleExpansion('synd_item_1_4');"><img id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_1_4_drill" border="0" src="/wps/PA_wp.feedspace/theme/images/expand.gif" width="11" height="11" alt="Expand article" title="Expand article" alt2="Collapse article" /></button><a class="synd-article-label" href="http://w3.itso.ibm.com/redpieces/abstracts/sg248200.html?Open" title="IBM System Storage N series Clustered Data ONTAP" target="ns_7_B0ODECD410QQC0ICVPIE403004_targetWin">IBM System Storage N series Clustered Data ONTAP</a></div><div class="synd-item-content synd-hidden" id="ns_7_B0ODECD410QQC0ICVPIE403004_synd_item_1_4"><div><h5 class="synd-item-date">Published: Mon, 20 Jan 2014 13:30:00 GMT</h5><!--TBD: Start for download url-->
+<div></div><!--TBD: End for download url-->
+ <strong>Draft Redbook, last updated: Mon, 20 Jan 2014</strong><p>
+- Understand Clustered Data ONTAP benefits for dynamic storage solution<br>
+- Learn about Clustered Data ONTAP features and functions<br>
+- Design scaleable NAS solutions using N series<p>
+Corporate workgroups, distributed enterprises, and small to medium-sized companies are increasingly seeking to network and consolidate storage to improve availability, share information, reduce costs, and protect and secure information.</div></div>
+
+<div class="synd-feed-ticker" id="ns_7_B0ODECD410QQC0ICVPIE403004_feed_1_1ticker">
+	<a href="/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lDU0lKSkthWWtLQ2xFS0NsRUpJL29Eb2dBRUlRaGpCS0VRQUVBRVpDZ0dRNEtRcGNFclN0Y1ZhQ0FHTUEvNEMxYjlXX05yeFFERVNaSUpSQ2t5WVNoRVJJX0FBISEvN19CME9ERUNENDEwUVFDMElDVlBJRTQwMzAwNC8yNTE2NjIyNTQ1NDIvc3luZF9mZWVkX3pvb20vJTAxJTAxL3N5bmRfZmVlZF96b29tX2lkeC8w/" title="More">More:</a>&nbsp;&nbsp;
+	
+		
+		<span style="white-space:nowrap;"><a class="synd-secondary-title" href="http://w3.itso.ibm.com/abstracts/tips1145.html?Open" title="IBM System x3630 M4 (E5-2400 v2)" target="_blank">IBM System x3630 M4 (E5-2400 v2)</a></span>
+		
+		<span style="white-space:nowrap;"><a class="synd-secondary-title" href="http://w3.itso.ibm.com/abstracts/tips1144.html?Open" title="IBM System x3530 M4 (E5-2400 v2)" target="_blank">IBM System x3530 M4 (E5-2400 v2)</a></span>
+		
+		<span style="white-space:nowrap;"><a class="synd-secondary-title" href="http://w3.itso.ibm.com/abstracts/tips1143.html?Open" title="ServeRAID F5115-200GB and 800GB SAS/SATA Controllers for IBM System x" target="_blank">ServeRAID F5115-200GB and 800GB ...</a></span>
+			
+	</ul>
+</div>
+
+
+</div>
+			
+		</div>
+		
+	
+	<div class="clearing"></div>
+	</div>
+	
+	
+	
+	
+	
+
+<a name="skipportlet7_B0ODECD410QQC0ICVPIE403004"></a>
+
+<script type="text/javascript">
+var dynamicTitle =
+    "My News";
+var titleElement = 
+    document.getElementById("title.7_B0ODECD410QQC0ICVPIE403004");
+if (titleElement != null) {
+    if (dynamicTitle != "" && dynamicTitle != "null")
+        titleElement.innerHTML = dynamicTitle;
+    }
+</script>
+<script type="text/javascript">var e=document.getElementById('title.7_B0ODECD410QQC0ICVPIE403004');if(e){e.innerHTML='My News';}</script>	
+	</div><!--end colRight-->
+
+
+
+	<div class="ibmPortalContentCenterCol3 ibmPortalLayoutContainer" id="oid:7_B0ODECD41GMD20I2FB4VBN0002" orientation=V ordinal=2 directions={left:'1'}> 	
+		
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+		
+	
+		<div class="portlet-blue" id="sr">
+	
+		
+		
+	
+	
+		
+	<div  class="portlet-head-blue-med">
+
+					
+					<span>
+						<h2 class="portlet-head-blue-med" id="title.7_B0ODECD418JK30II4MBA0M30I0">
+						    <span id="title.7_B0ODECD418JK30II4MBA0M30I0">
+							    Search
+							</span>
+						</h2>
+					</span>
+					
+				
+
+		
+				 
+				
+				
+				<span class="portlet-icons">
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+						    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lDU0NsQSEhL3dHa0FKTk1BLzRCRWo5NEFnLzdfQjBPREVDRDQxOEpLMzBJSTRNQkEwTTMwSTAvbWluaW1pemVk/'><img width="16" height="13"  src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-minimize-light.gif"  alt='Minimize' title='Minimize'/></a>
+						</span>
+										
+					
+				</span>
+				
+				
+				
+						
+	</div>
+	
+	
+		<div class='portlet-content' id='sr-portlet-content'>
+			<p class="access"><a href="#page-index">skip to Page Index</a></p>
+			
+
+
+
+<script language="javascript" type="text/javaScript">
+
+ var ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs    		= new Array();
+ var ns_7_B0ODECD418JK30II4MBA0M30I0_customURLs     		= new Array();
+ var ns_7_B0ODECD418JK30II4MBA0M30I0_blankSearchStringURLs  = new Array();
+ var ns_7_B0ODECD418JK30II4MBA0M30I0_customAdvURLs  		= new Array();
+ var ns_7_B0ODECD418JK30II4MBA0M30I0_encodeQuery    		= new Array();
+   
+ ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[0]  = "//w3.ibm.com/search/do/search"; 
+ ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[1]  = "//w3.ibm.com/search/do/index.wss" ;
+ ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[2]  = "//w3.ibm.com/bluepages/simpleSearch.wss";
+ ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[3]  = "//w3.ibm.com/bluepages/advanced.wss";
+ ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[4]  = "//w3.ibm.com/bluepages/advancedSearchEPPage.wss?task=advanced_search_ES";
+
+
+	function ns_7_B0ODECD418JK30II4MBA0M30I0_isEmpty(myText) 
+	{
+		var re = /^\s{1,}$/g; //match any white space including space, tab, form-feed, etc.
+
+		if ((myText==null) || (myText.length==0) || ((myText.search(re)) > -1)) 
+		{
+			return true;
+		}
+		else 
+		{
+			return false;
+		}
+	}
+
+
+	function ns_7_B0ODECD418JK30II4MBA0M30I0_isFieldEmpty(myField) 
+	{
+		var re = /^\s{1,}$/g; //match any white space including space, tab, form-feed, etc.
+
+		if ((myField.value==null) || (myField.value.length==0) || ((myField.value.search(re)) > -1)) 
+		{
+			return true;
+		}
+		else 
+		{
+			return false;
+		}
+	}
+
+    function ns_7_B0ODECD418JK30II4MBA0M30I0_searchSubmit(adv, myForm, formLastName)
+    {    
+
+       if ((formLastName == 'blupageSearchForm'))    
+       {  
+           ns_7_B0ODECD418JK30II4MBA0M30I0_submitBluepages(adv, myForm);          
+       }
+       else if ((formLastName == 'otherSearchForm'))    
+       {
+           ns_7_B0ODECD418JK30II4MBA0M30I0_submitOthers(adv, myForm);
+       }
+    }
+    
+    
+    function ns_7_B0ODECD418JK30II4MBA0M30I0_submitOthers(isAdvance, mySearchForm)
+    {
+        var theValue = "";
+
+        for (var i = 0; i < mySearchForm.searchOption.length; i++) 
+        {
+            if (mySearchForm.searchOption[i].checked) 
+            {
+                theValue = mySearchForm.searchOption[i].value;
+                var externalURL = false;
+                var optionId = "";
+
+                if ((theValue == "w3") && (isAdvance =="no")) 
+                {
+                    theValue = ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[0];                
+                    mySearchForm.qt.value = mySearchForm.others.value;              
+                    mySearchForm.tabName.value = "w3";
+                    mySearchForm.url.value = "";
+                    mySearchForm.expandAdv.value = "no";
+                    break;
+                } 
+                else if ((theValue == "w3") && (isAdvance =="yes")) 
+                {
+                    theValue = ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[1];
+                    mySearchForm.qt.value = mySearchForm.others.value;
+                    mySearchForm.tabName.value = "w3";
+                    mySearchForm.expandAdv.value = "yes";
+                    mySearchForm.url.value = "";
+                    break;
+                }
+                else if ((theValue == "forums") && (isAdvance == "no")) 
+                { 
+                    theValue = ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[0];                 
+                    mySearchForm.qt.value = mySearchForm.others.value;
+                    mySearchForm.tabName.value = "forums";
+                    mySearchForm.url.value = "";
+                    mySearchForm.expandAdv.value = "no";
+                    break;
+                } 
+                else if ((theValue == "forums") && (isAdvance == "yes")) 
+                {
+                    theValue = ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[1];
+                    mySearchForm.qt.value = mySearchForm.others.value;
+                    mySearchForm.tabName.value = "forums";
+                    mySearchForm.expandAdv.value = "yes";
+                    mySearchForm.url.value = "";
+                    break;
+                } 
+                else if ((theValue == "news") && (isAdvance == "no")) 
+                { 
+                    theValue = ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[0];
+                    mySearchForm.qt.value = mySearchForm.others.value;
+                    mySearchForm.tabName.value = "news";
+                    mySearchForm.url.value = "";
+                    mySearchForm.expandAdv.value = "no";
+                    break;
+                }
+                else if ((theValue == "news") && (isAdvance == "yes")) 
+                {
+                    theValue = ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[1];
+                    mySearchForm.qt.value = mySearchForm.others.value;
+                    mySearchForm.tabName.value = "news";
+                    mySearchForm.expandAdv.value = "yes";
+                    mySearchForm.url.value = "";
+                    break;
+                }
+                else if ((theValue == "assets") && (isAdvance == "no")) 
+                { 
+                    theValue = ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[0];
+                    mySearchForm.qt.value = mySearchForm.others.value;
+                    mySearchForm.tabName.value = "assets";
+                    mySearchForm.url.value = "";
+                    mySearchForm.expandAdv.value = "no";
+                    break;
+                }
+                else if ((theValue == "assets") && (isAdvance == "yes")) 
+                {
+                    theValue = ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[1];
+                    mySearchForm.qt.value = mySearchForm.others.value;
+                    mySearchForm.tabName.value = "assets";
+                    mySearchForm.expandAdv.value = "yes";
+                    mySearchForm.url.value = "";
+                    break;
+                }  
+                else if ((theValue == "tags") && (isAdvance == "no")) 
+                { 
+                    theValue = ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[0];
+                    mySearchForm.qt.value = mySearchForm.others.value;
+                    mySearchForm.tabName.value = "tags";
+                    mySearchForm.url.value = "";
+                    mySearchForm.expandAdv.value = "no";
+                    break;
+                }
+                else if ((theValue == "tags") && (isAdvance == "yes")) 
+                {
+                    theValue = ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[1];
+                    mySearchForm.qt.value = mySearchForm.others.value;
+                    mySearchForm.tabName.value = "tags";
+                    mySearchForm.expandAdv.value = "yes";
+                    mySearchForm.url.value = "";
+                    break;
+                }                 
+                else if ((theValue.indexOf("option") != -1 ) && (isAdvance == "no")) 
+                {
+                    mySearchForm.expandAdv.value = "no";
+                    optionId = theValue.substring((theValue.length-1),theValue.length);
+                    var optionQryString = mySearchForm.others.value;
+                   	
+                    if (!(ns_7_B0ODECD418JK30II4MBA0M30I0_isFieldEmpty(mySearchForm.others)))
+                    {
+                    	optionQryString = escape(optionQryString);
+						theValue = ns_7_B0ODECD418JK30II4MBA0M30I0_customURLs[optionId]+optionQryString;
+                    }
+                    else
+                    {
+                    	theValue = ns_7_B0ODECD418JK30II4MBA0M30I0_blankSearchStringURLs[optionId];
+                    }
+                    externalURL = true;
+                    break;
+                }
+                else if ((theValue.indexOf("option") != -1 ) && (isAdvance == "yes")) 
+                {
+                  mySearchForm.expandAdv.value = "yes";
+                  optionId = theValue.substring((theValue.length-1),theValue.length);
+                  theValue = ns_7_B0ODECD418JK30II4MBA0M30I0_customAdvURLs[optionId];
+                  externalURL = true;
+                  break;
+                }
+                else 
+                {
+					mySearchForm.url.value = "";
+                    mySearchForm.qt.value = mySearchForm.others.value;
+                    mySearchForm.tabName.value = "w3";
+
+                    if(isAdvance == "yes")
+                    {
+                        theValue = ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[1];
+                        mySearchForm.expandAdv.value = "yes";
+                    } 
+                    else
+                    {
+                        theValue = ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[0];
+					    mySearchForm.expandAdv.value = "no";
+                    }                       
+                    break;
+                }
+         }    
+      }      
+      
+	  if ( !ns_7_B0ODECD418JK30II4MBA0M30I0_isEmpty(theValue)) 
+      {
+      	if (externalURL)
+      	{
+			window.open(theValue);
+			return true;
+      	}
+      	else
+      	{
+          mySearchForm.action=theValue;
+          mySearchForm.submit();          
+          return true;
+        }  
+      }    
+      
+    }
+
+    
+    function ns_7_B0ODECD418JK30II4MBA0M30I0_submitBluepages(isAdvance, mySearchForm)
+    {
+        var theValue = "";
+        var searchTypeval = ns_7_B0ODECD418JK30II4MBA0M30I0_getSelectedValue(mySearchForm.searchBy);
+        
+        if(searchTypeval == "Entire profile") 
+        {
+           if(!ns_7_B0ODECD418JK30II4MBA0M30I0_checkWildCard(mySearchForm.searchFor,isAdvance)) 
+           {
+           	  return false;
+           }
+        }   
+            
+        if (searchTypeval == "-----------------------") 
+        {
+        	return false;
+        }
+
+        if( (ns_7_B0ODECD418JK30II4MBA0M30I0_checkMinSearch(mySearchForm.searchFor,2,isAdvance))) 
+        {
+        	mySearchForm.task.value = "viewrecord";
+        
+            if(isAdvance =="no")
+            {
+                 theValue = ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[2];
+            }
+            else
+            {
+                 if(searchTypeval == "Entire profile")
+                 {
+                     mySearchForm.task.value = "advanced_search_EP";
+                     theValue = ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[4];
+                 }
+                 else
+                 {  
+                 	theValue = ns_7_B0ODECD418JK30II4MBA0M30I0_defaultURLs[3];
+                 }
+            }
+            mySearchForm.action=theValue;     
+            mySearchForm.submit();
+            return true;
+        }
+        
+        return false;
+    }
+
+    function ns_7_B0ODECD418JK30II4MBA0M30I0_checkMinSearch(searchObj, minNeeded, isAdvance)
+    {
+        var minSearchAlert = "You must enter at least 2 non-blank, non-asterisk characters in order to perform a search";        
+        // count non-asterisks and non-blanks to ensure minimum chars needed
+        var count=0;
+        
+        if (isAdvance =="yes") 
+        {
+        	return true;
+        }
+
+        for (var i=0;i<searchObj.value.length && count<=minNeeded;i++) 
+        {
+            thisChar = searchObj.value.substr(i,1);
+            if (thisChar !="*" && thisChar !=" " ) 
+            {
+                count++;
+            }
+        }
+
+        if (count < minNeeded)
+        {
+            alert(minSearchAlert);
+            searchObj.focus();
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    function ns_7_B0ODECD418JK30II4MBA0M30I0_checkWildCard(searchObj, isAdvance)
+    {
+        var noWildCardAlert = "The wildcard character '*' is not supported for entire profile searches. Please refine your search without using wildcards.";
+        if (isAdvance =="yes") 
+        {
+        	return true;
+        }
+        
+        if (searchObj.value.indexOf("*")>-1) 
+        {
+            alert(noWildCardAlert);
+            searchObj.focus();
+            return false;
+        } 
+        else 
+        {
+            return true;
+        }
+    }
+
+    function ns_7_B0ODECD418JK30II4MBA0M30I0_getSelectedValue(searchTypeObj)
+    {
+      var w = searchTypeObj.selectedIndex;
+      var selected_text = searchTypeObj.options[w].text;
+      return selected_text;
+    }
+    
+	function ns_7_B0ODECD418JK30II4MBA0M30I0_checkForEnter(e, myForm, formLastName)
+	{
+		var keynum;
+
+		if(window.event) // IE
+		{
+			keynum = e.keyCode;
+		}
+		else if(e.which) // Netscape/Firefox/Opera
+		{
+			keynum = e.which;
+		}
+
+		if (keynum == 13) 	// If enter was pressed
+		{
+			ns_7_B0ODECD418JK30II4MBA0M30I0_searchSubmit('no', myForm, formLastName);
+			return false;
+		}
+		
+		return true;
+	}
+    
+</script>
+<div style="padding:0 10px;background:#9cf;border:1px solid #9cf;">
+<h3>BluePages</h3>
+<div class="table-wrap">
+
+<form name="ns_7_B0ODECD418JK30II4MBA0M30I0_blupageSearchForm" action="ns_7_B0ODECD418JK30II4MBA0M30I0_searchSubmit('no', document.ns_7_B0ODECD418JK30II4MBA0M30I0_blupageSearchForm, 'blupageSearchForm')" method="get" target="_blank" id="search-bluepages">
+  <input type="hidden" name="location" value="All locations" />
+  <div>
+  	<br/>
+    <label for="search-type">Search type</label>
+    <br/>
+        <select name="searchBy" id="search-type" >
+        <option value="Name" selected='selected' >Name</option>
+        <option value="Department number"        >Department number</option>
+        <option value="Phone numbers"            >Phone numbers</option>
+        <option value="Internet address"         >Internet address</option>
+        <option value="Job responsibilities"     >Job responsibilities</option>
+        <option value="Notes mail"               >Notes mail</option>
+        <option value="Serial number"            >Serial number</option>
+        <option value="Skills"                   >Skills</option>
+        <option value="Tie line"                 >Tie line</option>
+        <option value="ruler"                    >-----------------------</option>
+        <option value="Entire profile"           >Entire profile</option>
+        <option value="Native name"              >Name (Kanji)</option>
+        </select>
+  </div>
+  <br/>
+  <div>
+    <label for="search-query">Search for</label>
+    <br/>
+    <input type="text" style="width:85%" class="search-query" id="search-query" name="searchFor" onkeydown="return ns_7_B0ODECD418JK30II4MBA0M30I0_checkForEnter(event, document.ns_7_B0ODECD418JK30II4MBA0M30I0_blupageSearchForm, 'blupageSearchForm')"/>
+    <input type="button" class="button-blue" value="GO" onclick="ns_7_B0ODECD418JK30II4MBA0M30I0_searchSubmit('no', document.ns_7_B0ODECD418JK30II4MBA0M30I0_blupageSearchForm, 'blupageSearchForm')" />
+  </div>
+
+  <p align="right"><a onclick="ns_7_B0ODECD418JK30II4MBA0M30I0_searchSubmit('yes', document.ns_7_B0ODECD418JK30II4MBA0M30I0_blupageSearchForm, 'blupageSearchForm')" href="javascript:void(null)">Advanced search</a></p>
+
+  <input type="hidden" name="task" value="viewrecord" />
+</form>
+</div>
+</div>
+
+<div id="other-searches-div">
+<h3><label for="search-other">Other searches</label></h3>
+<div class="table-wrap">
+
+<form name="ns_7_B0ODECD418JK30II4MBA0M30I0_otherSearchForm" action="ns_7_B0ODECD418JK30II4MBA0M30I0_searchSubmit('no', document.ns_7_B0ODECD418JK30II4MBA0M30I0_otherSearchForm, 'otherSearchForm')" method="get" target="_blank" id="other-searches">
+
+  <input type="hidden" name="qt" value="" />
+  <input type="hidden" name="url" value="" />
+  <input type="hidden" name="tabName" value="" />
+  <input type="hidden" name="expandAdv" value="" />
+
+  <table cellspacing="0" cellpadding="0"> 
+    <tr><td><input id="option4" name="searchOption" value="option4" type="radio" checked/><label for="option4">iGSC Domain Search</label></td></tr>
+  </table>
+  <script language="javascript" type="text/javaScript">
+  	ns_7_B0ODECD418JK30II4MBA0M30I0_customURLs[4] = "//techsupport.rchland.ibm.com/catalog.nsf/DomainQuery?OpenForm&Query=";
+  	ns_7_B0ODECD418JK30II4MBA0M30I0_blankSearchStringURLs[4] = "//techsupport.rchland.ibm.com/catalog.nsf/DomainQuery?OpenForm";
+  	ns_7_B0ODECD418JK30II4MBA0M30I0_encodeQuery[4] = "YES";
+  	ns_7_B0ODECD418JK30II4MBA0M30I0_customAdvURLs[4] = "//techsupport.rchland.ibm.com/catalog.nsf/DomainQuery?OpenForm&Advanced=1";
+  	</script>
+  	
+  <div class="hrule-dots"> </div>
+
+  <table cellspacing="0" cellpadding="0">
+    <tr><td><input id="search-w3" name="searchOption" value="w3" type="radio" /><label for="search-w3">IBM web pages</label></td></tr>     
+    <tr><td><input id="search-forums" name="searchOption" value="forums" type="radio"  /><label for="search-forums">IBM collaboration spaces</label></td></tr>
+    <tr><td><input id="search-news" name="searchOption" value="news" type="radio"  /><label for="search-news">IBM news</label></td></tr>
+    <tr><td><input id="search-assets" name="searchOption" value="assets" type="radio"  /><label for="search-assets">IBM Knowledge assets</label></td></tr>
+    <tr><td><input id="search-tagged-pages" name="searchOption" value="tags" type="radio"  /><label for="search-tags">IBM Tagged pages (Beta)</label></td></tr>
+  </table> 
+
+  <table cellspacing="0" cellpadding="0"> 
+   <tr><td><input id="option1" name="searchOption" value="option1" type="radio" /><label for="option1">IBM Learning (site search)</label></td></tr>
+  </table>
+  <script language="javascript" type="text/javaScript">
+  	ns_7_B0ODECD418JK30II4MBA0M30I0_customURLs[1] = "//w3.ibm.com/learning/lati/dosearch.wss?searchstring=";
+  	ns_7_B0ODECD418JK30II4MBA0M30I0_blankSearchStringURLs[1] = "//w3.ibm.com/learning/lati/dosearch.wss?searchstring=";
+  	ns_7_B0ODECD418JK30II4MBA0M30I0_encodeQuery[1] = "YES";
+  	ns_7_B0ODECD418JK30II4MBA0M30I0_customAdvURLs[1] = "//w3.ibm.com/learning/lati/advsearch.wss";
+  	</script>
+  <table cellspacing="0" cellpadding="0"> 
+    <tr><td><input id="option2" name="searchOption" value="option2" type="radio" /><label for="option2">IBM World Wide Q&amp;A</label></td></tr>
+  </table>
+  <script language="javascript" type="text/javaScript">
+    ns_7_B0ODECD418JK30II4MBA0M30I0_customURLs[2] = "//w3.ibm.com/wwqa/wwqa.nsf/wwqaw3?OpenForm&w3s=";
+    ns_7_B0ODECD418JK30II4MBA0M30I0_blankSearchStringURLs[2] = "//w3.ibm.com/wwqa/wwqa.nsf/wwqaw3?OpenForm&w3s=";
+    ns_7_B0ODECD418JK30II4MBA0M30I0_encodeQuery[2] = "YES";
+    ns_7_B0ODECD418JK30II4MBA0M30I0_customAdvURLs[2] = "//w3.ibm.com/wwqa/wwqa.nsf/wwqaw3";
+   </script>
+   <table cellspacing="0" cellpadding="0"> 
+    <tr><td><input id="option3" name="searchOption" value="option3" type="radio" /><label for="option3">Technology Adoption Program (TAP)</label></td></tr>
+  </table>
+  <script language="javascript" type="text/javaScript">
+    ns_7_B0ODECD418JK30II4MBA0M30I0_customURLs[3] = "//w3.tap.ibm.com/myTAP/browseInnovations.wss?keyWordSearch=";
+    ns_7_B0ODECD418JK30II4MBA0M30I0_blankSearchStringURLs[3] = "//w3.tap.ibm.com/myTAP/browseInnovations.wss?keyWordSearch=";
+    ns_7_B0ODECD418JK30II4MBA0M30I0_encodeQuery[3] = "YES";
+    ns_7_B0ODECD418JK30II4MBA0M30I0_customAdvURLs[3] = "//w3.tap.ibm.com/myTAP/browseInnovations.wss?keyWordSearch=";
+   </script>
+   <div class="hrule-dots"> </div>
+   <table cellspacing="0" cellpadding="0"> 
+    <tr><td><input id="option6" name="searchOption" value="option6" type="radio" /><label for="option6">Dictionary.com</label></td></tr>
+  </table>
+  <script language="javascript" type="text/javaScript">
+    ns_7_B0ODECD418JK30II4MBA0M30I0_customURLs[6] = "//dictionary.reference.com/browse/";
+    ns_7_B0ODECD418JK30II4MBA0M30I0_blankSearchStringURLs[6] = "//dictionary.reference.com/browse/";
+    ns_7_B0ODECD418JK30II4MBA0M30I0_encodeQuery[6] = "YES";
+    ns_7_B0ODECD418JK30II4MBA0M30I0_customAdvURLs[6] = "//dictionary.reference.com/browse/";
+  </script>
+  <table cellspacing="0" cellpadding="0"> 
+    <tr><td><input id="option5" name="searchOption" value="option5" type="radio" /><label for="option5">Wikipedia</label></td></tr>
+  </table>
+  <script language="javascript" type="text/javaScript">
+    ns_7_B0ODECD418JK30II4MBA0M30I0_customURLs[5] = "//www.wikipedia.org/wiki/Special:Search?search=";
+    ns_7_B0ODECD418JK30II4MBA0M30I0_blankSearchStringURLs[5] = "//www.wikipedia.org/wiki/Special:Search?search=";
+    ns_7_B0ODECD418JK30II4MBA0M30I0_encodeQuery[5] = "YES";
+    ns_7_B0ODECD418JK30II4MBA0M30I0_customAdvURLs[5] = "//www.wikipedia.org/w/index.php?title=Special:Search&fulltext=Search&advanced=1&ns0=1&redirs=0&search=";
+  </script>
+  <table cellspacing="0" cellpadding="0"> 
+    <tr><td><input id="option0" name="searchOption" value="option0" type="radio" /><label for="option0">Google</label></td></tr>
+  </table>
+  <script language="javascript" type="text/javaScript">
+    ns_7_B0ODECD418JK30II4MBA0M30I0_customURLs[0] = "//www.google.com/search?q=";
+    ns_7_B0ODECD418JK30II4MBA0M30I0_blankSearchStringURLs[0] = "//www.google.com/search?q=";
+    ns_7_B0ODECD418JK30II4MBA0M30I0_encodeQuery[0] = "YES";
+    ns_7_B0ODECD418JK30II4MBA0M30I0_customAdvURLs[0] = "//www.google.com/advanced_search";
+  </script>
+  <br/>
+  <div>
+      <label for="search-other">Search for</label>
+      <br/>
+      <input type="text" style="width:85%" name="others" class="search-query" id="search-other" onkeydown="return ns_7_B0ODECD418JK30II4MBA0M30I0_checkForEnter(event, document.ns_7_B0ODECD418JK30II4MBA0M30I0_otherSearchForm, 'otherSearchForm')"/>
+      <input type="button" class="button-blue" value="GO" onclick="ns_7_B0ODECD418JK30II4MBA0M30I0_searchSubmit('no', document.ns_7_B0ODECD418JK30II4MBA0M30I0_otherSearchForm, 'otherSearchForm')" />
+  </div>
+	<p align="right"><a onclick="ns_7_B0ODECD418JK30II4MBA0M30I0_searchSubmit('yes', document.ns_7_B0ODECD418JK30II4MBA0M30I0_otherSearchForm, 'otherSearchForm')" href="javascript:void(null)">Advanced search</a></p>
+</form>
+<br/>
+</div>
+</div>
+
+			
+		</div>
+		
+	
+	<div class="clearing"></div>
+	</div>
+	
+	
+	
+	
+	
+
+<a name="skipportlet7_B0ODECD418JK30II4MBA0M30I0"></a>
+
+<script type="text/javascript">
+var dynamicTitle =
+    "Search";
+var titleElement = 
+    document.getElementById("title.7_B0ODECD418JK30II4MBA0M30I0");
+if (titleElement != null) {
+    if (dynamicTitle != "" && dynamicTitle != "null")
+        titleElement.innerHTML = dynamicTitle;
+    }
+</script>
+<script type="text/javascript">var e=document.getElementById('title.7_B0ODECD418JK30II4MBA0M30I0');if(e){e.innerHTML='Search';}</script>
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+		
+	
+		<div class="portlet-blue" id="xx">
+	
+		
+		
+	
+	
+		
+	<div  class="portlet-head-blue-med">
+
+					
+					<span>
+						<h2 class="portlet-head-blue-med" id="title.7_JL13TL55102A80IAQ386BG0046">
+						    <span id="title.7_JL13TL55102A80IAQ386BG0046">
+							    SharedBookmarks
+							</span>
+						</h2>
+					</span>
+					
+				
+
+		
+				 
+				
+				
+				<span class="portlet-icons">
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+						
+						    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+							    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lDU0tLVUEhL3dPa0FKRk5FRENBIS80QkVqOTRBZy83X0pMMTNUTDU1MTAyQTgwSUFRMzg2QkcwMDQ2L21heGltaXplZA!!/'><img width="16" height="13" src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-maximize-light.gif" alt='Maximize' title='Maximize'/></a>
+							</span>
+						
+					
+					
+					
+					
+					
+					    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+						    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lDU0NsQSEhL3dHa0FKTk1BLzRCRWo5NEFnLzdfSkwxM1RMNTUxMDJBODBJQVEzODZCRzAwNDYvbWluaW1pemVk/'><img width="16" height="13"  src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-minimize-light.gif"  alt='Minimize' title='Minimize'/></a>
+						</span>
+										
+					
+					    <span id="portalSkinTitleBarNormalMode" name="portalSkinTitleBarNormalMode" class="showTitleBarElement">
+						    <a href='/wps/portal/!ut/p/c5/hY7JDoIwGISfxSfoT2XxWgqBRlpEVrkQIi4QWQ4EpE8vxrM6c_zyTQblaG1XTvWtHOu-Kx8oQ7lemOBbNrVUxUlMCsxXrJhygmGPV37SC_gSAn_sFGWgFmGzG_gyZp6kU9TIYBFRILlks2jsJ6-uhyo5xiah55rJ--rk71XqEFc1PADHwBpgoYWYkwSAbT_8xyfh9u0FDW08De68eQHSXuNX/dl3/d3/L0lJSklLVW9wUUEhIS9JTmpBQUF4QUFFUWtMRWlrb0EhIS80Qm40UklBMklQaEMvNl9CME9ERUNENDFHVkJDMElPMURVQ01BMjBLMi83X0pMMTNUTDU1MTAyQTgwSUFRMzg2QkcwMDQ2L2hlbHAvbWF4aW1pemVk/'><img width="16" height="13" src="/w3pagebuilder/skins/html/w3PageBuilderSkin/icon-portlet-help-light.gif" alt='Help' title='Help'/></a>
+						</span>
+			        
+				</span>
+				
+				
+				
+						
+	</div>
+	
+	
+		<div class='portlet-content' id='xx-portlet-content'>
+			<p class="access"><a href="#page-index">skip to Page Index</a></p>
+			
+
+
+
+
+
+
+
+<form method="POST" name="ns_7_JL13TL55102A80IAQ386BG0046_viewform">
+
+<table style="overflow:hidden">
+	
+		
+		
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://w3.rchland.ibm.com/projects/iplaw/" target="_blank" class="BookmarkBean" title="http://w3.rchland.ibm.com/projects/iplaw/">Patent information</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://www.ibm.com/services/sl/products/" target="_blank" class="BookmarkBean" title="http://www.ibm.com/services/sl/products/">Supported product list</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="https://w3.ibm.com/hr/us/etotals/protect/home.wss" target="_blank" class="BookmarkBean" title="https://w3.ibm.com/hr/us/etotals/protect/home.wss">eTotals</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="https://w3-01.ibm.com/services/delivery/stats/index.jsp" target="_blank" class="BookmarkBean" title="https://w3-01.ibm.com/services/delivery/stats/index.jsp">STATS</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+				<tr style="overflow:hidden">
+					<td style="overflow:hidden">
+						
+							
+								<a href="http://webucation.rchland.ibm.com" target="_blank" class="BookmarkBean" title="http://webucation.rchland.ibm.com">Webucation</a>
+							
+							
+						
+					</td>
+				</tr>
+			
+		
+	
+</table>
+</form>
+			
+		</div>
+		
+	
+	<div class="clearing"></div>
+	</div>
+	
+	
+	
+	
+	
+
+<a name="skipportlet7_JL13TL55102A80IAQ386BG0046"></a>
+
+<script type="text/javascript">
+var dynamicTitle =
+    "Shared Bookmarks";
+var titleElement = 
+    document.getElementById("title.7_JL13TL55102A80IAQ386BG0046");
+if (titleElement != null) {
+    if (dynamicTitle != "" && dynamicTitle != "null")
+        titleElement.innerHTML = dynamicTitle;
+    }
+</script>
+<script type="text/javascript">var e=document.getElementById('title.7_JL13TL55102A80IAQ386BG0046');if(e){e.innerHTML='Shared Bookmarks';}</script>
+	</div><!--end content-->
+
+
+
+
+	         
+	         
+	     </div>  
+	 </div>  
+</div>  
+
+
+
+  
+    
+  
+
+
+
+
+	
+
+<!--  terms of use function-->
+<script type="text/javascript">
+    function openTOU() 
+    {
+		window.location = "//w3.ibm.com/w3/info_terms_of_use.html ";
+	}
+</script>
+
+
+
+
+
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+
+ 
+<!-- accessibility page index -->
+<div>
+<h2 class="access">A list of all portlets on this page.</h2>
+<ul id="page-index" class="access">
+	<li><a href="#xx">Welcome</a></li>
+<li><a href="#sr">Search</a></li>
+<li><a href="#w3_login">Sign in</a></li>
+<li><a href="#xx">SharedBookmarks</a></li>
+<li><a href="#xx">My News</a></li>
+<li><a href="#xx">Support Center News</a></li>
+
+</ul>
+</div>
+
+</body>
+</html>
