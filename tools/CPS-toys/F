@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body text="#000000" bgcolor="#FFFFFF">
+
+<form method="post" action="/names.nsf?Login" name="_wwwReturnAuthenticationFailure">
+<input type="hidden" name="%%ModDate" value="00000000BC01FE10"><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Description" content="This is the error page for the internal System i sites." />
+<meta name="Keywords" scheme="iso8601" content="error" />
+<meta name="Owner" content="ldedd@us.ibm.com" />
+<meta name="Feedback" content="ldedd@us.ibm.com" />
+<meta name="Robots" content="noindex,nofollow" />
+<meta name="Security" content="internal use only" />
+<meta name="Source" content="v8 Template Generator" />
+<meta name="DC.Date" scheme="iso8601" content="2006-08-01" />
+<meta name="DC.Language" scheme="rfc1766" content="en-US" />
+<meta name="DC.Rights" content="Copyright (c) 2001,2006 by IBM corporation" />
+<meta name="IBM.Country" content="US" />
+<meta name="IBM.Effective" content="2006-08-01" />
+<!-- ** Every tag's content below must be updated ** -->
+<meta name="DC.Type" scheme="IBM_ContentClassTaxonomy" content="" />
+<meta name="DC.Subject" scheme="IBM_SubjectTaxonomy" content="" />
+<meta name="DC.Publisher" content="IBM Corporation" />
+<meta name="IBM.Industry" scheme="IBM_IndustryTaxonomy" content="" />
+<title>System i Technical Support | Error</title>
+<script language="JavaScript" type="text/javaScript" src="//w3.ibm.com/ui/v8/scripts/scripts.js"></script>
+<style type="text/css" media="all">
+<!--
+@import url("//w3.ibm.com/ui/v8/css/screen.css");
+@import url("//w3.ibm.com/ui/v8/css/interior.css");
+@import url("//w3.ibm.com/ui/v8/css/icons.css");
+@import url("//w3.ibm.com/ui/v8/css/interior-1-col.css");
+-->
+</style>
+<!-- print stylesheet MUST follow imported stylesheets -->
+<link rel="stylesheet" type="text/css" media="print" href="//w3.ibm.com/ui/v8/css/print.css" />
+</head>
+<body id="w3-ibm-com" class="article">
+<!-- start accessibility prolog -->
+<div class="skip"><a href="#content-main" accesskey="2">Skip to main content</a></div>
+<div class="skip"><a href="#left-nav" accesskey="n">Skip to navigation</a></div>
+<div id="access-info">
+	<p class="access">The access keys for this page are:</p>
+	<ul class="access">
+		<li>ALT plus 0 links to this site's <a href="http://w3.ibm.com/w3/access-stmt.html" accesskey="0">Accessibility Statement.</a></li>
+		<li>ALT plus 1 links to the w3.ibm.com home page.</li>
+		<li>ALT plus 2 skips to main content.</li>
+		<li>ALT plus 4 skips to the search form.</li>
+		<li>ALT plus 9 links to the feedback page.</li>
+		<li>ALT plus N skips to navigation.</li>
+	</ul>
+	<p class="access">Additional accessibility information for w3.ibm.com can be found <a href="http://w3.ibm.com/w3/access-stmt.html">on the w3 Accessibility Statement page.</a></p>
+</div>
+<!-- end accessibility prolog -->
+<!-- start masthead -->
+<div id="masthead">
+	<h2 class="access">Start of masthead</h2>
+	<div id="prt-w3-sitemark"><img src="//w3.ibm.com/ui/v8/images/id-w3-sitemark-simple.gif" alt="" width="54" height="33" /></div>
+	<div id="prt-ibm-logo"><img src="//w3.ibm.com/ui/v8/images/id-ibm-logo-black.gif" alt="" width="44" height="15" /></div>
+	<div id="w3-sitemark"><img src="//w3.ibm.com/ui/v8/images/id-w3-sitemark-large.gif" alt="IBM Logo" width="266" height="70" usemap="#sitemark_map" /><map id="sitemark_map" name="sitemark_map"><area shape="rect" alt="Link to W3 Home Page" coords="0,0,130,70" href="http://w3.ibm.com/"  accesskey="1" /></map></div>
+	<div id="site-title-only">System i Technical Support</div>
+	<div id="ibm-logo"><img src="//w3.ibm.com/ui/v8/images/id-ibm-logo.gif" alt="" width="44" height="15" /></div>
+	<div id="persistent-nav"><a id="w3home" href="http://w3.ibm.com/"> w3 Home </a><a id="bluepages" href="http://w3.ibm.com/bluepages/"> BluePages </a><a id="helpnow" href="http://w3.ibm.com/help/"> HelpNow </a><a id="feedback" href="/w_dir/webcom.nsf/comment?openform" accesskey="9"> Feedback </a></div>
+	<div id="header-search">
+		<form action="http://w3.ibm.com/search/w3results.jsp" method="get" id="search">
+		<table cellspacing="0" cellpadding="0" class="header-search">
+		<tr><td class="label"><label for="header-search-field">Search w3</label></td><td class="field"><input id="header-search-field" name="qt" type="text" accesskey="4" /></td><td class="submit"><label class="access" for="header-search-btn">go button</label><input id="header-search-btn" type="image" alt="Go" src="//w3.ibm.com/ui/v8/images/btn-go-dark.gif" /></td></tr>
+		</table>
+		</form>
+	</div>
+</div>
+<!-- stop masthead -->
+<!-- start content -->
+<div id="content">
+	<h1 class="access">Start of main content</h1>
+	<!-- start content head -->
+	<div id="content-head">
+	<p id="breadcrumbs"></p>
+	</div>
+	<!-- stop content head -->
+	<!-- start main content -->
+	<div id="content-main">
+		<h1>Our apologies...</h1>
+		<p class="sub-title">Your request cannot be displayed</p>
+		<h2 class="bar-blue-med">Try your request again</h2>
+		<p >Verify the link and try again or click "Back" on your browser to return to the previous page.</p>
+		<p></p>
+		<h2 class="bar-blue-med">Get assistance</h2>
+		
+	<p>You may complete a <a href="/w_dir/webcom.nsf/comment?openform"><b>Feedback form</b></a> and tell us about a broken link. 
+You will receive an e-mail from an IBM representative to help you find what you need.</p>
+ 
+ <p></p>
+		<p class="terms"><a href="http://w3.ibm.com/w3/info_terms_of_use.html">Terms of use</a></p>
+	</div>
+	<!-- stop main content -->
+</div>
+<!-- stop content -->
+<!-- start navigation -->
+<div id="navigation">
+	<h2 class="access">Start of left navigation</h2>
+	<!-- left nav -->
+	<div id="left-nav">
+		<div class="top-level">
+			<a id="site-home" class="active" href="http://techsupport.rchland.ibm.com/">iGSC Support Center</a>
+		</div>
+	</div>
+	<!-- start related links -->
+	<!-- ** If there's related links, html goes here.  Otherwise, remove this line ** -->
+	<!-- stop related links -->
+</div>
+<!-- stop navigation -->
+</body>
+</html> 
+<p>
+<input type="submit" value="Submit"></form>
+</body>
+</html>

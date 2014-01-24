@@ -1,0 +1,45 @@
+#!/bin/bash
+
+#url='http://techsupport.rchland.ibm.com/catalog.nsf/DomainQuery?OpenForm&Seq=1'
+url='http://techsupport.rchland.ibm.com/catalog.nsf/DomainQuery?OpenForm&Seq=1&%24%24HTMLTagAttributes=xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxhtml%22%20lang%3D%22en-US%22%20xml%3Alang%3D%22en-US%22&%25%25Surrogate_CategoriesCheckbox1=1&%25%25Surrogate_CategoriesSelect=1&%25%25Surrogate_KeywordSearchOpt=1&%25%25Surrogate_PreviousQueries=1&%25%25Surrogate_SearchType=1&%25%25Surrogate_Sort=1&%25%25Surrogate_TeamSelect=1&%25%25Surrogate_Use=1&Author=Perry%20Smith%2FAustin%2FContr%2FIBM&CategoriesCheckbox2=CPS%20AIX&CategoriesSelect=Specific%20categories&DS=&ErrorInformation=&GeneralInformation=Your%20default%20search%20settings%20have%20been%20loaded.&KeywordSearchOpt=All&MaxDisplay=20&Remote_User=CN%3DPerry%20Smith%2FOU%3DAustin%2FOU%3DContr%2FO%3DIBM&ReplicaIDDisplay=&ResultLimit=0&SaveOptions=0&SearchContainer=0&SearchHistory=%2224372%2C499%2C000%22%20AND%20%2201%2F08%2F2014%22%3B%2024372%20AND%20499%3B%2024372%2C499%3B%2024372%3B%20%2224372%2C499%2C000%22%3B%20sangeetha%20AND%20%2224372%2C499%2C000%22%20AND%20%2201%2F08%2F2014%22%3B%20sangeetha%20AND%2024372%2C499%2C000%20AND%2001%2F08%2F2014%3B%20sangeetha&SearchScope=1&ShowBlankTeam=N&ShowSort=0&SimpleQuery=%2224372%2C499%2C000%22%20%2201%2F08%2F2014%22&Sort=N&TeamNames=All%20CPS%20Hardware%20%26%20Software%2C%20All%20CPS%20Hardware%20%26%20Software%2C%20All%20education%20documents%2C%20All%20knowledge%20content%2C%20All%20team%20documents&TeamNamesCategories=CPS%20Power%20Systems%2C%20CPS%20Software%2C%20CPS%20SW%20Archive%3BCPS%20Power%20Systems%2C%20CPS%20Software%2C%20CPS%20SW%20Archive%3BEducation%3BIBM%20Archive%20Support%20FLASH%2C%20IBM%20i%20APARs%2C%20IBM%20i%20Archive%20Knowledge%20Base%2C%20IBM%20i%20Knowledge%20Base%2C%20IBM%20i%20PSPs%2C%20IBM%20i%20PTF%20Cover%20Letters%2C%20IBM%20Support%20FLASH%3BTeam%20Documentation&TeamSelect=All%20CPS%20Hardware%20%26%20Software&UpdateTeamCategories=&__Click=802564E20735C975.6d7d4ea7dec157ea862579c00022de55%2F%24Body%2F0.53EA&categories=Cloud%20and%20System%20Management%2C%20CPS%20AIX%2C%20CPS%20Power%20Systems%2C%20CPS%20Software%2C%20CPS%20SW%20Archive%2C%20CPS%20Systems%20Director%2C%20CQ%2C%20Education%2C%20IBM%20Archive%20Support%20FLASH%2C%20IBM%20i%20APARs%2C%20IBM%20i%20Archive%20Knowledge%20Base%2C%20IBM%20i%20Knowledge%20Base%2C%20IBM%20i%20PSPs%2C%20IBM%20i%20PTF%20Cover%20Letters%2C%20IBM%20i%20Support%20Process%2C%20IBM%20Support%20FLASH%2C%20PMRs%2C%20Team%20Documentation&srchType=0'
+#  --form '$$HTMLTagAttributes=xmlns="http://www.w3.org/1999/xhtml"%20lang="en-US"%20xml:lang="en-US"' \
+#  --form '%%Surrogate_CategoriesCheckbox1=1' \
+#  --form '%%Surrogate_CategoriesSelect=1' \
+#  --form '%%Surrogate_KeywordSearchOpt=1' \
+#  --form '%%Surrogate_PreviousQueries=1' \
+#  --form '%%Surrogate_SearchType=1' \
+#  --form '%%Surrogate_Sort=1' \
+#  --form '%%Surrogate_TeamSelect=1' \
+#  --form '%%Surrogate_Use=1' \
+#  --form 'Author=Perry%20Smith/Austin/Contr/IBM' \
+#  --form 'CategoriesCheckbox2=CPS%20AIX' \
+#  --form 'CategoriesSelect=Specific%20categories' \
+#  --form 'DS=' \
+#  --form 'ErrorInformation=' \
+#  --form 'GeneralInformation=Your%20default%20search%20settings%20have%20been%20loaded.' \
+#  --form 'KeywordSearchOpt=All' \
+#  --form 'MaxDisplay=20' \
+#  --form 'Remote_User=CN=Perry%20Smith/OU=Austin/OU=Contr/O=IBM' \
+#  --form 'ReplicaIDDisplay=' \
+#  --form 'ResultLimit=0' \
+#  --form 'SaveOptions=0' \
+#  --form 'SearchContainer=0' \
+#  --form 'SearchHistory="24372,499,000"%20AND%20"01/08/2014";%2024372%20AND%20499;%2024372,499;%2024372;%20"24372,499,000";%20sangeetha%20AND%20"24372,499,000"%20AND%20"01/08/2014";%20sangeetha%20AND%2024372,499,000%20AND%2001/08/2014;%20sangeetha' \
+#  --form 'SearchScope=1' \
+#  --form 'ShowBlankTeam=N' \
+#  --form 'ShowSort=0' \
+#  --form 'SimpleQuery="24372,499,000"%20"01/08/2014"' \
+#  --form 'Sort=N' \
+#  --form 'TeamNames=All%20CPS%20Hardware%20&%20Software,%20All%20CPS%20Hardware%20&%20Software,%20All%20education%20documents,%20All%20knowledge%20content,%20All%20team%20documents' \
+#  --form 'TeamNamesCategories=CPS%20Power%20Systems,%20CPS%20Software,%20CPS%20SW%20Archive;CPS%20Power%20Systems,%20CPS%20Software,%20CPS%20SW%20Archive;Education;IBM%20Archive%20Support%20FLASH,%20IBM%20i%20APARs,%20IBM%20i%20Archive%20Knowledge%20Base,%20IBM%20i%20Knowledge%20Base,%20IBM%20i%20PSPs,%20IBM%20i%20PTF%20Cover%20Letters,%20IBM%20Support%20FLASH;Team%20Documentation' \
+#  --form 'TeamSelect=All%20CPS%20Hardware%20&%20Software' \
+#  --form 'UpdateTeamCategories=' \
+#  --form '__Click=802564E20735C975.6d7d4ea7dec157ea862579c00022de55/$Body/0.53EA' \
+#  --form 'categories=Cloud%20and%20System%20Management,%20CPS%20AIX,%20CPS%20Power%20Systems,%20CPS%20Software,%20CPS%20SW%20Archive,%20CPS%20Systems%20Director,%20CQ,%20Education,%20IBM%20Archive%20Support%20FLASH,%20IBM%20i%20APARs,%20IBM%20i%20Archive%20Knowledge%20Base,%20IBM%20i%20Knowledge%20Base,%20IBM%20i%20PSPs,%20IBM%20i%20PTF%20Cover%20Letters,%20IBM%20i%20Support%20Process,%20IBM%20Support%20FLASH,%20PMRs,%20Team%20Documentation' \
+#  --form 'srchType=0' \
+
+curl --cookie-jar cookies \
+  --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:26.0) Gecko/20100101 Firefox/26.0' \
+  -g \
+  "$url"
+echo $? 1>&2
