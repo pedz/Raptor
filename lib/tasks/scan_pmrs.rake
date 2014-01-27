@@ -32,15 +32,15 @@ task :scan_pmrs do
   rescue Retain::FailedMarkedTrue, Retain::LogonFailed
     # Catch errors for bad password or login already in failed state
     # here.  We should probably send out an email.
-    puts "Logon to retain failed"
+    $stderr.puts "Logon to retain failed"
     false
 
   rescue Exception => e
     # Some other problem happened so we give up.
-    puts "Retain is not happy for some reason"
-    puts e.message
-    puts e.backtrace.join("\n")
-    puts "SR: #{e.sr}, EX: #{e.ex} #{e.ex.class}"
+    $stderr.puts "Retain is not happy for some reason"
+    $stderr.puts e.message
+    $stderr.puts e.backtrace.join("\n")
+    $stderr.puts "SR: #{e.sr}, EX: #{e.ex} #{e.ex.class}"
     false
   end
 end
