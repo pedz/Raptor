@@ -196,7 +196,7 @@ module Combined
         case
           # See if we get a "start page requested larger than last page of record"
           # If we do, then we purge the PMR and start back over.
-        when e.sr == 115 && e.ex == 130
+        when e.sr == 115 && (e.ex >= 130 && e.ex <= 133)
 	  @cached.text_lines.clear
 	  options_hash[:beginning_page_number] = 0
 	  pmr = Retain::Pmr.new(retain_user_connection_parameters, options_hash)
