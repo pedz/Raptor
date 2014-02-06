@@ -1,0 +1,264 @@
+302 Moved Temporarily
+
+816
+HTTP/1.1 302 Moved Temporarily
+Server: Lotus-Domino
+Date: Wed, 05 Feb 2014 00:18:54 GMT
+Connection: close
+Set-Cookie: FLAreturnURL=http://techsupport.rchland.ibm.com/catalog.nsf/DomainQuery; domain=.ibm.com; path=/
+Set-Cookie: APPNAME=iGSC%20Domain%20Search; domain=.ibm.com; path=/
+Set-Cookie: APPCONTACT=*NONE; domain=.ibm.com; path=/
+Set-Cookie: showCARS=N; domain=.ibm.com; path=/
+Cache-Control: no-cache, no-store
+Location: https://techsupport.rchland.ibm.com/fileauth/Login
+
+HTTP/1.1 200 OK
+Server: Lotus-Domino
+Content-Type: text/html;charset=ISO-8859-1
+Content-Language: en-US
+Content-Length: 10801
+Set-Cookie: JSESSIONID=0000E4-YQIWhoVuCfMNzxOqtggg:-1; Path=/
+Date: Wed, 05 Feb 2014 00:18:53 GMT
+Expires: Thu, 01 Dec 1994 16:00:00 GMT
+Cache-Control: no-cache="set-cookie, set-cookie2"
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+
+
+
+
+<head>
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="expires" content="-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Description" content="Login page" />
+<meta name="Keywords" scheme="iso8601" content="domino, authentication, access, login, fla" />
+<meta name="Owner" content="gwatts@us.ibm.com" />
+<meta name="Feedback" content="gwatts@us.ibm.com" />
+<meta name="Robots" content="noindex,nofollow" />
+<meta name="Security" content="internal use only" />
+<meta name="Source" content="v8 Template Generator" />
+<meta name="DC.Date" scheme="iso8601" content="2005-03-29" />
+<meta name="DC.Language" scheme="rfc1766" content="en-US" />
+<meta name="DC.Rights" content="Copyright (c) 2001,2004 by IBM corporation" />
+<meta name="IBM.Country" content="US" />
+<meta name="IBM.Effective" content="2005-03-29" />
+
+
+
+<!-- ** Every tag's content below must be updated ** -->
+<meta name="DC.Type" scheme="IBM_ContentClassTaxonomy" content="" />
+<meta name="DC.Subject" scheme="IBM_SubjectTaxonomy" content="" />
+<meta name="DC.Publisher" content="IBM Corporation" />
+<meta name="IBM.Industry" scheme="IBM_IndustryTaxonomy" content="" />
+<title>Login page for iGSC Domain Search</title>
+<script language="JavaScript" type="text/javaScript" src="//w3.ibm.com/ui/v8/scripts/scripts.js"></script>
+
+<SCRIPT language="JavaScript">
+  
+function doValidate()
+{
+  
+     var userid=document.forms["logonForm"].userid.value;
+     var password=document.forms["logonForm"].password.value;     
+     
+     if (userid == '') 
+     {
+        alert("No intranet userid entered.\nIntranet userid is required");
+        return false;
+     }
+     
+     if (password == '') 
+     {
+        alert("No intranet password entered.\nIntranet password is required");
+        return false;
+     } 
+     
+      return true;
+}
+
+</SCRIPT>
+
+
+<link rel="stylesheet" type="text/css" href="//w3.ibm.com/ui/v8/css/v4-screen.css" />
+<style type="text/css" media="all">
+<!--
+@import url("//w3.ibm.com/ui/v8/css/screen.css");
+@import url("//w3.ibm.com/ui/v8/css/interior.css");
+@import url("//w3.ibm.com/ui/v8/css/icons.css");
+@import url("//w3.ibm.com/ui/v8/css/interior-1-col.css");
+-->
+</style>
+<!-- print stylesheet MUST follow imported stylesheets -->
+<link rel="stylesheet" type="text/css" media="print" href="//w3.ibm.com/ui/v8/css/print.css" />
+</head>
+<body id="w3-ibm-com" class="article" onLoad="
+
+// switch the protocol to &quot;https:// to enforce a SSL connection
+var protocol = &quot;https://&quot;;
+
+// Switch to secure SSL connection, if configured above
+if (protocol == &quot;https://&quot; &amp; window.location.protocol == &quot;http:&quot;) {
+	var host = window.location.hostname;
+	var pathname = window.location.pathname;
+	var search = window.location.search;
+	var url = protocol + host + pathname + search;
+	location.replace(url);
+};
+
+window.document.logonForm.userid.focus();
+">
+
+<!-- start accessibility prolog -->
+<div class="skip"><a href="#content-main" accesskey="2">Skip to main content</a></div>
+<div class="skip"><a href="#left-nav" accesskey="n">Skip to navigation</a></div>
+<div id="access-info">
+	<p class="access">The access keys for this page are:</p>
+	<ul class="access">
+		<li>ALT plus 0 links to this site's <a href="http://w3.ibm.com/w3/access-stmt.html" accesskey="0">Accessibility Statement.</a></li>
+		<li>ALT plus 1 links to the w3.ibm.com home page.</li>
+		<li>ALT plus 2 skips to main content.</li>
+		<li>ALT plus 4 skips to the search form.</li>
+		<li>ALT plus 9 links to the feedback page.</li>
+		<li>ALT plus N skips to navigation.</li>
+	</ul>
+	<p class="access">Additional accessibility information for w3.ibm.com can be found <a href="http://w3.ibm.com/w3/access-stmt.html">on the w3 Accessibility Statement page.</a></p>
+</div>
+<!-- end accessibility prolog -->
+
+<!-- start masthead -->
+<div id="masthead">
+	<h2 class="access">Start of masthead</h2>
+	<div id="prt-w3-sitemark"><img src="//w3.ibm.com/ui/v8/images/id-w3-sitemark-simple.gif" alt="" width="54" height="33" /></div>
+	<div id="prt-ibm-logo"><img src="//w3.ibm.com/ui/v8/images/id-ibm-logo-black.gif" alt="" width="44" height="15" /></div>
+	<div id="w3-sitemark"><img src="//w3.ibm.com/ui/v8/images/id-w3-sitemark-large.gif" alt="IBM Logo" width="266" height="70" usemap="#sitemark_map" /><map id="sitemark_map" name="sitemark_map"><area shape="rect" alt="Link to W3 Home Page" coords="0,0,130,70" href="http://w3.ibm.com/"  accesskey="1" /></map></div>
+	<div id="site-title-only">Login page for iGSC Domain Search</div>
+	<div id="ibm-logo"><img src="//w3.ibm.com/ui/v8/images/id-ibm-logo.gif" alt="" width="44" height="15" /></div>
+	<div id="persistent-nav"><a id="w3home" href="http://w3.ibm.com/"> w3 Home </a><a id="bluepages" href="http://w3.ibm.com/bluepages/"> BluePages </a><a id="helpnow" href="http://w3.ibm.com/help/"> HelpNow </a><a id="feedback" href="http://w3.ibm.com/feedback/" accesskey="9"> Feedback </a></div>
+	<div id="header-search">
+		<form action="http://w3.ibm.com/search/w3results.jsp" method="get" id="search">
+		<table cellspacing="0" cellpadding="0" class="header-search">
+		<tr><td class="label"><label for="header-search-field">Search w3</label></td><td class="field"><input tabindex="3" id="header-search-field" name="qt" type="text" accesskey="4" /></td><td class="submit"><label class="access" for="header-search-btn">go button</label><input id="header-search-btn" type="image" alt="Go" src="//w3.ibm.com/ui/v8/images/btn-go-dark.gif" /></td></tr>
+
+		</table>
+		</form>
+	</div>
+	<div id="browser-warning"><img src="//w3.ibm.com/ui/v8/images/icon-system-status-alert.gif" alt="" width="12" height="10" /> This Web page is best used in a modern browser. Since your browser is no longer supported by IBM, please upgrade your web browser at the <a href="http://w3.ibm.com/download/standardsoftware/">ISSI site</a>.</div>
+</div>
+<!-- stop masthead -->
+
+<!-- start content -->
+<div id="content">
+	<h1 class="access">Start of main content</h1>
+	<!-- start content head -->
+	<div id="content-head">
+
+
+	<p id="breadcrumbs"></p>
+	</div>
+	<!-- stop content head -->
+
+	<!-- start main content -->
+	<form name="logonForm" action="/fileauth/IIPValidation/Login" method="post" onsubmit="return doValidate()">
+		<table border="0" cellspacing="0" cellpadding="0" id="content-table">
+
+	<!-- Title -->
+			<tr valign="top">
+				<td width="100%"><h1>Sign in to iGSC Domain Search</h1></td>
+			</tr>
+	<!-- End Title -->
+			<tr valign="top"><td colspan="3"><img src="//www.ibm.com/i/c.gif" width="1" height="5" alt="" /></td></tr>
+			<tr valign="top">
+				<td width="100%" id="content">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" valign="top" class="v14-gray-table-border">
+						<tr><td colspan="2"><img alt="" height="4" src="//www.ibm.com/i/v14/rules/dblue_rule.gif" width="100%"/></td></tr>						
+	      				<tr><td colspan="2"><img src="//www.ibm.com/i/c.gif" width="1" height="6" alt="" /></td></tr>
+						<tr><td>Sign in using your <strong>IBM Intranet</strong> user ID and password.</td></tr>
+						<tr>
+							<td align="right" valign="top" width="25%"><span class="btn-66f">
+							<a href="javascript: window.open('help/loginhelp.html','','status=no,width=600,height=500,menubar=no,toolbar=no,resizable=yes,scrollbars=yes'); void('');">
+							<img src="https://w3.ibm.com/images/v6/buttons/popup_icon.gif"	width="20" height="12" border="0" alt="login help popup" />Help</a></span></td>							
+						</tr>
+	      				<tr><td colspan="2"><img src="//www.ibm.com/i/c.gif" width="1" height="10" alt="" /></td></tr>
+						<tr><td colspan="2"><img src="//www.ibm.com/i/v14/rules/gray_rule.gif" border="0" height="1" width="100%" alt="" /></td></tr>
+	      				<tr><td colspan="2"><img src="//www.ibm.com/i/c.gif" width="1" height="10" alt="" /></td></tr>
+						<tr>
+							<td colspan="2">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr><td style="font-weight:bold;"><label for="user_id">&nbsp;User ID</label></td>
+										<td class="body-text-small"><input tabindex="1" type="text" size="30" maxlength="60" name="userid" class="iform" id="user_id" value=''/>&nbsp;&nbsp;<i>(email@us.ibm.com)</i></td>
+									</tr>
+
+				      				<tr><td colspan="2"><img src="//www.ibm.com/i/c.gif" width="1" height="10" alt="" /></td></tr>
+
+									 <tr><td style="font-weight:bold;"><label for="passwd">&nbsp;Password</label></td>
+									 	 <td><input tabindex="1" type="password" size="30" maxlength="60" name="password" class="iform" id="passwd" />&nbsp;&nbsp;</td>
+									 </tr>
+										 		
+					      			<tr><td colspan="2"><img src="//www.ibm.com/i/c.gif" width="1" height="6" alt="" /></td></tr>
+									<tr><td colspan="2"><img src="//www.ibm.com/i/v14/rules/gray_rule.gif" border="0" height="1" width="433" alt="" /></td></tr>
+					      			<tr><td colspan="2"><img src="//www.ibm.com/i/c.gif" width="1" height="10" alt="" /></td></tr>
+									<tr><td><img src="//www.ibm.com/i/c.gif" width="1" height="10" alt="" /></td>
+										<td style="font-weight:bold;"><input tabindex="2" type="image" name="Sign in" src="//www.ibm.com/i/v14/buttons/sign_in.gif" alt="Sign in"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://w3.ibm.com/password/">Need profile help?</a></td>
+									</tr>
+									<tr><td colspan="2"><img src="//www.ibm.com/i/c.gif" height="5" alt="" /></td></tr>
+								</table>
+							</td>
+						</tr>
+			      		<tr><td>&nbsp;</td></tr>
+			      		<tr><td></td></tr>
+					</table>
+				</td>
+				<!-- END CONTENT AREA -->
+			</tr>
+			<tr>
+				<td>
+				
+
+
+
+
+
+<br/>
+<br/>
+
+				</td>
+			</tr>
+			<tr>
+				<td>	  
+					<!-- TERMS -->
+					<br/>
+					<br/>
+					<p class="terms"><a href="http://w3.ibm.com/w3/apps_terms_of_use.html">Terms of use</a></p>
+					<!-- END TERMS -->
+				</td>
+			</tr>
+			</table>
+		</form>
+	<!-- stop main content -->
+
+</div>
+<!-- stop content -->
+
+<!-- start navigation -->
+<div id="navigation">
+	<h2 class="access">Start of left navigation</h2>
+	<!-- left nav -->
+	<div id="left-nav">
+		<div class="top-level">
+			<a id="site-home" class="active" href="http://w3.rchland.ibm.com">Rochester w3 Home</a>
+		</div>
+	</div>
+	<div>
+	<p></p>
+	<p class="secured-link">Site secured by<br />
+	<a href="http://w3.ibm.com/profile/update/password">IBM intranet password</a></p>
+	</div>
+</div>
+
+<!-- stop navigation -->
+</body>
+</html>
