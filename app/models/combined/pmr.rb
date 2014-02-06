@@ -198,7 +198,7 @@ module Combined
           # If we do, then we purge the PMR and start back over.
         when e.sr == 115 && (e.ex >= 130 && e.ex <= 133)
 	  @cached.text_lines.clear
-	  options_hash[:beginning_page_number] = 0
+          options_hash.delete(:beginning_page_number)
 	  pmr = Retain::Pmr.new(retain_user_connection_parameters, options_hash)
 	  pmr.severity
 
