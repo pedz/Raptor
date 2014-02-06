@@ -236,7 +236,7 @@ module Combined
       
       # Create the text lines
       if pmr.nls_text_lines?
-        if @cached.alteration_date
+        if pmr.has_key?(:beginning_page_number)
           offset = ((pmr.beginning_page_number - 2) * 16) - @cached.alterable_format_lines.length
 	  offset = 0 if offset < 0
         else
