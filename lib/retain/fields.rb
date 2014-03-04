@@ -550,6 +550,7 @@ module Retain
       :cpu_type_x                  => [ 2218, :ebcdic,              4 ],
       :cpu_serial                  => [ 2219, :ebcdic,              7 ],
       :service_request             => [ 2221, :ebcdic,             11 ],
+      :registration_alt_signon     => [ 2398, :ebcdic,              3 ],
       :request_type                => [ 2417, :ebcdic,              3 ],
       :request_type_description    => [ 2418, :ebcdic,              8 ],
       :sub_request_type            => [ 2419, :ebcdic,              3 ],
