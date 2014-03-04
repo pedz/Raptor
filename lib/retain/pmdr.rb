@@ -137,7 +137,7 @@ module Retain
   class Pmdr < Retain::Sdi
     set_fetch_request "PMDR"
     set_required_fields :signon, :password, :group_request
-    set_optional_fields :secondary_login
+    set_optional_fields(:secondary_login, :registration_alt_signon)
     
     def initialize(retain_user_connection_parameters, options = {})
       super(retain_user_connection_parameters, options)

@@ -82,7 +82,8 @@ module Retain
                         :psar_end_date,
                         :h_or_s,
                         :psar_file_and_symbol,
-                        :error_message)
+                        :error_message,
+                        :registration_alt_signon)
     
     def initialize(retain_user_connection_parameters, options = {})
       super(retain_user_connection_parameters, options)
