@@ -90,6 +90,12 @@ module Retain
           @fields[sym] = @options[sym] || @retain_user_connection_parameters.signon
         when :password
           @fields[sym] = @options[sym] || @retain_user_connection_parameters.password
+        when :registration_alt_signon
+          tmp = @options[sym] || @retain_user_connection_parameters.registration_alt_signon
+          unless tmp.nil?
+            Rails.logger.debug("SDI: Setting registration_alt_signon to #{tmp}")
+            @fields[sym] = tmp
+          end
         else
           @fields[sym] = @options.delete(sym) if @options.has_key?(sym)
         end

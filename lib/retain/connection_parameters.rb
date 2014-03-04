@@ -21,6 +21,9 @@ module Retain
     # The user's Retain password
     attr_reader :password
 
+    # If non-nil, the alternate signon the user wants to use.
+    attr_reader :registration_alt_signon
+
     # The value of the failed flag from the Retuser record.  If set,
     # no attempt to access Retain will be made.
     attr_reader :failed
@@ -56,6 +59,11 @@ module Retain
         :port          => retuser.hardware_node.retain_node.port,
         :tunnel_offset => retuser.hardware_node.retain_node.tunnel_offset
       }
+      @registration_alt_signon = nil
+    end
+
+    def registration_alt_signon=(id)
+      @registration_alt_signon = ("%03d" % id.to_i)
     end
   end
 end
