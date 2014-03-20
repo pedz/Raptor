@@ -109,7 +109,7 @@ module Combined
     
     ##
     # returns true for "Blue Diamond" PMRs
-    def blue_diamand?
+    def blue_diamond?
       hits = text_lines.find(:all,
                              :conditions => "text like '%XXBLUDXX%'")
       hits.length > 0

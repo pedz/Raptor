@@ -8,7 +8,7 @@
 <% cache(@call.cache_tag('top')) do %>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> top -->
 <!-- <%= @controller.fragment_cache_key(:action_suffix => 'top') %> -->
-<table id='pmr-header' class='<%= @pmr.usa_support_only? ? "usa" : (@pmr.blue_diamand? ? "blue-diamond" : "normal" ) %>'>
+<table id='pmr-header' class='<%= @pmr.usa_support_only? ? "usa" : (@pmr.blue_diamond? ? "blue-diamond" : "normal" ) %>'>
   <tr>
     <td>
       <span id='queue' class='field-left'>
