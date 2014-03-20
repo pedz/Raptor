@@ -167,6 +167,8 @@ module Retain
       else
         if call.pmr.usa_support_only?
           classes = "biggem usa"
+        elsif call.pmr.blue_diamond?
+          classes = "biggem blue-diamond"
         else
           classes = "biggem"
         end
