@@ -3,6 +3,19 @@
     color: white;
 }
 
+.normal {
+}
+
+.blue-diamond {
+    background-color: white;
+    background-image: url(../../images/blue-diamond.jpg);
+}
+
+.usa {
+    background-color: white;
+    background-image: url(../../images/flag.jpg);
+}
+
 /* needed to get pop ups to position */
 .popup-wrapper {
   position: relative;

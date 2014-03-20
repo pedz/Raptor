@@ -107,6 +107,23 @@ module Combined
       }
     end
     
+    ##
+    # returns true for "Blue Diamond" PMRs
+    def blue_diamand?
+      hits = text_lines.find(:all,
+                             :conditions => "text like '%XXBLUDXX%'")
+      hits.length > 0
+    end
+
+    ##
+    # returns true if PMR is entitled for USA Citizen support only.
+    def usa_support_only?
+      hits = information_text_lines.find(:all,
+                                         :conditions => "text like '%SECURE SUPPORT VIA USA CITIZEN%'")
+      logger.debug("usa_support_only? hits.length = #{hits.length}")
+      hits.length > 0
+    end
+
     private
 
     ##
