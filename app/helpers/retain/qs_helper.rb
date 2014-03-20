@@ -165,7 +165,12 @@ module Retain
           end
         end
       else
-        td binding, :class => 'biggem' do |binding|
+        if call.pmr.usa_support_only?
+          classes = "biggem usa"
+        else
+          classes = "biggem"
+        end
+        td binding, :class => classes do |binding|
           table binding, :class => 'nested-table' do |binding|
             tbody binding do |binding|
               BIGGEM_COLUMNS.inject("") do |memo, cols|

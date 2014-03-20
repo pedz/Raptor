@@ -132,6 +132,11 @@ span.ecpaat-heading-missing {
     margin-bottom: 3px;
 }
 
+.usa {
+    background-color: white;
+    background-image: url(../../images/flag.jpg);
+}
+
 .pat {
     background-color: white;
 }
