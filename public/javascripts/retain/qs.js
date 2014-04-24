@@ -8,7 +8,7 @@ Raptor.month_names = [
     "Jan",
     "Feb",
     "Mar",
-    "Arp",
+    "Apr",
     "May",
     "Jun",
     "Jul",
