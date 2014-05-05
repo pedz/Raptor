@@ -41,10 +41,8 @@ module Retain
           ;
         when favorite_signons.include?(reg.signon)
           favorites << reg
-        when ((reg.software_center != "000" &&
-               (reg.software_center == user.software_center)) ||
-              (reg.hardware_center != "000" &&
-               (reg.hardware_center == user.hardware_center)))
+        when ((reg.software_center == user.software_center) ||
+              (reg.hardware_center == user.hardware_center))
           same_center << reg
         end
       end
