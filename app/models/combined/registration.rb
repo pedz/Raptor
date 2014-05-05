@@ -147,7 +147,11 @@ module Combined
         retain_registration.name
       rescue Retain::SdiReaderError => err
         # logger.debug("Can not get to registration")
-        raise err unless err.rc == 251
+
+        # SR105EX083 is for records we can't fetch
+        # SR105EX093 is for records with a bad center
+        ok_err = (err.sr == 105) && [83, 93].include?(err.ex)
+        raise err unless ok_err
         cache_options = { }
       else
         cache_options = Cached::Registration.options_from_retain(retain_registration)
