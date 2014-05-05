@@ -222,7 +222,7 @@ module Retain
         @error_message = msg
         # Lets leave this coming out all the time so I don't
         # completely forget about them.
-        logger.error("SDI: #{@request_type}: #{@error_message}")
+        logger.error("SDI: #{@request_type}: #{@error_message} (#{@rc})")
         if @rc == 703 || @rc == 705
           raise LogonFailed.new(@retain_user_connection_parameters, @logon_return, @logon_reason)
         end
