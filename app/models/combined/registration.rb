@@ -150,7 +150,7 @@ module Combined
 
         # SR105EX083 is for records we can't fetch
         # SR105EX093 is for records with a bad center
-        ok_err = (err.sr == 105) && [83, 93].include?(err.ex)
+        ok_err = (err.sr == 105) && [83, 93, 94].include?(err.ex)
         raise err unless ok_err
         cache_options = { }
       else
