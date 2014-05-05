@@ -41,11 +41,12 @@ module Retain
           ;
         when favorite_signons.include?(reg.signon)
           favorites << reg
-        when ((reg.software_center == user.software_center) ||
-              (reg.hardware_center == user.hardware_center))
+        when ((reg.software_center_id == user.software_center_id) ||
+              (reg.hardware_center_id == user.hardware_center_id))
           same_center << reg
         end
       end
+      logger.debug("favorites.length = #{favorites.length} same_center.length = #{same_center.length}")
       list = [ user ] + favorites + same_center
       render :json => list.map { |r| [ r.signon, r.name ] }.to_json
     end
