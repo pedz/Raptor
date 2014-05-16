@@ -1,0 +1,17 @@
+<%# -*- coding: utf-8 -*- -%>
+<%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith -%>
+<%# All Rights Reserved -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<%- content_for(:center) do -%>
+  <p>
+    <b>Name:</b>
+    <%=h @rotation_group.name %>
+  </p>
+  <p>
+    <b>Members:</b>
+    <%= link_to 'Show', settings_rotation_group_members_path(@rotation_group) %>
+  </p>
+
+  <%= link_to 'Edit', edit_settings_rotation_group_path(@rotation_group) %> |
+  <%= link_to 'Back', settings_rotation_groups_path %>
+<%- end -%>
