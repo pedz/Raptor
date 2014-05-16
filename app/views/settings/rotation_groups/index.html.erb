@@ -1,0 +1,26 @@
+<%# -*- coding: utf-8 -*- -%>
+<%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith -%>
+<%# All Rights Reserved -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<%- content_for(:center) do -%>
+  <h1>Listing rotation_groups</h1>
+
+  <table>
+    <tr>
+      <th>Name</th>
+    </tr>
+
+  <% @rotation_groups.each do |rotation_group| %>
+    <tr>
+      <td><%=h rotation_group.name %></td>
+      <td><%= link_to 'Show', settings_rotation_group_path(rotation_group) %></td>
+      <td><%= link_to 'Edit', edit_settings_rotation_group_path(rotation_group) %></td>
+      <td><%= link_to 'Destroy', settings_rotation_group_path(rotation_group), :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </table>
+
+  <br />
+
+  <%= link_to 'New rotation_group', new_settings_rotation_group_path %>
+<%- end -%>
