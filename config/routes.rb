@@ -8,7 +8,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :mappings
 
   map.resources :argument_defaults
-
   map.resources :argument_types
   map.resources(:relationships,
                 :collection => {
@@ -113,6 +112,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :combined_psars, :controller => 'combined/psars'
 
   map.namespace(:settings) do |settings|
+    settings.resources :rotation_groups do |rotation_group|
+      rotation_group.resources :members
+    end
     settings.resources :users do |user|
       user.resources :retusers
     end

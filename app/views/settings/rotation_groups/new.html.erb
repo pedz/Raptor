@@ -1,0 +1,23 @@
+<%# -*- coding: utf-8 -*- -%>
+<%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith -%>
+<%# All Rights Reserved -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<%- content_for(:center) do -%>
+  <h1>New rotation_group</h1>
+
+  <%= error_messages_for :user %>
+
+  <% form_for([:settings, @rotation_group]) do |f| %>
+    <%= f.error_messages %>
+
+    <p>
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+    </p>
+    <p>
+      <%= f.submit 'Create' %>
+    </p>
+  <% end %>
+
+  <%= link_to 'Back', settings_rotation_groups_path %>
+<%- end -%>
