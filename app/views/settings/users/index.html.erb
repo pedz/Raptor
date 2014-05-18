@@ -2,8 +2,9 @@
 <%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith -%>
 <%# All Rights Reserved -%>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<%- @title = "Listing of Users" -%>
 <%- content_for(:center) do -%>
-  <h1>Listing users</h1>
+  <h1><%= @title %></h1>
   
   <table>
     <tr>
@@ -25,22 +26,14 @@
 		  does not have any retain ids set.  In that case, we present a link
 		    to define a new retain id.
 	%>
-	<% if user.current_retain_id.nil? %>
-	  <% if user.retusers.empty? %>
-	    <td><%= link_to 'New Retain User Id', new_settings_user_retuser_path(user) %></td>
-	  <% else %>
-	    <td><%= link_to 'Pick Retain Id', edit_settings_user_path(user) %></td>
-	  <% end %>
-	<% else %>
-	  <td><%=link_to "#{user.current_retain_id.retid}", settings_user_retuser_url(user, user.current_retain_id) %></td>
-	<% end %>
+	<td><%= link_to_users_retain_id(user) %></td>
 	<% if admin? %>
 	  <td><%=h user.admin %></td>
 	<% end %>
-	<td><%= link_to 'Show', settings_user_path(user) %></td>
-	<td><%= link_to 'Edit', edit_settings_user_path(user) %></td>
+	<td><%= link_to_show_user(user, 'Show') %></td>
+	<td><%= link_to_edit_user(user, 'Edit') %></td>
 	<% if admin? %>
-	  <td><%= link_to 'Destroy', settings_user_path(user), :confirm => 'Are you sure?', :method => :delete %></td>
+	  <td><%= link_to_destroy_user(user, 'Delete') %></td>
 	<% end %>
       </tr>
     <% end %>
@@ -48,6 +41,6 @@
   
   <br />
   <% if admin? -%>
-    <%= link_to 'New user', new_settings_user_path %>
+    <%= link_to_new_user %>
   <%- end -%>
 <%- end -%>

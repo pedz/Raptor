@@ -26,16 +26,16 @@
 	<td><%=h retuser.logon_reason %></td>
 	<td><%=h retuser.software_node.description %></td>
 	<td><%=h retuser.hardware_node.description %></td>
-	<td><%= link_to 'Show', settings_user_retuser_path(@user, retuser) %></td>
-	<td><%= link_to 'Edit', edit_settings_user_retuser_path(@user, retuser) %></td>
+	<td><%= link_to_show_retuser(@user, retuser, 'Show') %></td>
+	<td><%= link_to_edit_retuser(@user, retuser, 'Edit') %></td>
 	<% if admin? %>
-	  <td><%= link_to 'Destroy', settings_user_retuser_path(@user, retuser), :confirm => 'Are you sure?', :method => :delete %></td>
+	  <td><%= link_to_destroy_retuser(@user, retuser, 'Delete') %></td>
 	<% end %>
       </tr>
     <% end %>
   </table>
   
   <br/>
-  <%= link_to 'Create Retain User Id', new_settings_user_retuser_path(@user) %>
-  <%= link_to 'Back to User', settings_user_path(@user) %>
+  <%= link_to_create_retuser(@user) %> |
+  <%= link_to_show_user(@user) %>
 <%- end -%>

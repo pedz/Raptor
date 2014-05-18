@@ -6,6 +6,8 @@
 
 module Settings
   class RotationGroupsController < ApplicationController
+    layout "settings"
+
     # GET /rotation_groups
     # GET /rotation_groups.xml
     def index
@@ -83,7 +85,7 @@ module Settings
       @rotation_group.destroy
       
       respond_to do |format|
-        format.html { redirect_to(rotation_groups_url) }
+        format.html { redirect_to(settings_rotation_groups_url) }
         format.xml  { head :ok }
       end
     end

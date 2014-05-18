@@ -8,6 +8,7 @@ module Settings
   class RetusersController < ApplicationController
     before_filter :this_user?
     before_filter :this_retuser?, :except => [ :index, :new, :create ]
+    layout "settings"
     
     # GET /users/1/retusers
     # GET /users/1/retusers.xml

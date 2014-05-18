@@ -1,0 +1,31 @@
+<%# -*- coding: utf-8 -*- -%>
+<%# Copyright 2007-2014 Ease Software, Inc. and Perry Smith -%>
+<%# All Rights Reserved -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<%- @title = "New Member for #{@rotation_group.name} Rotation Group" -%>
+<%- content_for(:center) do -%>
+  <%= render :partial => 'layouts/shared/display_flash' %>
+  <h1><%= @title %></h1>
+  <%= error_messages_for :rotation_group_member %>
+
+  <% form_for([:settings, @rotation_group, @rotation_group_member]) do |f| %>
+    <p>
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+    </p>
+    <p>
+      <%= f.label :user_id %><br />
+      <%= f.select(:user_id, User.all(:order => :ldap_id).collect { |u| [ u.ldap_id, u.id ] }) %>
+    </p>
+    <p>
+      <%= f.label :active %><br />
+      <%= f.check_box :active %>
+    </p>
+    <p>
+      <%= f.submit 'Create' %>
+    </p>
+  <% end %>
+  
+  <%= link_to_show_rotation_group(@rotation_group) %> |
+  <%= link_to_group_members_list(@rotation_group) %>
+<%- end -%>
