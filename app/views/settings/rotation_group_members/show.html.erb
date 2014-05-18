@@ -1,5 +1,5 @@
 <%# -*- coding: utf-8 -*- -%>
-<%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith -%>
+<%# Copyright 2007-2014 Ease Software, Inc. and Perry Smith -%>
 <%# All Rights Reserved -%>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <%- @title = "Showing #{@rotation_group_member.name} of rotation group #{@rotation_group.name}" -%>
@@ -11,7 +11,7 @@
     <%=h @rotation_group_member.name %>
   </p>
   <p>
-    <b>User:</b>
+    <b>Intranet Id:</b>
     <%=h @rotation_group_member.user.ldap_id %>
   </p>
   <p>

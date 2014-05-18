@@ -14,8 +14,8 @@
       <%= f.text_field :name %>
     </p>
     <p>
-      <%= f.label :user_id %><br />
-      <%= f.select(:user_id, User.all(:order => :ldap_id).collect { |u| [ u.ldap_id, u.id ] }) %>
+      <%= f.label :user_id, "Intranet Id" %><br />
+      <%= f.collection_select(:user_id, User.all(:order => :ldap_id), :id, :ldap_id, { :prompt => true }) %>
     </p>
     <p>
       <%= f.label :active %><br />
