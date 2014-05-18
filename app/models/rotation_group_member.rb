@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright 2007-2014 Ease Software, Inc. and Perry Smith
+# All Rights Reserved
+#
+
 class RotationGroupMember < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => :rotation_group_id
   validates_uniqueness_of :user_id, :scope => :rotation_group_id
