@@ -111,7 +111,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.namespace(:settings) do |settings|
     settings.resources :rotation_groups do |rotation_group|
-      rotation_group.resources :members
+      rotation_group.resources :rotation_group_members
     end
     settings.resources :users do |user|
       user.resources :retusers

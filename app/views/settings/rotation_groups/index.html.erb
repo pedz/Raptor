@@ -3,7 +3,7 @@
 <%# All Rights Reserved -%>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <%- content_for(:center) do -%>
-  <h1>Listing rotation_groups</h1>
+  <h1>Listing of Rotation Groups</h1>
 
   <table>
     <tr>
@@ -13,14 +13,14 @@
   <% @rotation_groups.each do |rotation_group| %>
     <tr>
       <td><%=h rotation_group.name %></td>
-      <td><%= link_to 'Show', settings_rotation_group_path(rotation_group) %></td>
-      <td><%= link_to 'Edit', edit_settings_rotation_group_path(rotation_group) %></td>
-      <td><%= link_to 'Destroy', settings_rotation_group_path(rotation_group), :confirm => 'Are you sure?', :method => :delete %></td>
+      <td><%= link_to_show_rotation_group(rotation_group, 'Show') %></td>
+      <td><%= link_to_edit_rotation_group(rotation_group, 'Edit') %></td>
+      <td><%= link_to_destroy_rotation_group(rotation_group, 'Delete') %></td>
     </tr>
   <% end %>
   </table>
 
   <br />
 
-  <%= link_to 'New rotation_group', new_settings_rotation_group_path %>
+  <%= link_to_new_rotation_group %>
 <%- end -%>

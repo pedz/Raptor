@@ -1,0 +1,31 @@
+<%# -*- coding: utf-8 -*- -%>
+<%# Copyright 2007-2014 Ease Software, Inc. and Perry Smith -%>
+<%# All Rights Reserved -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<%- @title = "Listing Members for #{@rotation_group.name} Rotation Group" -%>
+<%- content_for(:center) do -%>
+  <%= render :partial => 'layouts/shared/display_flash' %>
+  <h1><%= @title %></h1>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>User</th>
+      <th>Active</th>
+    </tr>
+
+    <% @rotation_group_members.each do |rotation_group_member| %>
+    <tr>
+      <td><%=h rotation_group_member.name %></td>
+      <td><%=h rotation_group_member.user.ldap_id %></td>
+      <td><%=h rotation_group_member.active %></td>
+      <td><%= link_to_show_group_member(@rotation_group, rotation_group_member, 'Show') %></td>
+      <td><%= link_to_edit_group_member(@rotation_group, rotation_group_member, 'Edit') %></td>
+      <td><%= link_to_destroy_group_member(@rotation_group, rotation_group_member, 'Delete') %></td>
+    </tr>
+    <% end %>
+  </table>
+
+  <br />
+  <%= link_to_new_group_member(@rotation_group) %> |
+  <%= link_to_show_rotation_group(@rotation_group) %>
+<%- end -%>
