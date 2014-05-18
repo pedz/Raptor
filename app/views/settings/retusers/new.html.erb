@@ -33,6 +33,6 @@
     </p>
   <% end %>
   
-  <%= link_to 'Back to User', settings_user_path(@user) %> |
-  <%= link_to 'List of Retain Ids', settings_user_retusers_path(@user) %>
+  <%= link_to_show_user(@user) %> |
+  <%= link_to_list_retusers(@user) %>
 <%- end -%>
