@@ -1,6 +1,6 @@
 
 .ecpaat-heading {
-    color: white;
+    color: white;		/* poo1 */
 }
 
 .normal {
@@ -8,7 +8,7 @@
 
 .blue-diamond {
     position: relative;
-    background-color: white;
+    background-color: white;	/* poo2 */
     opacity: 1.0;
     z-index: 1;
 }
@@ -27,7 +27,7 @@
 
 .usa {
     position: relative;
-    background-color: white;
+    background-color: white;	/* poo3 */
     opacity: 1.0;
     z-index: 1;
 }
@@ -56,24 +56,24 @@
     position: absolute;
     top: 2px;
     left: 25px;
-    color: #FFF;
+    color: white;		/* poo4 */
     padding: 0.5em;
     z-index: 100;
-    background-color: black;
+    background-color: black;	/* poo5 */
     text-align: left;
 }
 
 /* Links in the top section are hard to see. */
 
-#top a { color: #000; }
-#top a:visited { color: #222; }
-#top a:hover { color: #fff; background-color:#000; }
+#top a { color: #000; }		/* text */
+#top a:visited { color: #222; }	/* is this used? */
+#top a:hover { color: #fff; background-color:#000; } /* is this used? */
 
 /* PAT styling */
 
-.pat { background-color: lightBlue; }
+.pat { background-color: lightBlue; } /* main lighter 1 */
 
-.ps_hot { color: red; }
+.ps_hot { color: red; }		/* error */
 
 form.call-fi5312-form {
     padding-top: 2ex;

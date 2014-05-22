@@ -1,40 +1,45 @@
+/*
+ * Old colors:
+ *
+ * Main background color: #4477BB;
+ */
+
 body {
-    background-color: lightblue;
-    pogo-stick: #4477BB;
+    background-color: #4477BB;	/* main */
     color: black;
 }
 
 td.ret-time { text-align: right; }
 
 #flash-error {
-    color: red;
+    color: red;			/* error */
 }
 
 #flash-warn {
-    color: yellow;
+    color: yellow;		/* warning */
 }
 
 #flash-notice {
-    color: green;
+    color: green;		/* good */
 }
 
 .sdi-normal {
-    color: black;
-    background-color: green;
+    color: black;		/* text */
+    background-color: green;	/* good */
 }
 
 .sdi-warning {
-    color: black;
-    background-color: yellow;
+    color: black;		/* text */
+    background-color: yellow;	/* warning */
 }
 
 .sdi-error {
-    color: black;
-    background-color: red;
+    color: black;		/* text */
+    background-color: red;	/* error */
 }
 
 .click-to-edit-button {
-    border: 3px outset grey;
+    border: 3px outset grey;	/* grey? */
 }
 
 .click-to-edit-button:hover {

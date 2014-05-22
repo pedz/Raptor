@@ -11,26 +11,26 @@ table {
 tbody td {
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    border-color: black;
+    border-color: black;	/* table border */
 }
 
 thead th {
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    border-color: black;
+    border-color: black;	/* table border */
 }
 
 #error-message-box {
-    color:red;
+    color:red;			/* error */
     position: fixed;
     bottom: 0px;
     text-decoration: blink;
 }
 
 .team-nonempty {
-    color: Orange;
+    color: Orange;		/* warning */
 }
 
 .team-empty {
-    color: DarkGreen;
+    color: DarkGreen;		/* good */
 }
