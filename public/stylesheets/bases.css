@@ -16,7 +16,7 @@
 #subjects {
     clear: both;
 
-    border-color: DarkBlue;
+    border-color: DarkBlue;	/* main darker 2 */
     border-width: 4px;
     border-spacing: 1px;
     border-style: solid;
@@ -31,11 +31,11 @@
 }
 
 #error {
-    color: red;
+    color: red;			/* error */
 }
 
 #error + ul > li {
-    color: red;
+    color: red;			/* error */
 }
 
 .sorted-up {
@@ -69,7 +69,7 @@
 tbody.subject {
     counter-increment: tbody;
 
-    border-color: DarkBlue;
+    border-color: DarkBlue;	/* main darker 2 */
     border-width: 1px;
     border-style: solid;
 }
@@ -84,11 +84,11 @@ tbody.subject th {
 }
 
 tbody.subject:nth-of-type(odd) {
-    background-color: #e0e0e0;
+    background-color: #e0e0e0;	/* odd */
 }
 
 tbody.subject:nth-of-type(even) {
-    background-color: #e0e0f8;
+    background-color: #e0e0f8;	/* even */
 }
 
 .wrapper {
@@ -105,8 +105,8 @@ tbody.subject:nth-of-type(even) {
 }
 
 .pick-heading {
-    background: darkBlue;
-    color: white;
+    background-color: darkBlue;	/* main darker 2 */
+    color: white;		/* reverse text */
     cursor: pointer;
     padding: 5px;
     white-space: pre;
