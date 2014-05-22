@@ -1,35 +1,35 @@
 #flash-error {
-    color: red;
+    color: red;			/* error */
 }
 
 #flash-warn {
-    color: yellow;
+    color: yellow;		/* warning */
 }
 
 #flash-notice {
-    color: LightBlue;
+    color: LightBlue;		/* notice */
 }
 
 table.sortable {
     /* background-color: DarkBlue; */
-    border-color: DarkBlue;
+    border-color: DarkBlue;	/* main darker 2 */
     border-width: 1px;
     border-spacing: 0px;
     border-style: solid;
 }
 
 thead {
-    background-color: LightBlue;
+    background-color: LightBlue; /* main lighter 1 */
 }
 
 tfoot {
-    background-color: LightBlue;
+    background-color: LightBlue; /* main lighter 1 */
 }
 
 table.sortable > tfoot > tr > td,
 table.sortable > tbody > tr > td,
 table.sortable > thead > tr > th {
-   border-color: DarkBlue;
+   border-color: DarkBlue;	/* main darker 2 */
    border-width: 1px;
    border-style: solid;
 }
@@ -43,19 +43,19 @@ td.jeff {
 }
 
 .normal.rowodd {
-    background-color: #e0e0e0;
+    background-color: #e0e0e0;	/* normal odd */
 }
 
 .normal.roweven {
-    background-color: #e0e0f8;
+    background-color: #e0e0f8;	/* normal even */
 }
 
 .updated.rowodd {
-    background-color: #c0c0c0;
+    background-color: #c0c0c0;	/* updated off */
 }
 
 .updated.roweven {
-    background-color: #c0c0f8;
+    background-color: #c0c0f8;	/* updated even */
 }
 
 .not-editable {
@@ -63,11 +63,11 @@ td.jeff {
 }
 
 span.ecpaat-heading {
-    color: #0F0;
+    color: #0F0;		/* qs ecpaat heading */
 }
 
 span.ecpaat-heading-missing {
-    color: red;
+    color: red;			/* error */
 }
 
 /* needed to get pop ups to position */
@@ -82,20 +82,20 @@ span.ecpaat-heading-missing {
     position: absolute;
     top: 2px;
     left: 25px;
-    color: #FFF;
+    color: #FFF;		/* reverse text */
     padding: 0.5em;
     width: 45em;
     z-index: 100;
-    background-color: black;
+    background-color: black;	/* ecpaat background */
     text-align: left;
 }
 
 .system-down {
-    background-color: red;
+    background-color: red;	/* error */
 }
 
 .initial-response {
-    background-color: yellow;
+    background-color: yellow;	/* warning */
 }
 
 .smaller {
@@ -116,15 +116,15 @@ span.ecpaat-heading-missing {
 }
 
 .good {
-    color: green;
+    color: green;		/* normal */
 }
 
 .warn {
-    color: orange;
+    color: orange;		/* warning */
 }
 
 .wag-wag {
-    background-color: red;
+    background-color: red;	/* error */
 }
 
 .customer {
@@ -138,7 +138,7 @@ span.ecpaat-heading-missing {
  */
 .blue-diamond > table {
     position: relative;
-    background-color: white;
+    background-color: white;	/* blue-diamond backgroud */
     opacity: 1.0;
     z-index: 1;
 }
@@ -157,7 +157,7 @@ span.ecpaat-heading-missing {
 
 .usa > table {
     position: relative;
-    background-color: white;
+    background-color: white;	/* usa background */
     opacity: 1.0;
     z-index: 1;
 }
@@ -175,7 +175,7 @@ span.ecpaat-heading-missing {
 }
 
 .pat {
-    background-color: white;
+    background-color: white;	/* pat background */
 }
 
 .pmr-link {
@@ -197,7 +197,7 @@ span.ecpaat-heading-missing {
 }
 
 .pick-list-item:hover {
-    background-color: #ffb;
+    background-color: #ffb;	/* yuck99 */
 }
 
 td.other-time {
