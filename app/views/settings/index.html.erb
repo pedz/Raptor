@@ -1,0 +1,8 @@
+<%# -*- coding: utf-8 -*- -%>
+<%# Copyright 2007-2014 Ease Software, Inc. and Perry Smith -%>
+<%# All Rights Reserved -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<%- content_for(:center) do -%>
+  <%= link_to_users_list %><br />
+  <%= link_to_rotation_groups_list %> <br />
+<%- end -%>

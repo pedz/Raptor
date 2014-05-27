@@ -13,7 +13,7 @@ module Settings
     # GET /users/1/retusers
     # GET /users/1/retusers.xml
     def index
-      @retusers = @user.retusers
+      @retusers = @user.retusers(:order => :retid)
       respond_to do |format|
         format.html # index.html.erb
         format.xml  { render :xml => @retusers }

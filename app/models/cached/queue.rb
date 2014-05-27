@@ -134,9 +134,14 @@ module Cached
 
     ##
     # :attr: item_nestings
-    # A has_many assocation to Nesting that uses this object as
+    # A has_many association to Nesting that uses this object as
     # the item being contained.
     has_many :nesting_items, :class_name => "Nesting", :as => :item
+
+    ##
+    # :attr: rotation_group
+    # A has_many association to RotationGroup
+    has_many :rotation_groups
 
     ##
     # A class method that returns the list of team queues.  These are

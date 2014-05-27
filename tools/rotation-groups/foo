@@ -1,0 +1,6 @@
+script/generate model rotation_assignment \
+  rotation_group_id:integer \
+  assigned_by:integer \
+  assigned_to:integer \
+  rotaion_type_id:integer \
+  notes:text

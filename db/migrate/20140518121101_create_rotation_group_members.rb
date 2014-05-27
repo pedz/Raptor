@@ -1,10 +1,10 @@
 class CreateRotationGroupMembers < ActiveRecord::Migration
   def self.up
     create_table :rotation_group_members do |t|
-      t.integer :rotation_group_id, :null => false
-      t.string :name,               :null => false
-      t.integer :user_id,           :null => false
-      t.boolean :active,            :null => false
+      t.integer     :rotation_group_id, :null => false
+      t.string      :name,              :null => false
+      t.integer     :user_id,           :null => false
+      t.boolean     :active,            :null => false
       t.timestamps
     end
     execute "ALTER TABLE rotation_group_members ADD CONSTRAINT uq_rotation_group_members_name

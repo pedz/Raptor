@@ -1,0 +1,37 @@
+<%# -*- coding: utf-8 -*- -%>
+<%# Copyright 2007-2014 Ease Software, Inc. and Perry Smith -%>
+<%# All Rights Reserved -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<%- @title = "New type for #{@rotation_group.name} Rotation Group" -%>
+<%- content_for(:center) do -%>
+  <%= render :partial => 'layouts/shared/display_flash' %>
+  <h1><%= @title %></h1>
+  <%= error_messages_for :rotation_type %>
+
+  <% form_for([:settings, @rotation_group, @rotation_type]) do |f| %>
+    <%= f.error_messages %>
+
+    <p>
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+    </p>
+    <p>
+      <%= f.label :pmr_required %><br />
+      <%= f.check_box :pmr_required %>
+    </p>
+    <p>
+      <%= f.label :comments %><br />
+      <%= f.text_area :comments %>
+    </p>
+    <p>
+      <%= f.label :next_type %><br />
+      <%= f.collection_select(:next_type_id, RotationType.all, :id, :unique_name, { :prompt => true }) %>
+    </p>
+    <p>
+      <%= f.submit 'Create' %>
+    </p>
+  <% end %>
+
+  <%= link_to_show_rotation_group(@rotation_group) %> |
+  <%= link_to_rotation_types_list(@rotation_group) %>
+<%- end -%>

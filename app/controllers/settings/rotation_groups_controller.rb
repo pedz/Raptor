@@ -11,7 +11,7 @@ module Settings
     # GET /rotation_groups
     # GET /rotation_groups.xml
     def index
-      @rotation_groups = RotationGroup.all
+      @rotation_groups = RotationGroup.all(:order => :name)
       
       respond_to do |format|
         format.html # index.html.erb
