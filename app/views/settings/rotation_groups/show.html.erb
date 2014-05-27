@@ -8,7 +8,13 @@
     <%=h @rotation_group.name %>
   </p>
   <p>
+    <%=h @rotation_group.queue.item_name %>
+  </p>
+  <p>
     <%= link_to_group_members_list(@rotation_group) %>
+  </p>
+  <p>
+    <%= link_to_rotation_types_list(@rotation_group) %>
   </p>
 
   <%= link_to_edit_rotation_group(@rotation_group) %> |

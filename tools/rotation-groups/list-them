@@ -1,0 +1,10 @@
+#!/bin/bash
+
+LV="Normal IPSec X25 Crypto IB WPAR PartitionMobility Streams TTY SCTP IOCP GDLC QoS RDS IPFilter"
+TYPES="Hot_PMR Hot_IFix Skip Vacation PMR"
+
+for i in $LV ; do
+    for j in $TYPES ; do
+	printf "%12s %12s\n" $i $j
+    done
+done

@@ -111,9 +111,13 @@ ActionController::Routing::Routes.draw do |map|
   # that right now.
   map.resources :combined_psars, :controller => 'combined/psars'
 
+  map.resources(:rotation_assignments)
+  map.resources(:qm, :only => [:index, :show ])
+  map.settings('settings', :controller => 'settings')
   map.namespace(:settings) do |settings|
     settings.resources :rotation_groups do |rotation_group|
       rotation_group.resources :rotation_group_members
+      rotation_group.resources :rotation_types
     end
     settings.resources :users do |user|
       user.resources :retusers

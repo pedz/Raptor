@@ -8,11 +8,13 @@
   <table>
     <tr>
       <th>Name</th>
+      <th>Queue</th>
     </tr>
 
   <% @rotation_groups.each do |rotation_group| %>
     <tr>
       <td><%=h rotation_group.name %></td>
+      <td><%=h rotation_group.queue.item_name %></td>
       <td><%= link_to_show_rotation_group(rotation_group, 'Show') %></td>
       <td><%= link_to_edit_rotation_group(rotation_group, 'Edit') %></td>
       <td><%= link_to_destroy_rotation_group(rotation_group, 'Delete') %></td>

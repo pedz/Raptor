@@ -1,0 +1,31 @@
+Usage: script/generate mailer MailerName [options]
+
+Rails Info:
+    -v, --version                    Show the Rails version number and quit.
+    -h, --help                       Show this help message and quit.
+
+General Options:
+    -p, --pretend                    Run but do not make any changes.
+    -f, --force                      Overwrite files that already exist.
+    -s, --skip                       Skip files that already exist.
+    -q, --quiet                      Suppress normal output.
+    -t, --backtrace                  Debugging: show backtrace on errors.
+    -c, --svn                        Modify files with subversion. (Note: svn must be in path)
+    -g, --git                        Modify files with git. (Note: git must be in path)
+
+Description:
+    Stubs out a new mailer and its views. Pass the mailer name, either
+    CamelCased or under_scored, and an optional list of emails as arguments.
+
+    This generates a mailer class in app/models, view templates in
+    app/views/mailer_name, a unit test in test/unit, and fixtures in
+    test/fixtures.
+
+Example:
+    `./script/generate mailer Notifications signup forgot_password invoice`
+
+    creates a Notifications mailer class, views, test, and fixtures:
+        Mailer:     app/models/notifications.rb
+        Views:      app/views/notifications/signup.erb [...]
+        Test:       test/unit/test/unit/notifications_test.rb
+        Fixtures:   test/fixtures/notifications/signup [...]

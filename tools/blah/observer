@@ -1,0 +1,28 @@
+Usage: script/generate observer ObserverName [options]
+
+Rails Info:
+    -v, --version                    Show the Rails version number and quit.
+    -h, --help                       Show this help message and quit.
+
+General Options:
+    -p, --pretend                    Run but do not make any changes.
+    -f, --force                      Overwrite files that already exist.
+    -s, --skip                       Skip files that already exist.
+    -q, --quiet                      Suppress normal output.
+    -t, --backtrace                  Debugging: show backtrace on errors.
+    -c, --svn                        Modify files with subversion. (Note: svn must be in path)
+    -g, --git                        Modify files with git. (Note: git must be in path)
+
+Description:
+    Stubs out a new observer. Pass the observer name, either CamelCased or
+    under_scored, as an argument.
+
+    The generator creates an observer class in app/models and a unit test in
+    test/unit.
+
+Example:
+    `./script/generate observer Account`
+
+    creates an Account observer and unit test:
+        Observer:   app/models/account_observer.rb
+        Test:       test/unit/account_observer_test.rb

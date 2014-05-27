@@ -1,0 +1,40 @@
+<%# -*- coding: utf-8 -*- -%>
+<%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith -%>
+<%# All Rights Reserved -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<div>
+  <h2><%= group[:group].name %></h2>
+  <table>
+    <tr>
+      <%= group[:members].map { |member| "<th>#{member.name}</th>" }.join(' ') %>
+    </tr>
+    <%- group[:assignments].each do |row| -%>
+      <tr>
+	<%- row.each do |assignment| -%>
+	  <td>
+	    <% form_for(assignment) do |f| %>
+	      <%= f.hidden_field :rotation_group_id %>
+	      <%= f.hidden_field :assigned_by %>
+	      <%= f.hidden_field :assigned_to %>
+	      <p>
+		<%= f.label :rotation_type %>
+		<%= f.collection_select(:rotation_type_id, assignment.rotation_types.all( :order => :name), :id, :name, { :prompt => true }) %>
+	      </p>
+	      <p>
+		<%= f.label :pmr %>
+		<%= f.text_field :pmr, :size => 15 %>
+	      </p>
+	      <p>
+		<%= f.label :notes %><br />
+		<%= f.text_field :notes, :size => 15 %>
+	      </p>
+	      <p>
+		<%= f.submit (assignment.new_record? ? 'Create' : 'Update' ) %>
+	      </p>
+	    <% end %>
+	  </td>
+	<%- end -%>
+      </tr>
+    <%- end -%>
+  </table>
+</div>

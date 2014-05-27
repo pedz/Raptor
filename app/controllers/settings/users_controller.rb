@@ -18,7 +18,7 @@ module Settings
     # sequence assures us that.
     def index
       if admin?
-        @users = User.find(:all)
+        @users = User.all(:order => :ldap_id)
       else
         @users = [ application_user ]
       end

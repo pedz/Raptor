@@ -1,9 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
 cd log
-cp development-04.log development-05.log 2> /dev/null
-cp development-03.log development-04.log 2> /dev/null
-cp development-02.log development-03.log 2> /dev/null
-cp development-01.log development-02.log 2> /dev/null
-cp development.log development-01.log 2> /dev/null
-cp /dev/null development.log 2> /dev/null
+rm -f development-05.log
+[[ -f development-04.log ]] && mv development-04.log development-05.log
+[[ -f development-03.log ]] && mv development-03.log development-04.log
+[[ -f development-02.log ]] && mv development-02.log development-03.log
+[[ -f development-01.log ]] && mv development-01.log development-02.log
+cp development.log development-01.log
+cp /dev/null development.log

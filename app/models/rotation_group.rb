@@ -12,4 +12,20 @@ class RotationGroup < ActiveRecord::Base
   # :attr: rotation_group_members
   # A has_many relation to the list of type RotationGroupMember for this RotationGroup
   has_many :rotation_group_members
+
+  ##
+  # :attr: rotation_types
+  # A has_many relation to the list of type RotationGroupMember for this RotationGroup
+  has_many :rotation_types
+
+  ##
+  # :attr: queue
+  # A belogns_to association to a Cached::Queue that the entry refers
+  # to.
+  belongs_to :queue, :class_name => "Cached::Queue"
+
+  ##
+  # :attr: rotation_assignments
+  # A has_many association to the RotationAssignments made for this RotationGroup
+  has_many :rotation_assignments
 end
