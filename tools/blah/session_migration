@@ -1,0 +1,2 @@
+      exists  db/migrate
+      create  db/migrate/20140526193658_add_session_table.rb

@@ -15,6 +15,10 @@
       <%= f.text_field :name %>
     </p>
     <p>
+      <%= f.label :queue %><br />
+      <%= f.collection_select(:queue_id, Cached::Queue.all(:order => :queue_name), :id, :item_name, { :prompt => true }) %>
+    </p>
+    <p>
       <%= f.submit 'Create' %>
     </p>
   <% end %>

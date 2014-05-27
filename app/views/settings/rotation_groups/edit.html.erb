@@ -9,11 +9,13 @@
 
   <% form_for([:settings, @rotation_group]) do |f| %>
     <%= f.error_messages %>
-
     <p>
       <%= f.label :name %><br />
       <%= f.text_field :name %>
     </p>
+    <p>
+      <%= f.label :queue %><br />
+      <%= f.collection_select(:queue, Cached::Queue.all, :id, :id, { :prompt => true }) %>
     <p>
       <%= f.submit 'Update' %>
     </p>

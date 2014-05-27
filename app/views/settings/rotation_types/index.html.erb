@@ -1,0 +1,32 @@
+<%# -*- coding: utf-8 -*- -%>
+<%# Copyright 2007-2014 Ease Software, Inc. and Perry Smith -%>
+<%# All Rights Reserved -%>
+<!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
+<%- @title = "Listing types for #{@rotation_group.name} Rotation Group" -%>
+<%- content_for(:center) do -%>
+  <h1><%= @title %></h1>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>PMR Required</th>
+      <th>Comments</th>
+      <th>Next Type</th>
+    </tr>
+
+  <% @rotation_types.each do |rotation_type| %>
+    <tr>
+      <td><%=h rotation_type.name %></td>
+      <td><%=h rotation_type.pmr_required %></td>
+      <td><%=h rotation_type.comments %></td>
+      <td><%=h rotation_type.next_type.name %></td>
+      <td><%= link_to_show_rotation_type(@rotation_group, rotation_type, 'Show') %></td>
+      <td><%= link_to_edit_rotation_type(@rotation_group,rotation_type, 'Edit') %></td>
+      <td><%= link_to_destroy_rotation_type(@rotation_group, rotation_type, 'Delete') %></td>
+    </tr>
+  <% end %>
+  </table>
+
+  <br />
+  <%= link_to_new_rotation_type(@rotation_group) %> |
+  <%= link_to_show_rotation_group(@rotation_group) %>
+<%- end -%>

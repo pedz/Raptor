@@ -18,4 +18,8 @@ class RotationGroupMember < ActiveRecord::Base
   # :attr: user
   # A belongs_to association to the user
   belongs_to :user
+
+  def ldap_id
+    user.ldap_id
+  end
 end

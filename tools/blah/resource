@@ -1,0 +1,42 @@
+Usage: script/generate resource ModelName [field:type, field:type]
+
+Options:
+        --skip-timestamps            Don't add timestamps to the migration file for this model
+        --skip-migration             Don't generate a migration file for this model
+
+Rails Info:
+    -v, --version                    Show the Rails version number and quit.
+    -h, --help                       Show this help message and quit.
+
+General Options:
+    -p, --pretend                    Run but do not make any changes.
+    -f, --force                      Overwrite files that already exist.
+    -s, --skip                       Skip files that already exist.
+    -q, --quiet                      Suppress normal output.
+    -t, --backtrace                  Debugging: show backtrace on errors.
+    -c, --svn                        Modify files with subversion. (Note: svn must be in path)
+    -g, --git                        Modify files with git. (Note: git must be in path)
+
+Description:
+    Stubs out a new resource including an empty model and controller suitable
+    for a restful, resource-oriented application. Pass the singular model name,
+    either CamelCased or under_scored, as the first argument, and an optional
+    list of attribute pairs.
+
+    Attribute pairs are column_name:sql_type arguments specifying the
+    model's attributes. Timestamps are added by default, so you don't have to
+    specify them by hand as 'created_at:datetime updated_at:datetime'.
+
+    You don't have to think up every attribute up front, but it helps to
+    sketch out a few so you can start working with the resource immediately.
+
+    This creates a model, controller, helper, tests and fixtures for all of them,
+    and the corresponding map.resources declaration in config/routes.rb
+
+    Unlike the scaffold generator, the resource generator does not create
+    views or add any methods to the generated controller.
+
+Examples:
+    `./script/generate resource post` # no attributes
+    `./script/generate resource post title:string body:text published:boolean`
+    `./script/generate resource purchase order_id:integer amount:decimal`
