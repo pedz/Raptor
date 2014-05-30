@@ -9,6 +9,18 @@ class CreateRotationAssignments < ActiveRecord::Migration
       t.text        :notes,             :null => false, :default => ''
       t.timestamps
     end
+    execute "ALTER TABLE rotation_assignments ADD CONSTRAINT fk_rotation_assignments_rotation_group_id
+             FOREIGN KEY (rotation_group_id) REFERENCES rotation_groups(id)
+             ON DELETE CASCADE"
+    execute "ALTER TABLE rotation_assignments ADD CONSTRAINT fk_rotation_assignments_assigned_by
+             FOREIGN KEY (assigned_by) REFERENCES users(id)
+             ON DELETE CASCADE"
+    execute "ALTER TABLE rotation_assignments ADD CONSTRAINT fk_rotation_assignments_assigned_to
+             FOREIGN KEY (assigned_to) REFERENCES users(id)
+             ON DELETE CASCADE"
+    execute "ALTER TABLE rotation_assignments ADD CONSTRAINT fk_rotation_assignments_rotation_type_id
+             FOREIGN KEY (rotation_type_id) REFERENCES rotation_types(id)
+             ON DELETE CASCADE"
   end
 
   def self.down
