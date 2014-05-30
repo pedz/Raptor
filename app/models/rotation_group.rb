@@ -28,4 +28,12 @@ class RotationGroup < ActiveRecord::Base
   # :attr: rotation_assignments
   # A has_many association to the RotationAssignments made for this RotationGroup
   has_many :rotation_assignments
+
+  def sorted_group_members
+    rotation_group_members.all(:order => :name)
+  end
+
+  def sorted_assignments
+    rotation_assignments.all(:order => :created_at)
+  end
 end

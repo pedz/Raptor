@@ -6,6 +6,12 @@
 
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+  # Returns a string for the class of the body which is the name of
+  # the controller, underscore, with _controller removed
+  def body_class
+    controller.class.to_s.underscore.sub('_controller', '')
+  end
+
   def first_name
     application_user.first_name
   end

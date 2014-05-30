@@ -9,4 +9,10 @@ class RotationAssignment < ActiveRecord::Base
   # A has_many association through the rotation_group belongs to for
   # the RotationTypes that this RotationAssignment may have.
   has_many :rotation_types, :through => :rotation_group
+
+  ##
+  # :attr: rotation_type
+  # A belongs_to association to the RotationType chosen for this
+  # particular RotationAssignment
+  belongs_to :rotation_type
 end

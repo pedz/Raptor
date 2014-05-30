@@ -8,7 +8,7 @@ class QmController < ApplicationController
     @queue_name = params[:id]
     queue = Cached::Queue.find_by_queue_name(@queue_name.split(',')[0])
     @rotation_groups = queue.rotation_groups.map do |group|
-      members = group.rotation_group_members.all(:order => :name)
+      members = group.sorted_group_members
 
       # We go backwards through the assignments until we hit the 4th
       # entry for someone.  This will give us 3 rows back.  While we
@@ -22,25 +22,42 @@ class QmController < ApplicationController
                                            :assigned_by => application_user.id)
         end
       end
+      list = group.sorted_assignments.reverse
+      count = 3
       members.each_with_index do |member, index|
-        member_hash[member.user_id] = {
+        user_id = member.user_id
+        member_hash[user_id] = {
           :index => index,
-          :count => 3
+          :count => count
         }
+        if user_id == list[0].assigned_to
+          count = 2
+        end
       end
-      group.rotation_assignments.all(:order => :created_at).reverse.each do |assignment|
+      members_left = members.size
+#      last_assignment = false
+      list.each do |assignment|
         h = member_hash[assignment.assigned_to]
-        break if h[:count] == 0
+        if h[:count] == 0
+          members_left -= 1
+          if members_left <= 0
+            break
+          else
+            next
+          end
+        end
         h[:count] -= 1
-        logger.debug "Adding #{assignment.id} to #{h[:count]} and #{h[:index]}"
+        # unless last_assignment
+        #   last_assignment = true
+        #   row = h[:count]
+        #   ((h[:index] + 1) .. members.size).each do |index|
+        #     assignments[row][index] = assignments[row + 1][index]
+        #     assignments[row + 1][index] = nil
+        #   end
+        # end
         assignments[h[:count]][h[:index]] = assignment
       end
-      logger.debug assignments.inspect
       
-      # rows = []
-      # Now, we create an array of rows -- up to three rows with
-      # assignments plus an extra blank row.
-
       {
         :group => group,
         :members => members,

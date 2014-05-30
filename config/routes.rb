@@ -109,7 +109,7 @@ ActionController::Routing::Routes.draw do |map|
   # that right now.
   map.resources :combined_psars, :controller => 'combined/psars'
 
-  map.resources(:rotation_assignments)
+  map.resources(:rotation_assignments, :member => {:qm_create => :post, :qm_update => :put})
   map.resources(:qm, :only => [:index, :show ])
   map.settings('settings', :controller => 'settings')
   map.namespace(:settings) do |settings|
