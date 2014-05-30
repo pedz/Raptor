@@ -45,3 +45,36 @@ td.ret-time { text-align: right; }
 .click-to-edit-button:hover {
     cursor: pointer;
 }
+
+table.qm {
+	border-width: 1px;
+	border-spacing: 2px;
+	border-style: outset;
+	border-color: DarkBlue;
+	border-collapse: separate;
+	background-color: LightBlue;
+}
+table.qm th {
+	border-width: 1px;
+	padding: 1px;
+	border-style: inset;
+	border-color: DarkBlue;
+	background-color: LightBlue;
+	-moz-border-radius: ;
+}
+table.qm td {
+	border-width: 1px;
+	padding: 1px;
+	border-style: inset;
+	border-color: DarkBlue;
+	background-color: LightBlue;
+	-moz-border-radius: ;
+}
+
+table.qm form {
+    padding-left: 0.5em;
+}
+
+p.centered-text {
+    text-align: center;
+}

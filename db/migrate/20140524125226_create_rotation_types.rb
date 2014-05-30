@@ -19,6 +19,9 @@ class CreateRotationTypes < ActiveRecord::Migration
     execute "INSERT INTO rotation_types ( rotation_group_id, name, pmr_required, comments, next_type_id )
              VALUES ( (select id from rotation_groups where name = 'Null'),
                       'no-op', true, 'Used as a null value for the next_type_id column', 1 )"
+    execute "INSERT INTO rotation_types ( rotation_group_id, name, pmr_required, comments, next_type_id )
+             VALUES ( (select id from rotation_groups where name = 'Null'),
+                      'auto-skip', true, 'Used when filling in assignments', 2 )"
   end
   
   def self.down

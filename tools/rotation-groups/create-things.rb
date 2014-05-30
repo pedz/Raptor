@@ -2,6 +2,7 @@
 
 normal_name = 'AMNETK'
 hot_name = 'AMNETK - Hot'
+me = User.find_by_ldap_id('pedzan@us.ibm.com')
 darshan = {
   :user => User.find_by_ldap_id('darshanp@us.ibm.com'),
   :name => 'Darshan',
@@ -130,3 +131,17 @@ amnet_hot.rotation_types.find_by_name('Overload') ||
                                      :pmr_required => false,
                                      :comments => 'When team member is overloaded',
                                      :next_type_id => no_op.id)
+
+# Create four Temp Skips for each person in each group.
+[ amnet_normal, amnet_hot ].each do |group|
+  (1..4).each do |_notused|
+    group.sorted_group_members.each do |member|
+      RotationAssignment.create(:rotation_group_id => group.id,
+                                :pmr => "",
+                                :assigned_by => me.id,
+                                :assigned_to => member.user.id,
+                                :rotation_type_id => no_op.id,
+                                :notes => "Just to fill the table")
+    end
+  end
+end

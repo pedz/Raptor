@@ -2,8 +2,11 @@
 <%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith -%>
 <%# All Rights Reserved -%>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<% @title = "Queue Monitoring for #{@queue_name}" -%>
-<%- content_for(:center) do -%>
-  <h1><%= @title %></h1>
-  <%= show_qm_table %>
+<p class='centered-text'>
+  <%= @assignment.rotation_type.name %>
+</p>
+<%- if @assignment.rotation_type.pmr_required -%>
+<p class='centered-text'>
+  <%= @assignment.pmr %>
+</p>
 <%- end -%>

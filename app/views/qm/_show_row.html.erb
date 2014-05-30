@@ -2,8 +2,6 @@
 <%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith -%>
 <%# All Rights Reserved -%>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
-<% @title = "Queue Monitoring for #{@queue_name}" -%>
-<%- content_for(:center) do -%>
-  <h1><%= @title %></h1>
-  <%= show_qm_table %>
-<%- end -%>
+<tr>
+  <%= show_qm_row %>
+</tr>
