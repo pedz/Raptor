@@ -64,7 +64,7 @@ module Settings
 
       respond_to do |format|
         if @rotation_type.update_attributes(params[:rotation_type])
-          format.html { redirect_to([:settings, @rotation_type], :notice => 'RotationType was successfully updated.') }
+          format.html { redirect_to([:settings, @rotation_group, @rotation_type], :notice => 'RotationType was successfully updated.') }
           format.xml  { head :ok }
         else
           format.html { render :action => "edit" }

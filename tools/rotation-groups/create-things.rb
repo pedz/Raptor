@@ -114,6 +114,12 @@ hot_ifix = amnet_hot.rotation_types.find_by_name('Hot IFix') ||
                                   :comments => 'Assign a hot IFix PMR',
                                   :next_type_id => no_op.id)
 
+hot_assist = amnet_hot.rotation_types.find_by_name('Assist') ||
+  amnet_hot.rotation_types.create(:name => 'Assist',
+                                  :pmr_required => true,
+                                  :comments => 'Assisted.  Does not get a Skip',
+                                  :next_type_id => no_op.id)
+
 amnet_hot.rotation_types.find_by_name('Vacation') ||
   amnet_hot.rotation_types.create(:name => 'Vacation',
                                      :pmr_required => false,

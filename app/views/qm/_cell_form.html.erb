@@ -8,11 +8,11 @@
   <%= f.hidden_field :assigned_by %>
   <%= f.hidden_field :assigned_to %>
   <p>
-	<%= f.label :rotation_type %>
+	<%= f.label :rotation_type %><br />
 	<%= f.collection_select(:rotation_type_id, @assignment.rotation_types.all( :order => :name), :id, :name, { :prompt => true }) %>
   </p>
   <p>
-	<%= f.label :pmr %>
+	<%= f.label :pmr %><br />
 	<%= f.text_field :pmr, :size => 15 %>
   </p>
   <p>

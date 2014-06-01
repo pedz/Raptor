@@ -144,6 +144,15 @@ module Cached
     has_many :rotation_groups
 
     ##
+    # Returns the rotation groups for this queue which includes the
+    # user as a member of the group.
+    def rotation_groups_with_user(user)
+      rotation_groups.find(:all,
+                           :include => :rotation_group_members,
+                           :conditions => [ 'rotation_group_members.user_id = ?', user.id])
+    end
+
+    ##
     # A class method that returns the list of team queues.  These are
     # queues that do not have a Cached::QueueInfo entry.
     def self.team_queues
