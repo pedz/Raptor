@@ -5,5 +5,6 @@
 <% @title = "Queue Monitoring for #{@queue_name}" -%>
 <%- content_for(:center) do -%>
   <h1><%= @title %></h1>
-  <%= show_qm_table %>
+  <%= render :partial => 'layouts/shared/display_flash' %>
+  <%= show_qm_tables %>
 <%- end -%>
