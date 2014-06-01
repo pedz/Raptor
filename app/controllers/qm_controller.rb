@@ -7,8 +7,8 @@ class QmController < ApplicationController
     # Cheating here a bit ... just use the queue's name to find the queue (and not the center)
     @queue_name = params[:id]
     queue = Cached::Queue.find_by_queue_name(@queue_name.split(',')[0])
-    @rotation_groups = queue.rotation_groups.map do |group|
-      members = group.sorted_group_members
+    @rotation_groups = queue.rotation_groups_with_user(application_user).map do |group|
+      members = group.sorted_active_group_members
 
       # We go backwards through the assignments until we hit the 4th
       # entry for someone.  This will give us 3 rows back.  While we
@@ -30,7 +30,7 @@ class QmController < ApplicationController
           :index => index,
           :count => count
         }
-        if user_id == list[0].assigned_to
+        if list[0] && user_id == list[0].assigned_to
           count = 2
         end
       end

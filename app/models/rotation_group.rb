@@ -29,8 +29,8 @@ class RotationGroup < ActiveRecord::Base
   # A has_many association to the RotationAssignments made for this RotationGroup
   has_many :rotation_assignments
 
-  def sorted_group_members
-    rotation_group_members.all(:order => :name)
+  def sorted_active_group_members
+    rotation_group_members.all(:conditions => {:active => true }, :order => :name)
   end
 
   def sorted_assignments

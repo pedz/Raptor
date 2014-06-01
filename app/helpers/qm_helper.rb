@@ -1,5 +1,5 @@
 module QmHelper
-  def show_qm_table
+  def show_qm_tables
     @rotation_groups.map do |group|
       @group = group[:group]
       @members = group[:members]
@@ -20,7 +20,6 @@ module QmHelper
   def show_qm_row
     @col_index = -1
     @row.map do |assignment|
-      logger.debug "here"
       @col_index += 1
       @assignment = assignment
       render(:partial => 'show_cell')
@@ -30,6 +29,7 @@ module QmHelper
   def show_qm_cell
     unless blank_cell?
       if form_needed?
+        @members[@col_index] = nil # only one form per member
         render(:partial => 'cell_form')
       else
         # <div class='edit-assignment' style='display: none;'>
@@ -44,24 +44,15 @@ module QmHelper
   
   # Returns true if the cell will be blank
   def blank_cell?
-    # If this member already has a visable form then this cell will be
-    # blank
-    return true unless @members[@col_index]
+    # A nil assignment creates a blank cell
+    return true if @assignment.nil?
 
-    # if assignment is nil, cell will be blank
-    return true unless @assignment
+    # A form previously in this member's column implies that all cells
+    # below are empty
+    return true if @members[@col_index].nil?
 
-    # if new record, cell will not be blank (at this point)
-    return false if @assignment.new_record?
-
-    # If this is an auto-skip, then make it a form and skip the rest
-    # of cells for this member
-    if @assignment.rotation_type.name == 'auto-skip'
-      @members[@col_index] = nil
-    end
-
-    # cell will not be blank
-    false
+    # Otherwise, the cell is not blank
+    return false
   end
 
   # Returns true if a form is needed
