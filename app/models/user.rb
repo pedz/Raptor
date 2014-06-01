@@ -137,7 +137,25 @@ class User < ActiveRecord::Base
   # A has_many association to Name of the names owned by this user.
   has_many :owned_names, :class_name => "Name", :foreign_key => 'owner_id'
 
+  ##
+  # :attr: rotation_group_members
+  # A has_many association to RotationGroupMember for this user
+  has_many :rotation_group_members
+
+  ##
+  # :attr: rotation_groups
+  # A has_many association to RotationGroup through the
+  # rotation_group_members association to return the RotationGroup
+  # that this user belongs to
+  has_many :rotation_groups, :through => :rotation_group_members
+
   before_validation :ldap_id_to_lowercase
+
+  # Returns the RotationGroups for the user that have a specified
+  # queue as the monitored queue.
+  def rotation_groups_for_queue(queue, options = {})
+    rotation_groups.find(:all, options.merge(:conditions => [ 'queue_id = ?', queue.id]))
+  end
 
   # Returns the LdapUser for this user.
   def ldap_user
