@@ -83,10 +83,10 @@ class RotationAssignmentsController < ApplicationController
   private
 
   def fill_with_auto_skip(group, assignment)
-    user_ids = group.sorted_active_group_members.map { |member| member.user.id }
+    user_ids = group.active_group_members.map { |member| member.user.id }
     # user_ids are two sequences of each user's id
     user_ids = user_ids + user_ids
-    last_user_id = group.sorted_assignments.last.assigned_to
+    last_user_id = group.rotation_assignments.last.assigned_to
     next_user_id = assignment.assigned_to
     auto_skip = RotationType.find_by_name('auto-skip')
 

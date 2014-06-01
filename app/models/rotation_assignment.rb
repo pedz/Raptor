@@ -20,9 +20,6 @@ class RotationAssignment < ActiveRecord::Base
   belongs_to :rotation_type
 
   def pmr_required
-    logger.debug "rotation type name = #{self.rotation_type ? self.rotation_type.name : "nil" }"
-    logger.debug "pmr_required = #{self.rotation_type && self.rotation_type.pmr_required}"
-    logger.debug "pmr = '#{self.pmr}' /\A.....,...,...\Z/.match(pmr)}"
     self.rotation_type && self.rotation_type.pmr_required
   end
 end

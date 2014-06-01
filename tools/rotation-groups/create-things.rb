@@ -58,8 +58,11 @@ q = Cached::Queue.find_by_queue_name('WWNETK')
 
 # Now we can make stuff
 
-amnet_normal = RotationGroup.find_by_name(normal_name) || RotationGroup.create(:name => normal_name, :queue => q)
-amnet_hot = RotationGroup.find_by_name(hot_name) || RotationGroup.create(:name => hot_name, :queue => q)
+amnet_normal = RotationGroup.find_by_name(normal_name) ||
+  RotationGroup.create(:name => normal_name, :queue => q)
+
+amnet_hot = RotationGroup.find_by_name(hot_name) ||
+  RotationGroup.create(:name => hot_name, :queue => q)
 
 [ darshan, jim, luis, perry, tom, min, sangeetha, uma, bob, ram ].each do |u|
   amnet_normal.rotation_group_members.find_by_name(u[:name]) || amnet_normal.rotation_group_members.create(u)
@@ -141,7 +144,7 @@ amnet_hot.rotation_types.find_by_name('Overload') ||
 # Create four Temp Skips for each person in each group.
 [ amnet_normal, amnet_hot ].each do |group|
   (1..4).each do |_notused|
-    group.sorted_group_members.each do |member|
+    group.rotation_group_members.each do |member|
       RotationAssignment.create(:rotation_group_id => group.id,
                                 :pmr => "",
                                 :assigned_by => me.id,
