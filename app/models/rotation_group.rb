@@ -11,7 +11,7 @@ class RotationGroup < ActiveRecord::Base
   ##
   # :attr: rotation_group_members
   # A has_many relation to the list of type RotationGroupMember for this RotationGroup
-  has_many :rotation_group_members
+  has_many :rotation_group_members, :order => :name
 
   ##
   # :attr: rotation_types
@@ -27,13 +27,9 @@ class RotationGroup < ActiveRecord::Base
   ##
   # :attr: rotation_assignments
   # A has_many association to the RotationAssignments made for this RotationGroup
-  has_many :rotation_assignments
+  has_many :rotation_assignments, :order => :created_at
 
-  def sorted_active_group_members
-    rotation_group_members.all(:conditions => {:active => true }, :order => :name)
-  end
-
-  def sorted_assignments
-    rotation_assignments.all(:order => :created_at)
+  def active_group_members(options = {})
+    rotation_group_members.is_active.all(options)
   end
 end

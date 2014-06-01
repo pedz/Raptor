@@ -144,6 +144,20 @@ module Cached
     has_many :rotation_groups
 
     ##
+    # Find the queue from the queue_name,h_or_s,center.center string
+    # used as the identifier for the queue.
+    def self.find_by_param(p)
+      p = p.split(',')
+      find(:first,
+           :include => :center,
+           :conditions => {
+             :queue_name => p[0],
+             :h_or_s => p[1],
+             'cached_centers.center' => p[2]
+           })
+    end
+
+    ##
     # Returns the rotation groups for this queue which includes the
     # user as a member of the group.
     def rotation_groups_with_user(user)

@@ -19,6 +19,11 @@ class RotationGroupMember < ActiveRecord::Base
   # A belongs_to association to the user
   belongs_to :user
 
+  ##
+  # :attr: is_active
+  # A named_scope for active is true
+  named_scope :is_active, :conditions => { :active => true }
+
   def ldap_id
     user.ldap_id
   end
