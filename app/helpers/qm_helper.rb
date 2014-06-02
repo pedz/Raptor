@@ -32,12 +32,12 @@ module QmHelper
         @members[@col_index] = nil # only one form per member
         render(:partial => 'cell_form')
       else
-        # <div class='edit-assignment' style='display: none;'>
-        #   <%= render(:partial => 'cell_form') %>
-        # </div>
-        # <div class='show-assignment'>
-        render(:partial => 'cell_text')
-        # </div>
+        "<div class='edit-assignment' style='display: none;'>" +
+          render(:partial => 'cell_form') +
+        "</div>" +
+        "<div class='show-assignment'>" +
+          render(:partial => 'cell_text') +
+        "</div>"
       end
     end
   end
