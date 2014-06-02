@@ -235,5 +235,17 @@ var Raptor = {
 	ele.hidePopup = Raptor.hidePopup.bind(ele);
 	ele.popupElement = ele.down('.popup');
 	ele.popupElement.hide();
+    },
+
+    showQmForm : function (event) {
+	var td;
+	var form;
+
+	if (td = this.up('td')) {
+	    if (form = td.down('.edit-assignment')) {
+		this.hide();
+		form.show();
+	    }
+	}
     }
 };

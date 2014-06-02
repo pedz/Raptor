@@ -143,7 +143,7 @@ amnet_hot.rotation_types.find_by_name('Overload') ||
 
 # Create four Temp Skips for each person in each group.
 [ amnet_normal, amnet_hot ].each do |group|
-  (1..4).each do |_notused|
+  (1..8).each do |_notused|
     group.rotation_group_members.each do |member|
       RotationAssignment.create(:rotation_group_id => group.id,
                                 :pmr => "",

@@ -1,6 +1,6 @@
 class QmController < ApplicationController
   HashEntry = Struct.new(:row_index, :col_index)
-  QM_LAST_ROW_INDEX = 3
+  QM_LAST_ROW_INDEX = 16
 
   def index
     @rotation_groups = RotationGroup.all(:select => :queue_id, :group => :queue_id)

@@ -4,14 +4,18 @@
 //
 
 document.observe('dom:loaded', function() {
-	Raptor.addHooksAndUnhooks($(document.body));
+    Raptor.addHooksAndUnhooks($(document.body));
 
-	if (Raptor.updateLoadHook) {
-	    Raptor.updateLoadHook();
-	}
+    if (Raptor.updateLoadHook) {
+	Raptor.updateLoadHook();
+    }
 
-	var bottom = $('bottom');
-	if (bottom) {
-	    Raptor.addUserInput(bottom);
-	}
+    var bottom = $('bottom');
+    if (bottom) {
+	Raptor.addUserInput(bottom);
+    }
+
+    $$('.show-assignment').each(function (ele) {
+	ele.observe('click', Raptor.showQmForm.bind(ele));
     });
+});
