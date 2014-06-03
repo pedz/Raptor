@@ -3,14 +3,15 @@ class CreateRotationsView < ActiveRecord::Migration
     execute <<-EOF
       CREATE OR REPLACE VIEW rotations AS
       SELECT
-        g.name as "Group",
-        t.name as "Type",
-        a.pmr as "PMR",
-        u_to.ldap_id as "To",
-        u_by.ldap_id as "By",
-        a.notes as "Notes",
-        a.created_at as "Created",
-        a.updated_at as "Updated"
+        a.id as "id",
+        g.name as "rotation_group",
+        a.pmr as "pmr",
+        u_by.ldap_id as "assigned_by",
+        u_to.ldap_id as "assigned_to",
+        a.notes as "notes",
+        t.name as "rotation_type",
+        a.created_at as "created_at",
+        a.updated_at as "updated_at"
       FROM
         rotation_groups g,
         rotation_assignments a,
