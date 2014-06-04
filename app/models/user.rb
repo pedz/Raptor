@@ -194,6 +194,14 @@ class User < ActiveRecord::Base
     updated_at
   end
 
+  # Returns the Cached::Queue that the user owns
+  def queue
+    retuser = self.retusers.all(:conditions => { :apptest => false }).first
+    if retuser
+      retuser.registration.queues.first
+    end
+  end
+
   private
 
   # Force the ldap_id to all lowercase
