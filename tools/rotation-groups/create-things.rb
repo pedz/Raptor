@@ -72,7 +72,7 @@ end
   amnet_hot.rotation_group_members.find_by_name(u[:name]) || amnet_hot.rotation_group_members.create(u)
 end
 
-no_op = RotationType.find_by_name('no-op')
+no_op = RotationType.no_op
 
 normal_assign = amnet_normal.rotation_types.find_by_name('Assign') ||
   amnet_normal.rotation_types.create(:name => 'Assign',
@@ -143,7 +143,7 @@ amnet_hot.rotation_types.find_by_name('Overload') ||
 
 # Create four Temp Skips for each person in each group.
 [ amnet_normal, amnet_hot ].each do |group|
-  (1..8).each do |_notused|
+  (1 .. QmController::QM_LAST_ROW_INDEX).each do |_notused|
     group.rotation_group_members.each do |member|
       RotationAssignment.create(:rotation_group_id => group.id,
                                 :pmr => "",

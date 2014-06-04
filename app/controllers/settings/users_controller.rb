@@ -85,9 +85,6 @@ module Settings
     # for the admin flag and set it if it is set in params and the
     # current user is an admin.
     def update
-      # Done by this_user?
-      # @user = User.find(params[:id])
-      # currently a no-op 'cause everything is protected
       @user.attributes = params[:user]
       
       admin_param = params[:user].delete(:admin)

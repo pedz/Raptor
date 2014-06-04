@@ -64,6 +64,6 @@ module QmHelper
     return true if @assignment.new_record?
 
     # auto-skips need a form
-    @assignment.rotation_type.name == 'auto-skip'
+    @assignment.rotation_type.auto_skip?
   end
 end

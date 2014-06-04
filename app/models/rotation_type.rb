@@ -1,4 +1,15 @@
 class RotationType < ActiveRecord::Base
+  NO_OP_NAME = 'no-op'
+  AUTO_SKIP_NAME = 'auto-skip'
+
+  def self.auto_skip
+    @auto_skip ||= self.find_by_name(AUTO_SKIP_NAME)
+  end
+
+  def self.no_op
+    @no_op ||= self.find_by_name(NO_OP_NAME)
+  end
+
   ##
   # :attr: rotation_group
   # A belongs_to association to the owning RotationGroup
@@ -17,5 +28,13 @@ class RotationType < ActiveRecord::Base
 
   def unique_name
     "#{rotation_group.name}/#{name}"
+  end
+
+  def auto_skip?
+    self.id == self.class.auto_skip.id
+  end
+
+  def no_op?
+    self.id == self.class.no_op.id
   end
 end

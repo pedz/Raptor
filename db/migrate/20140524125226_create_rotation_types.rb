@@ -18,10 +18,10 @@ class CreateRotationTypes < ActiveRecord::Migration
              ON DELETE CASCADE"
     execute "INSERT INTO rotation_types ( rotation_group_id, name, pmr_required, comments, next_type_id )
              VALUES ( (select id from rotation_groups where name = 'Null'),
-                      'no-op', false, 'Used as a null value for the next_type_id column', 1 )"
+                      '#{RotationType::NO_OP_NAME}', false, 'Used as a null value for the next_type_id column', 1 )"
     execute "INSERT INTO rotation_types ( rotation_group_id, name, pmr_required, comments, next_type_id )
              VALUES ( (select id from rotation_groups where name = 'Null'),
-                      'auto-skip', false, 'Used when filling in assignments', 2 )"
+                      '#{RotationType::AUTO_SKIP_NAME}', false, 'Used when filling in assignments', 2 )"
   end
   
   def self.down
