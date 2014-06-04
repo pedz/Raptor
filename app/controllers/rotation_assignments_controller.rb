@@ -50,7 +50,7 @@ class RotationAssignmentsController < ApplicationController
     logger.debug("assignments.size = #{assignments.size}")
     last_user_id = assignments.last.assigned_to
     next_user_id = assignment.assigned_to
-    auto_skip = RotationType.find_by_name('auto-skip')
+    auto_skip = RotationType.auto_skip
     
     # We run through the user ids until we find the one that matches
     # the id of the last rotation assignment and we set triggered to
@@ -81,11 +81,9 @@ class RotationAssignmentsController < ApplicationController
     logger.debug "assignment.rotation_type.name = #{assignment.rotation_type.name}"
     next_type = assignment.rotation_type.next_type
     logger.debug "next_type.name = #{next_type.name}"
-    auto_skip = RotationType.find_by_name('auto-skip')
+    auto_skip = RotationType.auto_skip
     
-    # If the name is "no-op" we do nothing or if the next_type
-    # FIXME: the "no-op" string should be global or something.
-    unless next_type.name == "no-op"
+    unless next_type.no_op?
       next_group = next_type.rotation_group
       
       # See if we can find an auto-skip for this assign_to and the
