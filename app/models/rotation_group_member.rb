@@ -27,4 +27,8 @@ class RotationGroupMember < ActiveRecord::Base
   def ldap_id
     user.ldap_id
   end
+
+  def queue_name
+    user.queue.queue_name
+  end
 end

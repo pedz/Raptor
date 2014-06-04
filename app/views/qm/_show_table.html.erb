@@ -9,6 +9,9 @@
       <tr>
         <%= @members.map { |member| "<th>#{member.name}</th>" }.join("\n") %>
       </tr>
+      <tr>
+        <%= @members.map { |member| "<th>#{member.queue_name}</th>" }.join("\n") %>
+      </tr>
     </thead>
     <tbody>
       <%= show_qm_assignments %>
