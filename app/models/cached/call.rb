@@ -271,5 +271,9 @@ module Cached
       c = queue.center
       "#{q.queue_name},#{q.h_or_s},#{c.center},#{ppg}-#{t.tv_sec}.#{t.usec}-#{tag}"
     end
+
+    def hot?
+      self.priority == 1 || pmr.hot?
+    end
   end
 end
