@@ -232,11 +232,11 @@ module Cached
     end
 
     def unique_calls
-      calls.uniq { |call| call.pmr.id }
+      calls.sort { |a, b| a.pmr.id <=> b.pmr.id }.uniq { |call| call.pmr.id }
     end
 
     def hot_calls
-      calls.find_all { |call| call.hot? }.uniq { |call| call.pmr.id }
+      unique_calls.find_all { |call| call.hot? }
     end
   end
 end
