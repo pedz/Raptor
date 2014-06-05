@@ -230,5 +230,13 @@ module Cached
       c = Cached::Center.find_or_create_by_center(center)
       c.queues.find_or_create_by_queue_name_and_h_or_s(queue_name, h_or_s)
     end
+
+    def unique_calls
+      calls.uniq { |call| call.pmr.id }
+    end
+
+    def hot_calls
+      calls.find_all { |call| call.hot? }.uniq { |call| call.pmr.id }
+    end
   end
 end

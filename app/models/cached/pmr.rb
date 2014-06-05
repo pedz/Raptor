@@ -703,6 +703,10 @@ module Cached
       temp = self.opc
       temp && (temp.length > 11) && (temp[0,11] == self.service_request)
     end
+    
+    def hot?
+      hot || priority == 1 || severity == 1 || crit_sit
+    end
 
     private
 
