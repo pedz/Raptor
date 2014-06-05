@@ -8,7 +8,27 @@ module QmHelper
     end.join("\n")
   end
 
-  def show_qm_assignments
+  def show_qm_table_header
+    content_tag("tr", member_name_row) +
+      content_tag("tr", member_queue_row)
+  end
+
+  def member_name_row
+    @members.map { |member|
+      content_tag("th", member.name)
+    }.join("\n")
+  end
+
+  def member_queue_row
+    @members.map { |member|
+      content_tag("th") do
+        link_to(member.queue_name, combined_queue_path(member.queue.item_name)) +
+          "(#{member.queue.hot_calls.size}/#{member.queue.unique_calls.size})"
+      end
+    }.join("\n")
+  end
+  
+  def show_qm_table_body
     @row_index = -1
     @assignments.map do |row|
       @row_index += 1
@@ -32,12 +52,12 @@ module QmHelper
         @members[@col_index] = nil # only one form per member
         render(:partial => 'cell_form')
       else
-        "<div class='edit-assignment' style='display: none;'>" +
-          render(:partial => 'cell_form') +
-        "</div>" +
-        "<div class='show-assignment'>" +
-          render(:partial => 'cell_text') +
-        "</div>"
+        content_tag("div", :class => 'edit-assignment', :style => 'display:none;') do
+          render(:partial => 'cell_form')
+        end +
+          content_tag("div", :class => 'show-assignment') do
+          render(:partial => 'cell_text')
+        end
       end
     end
   end

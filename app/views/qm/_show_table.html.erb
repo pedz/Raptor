@@ -6,15 +6,10 @@
   <h2><%= @group.name %></h2>
   <table class='qm'>
     <thead>
-      <tr>
-        <%= @members.map { |member| "<th>#{member.name}</th>" }.join("\n") %>
-      </tr>
-      <tr>
-        <%= @members.map { |member| "<th>#{member.queue_name}</th>" }.join("\n") %>
-      </tr>
+      <%= show_qm_table_header %>
     </thead>
     <tbody>
-      <%= show_qm_assignments %>
+      <%= show_qm_table_body %>
     <tbody>
   </table>
 </div>
