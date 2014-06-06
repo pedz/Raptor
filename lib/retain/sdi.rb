@@ -230,7 +230,8 @@ module Retain
         # started with PSRR requests that fail with "No PSAR record
         # ...".
         if ! ((sr == 175 && ex == 101) ||		# no PSRR found
-              (sr == 115 && ex == 125))			# no PMPB found
+              (sr == 115 && ex == 125) ||		# no PMPB found
+              (sr ==  65 && ex ==  11))			# no PMCB found
           logger.error("Node used was #{@connection.node}(#{@connection.host}:#{@connection.port})")
           dump_debug
         end
