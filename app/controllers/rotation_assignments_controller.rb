@@ -83,7 +83,7 @@ class RotationAssignmentsController < ApplicationController
     logger.debug "next_type.name = #{next_type.name}"
     auto_skip = RotationType.auto_skip
     
-    unless next_type.no_op?
+    unless (next_type.no_op? || next_type.auto_skip?)
       next_group = next_type.rotation_group
       
       # See if we can find an auto-skip for this assign_to and the
