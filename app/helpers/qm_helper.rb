@@ -30,11 +30,12 @@ module QmHelper
   
   def show_qm_table_body
     @row_index = -1
+    @first_row_with_form = nil
     @assignments.map do |row|
       @row_index += 1
       @row = row
       render(:partial => 'show_row')
-    end.join("\n")
+    end[@first_row_with_form .. -1].join("\n")
   end
 
   def show_qm_row
@@ -49,6 +50,7 @@ module QmHelper
   def show_qm_cell
     unless blank_cell?
       if form_needed?
+        @first_row_with_form = [@row_index - 2, 0].max unless @first_row_with_form
         @members[@col_index] = nil # only one form per member
         render(:partial => 'cell_form')
       else
