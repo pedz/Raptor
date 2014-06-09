@@ -88,4 +88,10 @@ module QmHelper
     # auto-skips need a form
     @assignment.rotation_type.auto_skip?
   end
+
+  def rotation_selection_list(f)
+    list = @assignment.rotation_types.all( :order => :name)
+    list << RotationType.auto_skip unless @assignment.new_record?
+    f.collection_select(:rotation_type_id, list, :id, :name, { :prompt => true })
+  end
 end

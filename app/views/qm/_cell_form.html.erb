@@ -9,7 +9,7 @@
   <%= f.hidden_field :assigned_to %>
   <p>
 	<%= f.label :rotation_type %><br />
-	<%= f.collection_select(:rotation_type_id, @assignment.rotation_types.all( :order => :name), :id, :name, { :prompt => true }) %>
+	<%= rotation_selection_list(f) %>
   </p>
   <p>
 	<%= f.label :pmr %><br />
