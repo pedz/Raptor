@@ -54,6 +54,7 @@ module Settings
       
       respond_to do |format|
         if @rotation_group_member.save
+          create_no_ops
           format.html { redirect_to(settings_rotation_group_rotation_group_member_path(@rotation_group, @rotation_group_member),
                                     :notice => 'RotationGroupMember was successfully created.') }
           format.xml  { render :xml => @rotation_group_member, :status => :created, :location => @rotation_group_member }
@@ -97,6 +98,16 @@ module Settings
 
     def get_rotation_group
       @rotation_group = RotationGroup.find(params[:rotation_group_id])
+    end
+
+    # This does nothing right now.  Eventually it needs to back fill
+    # no-op assignments with the proper dates...
+    def create_no_ops
+      depth = QmController::QM_LAST_ROW_INDEX
+      members = @rotation_group.active_group_members(:include => :user)
+      list = @rotation_group.rotation_assignments.all(:order => 'created_at DESC')
+      return if list.size == 0
+      last_assigned_to = list[0].assigned_to
     end
   end
 end
