@@ -29,13 +29,17 @@ module QmHelper
   end
   
   def show_qm_table_body
+    logger.debug "show_qm_table_body STARTED"
     @row_index = -1
     @first_row_with_form = nil
-    @assignments.map do |row|
+    k = @assignments.map do |row|
       @row_index += 1
       @row = row
       render(:partial => 'show_row')
-    end[@first_row_with_form .. -1].join("\n")
+    end
+    logger.debug "k.size = #{k.size} @first_row_with_form = #{@first_row_with_form}"
+    @first_row_with_form = -3 unless @first_row_with_form
+    j = k[@first_row_with_form .. -1].join("\n")
   end
 
   def show_qm_row
@@ -50,8 +54,8 @@ module QmHelper
   def show_qm_cell
     unless blank_cell?
       if form_needed?
-        @first_row_with_form = [@row_index - 2, 0].max unless @first_row_with_form
-        @members[@col_index] = nil # only one form per member
+        logger.debug "@first_row_with_form = #{@first_row_with_form}"
+        @members[@col_index] = nil
         render(:partial => 'cell_form')
       else
         content_tag("div", :class => 'edit-assignment', :style => 'display:none;') do
@@ -83,10 +87,18 @@ module QmHelper
     return false if @assignment.nil?
 
     # New records need a form
-    return true if @assignment.new_record?
+    return true if @assignment.new_record? && @assignment.rotation_type.nil?
 
     # auto-skips need a form
-    @assignment.rotation_type.auto_skip?
+    if @assignment.rotation_type.auto_skip?
+      # only one auto-skip form per member
+      unless @first_row_with_form
+        @first_row_with_form = [@row_index - 2, 0].max 
+        logger.debug "Here!!! #{[@first_row_with_form .. -1]}"
+      end
+      return true
+    end
+    return false
   end
 
   def rotation_selection_list(f)
