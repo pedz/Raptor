@@ -152,7 +152,7 @@ module Combined
         # SR105EX093 is for records with a bad center
         ok_err = (err.sr == 105) && [83, 93, 94].include?(err.ex)
         raise err unless ok_err
-        cache_options = { }
+        cache_options = { name: "Unknown" }
       else
         cache_options = Cached::Registration.options_from_retain(retain_registration)
         cache_options.delete(:signon)
