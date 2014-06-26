@@ -217,15 +217,7 @@ module Combined
     ##
     # Returns the name of the person dispatched to the call.
     def dispatched_employee_name
-      dr = Cached::Registration.find(:first, :conditions => {
-                                       :signon => self.dispatched_employee,
-                                       :apptest => retain_user_connection_parameters.apptest
-                                     })
-      unless dr.nil?
-        dr.name
-      else
-        "Unknown"
-      end
+      Combined::Registration.find_or_initialize_by_signon(dispatched_employee).name
     end
 
     ##
