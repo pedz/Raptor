@@ -5,9 +5,10 @@ DAEMON_RETAIN_ID="305356"
 desc "Scan PMRs looking for ones that have been purged"
 task :scan_pmrs do
   Rake::Task["rake:environment"].invoke
-  pmrs = Cached::Pmr.find(:all, {
+  pmrs = Cached::Pmr.find(:all, 
 			  :conditions => { :deleted => false },
-			  :order => "updated_at ASC" })
+			  :order => "updated_at ASC",
+                          :limit => 1000)
   retuser = Retuser.find_by_retid(DAEMON_RETAIN_ID)
   @params = Retain::ConnectionParameters.new(retuser)
   Retain::Logon.instance.set(@params)
