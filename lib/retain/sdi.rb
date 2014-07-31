@@ -113,6 +113,7 @@ module Retain
     def sendit(req_fields, send_options = {})
       @snd_fields = @fields.merge(req_fields)
       options = @options.merge(send_options)
+      logger.info("RTN: sendit for #{self.class} called")
       if false
         Rails.logger.debug("class is #{self.class}")
         logger.debug("RTN: sendit for #{self.class} called")

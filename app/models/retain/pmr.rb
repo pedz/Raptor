@@ -47,7 +47,8 @@ module Retain
         pmr                     # return entire result
       rescue Retain::SdiReaderError => e
         if e.sr == 115 && e.ex == 125
-          raise Combined::PmrNotFound.new("%s,%s,%s" % [ pmr.problem, pmr.branch, pmr.country ])
+          # raise Combined::PmrNotFound.new("%s,%s,%s" % [ pmr.problem, pmr.branch, pmr.country ])
+          false
         else
           raise e
         end
