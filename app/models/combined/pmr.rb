@@ -76,8 +76,14 @@ module Combined
           :deleted => false
       }
       if (pmr = create_from_options(retain_user_connection_parameters, pmr_options))
+        # logger.debug "problem = #{entity.problem} pmr.class = #{pmr.class} 1"
         pmr = pmr.unwrap_to_cached
+      else
+        # logger.debug "problem = #{entity.problem} pmr.class = #{pmr.class} 2"
+        pmr_options[:creation_date] = 'O14/01/01' # arbitrary stupid date.
+        pmr = find_or_new(pmr_options).save!
       end
+      # logger.debug "problem = #{entity.problem} pmr.class = #{pmr.class} 3"
       pmr
     end
 
