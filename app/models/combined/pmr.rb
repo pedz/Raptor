@@ -7,7 +7,7 @@
 module Combined
   # === Combined PMR Model
   class Pmr < Combined::Base
-    set_db_keys :problem, :branch, :country, :creation_date
+    set_db_keys :problem, :branch, :country, :creation_date, :deleted
 
     set_db_constants :problem, :branch, :country, :customer
 
