@@ -206,8 +206,11 @@ module Combined
       if @cached.alteration_date
         fa_lines = @cached.alterable_format_lines.length
         text_lines = @cached.text_lines.length
-        pages = (fa_lines + text_lines + 15) / 16
-        options_hash[:beginning_page_number] = pages + 1
+        pages = ((fa_lines + text_lines + 15) / 16) + 1
+        if pages > 999
+          pages = 999
+        end
+        options_hash[:beginning_page_number] = pages
       end
       
       # Fields we need for the add text lines.
