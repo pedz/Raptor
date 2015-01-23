@@ -114,7 +114,7 @@
 <% end -%>
 <% end -%>
 
-<% all_lines = @pmr.alterable_format_lines + @pmr.text_lines -%>
+<% all_lines = @pmr.alterable_format_lines + @pmr.all_text_lines -%>
 
 <% content_for(:center) do %>
 <% cache(@call.cache_tag('center')) do %>
@@ -203,9 +203,8 @@
   <%= psar_button %>
   <%= registration_button %>
   <% display_update_button(binding) %>
-  <% exec_summary_button(binding) %>
   <% opc_button(binding, @call) %>
   <% display_update_form(binding, @call) %>
-  <% exec_summary_form(binding, @call) %>
+  <% opc_form(binding, @call) %>
 </div>
 <% end -%>

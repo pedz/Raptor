@@ -103,7 +103,7 @@
 <%= push_page_settings %>
 <% end -%>
 
-<% all_lines = @pmr.alterable_format_lines + @pmr.text_lines -%>
+<% all_lines = @pmr.alterable_format_lines + @pmr.all_text_lines -%>
 
 <% content_for(:center) do %>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> center -->

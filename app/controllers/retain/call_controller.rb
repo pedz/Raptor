@@ -73,7 +73,7 @@ module Retain
       
       # Convert the check box values to real true / false values.  I'm
       # worried I'm going to make a silly mistake if I don't.
-      [ :do_ct, :do_ca, :add_time, :update_pmr, :hot ].each { |sym|
+      [ :do_p8, :do_ct, :do_ca, :add_time, :update_pmr, :hot ].each { |sym|
         if call_update.has_key?(sym)
           call_update[sym] = call_update[sym] == "1"
        else
@@ -85,6 +85,7 @@ module Retain
       update_div = "call_update_div_#{@call.to_id}"
       reply_span = "call_update_reply_span_#{@call.to_id}"
       newtxt = format_lines(call_update[:newtxt])
+      newtxt.unshift("P8PMR") if call_update[:do_p8]
       
       if call_update[:update_pmr]
         case call_update[:update_type]
@@ -221,15 +222,10 @@ module Retain
             end
 
             # If queuing from a team queue to a personal queue
-
-            if (@queue.team_queue? && !new_queue.team_queue? && @call.p_s_b == 'P')
-              from_team_to_personal = true
-              if @pmr.country == '000'
-                # logger.debug("setting next queue")
-                requeue_options[:next_queue] = @queue.queue_name
-                requeue_options[:next_center] = @queue.center.center
-              end
-            end
+            from_team_to_personal = (@queue.team_queue? && !new_queue.team_queue?)
+            # if (@queue.team_queue? && !new_queue.team_queue? && @call.p_s_b == 'P')
+            #   from_team_to_personal = true
+            # end
           end
 
           requeue = safe_new(Retain::Pmcr, requeue_options, reply_span)
@@ -251,6 +247,8 @@ module Retain
           else
             text += create_reply_span("Requeue Completed")
             if from_team_to_personal
+              if @call.p_s_b == 'P'
+              end
               # logger.debug("setting owner / resolver")
               alter_options = pmr_options.dup
               owner = new_queue.owners[0]
@@ -600,116 +598,6 @@ module Retain
       end
       result = pmr_queues.reverse + center.queues.team_queues.map(&:to_param)
       render :json => result.to_json
-    end
-
-    def fi5312
-      @call = Combined::Call.from_param!(params[:id], signon_user)
-      @queue = @call.queue
-      call_options = @call.to_options
-      @pmr = @call.pmr
-      pmr_options = @pmr.to_options
-      call_fi5312 = params[:retain_call_fi5312].symbolize_keys
-      text = ""
-      do_fade = true
-
-      # ids for the div and reply span
-      fi5312_div = "call_fi5312_div_#{@call.to_id}"
-      reply_span = "call_fi5312_reply_span_#{@call.to_id}"
-
-      # Get the FI 5312 form template
-      fi5312_options = { }
-      fi5312_options[:center] = signon_user.default_center.center
-      fi5312_options[:format_panel_number] = '5312'
-      fi5312_options[:panel_operand] = "X"
-      formatted_panel = Retain::FormattedPanel.new(retain_user_connection_parameters, fi5312_options)
-      panel_lines = formatted_panel.format_panel
-      logger.debug("panel_lines.length = #{panel_lines.length}")
-      logger.debug("panel_lines[0].class = #{panel_lines[0].class}")
-      logger.debug("panel_lines.class = #{panel_lines.class}")
-
-      # Be prepared to vomit...  Smash the reply back into the form template.
-      # First do the three text lines
-      line_index = 0
-      [ :line_1, :line_2, :line_3 ]. each do |line_sym|
-        panel_line  = panel_lines[line_index]
-        i = 1
-        i += 1 while panel_line[i] != :normal_unprotected
-        i += 1
-        line = call_fi5312[line_sym]
-        j = 0
-        while j < line.length
-          panel_line[i + j] = line[j]
-          j += 1
-        end
-        line_index += 1
-      end
-
-      # Now for the DCT, DSS, et. al "radio" buttons
-      panel_line = panel_lines[4]
-      action = call_fi5312[:next_action_owner].to_s.downcase
-      i = 1
-      state = :scanning
-      while i < 72
-        c = panel_line[i]
-        logger.debug("c = #{c}")
-        case state
-        when :scanning
-          if c == :intensified_protected || c == :normal_protected
-            state = :gathering
-            field = ""
-          end
-        when :gathering
-          if c == :intensified_unprotected || c == :normal_unprotected
-            state = :comparing
-          elsif c != ' ' && c != ':'
-            field << c
-          end
-        when :comparing
-          field = field.downcase
-          logger.debug("comparing #{action} with #{field}")
-          if field == action
-            panel_line[i] = 'X'
-            break
-          end
-          state = :scanning
-        end
-        i += 1
-      end
-
-      # And last, we fill in the mm/dd/yyyy fields
-      panel_line = panel_lines[5]
-      i = 1
-      i += 1 while i < 72 && (c = panel_line[i]) && c != :intensified_unprotected && c != :normal_unprotected
-      panel_line[i += 1] = call_fi5312[:month]
-      i += 1 while i < 72 && (c = panel_line[i]) && c != :intensified_unprotected && c != :normal_unprotected
-      panel_line[i += 1] = call_fi5312[:day]
-      i += 1 while i < 72 && (c = panel_line[i]) && c != :intensified_unprotected && c != :normal_unprotected
-      panel_line[i += 1] = call_fi5312[:year]
-
-      # Now create the addtxt retain model and send it up.
-      addtxt_options = pmr_options.dup
-      addtxt_options[:center] = signon_user.default_center.center
-      addtxt_options[:format_panel_op_type] = 'FI'
-      addtxt_options[:format_panel_number] = '5312'
-      addtxt_options[:format_panels] = [ panel_lines ]
-      addtxt = safe_new(Retain::Pmat, addtxt_options, reply_span)
-      return if addtxt.nil?
-      safe_sendit(addtxt)
-      if addtxt.rc != 0
-        do_fade &= (addtxt.error_class != :error)
-        text += create_error_reply(addtxt, "Addtxt")
-      end
-      text += create_reply_span("Form Insert Completed")
-      @pmr.mark_all_as_dirty
-
-      # Respond back to the user.
-      render_message(reply_span, text) do |page|
-        if do_fade
-          page.visual_effect(:fade, reply_span, :duration => 5.0)
-          page[fi5312_div].redraw
-          page[fi5312_div].close
-        end
-      end
     end
 
     def opc

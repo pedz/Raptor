@@ -126,16 +126,6 @@ document.observe('dom:loaded', function() {
 		Raptor.fixUpdateContainer(ele);
 	});
 
-	$$('.call-fi5312-container').each(function (ele) {
-	    var div = ele.down('.call-fi5312-div');
-	    ele.toggleForm = Raptor.callToggleForm.bind(ele);
-	    div.redraw = function() {
-		$(ele).down('form').reset();
-	    };
-	    div.close = Raptor.closeDiv.bind(div);
-	    ele.hide();
-	});
-
 	$$('.opc-container').each(function (ele) {
 	    Raptor.opc_init(ele, Raptor.callToggleForm);
 	});

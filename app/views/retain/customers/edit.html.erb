@@ -6,10 +6,6 @@
 <%= error_messages_for :customer %>
 <% form_for(@customer) do |f| %>
 <p>
-  <b>PAT flag</b><br/>
-  <%= f.check_box :pat %>
-</p>
-<p>
   <%= f.submit "Update" %>
 </p>
 <% end %>

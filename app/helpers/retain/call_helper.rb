@@ -102,22 +102,6 @@ module Retain
       end
     end
 
-    def exec_summary_button(binding)
-      span binding, :class => 'call-fi5312-span' do |binding|
-        concat(button("Exec Summary", "$(\"call-fi5312-div\").toggleForm();"))
-      end
-    end
-
-    def exec_summary_form(binding, call)
-      div(binding,
-           :id => 'call-fi5312-div',
-           :class => 'call-fi5312-container') do |binding|
-        call_fi5312 = CallFi5312.new(call)
-        concat(render(:partial => "shared/retain/exec_summary_form",
-                      :locals => { :call_fi5312 => call_fi5312 }))
-      end
-    end
-
     def opc_button(binding, call)
       opc_text = call.pmr.valid_opc ? "Update OPC" : "Create OPC"
       span binding, :class => 'opc-span' do |binding|
