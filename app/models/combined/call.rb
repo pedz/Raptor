@@ -460,138 +460,119 @@ module Combined
     # before: the css_value, the title, and the editable flag.  These
     # are now saved in the database record as Cached::Call#owner_css
     # and others.
+    #
+    # For primary PMRs, if we have the owner of the queue where the
+    # primary resides, then we want that person to be the owner of the
+    # PMR.  This is for WT and US.
     def compute_owner_private
-      queue = @cached.queue
-
       # Lets deal with backups and secondarys.  As far as I know, they
       # are not editable for any reason.
       p_s_b = @cached.p_s_b
       if p_s_b == 'S' || p_s_b == 'B'
-        return ["normal", "Owner for secondary/backup not editable or judged", false ]
+        return ["normal", "Owner for secondary and backup calls always accepted", true ]
       end
 
+      queue = @cached.queue
+      calls_center_id = queue.center_id
       pmr = @cached.pmr
-      # World Trade, owner is always o.k.
-      # TODO Actually, this isn't true.  It resolver or next queue get
-      # clobbered they are not o.k.  We might could add code to detect that.
-      if pmr.country != "000"
-        return ["normal", "Owner for WT not editable or judged", false ]
-      end
-
       pmr_owner = pmr.owner
       # A blank owner is a bad dog.
       if pmr_owner.nil? || pmr_owner.signon.blank?
         return [ "wag-wag", "Owner should not be blank", true ]
       end
 
-      # If Queue Owner is the same as PMR Owner, we're good.
-      if (infos = queue.queue_infos).empty?
-        return [ "warn", "Queue has no owner", true ]
-      else
-        queue_owner = infos[0].owner
-        if pmr_owner.id == queue_owner.id
-          return [ "good", "PMR Owner is Queue Owner", true ]
-        end
-      end
-
-      owner_center = queue_owner.center(queue.h_or_s)
-      if owner_center && owner_center.center == queue.center.center
-        return [ "warn", "PMR Owner in same center but not queue owner", true ]
+      # From the pmr_owner, get their software and hardware center and
+      # see if one of those matches the center the primary call is
+      # on.
+      if calls_center_id == pmr_owner.software_center_id ||
+          calls_center_id == pmr_owner.hardware_center_id
+        return [ "good", "PMR Owner's center is matches primary call's center", true ]
       end
 
       return [ "wag-wag", "PMR Owner not in same center", true ]
     end
 
     ##
-    # Similar to compute_owner_private except for the resolver
-    # fields.
+    # Similar to compute_owner_private except for the resolver fields.
+    # In this case, we look at the all of the centers for the primary
+    # and secondary calls.  The resolver's software or hardware center
+    # should be one of those centers.
     def compute_resolver_private
-      queue = @cached.queue
-
-      # Lets deal with backups and secondarys.  As far as I know, they
-      # are not editable for any reason.
-      p_s_b = @cached.p_s_b
-      if p_s_b == 'S' || p_s_b == 'B'
-        return ["normal", "Resolver for secondary/backup not editable or judged", false ]
-      end
-
       pmr = @cached.pmr
       pmr_resolver = pmr.resolver
+
       # A blank resolver is a bad dog.
       if pmr_resolver.nil? || pmr_resolver.signon.blank?
         return [ "wag-wag", "Resolver should not be blank", true ]
       end
 
-      # If Queue Resolver is the same as PMR Resolver, we're good.
-      if (infos = queue.queue_infos).empty?
-        # If Queue has no owner, not much else we can do.
-        return [ "warn", "Queue has no owner", true ]
-      else
-        queue_owner = infos[0].owner
-        if pmr_resolver.id == queue_owner.id
-          return [ "good", "PMR Resolver is Queue Owner", true ]
-        end
+      queue = @cached.queue
+      centers = [ queue.center_id,
+                  pmr.sec_1_center,
+                  pmr.sec_2_center,
+                  pmr.sec_3_center ].uniq
+
+      if centers.include?(pmr_resolver.software_center_id) ||
+          centers.include?(pmr_resolver.hardware_center_id)
+        return ["good", "At least one call in same center as resolver", true]
       end
 
-      resolver_center = pmr_resolver.center(queue.h_or_s)
-      if resolver_center && resolver_center.center == queue.center.center
-        return [ "warn", "PMR Resolver in same center but not queue owner", true ]
-      end
-
-      return [ "wag-wag", "PMR Resolver not in same center", true ]
+      return [ "wag-wag", "No call in same center as resolver", true ]
     end
 
     ##
     # Similar to compute_owner_private except for the next queue
     # fields.
     def compute_next_queue_private
-      queue = @cached.queue
+      return ["normal", "No way to determine if Next Queue is set properly", true ]
 
-      # Lets deal with backups and secondarys.  As far as I know, they
-      # are not editable for any reason.
-      p_s_b = @cached.p_s_b
-      if p_s_b == 'S' || p_s_b == 'B'
-        return ["normal", "Next Queue for secondary/backup not editable or judged", false ]
-      end
+      # queue = @cached.queue
+
+      # # Lets deal with backups and secondarys.  As far as I know, they
+      # # are not editable for any reason.
+      # p_s_b = @cached.p_s_b
+      # if p_s_b == 'S' || p_s_b == 'B'
+      #   return ["normal", "Next Queue for secondary/backup not editable or judged", true ]
+      # end
       
-      pmr = @cached.pmr
-      # World Trade, next queue is always o.k.
-      # TODO Actually, this isn't true.  It resolver or next queue get
-      # clobbered they are not o.k.  We might could add code to detect that.
-      if pmr.country != "000"
-        return ["normal", "Next Queue for WT not editable or judged", false ]
-      end
+      # pmr = @cached.pmr
+      # # World Trade, next queue is always o.k.
+      # # TODO Actually, this isn't true.  It resolver or next queue get
+      # # clobbered they are not o.k.  We might could add code to detect that.
+      # if pmr.country != "000"
+      #   return ["normal", "Next Queue for WT not editable or judged", true ]
+      # end
 
-      if pmr.next_center.nil?
-        return [ "wag-wag", "Next Queue center is invalid", true ]
-      end
+      # if pmr.next_center.nil?
+      #   return [ "wag-wag", "Next Queue center is invalid", true ]
+      # end
 
-      next_queue = pmr.next_queue
-      if next_queue.nil?
-        return [ "wag-wag", "Next Queue queue name is invalid", true ]
-      end
+      # next_queue = pmr.next_queue
+      # if next_queue.nil?
+      #   return [ "wag-wag", "Next Queue queue name is invalid", true ]
+      # end
 
-      # We are going to assume that if we have no queue info records
-      # on this queue, then it is a team queue.
-      if (infos = queue.queue_infos).empty?
-        return [ "good", "Team queues are not editable or judged", false ]
-      end
+      # # We are going to assume that if we have no queue info records
+      # # on this queue, then it is a team queue.
+      # if (infos = queue.queue_infos).empty?
+      #   return [ "good", "Team queues are not editable or judged", true ]
+      # end
 
-      # Personal queue set to next queue... bad dog.
-      if next_queue.id == queue.id
-        return [ "wag-wag", "Next queue set to personal queue", true ]
-      end
+      # # Personal queue set to next queue... bad dog.
+      # if next_queue.id == queue.id
+      #   return [ "wag-wag", "Next queue set to personal queue", true ]
+      # end
 
-      # Queues outside of center can't be good -- can they?
-      if pmr.next_center.center != queue.center.center
-        return [ "warn", "Next queue outside of center is probably wrong", true ]
-      end
+      # # Queues outside of center can't be good -- can they?
+      # if pmr.next_center.center != queue.center.center
+      #   return [ "warn", "Next queue outside of center is probably wrong", true ]
+      # end
       
-      unless next_queue.queue_infos.empty?
-        return [ "warn", "Next queue is a personal queue", true ]
-      end
+      # unless next_queue.queue_infos.empty?
+      #   return [ "warn", "Next queue is a personal queue", true ]
+      # end
 
-      return [ "good", "I can not find anything to complain about", true ]
+      # return [ "good", "I can not find anything to complain about", true ]
     end
     
     ##

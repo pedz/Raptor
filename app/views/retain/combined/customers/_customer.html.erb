@@ -5,10 +5,6 @@
 <%-
    span_title = "Customer number: #{customer.customer_number}"
    classes = 'field field-center'
-   if customer.pat
-   classes = classes + ' pat'
-   span_title = span_title + ' PAT'
-   end
 -%>
 <span id='customer-name' class='<%= classes %>' title='<%= span_title %>'>
   <%= h name %>
