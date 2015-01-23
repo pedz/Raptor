@@ -165,12 +165,6 @@ ActionController::Routing::Routes.draw do |map|
                          :action => 'update',
                          :method => :post)
   
-  # Call FI 5312 map.
-  map.retain_call_fi5312('retain/call/:id/fi5312',
-                         :controller => 'retain/call',
-                         :action => 'fi5312',
-                         :method => :post)
-  
   # Call OPC map.
   map.retain_call_opc('retain/call/:id/opc',
                       :controller => 'retain/call',

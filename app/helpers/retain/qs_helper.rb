@@ -584,18 +584,6 @@ module Retain
       end
     end
     
-    def exec_summary_field(binding, header, call)
-      if header
-        th binding, :class => 'exec_summary' do |binding|
-          concat("Exec Summary")
-        end
-      else
-        td binding, :class => 'exec_summary' do |binding|
-          concat(button("Exec Summary", "$(\"call_exec_summary_td_#{call.ppg}\").toggleForm();"))
-        end
-      end
-    end
-    
     # Not used currently.  Added during experimentation of the new QS
     # page layout.
     def opc_field(binding, header, call)
@@ -618,13 +606,8 @@ module Retain
         end
       else
         pmr = call.pmr
-        if pmr.customer && pmr.customer.pat
-          classes = "customer pat"
-          pretitle = "PAT customer: "
-        else
-          classes = "customer"
-          pretitle = ""
-        end
+        classes = "customer"
+        pretitle = ""
         if pmr.problem_e_mail.nil? || (mail = pmr.problem_e_mail.strip).blank?
           title = pretitle + "No email given"
           td binding, :title => title, :class => classes do |binding|

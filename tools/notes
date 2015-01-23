@@ -1,0 +1,21 @@
+FI 5386 -- used by US.  has pass back queue and english = y field.
+also has phone and email address and preferred method of contact.
+
+FA 1654 -- used by EMEA and AP.  has Eng = Y,  Preferred contact
+method,  FE passback queue
+
+FA 1659 -- used by Japan.  Has Eng = y, preferred contact method, Cust
+Email, and PBQ.
+
+FA 1514 -- used by Canada.  has passback queue, Eng = y,  email
+preferred?,  phone # and email address, 
+
+FA 1524 -- used by LA.  has Eng = y, cust phone number, cust email,
+preferred email? (y/n), passback queue
+
+         Has Eng = Y? | has BPQ? | has phone | has email | has preferred method |
+FI 5386        y      |     y    |    y      |     y     |         y            |
+FA 1654        y      |     y    |    n      |     n     |         y            |
+FA 1659        y      |     y    |    y      |     y     |         y            |
+FA 1514        y      |     y    |    y      |     y     |         y            |
+FA 1524        y      |     y    |    y      |     y     |         y            |

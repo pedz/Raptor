@@ -174,14 +174,6 @@ span.ecpaat-heading-missing {
     z-index: -1;
 }
 
-.pat {
-    background-color: white;	/* pat background */
-}
-
-.pmr-link {
-    text-decoration: none;
-}
-
 .edit-name:hover {
     cursor: pointer;
 }
