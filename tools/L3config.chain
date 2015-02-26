@@ -197,6 +197,7 @@ Murillo   Simon     Barenys    WZ8S   417018    417018     Mazzurana,Paul D.    
 Murillo   Simon     Barenys    WZ8S   687200    687200     Nichols,Frank             L3FLN  165 PERSONAL NFS             L3_DEVELOPER  nichols3@us.ibm.com          DEV
 Murillo   Simon     Thomas     BN2S   463406    463406     Wigginton,Ann             ANN    165 PERSONAL INSTALL         L3_DEVELOPER  awiggint@us.ibm.com          DEV
 Ling      McConathy Mahajan    XILA   043230    6A2198     Ramagiri,Vani             WWVIRT 165 INCOMING VIRT            L2_SCREEN_AUS vani@us.ibm.com              ZTRANS
+Ling      McConathy Clark      5IEA   308737    C-HGUP     Kirkley,Brent             BKIRK  165 PERSONAL NET             L2_TECH       bkirk@us.ibm.com             ZTRANS
 Ling      McConathy Clark      5IEA   305356    C-5UEV     Smith,Perry               PEDZ   165 PERSONAL NET             L2_TECH       pedzan@us.ibm.com            ZTRANS
 Ling      McConathy Mahajan    XILA   001243    003202     Honore,Aaron              WWWAAH 248 PERSONAL VIRT            L2_TECH       aaron.honore@fr.ibm.com      SATEUR
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  056050    05605I     Saraswat,Ashutosh         ASHSAR 165 PERSONAL CMDS            L3_DEVELOPER  ashsaras@in.ibm.com          DEV
@@ -571,7 +572,6 @@ Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  031062    03106K     Saikrishnateja,Jayava
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  060258    06025H     Mohammed1,Azhar                               HACMP           L3_DEVELOPER  hussain.azhar@in.ibm.com     DEV
 Gupta     Makis     Young      OEIA   717316    7A7316     Escalera,Jose                                 Performance     L3_DEVELOPER  escalera@us.ibm.com          DEV
 Ling      McConathy Sutcliffe  39KA   371989    3G1989     Sheehy,Jacob                                  CLST_FS         L2_SCREEN_POK jjsheehy@us.ibm.com          POK
-Ling      McConathy Clark      5IEA   308737    C-HGUP     Kirkley,Brent                                 NET             L2_TECH       bkirk@us.ibm.com             ZTRANS
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  016154    016154     Jasti,Purnachandra                            STORAGE DD      L3_DEVELOPER  chandu.jasti@in.ibm.com      DEV
 Paranjape Contreras Tan        HMYS   596413    596413     Feuerbacher,Frank                             SysMgt Framewrk L3_DEVELOPER  fbacher@us.ibm.com           DEV
 Ling      McConathy Mahajan    XILA   709846    709646     DSO,Intern1                                   INST                                                       ZTRANS
