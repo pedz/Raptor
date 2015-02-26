@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 THIRD     SECOND    FIRST      DEPT  RETAIN_ID IND_SERIAL NAME                      Q      LOC QTYPE    TEAM            APAR_LEVEL    INTRANET_ID                  ORG
 --------- --------- ---------- ----- --------- ---------- ------------------------- ------ --- -------- --------------- ------------- ---------------------------- ------
 Ling      McConathy Brock      I4SA  305547    C-55DG     Choudhary,Bimalendu       BIMALC 165 PERSONAL LIB             L2_TECH       bimalen@us.ibm.com           ZTRANS
@@ -562,6 +561,9 @@ Ling      McConathy Sutcliffe  39KA  495969    495969     Guo,Jean              
 Ling      McConathy Sutcliffe  39KA  004626    0A4626     Apuzzo,Joe                                    CLST_FS         L2_TECH       apuzzoj@us.ibm.com           POK
 Murillo   Simon     Thomas     BN2S  123493    1A3493     Brandyberry,Matthew                           SYSPROC         L3_DEVELOPER  mbrandy@us.ibm.com           DEV
 =======
+=======
+	02/23/2015 07:01 AM
+>>>>>>> 5841aa5... new L3config.chain
 THIRD     SECOND    FIRST      DEPT   RETAIN_ID IND_SERIAL NAME                      Q      LOC QTYPE    TEAM            APAR_LEVEL    INTRANET_ID                  ORG
 --------- --------- ---------- ------ --------- ---------- ------------------------- ------ --- -------- --------------- ------------- ---------------------------- ------
 Ling      McConathy Browder    D1ZA   305534    C-EE34     Rajamani,Pavithra         PAVI   165 PERSONAL FSLV            L2_TECH       pavraj@us.ibm.com            ZTRANS
@@ -586,7 +588,7 @@ Ling      McConathy Brock      I4SA   913568    913568     Shang,Li             
 Ling      McConathy Sutcliffe  39KA   614151    614151     Swart,T.R.                CLSTHA 13A INCOMING CLST_HA         L2_SCREEN_POK trswart@us.ibm.com           POK
 Ling      McConathy Brock      I4SA   362492    362492     McLeod,Alex               APHA2  95A INCOMING HA              L2_SCREEN_AUS amcleod@us.ibm.com           ZTRANS
 Ling      McConathy Browder    D1ZA   307737    C-GY3Y     Molis,Steven              MOLISS 165 PERSONAL FSLV            L2_TECH       moliss@us.ibm.com            ZTRANS
-Ling      McConathy Clark      5IEA   208342    2A8342     Garcia,Antonio            WWPURE 165 INCOMING Z3P             L2_TECH       garcia1@us.ibm.com           ZTRANS
+Murillo   Simon     Beck       UD3A   709241    709241     Conklin,Chris             CHRIS  165 PERSONAL SECURITY        L3_DEVELOPER  cconklin@us.ibm.com          DEV
 Ling      McConathy Clark      5IEA   918054    918054     Shantala,G                GSHANS 165 PERSONAL NET             L2_TECH       gshantal@in.ibm.com          ZTRANS
 Ling      McConathy Brock      I4SA   050190    050190     Kim,MuHyun                MH     95A PERSONAL NET             L2_TECH       kimmh@kr.ibm.com             SATCHN
 Ling      McConathy Clark      5IEA   305338    C-5338     Tenjarla,Rama             RAMA   165 PERSONAL ZISV            L2_TECH       rtenjarl@us.ibm.com          ZTRANS
@@ -620,7 +622,7 @@ Ling      McConathy Clark      5IEA   308187    C-HAHY     Hingad,Rajat         
 Ling      McConathy Browder    D1ZA   305331    0G4920     Makineedi,Sreeni          SREENI 165 PERSONAL KERN            L2_SCREEN_AUS sreeni@us.ibm.com            ZTRANS
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  017728    017728     Kumar,Keerthi B           KKUMAR 165 PERSONAL SYSPROC         L3_DEVELOPER  keerthikumarb@in.ibm.com     DEV
 Ling      McConathy Browder    D1ZA   305171    0G8168     Batra,Gaurav              GBATRA 165 PERSONAL KERN            L2_TECH       gbatra@us.ibm.com            ZTRANS
-Ling      McConathy Brock      I4SA   500798    NGP826     Cucu,Lavinia              WWWCLA 248 PERSONAL LIB             L2_TECH                                    SATEUR
+Ling      McConathy Mahajan    XILA   C-HBWM    308254     Chandra,Raga              RAGAC  165 PERSONAL STOR            L2_TECH       ragac@us.ibm.com             ZTRANS
 Ling      McConathy Brock      I4SA   307334    C-GCC4     Weaver,Tom                TVWVER 165 PERSONAL HA              L2_TECH       tvwver@us.ibm.com            ZTRANS
 Murillo   WXBA Mgr2 CJHS Mgr1  CJHS   710262    469781     OBrien,Janice             JANICE 165 PERSONAL SECURITY        L3_DEVELOPER  brienjo@us.ibm.com           DEV
 Ling      McConathy Brock      I4SA   917439    917438     Chen,Tao                  TYLER  95A PERSONAL PERF            L2_TECH       chenttao@cn.ibm.com          SATCHN
@@ -700,7 +702,7 @@ Murillo   Jones     Paul       D58S   550169    550169     Messing,J.P.         
 Murillo                        E99S   550475    550475     Jones,Corradino           CJONES 165 PERSONAL Dev Mgr         MANAGER       cdjones@us.ibm.com           DEV
 Ling      McConathy Browder    D1ZA   042605    04260N     Thummala,Jagannath        JAGNET 165 PERSONAL FSLV            L2_TECH       jathumma@in.ibm.com          ZTRANS
 Ling      McConathy Mahajan    XILA   301848    9A7790     Lang,Steven               AIXIOD 165 INCOMING STOR            L2_SCREEN_AUS stevenla@us.ibm.com          ZTRANS
-Ling      McConathy Clark      5IEA   301623    C-AFT3     Kim,Minchong              MIN    165 PERSONAL NET             L2_TECH       minkim@us.ibm.com            ZTRANS
+Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  016656    01665X     Prabhakar,Akshatha        AKSHAP 165 PERSONAL PTX             L3_DEVELOPER  aksprabh@in.ibm.com          DEV
 Murillo   Simon     Wadehra    E18S   611627    611627     Cronk,Matthew             XCOFF  165 PERSONAL BRINGUP         L3_DEVELOPER  mcronk@us.ibm.com            DEV
 Murillo   Simon     Wadehra    E18S   611627    611627     Cronk,Matthew             MACRO  165 PERSONAL BRINGUP         L3_DEVELOPER  mcronk@us.ibm.com            DEV
 Ling      McConathy Brock      I4SA   082708    082706     Weber,Ingo                INGO   248 PERSONAL HA              L2_TECH       iweber@de.ibm.com            SATEUR
@@ -780,6 +782,7 @@ Ling      McConathy Clark      5IEA   301622    C-AFT2     Talmage,Steve        
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  029534    02953M     Ventakachalam1,Ponraj     PONRAJ 165 PERSONAL TCP/IP          L3_DEVELOPER  ponrvenk@in.ibm.com          DEV
 Ling      McConathy Browder    D1ZA   303765    C-3P6E     Unruh,Steven              SUNRUH 165 PERSONAL FSLV            L2_TECH       sunruh@us.ibm.com            ZTRANS
 Ling      McConathy Brock      I4SA   302776    C-2P7F     Guenter-Smith,Nancy       FAKEQ1 165 PERSONAL ZOPS            L2_TECH                                    ZTRANS
+Ling      McConathy Clark      5IEA   307127    C-GSTP     Magudapathi,Banumathi     BMAGU  165 PERSONAL NET             L2_TECH       bmagu@us.ibm.com             ZTRANS
 Ling      McConathy Brock      I4SA   049654    C+66YW     Thurston,Signe            FAKEQ2 165 PERSONAL ZOPS                          sest@us.ibm.com              ZTRANS
 Ling      McConathy Brock      I4SA   303345    954319     Sutton,Rick               SUTTON 165 PERSONAL PERF            L2_TECH       rbsutton@us.ibm.com          ZTRANS
 Ling      McConathy Mahajan    XILA   040670    4A2757     Puig,Rick                 PUIG   165 PERSONAL INST            L2_SCREEN_AUS puigr@us.ibm.com             ZTRANS
@@ -841,6 +844,7 @@ Manasso             Hayes      5U5A   302042    C-20MK     Roy,Suparna          
 Murillo   WXBA Mgr2 CJHS Mgr1  CJHS   911624    9A1624     Zoss,Evan                 EVAN   165 PERSONAL LVM             L3_DEVELOPER  evanzoss@us.ibm.com          DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  095370    095370     Singh,Santosh             SSINGH 165 PERSONAL PTX             L3_DEVELOPER  santsin8@in.ibm.com          DEV
 Ling      McConathy Brock      I4SA   008173    00817U     Mallepudi,Vijay           VIJAY  165 PERSONAL LIB             L2_TECH       vmallepu@in.ibm.com          ZTRANS
+Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  032641    03264S     Manuwacharya,Shivaprasad  SHIVRM 165 PERSONAL PTX             L3_DEVELOPER  smanuwac@in.ibm.com          DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  031038    03103P     MS,Rumaisa                RSHEIK 165 PERSONAL PTX             L3_DEVELOPER  rumaisam@in.ibm.com          DEV
 Ling      McConathy Sutcliffe  39KA   582676    582676     Simon,Robert              ZAIX   13A INCOMING CLST_FS         L2_SCREEN_POK rsimon@us.ibm.com            POK
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  011846    011846     Prashant,Arpana           ARPANA 165 PERSONAL CMDS            L3_DEVELOPER  arprasha@in.ibm.com          DEV
@@ -929,8 +933,10 @@ Ling      McConathy Brock      I4SA   172584    1G2584     Piotrowski,Leonard   
 Ling      McConathy Brock      I4SA   170921    1G0921     Bean,Greg                 FAKEQ6 165 PERSONAL ZETC            L2_TECH       gbean@us.ibm.com             ZTRANS
 Ling      McConathy Brock      I4SA   303524    2G4092     Silva,Isac                ISACD  165 PERSONAL HA              L2_TECH       isacrsilva@us.ibm.com        ZTRANS
 Ling      McConathy Brock      I4SA   234034    P34034     Krol,Wojciech             WWWWKR 248 PERSONAL HA              L2_TECH       wojciech.krol@pl.ibm.com     SATEUR
+Murillo   Simon     Wadehra    E18S   179824    1G9824     Stilwell,Nicholas                             BRINGUP         L3_DEVELOPER  nstilwe@us.ibm.com           DEV
 Ling      McConathy Sutcliffe  39KA   912292    9A2292     Nadel,Jennifer                                CLST_FS         L2_TECH       jenlee@us.ibm.com            POK
 Murillo   Simon     Love       LNJA   850349    850349     Bae,Myung                                     RSCT            L3_DEVELOPER  myungbae@us.ibm.com          DEV
+Murillo   Townsend  Mulvey     UDYA   906668    906668     De Leon III,Baltazar                          NETWORK DD                    balt@us.ibm.com              DEV
 Murillo   Simon     Thomas     BN2S   788019    788019     Finley,Paul                                   INSTALL         L3_DEVELOPER  pfinley@us.ibm.com           DEV
 Murillo   Simon     Thomas     BN2S   917367    917367     Yang,Fan                                      NLS             L3_DEVELOPER  yangffan@cn.ibm.com          DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  006044    00604K     Manjunath,Pavan                               VIO             L3_DEVELOPER  pavmanju@in.ibm.com          DEV
@@ -939,19 +945,18 @@ Ling      McConathy Sutcliffe  39KA   415344    445777     Scala,Antonio        
 Murillo   WXBA Mgr2 CJHS Mgr1  CJHS   319572    C-9WG289   OBryan,Joe                                    LVM             L3_DEVELOPER  josbryan@us.ibm.com          DEV
 Unknown   Unknown   Unknown    L3POK  595628    595628     Cham,Linda                                    PokDev          L3_SCREEN_POK lcham@us.ibm.com             DEV
 Ling      McConathy Weber      WQPA   300135    299985     Tiwary,Ashu                                   ZETC            L2_TECH       ashu@us.ibm.com              ZTRANS
-Murillo   Townsend  Mulvey     UDYA   906668    906668     De Leon III,Baltazar                          NETWORK DD                    balt@us.ibm.com              DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  919674    919674     Noronha,Nithin                                PRINTERS        L3_DEVELOPER  nnithin@in.ibm.com           DEV
+Murillo   Jones     Paul       D58S   301623    3G0184     Kim,Minchong                                  TCP/IP          L3_DEVELOPER  minkim@us.ibm.com            DEV
 Paranjape Contreras Tan        HMYS   924777    924777     Martinez,Rene                                 SysMgt Framewrk L3_DEVELOPER  rrmartin@us.ibm.com          DEV
 Murillo   Jones     Epsztein   6T4A   940229    940229     Stence,Donald                                 RAS             L3_DEVELOPER  dstence@us.ibm.com           DEV
-Ling      McConathy Clark      5IEA   307127    C-GSTP     Magudapathi,Banumathi                         NET             L2_TECH       bmagu@us.ibm.com             ZTRANS
 Murillo   Simon     Love       LNJA   627014    627014     Coffey,Michael                                HACMP           L3_DEVELOPER  mkcoffey@us.ibm.com          DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  786277    786277     Sadashivamurthy,Rakesh                        TCP/IP          L3_DEVELOPER  rakesh.murthy@in.ibm.com     DEV
-Murillo   Simon     Thomas     BN2S   000126    033985     Gomaa,Ashraf                                  NLS             L3_DEVELOPER  ashrafg@eg.ibm.com           DEV
+Gupta     Makis     Young      OEIA   341693    3D1693     Herrera,Andres                                Performance     L3_DEVELOPER  andreshe@us.ibm.com          DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  066275    06627E     Gururaj,Prabjanjan                            RSCT            L3_DEVELOPER  prgururaj@in.ibm.com         DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  481465    481465     Bhat,Kavana                                   Kernel          L3_DEVELOPER  Kavana.bhat@in.ibm.com       DEV
+Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  099457    099457     NAYAK,DEB                                     VIO             L3_DEVELOPER  deb_nayak@in.ibm.com         DEV
 Unknown   Unknown   Unknown    FRANCE 011975    011975R    Fintzel,Eric                                  INSTALL         L3_DEVELOPER  eric.fintzel@fr.ibm.com      DEV
 Murillo   Simon     Thomas     BN2S   614606    6A4606     Villarreal,Marcos                             SYSPROC         L3_DEVELOPER  marcosv@us.ibm.com           DEV
-Gupta     Makis     Young      OEIA   341693    3D1693     Herrera,Andres                                Performance     L3_DEVELOPER  andreshe@us.ibm.com          DEV
 Murillo   Townsend  D59S Mgr 1 D59S   934672    934672     Dutta,Hemanta                                 STORAGE DD      L3_DEVELOPER  hemanta@us.ibm.com           DEV
 Murillo   Simon     Wadehra    E18S   707269    7A7269     Hepkin,David                                  VMM             L3_DEVELOPER  dhepkin@us.ibm.com           DEV
 Unknown   Unknown   Unknown    E54S   079444    079444     Ramirez,Anthony                               Performance     L3_DEVELOPER  F079444@FRVM.vnet.ibm.com    DEV
@@ -961,7 +966,6 @@ Ling      McConathy            E59S   420434    420434     Weber,Lynne          
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  917929    917929     Anbalagan,Arun                                Install/update  L3_DEVELOPER  arunprasath@in.ibm.com       DEV
 Ling      McConathy Sutcliffe  39KA   922378    922378     Li,Ping                                       CLST_HA         L2_TECH       pingli1@us.ibm.com           POK
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  005967    00596P     Shankarappa,Vijay Kumar                       VIO             L3_DEVELOPER  vkumar35@in.ibm.com          DEV
-Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  099457    099457     NAYAK,DEB                                     VIO             L3_DEVELOPER  deb_nayak@in.ibm.com         DEV
 Murillo   Jones     Paul       D58S   625342    625342     Marquardt,Dave                                TCP/IP          L3_DEVELOPER  davemarq@us.ibm.com          DEV
 Murillo   Jones     Patel      BWUS   395447    395447     White,J                                       BUILD           L3_DEVELOPER  janiew@us.ibm.com            DEV
 Murillo   Simon     Love       LNJA   995049    995049     Lowther,Gary                                  HACMP           L3_DEVELOPER  glowther@us.ibm.com          DEV
@@ -983,7 +987,7 @@ Ling      McConathy Sutcliffe  39KA   251095    251095     Kelly,Kevin          
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  041671    04167A     Chukka1,Madan                                 NETWORK DD      L3_DEVELOPER  madan.chukka@in.ibm.com      DEV
 Ling      McConathy Sutcliffe  39KA   163381    163381     Moyer,Dawn                                    CLST_AP         L2_TECH       dawnstar@us.ibm.com          POK
 Unknown   Unknown   Unknown    92HS   611625    611625     Nallapati,K.V.                                Dev Mgr         MANAGER       kumarn@us.ibm.com            DEV
-Murillo   Simon     Wadehra    E18S   003073    0A3073     Albot,Andre                                   BRINGUP         L3_DEVELOPER  albot@us.ibm.com             DEV
+Murillo   Simon     Wadehra    E18S   013073    0A3073     Albot,Andre                                   BRINGUP         L3_DEVELOPER  albot@us.ibm.com             DEV
 Gupta     Makis     Young      OEIA   651077    651077     Twichell,Brian                                Performance     L3_DEVELOPER  twichell@us.ibm.com          DEV
 Murillo   Simon     Barenys    WZ8S   446024    4D6024     Kumar,Manoj                                                   L3_DEVELOPER                               DEV
 Ling      McConathy Sutcliffe  39KA   482555    482555     Shanes,Charles                                CLST_FS         L2_TECH       shanes@us.ibm.com            POK
@@ -998,16 +1002,17 @@ Ling      McConathy Sutcliffe  39KA   813981    813981     Doherty,James        
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  000485    00048A     Kumar,Jana                                    RSCT            L3_DEVELOPER  janrkuma@in.ibm.com          DEV
 Paranjape Contreras Ellsworth  B4RS   117610    +1761A     Hoetzel,Mary                                  SysMgt Solution L3_DEVELOPER  hhoetzel@us.ibm.com          DEV
 Murillo   Jones     Paul       D58S   797698    797698     Tran,Thinh                                    TCP/IP          L3_DEVELOPER  thinh@us.ibm.com             DEV
+Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  011915    011914     Goel1,Prateek                                 Kernel          L3_DEVELOPER  pragoel1@in.ibm.com          DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  048595    04859D     Varshney,Taru                                 RSCT            L3_DEVELOPER  tarvarsh@in.ibm.com          DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  011985    011980     Shivendra,Ashish                              HACMP           L3_DEVELOPER  shiv.ashish@in.ibm.com       DEV
+Murillo   Simon     Barenys    WZ8S   974305    974305     Patel,Priyesh                                                                                            DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  010018    01001P     Gangishetty1,Sowmya                           Kernel          L3_DEVELOPER  sowmya.tg@in.ibm.com         DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  027052    02705K     Karakavalasa,Dileep                           CMDS            L3_DEVELOPER  dileep.kk@in.ibm.com         DEV
+Murillo   Townsend  4VRA Mgr 1 4VRA   211751    2A1751     Gjertsen,Robert                               VIO             L3_DEVELOPER  gjertsen@us.ibm.com          DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  086223    08622C     Nagarajan1,Premkumar                          Kernel          L3_DEVELOPER  premkuna@in.ibm.com          DEV
-Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  011915    011914     Goel1,Prateek                                 Kernel          L3_DEVELOPER  pragoel1@in.ibm.com          DEV
 Murillo   Townsend  D59S Mgr 1 D59S   271578    271578     White,George                                  STORAGE DD      L3_DEVELOPER  glwhite1@us.ibm.com          DEV
 Murillo   Simon     Beck       UD3A   3D7474    347474     Feng,Jeff                                     SECURITY        L3_DEVELOPER  jianhua@us.ibm.com           DEV
 Murillo   Townsend  Kehne      CVRS   519182    519182     Edwards,Mark                                  Diagnostics     L3_DEVELOPER  marke@us.ibm.com             DEV
-Murillo   Simon     Barenys    WZ8S   974305    974305     Patel,Priyesh                                                                                            DEV
 Murillo   Simon                E97S   549818    549818     Beck,Jay                                      Dev Mgr         MANAGER                                    DEV
 Ling      McConathy Sutcliffe  39KA   902433    902433     Li,GuangLei                                   CLST_FS         L2_TECH       liguangl@cn.ibm.com          POK
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  911408    911408     Srinivas,Anantoju                             RSCT            L3_DEVELOPER  srinivas.anantoju@in.ibm.com DEV
@@ -1043,13 +1048,14 @@ Paranjape Contreras Ellsworth  B4RS   002197    2A3192     George,Jeffrey       
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  583667    583667     Mallipeddi,Kalyani                            RSCT            L3_DEVELOPER  m_kalyani@in.ibm.com         DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  062297    06229G     DAS7,Subhra                                   RSCT            L3_DEVELOPER  subhdask@in.ibm.com          DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  014219    01421I     Reddy,Chandra                                 MISC            L3_DEVELOPER  chandrasrk@in.ibm.com        DEV
-Gupta     Makis     Young      OEIA   325538    325538     Romero,Lilian                                 Performance     L3_DEVELOPER  lilianr@us.ibm.com           DEV
 Murillo   Simon     Love       LNJA   446630    4D6630     Haase,Eric                                    HACMP           L3_DEVELOPER  erichaase@us.ibm.com         DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  047269    04726I     Vellaya,Haribabu                              Kernel          L3_DEVELOPER  havellay@in.ibm.com          DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  031041    03104J     Bathija,Raunaq                                Kernel          L3_DEVELOPER  raunaq12@in.ibm.com          DEV
+Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  094699    094699     Sharrma,Chintan                               VIO             L3_DEVELOPER  chintans@in.ibm.com          DEV
 Ling      McConathy Sutcliffe  39KA   425186    425186     Palmiotti,Jill                                CLST_FS         L2_TECH       jmpalmio@us.ibm.com          POK
 Murillo   Jones     Epsztein   6T4A   811118    811118     Darmawan,Agustinus                            RAS             L3_DEVELOPER  darmawan@us.ibm.com          DEV
 Ling      McConathy Mahajan    XILA   709647    709647     DSO,Intern2                                   VIRT                                                       ZTRANS
+Gupta     Makis     Young      OEIA   325538    325538     Romero,Lilian                                 Performance     L3_DEVELOPER  lilianr@us.ibm.com           DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  021424    02142K     Na Sr,Murthy                                  NETWORK DD      L3_DEVELOPER  murthy.nssr@in.ibm.com       DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  914478    914478     Thota,Rupesh                                  VIO             L3_DEVELOPER  trupesh@in.ibm.com           DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  007398    007398     Boddukuri,Vinod Kumar                         STORAGE DD      L3_DEVELOPER  vbodduku@in.ibm.com          DEV
@@ -1072,6 +1078,7 @@ Murillo   Simon     Love       LNJA   592564    592564     Gardner,Bob          
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  454079    454079     Nataraj,Pruthvi                               VIO             L3_DEVELOPER  pruthvip@in.ibm.com          DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  031066    03106O     Mukherjee,Aritra                              STORAGE DD      L3_DEVELOPER  aritrmuk@in.ibm.com          DEV
 Unknown   Unknown   Unknown    FRANCE 063031    063031N    Normand,Michel                                INSTALL         L3_DEVELOPER  NORMAND@fr.ibm.com           DEV
+Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  069258    06925H     Chaudhary,Gopesh                              HACMP           L3_DEVELOPER  gopchaud@in.ibm.com          DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  078392    078392     Rajaboina,Yadagiri                            STORAGE DD      L3_DEVELOPER  ryadagiri@in.ibm.com         DEV
 Collins   Engleman  Grosch     YXIA   303399    C-3C9R     Joseph,Garland                                HSC Development                                            DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  045072    04507B     Srinivasan,Brahadambal                        Kernel          L3_DEVELOPER  brsriniv@in.ibm.com          DEV
@@ -1081,27 +1088,27 @@ Murillo   Townsend  D59S Mgr 1 D59S   304667    C-4667     Mankus,Eric          
 Murillo   Simon     Thomas     BN2S   408262    4A8262     Shvartsman,Eddie                              Kernel          L3_DEVELOPER  edshvart@us.ibm.com          DEV
 Ling      McConathy            E59S   877978    877978     Aaron,Thomas                                  ZMGMT           MANAGER       aarontom@us.ibm.com          ZTRANS
 Paranjape Contreras Tan        HMYS   591459    591459     Hannon,John                                   SysMgt Framewrk L3_DEVELOPER  jhannon@us.ibm.com           DEV
+Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  027626    02762O     P2,Ayappan                                    Graphics        L3_DEVELOPER  ayappap2@in.ibm.com          DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  004198    00419P     Anumula,Venkata                               STORAGE DD      L3_DEVELOPER  anumulavenkat@in.ibm.com     DEV
 Ling      McConathy            E59S   440157    440157     Harney,Pat                                    ZMGMT           MANAGER                                    OTHER
+Unknown   Unknown   Unknown    E92S   079091    0G9090     Adityan,Srinivasan                            FILESYSTEMS     L3_DEVELOPER  adityan@us.ibm.com           DEV
 Ling      McConathy Sutcliffe  39KA   402950    402950     Agar,Eric                                     CLST_FS         L2_TECH       agar@us.ibm.com              POK
-Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  027626    02762O     P2,Ayappan                                    Graphics        L3_DEVELOPER  ayappap2@in.ibm.com          DEV
 Murillo   Simon     Barenys    WZ8S   717260    7A7260     Madan,Sheena                                  FILESYSTEMS     L3_DEVELOPER  gmadan@us.ibm.com            DEV
 Murillo   Townsend  4VRA Mgr 1 4VRA   579969    579969     Pafumi,James                                  VIO             L3_DEVELOPER  jpafumi@us.ibm.com           DEV
 Murillo   Townsend  Kehne      CVRS   518047    518047     McCardle,John                                 Diagnostics     L3_DEVELOPER  mccardle@us.ibm.com          DEV
 Unknown   Unknown   Unknown    E54S   253881    253881     Pattanshetti,Manjunath A                      Performance     L3_DEVELOPER  ronr@us.ibm.com              DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  088550    088550     Chillarege,Naresh                             TCP/IP          L3_DEVELOPER  nareshc1@in.ibm.com          DEV
 Murillo   Simon     Barenys    WZ8S   910133    910133     Neuman,Grover                                 FILESYSTEMS     L3_DEVELOPER  neuman@us.ibm.com            DEV
-Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  016656    01665X     Prabhakar,Akshatha                            PTX             L3_DEVELOPER  aksprabh@in.ibm.com          DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  031058    03105Q     Shrestha,Pawan                                STORAGE DD      L3_DEVELOPER  pawan.shrestha@in.ibm.com    DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  096680    096680     Thoorpu,Raghavendra                           STORAGE DD      L3_DEVELOPER  rthoorpu@in.ibm.com          DEV
 Murillo   Jones     Patel      BWUS   156176    156176     Lee,D.P.                                      BUILD           L3_DEVELOPER  leedp@us.ibm.com             DEV
+Murillo   Simon     Love       LNJA   741882    7D1882     Meyer,Charles                                 HACMP           L3_DEVELOPER  cemeyer@us.ibm.com           DEV
 Murillo   Simon     Love       LNJA   965256    965256_1   Cotter,Richard                                RSCT            L3_DEVELOPER  RCOTTER@US.IBM.COM           DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  028439    02843Q     Nimmagadda,Rajeev                             HACMP           L3_DEVELOPER  rajenimm@in.ibm.com          DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  014541    014541     Ranganath,Deepak                              CMDS            L3_DEVELOPER  derangan@in.ibm.com          DEV
 Ling      McConathy Sutcliffe  39KA   948168    9D8168     Ali,Asmahan                                   CLST_FS         L2_TECH       aaali@us.ibm.com             POK
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  003210    003210     Gali,Subhas Chandra Bose                      HACMP           L3_DEVELOPER  subhash.gali@in.ibm.com      DEV
 Ling      McConathy Sutcliffe  39KA   454719    6D7410     Yaeger,Brian                                  CLST_FS         L2_SCREEN_POK bmyaeger@us.ibm.com          POK
-Murillo   Simon     Love       LNJA   741882    7D1882     Meyer,Charles                                 HACMP           L3_DEVELOPER  cemeyer@us.ibm.com           DEV
 Murillo   Simon     Barenys    WZ8S   710078    7A0078     Bodepudi,Smita                                CIFS            L3_DEVELOPER  bsmita@us.ibm.com            DEV
 Paranjape Contreras Ellsworth  B4RS   710794    7A0794     Chen,Douglas                                  SysMgt Solution L3_DEVELOPER  gychen@us.ibm.com            DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  950521    950521     Manchineni,Hari                               NETWORK DD      L3_DEVELOPER  hmanchin@in.ibm.com          DEV
@@ -1129,13 +1136,14 @@ Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  031062    03106K     Saikrishnateja,Jayava
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  060258    06025H     Mohammed1,Azhar                               HACMP           L3_DEVELOPER  hussain.azhar@in.ibm.com     DEV
 Gupta     Makis     Young      OEIA   717316    7A7316     Escalera,Jose                                 Performance     L3_DEVELOPER  escalera@us.ibm.com          DEV
 Ling      McConathy Sutcliffe  39KA   371989    3G1989     Sheehy,Jacob                                  CLST_FS         L2_SCREEN_POK jjsheehy@us.ibm.com          POK
+Ling      McConathy Clark      5IEA   308737    C-HGUP     Kirkley,Brent                                 NET             L2_TECH       bkirk@us.ibm.com             ZTRANS
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  016154    016154     Jasti,Purnachandra                            STORAGE DD      L3_DEVELOPER  chandu.jasti@in.ibm.com      DEV
 Paranjape Contreras Tan        HMYS   596413    596413     Feuerbacher,Frank                             SysMgt Framewrk L3_DEVELOPER  fbacher@us.ibm.com           DEV
-Ling      McConathy Clark      5IEA   709646    709646     DSO,Intern1                                   NET                                                        ZTRANS
+Ling      McConathy Mahajan    XILA   709846    709646     DSO,Intern1                                   INST                                                       ZTRANS
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  074621    07462J     Marupaka,Ramesh                               STORAGE DD      L3_DEVELOPER  rmarupak@in.ibm.com          DEV
+Murillo   WXBA Mgr2 CJHS Mgr1  CJHS   477770    4G7770     Burton,Michael                                                L3_DEVELOPER  mburton@us.ibm.com           DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  INDIA  097068    097066     Gangur,Chidanand                              Kernel          L3_DEVELOPER  chgangur@in.ibm.com          DEV
 Murillo   WXBA Mgr2 CJHS Mgr1  CJHS   305228    C-E2KH     Naik,Sharad                                   MISC            L3_DEVELOPER  sharadn@us.ibm.com           DEV
-Murillo   Simon     Beck       UD3A   709241    709241     Conklin,Chris                                 SECURITY        L3_DEVELOPER  cconklin@us.ibm.com          DEV
 Murillo   Townsend  Mulvey     UDYA   714660    7A4660     Yoder,Kent                                    NETWORK DD      L3_DEVELOPER  yoder1@us.ibm.com            DEV
 Murillo   Townsend  4VRA Mgr 1 4VRA   595765    595765     Marion,Neal                                   VIO             L3_DEVELOPER  nrm@us.ibm.com               DEV
 Murillo   Townsend  D59S Mgr 1 D59S   181942    181941     Hart,Brian                                    STORAGE DD      L3_DEVELOPER  hartb@us.ibm.com             DEV
@@ -1148,5 +1156,3 @@ Ling      McConathy Sutcliffe  39KA   495969    495969     Guo,Jean             
 Ling      McConathy Sutcliffe  39KA   004626    0A4626     Apuzzo,Joe                                    CLST_FS         L2_TECH       apuzzoj@us.ibm.com           POK
 Murillo   WXBA Mgr2 CJHS Mgr1  CJHS   305955    C-E95N     Joseph,Garland                                DEVSCREEN       L3_DEVELOPER  garland@us.ibm.com           DEV
 Murillo   Simon     Thomas     BN2S   123493    1A3493     Brandyberry,Matthew                           SYSPROC         L3_DEVELOPER  mbrandy@us.ibm.com           DEV
->>>>>>> 45d56a7... New files / toys.
-
