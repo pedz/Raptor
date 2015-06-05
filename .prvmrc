@@ -1,0 +1,2 @@
+prvm_use ruby-1.9.3-p392
+export PGDATABASE=raptor_development
