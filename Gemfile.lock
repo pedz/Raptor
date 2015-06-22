@@ -6,7 +6,7 @@ GIT
     rails-footnotes (3.6.7)
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     actionmailer (2.3.14)
       actionpack (= 2.3.14)
@@ -73,12 +73,15 @@ GEM
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.6.0)
     ruby-ldap (0.9.11)
+    ruby-ole (1.2.11.8)
     rubyzip (0.9.4)
     selenium-webdriver (2.5.0)
       childprocess (>= 0.2.1)
       ffi (>= 1.0.7)
       json_pure
       rubyzip
+    spreadsheet (0.6.5.9)
+      ruby-ole (>= 1.0)
     spruz (0.2.13)
 
 PLATFORMS
@@ -94,3 +97,4 @@ DEPENDENCIES
   rails (~> 2.3.14)
   rails-footnotes (= 3.6.7)!
   ruby-ldap
+  spreadsheet (= 0.6.5.9)

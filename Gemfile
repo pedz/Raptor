@@ -1,4 +1,4 @@
-source :gemcutter
+source 'https://rubygems.org'
 
 gem "rails", "~> 2.3.14"
 gem "ruby-ldap"
@@ -14,8 +14,5 @@ group :development do
       :git => 'http://github.com/jasoncodes/rails-footnotes.git',
       :branch => 'rails2')
   gem "jasmine"
-end
-
-group :test do
-  gem "jasmine"
+  gem 'spreadsheet', '0.6.5.9'
 end
