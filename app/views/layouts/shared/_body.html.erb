@@ -10,8 +10,10 @@
     </div>
   <% else -%>
     <% for div in divs -%>
-      <% temp = yield(div).encode('UTF-8') -%>
-      <% Rails.logger.debug("content for #{div} is encoded as #{temp.encoding}") -%>
+      <% if temp = yield(div) -%>
+      <%   temp = temp.encode('UTF-8') -%>
+      <%   Rails.logger.debug("content for #{div} is encoded as #{temp.encoding}") -%>
+      <% end -%>
       <div id="<%= div.to_s.gsub(/_/, '-') %>">
 	<%= temp %>
       </div>
