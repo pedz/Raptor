@@ -4,8 +4,7 @@
 # All Rights Reserved
 #
 
-module Settings
-  module RetusersHelper
+module Settings::RetusersHelper
     def node_selector_list(test_mode, node_type)
       RetainNodeSelector.
         find(:all,
@@ -44,5 +43,5 @@ module Settings
       link_to(label, settings_user_retuser_path(user, retuser),
               :confirm => 'Are you sure?', :method => :delete)
     end
-  end
+#  end
 end

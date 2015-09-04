@@ -487,7 +487,7 @@ module Retain
                      :locals => { :call => @call })
         page.call('Raptor.qsNewRow', "tr-#{@call.to_param.gsub(",", "-")}")
         page.visual_effect :fade, 'message-area'
-      }
+      end
     end
 
     # Currently all the editable attributes that call PMPU fall into

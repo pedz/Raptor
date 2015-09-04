@@ -1,0 +1,144 @@
+#!/usr/bin/env bash
+#  -*- coding: utf-8 -*-
+# 
+#  Copyright 2012-2013 Ease Software, Inc. and Perry Smith
+#  All Rights Reserved
+# 
+
+# -*- mode: shell-script -*-
+#
+# File of functions specifically for prvm
+#
+# prvm is my replacement for rvm.  I found rvm way too heavy and
+# invasive.  The directory structure is simple.  I will use
+# /usr/local/prvm as the base:
+#
+# /usr/local/prvm:
+#   download-images
+#     ruby-1.9.1-p376.tar.gz
+#     ruby-1.9.3-p194.tar.gz
+#     ... (the original compressed tarballs)
+#   ruby-1.9.1-p376
+#     bin
+#     include
+#     lib
+#     share
+#     src
+#       This is your build directory and make
+#         --prefix=/usr/local/prvm/ruby-1.9.1-p376
+#   ruby-1.9.3-p194
+#     bin
+#     include
+#     lib
+#     share
+#     src
+#       This is your build directory and make
+#         --prefix=/usr/local/prvm/ruby-1.9.3-p194
+#   ...
+#
+# The scheme revolves around bundler and putting the gems for a
+# particular project into .bundle/gems and their associated executable
+# into .bundle/bin.  This idea comes from:
+# http://tomafro.net/2012/06/tip-bundler-with-binstubs
+#
+# GEM_HOME would thus be .bundle/gems/ruby/1.9.1 (except made into an
+# absolute path)
+# 
+# There will be a path for the base of the prvm versions of ruby --
+# typically set to /usr/local/prvm.
+#
+# Thus a single line such as:
+#
+# prvm_use ruby-1.9.3-p194
+#
+# would set PATH to start with the absolute path to the project with
+# .bundle/bin appeneded followed by
+# /usr/local/prvm/ruby-1.9.3-p194/bin
+#
+# GEM_HOME would be set as mentioned above with GEM_PATH set to
+# /usr/local/prvm/ruby-1.9.3-p194/lib/ruby/gems/1.9.1
+#
+# Some type of options are probably needed to add or alter to these
+# defaults but until I need them, I won't define them.
+
+PRVM_BASE=/usr/local/prvm
+
+# $1 is a regular expression of the elements of PATH to delete
+function delete-path-elements
+{
+    typeset OIFS=$IFS
+    typeset path
+    typeset NPATH
+    IFS=:
+    for path in $PATH ; do
+	if [[ "$path" =~ $1 ]] ; then
+	    true
+	elif [[ -z "$NPATH" ]] ; then
+	    NPATH="$path"
+	else
+	    NPATH="$NPATH:$path"
+	fi
+    done
+    PATH="$NPATH"
+    IFS=$OIFS
+}
+
+# $1 is an absolute path to prepend to PATH keeping '.' as the first
+# element if it started out that way
+function prepend-path
+{
+    local flag
+    if [[ "${PATH%%:*}" == "." ]] ; then
+	flag=t
+	PATH="${PATH#*:}"
+    fi
+    delete-path-elements "^${1%/}$"
+    PATH="${1%/}:${PATH}"
+    if [[ "$flag" ]] ; then
+	PATH=".:$PATH"
+    fi
+}
+
+# $1 specifies which ruby to use.  e.g. prvm_use ruby-1.9.3-p194
+function prvm_use
+{
+    typeset ruby="$1"
+    typeset prvmrc_path="${BASH_SOURCE[1]}"
+
+    if [[ "$prvmrc_path" =~ ^/.* ]] ; then
+	true
+    else
+	prvmrc_path="${PWD}/${prvmrc_path}"
+    fi
+
+    # This is silly but I can't resist...
+    # strip out /./ in path.
+    prvmrc_path="$( echo "$prvmrc_path" | sed -e 's%/\./%/%g' )"
+    # strip out /foo/../ in path
+    while : ; do
+	typeset temp="$( echo "$prvmrc_path" | sed -e 's%/[^/]*/\.\./%/%' )"
+	if [[ "$temp" == "$prvmrc_path" ]] ; then
+	    break
+	fi
+	prvmrc_path="$temp"
+    done
+
+    # We want to delete what a previous prvm_use added.  This would be
+    # some path to /**/.bundle/bin as well as /usr/local/prvm/**
+    delete-path-elements '.*/\.bundle/bin$'
+    delete-path-elements "${PRVM_BASE}/.*"
+
+    # Now add in the new path pieces
+    prepend-path "${PRVM_BASE}/${ruby}/bin"
+    prepend-path "${prvmrc_path%/.*}/.bundle/bin"
+
+    # Finally set up ruby's exports
+    export GEM_HOME="${prvmrc_path%/.*}/.bundle/gems/ruby/1.9.1"
+    export GEM_PATH="${PRVM_BASE}/${ruby}/lib/ruby/gems/1.9.1"
+}
+
+. .prvmrc
+cmd=$1
+shift
+echo $PATH
+exec $cmd "$@"
