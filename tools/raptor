@@ -52,7 +52,7 @@ function start_workers
     cd ${SERVER_HOME}
     while [[ "${worker}" -lt "${WORKERS}" ]] ; do
 	echo "Starting working ${worker}"
-	script/rvm-wrapper \
+	script/prvm-wrapper \
 	    vendor/plugins/async_observer/bin/worker \
 	    -d \
 	    --pid tmp/pids/worker.${worker}.pid \
@@ -82,9 +82,9 @@ if [[ "${me}" = "${UID}" ]] ; then
     echo not SUing
     cd ${SERVER_HOME}
     if [[ $( hostname ) = p51 ]] ; then
-	script/rvm-wrapper ${THIN} --config config/thin-staging.yml $@
+	script/prvm-wrapper ${THIN} --config config/thin-staging.yml $@
     else
-	script/rvm-wrapper ${THIN} --config config/thin-production.yml $@
+	script/prvm-wrapper ${THIN} --config config/thin-production.yml $@
     fi
     do_workers $1
 else

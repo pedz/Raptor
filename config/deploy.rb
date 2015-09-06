@@ -1,49 +1,50 @@
-# -*- coding: utf-8 -*-
-#
-# Copyright 2007-2011 Ease Software, Inc. and Perry Smith
-# All Rights Reserved
-#
+# config valid only for current version of Capistrano
+lock '3.4.0'
 
-unless respond_to?(:env)
-  STDERR.puts "Please use --set-before env=<env>"
-  exit 1
+set :application, 'raptor'
+# set :repo_url, 'git@example.com:me/my_repo.git'
+set :repo_url, '/home/raptor/repositories/raptor.git'
+
+# Default branch is :master
+# ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
+
+# Default deploy_to directory is /var/www/my_app_name
+set :deploy_to, '/usr/local/www/raptor'
+
+# Default value for :scm is :git
+# set :scm, :git
+
+# Default value for :format is :pretty
+# set :format, :pretty
+
+# Default value for :log_level is :debug
+# set :log_level, :debug
+
+# Default value for :pty is false
+# set :pty, true
+
+# Default value for :linked_files is []
+set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/retain.yml')
+
+# Default value for linked_dirs is []
+# set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
+set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids')
+
+# Default value for default_env is {}
+# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+
+# Default value for keep_releases is 5
+# set :keep_releases, 5
+
+namespace :deploy do
+
+  after :restart, :clear_cache do
+    on roles(:web), in: :groups, limit: 3, wait: 10 do
+      # Here we can do anything such as:
+      # within release_path do
+      #   execute :rake, 'cache:clear'
+      # end
+    end
+  end
+
 end
-
-if env == 'production'
-  set :domain,      "raptor@tcp237.austin.ibm.com"
-elsif env == 'staging'
-  set :domain,      "raptor@p51.austin.ibm.com"
-else
-  STDERR.puts "env must be 'production' or 'staging'"
-  exit 1
-end
-
-# Added for RVM
-# $:.unshift(File.expand_path('./lib', ENV['rvm_path'])) # Add RVM's lib directory to the load path.
-
-# require "rvm/capistrano"  # Load RVM's capistrano plugin.
-require "bundler/capistrano" # Load Bundler's capistrano plugin.
-
-# set environment
-# set :rvm_ruby_string, 'ruby-1.9.2-p290@raptor'
-
-set :application,  "raptor"
-set :repository,   "#{domain}:repositories/raptor.git"
-set :scm,          :git
-set :branch,       "master"
-
-# deploy_base is my own variable that is the base of where all the
-# rails applications live.
-set :deploy_base,  "/usr/local/www"
-
-# The real database.yml is kept out of the tree in this path
-set :db_path,     "#{deploy_base}/database-files/#{application}-database.yml"
-set :retain_path, "#{deploy_base}/database-files/#{application}-retain.yml"
-
-# The deploy_to is a variable that Capistrano needs
-set :deploy_to, "#{deploy_base}/#{application}"
-set :use_sudo, false
-
-role :app, domain
-role :web, domain
-role :db,  domain, :primary => true
