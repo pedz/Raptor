@@ -1,10 +1,10 @@
-<%# -*- coding: utf-8 -*- -%>
+<%# -*- encoding: utf-8 -*- -%>
 <%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith -%>
 <%# All Rights Reserved -%>
 <%= app_doctype %>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <%= app_header(std_styles("retain/pmrs", "retain/call"),
-                 std_scripts("retain/call", "text_input_list", "retain/update")) %>
+                 std_scripts("retain/opc", "retain/call", "text_input_list", "retain/update")) %>
   <%= app_body :top, :left_tab, :left, :center, :right_tab, :right, :bottom %>
 </html>

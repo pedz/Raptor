@@ -1,4 +1,4 @@
-<%# -*- coding: utf-8 -*- -%>
+<%# -*- encoding: utf-8 -*- -%>
 <%# Copyright 2007-2011 Ease Software, Inc. and Perry Smith -%>
 <%# All Rights Reserved -%>
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> -->
@@ -11,8 +11,8 @@
   <% else -%>
     <% for div in divs -%>
       <% if temp = yield(div) -%>
-      <%   temp = temp.encode('UTF-8') -%>
       <%   Rails.logger.debug("content for #{div} is encoded as #{temp.encoding}") -%>
+      <%   temp = temp.encode('UTF-8') -%>
       <% end -%>
       <div id="<%= div.to_s.gsub(/_/, '-') %>">
 	<%= temp %>
