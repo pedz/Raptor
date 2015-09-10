@@ -73,27 +73,27 @@ class ApplicationController < ActionController::Base
   # initialized with the ldap_id field.  The user model is stored in
   # the session.
   def authenticate
-    logger.info("APP: authorization: #{temp_debug(request)}")
-    request.env.keys.each do |key|
-      logger.debug"request.env['#{key}'] = '#{request.env[key]}'"
-    end
+    # logger.info("APP: authorization: #{temp_debug(request)}")
+    # request.env.keys.each do |key|
+    #   logger.debug"request.env['#{key}'] = '#{request.env[key]}'"
+    # end
     set_last_uri
     return true unless application_user.nil?
-    logger.info("Header NOT-SET = #{request.headers['NOT-SET'].inspect}")
+    # logger.info("Header NOT-SET = #{request.headers['NOT-SET'].inspect}")
     if request.env.has_key? "REMOTE_USER"
-      logger.info("REMOTE_USER = #{request.env["REMOTE_USER"]}")
+      # logger.info("REMOTE_USER = #{request.env["REMOTE_USER"]}")
       apache_authenticate
     elsif request.headers.has_key?('HTTP_X_FORWARDED_USER')
-      logger.info("Header HTTP_X_FORWARDED_USER = #{request.headers['HTTP_X_FORWARDED_USER']}")
+      # logger.info("Header HTTP_X_FORWARDED_USER = #{request.headers['HTTP_X_FORWARDED_USER']}")
       proxy_apache_authenticate
     elsif Rails.env == "test"
-      logger.info("Authenticate via test")
+      # logger.info("Authenticate via test")
       testing_authenticate
     elsif NONE_AUTHENTICATE
-      logger.info("Authenticate via none")
+      # logger.info("Authenticate via none")
       none_authenticate
     else
-      logger.info("Authenticate else")
+      # logger.info("Authenticate else")
       ldap_authenticate
     end
   end
@@ -202,8 +202,21 @@ class ApplicationController < ActionController::Base
     return true
   end
 
-  # Apache has already authenticated but we are behind a proxy so use
-  # HTTP_X_FORWARDED_USER instead
+  # Apache has already authenticated but we are behind a proxy
+  # (e.g. Proxy balancer) so use HTTP_X_FORWARDED_USER instead Note
+  # that this header is produced by the httpd config file rules:
+  #
+  # RewriteCond %{LA-U:REMOTE_USER} (.+)
+  # RewriteRule .* - [E=RU:%1]
+  # RequestHeader add X-Forwarded-User %{RU}e
+  #
+  # I believe the reason is the proxy request is sent to the other
+  # process (like thin or mongrel) so the environment is not passed.
+  # Thus a header has to be introduced.  Somewhere someone picked
+  # X-Forwarded-User.  Rails takes all incoming headers and stores
+  # them in headers as
+  # "HTTP_" original_header_name.upcase.gsub(/-/, '_').  See
+  # actionpack/lib/action_dispatch/http/headers.rb
   def proxy_apache_authenticate
     # logger.info("proxy_apache_authenticate as #{request.env["HTTP_X_FORWARDED_USER"]}")
     common_authenticate(request.headers["HTTP_X_FORWARDED_USER"])

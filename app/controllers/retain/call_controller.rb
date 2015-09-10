@@ -7,16 +7,14 @@
 module Retain
   class CallController < RetainController
     rescue_from Retain::SdiReaderError do |exception|
-      logger.debug "#{exception.inspect} #{exception.rc} #{exception.class} #{exception.backtrace.join("\n")}\n sr=#{exception.sr} ex=#{exception.ex}"
       raise exception unless exception.rc == 251
       case @exception_type
       when nil
         render :action => "not_found"
-        # not_found_page(exception)
       when :text
         render :text => @exception_text
       when :json
-        render :json => @exception_json
+        rendon :json => @exception_json
       end
     end
     
@@ -108,14 +106,8 @@ module Retain
           update_type = :close
           need_undispatch = need_dispatch = true
           if @pmr.country != '000' && @call.p_s_b == 'P'
-            render(:update) { |page|
-              page.replace_html(reply_span,
-                                "<span class='sdi-error'>" +
-                                "Can not close WT PMRs" +
-                                "</span>")
-              page.show reply_span
-              logger.error "Can not close WT PMRs"
-            }
+            render_message(reply_span, [ error_mess("Can not close WT PMRs") ])
+            logger.error "Can not close WT PMRs"
             return
           end
         end
@@ -125,12 +117,12 @@ module Retain
       end
       
       do_fade = true
-      text = ""
+      text = []
       begin
         if need_dispatch
           dispatch = do_pmcu("CD  ", call_options)
           if dispatch.rc != 0
-            text = create_error_reply(dispatch, "Dispatch")
+            text.push(sdi_error_mess(dispatch, "Dispatch"))
             raise
           end
         end
@@ -139,11 +131,11 @@ module Retain
           ct = do_pmcu("CT  ", call_options)
           if ct.rc != 0
             do_fade &= (ct.error_class != :error)
-            text = create_error_reply(ct, "CT")
+            text.push(sdi_error_mess(ct, "CT"))
             raise
           end
           @pmr.mark_all_as_dirty
-          text = create_reply_span("CT Completed")
+          text.push(mess("CT Completed"))
         end
         
         case update_type
@@ -155,10 +147,10 @@ module Retain
           safe_sendit(addtxt)
           if addtxt.rc != 0
             do_fade &= (addtxt.error_class != :error)
-            text += create_error_reply(addtxt, "Addtxt")
+            text.push(sdi_error_mess(addtxt, "Addtxt"))
             raise
           end
-          text += create_reply_span("ADDTXT Completed")
+          text.push(mess("ADDTXT Completed"))
           @pmr.mark_all_as_dirty
           
           if call_update[:add_time]
@@ -169,12 +161,12 @@ module Retain
             safe_sendit(psar)
             if psar.rc != 0
               do_fade &= (psar.error_class != :error)
-              text += create_error_reply(psar, "PSAR")
+              text.push(sdi_error_mess(psar, "PSAR"))
             else
               # We added a PSAR so we want to make it so that we fetch
               # it next time through
               @user_registration.need_last_day
-              text += create_reply_span("PSAR Added")
+              text.push(mess("PSAR Added"))
             end
           end
           
@@ -204,14 +196,9 @@ module Retain
               elsif @queue.h_or_s == 'H' && new_queue.h_or_s == 'S' # from hardware to software
                 requeue_options[:operand] = 'SW  '
               else
-                render(:update) { |page|
-                  page.replace_html(reply_span,
-                                    "<span class='sdi-error'>" +
-                                    "Can only requeue to and from software or hardware" +
-                                    "</span>")
-                  page.show reply_span
-                  logger.error "Can only requeue to and from software or hardware"
-                }
+                render_message(reply_span,
+                               [ error_mess("Can only requeue to and from software or hardware")])
+                logger.error "Can only requeue to and from software or hardware"
                 return
               end
               # Note that the new h_or_s is not in the request.
@@ -243,9 +230,9 @@ module Retain
 
           if requeue.rc != 0
             do_fade &= (requeue.error_class != :error)
-            text += create_error_reply(requeue, "Requeue")
+            text.push(sdi_error_mess(requeue, "Requeue"))
           else
-            text += create_reply_span("Requeue Completed")
+            text.push(mess("Requeue Completed"))
             if from_team_to_personal
               if @call.p_s_b == 'P'
               end
@@ -264,9 +251,9 @@ module Retain
               safe_sendit(alter)
               if alter.rc != 0
                 do_fade &= (alter.error_class != :error)
-                text += create_error_reply(alter, "Alter")
+                text.push(sdi_error_mess(alter, "Alter"))
               else
-                text += create_reply_span("#{fields} Set")
+                text.push(mess("#{fields} Set"))
               end
             end
           end
@@ -288,9 +275,9 @@ module Retain
 
           if dup.rc != 0
             do_fade &= (dup.error_class != :error)
-            text += create_error_reply(dup, "Dup")
+            text.push(sdi_error_mess(dup, "Dup"))
           else
-            text += create_reply_span("Dup Completed")
+            text.push(mess("Dup Completed"))
           end
           
           if call_update[:add_time]
@@ -301,10 +288,10 @@ module Retain
             safe_sendit(psar)
             if psar.rc != 0
               do_fade &= (psar.error_class != :error)
-              text += create_error_reply(psar, "PSAR")
+              text.push(sdi_error_mess(psar, "PSAR"))
             else
               @user_registration.need_last_day
-              text += create_reply_span("PSAR Added")
+              text.push(mess("PSAR Added"))
             end
           end
           @pmr.mark_all_as_dirty
@@ -332,9 +319,9 @@ module Retain
 
           if close.rc != 0
             do_fade &= (close.error_class != :error)
-            text += create_error_reply(close, "Close")
+            text.push(sdi_error_mess(close, "Close"))
           else
-            text += create_reply_span("Close Completed")
+            text.push(mess("Close Completed"))
           end
           
         when :none
@@ -347,10 +334,10 @@ module Retain
             safe_sendit(psar)
             if psar.rc != 0
               do_fade &= (psar.error_class != :error)
-              text += create_error_reply(psar, "PSAR")
+              text.push(sdi_error_mess(psar, "PSAR"))
             else
               @user_registration.need_last_day
-              text += create_reply_span("PSAR Added")
+              text.push(mess("PSAR Added"))
             end
           end
         end
@@ -363,7 +350,7 @@ module Retain
         unless e.nil?
           logger.error(e.backtrace)
           unless (msg = e.message).blank?
-            text += create_reply_span(msg, :error)
+            text.push(mess(msg, :error))
           end
           do_fade = false
         end
@@ -374,38 +361,17 @@ module Retain
           undispatch = do_pmcu("NOCH", call_options)
           if undispatch.rc != 0
             do_fade &= (undispatch.error_class != :error)
-            text += create_error_reply(undispatch, "Undispatch")
+            text.push(sdi_error_mess(undispatch, "Undispatch"))
           end
         end
       end
-      render(:update) { |page|
-        page.replace_html reply_span, text                          
-        page.show reply_span
+      
+      render_message(reply_span, text) do |page|
         if do_fade
           page.visual_effect(:fade, reply_span, :duration => 5.0)
           page[update_div].redraw
           page[update_div].close
         end
-      }
-    end
-
-    def safe_new(klass, options, area)
-      begin
-        obj = klass.new(retain_user_connection_parameters, options)
-      rescue ArgumentError => e
-        text = create_reply_span(e.message, :error)
-        render_message(text, area)
-        logger.error(e.backtrace.join("\n"))
-        return nil
-      end
-      return obj
-    end
-    
-    def safe_sendit(obj)
-      begin
-        obj.sendit(Retain::Fields.new)
-      rescue
-        true
       end
     end
 
@@ -418,17 +384,19 @@ module Retain
       # We don't check who is dispatched.  We assume its the right person and
       # let Retain tell us if it isn't
       if @call.is_dispatched
-      dispatch_sdi = do_pmcu("NOCH", options)
+        dispatch_sdi = do_pmcu("NOCH", options)
         if dispatch_sdi.rc != 0
-          render_error(dispatch_sdi, 'message-area', 'PMCU')
+          render_sdi_error(dispatch_sdi, 'message-area', 'PMCU')
           return
         end
+        full_text = [ mess("Call has been undispatched") ]
       else
         dispatch_sdi = do_pmcu("CD  ", options)
         if dispatch_sdi.rc != 0
-          render_error(dispatch_sdi, 'message-area', 'PMCU')
+          render_sdi_error(dispatch_sdi, 'message-area', 'PMCU')
           return
         end
+        full_text = [ mess("Call has been dispatched") ]
       end
 
       # At this point, the PMR has changed, so mark it as dirty
@@ -442,15 +410,13 @@ module Retain
         memo
       end
 
-      full_text = "<span class='sdi-normal'>CT completed successfully</span>"
-      render(:update) { |page|
-        page.replace_html 'message-area', full_text
+      render_message('message-area', full_text) do |page|
         page.replace("tr-#{@call.to_param.gsub(",", "-")}",
                      :partial => 'retain/qs/qs_row',
                      :locals => { :call => @call })
         page.call('Raptor.qsNewRow', "tr-#{@call.to_param.gsub(",", "-")}")
         page.visual_effect :fade, 'message-area'
-      }
+      end
     end
 
     def ct
@@ -462,13 +428,13 @@ module Retain
       # Three step process.  Dispatch, CT, Undispatch
       dispatch = do_pmcu("CD  ", options)
       if dispatch.rc != 0
-        render_error(dispatch, 'message-area', 'PMCU')
+        render_sdi_error(dispatch, 'message-area', 'PMCU')
         return
       end
 
       ct = do_pmcu("CT  ", options)
       if ct.rc != 0
-        render_error(ct, 'message-area', 'PMCU')
+        render_sdi_error(ct, 'message-area', 'PMCU')
         return
       end
 
@@ -477,7 +443,7 @@ module Retain
       
       undispatch = do_pmcu("NOCH", options)
       if undispatch.rc != 0
-        render_error(undispatch, 'message-area', 'PMCU')
+        render_sdi_error(undispatch, 'message-area', 'PMCU')
         return
       end
 
@@ -619,6 +585,25 @@ module Retain
     
     private
 
+    def safe_new(klass, options, area)
+      begin
+        obj = klass.new(retain_user_connection_parameters, options)
+      rescue ArgumentError => e
+        render_message(area, [ error_mess(e.message) ])
+        logger.error(e.backtrace.join("\n"))
+        return nil
+      end
+      return obj
+    end
+    
+    def safe_sendit(obj)
+      begin
+        obj.sendit(Retain::Fields.new)
+      rescue
+        true
+      end
+    end
+
     def get_psar_options(call_update)
       psar_options = call_update[:psar_update].symbolize_keys
       # Pull out the "SAC" and convert to Service, Action, Cause
@@ -661,26 +646,50 @@ module Retain
       return pmcu
     end
 
-    def create_reply_span(msg, error_class = :normal)
-      span_class = "sdi-#{error_class.to_s}"
-      ApplicationController.helpers.content_tag :span, msg + ". ", :class => span_class
+    def mess(msg, sdi_class = :normal)
+      {
+        css_class: 'sdi-' + sdi_class.to_s,
+        msg: msg
+      }
     end
 
-    def create_error_reply(sdi, request)
+    def error_mess(msg)
+      mess(msg, :error)
+    end
+
+    def sdi_error_mess(sdi, request)
       err_text = "#{request}: #{sdi.error_message}"
-      create_reply_span(err_text, sdi.error_class)
+      mess(err_text, sdi.error_class)
     end
     
-    def render_error(sdi, area, request)
-      render_message(create_error_reply(sdi, request), area)
-      logger.error "render_error called: request = #{request} sdi.error_message = #{sdi.error_message}"
+    def render_sdi_error(sdi, area, request)
+      render_message(area, [ sdi_error_mess(sdi, request) ])
+      logger.error "render_sdi_error called: request = #{request} sdi.error_message = #{sdi.error_message}"
     end
 
-    def render_message(msg, area)
-      render(:update) { |page|
-        page.replace_html area, msg
-        page.show area
-      }
+    def create_reply_span(msg, error_class)
+      ApplicationController.helpers.content_tag(:span, msg + ". ", :class => error_class)
+    end
+
+    def create_reply_spans(msgs)
+      msgs.map do |h|
+        create_reply_span(h[:msg], h[:css_class])
+      end.join('')
+    end
+
+    def render_message(area, msgs)
+      if (request.xhr?)
+        text = create_reply_spans(msgs)
+        render(:update) do |page|
+          page.replace_html area, text
+          page.show area
+          if block_given?
+            yield page
+          end
+        end
+      else
+        render :json => msgs
+      end
     end
 
     def format_lines(lines)

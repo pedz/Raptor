@@ -6,7 +6,6 @@
 
 ActionController::Routing::Routes.draw do |map|
   map.resources :mappings
-
   map.resources :argument_defaults
   map.resources :argument_types
   map.resources(:relationships,
@@ -139,7 +138,6 @@ ActionController::Routing::Routes.draw do |map|
   # Mapping between Queue and Person... Needs much work.
   map.resources :combined_queue_infos, :controller => 'retain/queue_infos'
 
-  # Never has worked but will eventually display a PMR (instead of a call)
   map.resources(:combined_pmrs,
                 :controller => 'retain/pmrs',
                 :format => 'html',
@@ -152,10 +150,15 @@ ActionController::Routing::Routes.draw do |map|
   map.resources(:combined_qs,         :controller => 'retain/qs')
   map.resources(:combined_customers,  :controller => 'retain/customers')
   map.resources(:combined_centers,    :controller => 'retain/centers')
-  map.resources(:combined_components, :controller => 'retain/components')
   map.resources(:combined_apars,      :controller => 'retain/apars')
   map.resources(:combined_queues,     :controller => 'combined/queues')
   
+  # Component and OPC
+  map.resources(:combined_components,
+                :controller => 'retain/components',
+                :member => {
+                  :opc => :get
+                })
 
   # Call Update map.
   map.retain_call_update('retain/call/:id',

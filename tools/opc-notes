@@ -1,0 +1,191 @@
+The steps to dig out the data from the OPC tables:
+
+1) find component first
+1.b) find the component version (but it seems unused)
+2) via opc_group_id, find opc group
+2.b) find the target components.  Using "parent", this creates a tree
+     of target components
+3) Via question_set_id, find the question set
+4) find the ignore base items
+4.x) find the overwritten descriptions
+5) From question set id, also find question set version
+6) base_version_id points to the question_set_version_id.  For this
+   QSV, apply the same type of schema used for the root QSV.
+7) root_question_id points to opc_info and also question.  The
+   children will then be the questions.  The children of each question
+   is the possible answers.  The opc dependancy describes when to not
+   ask the question.
+
+# "Component" table with an entry per component.  Start here for the
+# walk through the tree.  Note that all the tables start with c_.  I
+# set up the models to not have this.  The model in this case is just
+# Component.  Also be careful in this case to not collide with
+# Cached::Component or other models.
+"c_component"
+  "component_id" integer,	# taken as the key to the table
+  "update_counter" integer,	# each table has this but it seems unused
+  "retain_comp_id" varchar,	# Start here with the Retain Component like 5765G6200
+  "description" varchar,	# Name of the component like AIX 6.1
+  "question_set_id" integer,	# FK to question set
+  "opc_group_id" integer,	# FK to opc group
+  "division_id" integer,	# IBM division (who cares?)
+  "use_version" integer		# I don't use this.
+
+# The second lookup in the journey.  The opc_group creates the list of
+code components (horrible collision of terms) such as TTY or NWDD
+"c_opc_group"
+  "opc_group_id" integer,	# taken as the key to the table
+  "description" varchar,	# Description of the components
+  "update_counter" integer,	# each table has this but it seems unused
+  "opc_group_name" varchar,	# Yet another name.
+  "division_id" integer,	# The guy seems obsessed about divisions
+  "allow_other" integer		# I assume this is a flag that allows
+                                # the user to say "Other" and then
+                                # fill in a text box with an arbitrary
+                                # string.
+
+# A table for the code components (or target components) such as TTY
+# or NWDD, etc.
+"c_target_component"
+  "target_component_id" integer,	# primary key for the table
+  "update_counter" integer,		# each table has this but it seems unused
+  "name" varchar,  			# presume the "value" for the component
+  "display_text" varchar,		# The text to display
+  "code" varchar,			# The NWDD or TTY, etc code
+  "sequence" integer,			# My guess is this relates to
+  	     				# the order the entries are
+  	     				# displayed.
+  "opc_group_id" integer,		# FK back to opc_group
+  "parent_id" integer,			# The components is at least a
+  	     				# two level tree.  The top
+  	     				# level have parent of NULL
+  "status" varchar,			# Has values of A, I, and C.
+  	     				# Active, Inactive, and C???
+  "non_selectable" integer,		# has values of 0 (false) and
+  	     				# 1 (true).  I assume a value
+  	     				# of 1 means that the user is
+  	     				# not permitted to select this
+  	     				# as his final entry (i.e. it
+  	     				# is used only to help
+  	     				# organize the other target
+  	     				# components).
+  "type" varchar			# can be U and R.  I assume
+  	     				# Restricted and Unrestricted
+  	     				# but don't have a good guess
+  	     				# as to what that could
+  	     				# imply.  Oh... All of the 'U'
+  	     				# types are "Other, please
+  	     				# specify"
+
+# I have not really figured this table out yet or what it is used
+# for.  It appears that for AIX stuff, we don't need it.
+"c_component_version"
+  "component_version_id" integer,
+  "update_counter" integer,
+  "component_id" integer,	# FK back to component
+  "version_number" varchar,
+  "description" varchar,
+  "ga_date" date,
+  "classify" integer
+
+# Describes the question set needed for a particular component.
+"c_question_set"
+  "question_set_id" integer,		# Primary Key
+  "name" varchar,   			# name of set
+  "division_id" integer,		# the freaking division again
+  "type" varchar,			# Possible values:
+  	 				# B Base Question Set
+					# O Base Optional Question Set
+                                	# R all the others
+  "update_counter" integer,		# 
+  "allow_partial_classification" integer # I assume it allows the user
+                                 	 # to whack the submit button
+                                 	 # before he has found the end
+                                 	 # of the rainbow.
+
+# Using the question_set_id, we find the question set version with a
+# status of A.  
+"c_question_set_version"
+  "question_set_version_id" integer,	# Primary key
+  "update_counter" integer, 		# useless
+  "brand_id" varchar,			# Not sure
+  "version" varchar,			# This is the 006 or 007 for AIX.
+  "root_question_id" integer,		# This points to the opc info
+		     			# entry of the root of the
+		     			# additional questions.
+  "description" varchar,		# blah blah text
+  "base_version_id" integer,		# points to a question set
+		     			# version (QSV) entry for the
+		     			# base question.  The root for
+		     			# this QSV will point to the
+		     			# base questions.  The base
+		     			# and optional version will be
+		     			# null.
+  "status" varchar,			# A for Active and I for Inactive
+  "optional_version_id" integer,	# Like base but I presume for
+		     			# optional questions.
+  "question_set_id" integer		# Find this via
+		     			# question_set_id from the component.
+
+# We find this via the question_set_id of the component and tell us to
+# ignore the questions from the base question set whose opc info ids
+# match.
+"c_ignore_base_item" (
+  "question_set_id" integer,		# FK to question set
+  "opc_information_id" integer,		# FK to opc infos
+  "update_counter" integer
+
+# This is somewhat of a metamorphic relation.  It can describe a
+# question or an answer and forms trees with the parent id pointing up
+# the tree to the parent opc info node.
+"c_opc_information"
+  "opc_information_id" integer,		# Primary Key
+  "sequence" integer,			# still don't know what this is
+  "description" varchar,		# Additonal text to go along
+  	      				# with the question or the answer.
+  "type" varchar,			# Q for question or answer
+  "parent_id" integer			# NULL for top node or the
+  	      				# opc_infomation_id of the
+  	      				# parent
+
+# Used for the base question set so that particular components can
+# override the displayed text of a question or an answer.
+"c_overwritten_description"
+  "opc_information_id" integer,
+  "update_counter" integer,
+  "description" varchar,
+  "type" varchar,
+  "question_set_id" integer
+
+# 
+"c_opc_dependency" (
+  "opc_dependency_id" integer,			# Primary key
+  "dependency_opc_information_id" integer,	# points to a question
+  				 		# to not ask if the
+  				 		# dependent answer has
+  				 		# been given
+  "dependent_opc_information_id" integer,	# points to a
+  				 		# particular answer
+  "update_counter" integer,			# useless
+  "dependency_type" varchar			# not used?
+);
+
+# Represents a possible answer.
+"c_answer" (
+  "update_counter" integer,			# useless
+  "answer_text" varchar,			# text of answer
+  "available_for_dependency" integer,		# always 0
+  "answer_id" integer,				# FK to opc info
+  "answer_type" varchar,			# U for ?
+  						# R for ?
+  "answer_code" varchar				# code of the answer
+
+"c_question" (
+  "update_counter" integer,			# useless
+  "question_text" varchar,			# the text of the question
+  "question_code" varchar,			# the code for the question
+  "retain_field_name" varchar,			# appears to not be used
+  "question_type" varchar,			# Q for Question, T for Target Component.
+  "encoding_sequence" integer,			# 0 through 11... not sure what this is
+  "question_id" integer,			# Primary Key?
+  "retain_save_type" integer			# 0, 1, and 2.  Most are 0.

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+curl -n \
+-F '_method=put' \
+-F 'commit=Submit' \
+-F 'retain_call_update[add_time]=0' \
+-F 'retain_call_update[business_justification]=' \
+-F 'retain_call_update[do_ct]=0' \
+-F 'retain_call_update[do_ct]=1' \
+-F 'retain_call_update[hot]=0' \
+-F 'retain_call_update[new_priority]=4' \
+-F 'retain_call_update[new_queue]=CINDY,S,165' \
+-F 'retain_call_update[newtxt]=Action Taken: This is what I did.
+
+Action Plan: This is what I will achieve.
+' \
+-F 'retain_call_update[psar_update][alter_time]=0' \
+-F 'retain_call_update[psar_update][hours]=0' \
+-F 'retain_call_update[psar_update][minutes]=30' \
+-F 'retain_call_update[psar_update][psar_apar_number]=' \
+-F 'retain_call_update[psar_update][psar_impact]=4' \
+-F 'retain_call_update[psar_update][psar_solution_code]=9' \
+-F 'retain_call_update[psar_update][sac]=2' \
+-F 'retain_call_update[psar_update][stop_day]=4' \
+-F 'retain_call_update[psar_update][stop_hour]=11' \
+-F 'retain_call_update[psar_update][stop_minute]=28' \
+-F 'retain_call_update[psar_update][stop_month]=5' \
+-F 'retain_call_update[psar_update][stop_year]=2013' \
+-F 'retain_call_update[service_given]=99' \
+-F 'retain_call_update[update_pmr]=1' \
+-F 'retain_call_update[update_type]=addtxt' \
+http://localhost/raptor/retain/call/CINDY,S,165,402

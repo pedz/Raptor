@@ -1,0 +1,20 @@
+#!/bin/bash
+
+curl -n \
+-d 'set=Q006' \
+-d 'comp=xxxxxxxxxxxxxxxxxxxxxTCPKxxxxxxxxxxxxxxxxxxxxx' \
+-d 'kv[][key]=@' \
+-d 'kv[][value]=18' \
+-d 'kv[][key]=#' \
+-d 'kv[][value]=__user' \
+-d 'kv[][key]=$' \
+-d 'kv[][value]=2013-05-04' \
+-d 'kv[][key]=O' \
+-d 'kv[][value]=Y' \
+-d 'kv[][key]=T' \
+-d 'kv[][value]=S' \
+-d 'kv[][key]=C' \
+-d 'kv[][value]=Y' \
+-d 'kv[][key]=D' \
+-d 'kv[][value]=4' \
+http://localhost/raptor/combined_pmrs/55443,999,000/opc

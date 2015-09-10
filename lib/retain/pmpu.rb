@@ -12,7 +12,7 @@ module Retain
     set_optional_fields(:pmr_owner_id, :pmr_resolver_id,
                         :queue_name, :center, :ppg, :h_or_s,
                         :next_queue, :next_center, :comment,
-                        :problem_crit_sit)
+                        :problem_crit_sit, :opc)
 
     def initialize(retain_user_connection_parameters, options = {})
       super(retain_user_connection_parameters, options)

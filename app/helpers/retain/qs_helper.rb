@@ -305,6 +305,7 @@ module Retain
                  "5765G0360",
                  "5765G0370",
                  "5765G0381",
+                 "5765G0399",   # 5.3 extended support
                  "5765G03BE",
                  "5765G03T4",
                  "5765G03T5",
@@ -334,6 +335,7 @@ module Retain
                  "5765G6200",   # AIX 6.1
                  "5765G6205",
                  "5765G6206",
+                 "5765G6207",   # AIX Java 7
                  "5765G6210",
                  "5765G6240",
                  "5765G6245",
@@ -1022,9 +1024,8 @@ module Retain
         
         # Sev 2,3,4 during Primeshift: Initial customer callback is
         #           within 2 business hours
-        logger.debug("center is #{pmr.center.center}")
-        logger.debug("prime_shift is #{pmr.center.prime_shift(entry_time)}")
-        logger.debug("entry time is #{entry_time}")
+        # logger.debug("center is #{pmr.center.center}")
+        # logger.debug("entry time is #{entry_time}")
         if pmr.center.prime_shift(entry_time)
           # logger.debug("prime_shift")
           return customer.business_hours(entry_time, 2)
@@ -1071,22 +1072,29 @@ module Retain
           concat("Next CT")
         end
       else
+        td_hash = {}
         # logger.debug("pmr's center is #{call.pmr.center.center}")
         is_initial = call.needs_initial_response?
         if is_initial
           nt = ct_initial_response_requirement(call)
           entry_time = call.center_entry_time.new_offset(signon_user.tz)
+          td_hash['data-entry-time'] = entry_time.to_s
           title = "Entry Time: #{entry_time.strftime("%a, %d %b %Y %H:%M")}"
         else
           nt = ct_normal_response_requirement(call)
           last_ct_time = call.pmr.last_ct_time.new_offset(signon_user.tz)
+          td_hash['data-last-ct'] = last_ct_time.to_s
           title = "Last CT: #{last_ct_time.strftime("%a, %d %b %Y %H:%M")}"
         end
         
-        
         now = DateTime.now
         if now > nt
-          text = "CT Overdue"
+          # Note: currently, this text is only seen if Javascript is disabled.
+          if is_initial
+            text = entry_time.new_offset(signon_user.tz).strftime("Entry Time:<br />%b %d")
+          else
+            text = last_ct_time.new_offset(signon_user.tz).strftime("Last CT:<br />%b %d")
+          end
           css_class = "wag-wag"
         else
           text = nt.new_offset(signon_user.tz).strftime("%a @ %H:%M<br />%b %d")
@@ -1098,7 +1106,10 @@ module Retain
           end
         end
         css_class << ' next-ct'
-        td binding, :class => css_class, :title => title do |binding|
+        td_hash[:class] = css_class
+        td_hash[:title] = title
+        td_hash['data-next-ct'] = nt.to_s
+        td binding, td_hash do |binding|
           concat(text)
         end
       end
