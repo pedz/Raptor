@@ -25,3 +25,37 @@ require 'capistrano/bundler'
 
 # Load custom tasks from `lib/capistrano/tasks` if you have any defined
 Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
+
+
+namespace :deploy do
+  desc "Play task"
+  task :play, :roles => :app do
+    run "echo #{deploy_to}"
+  end
+  
+  desc "Clear the production log via rake"
+  task :log_clear, :roles => :app do
+    run "cd #{current_path}/ && log/.old/save-log"
+  end
+
+  desc "The start task is used by :cold_deploy to start the application up"
+  task :start, :roles => :app do
+    # For thin
+    run "/etc/rc.d/init.d/raptor start"
+  end
+
+  desc "Restart the application"
+  task :restart, :roles => :app do
+    # For thin
+    run "/etc/rc.d/init.d/raptor restart"
+
+    # For Passenger
+    # run "rm -f  #{current_path}/tmp/restart.txt; touch #{current_path}/tmp/restart.txt"
+  end
+
+  desc "Stop the application"
+  task :stop, :roles => :app do
+    # For thin
+    run "/etc/rc.d/init.d/raptor stop"
+  end
+end
