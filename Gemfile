@@ -1,14 +1,17 @@
 source 'https://rubygems.org'
 
-gem "rails", "~> 2.3.14"
+gem "rails", "~> 2.3.18"
 gem "ruby-ldap"
 gem "activeldap", :require => "active_ldap"
 gem "icu4r_19"
 gem "beanstalk-client"
 gem "pg"
-gem "capistrano"
+gem "thin"
+gem 'capistrano', '~> 3.0', require: false, group: :development
 
 group :development do
+  gem 'capistrano-rails',   '~> 1.1', require: false
+  gem 'capistrano-bundler', '~> 1.1', require: false
   gem('rails-footnotes',
       '3.6.7',
       :git => 'http://github.com/jasoncodes/rails-footnotes.git',
