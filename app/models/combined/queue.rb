@@ -240,7 +240,7 @@ module Combined
         db_call.dirty = false
 
         # Make or find Cached PMR
-        db_pmr = Pmr.find_existing_pmr(retain_call)
+        db_pmr = Pmr.find_existing_pmr(retain_call).unwrap_to_cached
 
         # I believe now that customer is not required for pmrs, we can 
         # delete this code... To Be Done

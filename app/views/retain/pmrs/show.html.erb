@@ -44,14 +44,14 @@
   </tr>
   <tr>
     <td title='Not a call so can not alter this field'>
-      <%= h @pmr.owner.name %>
+      <%= h @pmr.owner ? @pmr.owner.name : "unknown" %>
     </td>
     <td>
       <%= render(:partial => @pmr.customer,
                  :locals => { :name => @pmr.customer.company_name }) %>
     </td>
     <td title='Not a call so can not alter this field'>
-      <%= h @pmr.resolver.name %>
+      <%= h @pmr.resolver ? @pmr.resolver.name : "unknown" %>
     </td>
   </tr>
   <tr>

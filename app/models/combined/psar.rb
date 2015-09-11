@@ -138,7 +138,7 @@ module Combined
       end
 
       # Make or find Cached PMR
-      @cached.pmr = Pmr.find_existing_pmr(psar)
+      @cached.pmr = Pmr.find_existing_pmr(psar).unwrap_to_cached
 
       # Make or find customer
       cust_options = {

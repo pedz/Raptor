@@ -81,7 +81,8 @@ module Combined
       else
         # logger.debug "problem = #{entity.problem} pmr.class = #{pmr.class} 2"
         pmr_options[:creation_date] = 'O14/01/01' # arbitrary stupid date.
-        pmr = find_or_new(pmr_options).save!
+        pmr = find_or_new(pmr_options)
+        pmr.save! if pmr.new_record?
       end
       # logger.debug "problem = #{entity.problem} pmr.class = #{pmr.class} 3"
       pmr

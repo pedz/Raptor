@@ -612,7 +612,7 @@ module Combined
       end
 
       # Make or find Cached PMR
-      @cached.pmr = Pmr.find_existing_pmr(call)
+      @cached.pmr = Pmr.find_existing_pmr(call).unwrap_to_cached
 
       # Make or find customer
       cust_options = {
