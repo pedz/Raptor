@@ -54,6 +54,7 @@ namespace :deploy do
       execute "/etc/rc.d/init.d/raptor restart"
     end
   end
+  after :publishing, :restart
 
   desc "Stop the application"
   task :stop do
