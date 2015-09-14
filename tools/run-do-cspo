@@ -8,6 +8,6 @@ if [[ ! -r "$f" ]] ; then
   echo "Can't find the CSPO file" 1>& 2
   exit 1
 fi
-git checkout crit-sits && 
-  bundle exec tools/do-cspo "$f" &&
-  git checkout master
+# git checkout crit-sits && 
+  bundle exec tools/do-cspo "$f"
+#  git checkout master
