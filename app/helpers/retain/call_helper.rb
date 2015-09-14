@@ -9,7 +9,7 @@ module Retain
 
     Condor_URL = "http://condor.austin.ibm.com/"
     APAR_Regexp = Regexp.new('\bi[vxyz][0-9][0-9][0-9][0-9][0-9]\b', Regexp::IGNORECASE)
-    AMT_URL = "https://amt.austin.ibm.com/aparmgt/aparmgt.html?action=view&record_num="
+    AMT_URL = "https://amt.aus.stglabs.ibm.com/aparmgt/aparmgt.html?action=view&record_num="
     # Matches "top services" initial entry of "AMT record 1234"
     AMT_Regexp1 = Regexp.new('AMT&nbsp;record&nbsp;([0-9]+)')
     # Matches top services entry when the APAR is created
