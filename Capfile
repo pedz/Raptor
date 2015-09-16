@@ -29,7 +29,9 @@ Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
 namespace :deploy do
   desc "Play task"
   task :play do
-    execute "echo #{deploy_to}"
+    on roles(:app) do |host|
+      execute "true | env"
+    end
   end
   
   desc "Clear the production log via rake"
