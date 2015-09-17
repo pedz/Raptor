@@ -30,7 +30,7 @@ namespace :deploy do
   desc "Play task"
   task :play do
     on roles(:app) do |host|
-      execute "true | env"
+      execute "env"
     end
   end
   
