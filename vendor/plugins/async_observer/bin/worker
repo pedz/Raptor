@@ -63,7 +63,7 @@ if ARGV.include?('-d')
     exit(1)
   end
 
-  require File.dirname(__FILE__) + '/../lib/async_observer/daemonize'
+  require_relative '../lib/async_observer/daemonize'
   AsyncObserver::Daemonize.detach(pidpath) do
     load_rails_and_run
   end
