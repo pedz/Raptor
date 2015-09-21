@@ -31,7 +31,6 @@ role :db,  'raptor@tcp237.austin.ibm.com'
 # For available Capistrano configuration variables see the documentation page.
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
-set :default_env, { path: "/usr/local/prvm/ruby-1.9.3-p392/bin:$PATH" }
 
 
 
