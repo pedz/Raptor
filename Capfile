@@ -37,7 +37,9 @@ namespace :deploy do
   desc "Clear the production log via rake"
   task :log_clear do
     on roles(:app) do |host|
-      execute "cd #{current_path}/ && log/.old/save-log"
+      within "#{current_path}/log" do
+        execute ".old/save-log"
+      end
     end
   end
 
@@ -45,7 +47,7 @@ namespace :deploy do
   task :start do
     on roles(:app) do |host|
       # For thin
-      execute "/etc/rc.d/init.d/raptor start"
+      execute "/etc/rc.d/init.d/raptor", :start
     end
   end
 
@@ -53,7 +55,7 @@ namespace :deploy do
   task :restart do
     on roles(:app) do |host|
       # For thin
-      execute "/etc/rc.d/init.d/raptor restart"
+      execute "/etc/rc.d/init.d/raptor", :restart
     end
   end
   after :publishing, :restart
@@ -62,7 +64,7 @@ namespace :deploy do
   task :stop do
     on roles(:app) do |host|
       # For thin
-      execute "/etc/rc.d/init.d/raptor stop"
+      execute "/etc/rc.d/init.d/raptor", :stop
     end
   end
 end
