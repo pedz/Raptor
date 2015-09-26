@@ -83,7 +83,7 @@ module Retain
                :span_classes => span_classes,
                :line => line,
                :index => index,
-               :page => page })
+               :page => page }).encode('UTF-8')
     end
 
     def display_update_button(binding)
@@ -98,7 +98,7 @@ module Retain
            :class => 'call-update-container') do |binding|
         call_update = CallUpdate.new(call)
         concat(render(:partial => 'shared/retain/call_update',
-                      :locals => { :call_update => call_update }))
+                      :locals => { :call_update => call_update })).encode('UTF-8')
       end
     end
 
@@ -116,7 +116,7 @@ module Retain
            :class => 'opc-container') do |binding|
         opc = Retain::CallOpc.new(call)
         concat(render(:partial => "shared/retain/opc_form",
-                      :locals => { :opc => opc }))
+                      :locals => { :opc => opc }).encode('UTF-8'))
       end
     end
 
