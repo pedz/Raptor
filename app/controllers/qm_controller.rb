@@ -1,5 +1,11 @@
 class QmController < ApplicationController
   HashEntry = Struct.new(:row_index, :col_index)
+
+  # This constant is vaguely connected with QM_FULL_ROWS_SHOWN in the
+  # helper.  QM_LAST_ROW_INDEX needs to be large enough so that the
+  # temporary table we build has enough rows to show
+  # QM_FULL_ROWS_SHOWN rows plus the rows needed for the assignments
+  # which can get spread out by a large amount sometimes.
   QM_LAST_ROW_INDEX = 12
 
   def index

@@ -1,4 +1,9 @@
 module QmHelper
+  # The number of rows we show before the first row that has a form in
+  # it... A form is done if the cell is unassigned and the form allows
+  # the assignment.
+  QM_FULL_ROWS_SHOWN = 6
+  
   def show_qm_tables
     @rotation_groups.map do |group|
       @group = group[:group]
@@ -93,7 +98,7 @@ module QmHelper
     if @assignment.rotation_type.auto_skip?
       # only one auto-skip form per member
       unless @first_row_with_form
-        @first_row_with_form = [@row_index - 2, 0].max 
+        @first_row_with_form = [@row_index - QM_FULL_ROWS_SHOWN, 0].max 
         logger.debug "Here!!! #{[@first_row_with_form .. -1]}"
       end
       return true
