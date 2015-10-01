@@ -203,6 +203,7 @@ Raptor.call_action_perform = function (event) {
     var tbody = ele.up('tbody');
     var update = tbody.down('.call-update-container');
     var opc = tbody.down('.opc-container');
+    var url;
 
     if (val == "update") {
 	if (!update.visible())
@@ -219,20 +220,28 @@ Raptor.call_action_perform = function (event) {
 	    opc.toggleForm();
     }
     if (val == "ct") {
-	var url = ele.readAttribute('data-ct');
+	url = ele.readAttribute('data-ct');
 	ele.disable();
 	new Ajax.Request(url,
 			 {
+			     onSuccess: function (transport) {
+				 ele.clear();
+				 ele.enable();
+			     },
 			     asynchronous : true,
 			     evalScripts : true,
 			     parameters : 'authenticity_token=' + encodeURIComponent(pageSettings.authenticityToken)
 			 });
     }
     if (val == "dispatch" || val == "undispatch") {
-	var url = ele.readAttribute('data-dispatch');
+	url = ele.readAttribute('data-dispatch');
 	ele.disable();
 	new Ajax.Request(url,
 			 {
+			     onSuccess: function (transport) {
+				 ele.clear();
+				 ele.enable();
+			     },
 			     asynchronous : true,
 			     evalScripts : true,
 			     parameters : 'authenticity_token=' + encodeURIComponent(pageSettings.authenticityToken)
@@ -242,6 +251,13 @@ Raptor.call_action_perform = function (event) {
 
 Raptor.call_action_init = function(ele) {
     ele.observe('change', Raptor.call_action_perform);
+    var tbody = ele.up('tbody');
+    var opc = tbody.down('.opc-container');
+    if (opc)
+	opc.menu = ele;
+    var update = tbody.down('.call-update-container');
+    if (update)
+	update.menu = ele;
 };
 
 // new Ajax.Request('/raptor/combined_call/PEDZ,S,165,302/dispatch', {asynchronous:true, evalScripts:true, parameters:'authenticity_token=' + encodeURIComponent('Ik66IThxIvuatBiYik9GYW/FTbt4JXt0VQkkU2fCpro=')}); return false;

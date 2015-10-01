@@ -209,6 +209,10 @@ Raptor.redrawAction = function() {
 
 Raptor.closeDiv = function() {
     var parent = this.up();
+    if (parent.menu) {
+	parent.menu.clear();
+	parent.menu.enable();
+    }
     if (parent.visible()) {
 	parent.toggleForm();
     }
@@ -332,13 +336,4 @@ Raptor.fixUpdateContainer = function (ele) {
 /* Add this to the document.observe('dom:loaded') list of functions */
 Raptor.updateLoadHook = function() {
     Raptor.fixAuthTokens();
-
-    /*
-     * This has to be here or firefox draws the initial page wrong.
-     * We find each call-update-container and then dive into each of
-     * them.  The form, for example, has added methods and properties
-     * so that the redraw method can properly initialize all of the
-     * input fields within it.
-    $$('.call-update-container').each(Raptor.fixUpdateContainer);
-     */
 };
