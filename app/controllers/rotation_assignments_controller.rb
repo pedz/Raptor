@@ -29,6 +29,7 @@ class RotationAssignmentsController < ApplicationController
     
     wrap_assignment_with_block(assignment) do
       assignment.update_attributes!(assignment_hash)
+      assignment.assigned_by = application_user.id
       assignment.reload
       follow_next_type(assignment)
     end
@@ -63,7 +64,7 @@ class RotationAssignmentsController < ApplicationController
       if triggered
         RotationAssignment.create!(:rotation_group => group,
                                    :pmr => "",
-                                   :assigned_by => assignment.assigned_by,
+                                   :assigned_by => application_user.id,
                                    :assigned_to => user_id,
                                    :rotation_type => auto_skip,
                                    :notes => "Auto Filled")
@@ -98,7 +99,7 @@ class RotationAssignmentsController < ApplicationController
       if l
         l.update_attributes!({
                                :pmr => assignment.pmr,
-                               :assigned_by => assignment.assigned_by,
+                               :assigned_by => application_user.id,
                                :rotation_type => next_type,
                                :notes => ""
                              })
@@ -107,7 +108,7 @@ class RotationAssignmentsController < ApplicationController
         fill_with_auto_skip(RotationAssignment.new({
                                                      :rotation_group => next_group,
                                                      :pmr => assignment.pmr,
-                                                     :assigned_by => assignment.assigned_by,
+                                                     :assigned_by => application_user.id,
                                                      :assigned_to => assignment.assigned_to,
                                                      :rotation_type => next_type,
                                                      :notes => ""
