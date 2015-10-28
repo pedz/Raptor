@@ -77,8 +77,13 @@ class QmController < ApplicationController
         # case they will not be in the active_member_hash
         if hash_entry
 
-          # Take care of ending conditions
+          # if this member has already filled all the rows, just move on
+          next if hash_entry.row_index == -1
+
+          # if this member has now filled up all the rows, adjust the
+          # number of members left and break out if no members are left.
           if hash_entry.row_index == 0
+            hash_entry.row_index -= 1
             members_left -= 1
             if members_left <= 0
               break
