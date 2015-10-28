@@ -43,7 +43,7 @@ module QmHelper
       render(:partial => 'show_row')
     end
     logger.debug "k.size = #{k.size} @first_row_with_form = #{@first_row_with_form}"
-    @first_row_with_form = [@row_index - QM_FULL_ROWS_SHOWN, 0].max if @first_row_with_form.nil?
+    @first_row_with_form = [@row_index - QM_FULL_ROWS_SHOWN - 1, 0].max if @first_row_with_form.nil?
     logger.debug "show_qm_table_body END #{[@first_row_with_form .. -1]}"
     j = k[@first_row_with_form .. -1].join("\n")
   end
