@@ -18,8 +18,8 @@ module Retain
 end
 
 begin
-  # Load a host specific file.  e.g. tcp237.austin.ibm.com loads a
-  # file called tcp237.rb.  That file needs to set TUNNELLED and
+  # Load a host specific file.  e.g. tcp237.aus.stglabs.ibm.com loads
+  # a file called tcp237.rb.  That file needs to set TUNNELLED and
   # BASE_PORT.  The default is to not have a file and default to not
   # tunnelled (see rescue below).
   file = Rails.root.join('config', 'saved', Socket.gethostname.sub(/\..*/, '') + '.rb')
