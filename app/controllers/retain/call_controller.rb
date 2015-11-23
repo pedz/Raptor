@@ -234,18 +234,11 @@ module Retain
           else
             text.push(mess("Requeue Completed"))
             if from_team_to_personal
-              if @call.p_s_b == 'P'
-              end
-              # logger.debug("setting owner / resolver")
+              # logger.debug("setting resolver")
               alter_options = pmr_options.dup
               owner = new_queue.owners[0]
               alter_options[:pmr_resolver_id] = owner.signon
-              if @pmr.country == '000'
-                fields = "Owner & Resolver"
-                alter_options[:pmr_owner_id] = owner.signon
-              else
-                fields = "Resolver"
-              end
+              fields = "Resolver"
               alter = safe_new(Retain::Pmpu, alter_options, reply_span)
               raise "Create of PMR Alter Failed" if requeue.nil?
               safe_sendit(alter)
