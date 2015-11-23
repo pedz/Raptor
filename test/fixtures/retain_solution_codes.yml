@@ -1,9 +1,0 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-one:
-  psar_solution_code: 1
-  description: MyString
-
-two:
-  psar_solution_code: 1
-  description: MyString
