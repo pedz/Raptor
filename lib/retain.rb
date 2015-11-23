@@ -11,7 +11,6 @@
 require 'retain/base'
 require 'retain/sdi'
 require 'retain/ccsid'
-require 'retain/config'
 require 'retain/connection'
 require 'retain/connection_parameters'
 require 'retain/errors'
