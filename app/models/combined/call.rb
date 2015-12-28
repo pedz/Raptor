@@ -311,50 +311,15 @@ module Combined
     # PMR is fetched so it can be displayed so it will be rare that a
     # call is fetched and not displayed.
     #
+    # The new process pretty much says that the owner is always
+    # valid.  The only exception is if it blank.
     def validate_owner_private(user)
-      queue = self.queue
-      user_center = user.center(queue.h_or_s)
-      if user_center.center != queue.center.center
-        return [ "normal", "Queue outside center not editable or judged", false]
-      end
-
-      # Lets deal with backups and secondarys.  As far as I know, they
-      # are not editable for any reason.
-      p_s_b = self.p_s_b
-      if p_s_b == 'S' || p_s_b == 'B'
-        return ["normal", "Owner for secondary/backup not editable or judged", false ]
-      end
-
-      pmr = self.pmr
-      # World Trade, owner is always o.k.
-      # TODO Actually, this isn't true.  It resolver or next queue get
-      # clobbered they are not o.k.  We might could add code to detect that.
-      if pmr.country != "000"
-        return ["normal", "Owner for WT not editable or judged", false ]
-      end
-
       pmr_owner = pmr.owner
       # A blank owner is a bad dog.
       if pmr_owner.signon.blank?
         return [ "wag-wag", "Owner should not be blank", true ]
       end
-
-      # If Queue Owner is the same as PMR Owner, we're good.
-      if (infos = queue.queue_infos).empty?
-        return [ "warn", "Queue has no owner", true ]
-      else
-        queue_owner = infos[0].owner
-        if pmr_owner.id == queue_owner.id
-          return [ "good", "PMR Owner is Queue Owner", true ]
-        end
-      end
-
-      owner_center = queue_owner.center(queue.h_or_s)
-      if owner_center && owner_center.center == queue.center.center
-        return [ "warn", "PMR Owner in same center but not queue owner", true ]
-      end
-
-      return [ "wag-wag", "PMR Owner not in same center", true ]
+      return [ "normal", "PMR Owner assumed valid", true]
     end
 
     ##
@@ -363,14 +328,14 @@ module Combined
       queue = self.queue
       user_center = user.center(queue.h_or_s)
       if user_center.center != queue.center.center
-        return [ "normal", "Queue outside center not editable or judged", false]
+        return [ "normal", "Queue outside center not editable or judged", true]
       end
 
       # Lets deal with backups and secondarys.  As far as I know, they
       # are not editable for any reason.
       p_s_b = self.p_s_b
       if p_s_b == 'S' || p_s_b == 'B'
-        return ["normal", "Resolver for secondary/backup not editable or judged", false ]
+        return ["normal", "Resolver for secondary/backup not editable or judged", true ]
       end
 
       pmr = self.pmr
@@ -405,14 +370,14 @@ module Combined
       queue = self.queue
       user_center = user.center(queue.h_or_s)
       if user_center.center != queue.center.center
-        return [ "normal", "Queue outside center not editable or judged", false]
+        return [ "normal", "Queue outside center not editable or judged", true]
       end
 
       # Lets deal with backups and secondarys.  As far as I know, they
       # are not editable for any reason.
       p_s_b = self.p_s_b
       if p_s_b == 'S' || p_s_b == 'B'
-        return ["normal", "Next Queue for secondary/backup not editable or judged", false ]
+        return ["normal", "Next Queue for secondary/backup not editable or judged", true ]
       end
       
       pmr = self.pmr
@@ -420,7 +385,7 @@ module Combined
       # TODO Actually, this isn't true.  It resolver or next queue get
       # clobbered they are not o.k.  We might could add code to detect that.
       if pmr.country != "000"
-        return ["normal", "Next Queue for WT not editable or judged", false ]
+        return ["normal", "Next Queue for WT not editable or judged", true ]
       end
 
       if pmr.next_center.nil?
@@ -435,7 +400,7 @@ module Combined
       # We are going to assume that if we have no queue info records
       # on this queue, then it is a team queue.
       if (infos = queue.queue_infos).empty?
-        return [ "good", "Team queues are not editable or judged", false ]
+        return [ "good", "Team queues are not editable or judged", true ]
       end
 
       # Personal queue set to next queue... bad dog.
@@ -465,31 +430,12 @@ module Combined
     # primary resides, then we want that person to be the owner of the
     # PMR.  This is for WT and US.
     def compute_owner_private
-      # Lets deal with backups and secondarys.  As far as I know, they
-      # are not editable for any reason.
-      p_s_b = @cached.p_s_b
-      if p_s_b == 'S' || p_s_b == 'B'
-        return ["normal", "Owner for secondary and backup calls always accepted", true ]
-      end
-
-      queue = @cached.queue
-      calls_center_id = queue.center_id
-      pmr = @cached.pmr
       pmr_owner = pmr.owner
       # A blank owner is a bad dog.
       if pmr_owner.nil? || pmr_owner.signon.blank?
         return [ "wag-wag", "Owner should not be blank", true ]
       end
-
-      # From the pmr_owner, get their software and hardware center and
-      # see if one of those matches the center the primary call is
-      # on.
-      if calls_center_id == pmr_owner.software_center_id ||
-          calls_center_id == pmr_owner.hardware_center_id
-        return [ "good", "PMR Owner's center is matches primary call's center", true ]
-      end
-
-      return [ "wag-wag", "PMR Owner not in same center", true ]
+      return [ "normal", "PMR Owner assumed valid", true]
     end
 
     ##
