@@ -77,12 +77,13 @@
     </td>
   </tr>
   <tr>
-    <td colspan='3'>
+    <td colspan='2'>
       <span id='click-header'>Click to view:</span>
       <span id='ecpaat-header'  class='click-tag' title='ecpaat-lines'>ECPAAT</span>,
       <span id='scratch-header' class='click-tag' title='scratch-lines'>Scratch Pad</span>,
       <span id='contact-header' class='click-tag' title='contact-lines'>Contact Info</span>
-      <span id='call-header'    class='click-tag' title='call-list'>Call List</span><br/>
+      <span id='call-header'    class='click-tag' title='call-list'>Call List</span>
+      <br/>
       <span id='ecpaat-lines' class='click-data'>
 	<%= ecpaat_lines(@pmr) %>
       </span>
@@ -107,6 +108,12 @@
 	<% make_call_link(binding, @call, "Sec 2", @pmr.secondary_2_param) %>
 	<% make_call_link(binding, @call, "Sec 3", @pmr.secondary_3_param) %>
       </span>
+    </td>
+    <td>
+      <form>
+	<label for="ecurep">Kill da Ecuwep</label>
+	<input type="checkbox" id="ecurep">
+      </form>
     </td>
   </tr>
 </table>

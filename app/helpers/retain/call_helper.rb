@@ -47,7 +47,9 @@ module Retain
       end
       if line.text_type == :signature
         sig_line = Retain::SignatureLine.new(line.text)
-        text_line = sig_line.to_s(tz).gsub(/ /, '&nbsp;')
+        text_line = sig_line.to_s(tz)
+        @matches = /ECUREP PMRUPDATE/.match(text_line)
+        text_line = text_line.gsub(/ /, '&nbsp;')
       else
         temp = html_escape(line.text)
         # Replace spaces with non-breaking spaces.
@@ -75,6 +77,7 @@ module Retain
         temp = temp.gsub(AMT_Regexp3, "<a href=\"#{AMT_URL}\\1\">\\0</a>")
         text_line = temp
       end
+      span_classes += ' ecurep' if @matches
       render(:partial => "shared/retain/show_line",
              :locals => {
                :id_prefix => id_prefix,
