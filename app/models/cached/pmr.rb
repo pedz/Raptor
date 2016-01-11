@@ -541,7 +541,7 @@ module Cached
                                "(#{ACTION_PLAN})|" +
                                "(#{TESTCASE})|" +
                                "(#{SUMMARY})" +
-                               "): *(.*)$", Regexp::IGNORECASE).freeze
+                               "):? *(.*)$", Regexp::IGNORECASE).freeze
 
     #
     # The Anderson tools puts a '.' on a line to create an empty line.
