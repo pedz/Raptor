@@ -78,9 +78,9 @@ module Retain
           if ecpaat.has_key?(heading)
             text_line = signatures[heading]
             signature = Retain::SignatureLine.new(text_line.text)
-            if signature.date < 2.weeks.ago
-              txt += "#{heading}: #{ecpaat[heading].join("\n")}\n\n"
-            end
+            # if signature.date < 2.weeks.ago
+            #   txt += "#{heading}: #{ecpaat[heading].join("\n")}\n\n"
+            # end
           else
             txt += "#{heading}: \n\n"
           end
