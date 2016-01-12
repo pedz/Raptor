@@ -533,7 +533,7 @@ module Cached
                         "Summary"].freeze
     ##
     # A regular expression that matches the ECPAAT headings.
-    ECPAAT_REGEXP = Regexp.new("^(" +
+    ECPAAT_REGEXP = Regexp.new("\\A(" +
                                "(#{ENVIRONMENT})|" +
                                "(#{CUSTOMER})|" +
                                "(#{PROBLEM})|" +
@@ -541,7 +541,7 @@ module Cached
                                "(#{ACTION_PLAN})|" +
                                "(#{TESTCASE})|" +
                                "(#{SUMMARY})" +
-                               "):? *(.*)$", Regexp::IGNORECASE).freeze
+                               "):? *(.*)\\z", Regexp::IGNORECASE).freeze
 
     #
     # The Anderson tools puts a '.' on a line to create an empty line.

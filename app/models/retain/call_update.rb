@@ -78,9 +78,9 @@ module Retain
           if ecpaat.has_key?(heading)
             text_line = signatures[heading]
             signature = Retain::SignatureLine.new(text_line.text)
-            # if signature.date < 2.weeks.ago
-            #   txt += "#{heading}: #{ecpaat[heading].join("\n")}\n\n"
-            # end
+            if signature.date && (signature.date < 2.weeks.ago)
+              txt += "#{heading}: #{fix_text(ecpaat[heading])}\n\n"
+            end
           else
             txt += "#{heading}: \n\n"
           end
@@ -94,6 +94,12 @@ module Retain
         end
       end
       txt
+    end
+
+    # Mostly does join("\n") but trims off space at the end of the
+    # lines.
+    def fix_text(lines)
+      lines.join("\n").gsub(/ +$/, "")
     end
   end
 end
