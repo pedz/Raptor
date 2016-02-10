@@ -21,7 +21,7 @@ module Retain
       temp_hash = pmr.ecpaat
       temp_lines = []
       Cached::Pmr::ECPAAT_HEADINGS.each { |heading|
-        unless (lines = temp_hash[heading]).nil?
+        unless (lines = temp_hash[heading]).nil? || lines.empty?
           temp_lines << "<span class='ecpaat-heading'>" + heading + ": " + "</span>" +
             lines.shift
           temp_lines += temp_hash[heading]
