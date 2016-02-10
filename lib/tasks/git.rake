@@ -12,7 +12,7 @@ end
 
 desc "Deploy to production server"
 task :deploy => [ :sync_production ] do
-  sh "cap --set-before env=production --set branch=#{git_head} deploy"
+  sh "cap production deploy"
 end
 
 desc "Pushs git repository to staging server"
@@ -22,111 +22,111 @@ end
 
 desc "Deploy to staging server"
 task :stage => [ :sync_staging ] do
-  sh "cap --set-before env=staging --set branch=#{git_head} deploy"
+  sh "cap staging deploy"
 end
 
 namespace :deploy do
   desc 'Test deployment dependencies.'
   task :check => [ :sync_production ] do
-    sh "cap --set-before env=production --set branch=#{git_head} deploy:check"
+    sh "cap production deploy:check"
   end
 
   desc 'Clean up old releases.'
   task :cleanup => [ :sync_production ] do
-    sh "cap --set-before env=production --set branch=#{git_head} deploy:cleanup"
+    sh "cap production deploy:cleanup"
   end
 
   desc "Deploys and starts a `cold' application."
   task :cold => [ :sync_production ] do
-    sh "cap --set-before env=production --set branch=#{git_head} deploy:cold"
+    sh "cap production deploy:cold"
   end
 
   desc 'Clear the production log via rake.'
   task :log_clear => [ :sync_production ] do
-    sh "cap --set-before env=production --set branch=#{git_head} deploy:log_clear"
+    sh "cap production deploy:log_clear"
   end
 
   desc 'Run the migrate rake task.'
   task :migrate => [ :sync_production ] do
-    sh "cap --set-before env=production --set branch=#{git_head} deploy:migrate"
+    sh "cap production deploy:migrate"
   end
 
   desc 'Deploy and run pending migrations'
   task :migrations => [ :sync_production ] do
-    sh "cap --set-before env=production --set branch=#{git_head} deploy:migrations"
+    sh "cap production deploy:migrations"
   end
 
   desc 'Displays the commits since your last deploy.'
   task :pending => [ :sync_production ] do
-    sh "cap --set-before env=production --set branch=#{git_head} deploy:pending"
+    sh "cap production deploy:pending"
   end
 
   namespace :pending do
     desc "Displays the `diff' since your last deploy."
     task :diff => [ :sync_production ] do
-      sh "cap --set-before env=production --set branch=#{git_head} deploy:pending:diff"
+      sh "cap production deploy:pending:diff"
     end
   end
 
   desc 'Play task.'
   task :play => [ :sync_production ] do
-    sh "cap --set-before env=production --set branch=#{git_head} deploy:play"
+    sh "cap production deploy:play"
   end
 
   desc 'Restart the application.'
   task :restart => [ :sync_production ] do
-    sh "cap --set-before env=production --set branch=#{git_head} deploy:restart"
+    sh "cap production deploy:restart"
   end
 
   desc 'Rolls back to a previous version and restarts.'
   task :rollback => [ :sync_production ] do
-    sh "cap --set-before env=production --set branch=#{git_head} deploy:rollback"
+    sh "cap production deploy:rollback"
   end
 
   desc 'Prepares one or more servers for deployment.'
   task :setup => [ :sync_production ] do
-    sh "cap --set-before env=production --set branch=#{git_head} deploy:setup"
+    sh "cap production deploy:setup"
   end
 
   desc 'The start task is used by :cold_deploy to start the application up.'
   task :start => [ :sync_production ] do
-    sh "cap --set-before env=production --set branch=#{git_head} deploy:start"
+    sh "cap production deploy:start"
   end
 
   desc 'No way to stop the application.'
   task :stop => [ :sync_production ] do
-    sh "cap --set-before env=production --set branch=#{git_head} deploy:stop"
+    sh "cap production deploy:stop"
   end
 
   desc 'Updates the symlink to the most recently deployed version.'
   task :symlink => [ :sync_production ] do
-    sh "cap --set-before env=production --set branch=#{git_head} deploy:symlink"
+    sh "cap production deploy:symlink"
   end
 
   desc 'Copies your project and updates the symlink.'
   task :update => [ :sync_production ] do
-    sh "cap --set-before env=production --set branch=#{git_head} deploy:update"
+    sh "cap production deploy:update"
   end
 
   desc 'Copies your project to the remote servers.'
   task :update_code => [ :sync_production ] do
-    sh "cap --set-before env=production --set branch=#{git_head} deploy:update_code"
+    sh "cap production deploy:update_code"
   end
 
   desc 'Copy files to the currently deployed version.'
   task :upload => [ :sync_production ] do
-    sh "cap --set-before env=production --set branch=#{git_head} deploy:upload"
+    sh "cap production deploy:upload"
   end
 
   namespace :web do
     desc 'Disable the web application'
     task :disable do
-      sh "cap --set-before env=production --set branch=#{git_head} deploy:web:disable"
+      sh "cap production deploy:web:disable"
     end
 
     desc 'Enable the web application'
     task :enable do
-      sh "cap --set-before env=production --set branch=#{git_head} deploy:web:enable"
+      sh "cap production deploy:web:enable"
     end
   end
 end
@@ -134,105 +134,105 @@ end
 namespace :stage do
   desc 'Test deployment dependencies.'
   task :check => [ :sync_staging ] do
-    sh "cap --set-before env=staging --set branch=#{git_head} deploy:check"
+    sh "cap staging deploy:check"
   end
 
   desc 'Clean up old releases.'
   task :cleanup => [ :sync_staging ] do
-    sh "cap --set-before env=staging --set branch=#{git_head} deploy:cleanup"
+    sh "cap staging deploy:cleanup"
   end
 
   desc "Deploys and starts a `cold' application."
   task :cold => [ :sync_staging ] do
-    sh "cap --set-before env=staging --set branch=#{git_head} deploy:cold"
+    sh "cap staging deploy:cold"
   end
 
   desc 'Clear the staging log via rake.'
   task :log_clear => [ :sync_staging ] do
-    sh "cap --set-before env=staging --set branch=#{git_head} deploy:log_clear"
+    sh "cap staging deploy:log_clear"
   end
 
   desc 'Run the migrate rake task.'
   task :migrate => [ :sync_staging ] do
-    sh "cap --set-before env=staging --set branch=#{git_head} deploy:migrate"
+    sh "cap staging deploy:migrate"
   end
 
   desc 'Deploy and run pending migrations'
   task :migrations => [ :sync_staging ] do
-    sh "cap --set-before env=staging --set branch=#{git_head} deploy:migrations"
+    sh "cap staging deploy:migrations"
   end
 
   desc 'Displays the commits since your last deploy.'
   task :pending => [ :sync_staging ] do
-    sh "cap --set-before env=staging --set branch=#{git_head} deploy:pending"
+    sh "cap staging deploy:pending"
   end
 
   namespace :pending do
     desc "Displays the `diff' since your last deploy."
     task :diff => [ :sync_staging ] do
-      sh "cap --set-before env=staging --set branch=#{git_head} deploy:pending:diff"
+      sh "cap staging deploy:pending:diff"
     end
   end
 
   desc 'Play task.'
   task :play => [ :sync_staging ] do
-    sh "cap --set-before env=staging --set branch=#{git_head} deploy:play"
+    sh "cap staging deploy:play"
   end
 
   desc 'Restart the application.'
   task :restart => [ :sync_staging ] do
-    sh "cap --set-before env=staging --set branch=#{git_head} deploy:restart"
+    sh "cap staging deploy:restart"
   end
 
   desc 'Rolls back to a previous version and restarts.'
   task :rollback => [ :sync_staging ] do
-    sh "cap --set-before env=staging --set branch=#{git_head} deploy:rollback"
+    sh "cap staging deploy:rollback"
   end
 
   desc 'Prepares one or more servers for deployment.'
   task :setup => [ :sync_staging ] do
-    sh "cap --set-before env=staging --set branch=#{git_head} deploy:setup"
+    sh "cap staging deploy:setup"
   end
 
   desc 'The start task is used by :cold_deploy to start the application up.'
   task :start => [ :sync_staging ] do
-    sh "cap --set-before env=staging --set branch=#{git_head} deploy:start"
+    sh "cap staging deploy:start"
   end
 
   desc 'No way to stop the application.'
   task :stop => [ :sync_staging ] do
-    sh "cap --set-before env=staging --set branch=#{git_head} deploy:stop"
+    sh "cap staging deploy:stop"
   end
 
   desc 'Updates the symlink to the most recently deployed version.'
   task :symlink => [ :sync_staging ] do
-    sh "cap --set-before env=staging --set branch=#{git_head} deploy:symlink"
+    sh "cap staging deploy:symlink"
   end
 
   desc 'Copies your project and updates the symlink.'
   task :update => [ :sync_staging ] do
-    sh "cap --set-before env=staging --set branch=#{git_head} deploy:update"
+    sh "cap staging deploy:update"
   end
 
   desc 'Copies your project to the remote servers.'
   task :update_code => [ :sync_staging ] do
-    sh "cap --set-before env=staging --set branch=#{git_head} deploy:update_code"
+    sh "cap staging deploy:update_code"
   end
 
   desc 'Copy files to the currently deployed version.'
   task :upload => [ :sync_staging ] do
-    sh "cap --set-before env=staging --set branch=#{git_head} deploy:upload"
+    sh "cap staging deploy:upload"
   end
 
   namespace :web do
     desc 'Disable the web application'
     task :disable do
-      sh "cap --set-before env=staging --set branch=#{git_head} deploy:web:disable"
+      sh "cap staging deploy:web:disable"
     end
 
     desc 'Enable the web application'
     task :enable do
-      sh "cap --set-before env=staging --set branch=#{git_head} deploy:web:enable"
+      sh "cap staging deploy:web:enable"
     end
   end
 end
