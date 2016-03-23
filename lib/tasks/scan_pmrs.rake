@@ -16,6 +16,7 @@ task :scan_pmrs do
   begin
     pmrs.each do |cached_pmr|
       print "#{cached_pmr.pbc} "
+      next if cached_pmr.pbc == "00000,000,000"
       if pmr_valid?(@params, cached_pmr)
         # cause the PMR to be fetched.
         # It might be that this causes an exception like the db unique
