@@ -83,8 +83,8 @@ module Cached
 
     ##
     # :attr: expire_time
-    # Set to 3.days.
-    set_expire_time 3.days
+    # Set to 15.days.
+    set_expire_time 15.days
 
     set_table_name "cached_registrations"
 
