@@ -76,9 +76,10 @@
   <tr>
     <td colspan='3'>
       <span id='click-header'>Click to view:</span>
-      <span id='ecpaat-header'  class='click-tag' for='ecpaat-lines'>ECPAAT</span>,
-      <span id='scratch-header' class='click-tag' for='scratch-lines'>Scratch Pad</span>,
+      <span id='ecpaat-header'  class='click-tag' for='ecpaat-lines'>ECPAAT</span>
+      <span id='scratch-header' class='click-tag' for='scratch-lines'>Scratch Pad</span>
       <span id='contact-header' class='click-tag' for='contact-lines'>Contact Info</span><br/>
+      <span id='entitlement-header' class='click-tag' title='entitlement-lines'>Entitlement</span>
       <span id='ecpaat-lines' class='click-data'>
 	<%= ecpaat_lines(@pmr) %>
       </span>
@@ -96,6 +97,11 @@
 	   onclick='Raptor.newUrl("<%= h @pmr.problem_e_mail.strip %>", "PMR <%= @pmr.pbc.upcase %>");'>
 	  <%= h @pmr.problem_e_mail %>
 	</a><br/>
+      </span>
+      <span id='entitlement-lines' class='click-data'>
+	<% @pmr.information_text_lines.each do |line| -%>
+	<%=  line.text.gsub(' ', '&nbsp;') %><br />
+	<% end -%>
       </span>
     </td>
   </tr>

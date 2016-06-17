@@ -79,10 +79,11 @@
   <tr>
     <td colspan='2'>
       <span id='click-header'>Click to view:</span>
-      <span id='ecpaat-header'  class='click-tag' title='ecpaat-lines'>ECPAAT</span>,
-      <span id='scratch-header' class='click-tag' title='scratch-lines'>Scratch Pad</span>,
-      <span id='contact-header' class='click-tag' title='contact-lines'>Contact Info</span>
-      <span id='call-header'    class='click-tag' title='call-list'>Call List</span>
+      <span id='ecpaat-header'      class='click-tag' title='ecpaat-lines'>ECPAAT</span>
+      <span id='scratch-header'     class='click-tag' title='scratch-lines'>Scratch Pad</span>
+      <span id='contact-header'     class='click-tag' title='contact-lines'>Contact Info</span>
+      <span id='call-header'        class='click-tag' title='call-list'>Call List</span>
+      <span id='entitlement-header' class='click-tag' title='entitlement-lines'>Entitlement</span>
       <br/>
       <span id='ecpaat-lines' class='click-data'>
 	<%= ecpaat_lines(@pmr) %>
@@ -107,6 +108,11 @@
 	<% make_call_link(binding, @call, "Sec 1", @pmr.secondary_1_param) %>
 	<% make_call_link(binding, @call, "Sec 2", @pmr.secondary_2_param) %>
 	<% make_call_link(binding, @call, "Sec 3", @pmr.secondary_3_param) %>
+      </span>
+      <span id='entitlement-lines' class='click-data'>
+	<% @pmr.information_text_lines.each do |line| -%>
+	<%=  line.text.gsub(' ', '&nbsp;') %><br />
+	<% end -%>
       </span>
     </td>
     <td>
