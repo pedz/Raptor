@@ -255,6 +255,9 @@ module Retain
           dup_options = pmr_options.dup
           dup_options[:h_or_s] = @queue.h_or_s
           dup_options[:customer_number] = @pmr.customer.customer_number
+          dup_options[:customer_name] = @call.nls_customer_name
+          dup_options[:priority] = @call.priority
+          dup_options[:severity] = @call.severity
           dup_options[:addtxt_lines] = newtxt unless newtxt.empty?
           dup_options[:comment] = @call.comments
           if new_queue = call_update[:new_queue]
