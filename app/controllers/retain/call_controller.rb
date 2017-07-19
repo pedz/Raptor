@@ -105,11 +105,6 @@ module Retain
         when "close"
           update_type = :close
           need_undispatch = need_dispatch = true
-          if @pmr.country != '000' && @call.p_s_b == 'P'
-            render_message(reply_span, [ error_mess("Can not close WT PMRs") ])
-            logger.error "Can not close WT PMRs"
-            return
-          end
         end
       else
         update_type = :none
