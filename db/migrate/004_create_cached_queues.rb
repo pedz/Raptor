@@ -17,6 +17,8 @@ class CreateCachedQueues < ActiveRecord::Migration
     execute "ALTER TABLE cached_queues ADD CONSTRAINT fk_cached_queues_center_id
              FOREIGN KEY (center_id) REFERENCES cached_centers(id)
              ON DELETE CASCADE"
+    execute "INSERT INTO cached_queues ( queue_name, h_or_s, center_id, created_at, updated_at )
+               VALUES ( 'nullqu', 'h', (select id from cached_centers where center = 'nul'), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP )"
   end
 
   def self.down

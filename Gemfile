@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem "rails", "~> 2.3.18"
 gem "ruby-ldap"
 gem "activeldap", :require => "active_ldap"
-gem "icu4r_19"
+gem "icu4r_19", :git => 'https://github.com/pedz/icu4r_19.git'
 gem "beanstalk-client"
 gem "pg"
 gem "thin"

@@ -16,6 +16,8 @@ class CreateCachedCenters < ActiveRecord::Migration
     end
     execute "ALTER TABLE cached_centers ADD CONSTRAINT uq_cached_centers
              UNIQUE (center)"
+    execute "INSERT INTO cached_centers ( center, created_at, updated_at )
+               VALUES ( 'nul', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP )"
   end
 
   def self.down
