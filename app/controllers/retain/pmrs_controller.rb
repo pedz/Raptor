@@ -36,24 +36,6 @@ module Retain
     end
     
     # POST
-    def opc
-      pmr = Combined::Pmr.from_param!(params[:id], signon_user)
-      opc_div = "opc_div_#{pmr.to_id}"
-      reply_span = "opc_reply_span_#{pmr.to_id}"
-      pmr_opc = Retain::PmrOpc.new(pmr)
-      opc_options = params[:retain_opc].merge(:user_name => application_user.ldap_id,
-                                              :retain_params => retain_user_connection_parameters)
-      text, do_fade = pmr_opc.update(opc_options)
-      render_message(reply_span, text) do |page|
-        if do_fade
-          page.visual_effect(:fade, reply_span, :duration => 5.0)
-          page[opc_div].redraw
-          page[opc_div].close
-        end
-      end
-    end
-
-    # POST
     def addtime
       options = Combined::Pmr.param_to_options(params[:id])
       options.merge!(params[:psar].symbolize_keys)

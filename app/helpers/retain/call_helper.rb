@@ -105,24 +105,6 @@ module Retain
       end
     end
 
-    def opc_button(binding, call)
-      opc_text = call.pmr.valid_opc ? "Update OPC" : "Create OPC"
-      span binding, :class => 'opc-span' do |binding|
-        concat(button(opc_text, "$(\"opc-div\").toggleForm();"))
-      end
-    end
-
-    def opc_form(binding, call)
-      add_page_setting("opc_#{call.to_id}", call.pmr.opc)
-      div(binding,
-           :id => 'opc-div',
-           :class => 'opc-container') do |binding|
-        opc = Retain::CallOpc.new(call)
-        concat(render(:partial => "shared/retain/opc_form",
-                      :locals => { :opc => opc }).encode('UTF-8'))
-      end
-    end
-
     def display_pmr_owner(binding, call)
       td binding, :class => "owner" do |binding|
         span binding, :class => "field-header" do |binding|

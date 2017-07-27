@@ -71,7 +71,7 @@ module Retain
       
       # Convert the check box values to real true / false values.  I'm
       # worried I'm going to make a silly mistake if I don't.
-      [ :do_p8, :do_ct, :do_ca, :add_time, :update_pmr, :hot ].each { |sym|
+      [ :do_ct, :do_ca, :add_time, :update_pmr, :hot ].each { |sym|
         if call_update.has_key?(sym)
           call_update[sym] = call_update[sym] == "1"
        else
@@ -83,7 +83,6 @@ module Retain
       update_div = "call_update_div_#{@call.to_id}"
       reply_span = "call_update_reply_span_#{@call.to_id}"
       newtxt = format_lines(call_update[:newtxt])
-      newtxt.unshift("P8PMR") if call_update[:do_p8]
       
       if call_update[:update_pmr]
         case call_update[:update_type]
@@ -557,23 +556,6 @@ module Retain
       render :json => result.to_json
     end
 
-    def opc
-      call = Combined::Call.from_param!(params[:id], signon_user)
-      opc_div = "opc_div_#{call.to_id}"
-      reply_span = "opc_reply_span_#{call.to_id}"
-      call_opc = Retain::CallOpc.new(call)
-      opc_options = params[:retain_opc].merge(:user_name => application_user.ldap_id,
-                                              :retain_params => retain_user_connection_parameters)
-      text, do_fade = call_opc.update(opc_options)
-      render_message(reply_span, text) do |page|
-        if do_fade
-          page.visual_effect(:fade, reply_span, :duration => 5.0)
-          page[opc_div].redraw
-          page[opc_div].close
-        end
-      end
-    end
-    
     private
 
     def safe_new(klass, options, area)

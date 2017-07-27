@@ -32,7 +32,7 @@ set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids')
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
-set :default_env, { path: "/usr/local/prvm/ruby-1.9.3-p392/bin:$PATH" }
+set :default_env, { path: "/usr/local/aixbin:/usr/local/prvm/ruby-1.9.3-p392/bin:$PATH" }
 
 # Default value for keep_releases is 5
 # set :keep_releases, 5

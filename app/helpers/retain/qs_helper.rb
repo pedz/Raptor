@@ -137,8 +137,7 @@ module Retain
     BIGGEM_COLUMNS = [
                       [ :customer, :owner, :resolver, :next_queue  ],
                       [ :comments, :component_check, :menu_button ],
-                      [ :call_update_form ],
-                      [ :opc_call_form ]
+                      [ :call_update_form ]
                      ]
     def biggem(binding, header, call)
       # logger.debug("QS: biggem #{call.nil? ? "header" : call.to_param}")
@@ -550,27 +549,6 @@ module Retain
       end
     end
 
-    # Adds the OPC form.  Also adds in to the pageSettings this PMR's current OPC.
-    def opc_call_form(binding, header, call)
-      if header
-        th(binding,
-           :class => 'call-update-container',
-           :colspan => 4) do |binding|
-          concat("")
-        end
-      else
-        add_page_setting("opc_#{call.to_id}", call.pmr.opc)
-        td(binding,
-           :id => "opc_div_#{call.ppg}",
-           :style => 'display: none;',
-           :class => 'opc-container') do |binding|
-          opc = CallOpc.new(call)
-          concat(render(:partial => "shared/retain/opc_form",
-                        :locals => { :opc => opc }))
-        end
-      end
-    end
-
     def call_update_field(binding, header, call)
       # logger.debug("QS: call_update_field #{call.nil? ? "header" : call.to_param}")
       if header
@@ -584,20 +562,6 @@ module Retain
       end
     end
     
-    # Not used currently.  Added during experimentation of the new QS
-    # page layout.
-    def opc_field(binding, header, call)
-      if header
-        th binding, :class => 'opc' do |binding|
-          concat("OPC")
-        end
-      else
-        td binding, :class => 'opc' do |binding|
-          concat(button("OPC", "$(\"call_opc_td_#{call.ppg}\").toggleForm();"))
-        end
-      end
-    end
-
     def customer(binding, header, call)
       # logger.debug("QS: customer #{call.nil? ? "header" : call.to_param}")
       if header
@@ -658,10 +622,8 @@ module Retain
           concat("Actions")
         end
       else
-        opc_text = call.pmr.valid_opc ? "Update OPC ..." : "Create OPC ..."
         menu_options = [
                         ["Update Call ...", "update"],
-                        [opc_text, "opc"],
                         ["Do CT", "ct"]
                        ]
         if call.is_dispatched

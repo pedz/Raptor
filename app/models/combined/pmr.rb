@@ -115,13 +115,6 @@ module Combined
     end
     
     ##
-    # returns true for P8 PMRs.  Search for "P8PMR" in the text
-    # fields.
-    def p8pmr?
-      text_lines.find(:all, :conditions => "text like '%P8PMR%'").length > 0
-    end
-
-    ##
     # returns true for "Blue Diamond" PMRs
     def blue_diamond?
       hits = text_lines.find(:all,

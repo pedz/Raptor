@@ -82,18 +82,6 @@ module Retain
       content_tag :button, "Clear Boxes", hash
     end
 
-    def p8_span(cu)
-      call_update = cu.object
-      if call_update.do_p8
-        "<span>Marked as P8 PMR</span>"
-      else
-        content_tag(:span, html_tag(call_update, 'p8-span')) do
-          do_label("P8", "do-p8", call_update) +
-            cu.check_box(:do_p8, html_tag(call_update, "do-p8"))
-        end
-      end
-    end
-    
     def last_sg_span(call_model)
       content_tag(:span,
                   "Last SG was #{call_model.last_sg}",
