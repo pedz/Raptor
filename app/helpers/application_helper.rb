@@ -102,6 +102,12 @@ module ApplicationHelper
     button_url "Home", root_path
   end
 
+  def arm_button(pmr)
+    url = "https://arm.rtp.raleigh.ibm.com/arm/arm.html#pmr=#{pmr.problem},#{pmr.branch},#{pmr.country}&openDate=#{pmr.creation_date}"
+    logger.debug url
+    "<button onclick='window.open(#{url.inspect}); return false;' class='auto-button' id='BARM'>ARM</button>"
+  end
+
   def favorites_button
     button_url("Favorites", favorite_queues_path)
   end
