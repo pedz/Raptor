@@ -211,7 +211,7 @@
 <!-- <%= __FILE__[Rails.root.to_s.length+1 .. -1] %> bottom -->
 <div>
   <%= home_button %>
-  <%= arm_button(@pmr) %>
+  <%= arm_button(@call, @pmr) %>
   <%= favorites_button %>
   <%= button_url("QS #{@queue.to_param}", combined_q_path(@queue)) %>
   <%= psar_button %>

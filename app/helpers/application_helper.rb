@@ -102,10 +102,20 @@ module ApplicationHelper
     button_url "Home", root_path
   end
 
-  def arm_button(pmr)
-    url = "https://arm.rtp.raleigh.ibm.com/arm/arm.html#pmr=#{pmr.problem},#{pmr.branch},#{pmr.country}&openDate=#{pmr.creation_date}"
-    logger.debug url
-    "<button onclick='window.open(#{url.inspect}); return false;' class='auto-button' id='BARM'>ARM</button>"
+  def arm_button(call, pmr)
+    url = 'https://arm.rtp.raleigh.ibm.com/arm/arm.html#' +
+          'pmr=' + pmr.pbc +
+          # '&srId=' + srId +
+          '&resolverId=' + pmr.resolver.signon +
+          '&openDate=' + pmr.creation_date +
+          '&targetProduct=' + 'AIX' + # hard code for now.
+          '&customerName=' + call.nls_customer_name +
+          '&customerNumber=' + pmr.customer.customer_number +
+          '&contactName=' + call.nls_contact_name +
+          "&contactEmail=" + pmr.problem_e_mail +
+          "&comment=" + pmr.comments
+    logger.debug "ARM URL=#{url}"
+    "<button onclick='window.open(#{url.inspect}); return false;' class='auto-button' id='Barm'>ARM</button>"
   end
 
   def favorites_button
