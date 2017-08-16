@@ -12,7 +12,7 @@ module Settings
     # GET /rotation_group_members
     # GET /rotation_group_members.xml
     def index
-      @rotation_group_members = @rotation_group.active_group_members
+      @rotation_group_members = @rotation_group.rotation_group_members
       
       respond_to do |format|
         format.html # index.html.erb

@@ -24,7 +24,13 @@ class QmController < ApplicationController
     end
 
     # Find the rotation groups that this user belongs to and monitor the requested queue.
-    @rotation_groups = application_user.rotation_groups_for_queue(queue, :order => :name).map do |group|
+    # I'm going to leave this as a comment.  The line below restricts
+    # the rotation groups to be the groups with the same queue for
+    # this particular user.  This is what I had originally but
+    # non-members (management) can't see the activity.  Of
+    # course... that might be a good thing.
+    # @rotation_groups = application_user.rotation_groups_for_queue(queue, :order => :name).map do |group|
+    @rotation_groups = queue.rotation_groups.all(queue, :order => :name).map do |group|
       # active group members alphabetized by name
       members = group.active_group_members(:include => :user)
 
