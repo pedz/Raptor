@@ -82,12 +82,14 @@ task :l3config do
                       (columns[column_names["LOC"] + 1].column - 1)].strip
 
       intranet_id = l[columns[column_names["INTRANET_ID"]].column ...
-                      (columns[column_names["INTRANET_ID"] + 1].column - 1)].strip
+                      (columns[column_names["INTRANET_ID"] + 1].column - 1)].strip.downcase
 
       queue_type  = l[columns[column_names["QTYPE"]].column ...
                       (columns[column_names["QTYPE"] + 1].column - 1)].strip
 
       next if intranet_id.blank? || retain_id.blank? || q.blank? ||loc.blank? || queue_type != "PERSONAL"
+      # user = User.find_by_ldap_id(intranet_id) || User.create(:ldap_id => intranet_id)
+      # puts intranet_id
       user = User.find_or_create_by_ldap_id(intranet_id)
       # puts "User id is #{user.id}"
       retuser = user.retusers.find_by_retid_and_apptest(retain_id, false)
