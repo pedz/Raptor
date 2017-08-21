@@ -82,7 +82,7 @@ module Retain
       
       update_div = "call_update_div_#{@call.to_id}"
       reply_span = "call_update_reply_span_#{@call.to_id}"
-      newtxt = format_lines(call_update[:newtxt])
+      newtxt = format_lines(call_update[:newtxt].u.translit('Latin-ASCII'.u).to_s)
       
       if call_update[:update_pmr]
         case call_update[:update_type]
