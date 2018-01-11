@@ -172,6 +172,18 @@ ActionController::Routing::Routes.draw do |map|
                       :action => 'opc',
                       :method => :post)
   
+  # PMR with create date
+  map.retain_pmr_open('combined_pmrs/:id/:b/:c',
+                      :controller => 'retain/pmrs',
+                      :action => 'show',
+                      :method => :get)
+
+  # PMR with create date (with slash)
+  map.retain_pmr_open('combined_pmrs/:id/:a/:b/:c',
+                      :controller => 'retain/pmrs',
+                      :action => 'show',
+                      :method => :get)
+
   # PMR OPC map.
   map.retain_pmr_opc('combined_pmrs/:id/opc',
                      :controller => 'retain/pmrs',

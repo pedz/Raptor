@@ -9,8 +9,28 @@ module Retain
     # GET /retain_pmrs/1
     # GET /retain_pmrs/1.xml
     def show
-      # logger.debug("params 1 = #{retain_user_connection_parameters.inspect}")
-      @pmr = Combined::Pmr.from_param!(params[:id], signon_user)
+      if params.has_key?(:c)
+        pmr = params[:id]
+        if params.has_key?(:a)
+          date = "#{params[:a]}/#{params[:b]}/#{params[:c]}"
+        else
+          fields = pmr.split
+          pmr = fields[0]
+          date = "#{fields[1]}/#{params[:b]}/#{params[:c]}"
+        end
+        logger.debug("pmr = #{pmr}; date = #{date}")
+        problem, branch, country = pmr.split(',')
+        @pmr = Combined::Pmr.first(conditions: { problem: problem,
+                                                 branch: branch,
+                                                 country: country,
+                                                 creation_date: date })
+        if @pmr.nil?
+          raise Combined::PmrNotFound.new("#{pmr} #{date}")
+        end
+      else
+        # logger.debug("params 1 = #{retain_user_connection_parameters.inspect}")
+        @pmr = Combined::Pmr.from_param!(params[:id], signon_user)
+      end
       
       # The is not a hack... The primary call can become null for
       # various reasons.  In particular, if the call is deleted,
