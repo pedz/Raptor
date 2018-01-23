@@ -109,10 +109,10 @@ module ApplicationHelper
           '&resolverId=' + pmr.resolver.signon +
           '&openDate=' + pmr.creation_date +
           '&targetProduct=' + 'AIX' + # hard code for now.
-          '&customerName=' + call.nls_customer_name +
+          (call ? '&customerName=' + call.nls_customer_name : "") +
           '&customerNumber=' + pmr.customer.customer_number +
-          '&contactName=' + call.nls_contact_name +
-          "&contactEmail=" + pmr.problem_e_mail +
+          (call ? '&contactName=' + call.nls_contact_name : "") +
+          "&contactEmail=" + pmr.pmr_e_mail +
           "&comment=" + pmr.comments
     logger.debug "ARM URL=#{url}"
     "<button onclick='window.open(#{url.inspect}); return false;' class='auto-button' id='Barm'>ARM</button>"

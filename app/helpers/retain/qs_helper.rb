@@ -680,7 +680,7 @@ module Retain
     def cust_email(header, call)
       return "<th class='cust-email'>Email Customer</th>" if header
       pmr = call.pmr
-      if (mail = pmr.problem_e_mail.strip).blank?
+      if pmr.problem_e_mail.nil? || (mail = pmr.problem_e_mail.strip).blank?
         td :class => 'cust-email' do
           "No Email Given"
         end
@@ -1079,7 +1079,7 @@ module Retain
 
     def customer_span(call)
       pmr = call.pmr
-      if (mail = pmr.problem_e_mail.strip).blank?
+      if pmr.problem_e_mail.nil? || (mail = pmr.problem_e_mail.strip).blank?
         span :title => "No email given", :class => "customer" do
           call.nls_customer_name
         end

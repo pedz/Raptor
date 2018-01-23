@@ -702,6 +702,10 @@ module Cached
       hot || priority == 1 || severity == 1 || crit_sit
     end
 
+    def pmr_e_mail
+      self.problem_e_mail ? self.problem_e_mail : ""
+    end
+
     private
 
     ##
