@@ -111,7 +111,7 @@ module ApplicationHelper
           '&targetProduct=' + 'AIX' + # hard code for now.
           (call ? '&customerName=' + call.nls_customer_name : "") +
           '&customerNumber=' + pmr.customer.customer_number +
-          (call ? '&contactName=' + call.nls_contact_name : "") +
+          ((call && call.nls_contact_name) ? '&contactName=' + call.nls_contact_name : "") +
           "&contactEmail=" + pmr.pmr_e_mail +
           "&comment=" + pmr.comments
     logger.debug "ARM URL=#{url}"
